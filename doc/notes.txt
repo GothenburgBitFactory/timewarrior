@@ -1,0 +1,101 @@
+Timewarrior
+
+Tracking time is complex, and involves the confluence of task start/stop, work
+schedule, breaks, meetings, holidays, vacations and manual adjustments.
+
+Defining a calendar as a set of events, and an event as a single or recurrent
+duration with metadata.  A calendar can therefore represent vacation schedule,
+holidays and work schedule, and when combined, define the boundaries of time
+spent working.
+
+
+Reports
+
+A variety of reports are needed, all customizable.
+
+
+Layering
+
+[1] At the lowest layer, there is a calendar that represents unobstructed time.
+    This layer has no data.
+[2] Upon this іs a layer that represents holidays, pulled automatically from
+    http://holidata.net. This is read-only data.
+[3] Next is a layer that represents a work week. This is a set of boundaries
+    that define a work week.
+
+If time can be considered a one-dimensional line, then the above are a set of
+included and excluded segments of that line.  The gaps represent time that
+needs to be tracked.
+
+A report is a bracketed list of how those gaps were utilized.
+
+
+CLI
+
+A full CLI with structured grammar will support the creation, configuration and manipulation of all layers.
+The CLI will support data capture in various ways, using different techniques for selecting slots.
+The CLI will support queries and reporting.
+
+  $ timew holidays
+  $ timew holidays eng-USA
+  $ timew holidays work 2015-11-26
+
+  $ timew define workweek mon-fri
+  $ timew define workweek mon wed-sat
+
+  $ timew define workday start 8:30am
+  $ timew define workday end 1730
+  $ timew define workday tue end 3pm
+
+  $ timew define week start mon
+
+  $ timew show year
+  $ timew show month
+  $ timew show week
+  $ timew show day
+
+
+
+
+Integration
+
+As a sister-product to Taskwarrior, full integration is anticipated.
+An export and import feature, based on JSON, will allow further integration.
+
+
+Data Capture
+
+Data can be captured in several ways.  Here are some examples:
+
+    [exact time start/stop for accurate tracking]
+
+    [inexact time start/stop adjusted to nearest day/hour/half/quarter]
+
+    [backfill 'working on this today' that fills available time]
+
+    [backfill 'worked on this yesterday' that fills available time]
+
+---
+
+Setup
+
+  $ timew define   holidays eng-USA                             # I observe US holidays
+  $ timew undefine holiday  2016-01-01                          # I work on New Year's Day
+  $ timew define   holiday  2016-01-02 "New Year Compensation"  # But not work the 2nd
+
+  $ timew define   workweek mon wed - sat                       # Tuesday is my day off
+
+  $ timew define   workday  start 8:30am                        # Day starts at 0830
+  $ timew define   workday  end 1730                            # Day ends at 1730
+  $ timew define   workday  end 4pm thu                         # Thursdays end at 1600
+  $ timew define   workday  end 3pm next thu                    # Except next week
+
+  $ timew define   break    10am - 10:15am                      # Break
+  $ timew define   break    12pm - 12:45pm                      # Lunch
+  $ timew define   break    3pm - 3:15pm                        # Break
+
+  $ timew define   vacation 2016-02-20 - 2016-02-26             # Vacation week
+
+  $ timew define   sickday  monday                              # Non-working time
+  $ timew define   sickday  today                               # Non-working time
+
