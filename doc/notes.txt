@@ -1,4 +1,5 @@
 Timewarrior
+===========
 
 Tracking time is complex, and requires more than simply a set of start/stop
 timestamps. There are daily schedules, breaks, meetings, holidays, and
@@ -7,23 +8,34 @@ vacations to consider.
 For a tool to be useful, it must support all the above, and make the task of
 tracking time simple.
 
+
 Goals
-- Provide a personal tool to easily track time spent.
-- Provide a tool to easily generate status reports in multiple formats and
-  styles.
+-----
+
+Provide a personal tool to easily track time spent and generate status reports
+in multiple formats and styles. The tool will "do the right thing" as much as
+possible. Tool will be Open Source.
+
 
 Non-Goals
+---------
 - No cloud support.
 - No multi-user support.
 - No sync support.
 - No precision higher than a minute.
 
+
 Integration
-- As a sister-product to Taskwarrior, integration should be as simple as
-  installing a hook script.
-- An export and import feature, based on JSON, will allow further integration.
+-----------
+- As a sister-product to Taskwarrior and Tasksh, integration should be as
+  simple as installing a hook script.
+- Software may invoke timew for tracking, but timew will not invoke any other
+  software.
+- An export and import feature, using JSON, will allow further integration.
+
 
 Definitions
+-----------
 - A timeline is a continuum that is the one-dimensional space that timestamps
   and intervals map onto.
 - A timmestamp is a point on a timeline.
@@ -43,24 +55,61 @@ Definitions
   empty set.
 - The time resolution is 1 minute.
 
+
 Rule System Use Cases
+---------------------
+
+A rule system should be able to evaluate conditions and perform actions, which
+include continuing to process rules, or stopping. The conditions will need to
+access configuration, exclusions, and tracking data.
+
 - A constraint on total tracking time, "do not spend more than 4 hours on x".
 - A constraint that only allows certain tags to be used together, to prevent
   client 1 from being billed for project 2.
 - A constraint that only allows multiples of 15-minute intervals.
 
+
 CLI Syntax
-- The CLI shall have a well-defined and unambiguous grammar.
--
+----------
+The CLI shall have a well-defined and unambiguous grammar.
+
+As timew will use tags, by default we assume the same convention as Taskwarrior,
+namely:
+
+    +tag       Implies the presence of a tag
+    -tag       Implies the absence of a tag
+
+Timestamp values should support a wide range of unambiguous formats, including:
+
+    today
+    9am
+    today 9am
+    0900
+    9:00
+    2015-12-02T09:00
+    2nd 4pm
+
+Interval values should support a wide range of unambiguous formats, including:
+
+    <timestamp> - <timestamp>
+    <timestamp> to <timestamp>
+    from <timestamp> to <timestamp>
+    until <timestamp>
+    from <timestamp>
+    <timestamp> for <duration>
+
 
 Macros
-- A macro is a keyword that can take arguments, and expands to a set of one or
-  more other timew commands, with some dynamic aspect. For example, the macro
-  named 'staff meeting' could be an interval that is on Wednesdays at 10:00,
-  and has a set of associated tags. This would then create an appropriately
-  tagged interval.
+------
+A macro is a keyword that can take arguments, and expands to a set of one or
+more other timew commands, with some dynamic aspect. For example, the macro
+named 'staff meeting' could be an interval that is on Wednesdays at 10:00, and
+has a set of associated tags. This would then create an appropriately tagged
+interval.
+
 
 General Use Cases
+-----------------
 - Define a work week.
     $ timew holidays eng-USA
     $ timew holidays work 2015-11-26
@@ -69,35 +118,72 @@ General Use Cases
     $ timew define workday start 8:30am
     $ timew define workday end 1730
     $ timew define workday tue end 3pm
-- Declare all day yesterday was spent on tag1
-    $ timew track tag1 yesterday
+
+- Assorted tracking commands:
+    $ timew track +tag1 +tag2 yesterday
+    $ timew track +tag1 +tag2 today
+    $ timew start +tag1 +tag2
+    $ timew start +tag1 +tag2 backfill
+
 - Adding a tag to an existing interval.
+    $ timew track +tag3 yesterday 2pm - 4pm
+
 - Removing a tag from an existing interval.
+    $ timew track -tag3 yesterday 2pm - 4pm
+
 - Removing an interval.
+    $ timew untrack yesterday 2pm - 4pm
+
 - Drag the boundary between two blocks to adjust time in each, without adjusting
   the endpoints.
+    $
+
 - Drag a block off the timeline, to delete it.
-- Insert a new block between two adjacent blocks, then adjust as in (1).
+    $
+
+- Insert a new block between two adjacent blocks.
+    $ timew track +tag1 +tag2 yesterday 2pm 4pm
+
 - Create a gap.
+    $
+
 
 Data Format
+-----------
 - The storage format should be a text file.
 - An example storage format for a work week:
     -
-- An example storage format as a starting point:
-    2015-12-01                        # No time tracked.
-    2015-12-02 0-1440 tag1 tag2       # All day for interval set 'tag1 tag2'.
+- An example storage format as a starting point, in compact form. First line is
+  a full day, no break from 8am - 5pm. Second line is the same with an untracked
+  lunch break:
+    2015-12-01 480-1020 tag1 tag2
+    2015-12-02 480-720 tag1 tag2, 780-1020 tag1 tag2
+- Same in JSON:
+    [
+    {"day":"2015-12-01","intervals":[{"start":480,"end":1020,"tags":["tag1","tag2"]}]}
+    {"day":"2015-12-02","intervals":[{"start":480,"end":720,"tags":["tag1","tag2"]},{"start":780,"end":1020,"tags":["tag1","tag2"]]}
+    ]
+- If the user runs "timew track tag1 tag2 yesterday", then the "yesterday" is
+  resolved against the set of exclusions to determine its boundaries, and record
+  as a set of matching intervals. A later change to the work start time will
+  not be reflected in already tracked time.
+
 
 Reporting
+---------
 - Reports should have multiple output formats: TTY, JSON, HTML.
 -
 
+
 Unsolved Issues
+---------------
 - Is a tag a single word, or a KV pair? Why?
 - Multiple timelines?
 - Terminology for backwards and forwards tracking.
 
----
+
+Raw Notes (Slack)
+-----------------
 
 F: start (frontfill) and backfill (end) could be considered orthogonal to each other. They just operate into different directions. but I think they behave the same, more or less.
 
