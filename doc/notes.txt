@@ -1,101 +1,137 @@
 Timewarrior
 
-Tracking time is complex, and involves the confluence of task start/stop, work
-schedule, breaks, meetings, holidays, vacations and manual adjustments.
+Tracking time is complex, and requires more than simply a set of start/stop
+timestamps. There are daily schedules, breaks, meetings, holidays, and
+vacations to consider.
 
-Defining a calendar as a set of events, and an event as a single or recurrent
-duration with metadata.  A calendar can therefore represent vacation schedule,
-holidays and work schedule, and when combined, define the boundaries of time
-spent working.
+For a tool to be useful, it must support all the above, and make the task of
+tracking time simple.
 
+Goals
+- Provide a personal tool to easily track time spent.
+- Provide a tool to easily generate status reports in multiple formats and
+  styles.
 
-Reports
-
-A variety of reports are needed, all customizable.
-
-
-Layering
-
-[1] At the lowest layer, there is a calendar that represents unobstructed time.
-    This layer has no data.
-[2] Upon this іs a layer that represents holidays, pulled automatically from
-    http://holidata.net. This is read-only data.
-[3] Next is a layer that represents a work week. This is a set of boundaries
-    that define a work week.
-
-If time can be considered a one-dimensional line, then the above are a set of
-included and excluded segments of that line.  The gaps represent time that
-needs to be tracked.
-
-A report is a bracketed list of how those gaps were utilized.
-
-
-CLI
-
-A full CLI with structured grammar will support the creation, configuration and manipulation of all layers.
-The CLI will support data capture in various ways, using different techniques for selecting slots.
-The CLI will support queries and reporting.
-
-  $ timew holidays
-  $ timew holidays eng-USA
-  $ timew holidays work 2015-11-26
-
-  $ timew define workweek mon-fri
-  $ timew define workweek mon wed-sat
-
-  $ timew define workday start 8:30am
-  $ timew define workday end 1730
-  $ timew define workday tue end 3pm
-
-  $ timew define week start mon
-
-  $ timew show year
-  $ timew show month
-  $ timew show week
-  $ timew show day
-
-
-
+Non-Goals
+- No cloud support.
+- No multi-user support.
+- No sync support.
+- No precision higher than a minute.
 
 Integration
+- As a sister-product to Taskwarrior, integration should be as simple as
+  installing a hook script.
+- An export and import feature, based on JSON, will allow further integration.
 
-As a sister-product to Taskwarrior, full integration is anticipated.
-An export and import feature, based on JSON, will allow further integration.
+Definitions
+- A timeline is a continuum that is the one-dimensional space that timestamps
+  and intervals map onto.
+- A timmestamp is a point on a timeline.
+- An interval is a span of time on a timeline, consisting of two timestamps.
+- A tag is an arbitrary string.
+- An interval may have any number of tags.
+- An timestamp may have any number of tags.
+- An interval may be an inclusion or an exclusion. A weekend is an exclusion,
+  time spent working is an inclusion.
+- A workweek is defined by time that is not spent working, it is a set of
+  excluded intervals. Those intervals are tagged to be easily identifiable.
+- Lunch could be an inclusion, but tagged as non-work. It could also be an
+  exclusion.
+- An interval set is a set of tags that, when queried, results in the desired
+  subset of all intervals. For example, 'home' and 'painting' are tags that
+  represent all the tracked time with those tags. The interval set may be the
+  empty set.
+- The time resolution is 1 minute.
 
+Rule System Use Cases
+- A constraint on total tracking time, "do not spend more than 4 hours on x".
+- A constraint that only allows certain tags to be used together, to prevent
+  client 1 from being billed for project 2.
+- A constraint that only allows multiples of 15-minute intervals.
 
-Data Capture
+CLI Syntax
+- The CLI shall have a well-defined and unambiguous grammar.
+-
 
-Data can be captured in several ways.  Here are some examples:
+Macros
+- A macro is a keyword that can take arguments, and expands to a set of one or
+  more other timew commands, with some dynamic aspect. For example, the macro
+  named 'staff meeting' could be an interval that is on Wednesdays at 10:00,
+  and has a set of associated tags. This would then create an appropriately
+  tagged interval.
 
-    [exact time start/stop for accurate tracking]
+General Use Cases
+- Define a work week.
+    $ timew holidays eng-USA
+    $ timew holidays work 2015-11-26
+    $ timew define workweek mon-fri
+    $ timew define workweek mon wed-sat
+    $ timew define workday start 8:30am
+    $ timew define workday end 1730
+    $ timew define workday tue end 3pm
+- Declare all day yesterday was spent on tag1
+    $ timew track tag1 yesterday
+- Adding a tag to an existing interval.
+- Removing a tag from an existing interval.
+- Removing an interval.
+- Drag the boundary between two blocks to adjust time in each, without adjusting
+  the endpoints.
+- Drag a block off the timeline, to delete it.
+- Insert a new block between two adjacent blocks, then adjust as in (1).
+- Create a gap.
 
-    [inexact time start/stop adjusted to nearest day/hour/half/quarter]
+Data Format
+- The storage format should be a text file.
+- An example storage format for a work week:
+    -
+- An example storage format as a starting point:
+    2015-12-01                        # No time tracked.
+    2015-12-02 0-1440 tag1 tag2       # All day for interval set 'tag1 tag2'.
 
-    [backfill 'working on this today' that fills available time]
+Reporting
+- Reports should have multiple output formats: TTY, JSON, HTML.
+-
 
-    [backfill 'worked on this yesterday' that fills available time]
+Unsolved Issues
+- Is a tag a single word, or a KV pair? Why?
+- Multiple timelines?
+- Terminology for backwards and forwards tracking.
 
 ---
 
-Setup
+F: start (frontfill) and backfill (end) could be considered orthogonal to each other. They just operate into different directions. but I think they behave the same, more or less.
 
-  $ timew define   holidays eng-USA                             # I observe US holidays
-  $ timew undefine holiday  2016-01-01                          # I work on New Year's Day
-  $ timew define   holiday  2016-01-02 "New Year Compensation"  # But not work the 2nd
+F: Which brings me to the topic of overlapping intervals. While most of things would not be multitasking/overlapping. I could think of a few things that could be reported overlapping.
+P: Agreed, I can multitask and be pursuing two results at the same time.
 
-  $ timew define   workweek mon wed - sat                       # Tuesday is my day off
+P: I can do all these [manipulations] with my finger.  But not at the CLI.  That means lists, and ID numbers, I think.  Any thoughts?
+F: List… Hm. Don’t we already have one implicitly with the timeline and timestamps?
+P: Yes, but you’d need to view it, in order to identify which block should be manipulated.
+F: Can’t that list not be a list of key/value pairs? The keys are the minutes of the day, the values the different tags (another list of key/values).
+F: Then you just traverse the minutes in either direction.
+F: If you want to extend an event just look at the minutes after it and change the stored tags...
+P: Time for an example:  time in brackets is the time the command was run.
+P: [9:00] $ timew start tag1 tag2 tag3
+P: [9:45] $ timew start tag4 tag5
+P: [9:50] $ timew ??????????? I want to adjust the first block to start at 8:55am
+P: ie not the current block.
+P: [9:50] $ timew start tag1 tag2 tag3 8:55am     ?
 
-  $ timew define   workday  start 8:30am                        # Day starts at 0830
-  $ timew define   workday  end 1730                            # Day ends at 1730
-  $ timew define   workday  end 4pm thu                         # Thursdays end at 1600
-  $ timew define   workday  end 3pm next thu                    # Except next week
+P: You said earlier about time points, like monitoring systems.  If I jsut drop a point at 8:55, then it could merge it with the 9:00 point because the tags match.
+F: OTOH the command at 9:50 could also mean that the first block should go from 8:55 to 9:40. It was originally 45 minutes long. Should it now also be 45 minutes. Or do you want to extend it with 5mins from 8:55 to 9:45?
+P: Your question above: should we move the block intact, or stretch it?  I think that’s an important flexibility we need.  so both.
 
-  $ timew define   break    10am - 10:15am                      # Break
-  $ timew define   break    12pm - 12:45pm                      # Lunch
-  $ timew define   break    3pm - 3:15pm                        # Break
+F: I am thinking if that list would need to contain 1440 entries or if it could be smaller.
+F: Or if we just store less elements in it from the beginning and then just populate them as we add events to the day.
+F: If the list is fully populated then querying and reporting is just traversing and adding per resolution. No fancy time calculations.
+F: Just count how many minute entries you have for a tag combination.
+F: Would that be slow for a week or month?
+P: So initially we define our work week, which to me involves about 8 blocks of time, which is just 16 time points.  So that’s nothing.
+P: Well, I can represent an array of 1440 slots very efficiently:   1-1440 tag1
+P: Then you add a block, and it gets bisected:   1-300 tag1, 301-800 tag2, 801-1440 tag1
+F: Exactly.
+P: So with 10 separately billable chunks of time recorded, there would be 11 blocks, and the 8 that define the week.  Trivial.
+F: And their length is y-x.
+P: Even easier then:   1 tag1, 301 tag2, 801 tag1
 
-  $ timew define   vacation 2016-02-20 - 2016-02-26             # Vacation week
-
-  $ timew define   sickday  monday                              # Non-working time
-  $ timew define   sickday  today                               # Non-working time
-
+--
