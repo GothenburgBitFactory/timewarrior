@@ -68,6 +68,8 @@ access configuration, exclusions, and tracking data.
   client 1 from being billed for project 2.
 - A constraint that only allows multiples of 15-minute intervals.
 
+Ref: http://martinfowler.com/bliki/RulesEngine.html
+
 
 CLI Syntax
 ----------
@@ -110,9 +112,45 @@ interval.
 
 General Use Cases
 -----------------
+Suppose 'today' is 2015-11-24, a Tuesday. This date is chosen because it is
+mid-week, a holiday is coming up, and workday exceptions are typical. Here is
+the empty timeline:
+
+      2015
+      November                                                                            December
+      W48                                                                                 W49
+      23rd        24th        25th        26th        27th        28th        29th        30th        1st
+      Monday      Tuesday     Wednesday   Thursday    Friday      Saturday    Sunday      Monday      Tuesday
+      :           :           :           :           :           :           :           :           :           :
+      :..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:
+      0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0
+                        |
+                        |                 ------------                                                              $ timew holidays eng-USA
+                        |                                         ------------------------                          $ timew define workweek mon-fri
+      ----        ----  |     ----        ----        ----        ----        ----        ----        ----          $ timew define workday start 8:30am
+               ---      |  ---         ---         ---         ---         ---         ---         ---         ---  $ timew define workday end 1730
+                        | ----                                                                                      $ timew define workday tue end 3pm
+                        |
+          +++++       ++++        +++++                   +++++                               +++++       +++++     Resulting work week
+                        |
+                        now
+
+
+                        |
+          +++++ tag1 tag2                                                                                           $ timew track +tag1 +tag2 yesterday
+                      ++++ tag1 tag2                                                                                $ timew track +tag1 +tag2 today
+                        + tag1 tag2                                                                                 $ timew start +tag1 +tag2
+                      +++ tag1 tag2                                                                                 $ timew start +tag1 +tag2 backfill
+              + tag3                                                                                                $ timew track +tag3 yesterday 2pm - 4pm
+              + tag4                                                                                                $ timew track -tag3 +tag4 yesterday 2pm - 4pm
+                        |
+                        |
+                        now
+
+
 - Define a work week.
     $ timew holidays eng-USA
-    $ timew holidays work 2015-11-26
+    $ timew holidays work 2015-11-26     # override the holiday
     $ timew define workweek mon-fri
     $ timew define workweek mon wed-sat
     $ timew define workday start 8:30am
@@ -128,8 +166,8 @@ General Use Cases
 - Adding a tag to an existing interval.
     $ timew track +tag3 yesterday 2pm - 4pm
 
-- Removing a tag from an existing interval.
-    $ timew track -tag3 yesterday 2pm - 4pm
+- Add and remove a tag from an existing interval.
+    $ timew track -tag3 +tag4 yesterday 2pm - 4pm
 
 - Removing an interval.
     $ timew untrack yesterday 2pm - 4pm
