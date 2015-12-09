@@ -70,6 +70,22 @@ access configuration, exclusions, and tracking data.
 
 Ref: http://martinfowler.com/bliki/RulesEngine.html
 
+Example rules (assuming Python-like syntax):
+
+  define rule workweek:
+    holidays eng-USA
+    workweek mon,tue,wed,thu,fri
+    workday start 510
+    workday end 1050
+    workday tue end 900
+
+  define rule my_rule:
+    total_hours = sum_week +tag1
+    if total_hours > 12:
+      fail "The 'tag1' tag cannot exceed 12 hours/wk"
+
+  (needs work)
+
 
 CLI Syntax
 ----------
@@ -112,9 +128,10 @@ interval.
 
 General Use Cases
 -----------------
-Suppose 'today' is 2015-11-24, a Tuesday. This date is chosen because it is
-mid-week, a holiday is coming up, and workday exceptions are typical. Here is
-the empty timeline:
+Suppose 'today' is 2015-11-24, a Tuesday at noon. This date is chosen because
+it is mid-week, a holiday is coming up, and workday exceptions are typical.
+Here is the timeline, with the successive exclusions added, as a work week is
+defined:
 
       2015
       November                                                                            December
@@ -135,6 +152,7 @@ the empty timeline:
                         |
                         now
 
+On that same timeline, here are some example tracked intervals:
 
                         |
           +++++ tag1 tag2                                                                                           $ timew track +tag1 +tag2 yesterday
@@ -147,48 +165,86 @@ the empty timeline:
                         |
                         now
 
+Here is the example data storage for the above workweek:
 
-- Define a work week.
-    $ timew holidays eng-USA
-    $ timew holidays work 2015-11-26     # override the holiday
-    $ timew define workweek mon-fri
-    $ timew define workweek mon wed-sat
-    $ timew define workday start 8:30am
-    $ timew define workday end 1730
-    $ timew define workday tue end 3pm
+      define rule workweek:
+        holidays eng-USA
+        workweek mon,tue,wed,thu,fri
+        workday start 510
+        workday end 1050
+        workday tue end 900
 
-- Assorted tracking commands:
-    $ timew track +tag1 +tag2 yesterday
-    $ timew track +tag1 +tag2 today
-    $ timew start +tag1 +tag2
-    $ timew start +tag1 +tag2 backfill
+Time tracking is based on the inclusion intervals derived from the above rule.
+For week 48 those would be:
 
-- Adding a tag to an existing interval.
-    $ timew track +tag3 yesterday 2pm - 4pm
+      2015-11-23 510-1050
+      2015-11-24 510-900
+      2015-11-25 510-1050
+      2015-11-27 510-1050
 
-- Add and remove a tag from an existing interval.
-    $ timew track -tag3 +tag4 yesterday 2pm - 4pm
+Given these intervals, tracking becomes a set of basic modifications:
 
-- Removing an interval.
-    $ timew untrack yesterday 2pm - 4pm
+    The date 'yesterday' refers to the whole day, and overrides any other
+    intervals:
 
-- Drag the boundary between two blocks to adjust time in each, without adjusting
-  the endpoints.
-    $
+      $ timew track +tag1 +tag2 yesterday
 
-- Drag a block off the timeline, to delete it.
-    $
+      --> 'yesterday' resolves to 2015-11-23
+      --> delete all intervals for 2015-11-23
+      --> obtain inclusions for 2015-11-23: 510-1050
+      --> store: 2015-11-23 510-1050 tag1 tag2
 
-- Insert a new block between two adjacent blocks.
-    $ timew track +tag1 +tag2 yesterday 2pm 4pm
+    The date 'today' refers to the whole day, and overrides any other intervals:
 
-- Create a gap.
-    $
+      $ timew track +tag1 +tag2 today
+
+      --> 'today' resolves to 2015-11-24
+      --> delete all intervals for 2015-11-24
+      --> obtain inclusions for 2015-11-24: 510-900
+      --> store: 2015-11-24 510-900 tag1 tag2
+
+    The 'start' command uses 'now' (12:00pm) in this alternate example:
+
+      $ timew start +tag1 +tag2
+
+      --> 'now' resolves to 2015-11-24T12:00
+      --> obtain inclusions for 2015-11-24: 510-900
+      --> store: 2015-11-24 720- tag1 tag2
+          Note the open-ended interval
+
+    The 'start' recognizes 'backfill' to indicate that earlier, untracked
+    inclusions should be tracked:
+
+      $ timew start +tag1 +tag2 backfill
+
+      --> 'now' resolves to 2015-11-24T12:00
+      --> obtain inclusions for 2015-11-24: 510-900
+      --> store: 2015-11-24 510- tag1 tag2
+          Note the open-ended, back-dated interval
+
+    Inserting tracked time into an existing set of intervals:
+
+      $ timew track +tag3 yesterday 2pm - 4pm
+
+      --> 'yesterday' resolves to 2015-11-23
+      --> '2pm' - '4pm' resolves to 840-960
+      --> obtain inclusions for 2015-11-23: 510-1050
+      --> store: 2015-11-23 840-960 tag3
+
+    Change tagging for an interval:
+
+      $ timew track -tag3 +tag4 yesterday 2pm - 4pm
+
+      TBD
+
+
+Not shown:
+  - $ timew holidays work 2015-11-26     # override the holiday
 
 
 Data Format
 -----------
-- The storage format should be a text file.
+- The storage format should be all text files.
 - An example storage format for a work week:
     -
 - An example storage format as a starting point, in compact form. First line is
@@ -205,6 +261,7 @@ Data Format
   resolved against the set of exclusions to determine its boundaries, and record
   as a set of matching intervals. A later change to the work start time will
   not be reflected in already tracked time.
+- Tags may need to be quoted, to allow spaces.
 
 
 Reporting
@@ -215,9 +272,22 @@ Reporting
 
 Unsolved Issues
 ---------------
-- Is a tag a single word, or a KV pair? Why?
+- Is a tag a single word, or a KV pair? Why? If tags are quoted strings, then
+  there will be no issues with folks wanting to use actual project names.
 - Multiple timelines?
-- Terminology for backwards and forwards tracking.
+- Terminology for backwards and forwards tracking (backfill for the past, and
+  just assume everythign else is for the future)?
+- Given this:
+    $ timew track yesterday 9am - 5pm tag1
+  What does this do:
+    $ timew track yesterday 10am - 11am tag2
+  Does it yield:
+    a) yesterday 540-1020 tag, 600-660 tag2                      # overlap
+    b) yesterday 540-600 tag1, 600-660 tag2, 660-1020 tag1       # no overlap
+    c) yesterday 540-600 tag1, 600-660 tag1 tag2, 660-1020 tag1  # explicit overlap
+  Stating 'track yesterday 10am - 11am tag2' sounds imperative, thus overriding
+  any existing tags in that interval. Perhaps a 'merge' keyword could be added
+  to combined the results (track yesterday 10am - 11am tag2 merge)?
 
 
 Raw Notes (Slack)
@@ -234,12 +304,6 @@ P: Yes, but you’d need to view it, in order to identify which block should be 
 F: Can’t that list not be a list of key/value pairs? The keys are the minutes of the day, the values the different tags (another list of key/values).
 F: Then you just traverse the minutes in either direction.
 F: If you want to extend an event just look at the minutes after it and change the stored tags...
-P: Time for an example:  time in brackets is the time the command was run.
-P: [9:00] $ timew start tag1 tag2 tag3
-P: [9:45] $ timew start tag4 tag5
-P: [9:50] $ timew ??????????? I want to adjust the first block to start at 8:55am
-P: ie not the current block.
-P: [9:50] $ timew start tag1 tag2 tag3 8:55am     ?
 
 P: You said earlier about time points, like monitoring systems.  If I jsut drop a point at 8:55, then it could merge it with the 9:00 point because the tags match.
 F: OTOH the command at 9:50 could also mean that the first block should go from 8:55 to 9:40. It was originally 45 minutes long. Should it now also be 45 minutes. Or do you want to extend it with 5mins from 8:55 to 9:45?
