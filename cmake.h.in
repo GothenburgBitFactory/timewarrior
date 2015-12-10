@@ -1,0 +1,36 @@
+/* cmake.h.in. Creates cmake.h during a cmake run */
+
+/* Package information */
+#define PACKAGE           "${PACKAGE}"
+#define VERSION           "${VERSION}"
+#define PACKAGE_BUGREPORT "${PACKAGE_BUGREPORT}"
+#define PACKAGE_NAME      "${PACKAGE_NAME}"
+#define PACKAGE_TARNAME   "${PACKAGE_TARNAME}"
+#define PACKAGE_VERSION   "${PACKAGE_VERSION}"
+#define PACKAGE_STRING    "${PACKAGE_STRING}"
+
+#define CMAKE_BUILD_TYPE  "${CMAKE_BUILD_TYPE}"
+
+/* Installation details */
+#define TIMEW_RCDIR "${CMAKE_INSTALL_PREFIX}/${TIMEW_RCDIR}"
+
+/* git information */
+#cmakedefine HAVE_COMMIT
+
+/* cmake information */
+#cmakedefine HAVE_CMAKE
+#define CMAKE_VERSION "${CMAKE_VERSION}"
+
+/* Compiling platform */
+#cmakedefine LINUX
+#cmakedefine DARWIN
+#cmakedefine CYGWIN
+#cmakedefine FREEBSD
+#cmakedefine OPENBSD
+#cmakedefine NETBSD
+#cmakedefine HAIKU
+#cmakedefine SOLARIS
+#cmakedefine KFREEBSD
+#cmakedefine GNUHURD
+#cmakedefine UNKNOWN
+
