@@ -1,20 +1,27 @@
 Timewarrior
 ===========
+Tracking time is complex and means different things to different people. It can
+range from being as simple as:
 
-Tracking time is complex, and requires more than simply a set of start/stop
-timestamps. There are daily schedules, breaks, meetings, holidays, and
-vacations to consider.
+  $ timew track 9am - now "Prepare for staff meeting"
+  $ timew track now "Staff meeting"
 
-For a tool to be useful, it must support all the above, and make the task of
-tracking time simple.
+Or as sophisticated as:
+
+  $ timew track backfill last week "Design proposal"
+
+For fully automated time tracking, as the line above exhibits, weekly and daily
+schedules must be considered. For such a tool to be useful, it must support all
+the above, and make time tracking very simple.
 
 
 Goals
 -----
+Provide a personal tool to easily track time spent and generate reports in
+multiple formats and styles. The tool will "do the right thing" as much as
+possible, to make detailed time tracking easy, and not a burden.
 
-Provide a personal tool to easily track time spent and generate status reports
-in multiple formats and styles. The tool will "do the right thing" as much as
-possible. Tool will be Open Source.
+Open Source. Localized.
 
 
 Non-Goals
@@ -29,8 +36,6 @@ Integration
 -----------
 - As a sister-product to Taskwarrior and Tasksh, integration should be as
   simple as installing a hook script.
-- Software may invoke timew for tracking, but timew will not invoke any other
-  software.
 - An export and import feature, using JSON, will allow further integration.
 
 
@@ -38,27 +43,21 @@ Definitions
 -----------
 - A timeline is a continuum that is the one-dimensional space that timestamps
   and intervals map onto.
-- A timmestamp is a point on a timeline.
-- An interval is a span of time on a timeline, consisting of two timestamps.
+- A timestamp is a point on a timeline.
+- An interval is a span of time on a timeline, consisting of two timestamps,
+  with associated tags.
 - A tag is an arbitrary string.
-- An interval may have any number of tags.
-- An timestamp may have any number of tags.
 - An interval may be an inclusion or an exclusion. A weekend is an exclusion,
   time spent working is an inclusion.
 - A workweek is defined by time that is not spent working, it is a set of
   excluded intervals. Those intervals are tagged to be easily identifiable.
 - Lunch could be an inclusion, but tagged as non-work. It could also be an
   exclusion.
-- An interval set is a set of tags that, when queried, results in the desired
-  subset of all intervals. For example, 'home' and 'painting' are tags that
-  represent all the tracked time with those tags. The interval set may be the
-  empty set.
 - The time resolution is 1 minute.
 
 
 Rule System Use Cases
 ---------------------
-
 A rule system should be able to evaluate conditions and perform actions, which
 include continuing to process rules, or stopping. The conditions will need to
 access configuration, exclusions, and tracking data.
@@ -72,16 +71,16 @@ Ref: http://martinfowler.com/bliki/RulesEngine.html
 
 Example rules (assuming Python-like syntax):
 
-  define rule workweek:
+  define rule exclusions:
     holidays eng-USA
     workweek mon,tue,wed,thu,fri
     workday start 510
     workday end 1050
     workday tue end 900
+    resolution 1min
 
   define rule my_rule:
-    total_hours = sum_week +tag1
-    if total_hours > 12:
+    if sum_week(+tag1) > 12:
       fail "The 'tag1' tag cannot exceed 12 hours/wk"
 
   (needs work)
@@ -115,6 +114,31 @@ Interval values should support a wide range of unambiguous formats, including:
     until <timestamp>
     from <timestamp>
     <timestamp> for <duration>
+
+
+Tags
+----
+Tags represent tracking categories. Tags are arbitrary UTF8 strings. A tag may
+be a single unquoted word, or a quoted phrase.
+
+A tag may be used without being defined, but if a tags is defined, then it may
+have associated metadata, such as a start date representing the first date on
+which it may be used, or an end date, when it expires. A tag may have a budget,
+which is the maximum trackable time for a period.
+
+
+Commands
+--------
+The command set may include:
+
+  define         Modify configuration
+  track          Record tracked time
+  report         Run a report
+  tags           Show all tags
+  query          Extract an interval set
+  import         Import JSON data
+  export         Export JSON data
+  x              Run extension 'x'
 
 
 Macros
@@ -167,7 +191,7 @@ On that same timeline, here are some example tracked intervals:
 
 Here is the example data storage for the above workweek:
 
-      define rule workweek:
+      define rule exclusions:
         holidays eng-USA
         workweek mon,tue,wed,thu,fri
         workday start 510
@@ -244,36 +268,64 @@ Not shown:
 
 Data Format
 -----------
-- The storage format should be all text files.
-- An example storage format for a work week:
-    -
-- An example storage format as a starting point, in compact form. First line is
-  a full day, no break from 8am - 5pm. Second line is the same with an untracked
-  lunch break:
-    2015-12-01 480-1020 tag1 tag2
-    2015-12-02 480-720 tag1 tag2, 780-1020 tag1 tag2
-- Same in JSON:
-    [
-    {"day":"2015-12-01","intervals":[{"start":480,"end":1020,"tags":["tag1","tag2"]}]}
-    {"day":"2015-12-02","intervals":[{"start":480,"end":720,"tags":["tag1","tag2"]},{"start":780,"end":1020,"tags":["tag1","tag2"]]}
-    ]
-- If the user runs "timew track tag1 tag2 yesterday", then the "yesterday" is
-  resolved against the set of exclusions to determine its boundaries, and record
-  as a set of matching intervals. A later change to the work start time will
-  not be reflected in already tracked time.
-- Tags may need to be quoted, to allow spaces.
+A work week can be defined by a rule:
+
+  define rule exclusions:
+    holidays eng-USA
+    workweek mon,tue,wed,thu,fri
+    workday start 510
+    workday end 1050
+    workday tue end 900
+
+In this compact form, it is easy to expand this template into a set of intervals
+for a given week, and keeping the definition in this form allows simple
+modification.
+
+Intervals of tracked time can be stored in a text file, with one line of text
+representing one daẏ. Here is a single tracked interval:
+
+  YYYY-MM-DD <start>-<end> <tagset>
+
+Here is an open-ended, currently tracked active interval, notice the missing
+<end> timestamp:
+
+  YYYY-MM-DD <start>- <tagset>
+
+A typical day might look like this:
+
+  2015-12-10 480-720 Upgrade Planning, 780- Upgrade Presentation "ABCD Inc"
+
+The "480-720" is a time range, in this case from 8:00am to 12:00pm, associated
+with the two tags "Upgrade" and "Planning". A second interval started at 1:00pm
+and is incomplete, associated with three tags "Upgrade", "Presentation" and
+"ABCD Inc". A tag must be quoted, if it contains whitespace.
 
 
 Reporting
 ---------
 - Reports should have multiple output formats: TTY, JSON, HTML.
--
+- There will be a few different types of reports:
+  - Tabular Calendar
+  - List with subtotals, total
+- Reports will be decorated, for example, subtotals, legend, title
+- It should be possible to extend Timewarrior to add custom reports, via a
+  simple hook mechanism.
+
+
+Extensions
+----------
+A simple extension mechanism, similar to Taskwarrior would require an executable
+script found in a defined location with a conformant name, which then is fed
+queried raw data as stdin.
+
+For example, this script clearly defines that it is a 'report' extension named
+'abc'.
+
+  ~/.timewarrior/extensions/report_abc
 
 
 Unsolved Issues
 ---------------
-- Is a tag a single word, or a KV pair? Why? If tags are quoted strings, then
-  there will be no issues with folks wanting to use actual project names.
 - Multiple timelines?
 - Terminology for backwards and forwards tracking (backfill for the past, and
   just assume everythign else is for the future)?
@@ -308,18 +360,5 @@ F: If you want to extend an event just look at the minutes after it and change t
 P: You said earlier about time points, like monitoring systems.  If I jsut drop a point at 8:55, then it could merge it with the 9:00 point because the tags match.
 F: OTOH the command at 9:50 could also mean that the first block should go from 8:55 to 9:40. It was originally 45 minutes long. Should it now also be 45 minutes. Or do you want to extend it with 5mins from 8:55 to 9:45?
 P: Your question above: should we move the block intact, or stretch it?  I think that’s an important flexibility we need.  so both.
-
-F: I am thinking if that list would need to contain 1440 entries or if it could be smaller.
-F: Or if we just store less elements in it from the beginning and then just populate them as we add events to the day.
-F: If the list is fully populated then querying and reporting is just traversing and adding per resolution. No fancy time calculations.
-F: Just count how many minute entries you have for a tag combination.
-F: Would that be slow for a week or month?
-P: So initially we define our work week, which to me involves about 8 blocks of time, which is just 16 time points.  So that’s nothing.
-P: Well, I can represent an array of 1440 slots very efficiently:   1-1440 tag1
-P: Then you add a block, and it gets bisected:   1-300 tag1, 301-800 tag2, 801-1440 tag1
-F: Exactly.
-P: So with 10 separately billable chunks of time recorded, there would be 11 blocks, and the 8 that define the week.  Trivial.
-F: And their length is y-x.
-P: Even easier then:   1 tag1, 301 tag2, 801 tag1
 
 --
