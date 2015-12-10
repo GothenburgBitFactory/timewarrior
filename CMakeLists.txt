@@ -102,7 +102,7 @@ configure_file (
 
 add_subdirectory (src)
 
-set (doc_FILES ChangeLog README.md)
+set (doc_FILES NEWS ChangeLog README.md INSTALL AUTHORS COPYING LICENSE)
 foreach (doc_FILE ${doc_FILES})
   install (FILES ${doc_FILE}  DESTINATION ${TIMEW_DOCDIR})
 endforeach (doc_FILE)

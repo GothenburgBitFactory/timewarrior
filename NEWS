@@ -1,0 +1,45 @@
+
+New Features in 1.0.0
+
+  - 
+
+New Commands in 1.0.0
+
+  - 
+
+New Configuration Options in 1.0.0
+
+  -
+
+Newly Deprecated Features in 1.0.0
+
+  - None, this is the first release.
+
+Removed Features in 1.0.0
+
+  - None, this is the first release.
+
+Known Issues
+
+  - https://bug.tasktools.org/
+
+Timewarrior has been built and tested on the following configurations:
+
+  * OS X
+
+---
+
+While Timewarrior has undergone testing, bugs are sure to remain.  If you
+encounter a bug, please enter a new issue at:
+
+  https://bug.tasktools.org
+
+Or you can also report the issue in the forums at:
+
+  https://answers.tasktools.org
+
+Or just send a message to:
+
+  support@taskwarrior.org
+
+Thank you.
