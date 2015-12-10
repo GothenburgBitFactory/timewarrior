@@ -101,6 +101,9 @@ configure_file (
   ${CMAKE_SOURCE_DIR}/cmake.h)
 
 add_subdirectory (src)
+if (EXISTS ${CMAKE_SOURCE_DIR}/test)
+  add_subdirectory (test EXCLUDE_FROM_ALL)
+endif (EXISTS ${CMAKE_SOURCE_DIR}/test)
 
 set (doc_FILES NEWS ChangeLog README.md INSTALL AUTHORS COPYING LICENSE)
 foreach (doc_FILE ${doc_FILES})
