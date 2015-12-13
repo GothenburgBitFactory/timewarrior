@@ -4,7 +4,7 @@ Tracking time is complex and means different things to different people. It can
 range from being as simple as:
 
   $ timew track 9am - now "Prepare for staff meeting"
-  $ timew track now "Staff meeting"
+  $ timew track "Staff meeting"
 
 Or as sophisticated as:
 
@@ -361,4 +361,229 @@ P: You said earlier about time points, like monitoring systems.  If I jsut drop 
 F: OTOH the command at 9:50 could also mean that the first block should go from 8:55 to 9:40. It was originally 45 minutes long. Should it now also be 45 minutes. Or do you want to extend it with 5mins from 8:55 to 9:45?
 P: Your question above: should we move the block intact, or stretch it?  I think that’s an important flexibility we need.  so both.
 
---
+---
+
+P: I think that it needs to support the following, with zero configuration (ie no exclusions defined):
+   $ timew track “Packing my bags”
+   That means track the tag “Packing my bags” starting now.  Additionally, direct data capture, with no magic:
+   $ timew start “Painting the kitchen”
+   $ timew stop “Painting the kitchen”
+   This is equivalent to the tw 30-second tutorial,  and is easy to learn.
+   So it works like a chess clock - you just hit it.  All times are evaluated as “now”.
+F: Yes.
+P: The missing part is:
+   $ timew report foo
+   Which shows a report named ‘foo’ of the captured data.  easy.
+
+F: What about IDs to make this even easier or just “stop” that actuates on the last start?
+P: I think a “start” leaves and open-ended time range:    2015-12-10 791- “Painting the kitchen"
+   The 791 corresponds to my local 1631EST (60 * 16 + 31), with no end time.
+F: yes. but i mean more like...
+   $ timew track “Packing my bags"
+   Tracking [1] “packing my bags"
+   $ timew stop 1
+   or just
+   $ timew stop
+P: The latter works in this example, so no need for ID there.  IDs might be useful if I’m tracking two things at once, ie no single active thing.
+F: exactly. it would avoid typing descriptions...
+P: okay, good.  Noted.
+
+P: So only if you define a workweek, does the following make sense:
+   $ timew track last week “Installing shelves"
+   “last week” clearly means all week, so it can query the timeline for a list of untracked time, then add intervals to fill it.  Similarly:
+   $ timew track today “Paint door”
+   That can mean fill all time up until now.  You could add a keyword “fill” to that, and maybe it goes to end of day.
+
+F: yes. or use other time modifiers...
+   today until now
+   today from now
+
+P: Right.  My point here is that “backfill” and “fill” are not necessarily needed, and can be implied from the “last week”.  Obviously this implies no fill:
+   $ timew track yesterday 2pm - 4pm “Do this"
+   Yes - “today until now” could be an explicit version of “today”.  “Today from now” is the same as “track”.
+
+F: the fill thing could be used to indicate just a direction:
+
+P: There is no open-ended fill though.  The future is infinite, so we don’t want to actually record much.  Anything bounded, yes (“until eod”), but anything unbounded (“track ‘do this’”) just leaves it open.
+
+F: it fills from the last good point, goes backwards in time until it hits a stop/interval limit.
+
+P: Yes, unless you bound it.  ie   “timew track last week ‘this thing’” can back fill within the “last week”, but exclude any otherwise tracked intervals.
+   Then we can support a “merge” keyword to overlap any tracked intervals.
+
+F: If you add fill to this I would expect it to start at the end of last week, find the empty intervall and fill it until it hits a limit or another already filled interval.
+   So it only does one thing.
+   while the command without fill would operate on the entire week instead.
+   but this would just be me.
+
+P: Let’s explore that.  Suppose “last week” is 39 hours of nothing, and 1 hour of a meeting.  Suppose we indicate (for clarity here) keywords as “:keyword”.  The question then becomes what do the following do:
+   $ timew track last week “paint the thing”
+   $ timew track last week “paint the thing” :fill
+   Our choices are:
+   39 hours of “paint the thing” filled around the 1 hour “meeting”.
+   Or 40 hours of “paint the thing” overlapping with 1 hour “meeting”
+   Or 40 hours of “paint the thing”, and the meeting is gone
+F: hm, b would be first choice.
+   “a" would be second or third.
+P: Configurable maybe, or overridden with a keyword.
+F: yeah. you could get a warning.
+
+
+P: So there are lots of time specification formats to support:
+      until 4pm
+      from 11am
+      since 11am
+      3pm - 4pm
+      etc.  Assume we support them all.
+   Also ranges:
+      last week
+      last month
+      monday
+      last monday
+      yesterday
+      etc.  Assume we support them all
+F: don’t forget 2000...
+P: at 3pm for 2 hours Yes,   2000 - 9pm, mixing is okay
+F: should we allow implicit tmes?
+   that is “guess” am or pm from the context.
+P: Probably, yes, the same way that “monday” assumes the next one for tw, or maybe the last one in timew.  Good point.
+   Tags are quoted strings or single words, all UTF8.  If we don’t support whitespace, then you can’t track “Alpha Project” or some such code name, and I would anticipate complaints, as we have now for tw.  So this means:
+
+   $ timew track “Paint the house” home painting
+
+   three “tags”.
+
+
+
+P: Reports:  We need some built-in reports:
+   $ timew report day
+   $ timew report day monday
+   $ timew report week
+   $ timew report month
+   $ timew report week +tag1 -tag2    <— has tag1, missing tag2, for creating client-specific reports
+P: But we can’t anticipate all reports, and don’t have the manpower to implement them, therefore we need report extensions.  Something like hooks for tw.
+F: what would these create anyway? basic output format - some columns on the screen? how formatted?
+   I assume most people would want to feed the numbers into something else.
+P: Yeah, not sure.  Some kind of list, tabular, with subtotals.
+   Agree about what people might want.
+   But we could do this:
+
+   $ timew report week :tty                 (default)
+   $ timew report week :json
+   $ timew report week :html
+
+   They would support tags for filtering.
+F: good.
+P: But yes, most people will want custom, I expect. The number of reports would grow over time I think.
+
+
+
+F: Let me short go back to fill.
+P: ok
+F: I think we could generally use it to “fill” around other already tracked events.
+P: So a normal human only does one thing at a time.
+F: Yes but then also to make a difference between this
+   say you had this:
+   timew track 9-10 meeting
+   so now a noon you realise that you don’t have anything tracked for 8-9 and 10-12.
+   If I then do timew track 8 "reading email” it either stops automatic tracking for email at 9 (or continues and erases meeting - whatever if that makes sence).
+   but with timew track 8 “reading email” fill it would do 8-9 mail and 10-12 mail around the 9-10 meeting.
+   I think it would be more logic to stop a tracking of an event if a new event comes along.
+P: I like that:  “timew track 8 read” fills in 8-9 and stops.  “timew track 8 read :fill” fills in 8-9, 10-12.
+F: Yes.
+F: Perhaps this could be used in the same way for the yesterday example... So the double tracking would not occur.
+P: Agreed.
+F: Only when doing it explicitly.
+P: There is a use-case for double tracking.  Suppose I am a manager, and I do this:
+   $ timew track yesterday “paint the door” fredde
+   $ timew track yesterday “paint the window” paul
+   It’s a valid use case.  So there would be some kind of configuration that says “this tag can overlap with that tag, but not itself”.
+   I thought of this: Using a tag with pre-defining it is what we have discussed so far.
+   But if a tag is predefined somehow (timew define tag “…”) then it could live in configuration, and have metadata, such as an expiration date.  This corresponds to “you can’t bill this client after EOM”.
+   It could have a start date, which means “cannot bill before next month”.
+   Could also define overlap.  This could be implemented using Rules.
+
+
+
+   On to Rules...  The above, written in pseudo-python could be:
+
+   define rule xyz:
+      if tag == “foo” and start > 2015-12-31:
+          fail “tag ‘foo’ only valid until 2015-12-31"
+
+   So what we thought of in tw as configuration, could now be a rule.  This approach covers several configurable settings, and is equivalent to:
+
+   tag.foo.end_date=2015-12-31
+   tag.foo.fail.message=tag ‘foo’ only valid until 2015-12-31
+
+   Same thing.  But a rule has the potential to take multiple actions, or make the condition more complex.  Therefore, more flexible.
+F: So a rule could be invoked “once” after creating it to “translate” these un-explicit dates to real ones.
+   like an activation.
+P: Maybe.  Definitely if ‘EOM’ appears on the command line it gets expanded.  I would think writing EOM in a rule file would be a mistake.
+   Notice that for the rule syntax, “define”, “if” and “fail” are all keywords that take arguments.  Easy to parse/run.
+F: yes.
+   Would timew group rules? Create some “namespace” for rules? So only certain rules are evaluated for certain tags?
+   would there be genereal rules? for all.(edited)
+   rule precedence? ordering of rules?
+   Just asking.(edited)
+P: Yes.  I did a fair amount of reading about rule systems.  Here is briefly what I learned:
+   A rule system is just a way to iterate over a set of data items and apply late-bound logic.  That is, it’s a loop that applies every rule in turn to the subject.
+   You need a way to maybe not run every rule.  This can be done by storing them in memory, having scanned them to see what data is read to trigger them, then using that to filter a subset of the rules to apply.
+   Chaining rules is hard.  Precedence is hard.
+   Having different species of rules is a good idea.
+   in other words, if the rule is:
+
+   define rule one:
+      if foo > 3:
+          fail “Error”
+
+   Then the rule is triggered by a change in foo.  If foo isn’t changing, skip the rule, and assume it ran the last time foo was changed, and will run the next time also.
+   Precedence can be simply top to bottom.
+   Species:
+
+   define rule_type1 abc:
+      ….
+
+F: ok.
+P: So the rule syntax needs to be frozen early, which makes it difficult.  The tw approach of iterating incrementally from nothing is not going to work with rules - you need to define it well, define the DOM etc first.
+  Of course, we don’t need rules for version 1.0.
+  Or we could have them.  Choices.
+  But there is no big distinction between rules and configuration+hard-coded-logic
+F: they are the “same”. you could express them with rules.
+P: Right.
+
+
+
+F: sending the data through the rules is like what they call the percolator in ElasticSearch.
+P: percolator.  Sounds like the data walks through a series of checks.
+F: yep.
+P: I will read about that.
+F: ElasticSearch is this huge search db.
+   instead of running queries at certain intervals and see if they retrieve things, you can register your queries with the db.
+P: and get callbacks?
+F: Each time you insert something or modify something and a query “triggers” on the data.
+P: Yeah, that’s the rule system.
+F: Much more efficient if you have terabyte of data.
+
+
+
+P: Final topic on my list: Data Format, and it’s very short.
+   data is a text file.  one line per day.
+   Example:
+
+     2015-12-10 9am-10am “painting door”, 10am-11:29am “meeting with x”, 1:32pm-5pm “training"
+
+   Minimal.  readable.  Comma-separated intervals.
+   JSON would be more than twice as long.  Available via ‘export’.
+   Could alternatively be one line per interval.  Not sure it matters
+F: have an archive file as well?(edited)
+P: I was thinking that we could auto-archive, moving out records older than X into another file.  Queries would then know in advance whether it needed to read the archive.
+   Think about the volume though: a month is 31 lines of text.  Nothing.
+F: not performance wise. just to reduce the clutter.
+P: Agreed.
+F: Should there be a possibility to freeze entries?
+P: hmm.  Good point, I tihnk yes.
+   For old data?  Or so that a workweek redefine has no effect?
+F: the first yes. the latter, hm. perhaps. would make sense to get the reports correct that depend on that.
+
+---
