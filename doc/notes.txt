@@ -89,56 +89,6 @@ Example rules (assuming Python-like syntax):
   needs to be many of these, in order to make the rule system capable.
 
 
-CLI Syntax
-----------
-The CLI shall have a well-defined and unambiguous grammar.
-
-    timew start [<tagset>]
-    timew stop [<tagset>]
-    timew track [<interval>] [<tagset>]
-    timew [<filter>] report <report>
-
-
-CLI Grammar
------------
-
-  interval:  <timestamp> "-" <timestamp>
-             <timestamp> "to" <timestamp>
-             "from" <timestamp> "to" <timestamp>
-             "until" <timestamp>
-             "from" <timestamp>
-
-  timestamp: <day> <time>
-
-  month:     "january"
-             "february"
-             ...
-
-  day:       "monday"
-             "tuesday"
-             ...
-
-  time:      \d{4}
-             \d{1,2} ":" \d{2} <ampm>
-             \d{1,2} ":" \d{2}
-             \d{1,2} <ampm>
-             \d{1,2}
-
-  ampm:      "AM"
-             "am"
-             "a.m."
-             "PM"
-             "pm"
-             "p.m."
-
-  tagset:    <tag>+
-
-  tag:       string
-
-  string:    "\"" .+ "\""
-             .+
-
-
 Tags
 ----
 Tags represent tracking categories. Tags are arbitrary UTF8 strings. A tag may
