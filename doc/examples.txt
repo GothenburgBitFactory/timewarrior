@@ -1,0 +1,50 @@
+[This is just a list of exampel commands with an explanation, and arguably
+ better than any spec.]
+
+
+
+Basic usage summary:
+
+  $ timew start tag1                             # Start tracking now
+  $ timew start "Home Improvement Project"       # Stop old interval, start new interval now
+  $ timew stop                                   # Stop all tracking
+  $ timew report month                           # Run report 'month'
+
+If a time is specified, it always means today:
+
+  $ timew track 8am - 10am tag1
+
+If days are specified, they always mean the past:
+
+  $ timew track mon - wed tag1
+
+If today is thursday, the following covers the curent week because the previous
+monday would be after the previous friday, therefore the friday refers to the
+next friday, at EOW:
+
+  $ timew track mon - fri tag1
+
+If overlapping intervals are permitted (configuration: interval.overlap=yes),
+then this creates overlapping intervals:
+
+  [1] $ timew start tag1
+  ...
+  [2] $ timew start tag2
+  ...
+  [3] $ timew stop tag1
+  ...
+  [4] $ timew stop tag2
+
+  With overlapping intervals:
+    o-------o         tag1
+       o--------o     tag2
+    1--2----3---4---> time
+
+Track time but backfill to the most recent interval end:
+
+  $ timew track fill tag1
+
+Record yesterday's time:
+
+  $ timew track yesterday tag1
+
