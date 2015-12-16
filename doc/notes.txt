@@ -36,7 +36,8 @@ Integration
 -----------
 - As a sister-product to Taskwarrior and Tasksh, integration should be as
   simple as installing a hook script.
-- An export and import feature, using JSON, will allow further integration.
+- An export and import feature, using JSON, will allow further integration with
+  arbitrary tools.
 
 
 Definitions
@@ -45,12 +46,11 @@ Definitions
   and intervals map onto.
 - A timestamp is a point on a timeline.
 - An interval is a span of time on a timeline, consisting of two timestamps,
-  with associated tags.
-- A tag is an arbitrary string.
-- An interval may be an inclusion or an exclusion. A weekend is an exclusion,
-  time spent working is an inclusion.
-- A workweek is defined by time that is not spent working, it is a set of
-  excluded intervals. Those intervals are tagged to be easily identifiable.
+  with associated tags. An interval may be an inclusion or an exclusion. A
+  weekend is an exclusion, time spent working is an inclusion.
+- A tag is an arbitrary UTF8 string, which may contain whitespace.
+- A workweek is defined by exclusions - a set of excluded intervals representing
+  time not spent working. Those intervals are tagged to be easily identifiable.
 - Lunch could be an inclusion, but tagged as non-work. It could also be an
   exclusion.
 - The time resolution is 1 minute.
@@ -85,35 +85,58 @@ Example rules (assuming Python-like syntax):
 
   (needs work)
 
+  The 'sum_week' function is an example of exposed functionality, and there
+  needs to be many of these, in order to make the rule system capable.
+
 
 CLI Syntax
 ----------
 The CLI shall have a well-defined and unambiguous grammar.
 
-As timew will use tags, by default we assume the same convention as Taskwarrior,
-namely:
+    timew start [<tagset>]
+    timew stop [<tagset>]
+    timew track [<interval>] [<tagset>]
+    timew [<filter>] report <report>
 
-    +tag       Implies the presence of a tag
-    -tag       Implies the absence of a tag
 
-Timestamp values should support a wide range of unambiguous formats, including:
+CLI Grammar
+-----------
 
-    today
-    9am
-    today 9am
-    0900
-    9:00
-    2015-12-02T09:00
-    2nd 4pm
+  interval:  <timestamp> "-" <timestamp>
+             <timestamp> "to" <timestamp>
+             "from" <timestamp> "to" <timestamp>
+             "until" <timestamp>
+             "from" <timestamp>
 
-Interval values should support a wide range of unambiguous formats, including:
+  timestamp: <day> <time>
 
-    <timestamp> - <timestamp>
-    <timestamp> to <timestamp>
-    from <timestamp> to <timestamp>
-    until <timestamp>
-    from <timestamp>
-    <timestamp> for <duration>
+  month:     "january"
+             "february"
+             ...
+
+  day:       "monday"
+             "tuesday"
+             ...
+
+  time:      \d{4}
+             \d{1,2} ":" \d{2} <ampm>
+             \d{1,2} ":" \d{2}
+             \d{1,2} <ampm>
+             \d{1,2}
+
+  ampm:      "AM"
+             "am"
+             "a.m."
+             "PM"
+             "pm"
+             "p.m."
+
+  tagset:    <tag>+
+
+  tag:       string
+
+  string:    "\"" .+ "\""
+             .+
 
 
 Tags
@@ -179,13 +202,12 @@ defined:
 On that same timeline, here are some example tracked intervals:
 
                         |
-          +++++ tag1 tag2                                                                                           $ timew track +tag1 +tag2 yesterday
-                      ++++ tag1 tag2                                                                                $ timew track +tag1 +tag2 today
+      ++++++++++++ tag1 tag2                                                                                        $ timew track +tag1 +tag2 yesterday
+                  ++++++++++++ tag1 tag2                                                                            $ timew track +tag1 +tag2 today
                         + tag1 tag2                                                                                 $ timew start +tag1 +tag2
-                      +++ tag1 tag2                                                                                 $ timew start +tag1 +tag2 backfill
-              + tag3                                                                                                $ timew track +tag3 yesterday 2pm - 4pm
-              + tag4                                                                                                $ timew track -tag3 +tag4 yesterday 2pm - 4pm
-                        |
+      +++++++++++++++++++ tag1 tag2                                                                                 $ timew start +tag1 +tag2 backfill
+              + tag3    |                                                                                           $ timew track +tag3 yesterday 2pm - 4pm
+              + tag4    |                                                                                           $ timew track -tag3 +tag4 yesterday 2pm - 4pm
                         |
                         now
 
@@ -216,7 +238,8 @@ Given these intervals, tracking becomes a set of basic modifications:
       --> 'yesterday' resolves to 2015-11-23
       --> delete all intervals for 2015-11-23
       --> obtain inclusions for 2015-11-23: 510-1050
-      --> store: 2015-11-23 510-1050 tag1 tag2
+      --> store: 2015-11-23 0-1439 tag1 tag2
+      --> Describe the above in feedback
 
     The date 'today' refers to the whole day, and overrides any other intervals:
 
@@ -225,7 +248,7 @@ Given these intervals, tracking becomes a set of basic modifications:
       --> 'today' resolves to 2015-11-24
       --> delete all intervals for 2015-11-24
       --> obtain inclusions for 2015-11-24: 510-900
-      --> store: 2015-11-24 510-900 tag1 tag2
+      --> store: 2015-11-24 0-1439 tag1 tag2
 
     The 'start' command uses 'now' (12:00pm) in this alternate example:
 
@@ -340,6 +363,12 @@ Unsolved Issues
   Stating 'track yesterday 10am - 11am tag2' sounds imperative, thus overriding
   any existing tags in that interval. Perhaps a 'merge' keyword could be added
   to combined the results (track yesterday 10am - 11am tag2 merge)?
+- If the timelines are not collapsed until needed (report/export), then a command
+  like this on day 1:
+    $ timew start tag1
+  Followed by this on day 5:
+    $ timew stop
+  Needs to create a tracking record for each of the 5 days.
 
 
 Raw Notes (Slack)
@@ -544,28 +573,6 @@ P: Yes.  I did a fair amount of reading about rule systems.  Here is briefly wha
    define rule_type1 abc:
       ….
 
-F: ok.
-P: So the rule syntax needs to be frozen early, which makes it difficult.  The tw approach of iterating incrementally from nothing is not going to work with rules - you need to define it well, define the DOM etc first.
-  Of course, we don’t need rules for version 1.0.
-  Or we could have them.  Choices.
-  But there is no big distinction between rules and configuration+hard-coded-logic
-F: they are the “same”. you could express them with rules.
-P: Right.
-
-
-
-F: sending the data through the rules is like what they call the percolator in ElasticSearch.
-P: percolator.  Sounds like the data walks through a series of checks.
-F: yep.
-P: I will read about that.
-F: ElasticSearch is this huge search db.
-   instead of running queries at certain intervals and see if they retrieve things, you can register your queries with the db.
-P: and get callbacks?
-F: Each time you insert something or modify something and a query “triggers” on the data.
-P: Yeah, that’s the rule system.
-F: Much more efficient if you have terabyte of data.
-
-
 
 P: Final topic on my list: Data Format, and it’s very short.
    data is a text file.  one line per day.
@@ -581,9 +588,13 @@ P: I was thinking that we could auto-archive, moving out records older than X in
    Think about the volume though: a month is 31 lines of text.  Nothing.
 F: not performance wise. just to reduce the clutter.
 P: Agreed.
+
+
 F: Should there be a possibility to freeze entries?
 P: hmm.  Good point, I tihnk yes.
    For old data?  Or so that a workweek redefine has no effect?
 F: the first yes. the latter, hm. perhaps. would make sense to get the reports correct that depend on that.
+
+   --> If old data is frozen, what does that mean?  It should mean that the inclusions and exclusions are collapsed, and the net inclusions recorded and frozen. This prevents changes to the work week from modifying old information.
 
 ---
