@@ -69,25 +69,6 @@ access configuration, exclusions, and tracking data.
 
 Ref: http://martinfowler.com/bliki/RulesEngine.html
 
-Example rules (assuming Python-like syntax):
-
-  define rule exclusions:
-    holidays eng-USA
-    workweek mon,tue,wed,thu,fri
-    workday start 510
-    workday end 1050
-    workday tue end 900
-    resolution 1min
-
-  define rule my_rule:
-    if sum_week(+tag1) > 12:
-      fail "The 'tag1' tag cannot exceed 12 hours/wk"
-
-  (needs work)
-
-  The 'sum_week' function is an example of exposed functionality, and there
-  needs to be many of these, in order to make the rule system capable.
-
 
 Tags
 ----
@@ -160,15 +141,6 @@ On that same timeline, here are some example tracked intervals:
               + tag4    |                                                                                           $ timew track -tag3 +tag4 yesterday 2pm - 4pm
                         |
                         now
-
-Here is the example data storage for the above workweek:
-
-      define rule exclusions:
-        holidays eng-USA
-        workweek mon,tue,wed,thu,fri
-        workday start 510
-        workday end 1050
-        workday tue end 900
 
 Time tracking is based on the inclusion intervals derived from the above rule.
 For week 48 those would be:
@@ -481,47 +453,6 @@ P: There is a use-case for double tracking.  Suppose I am a manager, and I do th
    But if a tag is predefined somehow (timew define tag “…”) then it could live in configuration, and have metadata, such as an expiration date.  This corresponds to “you can’t bill this client after EOM”.
    It could have a start date, which means “cannot bill before next month”.
    Could also define overlap.  This could be implemented using Rules.
-
-
-
-   On to Rules...  The above, written in pseudo-python could be:
-
-   define rule xyz:
-      if tag == “foo” and start > 2015-12-31:
-          fail “tag ‘foo’ only valid until 2015-12-31"
-
-   So what we thought of in tw as configuration, could now be a rule.  This approach covers several configurable settings, and is equivalent to:
-
-   tag.foo.end_date=2015-12-31
-   tag.foo.fail.message=tag ‘foo’ only valid until 2015-12-31
-
-   Same thing.  But a rule has the potential to take multiple actions, or make the condition more complex.  Therefore, more flexible.
-F: So a rule could be invoked “once” after creating it to “translate” these un-explicit dates to real ones.
-   like an activation.
-P: Maybe.  Definitely if ‘EOM’ appears on the command line it gets expanded.  I would think writing EOM in a rule file would be a mistake.
-   Notice that for the rule syntax, “define”, “if” and “fail” are all keywords that take arguments.  Easy to parse/run.
-F: yes.
-   Would timew group rules? Create some “namespace” for rules? So only certain rules are evaluated for certain tags?
-   would there be genereal rules? for all.(edited)
-   rule precedence? ordering of rules?
-   Just asking.(edited)
-P: Yes.  I did a fair amount of reading about rule systems.  Here is briefly what I learned:
-   A rule system is just a way to iterate over a set of data items and apply late-bound logic.  That is, it’s a loop that applies every rule in turn to the subject.
-   You need a way to maybe not run every rule.  This can be done by storing them in memory, having scanned them to see what data is read to trigger them, then using that to filter a subset of the rules to apply.
-   Chaining rules is hard.  Precedence is hard.
-   Having different species of rules is a good idea.
-   in other words, if the rule is:
-
-   define rule one:
-      if foo > 3:
-          fail “Error”
-
-   Then the rule is triggered by a change in foo.  If foo isn’t changing, skip the rule, and assume it ran the last time foo was changed, and will run the next time also.
-   Precedence can be simply top to bottom.
-   Species:
-
-   define rule_type1 abc:
-      ….
 
 
 P: Final topic on my list: Data Format, and it’s very short.

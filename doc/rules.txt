@@ -1,0 +1,109 @@
+Rules System
+============
+Instead of configuration, a rules system stores various settings and
+configuration data as rules. There are several different types of rules, which
+are loaded at launch time, and applied at various times during execution.
+
+Some rules can be manipulated at the command line ('exclusions'), but most will
+require editing the rules file. It is not intended that new users edit the
+rules file, therefore some rules are automatically maintained from the command
+line.
+
+The rules are a mechanism to apply late-bound logic and data to various
+functions. Whenever data changes, the rule system is run, which will run each
+rule in turn, if it applies, going from top to bottom in the rules file. There
+are no chained rules, but errors will terminate rule processing and program
+execution.
+
+As much functionality as possible is to be deferred to the rules.
+
+
+Format
+------
+The rules are written in a UTF8 text file, in a known location. Other rules
+files may be included:
+
+  import /path/to/other/rules
+
+The syntax of rules is Python-like, in that indentation is significant.
+
+
+Types of Rules
+--------------
+There are several different types of rules, for example there is the rule that
+defines all exclusions:
+
+  define rule exclusions:
+    interval workweek mon,tue,wed,thu,fri
+
+There are rules triggered by changes to the data. In this example, rule 'one'
+is a constraint that prevents the value 'foo' from exceeding three. It is
+triggered by a change to 'foo', which is a DOM reference, and can prevent the
+update by failing:
+
+  define rule one:
+    tagset tag1
+    if foo > 3:
+      error "The value of 'foo' may not exceed 3."
+
+Note that this rule is defined as applying to the tagset 'tag1'.
+
+
+Exclusions
+----------
+Because exclusions are resolved at run time, and only when needed, they should
+be stored in a form very close to the command line syntax, with no expansion.
+For example:
+
+  $ timew define workweek mon - fri
+
+Should be stored in a rule, whose purpose is to return a set of exclusion
+intervals:
+
+  define rule exclusions:
+    include workweek mon,tue,wed,thu,fri
+
+Further definitions will build on this rule:
+
+  $ timew define workday start 8:30am
+
+Yields a combined:
+
+  define rule exclusions:
+    interval workweek mon,tue,wed,thu,fri
+    interval workday start 8:30am
+
+Possible exclusions include:
+
+  $ timew holidays eng-USA
+  $ timew define workweek mon-fri
+  $ timew define workday start 8:30am
+  $ timew define workday end 1730
+  $ timew define workday tue end 3pm
+
+Yielding:
+
+  define rule exclusions:
+    interval holidays eng-USA
+    interval workweek mon,tue,wed,thu,fri
+    interval workday start 8:30am
+    interval workday end 1730
+    interval workday tue end 3pm
+
+
+Built-in Functions
+------------------
+There are several built-in functions, which may be used by rules:
+
+  error   "An error occurred"
+  warning "You have been warned"
+  info    "Yuo have been notified"
+
+An error call terminates processing.
+
+  sum_week("tag1")
+
+The 'sum_week' will sum minutes in the current week for the tagset "tag1".
+
+---
+
