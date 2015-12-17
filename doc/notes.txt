@@ -132,17 +132,6 @@ On that same timeline, here are some example tracked intervals:
                         now
 
 
-Reporting
----------
-- Reports should have multiple output formats: TTY, JSON, HTML.
-- There will be a few different types of reports:
-  - Tabular Calendar
-  - List with subtotals, total
-- Reports will be decorated, for example, subtotals, legend, title
-- It should be possible to extend Timewarrior to add custom reports, via a
-  simple hook mechanism.
-
-
 Extensions
 ----------
 A simple extension mechanism, similar to Taskwarrior would require an executable
@@ -229,6 +218,29 @@ F: hm, b would be first choice.
    “a" would be second or third.
 P: Configurable maybe, or overridden with a keyword.
 F: yeah. you could get a warning.
+F: I think we could generally use it to “fill” around other already tracked events.
+P: So a normal human only does one thing at a time.
+F: Yes but then also to make a difference between this
+   say you had this:
+   timew track 9-10 meeting
+   so now a noon you realise that you don’t have anything tracked for 8-9 and 10-12.
+   If I then do timew track 8 "reading email” it either stops automatic tracking for email at 9 (or continues and erases meeting - whatever if that makes sence).
+   but with timew track 8 “reading email” fill it would do 8-9 mail and 10-12 mail around the 9-10 meeting.
+   I think it would be more logic to stop a tracking of an event if a new event comes along.
+P: I like that:  “timew track 8 read” fills in 8-9 and stops.  “timew track 8 read :fill” fills in 8-9, 10-12.
+F: Yes.
+F: Perhaps this could be used in the same way for the yesterday example... So the double tracking would not occur.
+P: Agreed.
+F: Only when doing it explicitly.
+P: There is a use-case for double tracking.  Suppose I am a manager, and I do this:
+   $ timew track yesterday “paint the door” fredde
+   $ timew track yesterday “paint the window” paul
+   It’s a valid use case.  So there would be some kind of configuration that says “this tag can overlap with that tag, but not itself”.
+   I thought of this: Using a tag with pre-defining it is what we have discussed so far.
+   But if a tag is predefined somehow (timew define tag “…”) then it could live in configuration, and have metadata, such as an expiration date.  This corresponds to “you can’t bill this client after EOM”.
+   It could have a start date, which means “cannot bill before next month”.
+   Could also define overlap.  This could be implemented using Rules.
+
 
 
 P: So there are lots of time specification formats to support:
@@ -252,53 +264,5 @@ P: Probably, yes, the same way that “monday” assumes the next one for tw, or
    Tags are quoted strings or single words, all UTF8.  If we don’t support whitespace, then you can’t track “Alpha Project” or some such code name, and I would anticipate complaints, as we have now for tw.  So this means:
    $ timew track “Paint the house” home painting
    three “tags”.
-
-
-P: Reports:  We need some built-in reports:
-   $ timew report day
-   $ timew report day monday
-   $ timew report week
-   $ timew report month
-   $ timew report week +tag1 -tag2    <— has tag1, missing tag2, for creating client-specific reports
-P: But we can’t anticipate all reports, and don’t have the manpower to implement them, therefore we need report extensions.  Something like hooks for tw.
-F: what would these create anyway? basic output format - some columns on the screen? how formatted?
-   I assume most people would want to feed the numbers into something else.
-P: Yeah, not sure.  Some kind of list, tabular, with subtotals.
-   Agree about what people might want.
-   But we could do this:
-
-   $ timew report week :tty                 (default)
-   $ timew report week :json
-   $ timew report week :html
-
-   They would support tags for filtering.
-F: good.
-P: But yes, most people will want custom, I expect. The number of reports would grow over time I think.
-
-
-F: Let me short go back to fill.
-P: ok
-F: I think we could generally use it to “fill” around other already tracked events.
-P: So a normal human only does one thing at a time.
-F: Yes but then also to make a difference between this
-   say you had this:
-   timew track 9-10 meeting
-   so now a noon you realise that you don’t have anything tracked for 8-9 and 10-12.
-   If I then do timew track 8 "reading email” it either stops automatic tracking for email at 9 (or continues and erases meeting - whatever if that makes sence).
-   but with timew track 8 “reading email” fill it would do 8-9 mail and 10-12 mail around the 9-10 meeting.
-   I think it would be more logic to stop a tracking of an event if a new event comes along.
-P: I like that:  “timew track 8 read” fills in 8-9 and stops.  “timew track 8 read :fill” fills in 8-9, 10-12.
-F: Yes.
-F: Perhaps this could be used in the same way for the yesterday example... So the double tracking would not occur.
-P: Agreed.
-F: Only when doing it explicitly.
-P: There is a use-case for double tracking.  Suppose I am a manager, and I do this:
-   $ timew track yesterday “paint the door” fredde
-   $ timew track yesterday “paint the window” paul
-   It’s a valid use case.  So there would be some kind of configuration that says “this tag can overlap with that tag, but not itself”.
-   I thought of this: Using a tag with pre-defining it is what we have discussed so far.
-   But if a tag is predefined somehow (timew define tag “…”) then it could live in configuration, and have metadata, such as an expiration date.  This corresponds to “you can’t bill this client after EOM”.
-   It could have a start date, which means “cannot bill before next month”.
-   Could also define overlap.  This could be implemented using Rules.
 
 ---

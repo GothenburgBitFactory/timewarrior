@@ -1,0 +1,34 @@
+Reporting
+=========
+Some basic requirements:
+
+- Reports should have multiple output formats: TTY, JSON, HTML.
+- There will be a few different types of reports:
+  - Tabular Calendar
+  - List with subtotals, total
+- Reports will be decorated, for example, subtotals, legend, title
+- It should be possible to extend Timewarrior to add custom reports, via a
+  simple hook mechanism.
+
+---
+
+P: Reports:  We need some built-in reports:
+   $ timew report day
+   $ timew report day monday
+   $ timew report week
+   $ timew report month
+   $ timew report week +tag1 -tag2    <— has tag1, missing tag2, for creating client-specific reports
+P: But we can’t anticipate all reports, and don’t have the manpower to implement them, therefore we need report extensions.  Something like hooks for tw.
+F: what would these create anyway? basic output format - some columns on the screen? how formatted?
+   I assume most people would want to feed the numbers into something else.
+P: Yeah, not sure.  Some kind of list, tabular, with subtotals.
+   Agree about what people might want.
+   But we could do this:
+
+   $ timew report week :tty                 (default)
+   $ timew report week :json
+   $ timew report week :html
+
+   They would support tags for filtering.
+F: good.
+P: But yes, most people will want custom, I expect. The number of reports would grow over time I think.
