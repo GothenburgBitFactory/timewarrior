@@ -103,31 +103,31 @@ defined:
       2015
       November                                                                            December
       W48                                                                                 W49
-      23rd        24th        25th        26th        27th        28th        29th        30th        1st
-      Monday      Tuesday     Wednesday   Thursday    Friday      Saturday    Sunday      Monday      Tuesday
-      :           :           :           :           :           :           :           :           :           :
-      :..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:
-      0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0
+      23rd        24th        25th        26th        27th        28th        29th        30th
+      Monday      Tuesday     Wednesday   Thursday    Friday      Saturday    Sunday      Monday
+      :           :           :           :           :           :           :           :
+      :..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..
+      0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18
                         |
-                        |                 ------------                                                              $ timew define holidays eng-USA
-                        |                                         ------------------------                          $ timew define workweek mon-fri
-      ----        ----  |     ----        ----        ----        ----        ----        ----        ----          $ timew define workday start 8:30am
-               ---      |  ---         ---         ---         ---         ---         ---         ---         ---  $ timew define workday end 1730
-                        | ----                                                                                      $ timew define workday tue end 3pm
+                        |                 ------------                                                 $ timew define holidays eng-USA
+                        |                                         ------------------------             $ timew define workweek mon-fri
+      ----        ----  |     ----        ----        ----        ----        ----        ----         $ timew define workday start 8:30am
+               ---      |  ---         ---         ---         ---         ---         ---         --- $ timew define workday end 1730
+                        | ----                                                                         $ timew define workday tue end 3pm
                         |
-          +++++       ++++        +++++                   +++++                               +++++       +++++     Resulting work week
+          +++++       ++++        +++++                   +++++                               +++++    Resulting work week
                         |
                         now
 
 On that same timeline, here are some example tracked intervals:
 
                         |
-      ++++++++++++ tag1 tag2                                                                                        $ timew track +tag1 +tag2 yesterday
-                  ++++++++++++ tag1 tag2                                                                            $ timew track +tag1 +tag2 today
-                        + tag1 tag2                                                                                 $ timew start +tag1 +tag2
-      +++++++++++++++++++ tag1 tag2                                                                                 $ timew start +tag1 +tag2 backfill
-              + tag3    |                                                                                           $ timew track +tag3 yesterday 2pm - 4pm
-              + tag4    |                                                                                           $ timew track -tag3 +tag4 yesterday 2pm - 4pm
+      ++++++++++++ tag1 tag2                                                                           $ timew track +tag1 +tag2 yesterday
+                  ++++++++++++ tag1 tag2                                                               $ timew track +tag1 +tag2 today
+                        + tag1 tag2                                                                    $ timew start +tag1 +tag2
+      +++++++++++++++++++ tag1 tag2                                                                    $ timew start +tag1 +tag2 backfill
+              + tag3    |                                                                              $ timew track +tag3 yesterday 2pm - 4pm
+              + tag4    |                                                                              $ timew track -tag3 +tag4 yesterday 2pm - 4pm
                         |
                         now
 
@@ -167,9 +167,7 @@ Unsolved Issues
     $ timew stop
   Needs to create a tracking record for each of the 5 days.
 
-
-Raw Notes (Slack)
------------------
+---
 
 F: start (frontfill) and backfill (end) could be considered orthogonal to each other. They just operate into different directions. but I think they behave the same, more or less.
 
@@ -242,7 +240,6 @@ P: There is a use-case for double tracking.  Suppose I am a manager, and I do th
    Could also define overlap.  This could be implemented using Rules.
 
 
-
 P: So there are lots of time specification formats to support:
       until 4pm
       from 11am
@@ -256,13 +253,4 @@ P: So there are lots of time specification formats to support:
       last monday
       yesterday
       etc.  Assume we support them all
-F: don’t forget 2000...
-P: at 3pm for 2 hours Yes,   2000 - 9pm, mixing is okay
-F: should we allow implicit tmes?
-   that is “guess” am or pm from the context.
-P: Probably, yes, the same way that “monday” assumes the next one for tw, or maybe the last one in timew.  Good point.
-   Tags are quoted strings or single words, all UTF8.  If we don’t support whitespace, then you can’t track “Alpha Project” or some such code name, and I would anticipate complaints, as we have now for tw.  So this means:
-   $ timew track “Paint the house” home painting
-   three “tags”.
 
----
