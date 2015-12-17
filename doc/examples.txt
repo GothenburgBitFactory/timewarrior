@@ -1,7 +1,5 @@
-[This is just a list of exampel commands with an explanation, and arguably
- better than any spec.]
-
-
+Use Cases
+=========
 
 Basic usage summary:
 
@@ -48,3 +46,10 @@ Record yesterday's time:
 
   $ timew track yesterday tag1
 
+Defining Exclusions:
+
+  $ timew holidays eng-USA
+  $ timew define workweek mon-fri
+  $ timew define workday start 8:30am
+  $ timew define workday end 1730
+  $ timew define workday tue end 3pm
