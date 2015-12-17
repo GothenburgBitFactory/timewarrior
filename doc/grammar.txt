@@ -19,6 +19,8 @@ The CLI shall have a well-defined and unambiguous grammar.
     timew define tag <tag> description <string>
     timew define tag <tag> start <date>
     timew define tag <tag> end <date>
+    timew define tag <tag> budget <number> <units> per <unit>
+    timew define tag <tag> budget <number> <units> total
 
     timew export ...
     timew import ...

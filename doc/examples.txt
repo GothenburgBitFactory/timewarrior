@@ -25,13 +25,13 @@ next friday, at EOW:
 If overlapping intervals are permitted (configuration: interval.overlap=yes),
 then this creates overlapping intervals:
 
-  [1] $ timew start tag1
+  1 $ timew start tag1
   ...
-  [2] $ timew start tag2
+  2 $ timew start tag2
   ...
-  [3] $ timew stop tag1
+  3 $ timew stop tag1
   ...
-  [4] $ timew stop tag2
+  4 $ timew stop tag2
 
   With overlapping intervals:
     o-------o         tag1
@@ -63,5 +63,7 @@ associated metadata:
   $ timew define tag "tag1" description "Description of tag1"
   $ timew define tag "tag1" start 2016-01-01
   $ timew define tag "tag1" end 2016-06-30
+  $ timew define tag "tag1" budget 20 hours per week
+  $ timew define tag "tag1" budget 400 hours total
 
 ---
