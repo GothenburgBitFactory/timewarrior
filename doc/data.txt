@@ -28,3 +28,16 @@ P: Instead of one day per line, one interval per line:
 
    The first has no 'end' timestamp, and is therefore an open track, ie active
    now. The second is a bounded range.
+
+
+F: have an archive file as well?(edited)
+P: I was thinking that we could auto-archive, moving out records older than X into another file.  Queries would then know in advance whether it needed to read the archive.
+
+
+F: Should there be a possibility to freeze entries?
+P: hmm.  Good point, I tihnk yes.
+   For old data?  Or so that a workweek redefine has no effect?
+F: the first yes. the latter, hm. perhaps. would make sense to get the reports correct that depend on that.
+
+   --> If old data is frozen, what does that mean?  It should mean that the inclusions and exclusions are collapsed, and the net inclusions recorded and frozen. This prevents changes to the work week from modifying old information.
+

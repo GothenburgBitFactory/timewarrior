@@ -301,28 +301,4 @@ P: There is a use-case for double tracking.  Suppose I am a manager, and I do th
    It could have a start date, which means “cannot bill before next month”.
    Could also define overlap.  This could be implemented using Rules.
 
-
-P: Final topic on my list: Data Format, and it’s very short.
-   data is a text file.  one line per day.
-   Example:
-
-     2015-12-10 9am-10am “painting door”, 10am-11:29am “meeting with x”, 1:32pm-5pm “training"
-
-   Minimal.  readable.  Comma-separated intervals.
-   JSON would be more than twice as long.  Available via ‘export’.
-   Could alternatively be one line per interval.  Not sure it matters
-F: have an archive file as well?(edited)
-P: I was thinking that we could auto-archive, moving out records older than X into another file.  Queries would then know in advance whether it needed to read the archive.
-   Think about the volume though: a month is 31 lines of text.  Nothing.
-F: not performance wise. just to reduce the clutter.
-P: Agreed.
-
-
-F: Should there be a possibility to freeze entries?
-P: hmm.  Good point, I tihnk yes.
-   For old data?  Or so that a workweek redefine has no effect?
-F: the first yes. the latter, hm. perhaps. would make sense to get the reports correct that depend on that.
-
-   --> If old data is frozen, what does that mean?  It should mean that the inclusions and exclusions are collapsed, and the net inclusions recorded and frozen. This prevents changes to the work week from modifying old information.
-
 ---
