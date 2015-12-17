@@ -10,6 +10,9 @@ Or as sophisticated as:
 
   $ timew track backfill last week "Design proposal"
 
+It is not necessary to define tags, or define a set of work week exclusions,
+and without these, the software is a simple start/stop clock.
+
 For fully automated time tracking, as the line above exhibits, weekly and daily
 schedules must be considered. For such a tool to be useful, it must support all
 the above, and make time tracking very simple.
@@ -75,7 +78,7 @@ Tags
 Tags represent tracking categories. Tags are arbitrary UTF8 strings. A tag may
 be a single unquoted word, or a quoted phrase.
 
-A tag may be used without being defined, but if a tags is defined, then it may
+A tag may be used without being defined, but if a tag is defined, then it may
 have associated metadata, such as a start date representing the first date on
 which it may be used, or an end date, when it expires. A tag may have a budget,
 which is the maximum trackable time for a period.
@@ -120,7 +123,7 @@ defined:
       :..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:
       0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0
                         |
-                        |                 ------------                                                              $ timew holidays eng-USA
+                        |                 ------------                                                              $ timew define holidays eng-USA
                         |                                         ------------------------                          $ timew define workweek mon-fri
       ----        ----  |     ----        ----        ----        ----        ----        ----        ----          $ timew define workday start 8:30am
                ---      |  ---         ---         ---         ---         ---         ---         ---         ---  $ timew define workday end 1730
@@ -207,27 +210,10 @@ Given these intervals, tracking becomes a set of basic modifications:
       TBD
 
 
-Not shown:
-  - $ timew holidays work 2015-11-26     # override the holiday
-
-
 Data Format
 -----------
-A work week can be defined by a rule:
-
-  define rule exclusions:
-    holidays eng-USA
-    workweek mon,tue,wed,thu,fri
-    workday start 510
-    workday end 1050
-    workday tue end 900
-
-In this compact form, it is easy to expand this template into a set of intervals
-for a given week, and keeping the definition in this form allows simple
-modification.
-
-Intervals of tracked time can be stored in a text file, with one line of text
-representing one daẏ. Here is a single tracked interval:
+Intervals of tracked time are stored in a text file, with one line of text
+representing one day. Here is a single tracked interval:
 
   YYYY-MM-DD <start>-<end> <tagset>
 
@@ -314,18 +300,6 @@ P: Your question above: should we move the block intact, or stretch it?  I think
 
 ---
 
-P: I think that it needs to support the following, with zero configuration (ie no exclusions defined):
-   $ timew track “Packing my bags”
-   That means track the tag “Packing my bags” starting now.  Additionally, direct data capture, with no magic:
-   $ timew start “Painting the kitchen”
-   $ timew stop “Painting the kitchen”
-   This is equivalent to the tw 30-second tutorial,  and is easy to learn.
-   So it works like a chess clock - you just hit it.  All times are evaluated as “now”.
-F: Yes.
-P: The missing part is:
-   $ timew report foo
-   Which shows a report named ‘foo’ of the captured data.  easy.
-
 F: What about IDs to make this even easier or just “stop” that actuates on the last start?
 P: I think a “start” leaves and open-ended time range:    2015-12-10 791- “Painting the kitchen"
    The 791 corresponds to my local 1631EST (60 * 16 + 31), with no end time.
@@ -405,7 +379,6 @@ P: Probably, yes, the same way that “monday” assumes the next one for tw, or
    three “tags”.
 
 
-
 P: Reports:  We need some built-in reports:
    $ timew report day
    $ timew report day monday
@@ -426,7 +399,6 @@ P: Yeah, not sure.  Some kind of list, tabular, with subtotals.
    They would support tags for filtering.
 F: good.
 P: But yes, most people will want custom, I expect. The number of reports would grow over time I think.
-
 
 
 F: Let me short go back to fill.
