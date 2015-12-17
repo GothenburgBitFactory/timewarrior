@@ -59,20 +59,6 @@ Definitions
 - The time resolution is 1 minute.
 
 
-Rule System Use Cases
----------------------
-A rule system should be able to evaluate conditions and perform actions, which
-include continuing to process rules, or stopping. The conditions will need to
-access configuration, exclusions, and tracking data.
-
-- A constraint on total tracking time, "do not spend more than 4 hours on x".
-- A constraint that only allows certain tags to be used together, to prevent
-  client 1 from being billed for project 2.
-- A constraint that only allows multiples of 15-minute intervals.
-
-Ref: http://martinfowler.com/bliki/RulesEngine.html
-
-
 Tags
 ----
 Tags represent tracking categories. Tags are arbitrary UTF8 strings. A tag may
@@ -198,21 +184,10 @@ Raw Notes (Slack)
 
 F: start (frontfill) and backfill (end) could be considered orthogonal to each other. They just operate into different directions. but I think they behave the same, more or less.
 
+
 F: Which brings me to the topic of overlapping intervals. While most of things would not be multitasking/overlapping. I could think of a few things that could be reported overlapping.
 P: Agreed, I can multitask and be pursuing two results at the same time.
 
-P: I can do all these [manipulations] with my finger.  But not at the CLI.  That means lists, and ID numbers, I think.  Any thoughts?
-F: List… Hm. Don’t we already have one implicitly with the timeline and timestamps?
-P: Yes, but you’d need to view it, in order to identify which block should be manipulated.
-F: Can’t that list not be a list of key/value pairs? The keys are the minutes of the day, the values the different tags (another list of key/values).
-F: Then you just traverse the minutes in either direction.
-F: If you want to extend an event just look at the minutes after it and change the stored tags...
-
-P: You said earlier about time points, like monitoring systems.  If I jsut drop a point at 8:55, then it could merge it with the 9:00 point because the tags match.
-F: OTOH the command at 9:50 could also mean that the first block should go from 8:55 to 9:40. It was originally 45 minutes long. Should it now also be 45 minutes. Or do you want to extend it with 5mins from 8:55 to 9:45?
-P: Your question above: should we move the block intact, or stretch it?  I think that’s an important flexibility we need.  so both.
-
----
 
 F: What about IDs to make this even easier or just “stop” that actuates on the last start?
 P: I think a “start” leaves and open-ended time range:    2015-12-10 791- “Painting the kitchen"
@@ -226,35 +201,23 @@ F: yes. but i mean more like...
 P: The latter works in this example, so no need for ID there.  IDs might be useful if I’m tracking two things at once, ie no single active thing.
 F: exactly. it would avoid typing descriptions...
 P: okay, good.  Noted.
-
 P: So only if you define a workweek, does the following make sense:
    $ timew track last week “Installing shelves"
    “last week” clearly means all week, so it can query the timeline for a list of untracked time, then add intervals to fill it.  Similarly:
    $ timew track today “Paint door”
    That can mean fill all time up until now.  You could add a keyword “fill” to that, and maybe it goes to end of day.
-
-F: yes. or use other time modifiers...
-   today until now
-   today from now
-
 P: Right.  My point here is that “backfill” and “fill” are not necessarily needed, and can be implied from the “last week”.  Obviously this implies no fill:
    $ timew track yesterday 2pm - 4pm “Do this"
    Yes - “today until now” could be an explicit version of “today”.  “Today from now” is the same as “track”.
-
 F: the fill thing could be used to indicate just a direction:
-
 P: There is no open-ended fill though.  The future is infinite, so we don’t want to actually record much.  Anything bounded, yes (“until eod”), but anything unbounded (“track ‘do this’”) just leaves it open.
-
 F: it fills from the last good point, goes backwards in time until it hits a stop/interval limit.
-
 P: Yes, unless you bound it.  ie   “timew track last week ‘this thing’” can back fill within the “last week”, but exclude any otherwise tracked intervals.
    Then we can support a “merge” keyword to overlap any tracked intervals.
-
 F: If you add fill to this I would expect it to start at the end of last week, find the empty intervall and fill it until it hits a limit or another already filled interval.
    So it only does one thing.
    while the command without fill would operate on the entire week instead.
    but this would just be me.
-
 P: Let’s explore that.  Suppose “last week” is 39 hours of nothing, and 1 hour of a meeting.  Suppose we indicate (for clarity here) keywords as “:keyword”.  The question then becomes what do the following do:
    $ timew track last week “paint the thing”
    $ timew track last week “paint the thing” :fill
@@ -287,9 +250,7 @@ F: should we allow implicit tmes?
    that is “guess” am or pm from the context.
 P: Probably, yes, the same way that “monday” assumes the next one for tw, or maybe the last one in timew.  Good point.
    Tags are quoted strings or single words, all UTF8.  If we don’t support whitespace, then you can’t track “Alpha Project” or some such code name, and I would anticipate complaints, as we have now for tw.  So this means:
-
    $ timew track “Paint the house” home painting
-
    three “tags”.
 
 

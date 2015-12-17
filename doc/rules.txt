@@ -1,5 +1,16 @@
 Rules System
 ============
+A rule system should be able to evaluate conditions and perform actions, which
+include continuing to process rules, or stopping. The conditions will need to
+access configuration, exclusions, and tracking data.
+
+- A constraint on total tracking time, "do not spend more than 4 hours on x".
+- A constraint that only allows certain tags to be used together, to prevent
+  client 1 from being billed for project 2.
+- A constraint that only allows multiples of 15-minute intervals.
+
+Ref: http://martinfowler.com/bliki/RulesEngine.html
+
 Instead of configuration, a rules system stores various settings and
 configuration data as rules. There are several different types of rules, which
 are loaded at launch time, and applied at various times during execution.
@@ -82,7 +93,7 @@ Possible exclusions include:
 Yielding:
 
   define exclusions:
-    interval define holidays eng-USA
+    interval holidays eng-USA
     interval work 2015-11-26
     interval workweek mon,tue,wed,thu,fri
     interval workday start 8:30am
