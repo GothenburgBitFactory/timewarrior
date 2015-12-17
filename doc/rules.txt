@@ -33,24 +33,22 @@ Types of Rules
 There are several different types of rules, for example there is the rule that
 defines all exclusions:
 
-  define rule exclusions:
-    interval workweek mon,tue,wed,thu,fri
+  define exclusions:
+    ...
 
-There are rules triggered by changes to the data. In this example, rule 'one'
-is a constraint that prevents the value 'foo' from exceeding three. It is
-triggered by a change to 'foo', which is a DOM reference, and can prevent the
-update by failing:
+There are general rules triggered by changes to the data:
 
   define rule one:
-    tagset tag1
-    if foo > 3:
-      error "The value of 'foo' may not exceed 3."
+    ...
 
-Note that this rule is defined as applying to the tagset 'tag1'.
+There are rules that define tags and their metadata:
+
+  define tag "tag1":
+    ...
 
 
-Exclusions
-----------
+Rule Type: Exclusions
+---------------------
 Because exclusions are resolved at run time, and only when needed, they should
 be stored in a form very close to the command line syntax, with no expansion.
 For example:
@@ -60,7 +58,7 @@ For example:
 Should be stored in a rule, whose purpose is to return a set of exclusion
 intervals:
 
-  define rule exclusions:
+  define exclusions:
     include workweek mon,tue,wed,thu,fri
 
 Further definitions will build on this rule:
@@ -69,7 +67,7 @@ Further definitions will build on this rule:
 
 Yields a combined:
 
-  define rule exclusions:
+  define exclusions:
     interval workweek mon,tue,wed,thu,fri
     interval workday start 8:30am
 
@@ -83,12 +81,41 @@ Possible exclusions include:
 
 Yielding:
 
-  define rule exclusions:
+  define exclusions:
     interval holidays eng-USA
+    interval work 2015-11-26
     interval workweek mon,tue,wed,thu,fri
     interval workday start 8:30am
     interval workday end 1730
     interval workday tue end 3pm
+
+
+Rule Type: General
+------------------
+There are rules triggered by changes to the data. In this example, rule 'one'
+is a constraint that prevents the value 'foo' from exceeding three. It is
+triggered by a change to 'foo', which is a DOM reference, and can prevent the
+update by failing:
+
+  define rule one:
+    tagset tag1
+    if foo > 3:
+      error "The value of 'foo' may not exceed 3."
+
+Note that this rule is defined as applying to the tagset 'tag1'.
+
+
+Rule Type: Tag
+--------------
+A defined tag is a way to associate metadata with a tag, such as a description
+and start/end dates for use:
+
+  define tag "tag1":
+    description "Description of tag1"
+    start       2016-01-01
+    end         2016-06-30
+    budget      20 hours per week
+    budget      400 hours total
 
 
 Built-in Functions
@@ -97,7 +124,7 @@ There are several built-in functions, which may be used by rules:
 
   error   "An error occurred"
   warning "You have been warned"
-  info    "Yuo have been notified"
+  info    "You have been notified"
 
 An error call terminates processing.
 

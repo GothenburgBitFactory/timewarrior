@@ -49,7 +49,19 @@ Record yesterday's time:
 Defining Exclusions:
 
   $ timew holidays eng-USA
+  $ timew holidays work 2015-11-26
   $ timew define workweek mon-fri
   $ timew define workday start 8:30am
   $ timew define workday end 1730
   $ timew define workday tue end 3pm
+
+The above examples simply use ad-hoc tags, which is an undefined tag. They are
+simply used as tags, and have no metadata. Defining a tag allows it to have
+associated metadata:
+
+  $ timew define tag "tag1"
+  $ timew define tag "tag1" description "Description of tag1"
+  $ timew define tag "tag1" start 2016-01-01
+  $ timew define tag "tag1" end 2016-06-30
+
+---
