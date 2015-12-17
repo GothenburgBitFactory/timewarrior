@@ -1,0 +1,22 @@
+Data Files
+==========
+Intervals of tracked time are stored in a text file, with one line of text
+representing one day. Here is a single tracked interval:
+
+  YYYY-MM-DD <start>-<end> <tagset>
+
+Here is an open-ended, currently tracked active interval, notice the missing
+<end> timestamp:
+
+  YYYY-MM-DD <start>- <tagset>
+
+A typical day might look like this:
+
+  2015-12-10 480-720 Upgrade Planning, 780- Upgrade Presentation "ABCD Inc"
+
+The "480-720" is a time range, in this case from 8:00am to 12:00pm, associated
+with the two tags "Upgrade" and "Planning". A second interval started at 1:00pm
+and is incomplete, associated with three tags "Upgrade", "Presentation" and
+"ABCD Inc". A tag must be quoted, if it contains whitespace.
+
+---
