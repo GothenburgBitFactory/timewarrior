@@ -20,6 +20,9 @@ The CLI shall have a well-defined and unambiguous grammar.
     timew define tag <tag> start <date>
     timew define tag <tag> end <date>
 
+    timew export ...
+    timew import ...
+
 
 CLI Grammar
 -----------
