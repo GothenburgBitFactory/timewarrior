@@ -7,6 +7,19 @@ The CLI shall have a well-defined and unambiguous grammar.
     timew track [<interval>] [<tagset>]
     timew [<filter>] report <report>
 
+    timew define holidays <locale>
+    timew define holidays work <date>
+    timew define week <day>[- <day>] [, <day>] ...
+    timew define day start <time>
+    timew define day end <time>
+    timew define day <day> start <time>
+    timew define day <day> end <time>
+
+    timew define tag <tag>
+    timew define tag <tag> description <string>
+    timew define tag <tag> start <date>
+    timew define tag <tag> end <date>
+
 
 CLI Grammar
 -----------
@@ -47,3 +60,9 @@ CLI Grammar
   string:    "\"" .+ "\""
              .+
 
+
+Rules Grammar
+-------------
+
+
+---

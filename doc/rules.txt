@@ -73,7 +73,7 @@ Yields a combined:
 
 Possible exclusions include:
 
-  $ timew holidays eng-USA
+  $ timew define holidays eng-USA
   $ timew define workweek mon-fri
   $ timew define workday start 8:30am
   $ timew define workday end 1730
@@ -82,7 +82,7 @@ Possible exclusions include:
 Yielding:
 
   define exclusions:
-    interval holidays eng-USA
+    interval define holidays eng-USA
     interval work 2015-11-26
     interval workweek mon,tue,wed,thu,fri
     interval workday start 8:30am

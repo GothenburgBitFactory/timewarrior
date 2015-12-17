@@ -48,8 +48,8 @@ Record yesterday's time:
 
 Defining Exclusions:
 
-  $ timew holidays eng-USA
-  $ timew holidays work 2015-11-26
+  $ timew define holidays eng-USA
+  $ timew define holidays work 2015-11-26
   $ timew define workweek mon-fri
   $ timew define workday start 8:30am
   $ timew define workday end 1730
