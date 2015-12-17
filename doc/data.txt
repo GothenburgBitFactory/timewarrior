@@ -20,3 +20,11 @@ and is incomplete, associated with three tags "Upgrade", "Presentation" and
 "ABCD Inc". A tag must be quoted, if it contains whitespace.
 
 ---
+
+P: Instead of one day per line, one interval per line:
+
+   YYYY-MM-DDTHH:MM-                 tag1 tag2
+   YYYY-MM-DDTHH:MM-YYYY-MM-DDTHH:MM tag3
+
+   The first has no 'end' timestamp, and is therefore an open track, ie active
+   now. The second is a bounded range.
