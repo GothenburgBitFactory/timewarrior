@@ -10,6 +10,14 @@ Some basic requirements:
 - It should be possible to extend Timewarrior to add custom reports, via a
   simple hook mechanism.
 
+
+Report Mockups
+--------------
+Purely as an example of what might be implemented, here are some report mockups:
+
+...
+
+
 ---
 
 P: Reports:  We need some built-in reports:
