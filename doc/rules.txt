@@ -133,21 +133,11 @@ Built-in Functions
 ------------------
 There are several built-in functions, which may be used by rules:
 
-  error   "An error occurred"
-  warning "You have been warned"
-  info    "You have been notified"
-
-An error call terminates processing.
-
-  sum_week("tag1")
-
-The 'sum_week' will sum minutes in the current week for the tagset "tag1".
+  error("...")         Logs, emits and terminates
+  warning("...")       Logs, emits and continues
+  info("...")          Logs, emits and continues
+  log("...")           Logs and continues
+  sum_week("tag1")     Sums minutes in the current week for "tag1"
 
 ---
-
-P: Not sure I like the python-style.  Going with it for now.
-
-P: So rules needs a set of builtins (TBD)
-F: Builtins yes.
-   I guess we now just have to complete the grammar.
 
