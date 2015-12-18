@@ -40,3 +40,10 @@ P: Yeah, not sure.  Some kind of list, tabular, with subtotals.
    They would support tags for filtering.
 F: good.
 P: But yes, most people will want custom, I expect. The number of reports would grow over time I think.
+
+
+P: reports.txt
+  There is very little here, so I just want to list a few simple reports in different forms, like a calendar (like tw), and maybe in a couple of different formats.  Maybe something in HTML, maybe not.
+  I think the variations are going to be things like a title, sort by this, break by that, subtotal by this etc.
+  We could actually provide all reports as extension scripts.  Might not be a bad idea.
+

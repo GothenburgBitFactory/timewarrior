@@ -65,5 +65,32 @@ associated metadata:
   $ timew define tag "tag1" end 2016-06-30
   $ timew define tag "tag1" budget 20 hours per week
   $ timew define tag "tag1" budget 400 hours total
+  $ timew define tag "tag1" overlap
 
 ---
+
+P: So the first six lines of examples show timew in use without any exclusions.  That just turns it into a stopwatch.
+F: yes.
+P: But when you add exclusions, you get to say “timew track monday tag1” and it does something less than 24 hours.
+   You also get to use fill.
+F: Right.
+
+
+F: I like the rules for days.
+   Referring to the past.
+P: Yes, I think that makes sense.
+F: Do we want to have “modifiers” for this?
+P: How so?
+F: timew track last week mon - wed tag1
+   or
+   timew track mon - wed last week tag1
+P: Yes, we do, but I would prefer this:
+   timew track last week monday - last week wednesday tag1
+F: Yes.
+P: Maybe we’ll find a better way to do this, but we need to be able to do all kinds of weird things with dates:
+   last monday, this monday, next monday, monday
+F: Would this here ever happen?
+   timew track last week tag1
+P: yes
+   That’s an auto-fill if you have exclusions.
+F: tag1 = vacation on the island

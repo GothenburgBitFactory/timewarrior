@@ -41,3 +41,54 @@ F: the first yes. the latter, hm. perhaps. would make sense to get the reports c
 
    --> If old data is frozen, what does that mean?  It should mean that the inclusions and exclusions are collapsed, and the net inclusions recorded and frozen. This prevents changes to the work week from modifying old information.
 
+
+P: So in this case I think I want to change it, so it’s not one day per line, but one interval per line.
+   That’s issue 1.  2 is archiving.  3 is freezing, which might be the same as archiving.
+F: I guess 1 is for easier parsing.
+P: Yes, but there’s more.  Suppose I run:
+   $ timew start monday 9am tag1
+   Then on thursday:
+   $ timew stop
+   I would rather create one interval than four:
+   2015-12-14T09:00:00-2015-12-17T16:15:00 tag1
+   The above assumes that we just run with one long interval, ignoring exclusions.  That was from your email, and it’s a good idea.
+F: One intervall is good.
+
+
+F: Regarding the exclusions...
+   I just had an idea. Which would help with 3.
+   Say we have all the definitions for exclusions.
+   These only affect the NOW and the future. Once a day (or time intervall has passed) they are recorded together with the corresponding intervall.
+   So in your example with exclusions for monday, tuesday, wednesday and thursday.
+   With that they “are” immutable for definition changes. And aren’t rewritten.
+   You have to tell timew to change them.
+   I would also help in the calculation of the reports.
+P: So if you run “timew define workday end 1745”, then that constitutes a change to the exclusions, and gets recorded in the timeline.
+   Then we essentially auto-freeze.
+   And we can reconstruct intervals and exclusions perfectly, provided we read the data, in sequence, going back to the previous exclusion change.
+   Did I get it right?
+F: Hm. I guess I meant that when you run timew stop tag1 all exclusion definitions affecting the intervall are saved together with the timestamp information of that intervall...
+P: Ah, so every line.
+F: I think so.
+   So the line would contain workday start and ends, etc.
+   Then you have all exclusion definitions affecting this particular intervall stored together with it.
+P: That is equivalent to doing this:
+   on “timew stop”, combine the intervals with the exclusions, and store only the inclusions.
+F: But then you can’t “rewrite” history in case you need. You don’t now which definitions were valid.
+P: True
+   So every line in the data contains one interval of recorded time, and all exclusions, even if they don’t change day to day.  Because they might change.
+F: Yes. And these would not be affected by redefinitions as they only apply to the future recordings.
+   Kind of like saving the “current state”.
+P: Good, I understand it.  Nice.
+   Zero loss of information.
+F: Then it is just the question when to save them. At the end, when you finish the tracking of that tag? In between as well, when doing redefinitions? Look through open intervalls, recored the current definition that is changed if it affects the intervall.
+   I would guess both.
+P: I say both
+F: Cool.
+P: If a redefine occurs in the middle of an interval, stop the first interval and record exlcusions as-is, then add a new interval to continue, but with the new settings.
+   Then a redefine just creates two adjacent intervals with different settings.
+   Great, [1] and [3] taken care of.  [2] archiving...
+   Archiving is a feature we could ignore and come to no harm.  But if we do archive, to reduce clutter, should it be automatic?  ie anything older than a month?
+   Archiving also improves performance for “timew stop”, which has less data to scan,  when closing an interval.
+F: Automatic would be good. Configurable. Then perhaps an explicite archive. Say you have terminated the work for the client, have sent the bill, got the cash. Then you could tell timew to archive the corresponding entries.
+

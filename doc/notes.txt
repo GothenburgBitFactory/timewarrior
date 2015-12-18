@@ -11,7 +11,7 @@ Or as sophisticated as:
   $ timew track backfill last week "Design proposal"
 
 It is not necessary to define tags, or define a set of work week exclusions,
-and without these, the software is a simple start/stop clock.
+and without these, the software is a simple start/stop clock with tags.
 
 For fully automated time tracking, as the line above exhibits, weekly and daily
 schedules must be considered. For such a tool to be useful, it must support all
@@ -254,3 +254,12 @@ P: So there are lots of time specification formats to support:
       yesterday
       etc.  Assume we support them all
 
+
+F: I think we should not only have an undo file, but also a log file.
+P: Undo like tw?
+   ie single stack?
+F: Yes. Log file: so we can see what the rules system does.
+P: Good point.
+   I like that.  I’ll add something.
+   Good for debugging also.
+   So there will now be a logging rule, to define what happens.

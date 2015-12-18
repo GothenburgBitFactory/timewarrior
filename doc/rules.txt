@@ -145,3 +145,9 @@ The 'sum_week' will sum minutes in the current week for the tagset "tag1".
 
 ---
 
+P: Not sure I like the python-style.  Going with it for now.
+
+P: So rules needs a set of builtins (TBD)
+F: Builtins yes.
+   I guess we now just have to complete the grammar.
+
