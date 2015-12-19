@@ -3,8 +3,10 @@ include_directories (${CMAKE_SOURCE_DIR}
                      ${CMAKE_SOURCE_DIR}/src
                      ${TIMEW_INCLUDE_DIRS})
 
-set (timew_SRCS utf8.h utf8.cpp
-                       wcwidth6.cpp)
+set (timew_SRCS Color.h Color.cpp
+                text.h  text.cpp
+                utf8.h  utf8.cpp
+                        wcwidth6.cpp)
 
 add_library (timew STATIC ${timew_SRCS})
 add_executable (timew_executable main.cpp)
