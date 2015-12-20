@@ -29,6 +29,7 @@
 #include <sstream>
 #include <vector>
 #include <cstdlib>
+//#include <Lexer.h>
 #include <text.h>
 
 // uint to string lookup table for Color::_colorize()
@@ -139,6 +140,8 @@ Color::Color (const std::string& spec)
   int index;
   for (auto& word : words)
   {
+//    word = Lexer::lowerCase (Lexer::trim (word));
+
          if (word == "bold")      fg_value |= _COLOR_BOLD;
     else if (word == "bright")    bg_value |= _COLOR_BRIGHT;
     else if (word == "underline") fg_value |= _COLOR_UNDERLINE;
