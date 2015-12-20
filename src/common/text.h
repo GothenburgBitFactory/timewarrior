@@ -27,7 +27,6 @@
 #ifndef INCLUDED_TEXT
 #define INCLUDED_TEXT
 
-#include <set>
 #include <sstream>
 #include <string>
 #include <vector>

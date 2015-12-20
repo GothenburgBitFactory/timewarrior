@@ -25,15 +25,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
-#include <algorithm>
-#include <iostream>
-#include <sstream>
-#include <iomanip>
-#include <vector>
-#include <string>
-#include <strings.h>
-#include <math.h>
 #include <text.h>
+#include <iomanip>
+#include <math.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 void split (
