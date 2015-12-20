@@ -5,11 +5,11 @@ endif()
 
 include_directories (${CMAKE_SOURCE_DIR}
                      ${CMAKE_SOURCE_DIR}/src
-                     ${CMAKE_SOURCE_DIR}/common
+                     ${CMAKE_SOURCE_DIR}/src/common
                      ${CMAKE_SOURCE_DIR}/test
                      ${TIMEW_INCLUDE_DIRS})
 
-set (test_SRCS color.t utf8.t)
+set (test_SRCS color.t rx.t utf8.t)
 
 add_custom_target (test ./run_all --verbose
                         DEPENDS ${test_SRCS} timew_executable
