@@ -1,13 +1,13 @@
 cmake_minimum_required (VERSION 2.8)
 include_directories (${CMAKE_SOURCE_DIR}
-                     ${CMAKE_SOURCE_DIR}/src
                      ${CMAKE_SOURCE_DIR}/src/common
                      ${TIMEW_INCLUDE_DIRS})
 
-set (common_SRCS Color.cpp Color.h
-                   text.cpp  text.h
-                   utf8.cpp  utf8.h
-                   wcwidth6.cpp)
+set (common_SRCS Color.cpp    Color.h
+                 RX.cpp       RX.h
+                 text.cpp     text.h
+                 utf8.cpp     utf8.h
+                 wcwidth6.cpp)
 
 add_library (common STATIC ${common_SRCS})
 
