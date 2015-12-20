@@ -32,6 +32,7 @@
 #include <vector>
 
 // text.cpp, Non-UTF-8 aware.
+std::vector <std::string> split (const std::string&, const char);
 void split (std::vector<std::string>&, const std::string&, const char);
 const std::string format (std::string&);
 const std::string format (const char*);

@@ -30,6 +30,24 @@
 #include <math.h>
 
 ////////////////////////////////////////////////////////////////////////////////
+std::vector <std::string> split (const std::string& input, const char delimiter)
+{
+  std::vector <std::string> results;
+  std::string::size_type start = 0;
+  std::string::size_type i;
+  while ((i = input.find (delimiter, start)) != std::string::npos)
+  {
+    results.push_back (input.substr (start, i - start));
+    start = i + 1;
+  }
+
+  if (input.length ())
+    results.push_back (input.substr (start));
+
+  return results;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void split (
   std::vector<std::string>& results,
   const std::string& input,

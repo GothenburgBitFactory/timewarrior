@@ -34,28 +34,27 @@ int main (int, char**)
   UnitTest t (29);
 
   // void split (std::vector<std::string>& results, const std::string& input, const char delimiter)
-  std::vector <std::string> items;
   std::string unsplit = "";
-  split (items, unsplit, '-');
+  std::vector <std::string> items = split (unsplit, '-');
   t.is (items.size (), (size_t) 0, "split '' '-' -> 0 items");
 
   unsplit = "a";
-  split (items, unsplit, '-');
+  items = split (unsplit, '-');
   t.is (items.size (), (size_t) 1, "split 'a' '-' -> 1 item");
   t.is (items[0], "a",             "split 'a' '-' -> 'a'");
 
-  split (items, unsplit, '-');
+  items = split (unsplit, '-');
   t.is (items.size (), (size_t) 1, "split 'a' '-' -> 1 item");
   t.is (items[0], "a",             "split 'a' '-' -> 'a'");
 
   unsplit = "-";
-  split (items, unsplit, '-');
+  items = split (unsplit, '-');
   t.is (items.size (), (size_t) 2, "split '-' '-' -> '' ''");
   t.is (items[0], "",              "split '-' '-' -> [0] ''");
   t.is (items[1], "",              "split '-' '-' -> [1] ''");
 
   unsplit = "-a-bc-def";
-  split (items, unsplit, '-');
+  items = split (unsplit, '-');
   t.is (items.size (), (size_t) 4, "split '-a-bc-def' '-' -> '' 'a' 'bc' 'def'");
   t.is (items[0], "",              "split '-a-bc-def' '-' -> [0] ''");
   t.is (items[1], "a",             "split '-a-bc-def' '-' -> [1] 'a'");
