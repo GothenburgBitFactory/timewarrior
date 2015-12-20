@@ -1,5 +1,6 @@
 all.log
 color.t
+lexer.t
 rx.t
 text.t
 utf8.t
