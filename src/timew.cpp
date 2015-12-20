@@ -44,6 +44,9 @@ int main (int argc, const char** argv)
     try
     {
       // TODO Initialize configuration.
+      // TODO Load grammar.
+      // TODO Load rules.
+      // TODO Parse CLI.
       // TODO Dispatch to commands.
     }
 
