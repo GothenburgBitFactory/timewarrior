@@ -25,6 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <Grammar.h>
 #include <iostream>
 #include <new>
 #include <cstring>
@@ -45,6 +46,11 @@ int main (int argc, const char** argv)
     {
       // TODO Initialize configuration.
       // TODO Load grammar.
+      // TODO Load from string, else file on config override.
+      File file ("./grammar.cfg");
+      Grammar grammar;
+      grammar.loadFromFile (file);
+
       // TODO Load rules.
       // TODO Parse CLI.
       // TODO Dispatch to commands.

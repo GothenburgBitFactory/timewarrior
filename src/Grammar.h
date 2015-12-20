@@ -27,10 +27,15 @@
 #ifndef INCLUDED_GRAMMAR
 #define INCLUDED_GRAMMAR
 
+#include <FS.h>
+#include <string>
+
 class Grammar
 {
 public:
   Grammar ();
+  void loadFromFile (File&);
+  void loadFromString (const std::string&);
 };
 
 #endif
