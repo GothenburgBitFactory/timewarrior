@@ -34,7 +34,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (29);
+  UnitTest t (50);
 
   std::vector <std::pair <std::string, Lexer::Type>> tokens;
   std::string token;
@@ -76,6 +76,33 @@ int main (int, char**)
   // Should result in no tokens.
   Lexer l1 ("       \t ");
   t.notok (l1.token (token, type), "'       \\t ' --> no tokens");
+
+  // std::string Lexer::trimLeft (const std::string& in, const std::string&)
+  t.is (Lexer::trimLeft (""),                     "",            "Lexer::trimLeft '' -> ''");
+  t.is (Lexer::trimLeft ("   "),                  "",            "Lexer::trimLeft '   ' -> ''");
+  t.is (Lexer::trimLeft ("",              " \t"), "",            "Lexer::trimLeft '' -> ''");
+  t.is (Lexer::trimLeft ("xxx"),                  "xxx",         "Lexer::trimLeft 'xxx' -> 'xxx'");
+  t.is (Lexer::trimLeft ("xxx",           " \t"), "xxx",         "Lexer::trimLeft 'xxx' -> 'xxx'");
+  t.is (Lexer::trimLeft ("  \t xxx \t  "),        "\t xxx \t  ", "Lexer::trimLeft '  \\t xxx \\t  ' -> '\\t xxx \\t  '");
+  t.is (Lexer::trimLeft ("  \t xxx \t  ", " \t"), "xxx \t  ",    "Lexer::trimLeft '  \\t xxx \\t  ' -> 'xxx \\t  '");
+
+  // std::string Lexer::trimRight (const std::string& in, const std::string&)
+  t.is (Lexer::trimRight (""),                     "",            "Lexer::trimRight '' -> ''");
+  t.is (Lexer::trimRight ("   "),                  "",            "Lexer::trimRight '   ' -> ''");
+  t.is (Lexer::trimRight ("",              " \t"), "",            "Lexer::trimRight '' -> ''");
+  t.is (Lexer::trimRight ("xxx"),                  "xxx",         "Lexer::trimRight 'xxx' -> 'xxx'");
+  t.is (Lexer::trimRight ("xxx",           " \t"), "xxx",         "Lexer::trimRight 'xxx' -> 'xxx'");
+  t.is (Lexer::trimRight ("  \t xxx \t  "),        "  \t xxx \t", "Lexer::trimRight '  \\t xxx \\t  ' -> '  \\t xxx \\t'");
+  t.is (Lexer::trimRight ("  \t xxx \t  ", " \t"), "  \t xxx",    "Lexer::trimRight '  \\t xxx \\t  ' -> '  \\t xxx'");
+
+  // std::string Lexer::trim (const std::string& in, const std::string& t)
+  t.is (Lexer::trim (""),                     "",          "Lexer::trim '' -> ''");
+  t.is (Lexer::trim ("   "),                  "",          "Lexer::trim '   ' -> ''");
+  t.is (Lexer::trim ("",              " \t"), "",          "Lexer::trim '' -> ''");
+  t.is (Lexer::trim ("xxx"),                  "xxx",       "Lexer::trim 'xxx' -> 'xxx'");
+  t.is (Lexer::trim ("xxx",           " \t"), "xxx",       "Lexer::trim 'xxx' -> 'xxx'");
+  t.is (Lexer::trim ("  \t xxx \t  "),        "\t xxx \t", "Lexer::trim '  \\t xxx \\t  ' -> '\\t xxx \\t'");
+  t.is (Lexer::trim ("  \t xxx \t  ", " \t"), "xxx",       "Lexer::trim '  \\t xxx \\t  ' -> 'xxx'");
 
   return 0;
 }

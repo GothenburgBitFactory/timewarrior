@@ -124,6 +124,32 @@ bool Lexer::isEOS () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::string Lexer::trimLeft (const std::string& in, const std::string& t /*= " "*/)
+{
+  std::string::size_type ws = in.find_first_not_of (t);
+  if (ws > 0)
+  {
+    std::string out {in};
+    return out.erase (0, ws);
+  }
+
+  return in;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string Lexer::trimRight (const std::string& in, const std::string& t /*= " "*/)
+{
+  std::string out {in};
+  return out.erase (in.find_last_not_of (t) + 1);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string Lexer::trim (const std::string& in, const std::string& t /*= " "*/)
+{
+  return trimLeft (trimRight (in, t), t);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Lexer::Type::word
 //   [^\s]+
 bool Lexer::isWord (std::string& token, Lexer::Type& type)

@@ -43,6 +43,9 @@ public:
   // Static helpers.
   static bool isWhitespace                   (int);
   static bool isSingleCharOperator           (int);
+  static std::string trimLeft                (const std::string& in, const std::string& t = " ");
+  static std::string trimRight               (const std::string& in, const std::string& t = " ");
+  static std::string trim                    (const std::string& in, const std::string& t = " ");
 
   // Stream Classifiers.
   bool isEOS          () const;
