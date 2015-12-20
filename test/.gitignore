@@ -1,5 +1,6 @@
 all.log
 color.t
+fs.t
 lexer.t
 rx.t
 text.t
