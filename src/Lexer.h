@@ -35,20 +35,29 @@
 class Lexer
 {
 public:
-  enum class Type { word };
+  enum class Type { string,
+                    word };
 
   Lexer (const std::string&);
   bool token (std::string&, Lexer::Type&);
 
   // Static helpers.
   static bool isWhitespace                   (int);
+  static bool isHexDigit                     (int);
   static bool isSingleCharOperator           (int);
+  static bool isHardBoundary                 (int, int);
+  static bool readWord                       (const std::string&, const std::string&, std::string::size_type&, std::string&);
+  static bool readWord                       (const std::string&, std::string::size_type&, std::string&);
+  static int hexToInt                        (int);
+  static int hexToInt                        (int, int);
+  static int hexToInt                        (int, int, int, int);
   static std::string trimLeft                (const std::string& in, const std::string& t = " ");
   static std::string trimRight               (const std::string& in, const std::string& t = " ");
   static std::string trim                    (const std::string& in, const std::string& t = " ");
 
   // Stream Classifiers.
   bool isEOS          () const;
+  bool isString       (std::string&, Lexer::Type&, const std::string&);
   bool isWord         (std::string&, Lexer::Type&);
 
 private:

@@ -34,7 +34,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (50);
+  UnitTest t (74);
 
   std::vector <std::pair <std::string, Lexer::Type>> tokens;
   std::string token;
@@ -76,6 +76,55 @@ int main (int, char**)
   // Should result in no tokens.
   Lexer l1 ("       \t ");
   t.notok (l1.token (token, type), "'       \\t ' --> no tokens");
+
+
+  // static bool readWord (const std::string&, const std::string&, std::string::size_type&, std::string&);
+  std::string::size_type cursor = 0;
+  std::string word;
+  t.ok (Lexer::readWord ("'one two'", "'\"", cursor, word), "readWord ''one two'' --> true");
+  t.is (word, "'one two'",                                  "  word '" + word + "'");
+  t.is ((int)cursor, 9,                                     "  cursor");
+
+  // Unterminated quoted string is invalid.
+  cursor = 0;
+  t.notok (Lexer::readWord ("'one", "'\"", cursor, word),   "readWord ''one' --> false");
+
+  // static bool readWord (const std::string&, std::string::size_type&, std::string&);
+  cursor = 0;
+  t.ok (Lexer::readWord ("input", cursor, word),            "readWord 'input' --> true");
+  t.is (word, "input",                                      "  word '" + word + "'");
+  t.is ((int)cursor, 5,                                     "  cursor");
+
+  cursor = 0;
+  t.ok (Lexer::readWord ("one\\ two", cursor, word),        "readWord 'one\\ two' --> true");
+  t.is (word, "one two",                                    "  word '" + word + "'");
+  t.is ((int)cursor, 8,                                     "  cursor");
+
+  cursor = 0;
+  t.ok (Lexer::readWord ("\\u20A43", cursor, word),         "readWord '\\u20A43' --> true");
+  t.is (word, "₤3",                                         "  word '" + word + "'");
+  t.is ((int)cursor, 7,                                     "  cursor");
+
+  cursor = 0;
+  t.ok (Lexer::readWord ("U+20AC4", cursor, word),          "readWord '\\u20AC4' --> true");
+  t.is (word, "€4",                                         "  word '" + word + "'");
+  t.is ((int)cursor, 7,                                     "  cursor");
+
+  std::string text = "one 'two' three\\ four";
+  cursor = 0;
+  t.ok (Lexer::readWord (text, cursor, word),               "readWord \"one 'two' three\\ four\" --> true");
+  t.is (word, "one",                                        "  word '" + word + "'");
+  cursor++;
+  t.ok (Lexer::readWord (text, cursor, word),               "readWord \"one 'two' three\\ four\" --> true");
+  t.is (word, "'two'",                                      "  word '" + word + "'");
+  cursor++;
+  t.ok (Lexer::readWord (text, cursor, word),               "readWord \"one 'two' three\\ four\" --> true");
+  t.is (word, "three four",                                 "  word '" + word + "'");
+
+  text = "one     ";
+  cursor = 0;
+  t.ok (Lexer::readWord (text, cursor, word),               "readWord \"one     \" --> true");
+  t.is (word, "one",                                        "  word '" + word + "'");
 
   // std::string Lexer::trimLeft (const std::string& in, const std::string&)
   t.is (Lexer::trimLeft (""),                     "",            "Lexer::trimLeft '' -> ''");
