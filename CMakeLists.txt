@@ -101,6 +101,7 @@ configure_file (
   ${CMAKE_SOURCE_DIR}/cmake.h)
 
 add_subdirectory (src)
+add_subdirectory (src/common)
 if (EXISTS ${CMAKE_SOURCE_DIR}/test)
   add_subdirectory (test EXCLUDE_FROM_ALL)
 endif (EXISTS ${CMAKE_SOURCE_DIR}/test)
@@ -116,6 +117,7 @@ set (CPACK_SOURCE_GENERATOR "TGZ")
 set (CPACK_SOURCE_PACKAGE_FILE_NAME ${PACKAGE_NAME}-${PACKAGE_VERSION})
 set (CPACK_SOURCE_IGNORE_FILES  "CMakeCache" "CMakeFiles" "CPackConfig" "CPackSourceConfig"
                                 "_CPack_Packages" "cmake_install" "install_manifest" "Makefile$"
-                                "test" "package-config" "misc/*" "src/timew$" "src/calc$" "performance"
-                                "src/libtimew.a" "/\\\\.gitignore" "/\\\\.git/" "swp$" "src/lex$")
+                                "test" "package-config" "misc/*" "src/timew$" "src/common/libcommon.a"
+                                "performance" "src/libtimew.a" "/\\\\.gitignore" "/\\\\.git/" "swp$"
+                                "src/lex$")
 include (CPack)
