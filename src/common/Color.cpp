@@ -26,11 +26,8 @@
 
 #include <cmake.h>
 #include <Color.h>
-#include <iostream>
-#include <iomanip>
 #include <sstream>
 #include <vector>
-#include <algorithm>
 #include <cstdlib>
 #include <text.h>
 

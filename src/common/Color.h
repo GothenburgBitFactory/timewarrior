@@ -29,7 +29,6 @@
 
 #include <string>
 
-////////////////////////////////////////////////////////////////////////////////
 #define _COLOR_INVERSE   0x00400000  // Inverse attribute.
 #define _COLOR_256       0x00200000  // 256-color mode.
 #define _COLOR_HASBG     0x00100000  // Has background color (all values taken).
