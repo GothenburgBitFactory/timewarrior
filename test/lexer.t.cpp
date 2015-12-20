@@ -34,7 +34,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (74);
+  UnitTest t (82);
 
   std::vector <std::pair <std::string, Lexer::Type>> tokens;
   std::string token;
@@ -125,6 +125,57 @@ int main (int, char**)
   cursor = 0;
   t.ok (Lexer::readWord (text, cursor, word),               "readWord \"one     \" --> true");
   t.is (word, "one",                                        "  word '" + word + "'");
+
+  // Test all Lexer types.
+  #define NO {"",Lexer::Type::word}
+  struct
+  {
+    const char* input;
+    struct
+    {
+      const char* token;
+      Lexer::Type type;
+    } results[5];
+  } lexerTests[] =
+  {
+    // Word
+    { "1.foo.bar",                                    { { "1.foo.bar",                                    Lexer::Type::word         }, NO, NO, NO, NO }, },
+  };
+  #define NUM_TESTS (sizeof (lexerTests) / sizeof (lexerTests[0]))
+
+  for (unsigned int i = 0; i < NUM_TESTS; i++)
+  {
+    // The isolated test puts the input string directly into the Lexer.
+    Lexer isolated (lexerTests[i].input);
+
+    for (int j = 0; j < 5; j++)
+    {
+      if (lexerTests[i].results[j].token[0])
+      {
+        // Isolated: "<token>"
+        t.ok (isolated.token (token, type),                  "Isolated Lexer::token(...) --> true");
+        t.is (token, lexerTests[i].results[j].token,         "  token --> " + token);
+        t.is ((int)type, (int)lexerTests[i].results[j].type, "  type --> Lexer::Type::" + Lexer::typeToString (type));
+      }
+    }
+
+    // The embedded test surrounds the input string with a space.
+    Lexer embedded (std::string (" ") + lexerTests[i].input + " ");
+
+    for (int j = 0; j < 5; j++)
+    {
+      if (lexerTests[i].results[j].token[0])
+      {
+        // Embedded: "<token>"
+        t.ok (embedded.token (token, type),                  "Embedded Lexer::token(...) --> true");
+        t.is (token, lexerTests[i].results[j].token,         "  token --> " + token);
+        t.is ((int)type, (int)lexerTests[i].results[j].type, "  type --> Lexer::Type::" + Lexer::typeToString (type));
+      }
+    }
+  }
+
+  t.is (Lexer::typeName (Lexer::Type::string),       "string",       "Lexer::typeName (Lexer::Type::string)");
+  t.is (Lexer::typeName (Lexer::Type::word),         "word",         "Lexer::typeName (Lexer::Type::word)");
 
   // std::string Lexer::trimLeft (const std::string& in, const std::string&)
   t.is (Lexer::trimLeft (""),                     "",            "Lexer::trimLeft '' -> ''");

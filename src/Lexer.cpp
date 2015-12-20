@@ -59,6 +59,19 @@ bool Lexer::token (std::string& token, Lexer::Type& type)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// No L10N - these are for internal purposes.
+const std::string Lexer::typeName (const Lexer::Type& type)
+{
+  switch (type)
+  {
+  case Lexer::Type::string:       return "string";
+  case Lexer::Type::word:         return "word";
+  }
+
+  return "unknown";
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Complete Unicode whitespace list.
 //
 // http://en.wikipedia.org/wiki/Whitespace_character
@@ -242,6 +255,15 @@ bool Lexer::isWord (std::string& token, Lexer::Type& type)
   }
 
   return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Static
+std::string Lexer::typeToString (Lexer::Type type)
+{
+       if (type == Lexer::Type::string)       return std::string ("\033[38;5;7m\033[48;5;3m")    + "string"       + "\033[0m";
+  else if (type == Lexer::Type::word)         return std::string ("\033[38;5;15m\033[48;5;236m") + "word"         + "\033[0m";
+  else                                        return std::string ("\033[37;41m")                 + "unknown"      + "\033[0m";
 }
 
 ////////////////////////////////////////////////////////////////////////////////

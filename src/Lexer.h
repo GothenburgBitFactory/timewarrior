@@ -40,8 +40,10 @@ public:
 
   Lexer (const std::string&);
   bool token (std::string&, Lexer::Type&);
+  static std::string typeToString (Lexer::Type);
 
   // Static helpers.
+  static const std::string typeName          (const Lexer::Type&);
   static bool isWhitespace                   (int);
   static bool isHexDigit                     (int);
   static bool isSingleCharOperator           (int);
