@@ -69,8 +69,8 @@ lists them and their defaults plus the CMAKE_INSTALL_PREFIX:
 
   CMAKE_INSTALL_PREFIX   /usr/local
   TIMEW_BINDIR           bin
-  TIMEW_DOCDIR           share/doc/task
-  TIMEW_RCDIR            share/doc/task/rc
+  TIMEW_DOCDIR           share/doc/timew
+  TIMEW_RCDIR            share/doc/timew/rc
   TIMEW_MAN1DIR          share/man/man1
   TIMEW_MAN5DIR          share/man/man5
 
@@ -78,8 +78,8 @@ The corresponding TIMEW_* variables will be combined with CMAKE_INSTALL_PREFIX t
 get absolute installation directories:
 
   CMAKE_INSTALL_PREFIX/TIMEW_BINDIR   /usr/local/bin
-  CMAKE_INSTALL_PREFIX/TIMEW_DOCDIR   /usr/local/share/doc/task
-  CMAKE_INSTALL_PREFIX/TIMEW_RCDIR    /usr/local/share/doc/task/rc
+  CMAKE_INSTALL_PREFIX/TIMEW_DOCDIR   /usr/local/share/doc/timew
+  CMAKE_INSTALL_PREFIX/TIMEW_RCDIR    /usr/local/share/doc/timew/rc
   CMAKE_INSTALL_PREFIX/TIMEW_MAN1DIR  /usr/local/share/man/man1
   CMAKE_INSTALL_PREFIX/TIMEW_MAN5DIR  /usr/local/share/man/man5
 
