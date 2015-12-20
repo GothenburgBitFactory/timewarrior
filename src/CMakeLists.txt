@@ -4,7 +4,8 @@ include_directories (${CMAKE_SOURCE_DIR}
                      ${CMAKE_SOURCE_DIR}/src/common
                      ${TIMEW_INCLUDE_DIRS})
 
-set (timew_SRCS LR0.cpp LR0.h)
+set (timew_SRCS Grammar.cpp     Grammar.h
+                LR0.cpp         LR0.h)
 
 add_library (timew STATIC ${timew_SRCS})
 add_executable (timew_executable timew.cpp)
