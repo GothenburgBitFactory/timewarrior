@@ -29,6 +29,8 @@
 
 #include <FS.h>
 #include <string>
+#include <vector>
+#include <map>
 
 class Grammar
 {
@@ -36,6 +38,20 @@ public:
   Grammar ();
   void loadFromFile (File&);
   void loadFromString (const std::string&);
+  std::string dump () const;
+
+protected:
+  class Production : public std::vector <std::string>
+  {
+  };
+
+  class Rule : public std::vector <Production>
+  {
+  };
+
+private:
+  std::string _start;
+  std::map <std::string, Grammar::Rule> _rules;
 };
 
 #endif
