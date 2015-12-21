@@ -45,7 +45,7 @@ void Grammar::loadFromFile (File& file)
     loadFromString (contents);
   }
   else
-    throw format ("Grammar file '{0}'not found.", static_cast<std::string> (file));
+    throw format ("Grammar file '{1}' not found.", static_cast<std::string> (file));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
