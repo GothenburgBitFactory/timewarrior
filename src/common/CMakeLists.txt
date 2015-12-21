@@ -6,6 +6,7 @@ include_directories (${CMAKE_SOURCE_DIR}
 set (common_SRCS Color.cpp    Color.h
                  FS.cpp       FS.h
                  RX.cpp       RX.h
+                 Timer.cpp    Timer.h
                  text.cpp     text.h
                  utf8.cpp     utf8.h
                  wcwidth6.cpp)
