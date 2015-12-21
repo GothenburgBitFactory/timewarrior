@@ -44,16 +44,22 @@ int main (int argc, const char** argv)
   {
     try
     {
-      // TODO Initialize configuration.
-      // TODO Load grammar.
+      // TODO Load configuration ~/.timewrc || $TIMEWRC.
+
+      // TODO Load CLI grammar.
       // TODO Load from string, else file on config override.
+      // TODO Migrate from loading a grammar from file, to a string.
       File file ("./grammar.cfg");
       Grammar grammar;
       grammar.loadFromFile (file);
       std::cout << grammar.dump ();
 
-      // TODO Load rules.
       // TODO Parse CLI.
+
+      // TODO Load rules grammar.
+      // TODO Load rules.
+      // TODO Parse rules.
+
       // TODO Dispatch to commands.
     }
 
