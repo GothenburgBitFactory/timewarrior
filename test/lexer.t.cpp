@@ -34,7 +34,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (124);
+  UnitTest t (131);
 
   std::vector <std::pair <std::string, Lexer::Type>> tokens;
   std::string token;
@@ -76,7 +76,6 @@ int main (int, char**)
   // Should result in no tokens.
   Lexer l1 ("       \t ");
   t.notok (l1.token (token, type), "'       \\t ' --> no tokens");
-
 
   // static bool readWord (const std::string&, const std::string&, std::string::size_type&, std::string&);
   std::string::size_type cursor = 0;
@@ -149,6 +148,10 @@ int main (int, char**)
     { "\"\tfoo\t\"",                                  { { "\"\tfoo\t\"",                                  Lexer::Type::string       }, NO, NO, NO, NO }, },
     { "\"\\u20A43\"",                                 { { "\"₤3\"",                                       Lexer::Type::string       }, NO, NO, NO, NO }, },
     { "\"U+20AC4\"",                                  { { "\"€4\"",                                       Lexer::Type::string       }, NO, NO, NO, NO }, },
+
+    // Number
+    { "0x2f",                                         { { "0x2f",                                         Lexer::Type::hex          }, NO, NO, NO, NO }, },
+
   };
   #define NUM_TESTS (sizeof (lexerTests) / sizeof (lexerTests[0]))
 
@@ -183,6 +186,7 @@ int main (int, char**)
     }
   }
 
+  t.is (Lexer::typeName (Lexer::Type::hex),          "hex",          "Lexer::typeName (Lexer::Type::hex)");
   t.is (Lexer::typeName (Lexer::Type::string),       "string",       "Lexer::typeName (Lexer::Type::string)");
   t.is (Lexer::typeName (Lexer::Type::word),         "word",         "Lexer::typeName (Lexer::Type::word)");
 

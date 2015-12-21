@@ -51,8 +51,9 @@ bool Lexer::token (std::string& token, Lexer::Type& type)
   if (isEOS ())
     return false;
 
-  if (isString (token, type, "'\"") ||
-      isWord   (token, type))
+  if (isString    (token, type, "'\"") ||
+      isHexNumber (token, type)        ||
+      isWord      (token, type))
     return true;
 
   return false;
@@ -64,6 +65,7 @@ const std::string Lexer::typeName (const Lexer::Type& type)
 {
   switch (type)
   {
+  case Lexer::Type::hex:          return "hex";
   case Lexer::Type::string:       return "string";
   case Lexer::Type::word:         return "word";
   }
@@ -235,6 +237,34 @@ bool Lexer::isString (std::string& token, Lexer::Type& type, const std::string& 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Lexer::Type::hex
+//   0xX+
+bool Lexer::isHexNumber (std::string& token, Lexer::Type& type)
+{
+  std::size_t marker = _cursor;
+
+  if (_eos - marker >= 3 &&
+      _text[marker + 0] == '0' &&
+      _text[marker + 1] == 'x')
+  {
+    marker += 2;
+
+    while (isHexDigit (_text[marker]))
+      ++marker;
+
+    if (marker - _cursor > 2)
+    {
+      token = _text.substr (_cursor, marker - _cursor);
+      type = Lexer::Type::hex;
+      _cursor = marker;
+      return true;
+    }
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Lexer::Type::word
 //   [^\s]+
 bool Lexer::isWord (std::string& token, Lexer::Type& type)
@@ -262,6 +292,7 @@ bool Lexer::isWord (std::string& token, Lexer::Type& type)
 std::string Lexer::typeToString (Lexer::Type type)
 {
        if (type == Lexer::Type::string)       return std::string ("\033[38;5;7m\033[48;5;3m")    + "string"       + "\033[0m";
+  else if (type == Lexer::Type::hex)          return std::string ("\033[38;5;7m\033[48;5;14m")   + "hex"          + "\033[0m";
   else if (type == Lexer::Type::word)         return std::string ("\033[38;5;15m\033[48;5;236m") + "word"         + "\033[0m";
   else                                        return std::string ("\033[37;41m")                 + "unknown"      + "\033[0m";
 }

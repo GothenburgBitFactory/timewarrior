@@ -35,7 +35,8 @@
 class Lexer
 {
 public:
-  enum class Type { string,
+  enum class Type { hex,
+                    string,
                     word };
 
   Lexer (const std::string&);
@@ -60,6 +61,7 @@ public:
   // Stream Classifiers.
   bool isEOS          () const;
   bool isString       (std::string&, Lexer::Type&, const std::string&);
+  bool isHexNumber    (std::string&, Lexer::Type&);
   bool isWord         (std::string&, Lexer::Type&);
 
 private:
