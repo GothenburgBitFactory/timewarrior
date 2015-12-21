@@ -50,6 +50,7 @@ int main (int argc, const char** argv)
       File file ("./grammar.cfg");
       Grammar grammar;
       grammar.loadFromFile (file);
+      std::cout << grammar.dump ();
 
       // TODO Load rules.
       // TODO Parse CLI.
