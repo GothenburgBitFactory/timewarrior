@@ -35,7 +35,7 @@
 class Lexer
 {
 public:
-  enum class Type { hex,
+  enum class Type { number, hex,
                     string,
                     word };
 
@@ -46,6 +46,7 @@ public:
   // Static helpers.
   static const std::string typeName          (const Lexer::Type&);
   static bool isWhitespace                   (int);
+  static bool isDigit                        (int);
   static bool isHexDigit                     (int);
   static bool isSingleCharOperator           (int);
   static bool isHardBoundary                 (int, int);
@@ -61,6 +62,8 @@ public:
   // Stream Classifiers.
   bool isEOS          () const;
   bool isString       (std::string&, Lexer::Type&, const std::string&);
+  bool isNumber       (std::string&, Lexer::Type&);
+  bool isInteger      (std::string&, Lexer::Type&);
   bool isHexNumber    (std::string&, Lexer::Type&);
   bool isWord         (std::string&, Lexer::Type&);
 

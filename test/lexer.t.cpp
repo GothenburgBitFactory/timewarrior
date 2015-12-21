@@ -34,7 +34,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (131);
+  UnitTest t (171);
 
   std::vector <std::pair <std::string, Lexer::Type>> tokens;
   std::string token;
@@ -76,6 +76,31 @@ int main (int, char**)
   // Should result in no tokens.
   Lexer l1 ("       \t ");
   t.notok (l1.token (token, type), "'       \\t ' --> no tokens");
+
+  // Test for numbers that are no longer ISO-8601 dates.
+  Lexer l3 ("1 12 123 1234 12345 123456 1234567");
+  tokens.clear ();
+  while (l3.token (token, type))
+  {
+    std::cout << "# «" << token << "» " << Lexer::typeName (type) << "\n";
+    tokens.push_back (std::pair <std::string, Lexer::Type> (token, type));
+  }
+
+  t.is ((int)tokens.size (),     7,                         "7 tokens");
+  t.is (tokens[0].first,         "1",                       "tokens[0] == '1'");
+  t.is ((int) tokens[0].second,  (int) Lexer::Type::number, "tokens[0] == Type::number");
+  t.is (tokens[1].first,         "12",                      "tokens[1] == '12'");
+  t.is ((int) tokens[1].second,  (int) Lexer::Type::number, "tokens[1] == Type::date");
+  t.is (tokens[2].first,         "123",                     "tokens[2] == '123'");
+  t.is ((int) tokens[2].second,  (int) Lexer::Type::number, "tokens[2] == Type::number"); // 70
+  t.is (tokens[3].first,         "1234",                    "tokens[3] == '1234'");
+  t.is ((int) tokens[3].second,  (int) Lexer::Type::number, "tokens[3] == Type::date");
+  t.is (tokens[4].first,         "12345",                   "tokens[4] == '12345'");
+  t.is ((int) tokens[4].second,  (int) Lexer::Type::number, "tokens[4] == Type::number");
+  t.is (tokens[5].first,         "123456",                  "tokens[5] == '123456'");
+  t.is ((int) tokens[5].second,  (int) Lexer::Type::number, "tokens[5] == Type::date");
+  t.is (tokens[6].first,         "1234567",                 "tokens[6] == '1234567'");
+  t.is ((int) tokens[6].second,  (int) Lexer::Type::number, "tokens[6] == Type::number");
 
   // static bool readWord (const std::string&, const std::string&, std::string::size_type&, std::string&);
   std::string::size_type cursor = 0;
@@ -150,6 +175,10 @@ int main (int, char**)
     { "\"U+20AC4\"",                                  { { "\"€4\"",                                       Lexer::Type::string       }, NO, NO, NO, NO }, },
 
     // Number
+    { "1",                                            { { "1",                                            Lexer::Type::number       }, NO, NO, NO, NO }, },
+    { "3.14",                                         { { "3.14",                                         Lexer::Type::number       }, NO, NO, NO, NO }, },
+    { "6.02217e23",                                   { { "6.02217e23",                                   Lexer::Type::number       }, NO, NO, NO, NO }, },
+    { "1.2e-3.4",                                     { { "1.2e-3.4",                                     Lexer::Type::number       }, NO, NO, NO, NO }, },
     { "0x2f",                                         { { "0x2f",                                         Lexer::Type::hex          }, NO, NO, NO, NO }, },
 
   };
@@ -186,6 +215,7 @@ int main (int, char**)
     }
   }
 
+  t.is (Lexer::typeName (Lexer::Type::number),       "number",       "Lexer::typeName (Lexer::Type::number)");
   t.is (Lexer::typeName (Lexer::Type::hex),          "hex",          "Lexer::typeName (Lexer::Type::hex)");
   t.is (Lexer::typeName (Lexer::Type::string),       "string",       "Lexer::typeName (Lexer::Type::string)");
   t.is (Lexer::typeName (Lexer::Type::word),         "word",         "Lexer::typeName (Lexer::Type::word)");

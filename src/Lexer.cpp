@@ -53,6 +53,7 @@ bool Lexer::token (std::string& token, Lexer::Type& type)
 
   if (isString    (token, type, "'\"") ||
       isHexNumber (token, type)        ||
+      isNumber    (token, type)        ||
       isWord      (token, type))
     return true;
 
@@ -65,6 +66,7 @@ const std::string Lexer::typeName (const Lexer::Type& type)
 {
   switch (type)
   {
+  case Lexer::Type::number:       return "number";
   case Lexer::Type::hex:          return "hex";
   case Lexer::Type::string:       return "string";
   case Lexer::Type::word:         return "word";
@@ -116,12 +118,114 @@ bool Lexer::isWhitespace (int c)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Digits 0-9.
+//
+// TODO This list should be derived from the Unicode database.
+bool Lexer::isDigit (int c)
+{
+  return c >= 0x30 && c <= 0x39;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Digits 0-9 a-f A-F.
 bool Lexer::isHexDigit (int c)
 {
   return (c >= '0' && c <= '9') ||
          (c >= 'a' && c <= 'f') ||
          (c >= 'A' && c <= 'F');
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Lexer::Type::number
+//   \d+
+//   [ . \d+ ]
+//   [ e|E [ +|- ] \d+ [ . \d+ ] ]
+//   not followed by non-operator.
+bool Lexer::isNumber (std::string& token, Lexer::Type& type)
+{
+  std::size_t marker = _cursor;
+
+  if (isDigit (_text[marker]))
+  {
+    ++marker;
+    while (isDigit (_text[marker]))
+      utf8_next_char (_text, marker);
+
+    if (_text[marker] == '.')
+    {
+      ++marker;
+      if (isDigit (_text[marker]))
+      {
+        ++marker;
+        while (isDigit (_text[marker]))
+          utf8_next_char (_text, marker);
+      }
+    }
+
+    if (_text[marker] == 'e' ||
+        _text[marker] == 'E')
+    {
+      ++marker;
+
+      if (_text[marker] == '+' ||
+          _text[marker] == '-')
+        ++marker;
+
+      if (isDigit (_text[marker]))
+      {
+        ++marker;
+        while (isDigit (_text[marker]))
+          utf8_next_char (_text, marker);
+
+        if (_text[marker] == '.')
+        {
+          ++marker;
+          if (isDigit (_text[marker]))
+          {
+            ++marker;
+            while (isDigit (_text[marker]))
+              utf8_next_char (_text, marker);
+          }
+        }
+      }
+    }
+
+    // Lookahread: !<isWhitespace> | !<isSingleCharOperator>
+    // If there is an immediately consecutive character, that is not an operator, fail.
+    if (_eos > marker &&
+        ! isWhitespace (_text[marker]) &&
+        ! isSingleCharOperator (_text[marker]))
+      return false;
+
+    token = _text.substr (_cursor, marker - _cursor);
+    type = Lexer::Type::number;
+    _cursor = marker;
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Lexer::Type::number
+//   \d+
+bool Lexer::isInteger (std::string& token, Lexer::Type& type)
+{
+  std::size_t marker = _cursor;
+
+  if (isDigit (_text[marker]))
+  {
+    ++marker;
+    while (isDigit (_text[marker]))
+      utf8_next_char (_text, marker);
+
+    token = _text.substr (_cursor, marker - _cursor);
+    type = Lexer::Type::number;
+    _cursor = marker;
+    return true;
+  }
+
+  return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -293,6 +397,7 @@ std::string Lexer::typeToString (Lexer::Type type)
 {
        if (type == Lexer::Type::string)       return std::string ("\033[38;5;7m\033[48;5;3m")    + "string"       + "\033[0m";
   else if (type == Lexer::Type::hex)          return std::string ("\033[38;5;7m\033[48;5;14m")   + "hex"          + "\033[0m";
+  else if (type == Lexer::Type::number)       return std::string ("\033[38;5;7m\033[48;5;6m")    + "number"       + "\033[0m";
   else if (type == Lexer::Type::word)         return std::string ("\033[38;5;15m\033[48;5;236m") + "word"         + "\033[0m";
   else                                        return std::string ("\033[37;41m")                 + "unknown"      + "\033[0m";
 }
