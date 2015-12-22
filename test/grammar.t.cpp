@@ -29,48 +29,64 @@
 #include <test.h>
 
 ////////////////////////////////////////////////////////////////////////////////
+void testBadGrammarFile (UnitTest& t, File& file)
+{
+  try
+  {
+    Grammar g;
+    g.loadFromFile (file);
+    t.fail ("Grammar::loadFromFile accepted a bad file");
+  }
+  catch (std::string error)
+  {
+    t.diag (error);
+    t.pass ("Grammar::loadFromFile rejected a bad file");
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void testBadGrammar (UnitTest& t, const std::string& bnf)
+{
+  try
+  {
+    Grammar g;
+    g.loadFromString (bnf);
+    t.fail ("Grammar::loadFromFile accepted a bad grammar");
+  }
+  catch (std::string error)
+  {
+    t.diag (error);
+    t.pass ("Grammar::loadFromFile rejected a bad grammar");
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (4);
+  UnitTest t (6);
 
   // Test loading from a missing file.
-  Grammar g;
   File missing ("/tmp/does/not/exist");
-  t.ok (! missing.exists (), "Input file does not exist");
-  try
-  {
-    g.loadFromFile (missing);
-    t.fail ("Grammar::loadFromFile accepted a missing file");
-  }
-  catch (std::string s)
-  {
-    t.diag (s);
-    t.pass ("Grammar::loadFromFile rejected a missing file");
-  }
+  t.notok (missing.exists (), "Grammar file is recognized as missing");
+  testBadGrammarFile (t, missing);
 
-  // Test error on parsing an empty grammar.
-  try
-  {
-    g.loadFromString ("");
-    t.fail ("Grammar::loadFromFile accepted an empty grammar");
-  }
-  catch (std::string s)
-  {
-    t.diag (s);
-    t.pass ("Grammar::loadFromFile rejected an empty grammar");
-  }
+  // Test error on parsing bad grammar.
+  testBadGrammar (t, "");
+  testBadGrammar (t, "# Comment\n"
+                     "# Comment\n"
+                     "\n"
+                     "\n"
+                     "\n");
 
-  // Test error on non-empty but trivial grammar.
-  try
-  {
-    g.loadFromString ("# Comment\n# comment\n\n\n\n");
-    t.fail ("Grammar::loadFromFile accepted an empty grammar");
-  }
-  catch (std::string s)
-  {
-    t.diag (s);
-    t.pass ("Grammar::loadFromFile rejected an empty grammar");
-  }
+  // Unreferenced rule 'two'.
+  testBadGrammar (t, "one: \"foo\"\n"
+                     "\n"
+                     "two: \"bar\"\n");
+
+  // Undefined rule 'three'.
+  testBadGrammar (t, "one: three\n"
+                     "\n"
+                     "two: \"foo\"\n");
 
   return 0;
 }
