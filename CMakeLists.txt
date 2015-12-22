@@ -119,5 +119,5 @@ set (CPACK_SOURCE_IGNORE_FILES  "CMakeCache" "CMakeFiles" "CPackConfig" "CPackSo
                                 "_CPack_Packages" "cmake_install" "install_manifest" "Makefile$"
                                 "test" "package-config" "misc/*" "src/timew$" "src/common/libcommon.a"
                                 "performance" "src/libtimew.a" "/\\\\.gitignore" "/\\\\.git/" "swp$"
-                                "src/lex$")
+                                "src/gr$")
 include (CPack)

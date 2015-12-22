@@ -10,10 +10,13 @@ set (timew_SRCS Grammar.cpp     Grammar.h
 
 add_library (timew STATIC ${timew_SRCS})
 add_executable (timew_executable timew.cpp)
+add_executable (gr_executable gr.cpp)
 
 target_link_libraries (timew_executable common timew ${TIMEW_LIBRARIES})
+target_link_libraries (gr_executable common timew ${TIMEW_LIBRARIES})
 
 set_property (TARGET timew_executable PROPERTY OUTPUT_NAME "timew")
+set_property (TARGET gr_executable PROPERTY OUTPUT_NAME "gr")
 
 install (TARGETS timew_executable DESTINATION ${TIMEW_BINDIR})
 
