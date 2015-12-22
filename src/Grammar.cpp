@@ -156,7 +156,7 @@ std::string Grammar::dump () const
       {
         out << term._token;
         if (term._decoration != "")
-          out << term._decoration;
+          out << " " << term._decoration;
         out << " ";
       }
 
@@ -187,7 +187,8 @@ void Grammar::validate () const
     {
       for (auto& token : production)
       {
-        if (token._token.front () != '"')
+        if (token._token.front () != '"' and
+            token._token.front () != '/')
           allTokens.push_back (token._token);
 
         if (token._token == production[0]._token &&
@@ -213,7 +214,8 @@ void Grammar::validate () const
     throw format ("Definition '{1}' is left recursive.", lr);
 
   for (auto& r : allRules)
-    if (r[0] == '"')
+    if (r[0] == '"' or
+        r[0] == '/')
       throw format ("Definition '{1}' must not be a literal.");
 
   // Unused definitions - these are names in _rules that are never
