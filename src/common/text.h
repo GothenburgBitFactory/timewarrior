@@ -70,5 +70,45 @@ const std::string format (const std::string& fmt, Args... args)
     return format (1, fmt, args...);
 }
 
+// List operations.
+template <class T> void listDiff (
+  const T& left, const T& right, T& leftOnly, T& rightOnly)
+{
+  leftOnly.clear ();
+  rightOnly.clear ();
+
+  for (unsigned int l = 0; l < left.size (); ++l)
+  {
+    bool found = false;
+    for (unsigned int r = 0; r < right.size (); ++r)
+    {
+      if (left[l] == right[r])
+      {
+        found = true;
+        break;
+      }
+    }
+
+    if (!found)
+      leftOnly.push_back (left[l]);
+  }
+
+  for (unsigned int r = 0; r < right.size (); ++r)
+  {
+    bool found = false;
+    for (unsigned int l = 0; l < left.size (); ++l)
+    {
+      if (left[l] == right[r])
+      {
+        found = true;
+        break;
+      }
+    }
+
+    if (!found)
+      rightOnly.push_back (right[r]);
+  }
+}
+
 #endif
 ////////////////////////////////////////////////////////////////////////////////
