@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (2);
+  UnitTest t (3);
 
   // Test loading from a missing file.
   Grammar g;
@@ -41,13 +41,25 @@ int main (int, char**)
   try
   {
     g.loadFromFile (missing);
-    t.fail ("Grammar::loadFromFile did not notice a missing file");
+    t.fail ("Grammar::loadFromFile accepted a missing file");
   }
   catch (std::string s)
   {
-    t.pass ("Grammar::loadFromFile noticed a file was missing");
+    t.diag (s);
+    t.pass ("Grammar::loadFromFile rejected a missing file");
   }
 
+  // Test error on parsing an empty grammar.
+  try
+  {
+    g.loadFromString ("");
+    t.fail ("Grammar::loadFromFile accepted an empty grammar");
+  }
+  catch (std::string s)
+  {
+    t.diag (s);
+    t.pass ("Grammar::loadFromFile rejected an empty grammar");
+  }
   return 0;
 }
 
