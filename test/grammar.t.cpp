@@ -31,11 +31,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (3);
+  UnitTest t (4);
 
   // Test loading from a missing file.
   Grammar g;
-
   File missing ("/tmp/does/not/exist");
   t.ok (! missing.exists (), "Input file does not exist");
   try
@@ -60,6 +59,19 @@ int main (int, char**)
     t.diag (s);
     t.pass ("Grammar::loadFromFile rejected an empty grammar");
   }
+
+  // Test error on non-empty but trivial grammar.
+  try
+  {
+    g.loadFromString ("# Comment\n# comment\n\n\n\n");
+    t.fail ("Grammar::loadFromFile accepted an empty grammar");
+  }
+  catch (std::string s)
+  {
+    t.diag (s);
+    t.pass ("Grammar::loadFromFile rejected an empty grammar");
+  }
+
   return 0;
 }
 
