@@ -38,14 +38,12 @@ Grammar::Grammar ()
 ////////////////////////////////////////////////////////////////////////////////
 void Grammar::loadFromFile (File& file)
 {
-  if (file.exists ())
-  {
-    std::string contents;
-    file.read (contents);
-    loadFromString (contents);
-  }
-  else
-    throw format ("Grammar file '{1}' not found.", static_cast<std::string> (file));
+  if (! file.exists ())
+    throw format ("Grammar file '{1}' not found.", file._data);
+
+  std::string contents;
+  file.read (contents);
+  loadFromString (contents);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -70,8 +68,8 @@ void Grammar::loadFromFile (File& file)
 void Grammar::loadFromString (const std::string& input)
 {
   std::string rule_name = "";
-  int token_count = 0;
 
+  // This is a state machine.  Read each line.
   for (auto& line : split (input, '\n'))
   {
     // Skip whole-line comments.
@@ -83,15 +81,14 @@ void Grammar::loadFromString (const std::string& input)
     if (hash != std::string::npos)
       line.resize (hash);
 
-    line = Lexer::trim (line);
-
     // Skip blank lines with no semantics.
+    line = Lexer::trim (line);
     if (line == "" and rule_name == "")
       continue;
 
     if (line != "")
     {
-      token_count = 0;
+      int token_count = 0;
 
       Lexer l (line);
       Lexer::Type type;
@@ -102,7 +99,10 @@ void Grammar::loadFromString (const std::string& input)
 
         if (token.back () == ':')
         {
+          // Capture the Rule_name.
           rule_name = token.substr (0, token.size () - 1);
+
+          // If this is the first Rule, capture it as a starting point.
           if (_start == "")
             _start = rule_name;
 
@@ -111,22 +111,30 @@ void Grammar::loadFromString (const std::string& input)
         }
         else if (token.front () == ':')
         {
-          // Decorate the most recent token, of the most recent production,
-          // of the current rule.
+          // Decorate the most recent token, of the most recent Production,
+          // of the current Rule.
           _rules[rule_name].back ().back ().decorate (token);
         }
         else
         {
+          // If no Production was added yet, add one.
           if (token_count <= 1)
             _rules[rule_name].push_back (Grammar::Production ());
 
+          // Add the new Token to the most recent Production, of the current
+          // Rule.
           _rules[rule_name].back ().push_back (Grammar::Token (token));
         }
       }
     }
+
+    // A blank line in the input ends the current rule definition.
     else
       rule_name = "";
   }
+
+  // Validate the parsed grammar.
+  validate ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -135,6 +143,7 @@ std::string Grammar::dump () const
   std::stringstream out;
   for (auto& rule : _rules)
   {
+    // Indicate the start Rule.
     if (rule.first == _start)
       out << "▶ ";
 
@@ -145,9 +154,10 @@ std::string Grammar::dump () const
       out << "    ";
       for (auto& term : production)
       {
-        out << term._token << " ";
+        out << term._token;
         if (term._decoration != "")
-          out << "(" << term._decoration << ") ";
+          out << term._decoration;
+        out << " ";
       }
 
       out << "\n";

@@ -48,7 +48,7 @@ int main (int argc, const char** argv)
 
       // TODO Load CLI grammar.
       // TODO Load from string, else file on config override.
-      // TODO Migrate from loading a grammar from file, to a string.
+      // TODO Migrate from loading a grammar from file, to a default string.
       File file ("./grammar.cfg");
       Grammar grammar;
       grammar.loadFromFile (file);
