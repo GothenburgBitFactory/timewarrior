@@ -1,6 +1,7 @@
 all.log
 color.t
 fs.t
+grammar.t
 lexer.t
 list.t
 rx.t
