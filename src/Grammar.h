@@ -60,6 +60,8 @@ protected:
   };
 
 private:
+  void validate () const;
+
   std::string _start;
   std::map <std::string, Grammar::Rule> _rules;
 };
