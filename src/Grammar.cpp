@@ -172,6 +172,52 @@ std::string Grammar::dump () const
 ////////////////////////////////////////////////////////////////////////////////
 void Grammar::validate () const
 {
+  std::vector <std::string> allRules;
+  std::vector <std::string> allTokens;
+  std::vector <std::string> allLeftRecursive;
+
+  for (auto& rule : _rules)
+  {
+    allRules.push_back (rule.first);
+
+    for (auto& production : rule.second)
+    {
+      for (auto& token : production)
+      {
+        if (token._token.front () != '"')
+          allTokens.push_back (token._token);
+
+        if (token._token == production[0]._token &&
+            rule.first == production[0]._token)
+          allLeftRecursive.push_back (token._token);
+      }
+    }
+  }
+
+  std::vector <std::string> notUsed;
+  std::vector <std::string> notDefined;
+  listDiff (allRules, allTokens, notUsed, notDefined);
+
+  // Undefined value - these are definitions that appear in token, but are
+  // not in _rules.
+  for (auto& nd : notDefined)
+    if (nd != "є")
+      throw format ("Definition '{1}' referenced, but not defined.", nd);
+
+  // Circular definitions - these are names in _rules that also appear as
+  // token 0 in any of the alternates for that definition.
+  for (auto& lr : allLeftRecursive)
+    throw format ("Definition '{1}' is left recursive.", lr);
+
+  for (auto& r : allRules)
+    if (r[0] == '"')
+      throw format ("Definition '{1}' must not be a literal.");
+
+  // Unused definitions - these are names in _rules that are never
+  // referenced as token.
+  for (auto& nu : notUsed)
+    if (nu != _start)
+      throw format ("Definition '{1}' is defined, but not referenced.", nu);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
