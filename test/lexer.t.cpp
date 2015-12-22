@@ -34,7 +34,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (171);
+  UnitTest t (190);
 
   std::vector <std::pair <std::string, Lexer::Type>> tokens;
   std::string token;
@@ -162,6 +162,11 @@ int main (int, char**)
     } results[5];
   } lexerTests[] =
   {
+    // Pattern
+    { "/foo/",                                        { { "/foo/",                                        Lexer::Type::pattern      }, NO, NO, NO, NO }, },
+    { "/a\\/b/",                                      { { "/a\\/b/",                                      Lexer::Type::pattern      }, NO, NO, NO, NO }, },
+    { "/'/",                                          { { "/'/",                                          Lexer::Type::pattern      }, NO, NO, NO, NO }, },
+
     // Word
     { "1.foo.bar",                                    { { "1.foo.bar",                                    Lexer::Type::word         }, NO, NO, NO, NO }, },
 
@@ -218,6 +223,7 @@ int main (int, char**)
   t.is (Lexer::typeName (Lexer::Type::number),       "number",       "Lexer::typeName (Lexer::Type::number)");
   t.is (Lexer::typeName (Lexer::Type::hex),          "hex",          "Lexer::typeName (Lexer::Type::hex)");
   t.is (Lexer::typeName (Lexer::Type::string),       "string",       "Lexer::typeName (Lexer::Type::string)");
+  t.is (Lexer::typeName (Lexer::Type::pattern),      "pattern",      "Lexer::typeName (Lexer::Type::pattern)");
   t.is (Lexer::typeName (Lexer::Type::word),         "word",         "Lexer::typeName (Lexer::Type::word)");
 
   // std::string Lexer::trimLeft (const std::string& in, const std::string&)
