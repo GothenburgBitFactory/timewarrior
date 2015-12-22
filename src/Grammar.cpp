@@ -172,6 +172,9 @@ std::string Grammar::dump () const
 ////////////////////////////////////////////////////////////////////////////////
 void Grammar::validate () const
 {
+  if (_start == "")
+    throw std::string ("There are no rules defined.");
+
   std::vector <std::string> allRules;
   std::vector <std::string> allTokens;
   std::vector <std::string> allLeftRecursive;
