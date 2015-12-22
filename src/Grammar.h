@@ -41,10 +41,18 @@ public:
   std::string dump () const;
 
 protected:
-  class Production : public std::vector <std::string>
+  class Token
   {
   public:
-    void decorate (const std::string& value) {}
+    Token (const std::string& value)         { _token      = value; }
+    void decorate (const std::string& value) { _decoration = value; }
+
+    std::string _token;
+    std::string _decoration;
+  };
+
+  class Production : public std::vector <Token>
+  {
   };
 
   class Rule : public std::vector <Production>

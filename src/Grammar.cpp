@@ -111,15 +111,16 @@ void Grammar::loadFromString (const std::string& input)
         }
         else if (token.front () == ':')
         {
-          // TODO Handle decorated tokens here.
-          _rules[rule_name].back ().decorate (token);
+          // Decorate the most recent token, of the most recent production,
+          // of the current rule.
+          _rules[rule_name].back ().back ().decorate (token);
         }
         else
         {
           if (token_count <= 1)
             _rules[rule_name].push_back (Grammar::Production ());
 
-          _rules[rule_name].back ().push_back (token);
+          _rules[rule_name].back ().push_back (Grammar::Token (token));
         }
       }
     }
@@ -143,7 +144,11 @@ std::string Grammar::dump () const
     {
       out << "    ";
       for (auto& term : production)
-        out << term << " ";
+      {
+        out << term._token << " ";
+        if (term._decoration != "")
+          out << "(" << term._decoration << ") ";
+      }
 
       out << "\n";
     }
