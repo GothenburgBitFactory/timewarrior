@@ -111,6 +111,8 @@ void Grammar::loadFromString (const std::string& input)
         }
         else if (token.front () == ':')
         {
+          // TODO Handle decorated tokens here.
+          _rules[rule_name].back ().decorate (token);
         }
         else
         {

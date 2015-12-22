@@ -43,6 +43,8 @@ public:
 protected:
   class Production : public std::vector <std::string>
   {
+  public:
+    void decorate (const std::string& value) {}
   };
 
   class Rule : public std::vector <Production>
