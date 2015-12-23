@@ -181,11 +181,11 @@ std::string Grammar::dump () const
     for (auto& production : rule.second)
     {
       out << "    ";
-      for (auto& term : production)
+      for (auto& token : production)
       {
-        out << term._token;
-        if (term._decoration != "")
-          out << " " << term._decoration;
+        out << token._token;
+        if (token._decoration != "")
+          out << " " << token._decoration;
         out << " ";
       }
 
