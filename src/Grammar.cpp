@@ -154,6 +154,19 @@ std::vector <std::string> Grammar::rules () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::vector <std::string> Grammar::terminals () const
+{
+  std::vector <std::string> results;
+  for (auto& rule : _rules)
+    for (auto& production : rule.second)
+      for (auto& token : production)
+        if (_rules.find (token._token) == _rules.end ())
+          results.push_back (token._token);
+
+  return results;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 std::string Grammar::dump () const
 {
   std::stringstream out;

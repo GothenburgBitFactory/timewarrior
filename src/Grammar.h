@@ -40,6 +40,7 @@ public:
   void loadFromString (const std::string&);
   std::string start () const;
   std::vector <std::string> rules () const;
+  std::vector <std::string> terminals () const;
   std::string dump () const;
 
 protected:
