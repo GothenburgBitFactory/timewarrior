@@ -1,0 +1,38 @@
+# Timewarrior grammar definition.
+
+# Conventions:
+# - Literals are always double-quoted.
+# - "*", "+" and "?" suffixes have POSIX semantics.
+# - "є" means empty set.
+# - Lower-level primitives are barewords.
+# - Literal modifiers:
+#   - :a  Accept abbreviations
+#   - :i  Accept caseless match
+# - Blank line between rules.
+
+# Left associative:
+#  A -> A <op> B
+#       B
+#
+# Right associative:
+#  A -> B <op> A
+#       B
+
+rule:
+  config_rule
+  exclusion_rule
+  event_rule
+  tag_rule
+
+config_rule:
+  "define" "configuration"
+
+exclusion_rule:
+  "define" "exclusions"
+
+event_rule:
+  "define" "rule"
+
+tag_rule:
+  "define" "tag"
+

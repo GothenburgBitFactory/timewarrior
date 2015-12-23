@@ -50,19 +50,29 @@ int main (int argc, const char** argv)
       // TODO Load CLI grammar.
       // TODO Load from string, else file on config override.
       // TODO Migrate from loading a grammar from file, to a default string.
-      File file ("./grammar.cfg");
-      Grammar grammar;
-      grammar.loadFromFile (file);
-      std::cout << grammar.dump ();
+      File cliFile ("./cli.grammar");
+      Grammar cliGrammar;
+      cliGrammar.loadFromFile (cliFile);
+      std::cout << cliGrammar.dump ();
 
       // Instantiate the parser.
-      LR0 lr0;
-      lr0.createParseTables (grammar);
-      std::cout << lr0.dump ();
+      LR0 cliParser;
+      cliParser.createParseTables (cliGrammar);
+      std::cout << cliParser.dump ();
 
       // TODO Parse CLI.
 
-      // TODO Load rules grammar.
+      // TODO Load rule grammar.
+      File ruleFile ("./rule.grammar");
+      Grammar ruleGrammar;
+      ruleGrammar.loadFromFile (ruleFile);
+      std::cout << ruleGrammar.dump ();
+
+      // Instantiate the parser.
+      LR0 ruleParser;
+      ruleParser.createParseTables (ruleGrammar);
+      std::cout << ruleParser.dump ();
+
       // TODO Load rules.
       // TODO Parse rules.
 
