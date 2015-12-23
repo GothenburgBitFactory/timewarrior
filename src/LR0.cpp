@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <LR0.h>
 #include <sstream>
+#include <iostream> // TODO Remove
 
 ////////////////////////////////////////////////////////////////////////////////
 LR0::LR0 ()
@@ -34,8 +35,19 @@ LR0::LR0 ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void LR0::createParseTables (Grammar& grammar)
+void LR0::createParseTables (const Grammar& grammar)
 {
+  std::cout << "# LR0::createParseTables\n";
+  std::cout << "#   Start\n"
+            << "#     " << grammar.start () << "\n";
+
+  std::cout << "#   Rules\n";
+  for (auto& rule : grammar.rules ())
+    std::cout << "#     " << rule << "\n";
+
+  std::cout << "#   Terminals\n";
+  for (auto& terminal : grammar.terminals ())
+    std::cout << "#     " << terminal << "\n";
 }
 
 ////////////////////////////////////////////////////////////////////////////////

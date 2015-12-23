@@ -35,7 +35,7 @@ class LR0
 {
 public:
   LR0 ();
-  void createParseTables (Grammar&);
+  void createParseTables (const Grammar&);
   std::string dump () const;
 
 private:
