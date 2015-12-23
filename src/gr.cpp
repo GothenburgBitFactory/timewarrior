@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <FS.h>
 #include <Grammar.h>
+#include <LR0.h>
 #include <iostream>
 #include <string>
 #include <stdlib.h>
@@ -92,6 +93,11 @@ int main (int argc, char** argv)
     // TODO Test commandLine against grammar.
     if (commandLine != "")
     {
+      LR0 lr0;
+      lr0.createParseTables (grammar);
+      std::cout << lr0.dump ();
+
+      // TODO Run the parser.
     }
   }
 
