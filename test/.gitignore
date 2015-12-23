@@ -3,6 +3,7 @@ color.t
 fs.t
 grammar.t
 lexer.t
+lr0.t
 list.t
 rules.t
 rx.t

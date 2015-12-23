@@ -9,7 +9,7 @@ include_directories (${CMAKE_SOURCE_DIR}
                      ${CMAKE_SOURCE_DIR}/test
                      ${TIMEW_INCLUDE_DIRS})
 
-set (test_SRCS color.t fs.t grammar.t lexer.t list.t rules.t rx.t text.t utf8.t)
+set (test_SRCS color.t fs.t grammar.t lexer.t list.t lr0.t rules.t rx.t text.t utf8.t)
 
 add_custom_target (test ./run_all --verbose
                         DEPENDS ${test_SRCS} timew_executable
