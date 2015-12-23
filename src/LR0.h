@@ -27,10 +27,22 @@
 #ifndef INCLUDED_LR0
 #define INCLUDED_LR0
 
+#include <Grammar.h>
+#include <map>
+#include <string>
+
 class LR0
 {
 public:
   LR0 ();
+  void createParseTables (Grammar&);
+  std::string dump () const;
+
+private:
+  //        state         column        result
+  //        |              |            |
+  std::map <int, std::map <std::string, std::string>> _actions;
+  std::map <int, std::map <std::string, std::string>> _goto;
 };
 
 #endif
