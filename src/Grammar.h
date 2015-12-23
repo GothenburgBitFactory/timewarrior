@@ -38,6 +38,7 @@ public:
   Grammar ();
   void loadFromFile (File&);
   void loadFromString (const std::string&);
+  std::string start () const;
   std::string dump () const;
 
 protected:
