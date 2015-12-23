@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Grammar.h>
+#include <LR0.h>
 #include <iostream>
 #include <new>
 #include <cstring>
@@ -53,6 +54,11 @@ int main (int argc, const char** argv)
       Grammar grammar;
       grammar.loadFromFile (file);
       std::cout << grammar.dump ();
+
+      // Instantiate the parser.
+      LR0 lr0;
+      lr0.createParseTables (grammar);
+      std::cout << lr0.dump ();
 
       // TODO Parse CLI.
 
