@@ -4,6 +4,7 @@ fs.t
 grammar.t
 lexer.t
 list.t
+rules.t
 rx.t
 text.t
 utf8.t
