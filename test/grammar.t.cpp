@@ -63,7 +63,7 @@ void testBadGrammar (UnitTest& t, const std::string& bnf)
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (6);
+  UnitTest t (14);
 
   // Test loading from a missing file.
   File missing ("/tmp/does/not/exist");
@@ -87,6 +87,26 @@ int main (int, char**)
   testBadGrammar (t, "one: three\n"
                      "\n"
                      "two: \"foo\"\n");
+
+  // Test metadata access.
+  Grammar g;
+  g.loadFromString ("one: two\n"
+                    "\n"
+                    "two: three \"literal\"\n"
+                    "     /regex/\n"
+                    "\n"
+                    "three: \"literal2\"\n");
+  auto start = g.start ();
+  auto rules = g.rules ();
+  auto terminals = g.terminals ();
+  t.is (start, "one",                                        "Located start rule");
+  t.is ((int)rules.size (), 3,                               "Found three rules");
+  t.ok (rules.find ("one")              != rules.end (),     "Found rule 'one'");
+  t.ok (rules.find ("two")              != rules.end (),     "Found rule 'two'");
+  t.ok (rules.find ("three")            != rules.end (),     "Found rule 'three'");
+  t.ok (terminals.find ("\"literal\"")  != terminals.end (), "Found terminal '\"literal\"'");
+  t.ok (terminals.find ("/regex/")      != terminals.end (), "Found terminal '/regex/'");
+  t.ok (terminals.find ("\"literal2\"") != terminals.end (), "Found terminal '\"literal2\"'");
 
   return 0;
 }
