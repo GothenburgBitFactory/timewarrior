@@ -39,6 +39,7 @@ public:
   void loadFromFile (File&);
   void loadFromString (const std::string&);
   std::string start () const;
+  std::vector <std::string> rules () const;
   std::string dump () const;
 
 protected:

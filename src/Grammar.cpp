@@ -144,6 +144,16 @@ std::string Grammar::start () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::vector <std::string> Grammar::rules () const
+{
+  std::vector <std::string> results;
+  for (auto& rule : _rules)
+    results.push_back (rule.first);
+
+  return results;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 std::string Grammar::dump () const
 {
   std::stringstream out;
