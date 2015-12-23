@@ -6,7 +6,8 @@ include_directories (${CMAKE_SOURCE_DIR}
 
 set (timew_SRCS Grammar.cpp     Grammar.h
                 Lexer.cpp       Lexer.h
-                LR0.cpp         LR0.h)
+                LR0.cpp         LR0.h
+                Rules.cpp       Rules.h)
 
 add_library (timew STATIC ${timew_SRCS})
 add_executable (timew_executable timew.cpp)
