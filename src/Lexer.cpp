@@ -52,6 +52,7 @@ bool Lexer::token (std::string& token, Lexer::Type& type)
     return false;
 
   if (isString    (token, type, "'\"") ||
+      isURL       (token, type)        ||
       isHexNumber (token, type)        ||
       isNumber    (token, type)        ||
       isPattern   (token, type)        ||
@@ -70,6 +71,7 @@ const std::string Lexer::typeName (const Lexer::Type& type)
   case Lexer::Type::number:       return "number";
   case Lexer::Type::hex:          return "hex";
   case Lexer::Type::string:       return "string";
+  case Lexer::Type::url:          return "url";
   case Lexer::Type::pattern:      return "pattern";
   case Lexer::Type::word:         return "word";
   }
@@ -394,6 +396,43 @@ bool Lexer::isWord (std::string& token, Lexer::Type& type)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Lexer::Type::url
+//   http [s] :// ...
+bool Lexer::isURL (std::string& token, Lexer::Type& type)
+{
+  std::size_t marker = _cursor;
+
+  if (_eos - _cursor > 9 &&    // length 'https://*'
+      (_text[marker + 0] == 'h' || _text[marker + 0] == 'H') &&
+      (_text[marker + 1] == 't' || _text[marker + 1] == 'T') &&
+      (_text[marker + 2] == 't' || _text[marker + 2] == 'T') &&
+      (_text[marker + 3] == 'p' || _text[marker + 3] == 'P'))
+  {
+    marker += 4;
+    if (_text[marker + 0] == 's' || _text[marker + 0] == 'S')
+      ++marker;
+
+    if (_text[marker + 0] == ':' &&
+        _text[marker + 1] == '/' &&
+        _text[marker + 2] == '/')
+    {
+      marker += 3;
+
+      while (marker < _eos &&
+             ! isWhitespace (_text[marker]))
+        utf8_next_char (_text, marker);
+
+      token = _text.substr (_cursor, marker - _cursor);
+      type = Lexer::Type::url;
+      _cursor = marker;
+      return true;
+    }
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Lexer::Type::pattern
 //   / <unquoted-string> /  <EOS> | <isWhitespace>
 bool Lexer::isPattern (std::string& token, Lexer::Type& type)
@@ -421,6 +460,7 @@ std::string Lexer::typeToString (Lexer::Type type)
        if (type == Lexer::Type::string)       return std::string ("\033[38;5;7m\033[48;5;3m")    + "string"       + "\033[0m";
   else if (type == Lexer::Type::hex)          return std::string ("\033[38;5;7m\033[48;5;14m")   + "hex"          + "\033[0m";
   else if (type == Lexer::Type::number)       return std::string ("\033[38;5;7m\033[48;5;6m")    + "number"       + "\033[0m";
+  else if (type == Lexer::Type::url)          return std::string ("\033[38;5;7m\033[48;5;4m")    + "url"          + "\033[0m";
   else if (type == Lexer::Type::pattern)      return std::string ("\033[37;42m")                 + "pattern"      + "\033[0m";
   else if (type == Lexer::Type::word)         return std::string ("\033[38;5;15m\033[48;5;236m") + "word"         + "\033[0m";
   else                                        return std::string ("\033[37;41m")                 + "unknown"      + "\033[0m";

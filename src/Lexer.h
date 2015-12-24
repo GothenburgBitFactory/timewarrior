@@ -37,6 +37,7 @@ class Lexer
 public:
   enum class Type { number, hex,
                     string,
+                    url,
                     pattern,
                     word };
 
@@ -66,6 +67,7 @@ public:
   bool isNumber       (std::string&, Lexer::Type&);
   bool isInteger      (std::string&, Lexer::Type&);
   bool isHexNumber    (std::string&, Lexer::Type&);
+  bool isURL          (std::string&, Lexer::Type&);
   bool isPattern      (std::string&, Lexer::Type&);
   bool isWord         (std::string&, Lexer::Type&);
 
