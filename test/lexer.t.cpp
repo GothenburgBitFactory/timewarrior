@@ -34,7 +34,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (203);
+  UnitTest t (210);
 
   std::vector <std::pair <std::string, Lexer::Type>> tokens;
   std::string token;
@@ -167,6 +167,9 @@ int main (int, char**)
     { "/a\\/b/",                                      { { "/a\\/b/",                                      Lexer::Type::pattern      }, NO, NO, NO, NO }, },
     { "/'/",                                          { { "/'/",                                          Lexer::Type::pattern      }, NO, NO, NO, NO }, },
 
+    // Path
+    { "/long/path/to/file.txt",                       { { "/long/path/to/file.txt",                       Lexer::Type::path         }, NO, NO, NO, NO }, },
+
     // Word
     { "1.foo.bar",                                    { { "1.foo.bar",                                    Lexer::Type::word         }, NO, NO, NO, NO }, },
 
@@ -228,6 +231,7 @@ int main (int, char**)
   t.is (Lexer::typeName (Lexer::Type::hex),          "hex",          "Lexer::typeName (Lexer::Type::hex)");
   t.is (Lexer::typeName (Lexer::Type::string),       "string",       "Lexer::typeName (Lexer::Type::string)");
   t.is (Lexer::typeName (Lexer::Type::url),          "url",          "Lexer::typeName (Lexer::Type::url)");
+  t.is (Lexer::typeName (Lexer::Type::path),         "path",         "Lexer::typeName (Lexer::Type::path)");
   t.is (Lexer::typeName (Lexer::Type::pattern),      "pattern",      "Lexer::typeName (Lexer::Type::pattern)");
   t.is (Lexer::typeName (Lexer::Type::word),         "word",         "Lexer::typeName (Lexer::Type::word)");
 

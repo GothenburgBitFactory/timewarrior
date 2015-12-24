@@ -55,6 +55,7 @@ bool Lexer::token (std::string& token, Lexer::Type& type)
       isURL       (token, type)        ||
       isHexNumber (token, type)        ||
       isNumber    (token, type)        ||
+      isPath      (token, type)        ||
       isPattern   (token, type)        ||
       isWord      (token, type))
     return true;
@@ -72,6 +73,7 @@ const std::string Lexer::typeName (const Lexer::Type& type)
   case Lexer::Type::hex:          return "hex";
   case Lexer::Type::string:       return "string";
   case Lexer::Type::url:          return "url";
+  case Lexer::Type::path:         return "path";
   case Lexer::Type::pattern:      return "pattern";
   case Lexer::Type::word:         return "word";
   }
@@ -433,6 +435,50 @@ bool Lexer::isURL (std::string& token, Lexer::Type& type)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Lexer::Type::path
+//   ( / <non-slash, non-whitespace> )+
+bool Lexer::isPath (std::string& token, Lexer::Type& type)
+{
+  std::size_t marker = _cursor;
+  int slashCount = 0;
+
+  while (1)
+  {
+    if (_text[marker] == '/')
+    {
+      ++marker;
+      ++slashCount;
+    }
+    else
+      break;
+
+    if (_text[marker] &&
+        ! isWhitespace (_text[marker]) &&
+        _text[marker] != '/')
+    {
+      utf8_next_char (_text, marker);
+      while (_text[marker] &&
+             ! isWhitespace (_text[marker]) &&
+             _text[marker] != '/')
+        utf8_next_char (_text, marker);
+    }
+    else
+      break;
+  }
+
+  if (marker > _cursor &&
+      slashCount > 3)
+  {
+    type = Lexer::Type::path;
+    token = _text.substr (_cursor, marker - _cursor);
+    _cursor = marker;
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Lexer::Type::pattern
 //   / <unquoted-string> /  <EOS> | <isWhitespace>
 bool Lexer::isPattern (std::string& token, Lexer::Type& type)
@@ -461,6 +507,7 @@ std::string Lexer::typeToString (Lexer::Type type)
   else if (type == Lexer::Type::hex)          return std::string ("\033[38;5;7m\033[48;5;14m")   + "hex"          + "\033[0m";
   else if (type == Lexer::Type::number)       return std::string ("\033[38;5;7m\033[48;5;6m")    + "number"       + "\033[0m";
   else if (type == Lexer::Type::url)          return std::string ("\033[38;5;7m\033[48;5;4m")    + "url"          + "\033[0m";
+  else if (type == Lexer::Type::path)         return std::string ("\033[37;102m")                + "path"         + "\033[0m";
   else if (type == Lexer::Type::pattern)      return std::string ("\033[37;42m")                 + "pattern"      + "\033[0m";
   else if (type == Lexer::Type::word)         return std::string ("\033[38;5;15m\033[48;5;236m") + "word"         + "\033[0m";
   else                                        return std::string ("\033[37;41m")                 + "unknown"      + "\033[0m";
