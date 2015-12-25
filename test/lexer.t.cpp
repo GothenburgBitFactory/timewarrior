@@ -34,7 +34,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (210);
+  UnitTest t (367);
 
   std::vector <std::pair <std::string, Lexer::Type>> tokens;
   std::string token;
@@ -193,6 +193,34 @@ int main (int, char**)
     { "1.2e-3.4",                                     { { "1.2e-3.4",                                     Lexer::Type::number       }, NO, NO, NO, NO }, },
     { "0x2f",                                         { { "0x2f",                                         Lexer::Type::hex          }, NO, NO, NO, NO }, },
 
+    // Operator - complete set
+    { "^",                                            { { "^",                                            Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "!",                                            { { "!",                                            Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "_neg_",                                        { { "_neg_",                                        Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "_pos_",                                        { { "_pos_",                                        Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "_hastag_",                                     { { "_hastag_",                                     Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "_notag_",                                      { { "_notag_",                                      Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "*",                                            { { "*",                                            Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "/",                                            { { "/",                                            Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "%",                                            { { "%",                                            Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "+",                                            { { "+",                                            Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "-",                                            { { "-",                                            Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "<=",                                           { { "<=",                                           Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { ">=",                                           { { ">=",                                           Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { ">",                                            { { ">",                                            Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "<",                                            { { "<",                                            Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "=",                                            { { "=",                                            Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "==",                                           { { "==",                                           Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "!=",                                           { { "!=",                                           Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "!==",                                          { { "!==",                                          Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "~",                                            { { "~",                                            Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "!~",                                           { { "!~",                                           Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "and",                                          { { "and",                                          Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "or",                                           { { "or",                                           Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "xor",                                          { { "xor",                                          Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { "(",                                            { { "(",                                            Lexer::Type::op           }, NO, NO, NO, NO }, },
+    { ")",                                            { { ")",                                            Lexer::Type::op           }, NO, NO, NO, NO }, },
+
   };
   #define NUM_TESTS (sizeof (lexerTests) / sizeof (lexerTests[0]))
 
@@ -233,6 +261,7 @@ int main (int, char**)
   t.is (Lexer::typeName (Lexer::Type::url),          "url",          "Lexer::typeName (Lexer::Type::url)");
   t.is (Lexer::typeName (Lexer::Type::path),         "path",         "Lexer::typeName (Lexer::Type::path)");
   t.is (Lexer::typeName (Lexer::Type::pattern),      "pattern",      "Lexer::typeName (Lexer::Type::pattern)");
+  t.is (Lexer::typeName (Lexer::Type::op),           "op",           "Lexer::typeName (Lexer::Type::op)");
   t.is (Lexer::typeName (Lexer::Type::word),         "word",         "Lexer::typeName (Lexer::Type::word)");
 
   // std::string Lexer::trimLeft (const std::string& in, const std::string&)

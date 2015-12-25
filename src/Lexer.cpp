@@ -57,6 +57,7 @@ bool Lexer::token (std::string& token, Lexer::Type& type)
       isNumber    (token, type)        ||
       isPath      (token, type)        ||
       isPattern   (token, type)        ||
+      isOperator  (token, type)        ||
       isWord      (token, type))
     return true;
 
@@ -75,6 +76,7 @@ const std::string Lexer::typeName (const Lexer::Type& type)
   case Lexer::Type::url:          return "url";
   case Lexer::Type::path:         return "path";
   case Lexer::Type::pattern:      return "pattern";
+  case Lexer::Type::op:           return "op";
   case Lexer::Type::word:         return "word";
   }
 
@@ -121,6 +123,13 @@ bool Lexer::isWhitespace (int c)
           c == 0x205F ||   // medium mathematical space Common  Separator, space
           c == 0x2060 ||   // word joiner
           c == 0x3000);    // ideographic space Common  Separator, space
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool Lexer::isAlpha (int c)
+{
+  return (c >= 'A' && c <= 'Z') ||
+         (c >= 'a' && c <= 'z');
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -253,6 +262,44 @@ bool Lexer::isSingleCharOperator (int c)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+bool Lexer::isDoubleCharOperator (int c0, int c1, int c2)
+{
+  return (c0 == '=' && c1 == '=')                        ||
+         (c0 == '!' && c1 == '=')                        ||
+         (c0 == '<' && c1 == '=')                        ||
+         (c0 == '>' && c1 == '=')                        ||
+         (c0 == 'o' && c1 == 'r' && isBoundary (c1, c2)) ||
+         (c0 == '|' && c1 == '|')                        ||
+         (c0 == '&' && c1 == '&')                        ||
+         (c0 == '!' && c1 == '~');
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool Lexer::isTripleCharOperator (int c0, int c1, int c2, int c3)
+{
+  return (c0 == 'a' && c1 == 'n' && c2 == 'd' && isBoundary (c2, c3)) ||
+         (c0 == 'x' && c1 == 'o' && c2 == 'r' && isBoundary (c2, c3)) ||
+         (c0 == '!' && c1 == '=' && c2 == '=');
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool Lexer::isBoundary (int left, int right)
+{
+  // EOS
+  if (right == '\0')                                 return true;
+
+  // XOR
+  if (isAlpha (left)       != isAlpha (right))       return true;
+  if (isDigit (left)       != isDigit (right))       return true;
+  if (isWhitespace (left)  != isWhitespace (right))  return true;
+
+  // OR
+  if (isPunctuation (left) || isPunctuation (right)) return true;
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 bool Lexer::isHardBoundary (int left, int right)
 {
   // EOS
@@ -267,6 +314,19 @@ bool Lexer::isHardBoundary (int left, int right)
     return true;
 
   return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool Lexer::isPunctuation (int c)
+{
+  return isprint (c)   &&
+         c != ' '      &&
+         c != '@'      &&
+         c != '#'      &&
+         c != '$'      &&
+         c != '_'      &&
+         ! isDigit (c) &&
+         ! isAlpha (c);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -500,6 +560,83 @@ bool Lexer::isPattern (std::string& token, Lexer::Type& type)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Lexer::Type::op
+//   _hastag_ | _notag | _neg_ | _pos_ |
+//   <isTripleCharOperator> |
+//   <isDoubleCharOperator> |
+//   <isSingleCharOperator> |
+bool Lexer::isOperator (std::string& token, Lexer::Type& type)
+{
+  std::size_t marker = _cursor;
+
+  if (_eos - marker >= 8 && _text.substr (marker, 8) == "_hastag_")
+  {
+    marker += 8;
+    type = Lexer::Type::op;
+    token = _text.substr (_cursor, marker - _cursor);
+    _cursor = marker;
+    return true;
+  }
+
+  else if (_eos - marker >= 7 && _text.substr (marker, 7) == "_notag_")
+  {
+    marker += 7;
+    type = Lexer::Type::op;
+    token = _text.substr (_cursor, marker - _cursor);
+    _cursor = marker;
+    return true;
+  }
+
+  else if (_eos - marker >= 5 && _text.substr (marker, 5) == "_neg_")
+  {
+    marker += 5;
+    type = Lexer::Type::op;
+    token = _text.substr (_cursor, marker - _cursor);
+    _cursor = marker;
+    return true;
+  }
+
+  else if (_eos - marker >= 5 && _text.substr (marker, 5) == "_pos_")
+  {
+    marker += 5;
+    type = Lexer::Type::op;
+    token = _text.substr (_cursor, marker - _cursor);
+    _cursor = marker;
+    return true;
+  }
+
+  else if (_eos - marker >= 3 &&
+      isTripleCharOperator (_text[marker], _text[marker + 1], _text[marker + 2], _text[marker + 3]))
+  {
+    marker += 3;
+    type = Lexer::Type::op;
+    token = _text.substr (_cursor, marker - _cursor);
+    _cursor = marker;
+    return true;
+  }
+
+  else if (_eos - marker >= 2 &&
+      isDoubleCharOperator (_text[marker], _text[marker + 1], _text[marker + 2]))
+  {
+    marker += 2;
+    type = Lexer::Type::op;
+    token = _text.substr (_cursor, marker - _cursor);
+    _cursor = marker;
+    return true;
+  }
+
+  else if (isSingleCharOperator (_text[marker]))
+  {
+    token = _text[marker];
+    type = Lexer::Type::op;
+    _cursor = ++marker;
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Static
 std::string Lexer::typeToString (Lexer::Type type)
 {
@@ -509,6 +646,7 @@ std::string Lexer::typeToString (Lexer::Type type)
   else if (type == Lexer::Type::url)          return std::string ("\033[38;5;7m\033[48;5;4m")    + "url"          + "\033[0m";
   else if (type == Lexer::Type::path)         return std::string ("\033[37;102m")                + "path"         + "\033[0m";
   else if (type == Lexer::Type::pattern)      return std::string ("\033[37;42m")                 + "pattern"      + "\033[0m";
+  else if (type == Lexer::Type::op)           return std::string ("\033[38;5;7m\033[48;5;203m")  + "op"           + "\033[0m";
   else if (type == Lexer::Type::word)         return std::string ("\033[38;5;15m\033[48;5;236m") + "word"         + "\033[0m";
   else                                        return std::string ("\033[37;41m")                 + "unknown"      + "\033[0m";
 }

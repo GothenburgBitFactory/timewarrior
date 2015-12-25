@@ -40,6 +40,7 @@ public:
                     url,
                     path,
                     pattern,
+                    op,
                     word };
 
   Lexer (const std::string&);
@@ -49,10 +50,15 @@ public:
   // Static helpers.
   static const std::string typeName          (const Lexer::Type&);
   static bool isWhitespace                   (int);
+  static bool isAlpha                        (int);
   static bool isDigit                        (int);
   static bool isHexDigit                     (int);
   static bool isSingleCharOperator           (int);
+  static bool isDoubleCharOperator           (int, int, int);
+  static bool isTripleCharOperator           (int, int, int, int);
+  static bool isBoundary                     (int, int);
   static bool isHardBoundary                 (int, int);
+  static bool isPunctuation                  (int);
   static bool readWord                       (const std::string&, const std::string&, std::string::size_type&, std::string&);
   static bool readWord                       (const std::string&, std::string::size_type&, std::string&);
   static int hexToInt                        (int);
@@ -71,6 +77,7 @@ public:
   bool isURL          (std::string&, Lexer::Type&);
   bool isPath         (std::string&, Lexer::Type&);
   bool isPattern      (std::string&, Lexer::Type&);
+  bool isOperator     (std::string&, Lexer::Type&);
   bool isWord         (std::string&, Lexer::Type&);
 
 private:
