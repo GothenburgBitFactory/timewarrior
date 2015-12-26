@@ -41,7 +41,7 @@ public:
   std::string start () const;
   std::vector <std::string> rules () const;
   std::vector <std::string> terminals () const;
-  std::map <std::string, std::vector <std::string>> items () const;
+  std::vector <std::vector <std::string>> augmented () const;
   std::string dump () const;
 
 protected:

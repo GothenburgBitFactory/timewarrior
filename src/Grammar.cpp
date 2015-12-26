@@ -167,17 +167,19 @@ std::vector <std::string> Grammar::terminals () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::map <std::string, std::vector <std::string>> Grammar::items () const
+std::vector <std::vector <std::string>> Grammar::augmented () const
 {
-  std::map <std::string, std::vector <std::string>> results;
+  std::vector <std::vector <std::string>> results {{"S", "-->", _start}};
   for (auto& rule : _rules)
     for (auto& production : rule.second)
     {
       std::vector <std::string> terms;
+      terms.push_back (rule.first);
+      terms.push_back ("-->");
       for (auto& token : production)
         terms.push_back (token._token);
 
-      results.insert (std::pair <std::string, std::vector <std::string>>(rule.first, terms));
+      results.push_back (terms);
     }
 
   return results;
