@@ -37,26 +37,37 @@ LR0::LR0 ()
 ////////////////////////////////////////////////////////////////////////////////
 void LR0::createParseTables (const Grammar& grammar)
 {
-  std::cout << "# LR0::createParseTables\n";
-  std::cout << "#   Start\n"
-            << "#     " << grammar.start () << "\n";
+  // TODO Remove.
+  std::cout << "LR0::createParseTables\n";
+  std::cout << "  Start\n"
+            << "    " << grammar.start () << "\n";
 
-  std::cout << "#   Rules\n";
+  // TODO Remove.
+  std::cout << "  Non-Terminals\n";
   for (auto& rule : grammar.rules ())
-    std::cout << "#     " << rule << "\n";
+    std::cout << "    " << rule << "\n";
 
-  std::cout << "#   Terminals\n";
+  // TODO Remove.
+  std::cout << "  Terminals\n";
   for (auto& terminal : grammar.terminals ())
-    std::cout << "#     " << terminal << "\n";
+    std::cout << "    " << terminal << "\n";
 
-  std::cout << "#   Augmented Grammar\n";
-  for (auto& item : grammar.augmented ())
+  // Obtain the augmented grammar.
+  auto augmented = grammar.augmented ();
+  std::cout << "  Augmented Grammar\n";
+  for (auto& item : augmented)
   {
-    std::cout << "#    ";
+    std::cout << "   ";
     for (auto& term : item)
       std::cout << " " << term;
     std::cout << "\n";
   }
+
+
+
+
+
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
