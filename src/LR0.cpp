@@ -26,8 +26,8 @@
 
 #include <cmake.h>
 #include <LR0.h>
+#include <iostream>
 #include <sstream>
-#include <iostream> // TODO Remove
 
 ////////////////////////////////////////////////////////////////////////////////
 LR0::LR0 ()
@@ -37,37 +37,44 @@ LR0::LR0 ()
 ////////////////////////////////////////////////////////////////////////////////
 void LR0::createParseTables (const Grammar& grammar)
 {
-  // TODO Remove.
-  std::cout << "LR0::createParseTables\n";
-  std::cout << "  Start\n"
-            << "    " << grammar.start () << "\n";
+  if (_debug)
+  {
+    std::cout << "LR0::createParseTables\n";
+    std::cout << "  Start\n"
+              << "    " << grammar.start () << "\n";
 
-  // TODO Remove.
-  std::cout << "  Non-Terminals\n";
-  for (auto& rule : grammar.rules ())
-    std::cout << "    " << rule << "\n";
+    std::cout << "  Non-Terminals\n";
+    for (auto& rule : grammar.rules ())
+      std::cout << "    " << rule << "\n";
 
-  // TODO Remove.
-  std::cout << "  Terminals\n";
-  for (auto& terminal : grammar.terminals ())
-    std::cout << "    " << terminal << "\n";
+    std::cout << "  Terminals\n";
+    for (auto& terminal : grammar.terminals ())
+      std::cout << "    " << terminal << "\n";
+  }
 
   // Obtain the augmented grammar.
   auto augmented = grammar.augmented ();
-  std::cout << "  Augmented Grammar\n";
-  for (auto& item : augmented)
+
+  if (_debug)
   {
-    std::cout << "   ";
-    for (auto& term : item)
-      std::cout << " " << term;
-    std::cout << "\n";
+    std::cout << "  Augmented Grammar\n";
+    for (auto& item : augmented)
+    {
+      std::cout << "   ";
+      for (auto& term : item)
+        std::cout << " " << term;
+      std::cout << "\n";
+    }
   }
 
 
 
 
+}
 
-
+////////////////////////////////////////////////////////////////////////////////
+void LR0::parse (const std::string& input)
+{
 }
 
 ////////////////////////////////////////////////////////////////////////////////
