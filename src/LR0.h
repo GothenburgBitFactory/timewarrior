@@ -36,6 +36,7 @@ class LR0
 public:
   LR0 ();
   void createParseTables (const Grammar&);
+  void debug (bool);
   std::string dump () const;
 
 private:
@@ -43,6 +44,8 @@ private:
   //        |              |            |
   std::map <int, std::map <std::string, std::string>> _actions;
   std::map <int, std::map <std::string, std::string>> _goto;
+
+  bool _debug;
 };
 
 #endif
