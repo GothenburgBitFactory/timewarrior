@@ -48,6 +48,15 @@ void LR0::createParseTables (const Grammar& grammar)
   std::cout << "#   Terminals\n";
   for (auto& terminal : grammar.terminals ())
     std::cout << "#     " << terminal << "\n";
+
+  std::cout << "#   Augmented Grammar\n";
+  for (auto& item : grammar.augmented ())
+  {
+    std::cout << "#    ";
+    for (auto& term : item)
+      std::cout << " " << term;
+    std::cout << "\n";
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
