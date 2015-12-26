@@ -167,6 +167,23 @@ std::vector <std::string> Grammar::terminals () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::map <std::string, std::vector <std::string>> Grammar::items () const
+{
+  std::map <std::string, std::vector <std::string>> results;
+  for (auto& rule : _rules)
+    for (auto& production : rule.second)
+    {
+      std::vector <std::string> terms;
+      for (auto& token : production)
+        terms.push_back (token._token);
+
+      results.insert (std::pair <std::string, std::vector <std::string>>(rule.first, terms));
+    }
+
+  return results;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 std::string Grammar::dump () const
 {
   std::stringstream out;
