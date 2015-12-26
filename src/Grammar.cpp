@@ -144,24 +144,24 @@ std::string Grammar::start () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::set <std::string> Grammar::rules () const
+std::vector <std::string> Grammar::rules () const
 {
-  std::set <std::string> results;
+  std::vector <std::string> results;
   for (auto& rule : _rules)
-    results.insert (rule.first);
+    results.push_back (rule.first);
 
   return results;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::set <std::string> Grammar::terminals () const
+std::vector <std::string> Grammar::terminals () const
 {
-  std::set <std::string> results;
+  std::vector <std::string> results;
   for (auto& rule : _rules)
     for (auto& production : rule.second)
       for (auto& token : production)
         if (_rules.find (token._token) == _rules.end ())
-          results.insert (token._token);
+          results.push_back (token._token);
 
   return results;
 }

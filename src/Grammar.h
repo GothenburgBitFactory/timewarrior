@@ -29,7 +29,6 @@
 
 #include <FS.h>
 #include <string>
-#include <set>
 #include <vector>
 #include <map>
 
@@ -40,8 +39,8 @@ public:
   void loadFromFile (File&);
   void loadFromString (const std::string&);
   std::string start () const;
-  std::set <std::string> rules () const;
-  std::set <std::string> terminals () const;
+  std::vector <std::string> rules () const;
+  std::vector <std::string> terminals () const;
   std::string dump () const;
 
 protected:
