@@ -40,6 +40,7 @@ void usage ()
             << "\n"
             << "Options are:\n"
             << "  -h/--help       Command usage\n"
+            << "  -d/--debug      Debug mode\n"
             << "\n";
   exit (-1);
 }
@@ -50,6 +51,7 @@ int main (int argc, char** argv)
   // Process command line arguments
   std::string grammarFile = "";
   std::string commandLine = "";
+  bool debug = false;
 
   for (int i = 1; i < argc; ++i)
   {
@@ -57,6 +59,8 @@ int main (int argc, char** argv)
     {
            if (!strcmp (argv[i], "-h"))         usage ();
       else if (!strcmp (argv[i], "--help"))     usage ();
+      else if (!strcmp (argv[i], "-d"))         debug = true;
+      else if (!strcmp (argv[i], "--debug"))    debug = true;
       else
       {
         std::cout << "Unrecognized option '" << argv[i] << "'" << std::endl;
@@ -84,6 +88,7 @@ int main (int argc, char** argv)
   {
     File file (grammarFile);
     Grammar grammar;
+    grammar.debug (debug);
     grammar.loadFromFile (file);
     std::cout << grammar.dump ();
 
@@ -91,6 +96,7 @@ int main (int argc, char** argv)
     if (commandLine != "")
     {
       LR0 lr0;
+      lr0.debug (debug);
       lr0.createParseTables (grammar);
       std::cout << lr0.dump ();
 
