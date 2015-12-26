@@ -287,9 +287,6 @@ void Grammar::validate () const
   for (auto& nu : notUsed)
     if (nu != _start)
       throw format ("Definition '{1}' is defined, but not referenced.", nu);
-
-  if (_debug)
-    std::cout << "Validated\n";
 }
 
 ////////////////////////////////////////////////////////////////////////////////
