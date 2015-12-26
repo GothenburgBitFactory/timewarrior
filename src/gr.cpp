@@ -90,7 +90,6 @@ int main (int argc, char** argv)
     Grammar grammar;
     grammar.debug (debug);
     grammar.loadFromFile (file);
-    std::cout << grammar.dump ();
 
     // TODO Test commandLine against grammar.
     if (commandLine != "")
@@ -98,7 +97,6 @@ int main (int argc, char** argv)
       LR0 lr0;
       lr0.debug (debug);
       lr0.createParseTables (grammar);
-      std::cout << lr0.dump ();
 
       // TODO Run the parser.
     }
