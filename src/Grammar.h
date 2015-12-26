@@ -65,7 +65,6 @@ protected:
 
 private:
   void validate () const;
-  void generateParseTable ();
 
 private:
   std::string _start;
