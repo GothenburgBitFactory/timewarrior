@@ -28,6 +28,7 @@
 #include <Grammar.h>
 #include <Lexer.h>
 #include <text.h>
+#include <iostream>
 #include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -134,6 +135,9 @@ void Grammar::loadFromString (const std::string& input)
       rule_name = "";
   }
 
+  if (_debug)
+    std::cout << dump () << "\n";
+
   // Validate the parsed grammar.
   validate ();
 }
@@ -228,6 +232,9 @@ std::string Grammar::dump () const
 ////////////////////////////////////////////////////////////////////////////////
 void Grammar::validate () const
 {
+  if (_debug)
+    std::cout << "Validating...\n";
+
   if (_start == "")
     throw std::string ("There are no rules defined.");
 
@@ -280,6 +287,9 @@ void Grammar::validate () const
   for (auto& nu : notUsed)
     if (nu != _start)
       throw format ("Definition '{1}' is defined, but not referenced.", nu);
+
+  if (_debug)
+    std::cout << "Validated\n";
 }
 
 ////////////////////////////////////////////////////////////////////////////////
