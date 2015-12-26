@@ -189,17 +189,18 @@ std::vector <std::vector <std::string>> Grammar::augmented () const
 std::string Grammar::dump () const
 {
   std::stringstream out;
+  out << "Grammar\n";
   for (auto& rule : _rules)
   {
     // Indicate the start Rule.
-    if (rule.first == _start)
-      out << "▶ ";
+    out << "  " << (rule.first == _start ? "▶" : " ") << " " << rule.first << ": ";
 
-    out << rule.first << ":\n";
-
+    int count = 0;
     for (auto& production : rule.second)
     {
-      out << "    ";
+      if (count)
+        out << "| ";
+
       for (auto& token : production)
       {
         out << token._token;
@@ -208,7 +209,7 @@ std::string Grammar::dump () const
         out << " ";
       }
 
-      out << "\n";
+      ++count;
     }
 
     out << "\n";
