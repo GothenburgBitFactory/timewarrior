@@ -221,7 +221,8 @@ void Grammar::validate () const
           allTokens.push_back (token._token);
 
         if (token._token == production[0]._token &&
-            rule.first == production[0]._token)
+            rule.first == production[0]._token   &&
+            production.size () == 1)
           allLeftRecursive.push_back (token._token);
       }
     }
@@ -238,7 +239,7 @@ void Grammar::validate () const
       throw format ("Definition '{1}' referenced, but not defined.", nd);
 
   // Circular definitions - these are names in _rules that also appear as
-  // token 0 in any of the alternates for that definition.
+  // the only token in any of the alternates for that definition.
   for (auto& lr : allLeftRecursive)
     throw format ("Definition '{1}' is left recursive.", lr);
 
