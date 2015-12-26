@@ -42,6 +42,7 @@ public:
   std::vector <std::string> rules () const;
   std::vector <std::string> terminals () const;
   std::vector <std::vector <std::string>> augmented () const;
+  void debug (bool);
   std::string dump () const;
 
 protected:
@@ -69,6 +70,7 @@ private:
 private:
   std::string _start;
   std::map <std::string, Grammar::Rule> _rules;
+  bool _debug;
 };
 
 #endif
