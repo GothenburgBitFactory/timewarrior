@@ -41,6 +41,9 @@ public:
   std::string dump () const;
 
 private:
+  bool expandNonTerminals ();
+
+private:
   //        state         column        result
   //        |              |            |
   std::map <int, std::map <std::string, std::string>> _actions;
