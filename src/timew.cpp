@@ -35,6 +35,7 @@
 int main (int argc, const char** argv)
 {
   int status = 0;
+  bool debug = true;
 
   // Lightweight version checking that doesn't require initialization or any I/O.
   if (argc == 2 && ! strcmp (argv[1], "--version"))
@@ -52,26 +53,26 @@ int main (int argc, const char** argv)
       // TODO Migrate from loading a grammar from file, to a default string.
       File cliFile ("./cli.grammar");
       Grammar cliGrammar;
+      cliGrammar.debug (debug);
       cliGrammar.loadFromFile (cliFile);
-      std::cout << cliGrammar.dump ();
 
       // Instantiate the parser.
       LR0 cliParser;
+      cliParser.debug (debug);
       cliParser.createParseTables (cliGrammar);
-      std::cout << cliParser.dump ();
 
       // TODO Parse CLI.
 
       // TODO Load rule grammar.
       File ruleFile ("./rule.grammar");
       Grammar ruleGrammar;
+      ruleGrammar.debug (debug);
       ruleGrammar.loadFromFile (ruleFile);
-      std::cout << ruleGrammar.dump ();
 
       // Instantiate the parser.
       LR0 ruleParser;
+      ruleParser.debug (debug);
       ruleParser.createParseTables (ruleGrammar);
-      std::cout << ruleParser.dump ();
 
       // TODO Load rules.
       // TODO Parse rules.

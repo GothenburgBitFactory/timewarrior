@@ -232,9 +232,6 @@ std::string Grammar::dump () const
 ////////////////////////////////////////////////////////////////////////////////
 void Grammar::validate () const
 {
-  if (_debug)
-    std::cout << "Validating...\n";
-
   if (_start == "")
     throw std::string ("There are no rules defined.");
 
