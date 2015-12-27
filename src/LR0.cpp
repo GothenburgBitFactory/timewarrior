@@ -64,20 +64,22 @@ void LR0::createParseTables (const Grammar& grammar)
   states.push_back (closure);
 
   // Iteratively expand non-terminals until there are no more.
-  while (expandNonTerminals (augmented, states))
+  int state = 0;
+  while (expandNonTerminals (augmented, states, state))
     ;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 bool LR0::expandNonTerminals (
   std::vector <std::vector <std::string>>& augmented,
-  LR0::States& states)
+  LR0::States& states,
+  int state)
 {
   if (_debug)
-    std::cout << "Expand:\n"
+    std::cout << "Expand state " << state << ":\n"
               << dump (augmented, states);
 
-
+  // TODO Find cases of ". <non-terminal>", and add a state for each unique <non-terminal>.
 
   return false;
 }
