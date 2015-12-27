@@ -31,10 +31,23 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (1);
-  t.skip ("No tests");
+  UnitTest t (8);
+
+  // LR0::Item
+  LR0::Item item ({"E", "-->", "E", "*", "B"});
+  t.is (item.dump (), "E --> ● E * B", "E --> ● E * B");
+
+  t.ok (item.advance (), "Item::advance true");
+  t.is (item.dump (), "E --> E ● * B", "E --> E ● * B");
+
+  t.ok (item.advance (), "Item::advance true");
+  t.is (item.dump (), "E --> E * ● B", "E --> E * ● B");
+
+  t.ok (item.advance (), "Item::advance true");
+  t.is (item.dump (), "E --> E * B ●", "E --> E * B ●");
+
+  t.notok (item.advance (), "Item::advance false");
   return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
