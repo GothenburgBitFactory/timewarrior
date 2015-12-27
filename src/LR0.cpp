@@ -60,15 +60,15 @@ void LR0::createParseTables (const Grammar& grammar)
     items.push_back (std::pair <int, int> (i, 0));
 
   // TODO Add new states.
-  while (expandNonTerminals (items))
+  while (expandNonTerminals (augmented, items))
     ;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool LR0::expandNonTerminals (std::vector <std::pair <int, int>>& items)
+bool LR0::expandNonTerminals (
+  std::vector <std::vector <std::string>>& augmented,
+  std::vector <std::pair <int, int>>& items)
 {
-
-
 
   return false;
 }
