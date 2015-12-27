@@ -53,9 +53,11 @@ void LR0::createParseTables (const Grammar& grammar)
     }
   }
 
-  // TODO Add all items from augmented grammar.
+  // Add all items from augmented grammar, in initial state:
+  //   A --> . B ....
   std::vector <std::pair <int, int>> items;
-  // TODO Add augmented grammar to items.
+  for (unsigned int i = 0; i < augmented.size (); ++i)
+    items.push_back (std::pair <int, int> (i, 0));
 
   // TODO Add new states.
   while (expandNonTerminals (items))
