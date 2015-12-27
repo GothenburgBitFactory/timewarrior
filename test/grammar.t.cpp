@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <Grammar.h>
 #include <test.h>
+#include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
 void testBadGrammarFile (UnitTest& t, File& file)
@@ -63,7 +64,7 @@ void testBadGrammar (UnitTest& t, const std::string& bnf)
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (14);
+  UnitTest t (20);
 
   // Test loading from a missing file.
   File missing ("/tmp/does/not/exist");
@@ -96,17 +97,27 @@ int main (int, char**)
                     "     /regex/\n"
                     "\n"
                     "three: \"literal2\"\n");
-  auto start = g.start ();
-  auto rules = g.rules ();
+  auto start     = g.start ();
+  auto rules     = g.rules ();
   auto terminals = g.terminals ();
-  t.is (start, "one",                                        "Located start rule");
-  t.is ((int)rules.size (), 3,                               "Found three rules");
-  t.ok (rules.find ("one")              != rules.end (),     "Found rule 'one'");
-  t.ok (rules.find ("two")              != rules.end (),     "Found rule 'two'");
-  t.ok (rules.find ("three")            != rules.end (),     "Found rule 'three'");
-  t.ok (terminals.find ("\"literal\"")  != terminals.end (), "Found terminal '\"literal\"'");
-  t.ok (terminals.find ("/regex/")      != terminals.end (), "Found terminal '/regex/'");
-  t.ok (terminals.find ("\"literal2\"") != terminals.end (), "Found terminal '\"literal2\"'");
+  auto augmented = g.augmented ();
+  t.is (start, "one",                                                                         "Located start rule");
+
+  t.is ((int)rules.size (), 3,                                                                "Found three rules");
+  t.ok (std::find (rules.begin (), rules.end (), "one")                  != rules.end (),     "Found rule 'one'");
+  t.ok (std::find (rules.begin (), rules.end (), "two")                  != rules.end (),     "Found rule 'two'");
+  t.ok (std::find (rules.begin (), rules.end (), "three")                != rules.end (),     "Found rule 'three'");
+
+  t.ok (std::find (terminals.begin (), terminals.end (), "\"literal\"")  != terminals.end (), "Found terminal '\"literal\"'");
+  t.ok (std::find (terminals.begin (), terminals.end (), "/regex/")      != terminals.end (), "Found terminal '/regex/'");
+  t.ok (std::find (terminals.begin (), terminals.end (), "\"literal2\"") != terminals.end (), "Found terminal '\"literal2\"'");
+
+  t.is ((int)augmented.size (), 5,                                                       "augmented: 5 items");
+  t.ok (augmented[0] == std::vector <std::string>{"S", "-->", "one"},                    "augmented[0]: S --> one");
+  t.ok (augmented[1] == std::vector <std::string>{"one", "-->", "two"},                  "augmented[1]: one --> two");
+  t.ok (augmented[2] == std::vector <std::string>{"three", "-->", "\"literal2\""},       "augmented[2]: three --> \"literal2\"");
+  t.ok (augmented[3] == std::vector <std::string>{"two", "-->", "three", "\"literal\""}, "augmented[3]: two --> three \"literal\"");
+  t.ok (augmented[4] == std::vector <std::string>{"two", "-->", "/regex/"},              "augmented[4]: two --> /regex/");
 
   return 0;
 }
