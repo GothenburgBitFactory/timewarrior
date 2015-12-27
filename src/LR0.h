@@ -60,6 +60,7 @@ protected:
 
 private:
   bool expandNonTerminals (std::vector <std::vector <std::string>>&, std::vector <std::pair <int, int>>&);
+  std::string dump (std::vector <std::vector <std::string>>&, States&) const;
 
 private:
   //        state         column        result
