@@ -31,22 +31,28 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (8);
+  UnitTest t (10);
 
-  // LR0::Item
-  LR0::Item item ({"E", "-->", "E", "*", "B"});
-  t.is (item.dump (), "E --> ● E * B", "E --> ● E * B");
+  // LR0::Item.
+  LR0::Item item1 ({"E", "-->", "E", "*", "B"});
+  t.is (item1.dump (), "E --> ● E * B", "E --> ● E * B");
 
-  t.ok (item.advance (), "Item::advance true");
-  t.is (item.dump (), "E --> E ● * B", "E --> E ● * B");
+  t.ok (item1.advance (), "Item::advance true");
+  t.is (item1.dump (), "E --> E ● * B", "E --> E ● * B");
 
-  t.ok (item.advance (), "Item::advance true");
-  t.is (item.dump (), "E --> E * ● B", "E --> E * ● B");
+  t.ok (item1.advance (), "Item::advance true");
+  t.is (item1.dump (), "E --> E * ● B", "E --> E * ● B");
 
-  t.ok (item.advance (), "Item::advance true");
-  t.is (item.dump (), "E --> E * B ●", "E --> E * B ●");
+  t.ok (item1.advance (), "Item::advance true");
+  t.is (item1.dump (), "E --> E * B ●", "E --> E * B ●");
 
-  t.notok (item.advance (), "Item::advance false");
+  t.notok (item1.advance (), "Item::advance false");
+
+  // LR0::Item special case for "A --> є".
+  LR0::Item item2 ({"A", "-->", "є"});
+  t.is (item2.dump (), "A --> ●", "A --> ●");
+  t.notok (item2.advance (), "Item::advance false");
+
   return 0;
 }
 
