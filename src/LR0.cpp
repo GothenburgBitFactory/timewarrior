@@ -57,19 +57,23 @@ void LR0::createParseTables (const Grammar& grammar)
 
   // Add all items from augmented grammar, in initial state:
   //   A --> . B ....
+/*
   LR0::Closure closure;
   for (unsigned int i = 0; i < augmented.size (); ++i)
     closure.push_back (LR0::Item (i, 0));
   LR0::States states;
   states.push_back (closure);
-
+*/
   // Iteratively expand non-terminals until there are no more.
+/*
   int state = 0;
   while (expandNonTerminals (augmented, states, state))
     ;
+*/
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/*
 bool LR0::expandNonTerminals (
   std::vector <std::vector <std::string>>& augmented,
   LR0::States& states,
@@ -83,6 +87,7 @@ bool LR0::expandNonTerminals (
 
   return false;
 }
+*/
 
 ////////////////////////////////////////////////////////////////////////////////
 void LR0::parse (const std::string& input)
@@ -115,6 +120,7 @@ std::string LR0::dump () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/*
 std::string LR0::dump (std::vector <std::vector <std::string>>& augmented, States& states) const
 {
   std::stringstream out;
@@ -148,6 +154,24 @@ std::string LR0::dump (std::vector <std::vector <std::string>>& augmented, State
 
   out << "\n";
   return out.str ();
+}
+*/
+
+////////////////////////////////////////////////////////////////////////////////
+LR0::Item::Item (std::vector <std::string>& rule)
+: _rule (rule)
+, _cursor (2)
+{
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool LR0::Item::advance ()
+{
+  if (_cursor >= _rule.size ())
+    return false;
+
+  ++_cursor;
+  return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -44,10 +44,12 @@ protected:
   class Item
   {
   public:
-    Item (int rule, int cursor) : _rule (rule), _cursor (cursor) {}
+    Item (std::vector <std::string>&);
+    bool advance ();
 
-    int _rule;
-    int _cursor;
+  private:
+    std::vector <std::string> _rule;
+    unsigned int _cursor;
   };
 
   class Closure : public std::vector <Item>
@@ -59,8 +61,8 @@ protected:
   };
 
 private:
-  bool expandNonTerminals (std::vector <std::vector <std::string>>&, States&, int);
-  std::string dump (std::vector <std::vector <std::string>>&, States&) const;
+//  bool expandNonTerminals (std::vector <std::vector <std::string>>&, States&, int);
+//  std::string dump (std::vector <std::vector <std::string>>&, States&) const;
 
 private:
   //        state         column        result
