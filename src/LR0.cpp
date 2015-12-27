@@ -175,3 +175,25 @@ bool LR0::Item::advance ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::string LR0::Item::dump () const
+{
+  std::stringstream out;
+
+  for (unsigned int i = 0; i < _rule.size (); ++i)
+  {
+    if (i)
+      out << " ";
+
+    if (i == _cursor)
+      out << "● ";
+
+    out << _rule[i];
+  }
+
+  if (_cursor >= _rule.size ())
+    out << " ●";
+
+  return out.str ();
+}
+
+////////////////////////////////////////////////////////////////////////////////

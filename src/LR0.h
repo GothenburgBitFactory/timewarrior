@@ -45,6 +45,7 @@ public:
   public:
     Item (const std::vector <std::string>&);
     bool advance ();
+    std::string dump () const;
 
   private:
     std::vector <std::string> _rule;
