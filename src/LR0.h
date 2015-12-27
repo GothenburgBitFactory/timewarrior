@@ -40,11 +40,10 @@ public:
   void debug (bool);
   std::string dump () const;
 
-protected:
   class Item
   {
   public:
-    Item (std::vector <std::string>&);
+    Item (const std::vector <std::string>&);
     bool advance ();
 
   private:

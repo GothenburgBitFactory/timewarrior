@@ -158,7 +158,7 @@ std::string LR0::dump (std::vector <std::vector <std::string>>& augmented, State
 */
 
 ////////////////////////////////////////////////////////////////////////////////
-LR0::Item::Item (std::vector <std::string>& rule)
+LR0::Item::Item (const std::vector <std::string>& rule)
 : _rule (rule)
 , _cursor (2)
 {
