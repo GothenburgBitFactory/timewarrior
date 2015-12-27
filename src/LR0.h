@@ -40,6 +40,24 @@ public:
   void debug (bool);
   std::string dump () const;
 
+protected:
+  class Item
+  {
+  public:
+    Item (int rule, int cursor) : _rule (rule), _cursor (cursor) {}
+
+    int _rule;
+    int _cursor;
+  };
+
+  class Closure : public std::vector <Item>
+  {
+  };
+
+  class States : public std::vector <Closure>
+  {
+  };
+
 private:
   bool expandNonTerminals (std::vector <std::vector <std::string>>&, std::vector <std::pair <int, int>>&);
 
