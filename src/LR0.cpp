@@ -162,6 +162,8 @@ LR0::Item::Item (const std::vector <std::string>& rule)
 : _rule (rule)
 , _cursor (2)
 {
+  if (_rule.size () == 3 && _rule[2] == "є")
+    _rule.pop_back ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
