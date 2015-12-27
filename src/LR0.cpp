@@ -57,44 +57,25 @@ void LR0::createParseTables (const Grammar& grammar)
 
   // Add all items from augmented grammar, in initial state:
   //   A --> . B ....
-  std::vector <std::pair <int, int>> items;
+  LR0::Closure closure;
   for (unsigned int i = 0; i < augmented.size (); ++i)
-    items.push_back (std::pair <int, int> (i, 0));
+    closure.push_back (LR0::Item (i, 0));
+  LR0::States states;
+  states.push_back (closure);
 
   // Iteratively expand non-terminals until there are no more.
-  while (expandNonTerminals (augmented, items))
+  while (expandNonTerminals (augmented, states))
     ;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 bool LR0::expandNonTerminals (
   std::vector <std::vector <std::string>>& augmented,
-  std::vector <std::pair <int, int>>& items)
+  LR0::States& states)
 {
   if (_debug)
-  {
-    std::cout << "Expand:\n";
-    int count = 0;
-    for (auto& item : items)
-    {
-      std::cout << "  [" << count++ << "] "
-                << augmented[item.first][0]
-                << " "
-                << augmented[item.first][1];
-
-      for (int i = 2; i < (int)augmented[item.first].size (); ++i)
-      {
-        if (i - 2 == item.second)
-          std::cout << " .";
-
-        std::cout << " " << augmented[item.first][i];
-      }
-
-      std::cout << "\n";
-    }
-
-    std::cout << "\n";
-  }
+    std::cout << "Expand:\n"
+              << dump (augmented, states);
 
 
 

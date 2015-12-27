@@ -59,7 +59,7 @@ protected:
   };
 
 private:
-  bool expandNonTerminals (std::vector <std::vector <std::string>>&, std::vector <std::pair <int, int>>&);
+  bool expandNonTerminals (std::vector <std::vector <std::string>>&, States&);
   std::string dump (std::vector <std::vector <std::string>>&, States&) const;
 
 private:
