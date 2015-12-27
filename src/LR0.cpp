@@ -58,12 +58,12 @@ void LR0::createParseTables (const Grammar& grammar)
   // TODO Add augmented grammar to items.
 
   // TODO Add new states.
-  while (expandNonTerminals ())
+  while (expandNonTerminals (items))
     ;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool LR0::expandNonTerminals ()
+bool LR0::expandNonTerminals (std::vector <std::pair <int, int>>& items)
 {
 
 

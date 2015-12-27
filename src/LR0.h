@@ -41,7 +41,7 @@ public:
   std::string dump () const;
 
 private:
-  bool expandNonTerminals ();
+  bool expandNonTerminals (std::vector <std::pair <int, int>>&);
 
 private:
   //        state         column        result
