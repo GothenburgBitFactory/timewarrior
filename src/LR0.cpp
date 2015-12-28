@@ -55,25 +55,20 @@ void LR0::initialize (const Grammar& grammar)
     std::cout << "\n";
   }
 
-  // Add all items from augmented grammar, in initial state:
+  // TODO Add all items from augmented grammar, in initial state:
   //   A --> . B ....
-/*
-  LR0::Closure closure;
-  for (unsigned int i = 0; i < augmented.size (); ++i)
-    closure.push_back (LR0::Item (i, 0));
-  LR0::States states;
+  Item item0 {augmented[0]};
+  std::cout << item0.dump () << "\n";
+  auto closure = getClosure (item0, augmented);
+
+  States states;
   states.push_back (closure);
-*/
-  // Iteratively expand non-terminals until there are no more.
-/*
-  int state = 0;
-  while (expandNonTerminals (augmented, states, state))
-    ;
-*/
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-LR0::Closure getClosure (LR0::Item& item)
+LR0::Closure LR0::getClosure (
+  const Item& item,
+  const std::vector <std::vector <std::string>>& augmented)
 {
   LR0::Closure closure;
 

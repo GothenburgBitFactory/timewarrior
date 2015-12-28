@@ -61,7 +61,7 @@ public:
   };
 
 private:
-  Closure getClosure (Item&);
+  Closure getClosure (const Item&, const std::vector <std::vector <std::string>>&);
 
 private:
   //        state         column        result
