@@ -62,7 +62,6 @@ public:
 
 private:
 //  bool expandNonTerminals (std::vector <std::vector <std::string>>&, States&, int);
-//  std::string dump (std::vector <std::vector <std::string>>&, States&) const;
 
 private:
   //        state         column        result

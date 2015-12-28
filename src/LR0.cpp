@@ -120,44 +120,6 @@ std::string LR0::dump () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/*
-std::string LR0::dump (std::vector <std::vector <std::string>>& augmented, States& states) const
-{
-  std::stringstream out;
-
-  for (unsigned int c = 0; c < states.size (); ++c)
-  {
-    out << "  [" << c << "] ";
-
-    for (unsigned int i = 0; i < states[c].size (); ++i)
-    {
-      if (i)
-        out << "      ";
-
-      out << augmented[states[c][i]._rule][0]
-          << " "
-          << augmented[states[c][i]._rule][1];
-
-      for (unsigned int t = 2; t < augmented[states[c][i]._rule].size (); t++)
-      {
-        if ((int)t - 2 == states[c][i]._cursor)
-          out << " .";
-
-        out << " " << augmented[states[c][i]._rule][t];
-      }
-
-      out << "\n";
-    }
-
-    out << "\n";
-  }
-
-  out << "\n";
-  return out.str ();
-}
-*/
-
-////////////////////////////////////////////////////////////////////////////////
 LR0::Item::Item (const std::vector <std::string>& rule)
 : _rule (rule)
 , _cursor (2)
