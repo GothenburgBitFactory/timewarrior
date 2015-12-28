@@ -96,7 +96,7 @@ int main (int argc, char** argv)
     {
       LR0 lr0;
       lr0.debug (debug);
-      lr0.createParseTables (grammar);
+      lr0.initialize (grammar);
 
       // TODO Run the parser.
     }

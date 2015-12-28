@@ -35,7 +35,7 @@ LR0::LR0 ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void LR0::createParseTables (const Grammar& grammar)
+void LR0::initialize (const Grammar& grammar)
 {
   // Obtain the augmented grammar.
   auto augmented = grammar.augmented ();

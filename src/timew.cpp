@@ -48,6 +48,7 @@ int main (int argc, const char** argv)
     {
       // TODO Load configuration ~/.timewrc || $TIMEWRC.
 
+      // TODO Arrange the following to minimize memory use.
       // TODO Load CLI grammar.
       // TODO Load from string, else file on config override.
       // TODO Migrate from loading a grammar from file, to a default string.
@@ -59,7 +60,7 @@ int main (int argc, const char** argv)
       // Instantiate the parser.
       LR0 cliParser;
       cliParser.debug (debug);
-      cliParser.createParseTables (cliGrammar);
+      cliParser.initialize (cliGrammar);
 
       // TODO Parse CLI.
 
@@ -72,7 +73,7 @@ int main (int argc, const char** argv)
       // Instantiate the parser.
       LR0 ruleParser;
       ruleParser.debug (debug);
-      ruleParser.createParseTables (ruleGrammar);
+      ruleParser.initialize (ruleGrammar);
 
       // TODO Load rules.
       // TODO Parse rules.
