@@ -73,21 +73,12 @@ void LR0::initialize (const Grammar& grammar)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-/*
-bool LR0::expandNonTerminals (
-  std::vector <std::vector <std::string>>& augmented,
-  LR0::States& states,
-  int state)
+LR0::Closure getClosure (LR0::Item& item)
 {
-  if (_debug)
-    std::cout << "Expand state " << state << ":\n"
-              << dump (augmented, states);
+  LR0::Closure closure;
 
-  // TODO Find cases of ". <non-terminal>", and add a state for each unique <non-terminal>.
-
-  return false;
+  return closure;
 }
-*/
 
 ////////////////////////////////////////////////////////////////////////////////
 void LR0::parse (const std::string& input)

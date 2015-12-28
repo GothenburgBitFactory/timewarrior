@@ -61,7 +61,7 @@ public:
   };
 
 private:
-//  bool expandNonTerminals (std::vector <std::vector <std::string>>&, States&, int);
+  Closure getClosure (Item&);
 
 private:
   //        state         column        result
