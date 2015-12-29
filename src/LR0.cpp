@@ -35,6 +35,18 @@ LR0::LR0 ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Aho/Sethi/Ullman, p224
+// The sets-of-items construction:
+//
+// procedure items(G');
+// begin
+//   C := {closure ({[S' --> . S]})};
+//   repeat
+//     for each set of items I in C and each grammar symbol X such that
+//     goto (I, X) is not empty and not in C do
+//       add goto (I, X) to C
+//   until no more sets of items can be added to C
+// end
 void LR0::initialize (const Grammar& grammar)
 {
   // Obtain the augmented grammar.
