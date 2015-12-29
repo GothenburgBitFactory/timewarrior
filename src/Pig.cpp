@@ -64,6 +64,21 @@ bool Pig::skipWS ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+bool Pig::getDigit (int& result)
+{
+  int c = _text[_cursor];
+  if (Lexer::isDigit (c))
+  {
+    result = c - '0';
+    ++_cursor;
+    ++_mark;
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void Pig::debug (bool value)
 {
   _debug = value;

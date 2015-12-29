@@ -36,6 +36,8 @@ public:
 
   bool skipWS ();
 
+  bool getDigit (int&);
+
   void debug (bool);
   std::string dump () const;
 
