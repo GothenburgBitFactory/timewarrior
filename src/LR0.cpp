@@ -67,14 +67,14 @@ void LR0::initialize (const Grammar& grammar)
     std::cout << "\n";
   }
 
-  // TODO Add all items from augmented grammar, in initial state:
-  //   A --> . B ....
+  // TODO Expand this single interation into a loop that ends when there is no
+  // more expanѕion.
   Item item0 {augmented[0]};
-  std::cout << item0.dump () << "\n";
   auto closure = getClosure (item0, augmented);
 
   States states;
   states.push_back (closure);
+  std::cout << states.dump () << "\n";
 }
 
 ////////////////////////////////////////////////////////////////////////////////
