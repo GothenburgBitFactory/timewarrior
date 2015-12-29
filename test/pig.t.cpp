@@ -31,16 +31,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (13);
+  UnitTest t (18);
 
   // Pig::skipWS
   Pig p0 ("  one");
-  t.ok (p0.skipWS (),    "skipWS '  one' -> true");
-  t.is (p0.dump (),      "≪  one≫ l5 c2", "dump");
+  t.ok (p0.skipWS (),       "skipWS '  one' -> true");
+  t.is (p0.dump (),         "≪  one≫ l5 c2", "dump");
   t.diag (p0.dump ());
 
-  t.notok (p0.skipWS (), "skipWS 'one' -> false");
-  t.is (p0.dump (),      "≪  one≫ l5 c2", "dump");
+  t.notok (p0.skipWS (),    "skipWS 'one' -> false");
+  t.is (p0.dump (),         "≪  one≫ l5 c2", "dump");
   t.diag (p0.dump ());
 
   // Pig::getDigit
@@ -61,6 +61,14 @@ int main (int, char**)
   t.is (n, 123,             "getDigits '123 ' --> 123");
   t.is (p2.dump (),         "≪123 ≫ l4 c3", "dump");
   t.diag (p2.dump ());
+
+  Pig p3 ("1");
+  t.notok (p3.eos (),       "eos '1' --> false");
+  t.ok (p3.getDigit (n),    "getDigit '1' --> true");
+  t.notok (p3.getDigit (n), "getDigit '' --> false");
+  t.ok (p3.eos (),          "eos '' --> true");
+  t.is (p3.dump (),         "≪1≫ l1 c1", "dump");
+  t.diag (p3.dump ());
 
   return 0;
 }
