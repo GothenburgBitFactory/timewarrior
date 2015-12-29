@@ -38,14 +38,11 @@ public:
 
   bool getDigit (int&);
 
-  void debug (bool);
   std::string dump () const;
 
 private:
   const std::string&     _text;
-  std::string::size_type _mark;
   std::string::size_type _cursor;
-  bool                   _debug;
 };
 
 #endif

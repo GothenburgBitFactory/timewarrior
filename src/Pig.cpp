@@ -33,15 +33,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 Pig::Pig (const std::string& text)
 : _text (text)
-, _mark (0)
 , _cursor (0)
-, _debug (false)
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 bool Pig::skipWS ()
 {
+  auto save = _cursor;
+
   int c;
   auto prev = _cursor;
   while ((c = utf8_next_char (_text, _cursor)))
@@ -54,13 +54,7 @@ bool Pig::skipWS ()
     prev = _cursor;
   }
 
-  if (_cursor > _mark)
-  {
-    _mark = _cursor;
-    return true;
-  }
-
-  return false;
+  return _cursor > save;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -71,17 +65,10 @@ bool Pig::getDigit (int& result)
   {
     result = c - '0';
     ++_cursor;
-    ++_mark;
     return true;
   }
 
   return false;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void Pig::debug (bool value)
-{
-  _debug = value;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -90,7 +77,6 @@ std::string Pig::dump () const
   std::stringstream out;
   out << "≪" << _text << "≫"
       << " l" << _text.length ()
-      << " m" << _mark
       << " c" << _cursor;
 
   return out.str ();

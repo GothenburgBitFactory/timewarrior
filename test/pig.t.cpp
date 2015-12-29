@@ -36,11 +36,11 @@ int main (int, char**)
   // Pig::skipWS
   Pig p0 ("  one");
   t.ok (p0.skipWS (),    "skipWS '  one' -> true");
-  t.is (p0.dump (),      "≪  one≫ l5 m2 c2", "dump");
+  t.is (p0.dump (),      "≪  one≫ l5 c2", "dump");
   t.diag (p0.dump ());
 
   t.notok (p0.skipWS (), "skipWS 'one' -> false");
-  t.is (p0.dump (),      "≪  one≫ l5 m2 c2", "dump");
+  t.is (p0.dump (),      "≪  one≫ l5 c2", "dump");
   t.diag (p0.dump ());
 
   // Pig::getDigit
@@ -48,11 +48,11 @@ int main (int, char**)
   int n;
   t.notok (p1.getDigit (n), "getDigit ' 123' --> false");
   t.ok (p1.skipWS (),       "skipWS ' 123' --> true");
-  t.is (p1.dump (),         "≪ 123≫ l4 m1 c1", "dump");
+  t.is (p1.dump (),         "≪ 123≫ l4 c1", "dump");
   t.diag (p1.dump ());
   t.ok (p1.getDigit (n),    "getDigit '123' --> true");
   t.is (n, 1,               "getDigit '123' --> '1'");
-  t.is (p1.dump (),         "≪ 123≫ l4 m2 c2", "dump");
+  t.is (p1.dump (),         "≪ 123≫ l4 c2", "dump");
   t.diag (p1.dump ());
 
   return 0;
