@@ -103,6 +103,23 @@ LR0::Closure LR0::getClosure (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Aho/Sethi/Ullman, p224
+//
+// If I is the set of two items {[E' --> E .], [E --> E . + T]}, then
+// goto (I, +) consists of:
+//
+// E --> E + . T
+// T --> . T * F
+// T --> . F
+// F --> . ( E )
+// F --> . id
+//
+// We computed goto (I, +) by examining I for items with + immediately to the
+// right of the dot. E' --> E . is not such an item, but E --> E . + T is.
+// We moved the dot over the + to get {E --> E + . T} and then took the closure
+// of this set.
+
+////////////////////////////////////////////////////////////////////////////////
 void LR0::parse (const std::string& input)
 {
 }
