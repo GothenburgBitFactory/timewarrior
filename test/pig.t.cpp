@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (10);
+  UnitTest t (13);
 
   // Pig::skipWS
   Pig p0 ("  one");
@@ -54,6 +54,13 @@ int main (int, char**)
   t.is (n, 1,               "getDigit '123' --> '1'");
   t.is (p1.dump (),         "≪ 123≫ l4 c2", "dump");
   t.diag (p1.dump ());
+
+  // Pig::getDigits
+  Pig p2 ("123 ");
+  t.ok (p2.getDigits (n),   "getDigits '123 ' --> true");
+  t.is (n, 123,             "getDigits '123 ' --> 123");
+  t.is (p2.dump (),         "≪123 ≫ l4 c3", "dump");
+  t.diag (p2.dump ());
 
   return 0;
 }
