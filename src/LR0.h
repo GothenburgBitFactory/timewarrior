@@ -58,6 +58,8 @@ public:
 
   class States : public std::vector <Closure>
   {
+  public:
+    std::string dump () const;
   };
 
 private:

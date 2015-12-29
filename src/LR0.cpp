@@ -96,11 +96,11 @@ std::string LR0::dump () const
   //  +-------+---------------+---------------+
   //  | state | actions...    | goto...       |
   //  |       | terminals   $ | non-terminals |
-  //  +-------+-----------+---+----+-----+----+
-  //  |       |           |   |    |     |    |
-  //  +-------+-----------+---+----+-----+----+
-  //  |       |           |   |    |     |    |
-  //  +-------+-----------+---+----+-----+----+
+  //  +-------+--+--+--+--+---+----+-----+----+
+  //  |       |  |  |  |  |   |    |     |    |
+  //  +-------+--+--+--+--+---+----+-----+----+
+  //  |       |  |  |  |  |   |    |     |    |
+  //  +-------+--+--+--+--+---+----+-----+----+
 
   return out.str ();
 }
@@ -142,6 +142,23 @@ std::string LR0::Item::dump () const
 
   if (_cursor >= _rule.size ())
     out << " ●";
+
+  return out.str ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string LR0::States::dump () const
+{
+  std::stringstream out;
+  out << "States\n";
+
+  for (unsigned int state = 0; state < this->size (); ++state)
+  {
+    out << "  State " << state << "\n";
+
+    for (auto& item : (*this)[state])
+      out << "    " << item.dump () << "\n";
+  }
 
   return out.str ();
 }
