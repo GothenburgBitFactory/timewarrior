@@ -39,6 +39,8 @@ public:
   bool getDigit (int&);
   bool getDigits (int&);
 
+  bool eos () const;
+
   std::string dump () const;
 
 private:
