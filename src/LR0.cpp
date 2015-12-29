@@ -78,11 +78,26 @@ void LR0::initialize (const Grammar& grammar)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Aho/Sethi/Ullman, p223
+//
+// function closure (I);
+// begin
+//   J := I;
+//   repeat
+//     for each item A --> alpha . B beta in J and each production
+//       B --> gamma of G such that B -> . gamma is not in J do
+//         add B --> . gamma to J
+//   until no more items can be added to J;
+//   return J
+// end
 LR0::Closure LR0::getClosure (
   const Item& item,
   const std::vector <std::vector <std::string>>& augmented)
 {
   LR0::Closure closure;
+  closure.push_back (item);
+
+  // TODO Add the rest
 
   return closure;
 }
