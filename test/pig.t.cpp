@@ -31,8 +31,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (1);
-  t.skip ("No tests");
+  UnitTest t (4);
+
+  Pig p0 (" one");
+  t.ok (p0.skipWS (),    "' one' -> 'one' true");
+  t.is (p0.dump (),      "≪ one≫ l4 m1 c1", "dump");
+  t.diag (p0.dump ());
+
+  t.notok (p0.skipWS (), "'one' -> 'one' false");
+  t.is (p0.dump (),      "≪ one≫ l4 m1 c1", "dump");
+  t.diag (p0.dump ());
 
   return 0;
 }
