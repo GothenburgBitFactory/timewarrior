@@ -29,6 +29,7 @@
 #include <Lexer.h>
 #include <utf8.h>
 #include <sstream>
+#include <cinttypes>
 
 ////////////////////////////////////////////////////////////////////////////////
 Pig::Pig (const std::string& text)
@@ -65,6 +66,32 @@ bool Pig::getDigit (int& result)
   {
     result = c - '0';
     ++_cursor;
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool Pig::getDigits (int& result)
+{
+  auto save = _cursor;
+
+  int c;
+  auto prev = _cursor;
+  while ((c = utf8_next_char (_text, _cursor)))
+  {
+    if (! Lexer::isDigit (c))
+    {
+      _cursor = prev;
+      break;
+    }
+    prev = _cursor;
+  }
+
+  if (_cursor > save)
+  {
+    result = std::strtoimax (_text.substr (save, _cursor - save).c_str (), NULL, 10);
     return true;
   }
 
