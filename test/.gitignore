@@ -5,6 +5,7 @@ grammar.t
 lexer.t
 lr0.t
 list.t
+pig.t
 rules.t
 rx.t
 text.t
