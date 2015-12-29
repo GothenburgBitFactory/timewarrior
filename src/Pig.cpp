@@ -26,16 +26,41 @@
 
 #include <cmake.h>
 #include <Pig.h>
+#include <Lexer.h>
 #include <utf8.h>
 #include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
 Pig::Pig (const std::string& text)
 : _text (text)
-, _mark (std::string::npos)
+, _mark (0)
 , _cursor (0)
 , _debug (false)
 {
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool Pig::skipWS ()
+{
+  int c;
+  auto prev = _cursor;
+  while ((c = utf8_next_char (_text, _cursor)))
+  {
+    if (! Lexer::isWhitespace (c))
+    {
+      _cursor = prev;
+      break;
+    }
+    prev = _cursor;
+  }
+
+  if (_cursor > _mark)
+  {
+    _mark = _cursor;
+    return true;
+  }
+
+  return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

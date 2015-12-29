@@ -34,6 +34,8 @@ class Pig
 public:
   Pig (const std::string&);
 
+  bool skipWS ();
+
   void debug (bool);
   std::string dump () const;
 
