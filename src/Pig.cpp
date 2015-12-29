@@ -73,6 +73,10 @@ void Pig::debug (bool value)
 std::string Pig::dump () const
 {
   std::stringstream out;
+  out << "≪" << _text << "≫"
+      << " l" << _text.length ()
+      << " m" << _mark
+      << " c" << _cursor;
 
   return out.str ();
 }
