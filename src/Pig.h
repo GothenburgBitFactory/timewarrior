@@ -46,6 +46,7 @@ public:
   bool getRemainder (std::string&);
 
   bool eos () const;
+  int peek () const;
 
   std::string dump () const;
 
