@@ -31,28 +31,33 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (65);
+  UnitTest t (68);
 
+  // Pig::skip
   // Pig::skipN
   Pig p0 ("12345");
-  t.ok (p0.skipN (4),       "skipN=4 '12345' -> true");
+  t.notok (p0.skip ('0'),   "skip='0', '12345' --> false");
+  t.ok (p0.skip ('1'),      "skip='1', '12345' --> true");
+  t.is (p0.dump (),         "≪12345≫ l5 c1", "dump: " + p0.dump ());
+
+  t.ok (p0.skipN (3),       "skipN=3 '12345' --> true");
   t.is (p0.dump (),         "≪12345≫ l5 c4", "dump: " + p0.dump ());
 
-  t.notok (p0.skipN (2),    "skipN=2 '5' -> false");
+  t.notok (p0.skipN (2),    "skipN=2 '5' --> false");
   t.is (p0.dump (),         "≪12345≫ l5 c4", "dump: " + p0.dump ());
 
   // Pig::skipWS
   Pig p1 ("  one");
-  t.ok (p1.skipWS (),       "skipWS '  one' -> true");
+  t.ok (p1.skipWS (),       "skipWS '  one' --> true");
   t.is (p1.dump (),         "≪  one≫ l5 c2", "dump: " + p1.dump ());
 
-  t.notok (p1.skipWS (),    "skipWS 'one' -> false");
+  t.notok (p1.skipWS (),    "skipWS 'one' --> false");
   t.is (p1.dump (),         "≪  one≫ l5 c2", "dump: " + p1.dump ());
 
   // Pig::skipLiteral
   Pig p2 ("onetwo");
-  t.notok (p2.skipLiteral ("two"), "skipLiteral=two 'onetwo' -> false");
-  t.ok (p2.skipLiteral ("one"),    "skipLiteral=one 'onetwo' -> true");
+  t.notok (p2.skipLiteral ("two"), "skipLiteral=two 'onetwo' --> false");
+  t.ok (p2.skipLiteral ("one"),    "skipLiteral=one 'onetwo' --> true");
   t.is (p2.dump (),                "≪onetwo≫ l6 c3", "dump: " + p2.dump ());
 
   // Pig::getUntilWS
