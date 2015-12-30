@@ -30,6 +30,7 @@
 #include <utf8.h>
 #include <sstream>
 #include <cinttypes>
+#include <cstdlib>
 
 ////////////////////////////////////////////////////////////////////////////////
 Pig::Pig (const std::string& text)
@@ -230,6 +231,19 @@ bool Pig::getNumber (std::string& result)
 
     result = _text.substr (_cursor, i - _cursor);
     _cursor = i;
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool Pig::getNumber (double& result)
+{
+  std::string s;
+  if (getNumber (s))
+  {
+    result = std::strtof (s.c_str (), NULL);
     return true;
   }
 

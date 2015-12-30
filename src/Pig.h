@@ -42,6 +42,7 @@ public:
   bool getDigit (int&);
   bool getDigits (int&);
   bool getNumber (std::string&);
+  bool getNumber (double&);
   bool getRemainder (std::string&);
 
   bool eos () const;
