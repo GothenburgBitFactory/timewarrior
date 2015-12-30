@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (55);
+  UnitTest t (57);
 
   // Pig::skipN
   Pig p0 ("12345");
@@ -149,6 +149,11 @@ int main (int, char**)
   t.notok (p11.getRemainder (value), "getRemainder '' --> false");
   t.is (p11.dump (),         "≪123≫ l3 c3", "dump");
   t.diag (p11.dump ());
+
+  // Pig::peek
+  Pig p12 ("123");
+  t.is (p12.peek (), '1',   "peek '123' --> '1'");
+  t.is (p12.dump (),        "≪123≫ l3 c0", "dump");
 
   return 0;
 }
