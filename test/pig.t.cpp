@@ -31,44 +31,54 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (18);
+  UnitTest t (22);
+
+  // Pig::skipN
+  Pig p0 ("12345");
+  t.ok (p0.skipN (4),       "skipN=4 '12345' -> true");
+  t.is (p0.dump (),         "≪12345≫ l5 c4", "dump");
+  t.diag (p0.dump ());
+
+  t.notok (p0.skipN (2),    "skipN=2 '5' -> false");
+  t.is (p0.dump (),         "≪12345≫ l5 c4", "dump");
+  t.diag (p0.dump ());
 
   // Pig::skipWS
-  Pig p0 ("  one");
-  t.ok (p0.skipWS (),       "skipWS '  one' -> true");
-  t.is (p0.dump (),         "≪  one≫ l5 c2", "dump");
-  t.diag (p0.dump ());
+  Pig p1 ("  one");
+  t.ok (p1.skipWS (),       "skipWS '  one' -> true");
+  t.is (p1.dump (),         "≪  one≫ l5 c2", "dump");
+  t.diag (p1.dump ());
 
-  t.notok (p0.skipWS (),    "skipWS 'one' -> false");
-  t.is (p0.dump (),         "≪  one≫ l5 c2", "dump");
-  t.diag (p0.dump ());
+  t.notok (p1.skipWS (),    "skipWS 'one' -> false");
+  t.is (p1.dump (),         "≪  one≫ l5 c2", "dump");
+  t.diag (p1.dump ());
 
   // Pig::getDigit
-  Pig p1 (" 123");
+  Pig p2 (" 123");
   int n;
-  t.notok (p1.getDigit (n), "getDigit ' 123' --> false");
-  t.ok (p1.skipWS (),       "skipWS ' 123' --> true");
-  t.is (p1.dump (),         "≪ 123≫ l4 c1", "dump");
-  t.diag (p1.dump ());
-  t.ok (p1.getDigit (n),    "getDigit '123' --> true");
+  t.notok (p2.getDigit (n), "getDigit ' 123' --> false");
+  t.ok (p2.skipWS (),       "skipWS ' 123' --> true");
+  t.is (p2.dump (),         "≪ 123≫ l4 c1", "dump");
+  t.diag (p2.dump ());
+  t.ok (p2.getDigit (n),    "getDigit '123' --> true");
   t.is (n, 1,               "getDigit '123' --> '1'");
-  t.is (p1.dump (),         "≪ 123≫ l4 c2", "dump");
-  t.diag (p1.dump ());
-
-  // Pig::getDigits
-  Pig p2 ("123 ");
-  t.ok (p2.getDigits (n),   "getDigits '123 ' --> true");
-  t.is (n, 123,             "getDigits '123 ' --> 123");
-  t.is (p2.dump (),         "≪123 ≫ l4 c3", "dump");
+  t.is (p2.dump (),         "≪ 123≫ l4 c2", "dump");
   t.diag (p2.dump ());
 
-  Pig p3 ("1");
-  t.notok (p3.eos (),       "eos '1' --> false");
-  t.ok (p3.getDigit (n),    "getDigit '1' --> true");
-  t.notok (p3.getDigit (n), "getDigit '' --> false");
-  t.ok (p3.eos (),          "eos '' --> true");
-  t.is (p3.dump (),         "≪1≫ l1 c1", "dump");
+  // Pig::getDigits
+  Pig p3 ("123 ");
+  t.ok (p3.getDigits (n),   "getDigits '123 ' --> true");
+  t.is (n, 123,             "getDigits '123 ' --> 123");
+  t.is (p3.dump (),         "≪123 ≫ l4 c3", "dump");
   t.diag (p3.dump ());
+
+  Pig p4 ("1");
+  t.notok (p4.eos (),       "eos '1' --> false");
+  t.ok (p4.getDigit (n),    "getDigit '1' --> true");
+  t.notok (p4.getDigit (n), "getDigit '' --> false");
+  t.ok (p4.eos (),          "eos '' --> true");
+  t.is (p4.dump (),         "≪1≫ l1 c1", "dump");
+  t.diag (p4.dump ());
 
   return 0;
 }
