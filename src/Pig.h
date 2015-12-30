@@ -48,6 +48,7 @@ public:
   bool eos () const;
   int peek () const;
   std::string peek (const int) const;
+  std::string::size_type cursor ();
   std::string::size_type save ();
   std::string::size_type restore ();
 

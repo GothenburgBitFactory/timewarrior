@@ -289,6 +289,12 @@ std::string Pig::peek (const int quantity) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::string::size_type Pig::cursor ()
+{
+  return _cursor;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Note: never called internally, otherwise the client cannot rely on iṫ.
 std::string::size_type Pig::save ()
 {
