@@ -161,19 +161,19 @@ bool Pig::getDigits (int& result)
 ////////////////////////////////////////////////////////////////////////////////
 // number:
 //   int frac? exp?
-// 
+//
 // int:
 //   (-|+)? digit+
-// 
+//
 // frac:
 //   . digit+
-// 
+//
 // exp:
 //   e digit+
-// 
+//
 // e:
 //   e|E (+|-)?
-// 
+//
 bool Pig::getNumber (std::string& result)
 {
   auto i = _cursor;
