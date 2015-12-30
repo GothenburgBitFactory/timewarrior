@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (59);
+  UnitTest t (64);
 
   // Pig::skipN
   Pig p0 ("12345");
@@ -156,6 +156,14 @@ int main (int, char**)
   t.is (p12.dump (),        "≪123≫ l3 c0", "dump");
   t.is (p12.peek (2), "12",  "peek=2 '123' --> '12'");
   t.is (p12.dump (),        "≪123≫ l3 c0", "dump");
+
+  // Pig::save, Pig::restore
+  Pig p13 ("123");
+  t.is ((int)p13.save (), 0,    "save '123' --> 0");
+  t.ok (p13.skipN (2),          "skipN=2 '123' --> true");
+  t.is (p13.dump (),            "≪123≫ l3 c2", "dump");
+  t.is ((int)p13.restore (), 0, "restore '123' --> 0");
+  t.is (p13.dump (),            "≪123≫ l3 c0", "dump");
 
   return 0;
 }
