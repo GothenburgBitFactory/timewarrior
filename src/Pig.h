@@ -34,6 +34,7 @@ class Pig
 public:
   Pig (const std::string&);
 
+  bool skipN (const int quantity = 1);
   bool skipWS ();
 
   bool getDigit (int&);

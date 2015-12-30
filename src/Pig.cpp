@@ -39,6 +39,24 @@ Pig::Pig (const std::string& text)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+bool Pig::skipN (const int quantity)
+{
+  auto save = _cursor;
+
+  auto count = 0;
+  while (count++ < quantity)
+  {
+    if (! utf8_next_char (_text, _cursor))
+    {
+      _cursor = save;
+      return false;
+    }
+  }
+
+  return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 bool Pig::skipWS ()
 {
   auto save = _cursor;
