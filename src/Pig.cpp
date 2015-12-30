@@ -264,6 +264,26 @@ bool Pig::getNumber (double& result)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Assumes that the options are sorted by decreasing length, so that if the
+// options contain 'fourteen' and 'four', the stream is first matched against
+// the longer entry.
+bool Pig::getOneOf (
+  const std::vector <std::string>& options,
+  std::string& found)
+{
+  for (auto& option : options)
+  {
+    if (skipLiteral (option))
+    {
+      found = option;
+      return true;
+    }
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 bool Pig::getRemainder (std::string& result)
 {
   if (_text[_cursor])

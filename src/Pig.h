@@ -28,6 +28,7 @@
 #define INCLUDED_PIG
 
 #include <string>
+#include <vector>
 
 class Pig
 {
@@ -44,6 +45,7 @@ public:
   bool getDigits (int&);
   bool getNumber (std::string&);
   bool getNumber (double&);
+  bool getOneOf (const std::vector <std::string>&, std::string&);
   bool getRemainder (std::string&);
 
   bool eos () const;
