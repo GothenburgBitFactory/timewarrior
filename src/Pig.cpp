@@ -172,6 +172,36 @@ bool Pig::getDigits (int& result)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+bool Pig::getHexDigit (int& result)
+{
+  int c = _text[_cursor];
+  if (c &&
+      Lexer::isHexDigit (c))
+  {
+    if (c >= '0' && c <= '9')
+    {
+      result = c - '0';
+      ++_cursor;
+      return true;
+    }
+    else if (c >= 'A' && c <= 'F')
+    {
+      result = c - 'A' + 10;
+      ++_cursor;
+      return true;
+    }
+    else if (c >= 'a' && c <= 'f')
+    {
+      result = c - 'a' + 10;
+      ++_cursor;
+      return true;
+    }
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // number:
 //   int frac? exp?
 //
