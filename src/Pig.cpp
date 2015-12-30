@@ -129,6 +129,19 @@ bool Pig::getDigits (int& result)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+bool Pig::getRemainder (std::string& result)
+{
+  if (_text[_cursor])
+  {
+    result = _text.substr (_cursor);
+    _cursor += result.length ();
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 bool Pig::eos () const
 {
   return _text[_cursor] == '\0';
