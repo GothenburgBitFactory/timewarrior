@@ -38,6 +38,7 @@ public:
   bool skipWS ();
   bool skipLiteral (const std::string&);
 
+  bool getUntilWS (std::string&);
   bool getDigit (int&);
   bool getDigits (int&);
   bool getRemainder (std::string&);

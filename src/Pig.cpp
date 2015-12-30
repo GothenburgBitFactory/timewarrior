@@ -79,7 +79,7 @@ bool Pig::skipWS ()
 ////////////////////////////////////////////////////////////////////////////////
 bool Pig::skipLiteral (const std::string& literal)
 {
-  if (_text.find (literal) == _cursor)
+  if (_text.find (literal, _cursor) == _cursor)
   {
     _cursor += literal.length ();
     return true;
@@ -89,10 +89,39 @@ bool Pig::skipLiteral (const std::string& literal)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+bool Pig::getUntilWS (std::string& result)
+{
+  auto save = _cursor;
+
+  int c;
+  auto prev = _cursor;
+  while ((c = utf8_next_char (_text, _cursor)))
+  {
+    if (eos ())
+    {
+      result = _text.substr (save, _cursor - save);
+      return true;
+    }
+
+    else if (Lexer::isWhitespace (c))
+    {
+      _cursor = prev;
+      result = _text.substr (save, _cursor - save);
+      return true;
+    }
+
+    prev = _cursor;
+  }
+
+  return _cursor > save;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 bool Pig::getDigit (int& result)
 {
   int c = _text[_cursor];
-  if (Lexer::isDigit (c))
+  if (c &&
+      Lexer::isDigit (c))
   {
     result = c - '0';
     ++_cursor;
