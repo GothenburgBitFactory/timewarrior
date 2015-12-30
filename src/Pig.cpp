@@ -77,6 +77,18 @@ bool Pig::skipWS ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+bool Pig::skipLiteral (const std::string& literal)
+{
+  if (_text.find (literal) == _cursor)
+  {
+    _cursor += literal.length ();
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 bool Pig::getDigit (int& result)
 {
   int c = _text[_cursor];

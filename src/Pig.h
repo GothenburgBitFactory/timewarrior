@@ -36,6 +36,7 @@ public:
 
   bool skipN (const int quantity = 1);
   bool skipWS ();
+  bool skipLiteral (const std::string&);
 
   bool getDigit (int&);
   bool getDigits (int&);
