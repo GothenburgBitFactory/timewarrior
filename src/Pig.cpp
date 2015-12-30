@@ -277,6 +277,17 @@ int Pig::peek () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Peeks ahead - does not move cursor.
+std::string Pig::peek (const int quantity) const
+{
+  if (_text[_cursor] &&
+      _cursor + quantity <= _text.length ())
+    return _text.substr (_cursor, quantity);
+
+  return "";
+}
+
+////////////////////////////////////////////////////////////////////////////////
 std::string Pig::dump () const
 {
   std::stringstream out;

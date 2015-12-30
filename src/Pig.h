@@ -47,6 +47,7 @@ public:
 
   bool eos () const;
   int peek () const;
+  std::string peek (const int) const;
 
   std::string dump () const;
 
