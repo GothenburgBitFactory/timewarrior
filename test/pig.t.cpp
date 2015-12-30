@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (75);
+  UnitTest t (87);
 
   // Pig::skip
   // Pig::skipN
@@ -161,6 +161,23 @@ int main (int, char**)
   t.is (p14.dump (),                                "≪fourteenfour five≫ l17 c12", "dump: " + p14.dump ());
   t.notok (p14.getOneOf ({"five"}, value),          "getOneOf={five} 'fourteenfour five' --> false");
   t.is (p14.dump (),                                "≪fourteenfour five≫ l17 c12", "dump: " + p14.dump ());
+
+  // Pig::getHexDigit
+  Pig p15 (" 9aF");
+  t.notok (p15.getHexDigit (n), "getHexDigit ' 9aF' --> false");
+  t.ok (p15.skipWS (),          "skipWS ' 9aF' --> true");
+  t.is (p15.dump (),            "≪ 9aF≫ l4 c1", "dump: " + p15.dump ());
+  t.ok (p15.getHexDigit (n),    "getHexDigit '9aF' --> true");
+  t.is (n, 9,                   "getHexDigit '9aF' --> '9'");
+  t.is (p15.dump (),            "≪ 9aF≫ l4 c2", "dump: " + p15.dump ());
+
+  t.ok (p15.getHexDigit (n),    "getHexDigit '9aF' --> true");
+  t.is (n, 10,                  "getHexDigit '9aF' --> '10'");
+  t.is (p15.dump (),            "≪ 9aF≫ l4 c3", "dump: " + p15.dump ());
+
+  t.ok (p15.getHexDigit (n),    "getHexDigit '9aF' --> true");
+  t.is (n, 15,                  "getHexDigit '9aF' --> '15'");
+  t.is (p15.dump (),            "≪ 9aF≫ l4 c4", "dump: " + p15.dump ());
 
   return 0;
 }
