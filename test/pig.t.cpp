@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (68);
+  UnitTest t (75);
 
   // Pig::skip
   // Pig::skipN
@@ -151,6 +151,16 @@ int main (int, char**)
   t.is ((int)p13.cursor (), 2,  "cursor '123' --> 2");
   t.is ((int)p13.restore (), 0, "restore '123' --> 0");
   t.is (p13.dump (),            "≪123≫ l3 c0", "dump: " + p13.dump ());
+
+  // Pig::getOneOf
+  Pig p14 ("fourteenfour five");
+  t.ok (p14.getOneOf ({"fourteen", "four"}, value), "getOneOf={fourteen,four} 'fourteenfour five' --> true");
+  t.is (value, "fourteen",                          "getOneOf={fourteen,four} 'fourteenfour five' --> 'fourteen'");
+  t.ok (p14.getOneOf ({"fourteen", "four"}, value), "getOneOf={fourteen,four} 'fourteenfour five' --> true");
+  t.is (value, "four",                              "getOneOf={fourteen,four} 'fourteenfour five' --> 'four'");
+  t.is (p14.dump (),                                "≪fourteenfour five≫ l17 c12", "dump: " + p14.dump ());
+  t.notok (p14.getOneOf ({"five"}, value),          "getOneOf={five} 'fourteenfour five' --> false");
+  t.is (p14.dump (),                                "≪fourteenfour five≫ l17 c12", "dump: " + p14.dump ());
 
   return 0;
 }
