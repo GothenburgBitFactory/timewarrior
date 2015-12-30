@@ -41,6 +41,18 @@ Pig::Pig (const std::string& text)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+bool Pig::skip (int c)
+{
+  if (_text[_cursor] == c)
+  {
+    ++_cursor;
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 bool Pig::skipN (const int quantity)
 {
   auto save = _cursor;
