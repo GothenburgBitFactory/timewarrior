@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (57);
+  UnitTest t (59);
 
   // Pig::skipN
   Pig p0 ("12345");
@@ -153,6 +153,8 @@ int main (int, char**)
   // Pig::peek
   Pig p12 ("123");
   t.is (p12.peek (), '1',   "peek '123' --> '1'");
+  t.is (p12.dump (),        "≪123≫ l3 c0", "dump");
+  t.is (p12.peek (2), "12",  "peek=2 '123' --> '12'");
   t.is (p12.dump (),        "≪123≫ l3 c0", "dump");
 
   return 0;
