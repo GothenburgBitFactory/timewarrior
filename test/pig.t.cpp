@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (43);
+  UnitTest t (52);
 
   // Pig::skipN
   Pig p0 ("12345");
@@ -109,20 +109,39 @@ int main (int, char**)
   t.is (p6.dump (),         "≪1≫ l1 c1", "dump");
   t.diag (p6.dump ());
 
+  // Pig::getNumber
+  Pig p7 ("1 ");
+  t.ok (p7.getNumber (value), "getNumber '1 ' --> true");
+  t.is (value, "1",           "getNumber '1 ' --> '1'");
+  t.is (p7.dump (),           "≪1 ≫ l2 c1", "dump");
+  t.diag (p7.dump ());
+
+  Pig p8 ("3.14");
+  t.ok (p8.getNumber (value), "getNumber '3.14' --> true");
+  t.is (value, "3.14",        "getNumber '3.14' --> '3.14'");
+  t.is (p8.dump (),           "≪3.14≫ l4 c4", "dump");
+  t.diag (p8.dump ());
+
+  Pig p9 ("1.23e-4 ");
+  t.ok (p9.getNumber (value), "getNumber '1.23e-4 ' --> true");
+  t.is (value, "1.23e-4",     "getNumber '1.23e-4 ' --> '1.23e-4'");
+  t.is (p9.dump (),           "≪1.23e-4 ≫ l8 c7", "dump");
+  t.diag (p9.dump ());
+
   // Pig::getRemainder
-  Pig p7 ("123");
-  t.ok (p7.skipN (1),       "skipN=1 '123' --> true");
-  t.is (p7.dump (),         "≪123≫ l3 c1", "dump");
-  t.diag (p7.dump ());
+  Pig p11 ("123");
+  t.ok (p11.skipN (1),       "skipN=1 '123' --> true");
+  t.is (p11.dump (),         "≪123≫ l3 c1", "dump");
+  t.diag (p11.dump ());
 
-  t.ok (p7.getRemainder (value), "getRemainder '23' --> true");
+  t.ok (p11.getRemainder (value), "getRemainder '23' --> true");
   t.is (value, "23",        "getRemainder '23' --> '23'");
-  t.is (p7.dump (),         "≪123≫ l3 c3", "dump");
-  t.diag (p7.dump ());
+  t.is (p11.dump (),         "≪123≫ l3 c3", "dump");
+  t.diag (p11.dump ());
 
-  t.notok (p7.getRemainder (value), "getRemainder '' --> false");
-  t.is (p7.dump (),         "≪123≫ l3 c3", "dump");
-  t.diag (p7.dump ());
+  t.notok (p11.getRemainder (value), "getRemainder '' --> false");
+  t.is (p11.dump (),         "≪123≫ l3 c3", "dump");
+  t.diag (p11.dump ());
 
   return 0;
 }
