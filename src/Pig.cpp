@@ -36,6 +36,7 @@
 Pig::Pig (const std::string& text)
 : _text (text)
 , _cursor (0)
+, _saved (0)
 {
 }
 
@@ -285,6 +286,20 @@ std::string Pig::peek (const int quantity) const
     return _text.substr (_cursor, quantity);
 
   return "";
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Note: never called internally, otherwise the client cannot rely on iṫ.
+std::string::size_type Pig::save ()
+{
+  return _saved = _cursor;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Note: never called internally, otherwise the client cannot rely on iṫ.
+std::string::size_type Pig::restore ()
+{
+  return _cursor = _saved;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

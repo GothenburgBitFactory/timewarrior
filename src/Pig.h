@@ -48,12 +48,15 @@ public:
   bool eos () const;
   int peek () const;
   std::string peek (const int) const;
+  std::string::size_type save ();
+  std::string::size_type restore ();
 
   std::string dump () const;
 
 private:
   const std::string&     _text;
   std::string::size_type _cursor;
+  std::string::size_type _saved;
 };
 
 #endif
