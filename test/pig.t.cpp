@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (32);
+  UnitTest t (43);
 
   // Pig::skipN
   Pig p0 ("12345");
@@ -60,48 +60,69 @@ int main (int, char**)
   t.is (p2.dump (),                "≪onetwo≫ l6 c3", "dump");
   t.diag (p2.dump ());
 
-  // Pig::getDigit
-  Pig p3 (" 123");
-  int n;
-  t.notok (p3.getDigit (n), "getDigit ' 123' --> false");
-  t.ok (p3.skipWS (),       "skipWS ' 123' --> true");
-  t.is (p3.dump (),         "≪ 123≫ l4 c1", "dump");
-  t.diag (p3.dump ());
-  t.ok (p3.getDigit (n),    "getDigit '123' --> true");
-  t.is (n, 1,               "getDigit '123' --> '1'");
-  t.is (p3.dump (),         "≪ 123≫ l4 c2", "dump");
+  // Pig::getUntilWS
+  Pig p3 ("one two three");
+  std::string value;
+  t.ok (p3.getUntilWS (value), "getUntilWS 'one two three' --> true");
+  t.is (value, "one",          "getUntilWS 'one two three' --> 'one'");
+  t.is (p3.dump (),            "≪one two three≫ l13 c3", "dump");
   t.diag (p3.dump ());
 
-  // Pig::getDigits
-  Pig p4 ("123 ");
-  t.ok (p4.getDigits (n),   "getDigits '123 ' --> true");
-  t.is (n, 123,             "getDigits '123 ' --> 123");
-  t.is (p4.dump (),         "≪123 ≫ l4 c3", "dump");
+  t.ok (p3.skipWS (),          "skipWS ' two three' --> true"); 
+
+  t.ok (p3.getUntilWS (value), "getUntilWS 'two three' --> true");
+  t.is (value, "two",          "getUntilWS 'two three' --> 'two'");
+  t.is (p3.dump (),            "≪one two three≫ l13 c7", "dump");
+  t.diag (p3.dump ());
+
+  t.ok (p3.skipWS (),          "skipWS ' three' --> true"); 
+
+  t.ok (p3.getUntilWS (value), "getUntilWS 'three' --> true");
+  t.is (value, "three",        "getUntilWS 'three' --> 'three'");
+  t.is (p3.dump (),            "≪one two three≫ l13 c13", "dump");
+  t.diag (p3.dump ());
+
+  // Pig::getDigit
+  Pig p4 (" 123");
+  int n;
+  t.notok (p4.getDigit (n), "getDigit ' 123' --> false");
+  t.ok (p4.skipWS (),       "skipWS ' 123' --> true");
+  t.is (p4.dump (),         "≪ 123≫ l4 c1", "dump");
+  t.diag (p4.dump ());
+  t.ok (p4.getDigit (n),    "getDigit '123' --> true");
+  t.is (n, 1,               "getDigit '123' --> '1'");
+  t.is (p4.dump (),         "≪ 123≫ l4 c2", "dump");
   t.diag (p4.dump ());
 
-  Pig p5 ("1");
-  t.notok (p5.eos (),       "eos '1' --> false");
-  t.ok (p5.getDigit (n),    "getDigit '1' --> true");
-  t.notok (p5.getDigit (n), "getDigit '' --> false");
-  t.ok (p5.eos (),          "eos '' --> true");
-  t.is (p5.dump (),         "≪1≫ l1 c1", "dump");
+  // Pig::getDigits
+  Pig p5 ("123 ");
+  t.ok (p5.getDigits (n),   "getDigits '123 ' --> true");
+  t.is (n, 123,             "getDigits '123 ' --> 123");
+  t.is (p5.dump (),         "≪123 ≫ l4 c3", "dump");
   t.diag (p5.dump ());
 
+  Pig p6 ("1");
+  t.notok (p6.eos (),       "eos '1' --> false");
+  t.ok (p6.getDigit (n),    "getDigit '1' --> true");
+  t.notok (p6.getDigit (n), "getDigit '' --> false");
+  t.ok (p6.eos (),          "eos '' --> true");
+  t.is (p6.dump (),         "≪1≫ l1 c1", "dump");
+  t.diag (p6.dump ());
+
   // Pig::getRemainder
-  Pig p6 ("123");
-  t.ok (p6.skipN (1),       "skipN=1 '123' --> true");
-  t.is (p6.dump (),         "≪123≫ l3 c1", "dump");
-  t.diag (p6.dump ());
+  Pig p7 ("123");
+  t.ok (p7.skipN (1),       "skipN=1 '123' --> true");
+  t.is (p7.dump (),         "≪123≫ l3 c1", "dump");
+  t.diag (p7.dump ());
 
-  std::string value;
-  t.ok (p6.getRemainder (value), "getRemainder '23' --> true");
+  t.ok (p7.getRemainder (value), "getRemainder '23' --> true");
   t.is (value, "23",        "getRemainder '23' --> '23'");
-  t.is (p6.dump (),         "≪123≫ l3 c3", "dump");
-  t.diag (p6.dump ());
+  t.is (p7.dump (),         "≪123≫ l3 c3", "dump");
+  t.diag (p7.dump ());
 
-  t.notok (p6.getRemainder (value), "getRemainder '' --> false");
-  t.is (p6.dump (),         "≪123≫ l3 c3", "dump");
-  t.diag (p6.dump ());
+  t.notok (p7.getRemainder (value), "getRemainder '' --> false");
+  t.is (p7.dump (),         "≪123≫ l3 c3", "dump");
+  t.diag (p7.dump ());
 
   return 0;
 }
