@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (25);
+  UnitTest t (32);
 
   // Pig::skipN
   Pig p0 ("12345");
@@ -86,6 +86,22 @@ int main (int, char**)
   t.ok (p5.eos (),          "eos '' --> true");
   t.is (p5.dump (),         "≪1≫ l1 c1", "dump");
   t.diag (p5.dump ());
+
+  // Pig::getRemainder
+  Pig p6 ("123");
+  t.ok (p6.skipN (1),       "skipN=1 '123' --> true");
+  t.is (p6.dump (),         "≪123≫ l3 c1", "dump");
+  t.diag (p6.dump ());
+
+  std::string value;
+  t.ok (p6.getRemainder (value), "getRemainder '23' --> true");
+  t.is (value, "23",        "getRemainder '23' --> '23'");
+  t.is (p6.dump (),         "≪123≫ l3 c3", "dump");
+  t.diag (p6.dump ());
+
+  t.notok (p6.getRemainder (value), "getRemainder '' --> false");
+  t.is (p6.dump (),         "≪123≫ l3 c3", "dump");
+  t.diag (p6.dump ());
 
   return 0;
 }
