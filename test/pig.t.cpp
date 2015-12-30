@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (52);
+  UnitTest t (55);
 
   // Pig::skipN
   Pig p0 ("12345");
@@ -127,6 +127,13 @@ int main (int, char**)
   t.is (value, "1.23e-4",     "getNumber '1.23e-4 ' --> '1.23e-4'");
   t.is (p9.dump (),           "≪1.23e-4 ≫ l8 c7", "dump");
   t.diag (p9.dump ());
+
+  Pig p10 ("2.34e-5");
+  double dvalue;
+  t.ok (p10.getNumber (dvalue), "getNumber '2.34e-5' --> true");
+  t.is (dvalue, 2.34e-5, 1e-6,  "getNumber '2.34e-5' --> 2.34e-5 +/- 1e-6");
+  t.is (p10.dump (),            "≪2.34e-5≫ l7 c7", "dump");
+  t.diag (p10.dump ());
 
   // Pig::getRemainder
   Pig p11 ("123");
