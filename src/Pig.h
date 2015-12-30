@@ -41,6 +41,7 @@ public:
   bool getUntilWS (std::string&);
   bool getDigit (int&);
   bool getDigits (int&);
+  bool getNumber (std::string&);
   bool getRemainder (std::string&);
 
   bool eos () const;

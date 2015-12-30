@@ -158,6 +158,85 @@ bool Pig::getDigits (int& result)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// number:
+//   int frac? exp?
+// 
+// int:
+//   (-|+)? digit+
+// 
+// frac:
+//   . digit+
+// 
+// exp:
+//   e digit+
+// 
+// e:
+//   e|E (+|-)?
+// 
+bool Pig::getNumber (std::string& result)
+{
+  auto i = _cursor;
+
+  // [+-]?
+  if (_text[i] &&
+      (_text[i] == '-' ||
+       _text[i] == '+'))
+    ++i;
+
+  // digit+
+  if (_text[i] &&
+      Lexer::isDigit (_text[i]))
+  {
+    ++i;
+
+    while (_text[i] && Lexer::isDigit (_text[i]))
+      ++i;
+
+    // ( . digit+ )?
+    if (_text[i] && _text[i] == '.')
+    {
+      ++i;
+
+      while (_text[i] && Lexer::isDigit (_text[i]))
+        ++i;
+    }
+
+    // ( [eE] [+-]? digit+ )?
+    if (_text[i] &&
+        (_text[i] == 'e' ||
+         _text[i] == 'E'))
+    {
+      ++i;
+
+      if (_text[i] &&
+          (_text[i] == '+' ||
+           _text[i] == '-'))
+        ++i;
+
+      if (_text[i] && Lexer::isDigit (_text[i]))
+      {
+        ++i;
+
+        while (_text[i] && Lexer::isDigit (_text[i]))
+          ++i;
+
+        result = _text.substr (_cursor, i - _cursor);
+        _cursor = i;
+        return true;
+      }
+
+      return false;
+    }
+
+    result = _text.substr (_cursor, i - _cursor);
+    _cursor = i;
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 bool Pig::getRemainder (std::string& result)
 {
   if (_text[_cursor])
