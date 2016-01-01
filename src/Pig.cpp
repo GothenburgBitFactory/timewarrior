@@ -294,6 +294,66 @@ bool Pig::getNumber (double& result)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Gets quote content:      "foobar" -> foobar      (for c = '"')
+// Handles escaped quotes:  "foo\"bar" -> foo\"bar  (for c = '"')
+// Returns false if first character is not c, or if there is no closing c.
+// Does not modify content between quotes.
+bool Pig::getQuoted (int quote, std::string& result)
+{
+  if (! _text[_cursor] ||
+      _text[_cursor] != quote)
+    return false;
+
+  auto start = _cursor + utf8_sequence (quote);
+  auto i = start;
+
+  while (_text[i])
+  {
+    i = _text.find (quote, i);
+    if (i == std::string::npos)
+      return false;  // Unclosed quote.  Short cut, not definitive.
+
+    if (i == start)
+    {
+      // Empty quote
+      _cursor += 2 * utf8_sequence (quote);  // Skip both quote chars
+      result = "";
+      return true;
+    }
+
+    if (_text[i - 1] == '\\')
+    {
+      // Check for escaped backslashes.  Backtracking like this is not very
+      // efficient, but is only done in extreme corner cases.
+
+      auto j = i - 2;  // Start one character further left
+      bool is_escaped_quote = true;
+      while (j >= start && _text[j] == '\\')
+      {
+        // Toggle flag for each further backslash encountered.
+        is_escaped_quote = is_escaped_quote ? false : true;
+        --j;
+      }
+
+      if (is_escaped_quote)
+      {
+        // Keep searching
+        ++i;
+        continue;
+      }
+    }
+
+    // None of the above applied, we must have found the closing quote char.
+    result.assign (_text, start, i - start);
+    _cursor = i + utf8_sequence (quote);  // Skip closing quote char
+    return true;
+  }
+
+  // This should never be reached.  We could throw here instead.
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Assumes that the options are sorted by decreasing length, so that if the
 // options contain 'fourteen' and 'four', the stream is first matched against
 // the longer entry.

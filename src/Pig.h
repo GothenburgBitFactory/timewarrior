@@ -46,6 +46,7 @@ public:
   bool getHexDigit (int&);
   bool getNumber (std::string&);
   bool getNumber (double&);
+  bool getQuoted (int, std::string&);
   bool getOneOf (const std::vector <std::string>&, std::string&);
   bool getRemainder (std::string&);
 
