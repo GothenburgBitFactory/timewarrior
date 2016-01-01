@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (87);
+  UnitTest t (101);
 
   // Pig::skip
   // Pig::skipN
@@ -67,13 +67,13 @@ int main (int, char**)
   t.is (value, "one",          "getUntilWS 'one two three' --> 'one'");
   t.is (p3.dump (),            "≪one two three≫ l13 c3", "dump: " + p3.dump ());
 
-  t.ok (p3.skipWS (),          "skipWS ' two three' --> true"); 
+  t.ok (p3.skipWS (),          "skipWS ' two three' --> true");
 
   t.ok (p3.getUntilWS (value), "getUntilWS 'two three' --> true");
   t.is (value, "two",          "getUntilWS 'two three' --> 'two'");
   t.is (p3.dump (),            "≪one two three≫ l13 c7", "dump: " + p3.dump ());
 
-  t.ok (p3.skipWS (),          "skipWS ' three' --> true"); 
+  t.ok (p3.skipWS (),          "skipWS ' three' --> true");
 
   t.ok (p3.getUntilWS (value), "getUntilWS 'three' --> true");
   t.is (value, "three",        "getUntilWS 'three' --> 'three'");
@@ -178,6 +178,37 @@ int main (int, char**)
   t.ok (p15.getHexDigit (n),    "getHexDigit '9aF' --> true");
   t.is (n, 15,                  "getHexDigit '9aF' --> '15'");
   t.is (p15.dump (),            "≪ 9aF≫ l4 c4", "dump: " + p15.dump ());
+
+  // Pig::getQuoted
+  Pig p16 ("");
+  t.notok (p16.getQuoted ('"', value),  "      \"\"   :      getQuoted ('\"')     --> false");
+
+  Pig p17 ("''");
+  t.ok (p17.getQuoted ('\'', value),    "      \"''\" :      getQuoted ('\\'')   --> true");
+  t.is (value, "",                      "      \"''\" :      getQuoted ('\\'')   --> ''");
+
+  Pig p18 ("'\"'");
+  t.ok (p18.getQuoted ('\'', value),    "     \"'\"'\" :      getQuoted ('\\'')   --> true");
+  t.is (value, "\"",                    "     \"'\"'\" :      getQuoted ('\\'')   --> '\"'");
+
+  Pig p19 ("'x'");
+  t.ok (p19.getQuoted ('\'', value),    "     \"'x'\" :      getQuoted ('\\'')   --> true");
+  t.is (value, "x",                     "     \"'x'\" :      getQuoted ('\\'')   --> \"x\"");
+
+  Pig p20 ("'x");
+  t.notok (p20.getQuoted ('\'', value), "      \"'x\" :      getQuoted ('\\'')   --> false");
+
+  Pig p21 ("x");
+  t.notok (p21.getQuoted ('\'', value), "       'x' :      getQuoted ('\\'')   --> false");
+
+  Pig p22 ("\"one\\\"two\"");
+  t.notok (p22.getQuoted ('\'', value), " \"one\\\"two\" :     getQuoted ('\\'')   --> false");
+  t.ok (p22.getQuoted ('"', value),     " \"one\\\"two\" :     getQuoted ('\"')    --> true");
+  t.is (value, "one\\\"two",            " \"one\\\"two\" :     getQuoted ('\"')    --> \"one\\\"two\"");
+
+  Pig p23 ("\"one\\\\\"");
+  t.ok (p23.getQuoted ('\"', value),    "  \"one\\\\\"\" :     getQuoted ('\"')    --> true");
+  t.is (value, "one\\\\",               "  \"one\\\\\"\" :     getQuoted ('\"')    --> \"one\\\\\"");
 
   return 0;
 }
