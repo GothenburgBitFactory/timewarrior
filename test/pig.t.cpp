@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (101);
+  UnitTest t (117);
 
   // Pig::skip
   // Pig::skipN
@@ -209,6 +209,34 @@ int main (int, char**)
   Pig p23 ("\"one\\\\\"");
   t.ok (p23.getQuoted ('\"', value),    "  \"one\\\\\"\" :     getQuoted ('\"')    --> true");
   t.is (value, "one\\\\",               "  \"one\\\\\"\" :     getQuoted ('\"')    --> \"one\\\\\"");
+
+  // Pig::getDigit1
+  // Pig::getDigit2
+  // Pig::getDigit3
+  // Pig::getDigit4
+  // Pig::getDigits
+  Pig p24 ("122333444455555555");
+  t.ok (p24.getDigit (n),   "getDigit   '122333444455555555' --> true");
+  t.is (n, 1,               "getDigit   '122333444455555555' --> 1");
+  t.is (p24.dump (),        "≪122333444455555555≫ l18 c1", "dump: " + p24.dump ());
+
+  t.ok (p24.getDigit2 (n),  "getDigit2   '22333444455555555' --> true");
+  t.is (n, 22,              "getDigit2   '22333444455555555' --> 22");
+  t.is (p24.dump (),        "≪122333444455555555≫ l18 c3", "dump: " + p24.dump ());
+
+  t.ok (p24.getDigit3 (n),  "getDigit3   '22333444455555555' --> true");
+  t.is (n, 333,             "getDigit3   '22333444455555555' --> 333");
+  t.is (p24.dump (),        "≪122333444455555555≫ l18 c6", "dump: " + p24.dump ());
+
+  t.ok (p24.getDigit4 (n),  "getDigit4   '22333444455555555' --> true");
+  t.is (n, 4444,            "getDigit4   '22333444455555555' --> 4444");
+  t.is (p24.dump (),        "≪122333444455555555≫ l18 c10", "dump: " + p24.dump ());
+
+  t.ok (p24.getDigits (n),  "getDigits   '22333444455555555' --> true");
+  t.is (n, 55555555,        "getDigits   '22333444455555555' --> 55555555");
+  t.is (p24.dump (),        "≪122333444455555555≫ l18 c18", "dump: " + p24.dump ());
+
+  t.ok (p24.eos (),         "eos --> true");
 
   return 0;
 }
