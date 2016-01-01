@@ -146,6 +146,63 @@ bool Pig::getDigit (int& result)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+bool Pig::getDigit2 (int& result)
+{
+  if (Lexer::isDigit (_text[_cursor + 0]))
+  {
+    if (Lexer::isDigit (_text[_cursor + 1]))
+    {
+      result = strtoimax (_text.substr (_cursor, 2).c_str (), NULL, 10);
+      _cursor += 2;
+      return true;
+    }
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool Pig::getDigit3 (int& result)
+{
+  if (Lexer::isDigit (_text[_cursor + 0]))
+  {
+    if (Lexer::isDigit (_text[_cursor + 1]))
+    {
+      if (Lexer::isDigit (_text[_cursor + 2]))
+      {
+        result = strtoimax (_text.substr (_cursor, 3).c_str (), NULL, 10);
+        _cursor += 3;
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool Pig::getDigit4 (int& result)
+{
+  if (Lexer::isDigit (_text[_cursor + 0]))
+  {
+    if (Lexer::isDigit (_text[_cursor + 1]))
+    {
+      if (Lexer::isDigit (_text[_cursor + 2]))
+      {
+        if (Lexer::isDigit (_text[_cursor + 3]))
+        {
+          result = strtoimax (_text.substr (_cursor, 4).c_str (), NULL, 10);
+          _cursor += 4;
+          return true;
+        }
+      }
+    }
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 bool Pig::getDigits (int& result)
 {
   auto save = _cursor;
