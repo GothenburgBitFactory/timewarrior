@@ -74,11 +74,15 @@ void LR0::initialize (const Grammar& grammar)
 
   Closure items;
   items.push_back (item0);
-  auto closure = getClosure (items);
+  for (auto& expected : getExpected (items))
+    for (auto& item : expand (expected))
+      items.push_back (item);
 
   States states;
-  states.push_back (closure);
+  states.push_back (items);
   std::cout << states.dump () << "\n";
+
+  // TODO Now recursively fill in the rest.
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -127,11 +131,11 @@ std::set <std::string> LR0::getExpected (const Closure& closure) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-LR0::Closure LR0::expand (const Closure& closure) const
+LR0::Closure LR0::expand (const std::string& symbol) const
 {
   LR0::Closure result;
 
-  return closure;
+  return result;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
