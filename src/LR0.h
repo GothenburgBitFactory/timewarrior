@@ -65,9 +65,7 @@ public:
   };
 
 private:
-  Closure getClosure (const Item&);
-
-
+  Closure getClosure (const Closure&);
   std::vector <std::string> getExpectations (const Closure&);
 
 private:

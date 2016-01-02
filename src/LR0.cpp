@@ -67,11 +67,14 @@ void LR0::initialize (const Grammar& grammar)
     std::cout << "\n";
   }
 
-  // TODO Expand this single interation into a loop that ends when there is no
-  // more expanѕion.
+  // TODO The rest of this method is a work in progress. The goal is to create
+  //      recursive tools to completely build the LR parsing table.
   Item item0 {_augmented[0]};
   item0.setGrammarRuleIndex (0);
-  auto closure = getClosure (item0);
+
+  Closure items;
+  items.push_back (item0);
+  auto closure = getClosure (items);
 
   States states;
   states.push_back (closure);
@@ -91,12 +94,12 @@ void LR0::initialize (const Grammar& grammar)
 //   until no more items can be added to J;
 //   return J
 // end
-LR0::Closure LR0::getClosure (const Item& item)
+LR0::Closure LR0::getClosure (const Closure& items)
 {
   LR0::Closure closure;
-  closure.push_back (item);
 
-  // TODO Add the rest
+  for (auto & item : items)
+    closure.push_back (item);
 
   return closure;
 }
