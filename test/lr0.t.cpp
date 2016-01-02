@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (10);
+  UnitTest t (13);
 
   // LR0::Item.
   LR0::Item item1 ({"E", "-->", "E", "*", "B"});
@@ -43,7 +43,9 @@ int main (int, char**)
   t.ok (item1.advance (), "Item::advance true");
   t.is (item1.dump (), "E --> E * ● B", "E --> E * ● B");
 
+  t.notok (item1.done (), "Item::done false");
   t.ok (item1.advance (), "Item::advance true");
+  t.ok (item1.done (), "Item::done true");
   t.is (item1.dump (), "E --> E * B ●", "E --> E * B ●");
 
   t.notok (item1.advance (), "Item::advance false");
@@ -52,6 +54,7 @@ int main (int, char**)
   LR0::Item item2 ({"A", "-->", "є"});
   t.is (item2.dump (), "A --> ●", "A --> ●");
   t.notok (item2.advance (), "Item::advance false");
+  t.ok (item2.done (), "Item::done true");
 
   return 0;
 }
