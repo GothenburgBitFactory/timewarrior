@@ -105,9 +105,14 @@ LR0::Closure LR0::getClosure (const Closure& items)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Collect a unique set of expected symbols from the closure.
 std::vector <std::string> LR0::getExpectations (const Closure& closure)
 {
   std::vector <std::string> expected;
+  for (auto& item : closure)
+    if (! item.done () &&
+        std::find (expected.begin (), expected.end (), item.next ()) == expected.end ())
+      expected.push_back (item.next ());
 
   return expected;
 }
