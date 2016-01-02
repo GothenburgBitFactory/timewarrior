@@ -44,12 +44,14 @@ public:
   {
   public:
     Item (const std::vector <std::string>&);
+    void setGrammarRuleIndex (const int);
     bool advance ();
     std::string dump () const;
 
   private:
     std::vector <std::string> _rule;
     unsigned int _cursor;
+    int _grammarRule;
   };
 
   class Closure : public std::vector <Item>

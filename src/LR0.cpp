@@ -70,6 +70,7 @@ void LR0::initialize (const Grammar& grammar)
   // TODO Expand this single interation into a loop that ends when there is no
   // more expanѕion.
   Item item0 {_augmented[0]};
+  item0.setGrammarRuleIndex (0);
   auto closure = getClosure (item0);
 
   States states;
@@ -151,9 +152,16 @@ std::string LR0::dump () const
 LR0::Item::Item (const std::vector <std::string>& rule)
 : _rule (rule)
 , _cursor (2)
+, _grammarRule (-1)
 {
   if (_rule.size () == 3 && _rule[2] == "є")
     _rule.pop_back ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void LR0::Item::setGrammarRuleIndex (const int rule)
+{
+  _grammarRule = rule;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -184,6 +192,9 @@ std::string LR0::Item::dump () const
 
   if (_cursor >= _rule.size ())
     out << " ●";
+
+  if (_grammarRule != -1)
+    out << " [g" << _grammarRule << "]";
 
   return out.str ();
 }
