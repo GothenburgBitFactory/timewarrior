@@ -47,6 +47,7 @@ public:
     void setGrammarRuleIndex (const int);
     bool advance ();
     bool done () const;
+    std::string next () const;
     std::string dump () const;
 
   private:
