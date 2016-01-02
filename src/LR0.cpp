@@ -50,13 +50,13 @@ LR0::LR0 ()
 void LR0::initialize (const Grammar& grammar)
 {
   // Obtain the augmented grammar.
-  auto augmented = grammar.augmented ();
+  auto _augmented = grammar.augmented ();
 
   if (_debug)
   {
     std::cout << "Augmented Grammar\n";
     auto count = 0;
-    for (auto& item : augmented)
+    for (auto& item : _augmented)
     {
       std::cout << "  [" << count++ << "]";
       for (auto& term : item)
@@ -69,8 +69,8 @@ void LR0::initialize (const Grammar& grammar)
 
   // TODO Expand this single interation into a loop that ends when there is no
   // more expanѕion.
-  Item item0 {augmented[0]};
-  auto closure = getClosure (item0, augmented);
+  Item item0 {_augmented[0]};
+  auto closure = getClosure (item0);
 
   States states;
   states.push_back (closure);
@@ -90,9 +90,7 @@ void LR0::initialize (const Grammar& grammar)
 //   until no more items can be added to J;
 //   return J
 // end
-LR0::Closure LR0::getClosure (
-  const Item& item,
-  const std::vector <std::vector <std::string>>& augmented)
+LR0::Closure LR0::getClosure (const Item& item)
 {
   LR0::Closure closure;
   closure.push_back (item);

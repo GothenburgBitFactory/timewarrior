@@ -63,9 +63,14 @@ public:
   };
 
 private:
-  Closure getClosure (const Item&, const std::vector <std::vector <std::string>>&);
+  Closure getClosure (const Item&);
+
+
 
 private:
+  // Copy of the augmented grammar.
+  std::vector <std::vector <std::string>> _augmented;
+
   //        state         column        result
   //        |              |            |
   std::map <int, std::map <std::string, std::string>> _actions;
