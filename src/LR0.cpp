@@ -130,9 +130,13 @@ std::set <std::string> LR0::getExpected (const Closure& closure) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Add all items to the result set matching the production rule for symbol.
 LR0::Closure LR0::expand (const std::string& symbol) const
 {
   LR0::Closure result;
+  for (auto& rule : _augmented)
+    if (rule[0] == symbol)
+      result.push_back (Item (rule));
 
   return result;
 }
