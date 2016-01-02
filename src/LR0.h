@@ -68,8 +68,8 @@ public:
   };
 
 private:
-  Closure getClosure (const Closure&);
-  std::set <std::string> getExpected (const Closure&);
+  Closure getClosure (const Closure&) const;
+  std::set <std::string> getExpected (const Closure&) const;
   Closure expand (const Closure&) const;
 
 private:

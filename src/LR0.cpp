@@ -94,7 +94,7 @@ void LR0::initialize (const Grammar& grammar)
 //   until no more items can be added to J;
 //   return J
 // end
-LR0::Closure LR0::getClosure (const Closure& items)
+LR0::Closure LR0::getClosure (const Closure& items) const
 {
   LR0::Closure closure;
   for (auto& item : items)
@@ -116,7 +116,7 @@ LR0::Closure LR0::getClosure (const Closure& items)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Collect a unique set of expected symbols from the closure.
-std::set <std::string> LR0::getExpected (const Closure& closure)
+std::set <std::string> LR0::getExpected (const Closure& closure) const
 {
   std::set <std::string> expected;
   for (auto& item : closure)
