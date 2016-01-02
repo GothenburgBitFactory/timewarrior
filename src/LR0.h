@@ -70,6 +70,7 @@ public:
 private:
   Closure getClosure (const Closure&);
   std::set <std::string> getExpected (const Closure&);
+  Closure expand (const Closure&) const;
 
 private:
   // Copy of the augmented grammar.

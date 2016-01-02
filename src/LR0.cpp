@@ -127,6 +127,14 @@ std::set <std::string> LR0::getExpected (const Closure& closure)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+LR0::Closure LR0::expand (const Closure& closure) const
+{
+  LR0::Closure result;
+
+  return closure;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Aho/Sethi/Ullman, p224
 //
 // If I is the set of two items {[E' --> E .], [E --> E . + T]}, then
