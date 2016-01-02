@@ -107,8 +107,7 @@ LR0::Closure LR0::getClosure (const Closure& items) const
     closure.push_back (item);
 
     // Obtain all the expected symbols.
-    auto expected = getExpected (items);
-    for (auto& exp : expected)
+    for (auto& exp : getExpected (items))
     {
       std::cout << "# Expecting " << exp << "\n";
       std::cout << "# Add expansion of " << exp << "\n";
