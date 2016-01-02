@@ -102,6 +102,14 @@ LR0::Closure LR0::getClosure (const Item& item)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::vector <std::string> LR0::getExpectations (const Closure& closure)
+{
+  std::vector <std::string> expected;
+
+  return expected;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Aho/Sethi/Ullman, p224
 //
 // If I is the set of two items {[E' --> E .], [E --> E . + T]}, then

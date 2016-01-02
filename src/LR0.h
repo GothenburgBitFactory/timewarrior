@@ -68,6 +68,7 @@ private:
   Closure getClosure (const Item&);
 
 
+  std::vector <std::string> getExpectations (const Closure&);
 
 private:
   // Copy of the augmented grammar.
