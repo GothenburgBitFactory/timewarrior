@@ -28,6 +28,7 @@
 #define INCLUDED_LR0
 
 #include <Grammar.h>
+#include <set>
 #include <map>
 #include <string>
 
@@ -68,7 +69,7 @@ public:
 
 private:
   Closure getClosure (const Closure&);
-  std::vector <std::string> getExpected (const Closure&);
+  std::set <std::string> getExpected (const Closure&);
 
 private:
   // Copy of the augmented grammar.
