@@ -50,7 +50,7 @@ LR0::LR0 ()
 void LR0::initialize (const Grammar& grammar)
 {
   // Obtain the augmented grammar.
-  auto _augmented = grammar.augmented ();
+  _augmented = grammar.augmented ();
 
   if (_debug)
   {
