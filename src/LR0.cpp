@@ -97,9 +97,19 @@ void LR0::initialize (const Grammar& grammar)
 LR0::Closure LR0::getClosure (const Closure& items)
 {
   LR0::Closure closure;
-
-  for (auto & item : items)
+  for (auto& item : items)
+  {
+    // closure(I) includes I.
     closure.push_back (item);
+
+    // Obtain all the expected symbols.
+    auto expected = getExpectations (items);
+    for (auto& exp : expected)
+    {
+      std::cout << "# Expecting " << exp << "\n";
+      std::cout << "# Add expansion of " << exp << "\n";
+    }
+  }
 
   return closure;
 }
