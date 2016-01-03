@@ -73,10 +73,10 @@ void LR0::initialize (const Grammar& grammar)
 
   States states;
   states.push_back (items);
-  std::cout << states.dump () << "\n";
 
   // TODO Now recursively fill in the rest.
   closeState (states, 0);
+  std::cout << states.dump () << "\n";
 }
 
 ////////////////////////////////////////////////////////////////////////////////
