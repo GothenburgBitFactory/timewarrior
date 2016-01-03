@@ -83,6 +83,7 @@ void LR0::initialize (const Grammar& grammar)
   std::cout << states.dump () << "\n";
 
   // TODO Now recursively fill in the rest.
+  closeState (states, 0);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -128,6 +129,13 @@ LR0::Closure LR0::getClosure (const std::string& symbol) const
   }
 
   return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool LR0::closeState (States& states, const int state) const
+{
+
+  return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
