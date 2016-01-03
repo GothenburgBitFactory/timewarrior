@@ -133,10 +133,31 @@ std::set <std::string> LR0::getExpected (const Closure& closure) const
 // Add all items to the result set matching the production rule for symbol.
 LR0::Closure LR0::expand (const std::string& symbol) const
 {
+  std::set <std::string> seen;
+
   LR0::Closure result;
   for (auto& rule : _augmented)
+  {
     if (rule[0] == symbol)
-      result.push_back (Item (rule));
+    {
+      Item item (rule);
+      result.push_back (item);
+      seen.insert (rule[0]);
+
+      auto nextSymbol = item.next ();
+      if (seen.find (nextSymbol) == seen.end ())
+      {
+        for (auto& rule : _augmented)
+        {
+          if (rule[0] == nextSymbol)
+          {
+            result.push_back (Item (rule));
+            seen.insert (nextSymbol);
+          }
+        }
+      }
+    }
+  }
 
   return result;
 }
