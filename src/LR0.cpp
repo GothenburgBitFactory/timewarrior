@@ -86,38 +86,6 @@ void LR0::initialize (const Grammar& grammar)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Aho/Sethi/Ullman, p223
-//
-// function closure (I);
-// begin
-//   J := I;
-//   repeat
-//     for each item A --> alpha . B beta in J and each production
-//       B --> gamma of G such that B -> . gamma is not in J do
-//         add B --> . gamma to J
-//   until no more items can be added to J;
-//   return J
-// end
-LR0::Closure LR0::getClosure (const Closure& items) const
-{
-  LR0::Closure closure;
-  for (auto& item : items)
-  {
-    // closure(I) includes I.
-    closure.push_back (item);
-
-    // Obtain all the expected symbols.
-    for (auto& exp : getExpected (items))
-    {
-      std::cout << "# Expecting " << exp << "\n";
-      std::cout << "# Add expansion of " << exp << "\n";
-    }
-  }
-
-  return closure;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 // Collect a unique set of expected symbols from the closure.
 std::set <std::string> LR0::getExpected (const Closure& closure) const
 {
