@@ -75,7 +75,7 @@ void LR0::initialize (const Grammar& grammar)
   Closure items;
   items.push_back (item0);
   for (auto& expected : getExpectedSymbols (items))
-    for (auto& item : expand (expected))
+    for (auto& item : getClosure (expected))
       items.push_back (item);
 
   States states;
@@ -99,7 +99,7 @@ std::set <std::string> LR0::getExpectedSymbols (const Closure& closure) const
 
 ////////////////////////////////////////////////////////////////////////////////
 // Add all items to the result set matching the production rule for symbol.
-LR0::Closure LR0::expand (const std::string& symbol) const
+LR0::Closure LR0::getClosure (const std::string& symbol) const
 {
   std::set <std::string> seen;
 

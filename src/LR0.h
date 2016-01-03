@@ -69,7 +69,7 @@ public:
 
 private:
   std::set <std::string> getExpectedSymbols (const Closure&) const;
-  Closure expand (const std::string&) const;
+  Closure getClosure (const std::string&) const;
 
 private:
   // Copy of the augmented grammar.
