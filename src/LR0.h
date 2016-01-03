@@ -68,7 +68,7 @@ public:
   };
 
 private:
-  std::set <std::string> getExpected (const Closure&) const;
+  std::set <std::string> getExpectedSymbols (const Closure&) const;
   Closure expand (const std::string&) const;
 
 private:

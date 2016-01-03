@@ -74,7 +74,7 @@ void LR0::initialize (const Grammar& grammar)
 
   Closure items;
   items.push_back (item0);
-  for (auto& expected : getExpected (items))
+  for (auto& expected : getExpectedSymbols (items))
     for (auto& item : expand (expected))
       items.push_back (item);
 
@@ -87,7 +87,7 @@ void LR0::initialize (const Grammar& grammar)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Collect a unique set of expected symbols from the closure.
-std::set <std::string> LR0::getExpected (const Closure& closure) const
+std::set <std::string> LR0::getExpectedSymbols (const Closure& closure) const
 {
   std::set <std::string> expected;
   for (auto& item : closure)
