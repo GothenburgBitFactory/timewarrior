@@ -80,7 +80,8 @@ void LR0::initialize (const Grammar& grammar)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Collect a unique set of expected symbols from the closure.
+// Collect a unique set of expected symbols from the closure. This is the set
+// of symbols where '● X' appears in an item.
 std::set <std::string> LR0::getExpectedSymbols (const Closure& closure) const
 {
   std::set <std::string> expected;
@@ -98,22 +99,25 @@ LR0::Closure LR0::getClosure (const std::string& symbol) const
   std::set <std::string> seen;
 
   LR0::Closure result;
-  for (auto& rule : _augmented)
+  for (unsigned int r = 0; r < _augmented.size (); ++r)
   {
-    if (rule[0] == symbol)
+    if (_augmented[r][0] == symbol)
     {
-      Item item (rule);
+      Item item (_augmented[r]);
+      item.setGrammarRuleIndex (r);
       result.push_back (item);
-      seen.insert (rule[0]);
+      seen.insert (_augmented[r][0]);
 
       auto nextSymbol = item.next ();
       if (seen.find (nextSymbol) == seen.end ())
       {
-        for (auto& rule : _augmented)
+        for (unsigned int r = 0; r < _augmented.size (); ++r)
         {
-          if (rule[0] == nextSymbol)
+          if (_augmented[r][0] == nextSymbol)
           {
-            result.push_back (Item (rule));
+            Item item (_augmented[r]);
+            item.setGrammarRuleIndex (r);
+            result.push_back (item);
             seen.insert (nextSymbol);
           }
         }
