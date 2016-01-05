@@ -76,11 +76,13 @@ void LR0::initialize (const Grammar& grammar)
   States states;
   initializeFirstState (states);
   closeState (states, 0);
-  std::cout << states.dump () << "\n";
+  if (_debug)
+    std::cout << states.dump () << "\n";
 
   // Construct the parser tables.
   createParseTable (states);
-  std::cout << dump () << "\n";;
+  if (_debug)
+    std::cout << dump () << "\n";;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -296,7 +298,6 @@ std::string LR0::States::dump () const
   for (unsigned int state = 0; state < this->size (); ++state)
   {
     out << "  State " << state << "\n";
-
     for (auto& item : (*this)[state])
       out << "    " << item.dump () << "\n";
   }
