@@ -60,21 +60,12 @@ void LR0::initialize (const Grammar& grammar)
     std::cout << "\n";
   }
 
-  // TODO The rest of this method is a work in progress. The goal is to create
-  //      recursive tools to completely build the LR parsing table.
-  Item item0 {_augmented[0]};
-  item0.setGrammarRuleIndex (0);
-
-  Closure items;
-  items.push_back (item0);
-  for (auto& expected : getExpectedSymbols (items))
-    for (auto& item : getClosure (expected))
-      items.push_back (item);
-
+  // Initialize the first state.
   States states;
-  states.push_back (items);
+  initializeFirstState (states);
+  std::cout << states.dump () << "\n";
 
-  // TODO Now recursively fill in the rest.
+  // Recursively fill in the rest.
   closeState (states, 0);
   std::cout << states.dump () << "\n";
 }
