@@ -176,7 +176,22 @@ void LR0::closeState (States& states, const int state) const
 ////////////////////////////////////////////////////////////////////////////////
 void LR0::createParseTable (States& states)
 {
-  // TODO Convert States to the _actions and _goto tables.
+  // First size the tables:
+  // - Create a row for every state
+  // - Create a column for every terminal in the _actions table
+  // - Create a column for every rule in the _goto table
+  for (unsigned int state = 0; state < states.size (); ++state)
+  {
+    // Create a column for every terminal, plus "$".
+    _actions.push_back ({});
+    _actions[state]["$"] = "";
+    for (auto& terminal : _terminals)
+      _actions[state][terminal] = "";
+
+    _goto.push_back ({});
+    for (auto& rule : _rules)
+      _goto[state][rule] = "";
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
