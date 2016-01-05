@@ -207,21 +207,32 @@ void LR0::debug (bool value)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+//  +-------+---------------+---------------+
+//  | state | actions...    | goto...       |
+//  |       | terminals   $ | non-terminals |
+//  +-------+--+--+--+--+---+----+-----+----+
+//  |       |  |  |  |  |   |    |     |    |
+//  +-------+--+--+--+--+---+----+-----+----+
+//  |       |  |  |  |  |   |    |     |    |
+//  +-------+--+--+--+--+---+----+-----+----+
 std::string LR0::dump () const
 {
   std::stringstream out;
   out << "Parser Tables\n";
 
-  // TODO Render _actions and _goto as a table.
-  //
-  //  +-------+---------------+---------------+
-  //  | state | actions...    | goto...       |
-  //  |       | terminals   $ | non-terminals |
-  //  +-------+--+--+--+--+---+----+-----+----+
-  //  |       |  |  |  |  |   |    |     |    |
-  //  +-------+--+--+--+--+---+----+-----+----+
-  //  |       |  |  |  |  |   |    |     |    |
-  //  +-------+--+--+--+--+---+----+-----+----+
+  for (unsigned int state = 0; state < _actions.size (); ++state)
+  {
+    out << "  " << state;
+    for (auto& terminal : _actions[state])
+      out << " " << terminal.first << ":" << terminal.second;
+
+    out << "    ";
+
+    for (auto& rule : _goto[state])
+      out << " " << rule.first << ":" << rule.second;
+
+    out << "\n";
+  }
 
   return out.str ();
 }
