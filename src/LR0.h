@@ -45,6 +45,7 @@ public:
   {
   public:
     Item (const std::vector <std::string>&);
+    bool operator== (const LR0::Item&);
     void setGrammarRuleIndex (const int);
     bool advance ();
     bool done () const;

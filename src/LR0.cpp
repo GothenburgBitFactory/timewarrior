@@ -226,6 +226,21 @@ LR0::Item::Item (const std::vector <std::string>& rule)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+bool LR0::Item::operator== (const Item& other)
+{
+  if (_cursor       != other._cursor      ||
+      _grammarRule  != other._grammarRule ||
+      _rule.size () != other._rule.size ())
+    return false;
+
+  for (unsigned int i = 0; i < _rule.size () - 1; ++i)
+    if (_rule[i] != other._rule[i])
+      return false;
+
+  return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void LR0::Item::setGrammarRuleIndex (const int rule)
 {
   _grammarRule = rule;
