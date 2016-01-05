@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <text.h>
 #include <utf8.h>
+#include <sstream>
 #include <iomanip>
 #include <math.h>
 
@@ -307,6 +308,47 @@ void replace_positional (
     fmt.replace (pos, from.length (), to);
     pos += to.length ();
   }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string leftJustify (const int input, const int width)
+{
+  std::stringstream s;
+  s << input;
+  std::string output = s.str ();
+  return output + std::string (width - output.length (), ' ');
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string leftJustify (const std::string& input, const int width)
+{
+  return input + std::string (width - utf8_text_width (input), ' ');
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string rightJustifyZero (const int input, const int width)
+{
+  std::stringstream s;
+  s << std::setw (width) << std::setfill ('0') << input;
+  return s.str ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string rightJustify (const int input, const int width)
+{
+  std::stringstream s;
+  s << std::setw (width) << std::setfill (' ') << input;
+  return s.str ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string rightJustify (const std::string& input, const int width)
+{
+  unsigned int len = utf8_text_width (input);
+  return (((unsigned int) width > len)
+           ? std::string (width - len, ' ')
+           : "")
+         + input;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

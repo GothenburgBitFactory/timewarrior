@@ -75,6 +75,12 @@ const std::string format (const std::string& fmt, Args... args)
     return format (1, fmt, args...);
 }
 
+std::string leftJustify (const int, const int);
+std::string leftJustify (const std::string&, const int);
+std::string rightJustifyZero (const int, const int);
+std::string rightJustify (const int, const int);
+std::string rightJustify (const std::string&, const int);
+
 // List operations.
 template <class T> void listDiff (
   const T& left, const T& right, T& leftOnly, T& rightOnly)
