@@ -31,7 +31,74 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (36);
+  UnitTest t (62);
+
+  // void wrapText (std::vector <std::string>& lines, const std::string& text, const int width, bool hyphenate)
+  std::string text = "This is a test of the line wrapping code.";
+  std::vector <std::string> lines;
+  wrapText (lines, text, 10, true);
+  t.is (lines.size (), (size_t) 5, "wrapText 'This is a test of the line wrapping code.' -> total 5 lines");
+  t.is (lines[0], "This is a",     "wrapText line 0 -> 'This is a'");
+  t.is (lines[1], "test of",       "wrapText line 1 -> 'test of'");
+  t.is (lines[2], "the line",      "wrapText line 2 -> 'the line'");
+  t.is (lines[3], "wrapping",      "wrapText line 3 -> 'wrapping'");
+  t.is (lines[4], "code.",         "wrapText line 4 -> 'code.'");
+
+  text = "This ☺ is a test of utf8 line extraction.";
+  lines.clear ();
+  wrapText (lines, text, 7, true);
+  t.is (lines.size (), (size_t) 7, "wrapText 'This ☺ is a test of utf8 line extraction.' -> total 7 lines");
+  t.is (lines[0], "This ☺",        "wrapText line 0 -> 'This ☺'");
+  t.is (lines[1], "is a",          "wrapText line 1 -> 'is a'");
+  t.is (lines[2], "test of",       "wrapText line 2 -> 'test of'");
+  t.is (lines[3], "utf8",          "wrapText line 3 -> 'utf8'");
+  t.is (lines[4], "line",          "wrapText line 4 -> 'line'");
+  t.is (lines[5], "extrac-",       "wrapText line 5 -> 'extrac-'");
+  t.is (lines[6], "tion.",         "wrapText line 6 -> 'tion.'");
+
+  text = "one two three\n  four";
+  lines.clear ();
+  wrapText (lines, text, 13, true);
+  t.is (lines.size (), (size_t) 2, "wrapText 'one two three\\n  four' -> 2 lines");
+  t.is (lines[0], "one two three", "wrapText line 0 -> 'one two three'");
+  t.is (lines[1], "  four",        "wrapText line 1 -> '  four'");
+
+  // void extractLine (std::string& text, std::string& line, int length, bool hyphenate, unsigned int& offset)
+  text = "This ☺ is a test of utf8 line extraction.";
+  unsigned int offset = 0;
+  std::string line;
+  extractLine (line, text, 7, true, offset);
+  t.is (line, "This ☺", "extractLine 7 'This ☺ is a test of utf8 line extraction.' -> 'This ☺'");
+
+  // void extractLine (std::string& text, std::string& line, int length, bool hyphenate, unsigned int& offset)
+  text = "line 1\nlengthy second line that exceeds width";
+  offset = 0;
+  extractLine (line, text, 10, true, offset);
+  t.is (line, "line 1", "extractLine 10 'line 1\\nlengthy second line that exceeds width' -> 'line 1'");
+
+  extractLine (line, text, 10, true, offset);
+  t.is (line, "lengthy", "extractLine 10 'lengthy second line that exceeds width' -> 'lengthy'");
+
+  extractLine (line, text, 10, true, offset);
+  t.is (line, "second", "extractLine 10 'second line that exceeds width' -> 'second'");
+
+  extractLine (line, text, 10, true, offset);
+  t.is (line, "line that", "extractLine 10 'line that exceeds width' -> 'line that'");
+
+  extractLine (line, text, 10, true, offset);
+  t.is (line, "exceeds", "extractLine 10 'exceeds width' -> 'exceeds'");
+
+  extractLine (line, text, 10, true, offset);
+  t.is (line, "width", "extractLine 10 'width' -> 'width'");
+
+  t.notok (extractLine (line, text, 10, true, offset), "extractLine 10 '' -> ''");
+
+  text = "AAAAAAAAAABBBBBBBBBB";
+  offset = 0;
+  extractLine (line, text, 10, true, offset);
+  t.is (line, "AAAAAAAAA-", "extractLine hyphenated unbreakable line");
+  t.diag (line);
+
 
   // void split (std::vector<std::string>& results, const std::string& input, const char delimiter)
   std::string unsplit = "";
