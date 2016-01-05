@@ -60,13 +60,15 @@ void LR0::initialize (const Grammar& grammar)
     std::cout << "\n";
   }
 
-  // Initialize the first state.
+  // Determine the parser states.
   States states;
   initializeFirstState (states);
-
-  // Recursively fill in the rest.
   closeState (states, 0);
   std::cout << states.dump () << "\n";
+
+  // Construct the parser tables.
+  createParseTable (states);
+  std::cout << dump () << "\n";;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -158,25 +160,15 @@ void LR0::closeState (States& states, const int state) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Aho/Sethi/Ullman, p224
-//
-// If I is the set of two items {[E' --> E .], [E --> E . + T]}, then
-// goto (I, +) consists of:
-//
-// E --> E + . T
-// T --> . T * F
-// T --> . F
-// F --> . ( E )
-// F --> . id
-//
-// We computed goto (I, +) by examining I for items with + immediately to the
-// right of the dot. E' --> E . is not such an item, but E --> E . + T is.
-// We moved the dot over the + to get {E --> E + . T} and then took the closure
-// of this set.
+void LR0::createParseTable (States& states)
+{
+  // TODO Convert States to the _actions and _goto tables.
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 void LR0::parse (const std::string& input)
 {
+  // TODO Implement parser DFA here.
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -189,6 +181,7 @@ void LR0::debug (bool value)
 std::string LR0::dump () const
 {
   std::stringstream out;
+  out << "Parser Tables\n";
 
   // TODO Render _actions and _goto as a table.
   //

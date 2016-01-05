@@ -72,6 +72,7 @@ private:
   std::set <std::string> getExpectedSymbols (const Closure&) const;
   void initializeFirstState (States&) const;
   void closeState (States&, const int) const;
+  void createParseTable (States&);
 
 private:
   // Copy of the augmented grammar.
