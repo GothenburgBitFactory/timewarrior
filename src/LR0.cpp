@@ -120,6 +120,9 @@ LR0::Closure LR0::getClosure (const std::string& symbol) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// The first state is юust the augmented grammar with the expected symbols all
+// at the first symbol of each rule, i.e. exactly what happens when an Item is
+// instantiated from a grammar rule.
 void LR0::initializeFirstState (States& states) const
 {
   LR0::Closure result;
