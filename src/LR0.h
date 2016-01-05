@@ -47,6 +47,7 @@ public:
     Item (const std::vector <std::string>&);
     bool operator== (const LR0::Item&);
     void setGrammarRuleIndex (const int);
+    void setReductionRule (const int);
     bool advance ();
     bool done () const;
     std::string next () const;
@@ -56,6 +57,7 @@ public:
     std::vector <std::string> _rule;
     unsigned int _cursor;
     int _grammarRule;
+    int _reducesTo;
   };
 
   class Closure : public std::vector <Item>
