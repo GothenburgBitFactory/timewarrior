@@ -83,42 +83,6 @@ std::set <std::string> LR0::getExpectedSymbols (const Closure& closure) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Add all items to the result set matching the production rule for symbol.
-LR0::Closure LR0::getClosure (const std::string& symbol) const
-{
-  std::set <std::string> seen;
-
-  LR0::Closure result;
-  for (unsigned int r = 0; r < _augmented.size (); ++r)
-  {
-    if (_augmented[r][0] == symbol)
-    {
-      Item item (_augmented[r]);
-      item.setGrammarRuleIndex (r);
-      result.push_back (item);
-      seen.insert (_augmented[r][0]);
-
-      auto nextSymbol = item.next ();
-      if (seen.find (nextSymbol) == seen.end ())
-      {
-        for (unsigned int r = 0; r < _augmented.size (); ++r)
-        {
-          if (_augmented[r][0] == nextSymbol)
-          {
-            Item item (_augmented[r]);
-            item.setGrammarRuleIndex (r);
-            result.push_back (item);
-            seen.insert (nextSymbol);
-          }
-        }
-      }
-    }
-  }
-
-  return result;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 // The first state is юust the augmented grammar with the expected symbols all
 // at the first symbol of each rule, i.e. exactly what happens when an Item is
 // instantiated from a grammar rule.
