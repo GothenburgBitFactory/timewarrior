@@ -8,5 +8,6 @@ list.t
 pig.t
 rules.t
 rx.t
+table.t
 text.t
 utf8.t
