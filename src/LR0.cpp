@@ -131,6 +131,36 @@ LR0::Closure LR0::getClosure (const std::string& symbol) const
 ////////////////////////////////////////////////////////////////////////////////
 bool LR0::closeState (States& states, const int state) const
 {
+  std::cout << "# LR0::closeState " << state << "\n";
+
+  // Obtain all the expected symbols for this state.
+  auto expectedSymbols = getExpectedSymbols (states[state]);
+  for (auto& expected : expectedSymbols)
+  {
+    std::cout << "#   expecting " << expected << "\n";
+
+    // This will be the new state.
+    Closure closure;
+
+    // Find all the rules in this state that are expecting 'expected'.
+    for (auto& item : states[state])
+    {
+      if (! item.done () &&
+          item.next () == expected)
+      {
+        std::cout << "#     matching " << item.dump () << "\n";
+
+        Item advanced (item);
+        advanced.advance ();
+        std::cout << "#     advanced " << advanced.dump () << "\n";
+        closure.push_back (advanced);
+      }
+    }
+
+    // Create the new state, and recurse to close it.
+    states.push_back (closure);
+    closeState (states, states.size () - 1);
+  }
 
   return false;
 }
