@@ -76,10 +76,10 @@ private:
   // Copy of the augmented grammar.
   std::vector <std::vector <std::string>> _augmented;
 
-  //        state         column        result
-  //        |              |            |
-  std::map <int, std::map <std::string, std::string>> _actions;
-  std::map <int, std::map <std::string, std::string>> _goto;
+  //        state        column       result
+  //        |            |            |
+  std::vector <std::map <std::string, std::string>> _actions;
+  std::vector <std::map <std::string, std::string>> _goto;
 
   bool _debug;
 };
