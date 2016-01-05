@@ -30,6 +30,19 @@
 #include <iomanip>
 #include <math.h>
 
+///////////////////////////////////////////////////////////////////////////////
+void wrapText (
+  std::vector <std::string>& lines,
+  const std::string& text,
+  const int width,
+  bool hyphenate)
+{
+  std::string line;
+  unsigned int offset = 0;
+  while (extractLine (line, text, width, hyphenate, offset))
+    lines.push_back (line);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 std::vector <std::string> split (const std::string& input, const char delimiter)
 {
@@ -100,6 +113,118 @@ int longestLine (const std::string& input)
     longest = length;
 
   return longest;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Walk the input text looking for a break point.  A break point is one of:
+//   - EOS
+//   - \n
+//   - last space before 'length' characters
+//   - last punctuation (, ; . :) before 'length' characters, even if not
+//     followed by a space
+//   - first 'length' characters
+//
+// text       "one two three\n  four"
+// bytes       0123456789012 3456789
+// characters  1234567890a23 4567890
+//
+// leading_ws
+// ws             ^   ^       ^^
+// punct
+// break                     ^
+bool extractLine (
+  std::string& line,
+  const std::string& text,
+  int width,
+  bool hyphenate,
+  unsigned int& offset)
+{
+  // Terminate processing.
+  // Note: bytes vs bytes.
+  if (offset >= text.length ())
+    return false;
+
+  std::string::size_type last_last_bytes = offset;
+  std::string::size_type last_bytes = offset;
+  std::string::size_type bytes = offset;
+  unsigned int last_ws = 0;
+  int character;
+  int char_width = 0;
+  int line_width = 0;
+  while (1)
+  {
+    last_last_bytes = last_bytes;
+    last_bytes = bytes;
+    character = utf8_next_char (text, bytes);
+
+    if (character == 0 ||
+        character == '\n')
+    {
+      line = text.substr (offset, last_bytes - offset);
+      offset = bytes;
+      break;
+    }
+    else if (character == ' ')
+      last_ws = last_bytes;
+
+    char_width = mk_wcwidth (character);
+    if (line_width + char_width > width)
+    {
+      int last_last_character = text[last_last_bytes];
+      int last_character = text[last_bytes];
+
+      // [case 1] one| two --> last_last != 32, last == 32, ws == 0
+      if (last_last_character != ' ' &&
+          last_character      == ' ')
+      {
+        line = text.substr (offset, last_bytes - offset);
+        offset = last_bytes + 1;
+        break;
+      }
+
+      // [case 2] one |two --> last_last == 32, last != 32, ws != 0
+      else if (last_last_character == ' ' &&
+               last_character      != ' ' &&
+               last_ws             != 0)
+      {
+        line = text.substr (offset, last_bytes - offset - 1);
+        offset = last_bytes;
+        break;
+      }
+
+      else if (last_last_character != ' ' &&
+               last_character      != ' ')
+      {
+        // [case 3] one t|wo --> last_last != 32, last != 32, ws != 0
+        if (last_ws != 0)
+        {
+          line = text.substr (offset, last_ws - offset);
+          offset = last_ws + 1;
+          break;
+        }
+        // [case 4] on|e two --> last_last != 32, last != 32, ws == 0
+        else
+        {
+          if (hyphenate)
+          {
+            line = text.substr (offset, last_bytes - offset - 1) + "-";
+            offset = last_last_bytes;
+          }
+          else
+          {
+            line = text.substr (offset, last_bytes - offset);
+            offset = last_bytes;
+          }
+        }
+
+        break;
+      }
+    }
+
+    line_width += char_width;
+  }
+
+  return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
