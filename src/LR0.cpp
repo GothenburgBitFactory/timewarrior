@@ -63,7 +63,6 @@ void LR0::initialize (const Grammar& grammar)
   // Initialize the first state.
   States states;
   initializeFirstState (states);
-  std::cout << states.dump () << "\n";
 
   // Recursively fill in the rest.
   closeState (states, 0);
