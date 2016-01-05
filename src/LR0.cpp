@@ -42,8 +42,10 @@ LR0::LR0 ()
 // - Recursively create and expand all the other states
 void LR0::initialize (const Grammar& grammar)
 {
-  // Obtain the augmented grammar.
+  // Save important grammar information.
   _augmented = grammar.augmented ();
+  _rules     = grammar.rules ();
+  _terminals = grammar.terminals ();
 
   if (_debug)
   {
@@ -56,6 +58,16 @@ void LR0::initialize (const Grammar& grammar)
         std::cout << " " << term;
       std::cout << "\n";
     }
+
+    std::cout << "\n";
+    std::cout << "Rules\n";
+    for (auto& r : _rules)
+      std::cout << "  " << r << "\n";
+
+    std::cout << "\n";
+    std::cout << "Terminals\n";
+    for (auto& t : _terminals)
+      std::cout << "  " << t << "\n";
 
     std::cout << "\n";
   }

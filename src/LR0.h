@@ -75,8 +75,10 @@ private:
   void createParseTable (States&);
 
 private:
-  // Copy of the augmented grammar.
+  // Copy of the  grammar details.
   std::vector <std::vector <std::string>> _augmented;
+  std::vector <std::string>               _rules;
+  std::vector <std::string>               _terminals;
 
   //        state        column       result
   //        |            |            |
