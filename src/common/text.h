@@ -34,6 +34,8 @@
 
 // text.cpp, Non-UTF-8 aware.
 std::vector <std::string> split (const std::string&, const char);
+int longestWord (const std::string&);
+int longestLine (const std::string&);
 const std::string format (std::string&);
 const std::string format (const char*);
 const std::string formatHex (int);

@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <text.h>
+#include <utf8.h>
 #include <iomanip>
 #include <math.h>
 
@@ -45,6 +46,60 @@ std::vector <std::string> split (const std::string& input, const char delimiter)
     results.push_back (input.substr (start));
 
   return results;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+int longestWord (const std::string& input)
+{
+  int longest = 0;
+  int length = 0;
+  std::string::size_type i = 0;
+  int character;
+
+  while ((character = utf8_next_char (input, i)))
+  {
+    if (character == ' ')
+    {
+      if (length > longest)
+        longest = length;
+
+      length = 0;
+    }
+    else
+      length += mk_wcwidth (character);
+  }
+
+  if (length > longest)
+    longest = length;
+
+  return longest;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+int longestLine (const std::string& input)
+{
+  int longest = 0;
+  int length = 0;
+  std::string::size_type i = 0;
+  int character;
+
+  while ((character = utf8_next_char (input, i)))
+  {
+    if (character == '\n')
+    {
+      if (length > longest)
+        longest = length;
+
+      length = 0;
+    }
+    else
+      length += mk_wcwidth (character);
+  }
+
+  if (length > longest)
+    longest = length;
+
+  return longest;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
