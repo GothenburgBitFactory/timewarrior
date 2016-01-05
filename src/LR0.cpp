@@ -150,6 +150,9 @@ void LR0::closeState (States& states, const int state) const
     // This will be the new state.
     Closure closure;
 
+    // Track additional symbols.
+    std::set <std::string> seen;
+
     // Find all the rules in this state that are expecting 'expected'.
     for (auto& item : states[state])
     {
@@ -162,12 +165,39 @@ void LR0::closeState (States& states, const int state) const
         advanced.advance ();
         std::cout << "#     advanced " << advanced.dump () << "\n";
         closure.push_back (advanced);
+
+        if (! advanced.done ())
+        {
+          auto nextSymbol = advanced.next ();
+          if (seen.find (nextSymbol) == seen.end ())
+          {
+            for (unsigned int r = 0; r < _augmented.size (); ++r)
+            {
+              if (_augmented[r][0] == nextSymbol)
+              {
+                Item additional (_augmented[r]);
+                additional.setGrammarRuleIndex (r);
+                closure.push_back (additional);
+                seen.insert (nextSymbol);
+              }
+            }
+          }
+        }
       }
     }
 
+    // Check that the new state is not already created.
+    bool skip = false;
+    for (auto& state : states)
+      if (state[0] == closure[0])
+        skip = true;
+
     // Create the new state, and recurse to close it.
-    states.push_back (closure);
-    closeState (states, states.size () - 1);
+    if (! skip)
+    {
+      states.push_back (closure);
+      closeState (states, states.size () - 1);
+    }
   }
 }
 
