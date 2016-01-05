@@ -139,14 +139,10 @@ void LR0::initializeFirstState (States& states) const
 ////////////////////////////////////////////////////////////////////////////////
 void LR0::closeState (States& states, const int state) const
 {
-  std::cout << "# LR0::closeState " << state << "\n";
-
   // Obtain all the expected symbols for this state.
   auto expectedSymbols = getExpectedSymbols (states[state]);
   for (auto& expected : expectedSymbols)
   {
-    std::cout << "#   expecting " << expected << "\n";
-
     // This will be the new state.
     Closure closure;
 
@@ -159,11 +155,8 @@ void LR0::closeState (States& states, const int state) const
       if (! item.done () &&
           item.next () == expected)
       {
-        std::cout << "#     matching " << item.dump () << "\n";
-
         Item advanced (item);
         advanced.advance ();
-        std::cout << "#     advanced " << advanced.dump () << "\n";
         closure.push_back (advanced);
 
         if (! advanced.done ())
