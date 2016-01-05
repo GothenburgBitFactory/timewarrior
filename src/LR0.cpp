@@ -129,7 +129,7 @@ LR0::Closure LR0::getClosure (const std::string& symbol) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool LR0::closeState (States& states, const int state) const
+void LR0::closeState (States& states, const int state) const
 {
   std::cout << "# LR0::closeState " << state << "\n";
 
@@ -161,8 +161,6 @@ bool LR0::closeState (States& states, const int state) const
     states.push_back (closure);
     closeState (states, states.size () - 1);
   }
-
-  return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
