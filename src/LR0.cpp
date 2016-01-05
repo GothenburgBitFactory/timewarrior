@@ -129,6 +129,20 @@ LR0::Closure LR0::getClosure (const std::string& symbol) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void LR0::initializeFirstState (States& states) const
+{
+  LR0::Closure result;
+  for (unsigned int r = 0; r < _augmented.size (); ++r)
+  {
+    Item item (_augmented[r]);
+    item.setGrammarRuleIndex (r);
+    result.push_back (item);
+  }
+
+  states.push_back (result);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void LR0::closeState (States& states, const int state) const
 {
   std::cout << "# LR0::closeState " << state << "\n";

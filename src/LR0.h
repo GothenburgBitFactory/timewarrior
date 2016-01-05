@@ -70,6 +70,7 @@ public:
 private:
   std::set <std::string> getExpectedSymbols (const Closure&) const;
   Closure getClosure (const std::string&) const;
+  void initializeFirstState (States&) const;
   void closeState (States&, const int) const;
 
 private:
