@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (29);
+  UnitTest t (36);
 
   // void split (std::vector<std::string>& results, const std::string& input, const char delimiter)
   std::string unsplit = "";
@@ -60,6 +60,17 @@ int main (int, char**)
   t.is (items[1], "a",             "split '-a-bc-def' '-' -> [1] 'a'");
   t.is (items[2], "bc",            "split '-a-bc-def' '-' -> [2] 'bc'");
   t.is (items[3], "def",           "split '-a-bc-def' '-' -> [3] 'def'");
+
+  // int longestWord (const std::string&)
+  t.is (longestWord ("    "),                   0, "longestWord (    ) --> 0");
+  t.is (longestWord ("this is a test"),         4, "longestWord (this is a test) --> 4");
+  t.is (longestWord ("this is a better test"),  6, "longestWord (this is a better test) --> 6");
+  t.is (longestWord ("house Çirçös clown"),     6, "longestWord (Çirçös) --> 6");
+
+  // int longestLine (const std::string&)
+  t.is (longestLine ("one two three four"),    18, "longestLine (one two three four) --> 18");
+  t.is (longestLine ("one\ntwo three four"),   14, "longestLine (one\\ntwo three four) --> 14");
+  t.is (longestLine ("one\ntwo\nthree\nfour"),  5, "longestLine (one\\ntwo\\nthree\\nfour) --> 5");
 
   // std::string format (char);
   t.is (format ('A'), "A", "format ('A') -> A");
