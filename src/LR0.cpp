@@ -198,14 +198,17 @@ void LR0::createParseTable (States& states)
       _goto[state][rule] = "";
   }
 
+  // Look for states with items that are done, and mark them as reductions, but
+  // a reduction of grammar rule 0 is marked "acc".
   for (unsigned int state = 0; state < states.size (); ++state)
-  {
-/*
-    if (states[state].size () == 1 &&
-        states[state][0].done ())
-      _actions[state][states[state][0]._rule[states[state]0]._cursor]] = format ("r{1}", states[state][0]._grammarRule);
-*/
-  }
+    for (unsigned int item = 0; item < states[state].size (); ++item)
+      if (states[state][item].done ())
+        if (states[state][item]._grammarRule == 0)
+          _actions[state]["$"] = "acc";
+        else
+          for (auto& terminal : _terminals)
+            _actions[state][terminal] = format ("r{1}", states[state][item]._grammarRule);
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
