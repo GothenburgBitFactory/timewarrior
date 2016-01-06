@@ -28,6 +28,7 @@
 #include <LR0.h>
 #include <Table.h>
 #include <Color.h>
+#include <Lexer.h>
 #include <text.h>
 #include <iostream>
 #include <sstream>
@@ -203,11 +204,13 @@ void LR0::createParseTable (States& states)
   for (unsigned int state = 0; state < states.size (); ++state)
     for (unsigned int item = 0; item < states[state].size (); ++item)
       if (states[state][item].done ())
+      {
         if (states[state][item]._grammarRule == 0)
           _actions[state]["$"] = "acc";
         else
           for (auto& terminal : _terminals)
             _actions[state][terminal] = format ("r{1}", states[state][item]._grammarRule);
+      }
 
 }
 
@@ -225,8 +228,7 @@ void LR0::debug (bool value)
 
 ////////////////////////////////////////////////////////////////////////////////
 //  +-------+---------------+---------------+
-//  | state | actions...    | goto...       |
-//  |       | terminals   $ | non-terminals |
+//  | state | terminals   $ | non-terminals |
 //  +-------+--+--+--+--+---+----+-----+----+
 //  |       |  |  |  |  |   |    |     |    |
 //  +-------+--+--+--+--+---+----+-----+----+
@@ -242,14 +244,12 @@ std::string LR0::dump () const
   t.colorHeader (Color ("underline"));
 
   // Add columns.
-  t.add ("State", false);
+  t.add ("State", true);
   for (auto& terminal : _terminals)
-    t.add (terminal, false);
-
-  t.add ("$", false);
+    t.add (Lexer::dequote (terminal), true);
 
   for (auto& rule : _rules)
-    t.add (rule, false);
+    t.add (rule, true);
 
   // Add cells.
   for (unsigned int state = 0; state < _actions.size (); ++state)
