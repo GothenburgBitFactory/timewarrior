@@ -179,15 +179,17 @@ void LR0::closeState (States& states, const int state) const
 ////////////////////////////////////////////////////////////////////////////////
 void LR0::createParseTable (States& states)
 {
+  // Add artificial end-point.
+  _terminals.push_back ("$");
+
   // First size the tables:
   // - Create a row for every state
   // - Create a column for every terminal in the _actions table
   // - Create a column for every rule in the _goto table
   for (unsigned int state = 0; state < states.size (); ++state)
   {
-    // Create a column for every terminal, plus "$".
+    // Create a column for every terminal.
     _actions.push_back ({});
-    _actions[state]["$"] = "";
     for (auto& terminal : _terminals)
       _actions[state][terminal] = "";
 
