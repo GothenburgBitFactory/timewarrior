@@ -34,7 +34,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (367);
+  UnitTest t (371);
 
   std::vector <std::pair <std::string, Lexer::Type>> tokens;
   std::string token;
@@ -68,6 +68,12 @@ int main (int, char**)
   t.ok (Lexer::isWhitespace (0x202F), "U+202F isWhitespace");
   t.ok (Lexer::isWhitespace (0x205F), "U+205F isWhitespace");
   t.ok (Lexer::isWhitespace (0x3000), "U+3000 isWhitespace");
+
+  // static bool Lexer::dequote (std::string&, const std::string& quotes = "'\"");
+  t.is (Lexer::dequote ("foo"),         "foo",       "Lexer::dequote foo --> foo");
+  t.is (Lexer::dequote ("'foo'"),       "foo",       "Lexer::dequote 'foo' --> foo");
+  t.is (Lexer::dequote ("'o\\'clock'"), "o\\'clock", "Lexer::dequote 'o\\'clock' --> o\\'clock");
+  t.is (Lexer::dequote ("abba", "a"),   "bb",        "Lexer::dequote 'abba' (a) --> bb");
 
   // Should result in no tokens.
   Lexer l0 ("");
