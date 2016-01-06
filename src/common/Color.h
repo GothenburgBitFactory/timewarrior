@@ -58,9 +58,9 @@ public:
   void upgrade ();
   void blend (const Color&);
 
-  std::string colorize (const std::string&);
+  std::string colorize (const std::string&) const;
   static std::string colorize (const std::string&, const std::string&);
-  void _colorize (std::string&, const std::string&);
+  void _colorize (std::string&, const std::string&) const;
   static std::string strip (const std::string&);
 
   bool nontrivial () const;

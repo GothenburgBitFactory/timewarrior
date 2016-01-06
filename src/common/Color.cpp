@@ -416,7 +416,7 @@ void Color::upgrade ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string Color::colorize (const std::string& input)
+std::string Color::colorize (const std::string& input) const
 {
   std::string result;
   _colorize (result, input);
@@ -435,7 +435,7 @@ std::string Color::colorize (const std::string& input)
 //
 //   256 fg               \033[38;5;Nm
 //   256 bg               \033[48;5;Nm
-void Color::_colorize (std::string &result, const std::string& input)
+void Color::_colorize (std::string &result, const std::string& input) const
 {
   if (!nontrivial ())
   {
