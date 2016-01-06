@@ -82,6 +82,40 @@ int main (int, char**)
 
     std::cout << t1.render ();
     t.ok (t1.lines () > 4, "Table::lines > 4");
+
+    // Chessboard example
+    Table t2;
+    t2.width (32);
+    t2.leftMargin (4);
+    t2.extraPadding (0);
+    t2.intraPadding (0);
+
+    t2.add ("", true);
+    t2.add ("", true);
+    t2.add ("", true);
+    t2.add ("", true);
+    t2.add ("", true);
+    t2.add ("", true);
+    t2.add ("", true);
+    t2.add ("", true);
+
+    Color blue ("on bright blue");
+    Color white ("on bright white");
+
+    for (row = 0; row < 8; ++row)
+    {
+      t2.addRow ();
+
+      for (int col = 0; col < 8; ++col)
+      {
+        if ((row + col) % 2)
+          t2.set (row, col, "  ", blue);
+        else
+          t2.set (row, col, "  ", white);
+      }
+    }
+
+    std::cout << t2.render ();
   }
 
   catch (const std::string& e)
