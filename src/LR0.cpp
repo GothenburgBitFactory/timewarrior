@@ -242,10 +242,21 @@ std::string LR0::dump () const
     t.set (row, col++, state);
 
     for (auto& terminal : _terminals)
-      t.set (row, col++, _actions[state].at (terminal));
+    {
+      auto data = _actions[state].at (terminal);
+      Color color (data[0] == 'r' ? "white on red"    :
+                   data[0] == 's' ? "black on yellow" :
+                   data[0] == 'a' ? "white on green"  :
+                   "");
+      t.set (row, col++, data, color);
+    }
 
     for (auto& rule : _rules)
-      t.set (row, col++, _goto[state].at (rule));
+    {
+      auto data = _goto[state].at (rule);
+      Color color (data != "" ? "black on yellow" : "");
+      t.set (row, col++, data, color);
+    }
   }
 
   out << t.render ();
