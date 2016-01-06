@@ -53,7 +53,7 @@ public:
     std::string next () const;
     std::string dump () const;
 
-  private:
+  public:
     std::vector <std::string> _rule;
     unsigned int _cursor;
     int _grammarRule;

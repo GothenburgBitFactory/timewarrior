@@ -28,6 +28,7 @@
 #include <LR0.h>
 #include <Table.h>
 #include <Color.h>
+#include <text.h>
 #include <iostream>
 #include <sstream>
 
@@ -194,6 +195,15 @@ void LR0::createParseTable (States& states)
     for (auto& rule : _rules)
       _goto[state][rule] = "";
   }
+
+  for (unsigned int state = 0; state < states.size (); ++state)
+  {
+/*
+    if (states[state].size () == 1 &&
+        states[state][0].done ())
+      _actions[state][states[state][0]._rule[states[state]0]._cursor]] = format ("r{1}", states[state][0]._grammarRule);
+*/
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -230,6 +240,8 @@ std::string LR0::dump () const
   t.add ("State", false);
   for (auto& terminal : _terminals)
     t.add (terminal, false);
+
+  t.add ("$", false);
 
   for (auto& rule : _rules)
     t.add (rule, false);
