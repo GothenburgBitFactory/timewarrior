@@ -330,6 +330,25 @@ bool Lexer::isPunctuation (int c)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Assumes that quotes is a string containing a non-trivial set of quote
+// characters.
+std::string Lexer::dequote (const std::string& input, const std::string& quotes)
+{
+  if (input.length ())
+  {
+    int quote = input[0];
+    if (quotes.find (quote) != std::string::npos)
+    {
+      size_t len = input.length ();
+      if (quote == input[len - 1])
+        return input.substr (1, len - 2);
+    }
+  }
+
+  return input;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 bool Lexer::isEOS () const
 {
   return _cursor >= _eos;

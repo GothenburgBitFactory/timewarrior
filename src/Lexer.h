@@ -67,6 +67,7 @@ public:
   static std::string trimLeft                (const std::string& in, const std::string& t = " ");
   static std::string trimRight               (const std::string& in, const std::string& t = " ");
   static std::string trim                    (const std::string& in, const std::string& t = " ");
+  static std::string dequote                 (const std::string&, const std::string& quotes = "'\"");
 
   // Stream Classifiers.
   bool isEOS          () const;
