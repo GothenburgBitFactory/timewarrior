@@ -58,7 +58,7 @@ int Table::addRow ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Table::set (int row, int col, const std::string& value, Color color)
+void Table::set (int row, int col, const std::string& value, const Color color)
 {
   _data[row][col] = value;
 
@@ -67,7 +67,7 @@ void Table::set (int row, int col, const std::string& value, Color color)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Table::set (int row, int col, int value, Color color)
+void Table::set (int row, int col, int value, const Color color)
 {
   std::string string_value = format (value);
   _data[row][col] = string_value;
@@ -77,7 +77,7 @@ void Table::set (int row, int col, int value, Color color)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Table::set (int row, int col, Color color)
+void Table::set (int row, int col, const Color color)
 {
   if (color.nontrivial ())
     _color[row][col] = color;
@@ -292,7 +292,7 @@ void Table::renderCell (
   const std::string& value,
   int width,
   bool alignLeft,
-  Color& color) const
+  const Color& color) const
 {
   std::vector <std::string> raw;
   wrapText (raw, value, width, false);

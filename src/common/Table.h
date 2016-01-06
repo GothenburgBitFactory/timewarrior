@@ -40,15 +40,15 @@ public:
   void add (const std::string& col, bool alignLeft = true) { _columns.push_back (col); _align.push_back (alignLeft); }
   void width (int width)                                   { _width = width;                                         }
   void leftMargin (int margin)                             { _left_margin = margin;                                  }
-  void colorHeader (Color& c)                              { _header = c;                                            }
-  void colorOdd (Color& c)                                 { _odd = c;                                               }
-  void colorEven (Color& c)                                { _even = c;                                              }
+  void colorHeader (const Color& c)                        { _header = c;                                            }
+  void colorOdd (const Color& c)                           { _odd = c;                                               }
+  void colorEven (const Color& c)                          { _even = c;                                              }
   void intraPadding (int padding)                          { _intra_padding = padding;                               }
-  void intraColorOdd (Color& c)                            { _intra_odd = c;                                         }
-  void intraColorEven (Color& c)                           { _intra_even = c;                                        }
+  void intraColorOdd (const Color& c)                      { _intra_odd = c;                                         }
+  void intraColorEven (const Color& c)                     { _intra_even = c;                                        }
   void extraPadding (int padding)                          { _extra_padding = padding;                               }
-  void extraColorOdd (Color& c)                            { _extra_odd = c;                                         }
-  void extraColorEven (Color& c)                           { _extra_even = c;                                        }
+  void extraColorOdd (const Color& c)                      { _extra_odd = c;                                         }
+  void extraColorEven (const Color& c)                     { _extra_even = c;                                        }
   void truncateLines (int n)                               { _truncate_lines = n;                                    }
   void truncateRows (int n)                                { _truncate_rows = n;                                     }
   int lines ()                                             { return _lines;                                          }
@@ -56,16 +56,16 @@ public:
 
   // Data provision.
   int addRow ();
-  void set (int, int, const std::string&, Color color = Color::nocolor);
-  void set (int, int, int, Color color = Color::nocolor);
-  void set (int, int, Color);
+  void set (int, int, const std::string&, const Color color = Color::nocolor);
+  void set (int, int, int, const Color color = Color::nocolor);
+  void set (int, int, const Color);
 
   // View rendering.
   std::string render ();
 
 private:
   void measureCell (const std::string&, unsigned int&, unsigned int&) const;
-  void renderCell (std::vector <std::string>&, const std::string&, int, bool, Color&) const;
+  void renderCell (std::vector <std::string>&, const std::string&, int, bool, const Color&) const;
 
 private:
   std::vector <std::vector <std::string>> _data;
