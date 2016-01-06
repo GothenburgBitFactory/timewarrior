@@ -26,6 +26,8 @@
 
 #include <cmake.h>
 #include <LR0.h>
+#include <Table.h>
+#include <Color.h>
 #include <iostream>
 #include <sstream>
 
@@ -220,19 +222,33 @@ std::string LR0::dump () const
   std::stringstream out;
   out << "Parser Tables\n";
 
+  Table t;
+  t.leftMargin (2);
+  t.colorHeader (Color ("underline"));
+
+  // Add columns.
+  t.add ("State", false);
+  for (auto& terminal : _terminals)
+    t.add (terminal, false);
+
+  for (auto& rule : _rules)
+    t.add (rule, false);
+
+  // Add cells.
   for (unsigned int state = 0; state < _actions.size (); ++state)
   {
-    out << "  " << state;
-    for (auto& terminal : _actions[state])
-      out << " " << terminal.first << ":" << terminal.second;
+    int row = t.addRow ();
+    int col = 0;
+    t.set (row, col++, state);
 
-    out << "    ";
+    for (auto& terminal : _terminals)
+      t.set (row, col++, _actions[state].at (terminal));
 
-    for (auto& rule : _goto[state])
-      out << " " << rule.first << ":" << rule.second;
-
-    out << "\n";
+    for (auto& rule : _rules)
+      t.set (row, col++, _goto[state].at (rule));
   }
+
+  out << t.render ();
 
   return out.str ();
 }
