@@ -261,9 +261,9 @@ std::string LR0::dump () const
     for (auto& terminal : _terminals)
     {
       auto data = _actions[state].at (terminal);
-      Color color (data[0] == 'r' ? "white on red"    :
-                   data[0] == 's' ? "black on yellow" :
-                   data[0] == 'a' ? "white on green"  :
+      Color color (data[0] == 'r' ? "black on rgb525" :
+                   data[0] == 's' ? "black on rgb420" :
+                   data[0] == 'a' ? "black on rgb031" :
                    "");
       t.set (row, col++, data, color);
     }
@@ -271,7 +271,7 @@ std::string LR0::dump () const
     for (auto& rule : _rules)
     {
       auto data = _goto[state].at (rule);
-      Color color (data != "" ? "black on yellow" : "");
+      Color color (data != "" ? "black on rgb420" : "");
       t.set (row, col++, data, color);
     }
   }
