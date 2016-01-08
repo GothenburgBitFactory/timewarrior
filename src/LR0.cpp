@@ -135,6 +135,7 @@ void LR0::closeState (States& states, const int state) const
       {
         Item advanced (item);
         advanced.advance ();
+        advanced.setTransition (state);
         closure.push_back (advanced);
 
         if (! advanced.done ())
@@ -148,6 +149,7 @@ void LR0::closeState (States& states, const int state) const
               {
                 Item additional (_augmented[r]);
                 additional.setGrammarRuleIndex (r);
+                additional.setTransition (state);
                 closure.push_back (additional);
                 seen.insert (nextSymbol);
               }
@@ -290,9 +292,9 @@ LR0::Item::Item (const std::vector <std::string>& rule)
 ////////////////////////////////////////////////////////////////////////////////
 bool LR0::Item::operator== (const Item& other)
 {
+  // Deliberately ignores _transitionsTo.
   if (_cursor        != other._cursor        ||
       _grammarRule   != other._grammarRule   ||
-      _transitionsTo != other._transitionsTo ||
       _rule.size ()  != other._rule.size ())
     return false;
 
