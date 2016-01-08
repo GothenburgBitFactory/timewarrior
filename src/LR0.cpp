@@ -28,7 +28,6 @@
 #include <LR0.h>
 #include <Table.h>
 #include <Color.h>
-#include <Lexer.h>
 #include <text.h>
 #include <iostream>
 #include <sstream>
@@ -243,7 +242,7 @@ std::string LR0::dump () const
   // Add columns.
   t.add ("State", true);
   for (auto& terminal : _terminals)
-    t.add (Lexer::dequote (terminal), true);
+    t.add (terminal, true);
 
   for (auto& rule : _rules)
     t.add (rule, true);
