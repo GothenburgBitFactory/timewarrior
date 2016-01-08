@@ -35,7 +35,6 @@
 class LR0
 {
 public:
-  LR0 ();
   void initialize (const Grammar&);
   void parse (const std::string&);
   void debug (bool);
