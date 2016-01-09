@@ -132,10 +132,13 @@ void LR0::closeState (States& states, const int state) const
       if (! item.done () &&
           item.next () == expected)
       {
+
         Item advanced (item);
         advanced.advance ();
-        advanced.setTransition (state);
         closure.push_back (advanced);
+
+        if (! advanced.done ())
+          item.setTransition ((int)states.size ());
 
         if (! advanced.done ())
         {
@@ -148,7 +151,6 @@ void LR0::closeState (States& states, const int state) const
               {
                 Item additional (_augmented[r]);
                 additional.setGrammarRuleIndex (r);
-                additional.setTransition (state);
                 closure.push_back (additional);
                 seen.insert (nextSymbol);
               }
@@ -208,6 +210,28 @@ void LR0::createParseTable (States& states)
             _actions[state][terminal] = format ("r{1}", states[state][item]._grammarRule);
       }
 
+  // Look at all items in all states, and if the item is not done, find the
+  // state with a matching, advanced, first item.
+  for (unsigned int state = 0; state < states.size (); ++state)
+    for (unsigned int item = 0; item < states[state].size (); ++item)
+      if (! states[state][item].done ())
+      {
+        auto nextSymbol = states[state][item].next ();
+
+        Item advanced (states[state][item]);
+        advanced.advance ();
+
+        for (unsigned int s = 0; s < states.size (); ++s)
+        {
+          if (states[s][0] == advanced)
+          {
+            if (std::find (_terminals.begin (), _terminals.end (), nextSymbol) != _terminals.end ())
+              _actions[state][nextSymbol] = format ("s{1}", s);
+            else
+              _goto[state][nextSymbol] = format ("s{1}", s);
+          }
+        }
+      }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -257,7 +281,7 @@ std::string LR0::dump () const
     for (auto& terminal : _terminals)
     {
       auto data = _actions[state].at (terminal);
-      Color color (data[0] == 'r' ? "rgb535 on rgb512" :
+      Color color (data[0] == 'r' ? "rgb535 on rgb412" :
                    data[0] == 's' ? "rgb045 on rgb015" :
                    data[0] == 'a' ? "rgb154 on rgb031" :
                    "");
