@@ -132,13 +132,9 @@ void LR0::closeState (States& states, const int state) const
       if (! item.done () &&
           item.next () == expected)
       {
-
         Item advanced (item);
         advanced.advance ();
         closure.push_back (advanced);
-
-        if (! advanced.done ())
-          item.setTransition ((int)states.size ());
 
         if (! advanced.done ())
         {
@@ -306,7 +302,6 @@ LR0::Item::Item (const std::vector <std::string>& rule)
 : _rule (rule)
 , _cursor (2)
 , _grammarRule (-1)
-, _transitionsTo (-1)
 {
   if (_rule.size () == 3 && _rule[2] == "є")
     _rule.pop_back ();
@@ -315,7 +310,6 @@ LR0::Item::Item (const std::vector <std::string>& rule)
 ////////////////////////////////////////////////////////////////////////////////
 bool LR0::Item::operator== (const Item& other)
 {
-  // Deliberately ignores _transitionsTo.
   if (_cursor        != other._cursor        ||
       _grammarRule   != other._grammarRule   ||
       _rule.size ()  != other._rule.size ())
@@ -332,12 +326,6 @@ bool LR0::Item::operator== (const Item& other)
 void LR0::Item::setGrammarRuleIndex (const int rule)
 {
   _grammarRule = rule;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void LR0::Item::setTransition (const int state)
-{
-  _transitionsTo = state;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -383,9 +371,6 @@ std::string LR0::Item::dump () const
 
   if (_grammarRule != -1)
     out << " [g" << _grammarRule << "]";
-
-  if (_transitionsTo != -1)
-    out << " [s" << _transitionsTo << "]";
 
   return out.str ();
 }
