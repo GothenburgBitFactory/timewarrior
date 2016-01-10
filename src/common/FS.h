@@ -38,7 +38,6 @@ public:
   Path ();
   Path (const Path&);
   Path (const std::string&);
-  virtual ~Path ();
 
   Path& operator= (const Path&);
   bool operator== (const Path&);
@@ -122,7 +121,6 @@ public:
   Directory (const File&);
   Directory (const Path&);
   Directory (const std::string&);
-  virtual ~Directory ();
 
   Directory& operator= (const Directory&);
 
