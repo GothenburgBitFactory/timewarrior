@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <LR0.h>
+#include <Lexer.h>
 #include <Table.h>
 #include <Color.h>
 #include <text.h>
@@ -233,7 +234,23 @@ void LR0::createParseTable (States& states)
 ////////////////////////////////////////////////////////////////////////////////
 void LR0::parse (const std::string& input)
 {
-  // TODO Implement parser DFA here.
+  Lexer l (input);
+
+  std::string token;
+  Lexer::Type type;
+  while (l.token (token, type))
+  {
+    std::cout << "# token '" << token << "' " << Lexer::typeToString (type) << "\n";
+
+    // TODO Done
+
+    // TODO Shift
+
+    // TODO Reduce
+
+    // TODO Error
+
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
