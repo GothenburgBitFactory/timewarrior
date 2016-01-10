@@ -91,14 +91,13 @@ int main (int argc, char** argv)
     grammar.debug (debug);
     grammar.loadFromFile (file);
 
-    // TODO Test commandLine against grammar.
+    // Test commandLine against grammar.
     if (commandLine != "")
     {
       LR0 lr0;
       lr0.debug (debug);
       lr0.initialize (grammar);
-
-      // TODO Run the parser.
+      lr0.parse (commandLine);
     }
   }
 
