@@ -10,4 +10,5 @@ rules.t
 rx.t
 table.t
 text.t
+unicode.t
 utf8.t

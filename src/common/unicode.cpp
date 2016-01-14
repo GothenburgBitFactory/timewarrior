@@ -35,7 +35,7 @@
 // Static
 //
 // TODO This list should be derived from the Unicode database.
-bool unicodeWhitespace (int c)
+bool unicodeWhitespace (unsigned int c)
 {
   return (c == 0x0020 ||   // space Common  Separator, space
           c == 0x0009 ||   // Common  Other, control  HT, Horizontal Tab
