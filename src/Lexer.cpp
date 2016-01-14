@@ -28,6 +28,7 @@
 #include <Lexer.h>
 #include <algorithm>
 #include <ctype.h>
+#include <unicode.h>
 #include <utf8.h>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -44,7 +45,7 @@ Lexer::Lexer (const std::string& text)
 bool Lexer::token (std::string& token, Lexer::Type& type)
 {
   // Eat white space.
-  while (isWhitespace (_text[_cursor]))
+  while (unicodeWhitespace (_text[_cursor]))
     utf8_next_char (_text, _cursor);
 
   // Terminate at EOS.
@@ -81,48 +82,6 @@ const std::string Lexer::typeName (const Lexer::Type& type)
   }
 
   return "unknown";
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// Complete Unicode whitespace list.
-//
-// http://en.wikipedia.org/wiki/Whitespace_character
-// Updated 2015-09-13
-// Static
-//
-// TODO This list should be derived from the Unicode database.
-bool Lexer::isWhitespace (int c)
-{
-  return (c == 0x0020 ||   // space Common  Separator, space
-          c == 0x0009 ||   // Common  Other, control  HT, Horizontal Tab
-          c == 0x000A ||   // Common  Other, control  LF, Line feed
-          c == 0x000B ||   // Common  Other, control  VT, Vertical Tab
-          c == 0x000C ||   // Common  Other, control  FF, Form feed
-          c == 0x000D ||   // Common  Other, control  CR, Carriage return
-          c == 0x0085 ||   // Common  Other, control  NEL, Next line
-          c == 0x00A0 ||   // no-break space  Common  Separator, space
-          c == 0x1680 ||   // ogham space mark  Ogham Separator, space
-          c == 0x180E ||   // mongolian vowel separator Mongolian Separator, space
-          c == 0x2000 ||   // en quad Common  Separator, space
-          c == 0x2001 ||   // em quad Common  Separator, space
-          c == 0x2002 ||   // en space  Common  Separator, space
-          c == 0x2003 ||   // em space  Common  Separator, space
-          c == 0x2004 ||   // three-per-em space  Common  Separator, space
-          c == 0x2005 ||   // four-per-em space Common  Separator, space
-          c == 0x2006 ||   // six-per-em space  Common  Separator, space
-          c == 0x2007 ||   // figure space  Common  Separator, space
-          c == 0x2008 ||   // punctuation space Common  Separator, space
-          c == 0x2009 ||   // thin space  Common  Separator, space
-          c == 0x200A ||   // hair space  Common  Separator, space
-          c == 0x200B ||   // zero width space
-          c == 0x200C ||   // zero width non-joiner
-          c == 0x200D ||   // zero width joiner
-          c == 0x2028 ||   // line separator  Common  Separator, line
-          c == 0x2029 ||   // paragraph separator Common  Separator, paragraph
-          c == 0x202F ||   // narrow no-break space Common  Separator, space
-          c == 0x205F ||   // medium mathematical space Common  Separator, space
-          c == 0x2060 ||   // word joiner
-          c == 0x3000);    // ideographic space Common  Separator, space
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -205,10 +164,10 @@ bool Lexer::isNumber (std::string& token, Lexer::Type& type)
       }
     }
 
-    // Lookahread: !<isWhitespace> | !<isSingleCharOperator>
+    // Lookahread: !<unicodeWhitespace> | !<isSingleCharOperator>
     // If there is an immediately consecutive character, that is not an operator, fail.
     if (_eos > marker &&
-        ! isWhitespace (_text[marker]) &&
+        ! unicodeWhitespace (_text[marker]) &&
         ! isSingleCharOperator (_text[marker]))
       return false;
 
@@ -289,9 +248,9 @@ bool Lexer::isBoundary (int left, int right)
   if (right == '\0')                                 return true;
 
   // XOR
-  if (isAlpha (left)       != isAlpha (right))       return true;
-  if (isDigit (left)       != isDigit (right))       return true;
-  if (isWhitespace (left)  != isWhitespace (right))  return true;
+  if (isAlpha (left)           != isAlpha (right))       return true;
+  if (isDigit (left)           != isDigit (right))       return true;
+  if (unicodeWhitespace (left) != unicodeWhitespace (right))  return true;
 
   // OR
   if (isPunctuation (left) || isPunctuation (right)) return true;
@@ -461,7 +420,7 @@ bool Lexer::isWord (std::string& token, Lexer::Type& type)
   std::size_t marker = _cursor;
 
   while (_text[marker]                  &&
-         ! isWhitespace (_text[marker]) &&
+         ! unicodeWhitespace (_text[marker]) &&
          ! isSingleCharOperator (_text[marker]))
     utf8_next_char (_text, marker);
 
@@ -500,7 +459,7 @@ bool Lexer::isURL (std::string& token, Lexer::Type& type)
       marker += 3;
 
       while (marker < _eos &&
-             ! isWhitespace (_text[marker]))
+             ! unicodeWhitespace (_text[marker]))
         utf8_next_char (_text, marker);
 
       token = _text.substr (_cursor, marker - _cursor);
@@ -532,12 +491,12 @@ bool Lexer::isPath (std::string& token, Lexer::Type& type)
       break;
 
     if (_text[marker] &&
-        ! isWhitespace (_text[marker]) &&
+        ! unicodeWhitespace (_text[marker]) &&
         _text[marker] != '/')
     {
       utf8_next_char (_text, marker);
       while (_text[marker] &&
-             ! isWhitespace (_text[marker]) &&
+             ! unicodeWhitespace (_text[marker]) &&
              _text[marker] != '/')
         utf8_next_char (_text, marker);
     }
@@ -559,7 +518,7 @@ bool Lexer::isPath (std::string& token, Lexer::Type& type)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Lexer::Type::pattern
-//   / <unquoted-string> /  <EOS> | <isWhitespace>
+//   / <unquoted-string> /  <EOS> | <unicodeWhitespace>
 bool Lexer::isPattern (std::string& token, Lexer::Type& type)
 {
   std::size_t marker = _cursor;
@@ -567,7 +526,7 @@ bool Lexer::isPattern (std::string& token, Lexer::Type& type)
   std::string word;
   if (readWord (_text, "/", _cursor, word) &&
       (isEOS () ||
-       isWhitespace (_text[_cursor])))
+       unicodeWhitespace (_text[_cursor])))
   {
     token = _text.substr (marker, _cursor - marker);
     type = Lexer::Type::pattern;
@@ -763,7 +722,7 @@ bool Lexer::readWord (
 //
 // Ends at:
 //   Lexer::isEOS
-//   Lexer::isWhitespace
+//   unicodeWhitespace
 //   Lexer::isHardBoundary
 bool Lexer::readWord (
   const std::string& text,
@@ -778,7 +737,7 @@ bool Lexer::readWord (
   while ((c = text[cursor]))  // Handles EOS.
   {
     // Unquoted word ends on white space.
-    if (Lexer::isWhitespace (c))
+    if (unicodeWhitespace (c))
       break;
 
     // Parentheses mostly.
