@@ -264,22 +264,69 @@ void LR0::createParseTable (States& states)
 //
 void LR0::parse (const std::string& input)
 {
+  // set ip to point to the first symbol of w$
   Lexer l (input);
-
   std::string token;
   Lexer::Type type;
-  while (l.token (token, type))
+  if (! l.token (token, type))
   {
-    std::cout << "# token '" << token << "' " << Lexer::typeToString (type) << "\n";
+    // TODO Error: Nothing to parse.
+    std::cout << "# LR0::parse EOS\n";
+    return;
+  }
 
-    // TODO Done
+  std::cout << "# LR0::parse token '" << token << "' " << Lexer::typeToString (type) << "\n";
+
+  // repeat forever begin
+  while (1)
+  {
+    // let s be the state on top of the stack
+    // let token be the symbol pointed to by ip
 
     // TODO Shift
+    // if action[s,token] == shift s'
+    //   push token then s' on top of the stack
+    //   advance ip to the next input symbol
+    // end
+    if (0)
+    {
+      std::cout << "# LR0::parse shift\n";
+
+      if (! l.token (token, type))
+      {
+        // TODO Error: No more to parse.
+        std::cout << "# LR0::parse unexpected EOS\n";
+        return;
+      }
+    }
 
     // TODO Reduce
+    // else if action[s,token] == reduce A --> B
+    //   pop 2 * [B] symbols off the stack
+    //   let s' be the state now at the top of the stack
+    //   push A, then goto[s',A] on top of the stack
+    //   output the production A --> B
+    else if (0)
+    {
+      std::cout << "# LR0::parse reduce\n";
+    }
+
+    // TODO Accept
+    // else if then begin
+    //   if action[s,token] == accept
+    //     return
+    else if (0)
+    {
+      std::cout << "# LR0::parse accept\n";
+      return;
+    }
 
     // TODO Error
-
+    else
+    {
+      std::cout << "# LR0::parse error\n";
+      return;
+    }
   }
 }
 
