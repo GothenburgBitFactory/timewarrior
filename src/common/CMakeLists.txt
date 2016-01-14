@@ -9,6 +9,7 @@ set (common_SRCS Color.cpp    Color.h
                  Table.cpp    Table.h
                  Timer.cpp    Timer.h
                  text.cpp     text.h
+                 unicode.cpp  unicode.h
                  utf8.cpp     utf8.h
                  wcwidth6.cpp)
 
