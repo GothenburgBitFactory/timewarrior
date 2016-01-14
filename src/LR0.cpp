@@ -232,6 +232,36 @@ void LR0::createParseTable (States& states)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// "Compilers.  Principles, Techniques, and Tools", Aho/Sethi/Ullman. p219.
+//
+// set ip to point to the first symbol of w$
+// repeat forever begin
+//   let s be the state on top of the stack
+//   let a be the symbol pointed to by ip
+//
+//   if action[s,a] = shift s' then begin
+//     push a then s' on top of the stack
+//     advance ip to the next input symbol
+//   end
+//
+//   else if action[s,a] = reduce A --> B then begin
+//     pop 2 * [B] symbols off the stack
+//     let s' be the state now at the top of the stack
+//     push A, then goto[s',A] on top of the stack
+//     output the production A --> B
+//   end
+//
+//   else if then begin
+//     if action[s,a] = accept then begin
+//       return
+//     end
+//   end
+//
+//   else
+//     error
+//   end
+// end
+//
 void LR0::parse (const std::string& input)
 {
   Lexer l (input);
