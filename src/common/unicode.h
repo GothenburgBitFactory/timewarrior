@@ -28,6 +28,7 @@
 #define INCLUDED_UNICODE
 
 bool unicodeWhitespace (unsigned int);
+bool unicodeAlpha      (unsigned int);
 
 #endif
 ////////////////////////////////////////////////////////////////////////////////
