@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (27);
+  UnitTest t (32);
 
   // White space detection.
   t.notok (unicodeWhitespace (0x0041), "U+0041 (A) ! unicodeWhitespace");
@@ -61,6 +61,13 @@ int main (int, char**)
   t.ok    (unicodeWhitespace (0x202F), "U+202F unicodeWhitespace");
   t.ok    (unicodeWhitespace (0x205F), "U+205F unicodeWhitespace");
   t.ok    (unicodeWhitespace (0x3000), "U+3000 unicodeWhitespace");
+
+  // Alpha
+  t.notok (unicodeAlpha (0x0033), "U+0033 (3) ! unicodeAlpha");
+  t.ok    (unicodeAlpha (0x0041), "U+0041 (A) unicodeAlpha");
+  t.ok    (unicodeAlpha (0x005A), "U+005A (Z) unicodeAlpha");
+  t.ok    (unicodeAlpha (0x0061), "U+0061 (a) unicodeAlpha");
+  t.ok    (unicodeAlpha (0x007A), "U+007A (z) unicodeAlpha");
 
   return 0;
 }
