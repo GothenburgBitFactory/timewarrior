@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <Pig.h>
 #include <Lexer.h>
+#include <unicode.h>
 #include <utf8.h>
 #include <sstream>
 #include <cinttypes>
@@ -79,7 +80,7 @@ bool Pig::skipWS ()
   auto prev = _cursor;
   while ((c = utf8_next_char (_text, _cursor)))
   {
-    if (! Lexer::isWhitespace (c))
+    if (! unicodeWhitespace (c))
     {
       _cursor = prev;
       break;
@@ -117,7 +118,7 @@ bool Pig::getUntilWS (std::string& result)
       return true;
     }
 
-    else if (Lexer::isWhitespace (c))
+    else if (unicodeWhitespace (c))
     {
       _cursor = prev;
       result = _text.substr (save, _cursor - save);
