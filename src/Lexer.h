@@ -49,7 +49,6 @@ public:
 
   // Static helpers.
   static const std::string typeName          (const Lexer::Type&);
-  static bool isAlpha                        (int);
   static bool isDigit                        (int);
   static bool isHexDigit                     (int);
   static bool isSingleCharOperator           (int);

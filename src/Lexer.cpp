@@ -85,13 +85,6 @@ const std::string Lexer::typeName (const Lexer::Type& type)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Lexer::isAlpha (int c)
-{
-  return (c >= 'A' && c <= 'Z') ||
-         (c >= 'a' && c <= 'z');
-}
-
-////////////////////////////////////////////////////////////////////////////////
 // Digits 0-9.
 //
 // TODO This list should be derived from the Unicode database.
@@ -245,15 +238,15 @@ bool Lexer::isTripleCharOperator (int c0, int c1, int c2, int c3)
 bool Lexer::isBoundary (int left, int right)
 {
   // EOS
-  if (right == '\0')                                 return true;
+  if (right == '\0')                                         return true;
 
   // XOR
-  if (isAlpha (left)           != isAlpha (right))       return true;
-  if (isDigit (left)           != isDigit (right))       return true;
-  if (unicodeWhitespace (left) != unicodeWhitespace (right))  return true;
+  if (unicodeAlpha (left)      != unicodeAlpha (right))      return true;
+  if (isDigit (left)           != isDigit (right))           return true;
+  if (unicodeWhitespace (left) != unicodeWhitespace (right)) return true;
 
   // OR
-  if (isPunctuation (left) || isPunctuation (right)) return true;
+  if (isPunctuation (left) || isPunctuation (right))         return true;
 
   return false;
 }
@@ -285,7 +278,7 @@ bool Lexer::isPunctuation (int c)
          c != '$'      &&
          c != '_'      &&
          ! isDigit (c) &&
-         ! isAlpha (c);
+         ! unicodeAlpha (c);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
