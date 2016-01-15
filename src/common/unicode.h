@@ -30,6 +30,7 @@
 bool unicodeWhitespace (unsigned int);
 bool unicodeLatinAlpha (unsigned int);
 bool unicodeLatinDigit (unsigned int);
+bool unicodeHexDigit   (unsigned int);
 
 #endif
 ////////////////////////////////////////////////////////////////////////////////
