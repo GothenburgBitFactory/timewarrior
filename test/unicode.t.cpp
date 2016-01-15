@@ -62,12 +62,12 @@ int main (int, char**)
   t.ok    (unicodeWhitespace (0x205F), "U+205F unicodeWhitespace");
   t.ok    (unicodeWhitespace (0x3000), "U+3000 unicodeWhitespace");
 
-  // Alpha
-  t.notok (unicodeAlpha (0x0033), "U+0033 (3) ! unicodeAlpha");
-  t.ok    (unicodeAlpha (0x0041), "U+0041 (A) unicodeAlpha");
-  t.ok    (unicodeAlpha (0x005A), "U+005A (Z) unicodeAlpha");
-  t.ok    (unicodeAlpha (0x0061), "U+0061 (a) unicodeAlpha");
-  t.ok    (unicodeAlpha (0x007A), "U+007A (z) unicodeAlpha");
+  // Latin Alpha
+  t.notok (unicodeLatinAlpha (0x0033), "U+0033 (3) ! unicodeLatinAlpha");
+  t.ok    (unicodeLatinAlpha (0x0041), "U+0041 (A) unicodeLatinAlpha");
+  t.ok    (unicodeLatinAlpha (0x005A), "U+005A (Z) unicodeLatinAlpha");
+  t.ok    (unicodeLatinAlpha (0x0061), "U+0061 (a) unicodeLatinAlpha");
+  t.ok    (unicodeLatinAlpha (0x007A), "U+007A (z) unicodeLatinAlpha");
 
   return 0;
 }

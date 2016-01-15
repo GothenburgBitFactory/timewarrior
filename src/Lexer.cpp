@@ -241,7 +241,7 @@ bool Lexer::isBoundary (int left, int right)
   if (right == '\0')                                         return true;
 
   // XOR
-  if (unicodeAlpha (left)      != unicodeAlpha (right))      return true;
+  if (unicodeLatinAlpha (left) != unicodeLatinAlpha (right)) return true;
   if (isDigit (left)           != isDigit (right))           return true;
   if (unicodeWhitespace (left) != unicodeWhitespace (right)) return true;
 
@@ -278,7 +278,7 @@ bool Lexer::isPunctuation (int c)
          c != '$'      &&
          c != '_'      &&
          ! isDigit (c) &&
-         ! unicodeAlpha (c);
+         ! unicodeLatinAlpha (c);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

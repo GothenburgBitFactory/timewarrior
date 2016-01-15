@@ -71,7 +71,7 @@ bool unicodeWhitespace (unsigned int c)
 
 ////////////////////////////////////////////////////////////////////////////////
 // TODO Needs better definition.
-bool unicodeAlpha (unsigned int c)
+bool unicodeLatinAlpha (unsigned int c)
 {
   return (c >= 'A' && c <= 'Z') ||
          (c >= 'a' && c <= 'z');
