@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (43);
+  UnitTest t (66);
 
   // White space detection.
   t.notok (unicodeWhitespace (0x0041), "U+0041 (A) ! unicodeWhitespace");
@@ -81,6 +81,31 @@ int main (int, char**)
   t.ok    (unicodeLatinDigit (0x0037), "U+0037 (7) unicodeLatinDigit");
   t.ok    (unicodeLatinDigit (0x0038), "U+0038 (8) unicodeLatinDigit");
   t.ok    (unicodeLatinDigit (0x0039), "U+0039 (9) unicodeLatinDigit");
+
+  // Hex Digit
+  t.notok (unicodeHexDigit (0x0047), "U+0047 (G) ! unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0030), "U+0030 (0) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0031), "U+0031 (1) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0032), "U+0032 (2) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0033), "U+0033 (3) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0034), "U+0034 (4) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0035), "U+0035 (5) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0036), "U+0036 (6) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0037), "U+0037 (7) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0038), "U+0038 (8) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0039), "U+0039 (9) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0041), "U+0041 (A) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0042), "U+0042 (B) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0043), "U+0043 (C) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0044), "U+0044 (D) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0045), "U+0045 (E) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0046), "U+0046 (F) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0061), "U+0061 (a) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0062), "U+0062 (b) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0063), "U+0063 (c) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0064), "U+0064 (d) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0065), "U+0065 (e) unicodeHexDigit");
+  t.ok    (unicodeHexDigit (0x0066), "U+0066 (f) unicodeHexDigit");
 
   return 0;
 }
