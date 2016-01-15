@@ -85,15 +85,6 @@ const std::string Lexer::typeName (const Lexer::Type& type)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Digits 0-9 a-f A-F.
-bool Lexer::isHexDigit (int c)
-{
-  return (c >= '0' && c <= '9') ||
-         (c >= 'a' && c <= 'f') ||
-         (c >= 'A' && c <= 'F');
-}
-
-////////////////////////////////////////////////////////////////////////////////
 // Lexer::Type::number
 //   \d+
 //   [ . \d+ ]
@@ -381,7 +372,7 @@ bool Lexer::isHexNumber (std::string& token, Lexer::Type& type)
   {
     marker += 2;
 
-    while (isHexDigit (_text[marker]))
+    while (unicodeHexDigit (_text[marker]))
       ++marker;
 
     if (marker - _cursor > 2)
@@ -648,10 +639,10 @@ bool Lexer::readWord (
     else if (eos - cursor >= 6 &&
              ((text[cursor + 0] == 'U'  && text[cursor + 1] == '+') ||
               (text[cursor + 0] == '\\' && text[cursor + 1] == 'u')) &&
-             isHexDigit (text[cursor + 2]) &&
-             isHexDigit (text[cursor + 3]) &&
-             isHexDigit (text[cursor + 4]) &&
-             isHexDigit (text[cursor + 5]))
+             unicodeHexDigit (text[cursor + 2]) &&
+             unicodeHexDigit (text[cursor + 3]) &&
+             unicodeHexDigit (text[cursor + 4]) &&
+             unicodeHexDigit (text[cursor + 5]))
     {
       word += utf8_character (
                 hexToInt (
@@ -732,10 +723,10 @@ bool Lexer::readWord (
     else if (eos - cursor >= 6 &&
              ((text[cursor + 0] == 'U'  && text[cursor + 1] == '+') ||
               (text[cursor + 0] == '\\' && text[cursor + 1] == 'u')) &&
-             isHexDigit (text[cursor + 2]) &&
-             isHexDigit (text[cursor + 3]) &&
-             isHexDigit (text[cursor + 4]) &&
-             isHexDigit (text[cursor + 5]))
+             unicodeHexDigit (text[cursor + 2]) &&
+             unicodeHexDigit (text[cursor + 3]) &&
+             unicodeHexDigit (text[cursor + 4]) &&
+             unicodeHexDigit (text[cursor + 5]))
     {
       word += utf8_character (
                 hexToInt (
