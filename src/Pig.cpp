@@ -136,7 +136,7 @@ bool Pig::getDigit (int& result)
 {
   int c = _text[_cursor];
   if (c &&
-      Lexer::isDigit (c))
+      unicodeLatinDigit (c))
   {
     result = c - '0';
     ++_cursor;
@@ -149,9 +149,9 @@ bool Pig::getDigit (int& result)
 ////////////////////////////////////////////////////////////////////////////////
 bool Pig::getDigit2 (int& result)
 {
-  if (Lexer::isDigit (_text[_cursor + 0]))
+  if (unicodeLatinDigit (_text[_cursor + 0]))
   {
-    if (Lexer::isDigit (_text[_cursor + 1]))
+    if (unicodeLatinDigit (_text[_cursor + 1]))
     {
       result = strtoimax (_text.substr (_cursor, 2).c_str (), NULL, 10);
       _cursor += 2;
@@ -165,11 +165,11 @@ bool Pig::getDigit2 (int& result)
 ////////////////////////////////////////////////////////////////////////////////
 bool Pig::getDigit3 (int& result)
 {
-  if (Lexer::isDigit (_text[_cursor + 0]))
+  if (unicodeLatinDigit (_text[_cursor + 0]))
   {
-    if (Lexer::isDigit (_text[_cursor + 1]))
+    if (unicodeLatinDigit (_text[_cursor + 1]))
     {
-      if (Lexer::isDigit (_text[_cursor + 2]))
+      if (unicodeLatinDigit (_text[_cursor + 2]))
       {
         result = strtoimax (_text.substr (_cursor, 3).c_str (), NULL, 10);
         _cursor += 3;
@@ -184,13 +184,13 @@ bool Pig::getDigit3 (int& result)
 ////////////////////////////////////////////////////////////////////////////////
 bool Pig::getDigit4 (int& result)
 {
-  if (Lexer::isDigit (_text[_cursor + 0]))
+  if (unicodeLatinDigit (_text[_cursor + 0]))
   {
-    if (Lexer::isDigit (_text[_cursor + 1]))
+    if (unicodeLatinDigit (_text[_cursor + 1]))
     {
-      if (Lexer::isDigit (_text[_cursor + 2]))
+      if (unicodeLatinDigit (_text[_cursor + 2]))
       {
-        if (Lexer::isDigit (_text[_cursor + 3]))
+        if (unicodeLatinDigit (_text[_cursor + 3]))
         {
           result = strtoimax (_text.substr (_cursor, 4).c_str (), NULL, 10);
           _cursor += 4;
@@ -212,7 +212,7 @@ bool Pig::getDigits (int& result)
   auto prev = _cursor;
   while ((c = utf8_next_char (_text, _cursor)))
   {
-    if (! Lexer::isDigit (c))
+    if (! unicodeLatinDigit (c))
     {
       _cursor = prev;
       break;
@@ -287,11 +287,11 @@ bool Pig::getNumber (std::string& result)
 
   // digit+
   if (_text[i] &&
-      Lexer::isDigit (_text[i]))
+      unicodeLatinDigit (_text[i]))
   {
     ++i;
 
-    while (_text[i] && Lexer::isDigit (_text[i]))
+    while (_text[i] && unicodeLatinDigit (_text[i]))
       ++i;
 
     // ( . digit+ )?
@@ -299,7 +299,7 @@ bool Pig::getNumber (std::string& result)
     {
       ++i;
 
-      while (_text[i] && Lexer::isDigit (_text[i]))
+      while (_text[i] && unicodeLatinDigit (_text[i]))
         ++i;
     }
 
@@ -315,11 +315,11 @@ bool Pig::getNumber (std::string& result)
            _text[i] == '-'))
         ++i;
 
-      if (_text[i] && Lexer::isDigit (_text[i]))
+      if (_text[i] && unicodeLatinDigit (_text[i]))
       {
         ++i;
 
-        while (_text[i] && Lexer::isDigit (_text[i]))
+        while (_text[i] && unicodeLatinDigit (_text[i]))
           ++i;
 
         result = _text.substr (_cursor, i - _cursor);
