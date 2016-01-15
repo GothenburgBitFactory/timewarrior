@@ -234,7 +234,7 @@ bool Pig::getHexDigit (int& result)
 {
   int c = _text[_cursor];
   if (c &&
-      Lexer::isHexDigit (c))
+      unicodeHexDigit (c))
   {
     if (c >= '0' && c <= '9')
     {
