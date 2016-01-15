@@ -85,15 +85,6 @@ const std::string Lexer::typeName (const Lexer::Type& type)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Digits 0-9.
-//
-// TODO This list should be derived from the Unicode database.
-bool Lexer::isDigit (int c)
-{
-  return c >= 0x30 && c <= 0x39;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 // Digits 0-9 a-f A-F.
 bool Lexer::isHexDigit (int c)
 {
@@ -112,19 +103,19 @@ bool Lexer::isNumber (std::string& token, Lexer::Type& type)
 {
   std::size_t marker = _cursor;
 
-  if (isDigit (_text[marker]))
+  if (unicodeLatinDigit (_text[marker]))
   {
     ++marker;
-    while (isDigit (_text[marker]))
+    while (unicodeLatinDigit (_text[marker]))
       utf8_next_char (_text, marker);
 
     if (_text[marker] == '.')
     {
       ++marker;
-      if (isDigit (_text[marker]))
+      if (unicodeLatinDigit (_text[marker]))
       {
         ++marker;
-        while (isDigit (_text[marker]))
+        while (unicodeLatinDigit (_text[marker]))
           utf8_next_char (_text, marker);
       }
     }
@@ -138,19 +129,19 @@ bool Lexer::isNumber (std::string& token, Lexer::Type& type)
           _text[marker] == '-')
         ++marker;
 
-      if (isDigit (_text[marker]))
+      if (unicodeLatinDigit (_text[marker]))
       {
         ++marker;
-        while (isDigit (_text[marker]))
+        while (unicodeLatinDigit (_text[marker]))
           utf8_next_char (_text, marker);
 
         if (_text[marker] == '.')
         {
           ++marker;
-          if (isDigit (_text[marker]))
+          if (unicodeLatinDigit (_text[marker]))
           {
             ++marker;
-            while (isDigit (_text[marker]))
+            while (unicodeLatinDigit (_text[marker]))
               utf8_next_char (_text, marker);
           }
         }
@@ -180,10 +171,10 @@ bool Lexer::isInteger (std::string& token, Lexer::Type& type)
 {
   std::size_t marker = _cursor;
 
-  if (isDigit (_text[marker]))
+  if (unicodeLatinDigit (_text[marker]))
   {
     ++marker;
-    while (isDigit (_text[marker]))
+    while (unicodeLatinDigit (_text[marker]))
       utf8_next_char (_text, marker);
 
     token = _text.substr (_cursor, marker - _cursor);
@@ -242,7 +233,7 @@ bool Lexer::isBoundary (int left, int right)
 
   // XOR
   if (unicodeLatinAlpha (left) != unicodeLatinAlpha (right)) return true;
-  if (isDigit (left)           != isDigit (right))           return true;
+  if (unicodeLatinDigit (left) != unicodeLatinDigit (right)) return true;
   if (unicodeWhitespace (left) != unicodeWhitespace (right)) return true;
 
   // OR
@@ -277,7 +268,7 @@ bool Lexer::isPunctuation (int c)
          c != '#'      &&
          c != '$'      &&
          c != '_'      &&
-         ! isDigit (c) &&
+         ! unicodeLatinDigit (c) &&
          ! unicodeLatinAlpha (c);
 }
 
