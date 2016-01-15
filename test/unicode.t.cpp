@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (32);
+  UnitTest t (43);
 
   // White space detection.
   t.notok (unicodeWhitespace (0x0041), "U+0041 (A) ! unicodeWhitespace");
@@ -68,6 +68,19 @@ int main (int, char**)
   t.ok    (unicodeLatinAlpha (0x005A), "U+005A (Z) unicodeLatinAlpha");
   t.ok    (unicodeLatinAlpha (0x0061), "U+0061 (a) unicodeLatinAlpha");
   t.ok    (unicodeLatinAlpha (0x007A), "U+007A (z) unicodeLatinAlpha");
+
+  // Latin Digit
+  t.notok (unicodeLatinDigit (0x0041), "U+0041 (A) ! unicodeLatinDigit");
+  t.ok    (unicodeLatinDigit (0x0030), "U+0030 (0) unicodeLatinDigit");
+  t.ok    (unicodeLatinDigit (0x0031), "U+0031 (1) unicodeLatinDigit");
+  t.ok    (unicodeLatinDigit (0x0032), "U+0032 (2) unicodeLatinDigit");
+  t.ok    (unicodeLatinDigit (0x0033), "U+0033 (3) unicodeLatinDigit");
+  t.ok    (unicodeLatinDigit (0x0034), "U+0034 (4) unicodeLatinDigit");
+  t.ok    (unicodeLatinDigit (0x0035), "U+0035 (5) unicodeLatinDigit");
+  t.ok    (unicodeLatinDigit (0x0036), "U+0036 (6) unicodeLatinDigit");
+  t.ok    (unicodeLatinDigit (0x0037), "U+0037 (7) unicodeLatinDigit");
+  t.ok    (unicodeLatinDigit (0x0038), "U+0038 (8) unicodeLatinDigit");
+  t.ok    (unicodeLatinDigit (0x0039), "U+0039 (9) unicodeLatinDigit");
 
   return 0;
 }
