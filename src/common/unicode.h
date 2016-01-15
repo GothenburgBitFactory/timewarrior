@@ -29,6 +29,7 @@
 
 bool unicodeWhitespace (unsigned int);
 bool unicodeLatinAlpha (unsigned int);
+bool unicodeLatinDigit (unsigned int);
 
 #endif
 ////////////////////////////////////////////////////////////////////////////////
