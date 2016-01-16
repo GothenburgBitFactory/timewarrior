@@ -127,7 +127,7 @@ Color::Color (const std::string& spec)
 : _value (0)
 {
   // Split spec into words.
-  std::vector <std::string> words = split (spec, ' ');
+  auto words = split (spec, ' ');
 
   // Construct the color as two separate colors, then blend them later.  This
   // make it possible to declare a color such as "color1 on black", and have
