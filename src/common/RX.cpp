@@ -26,13 +26,11 @@
 
 #include <cmake.h>
 #include <RX.h>
-#include <stdlib.h>
+#include <cstdlib>
+#include <cstring>
 
 ////////////////////////////////////////////////////////////////////////////////
 RX::RX ()
-: _compiled (false)
-, _pattern ("")
-, _case_sensitive (false)
 {
 }
 
@@ -65,12 +63,9 @@ RX::~RX ()
 ////////////////////////////////////////////////////////////////////////////////
 RX& RX::operator= (const RX& other)
 {
-  if (this != &other)
-  {
-    _compiled = false;
-    _pattern = other._pattern;
-    _case_sensitive = other._case_sensitive;
-  }
+  _compiled = false;
+  _pattern = other._pattern;
+  _case_sensitive = other._case_sensitive;
 
   return *this;
 }
@@ -84,7 +79,7 @@ void RX::compile ()
 
     int result;
     if ((result = regcomp (&_regex, _pattern.c_str (),
-#ifdef DARWIN
+#if defined REG_ENHANCED
                            REG_ENHANCED | REG_EXTENDED | REG_NEWLINE |
 #else
                            REG_EXTENDED | REG_NEWLINE |
