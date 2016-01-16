@@ -48,8 +48,8 @@ RX::RX (
 ////////////////////////////////////////////////////////////////////////////////
 RX::RX (const RX& other)
 {
-  _compiled = false;
-  _pattern = other._pattern;
+  _compiled       = false;
+  _pattern        = other._pattern;
   _case_sensitive = other._case_sensitive;
 }
 
@@ -63,8 +63,8 @@ RX::~RX ()
 ////////////////////////////////////////////////////////////////////////////////
 RX& RX::operator= (const RX& other)
 {
-  _compiled = false;
-  _pattern = other._pattern;
+  _compiled       = false;
+  _pattern        = other._pattern;
   _case_sensitive = other._case_sensitive;
 
   return *this;
