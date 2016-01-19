@@ -152,7 +152,7 @@ std::string Grammar::start () const
 std::vector <std::string> Grammar::rules () const
 {
   std::vector <std::string> results;
-  for (auto& rule : _rules)
+  for (const auto& rule : _rules)
     results.push_back (rule.first);
 
   return results;
@@ -162,9 +162,9 @@ std::vector <std::string> Grammar::rules () const
 std::vector <std::string> Grammar::terminals () const
 {
   std::vector <std::string> results;
-  for (auto& rule : _rules)
-    for (auto& production : rule.second)
-      for (auto& token : production)
+  for (const auto& rule : _rules)
+    for (const auto& production : rule.second)
+      for (const auto& token : production)
         if (_rules.find (token._token) == _rules.end ())
           results.push_back (token._token);
 
@@ -175,13 +175,13 @@ std::vector <std::string> Grammar::terminals () const
 std::vector <std::vector <std::string>> Grammar::augmented () const
 {
   std::vector <std::vector <std::string>> results {{"S", "-->", _start}};
-  for (auto& rule : _rules)
-    for (auto& production : rule.second)
+  for (const auto& rule : _rules)
+    for (const auto& production : rule.second)
     {
       std::vector <std::string> terms;
       terms.push_back (rule.first);
       terms.push_back ("-->");
-      for (auto& token : production)
+      for (const auto& token : production)
         terms.push_back (token._token);
 
       results.push_back (terms);
@@ -201,18 +201,18 @@ std::string Grammar::dump () const
 {
   std::stringstream out;
   out << "Grammar\n";
-  for (auto& rule : _rules)
+  for (const auto& rule : _rules)
   {
     // Indicate the start Rule.
     out << "  " << (rule.first == _start ? "▶" : " ") << " " << rule.first << ": ";
 
     int count = 0;
-    for (auto& production : rule.second)
+    for (const auto& production : rule.second)
     {
       if (count)
         out << "| ";
 
-      for (auto& token : production)
+      for (const auto& token : production)
       {
         out << token._token;
         if (token._decoration != "")
@@ -239,13 +239,13 @@ void Grammar::validate () const
   std::vector <std::string> allTokens;
   std::vector <std::string> allLeftRecursive;
 
-  for (auto& rule : _rules)
+  for (const auto& rule : _rules)
   {
     allRules.push_back (rule.first);
 
-    for (auto& production : rule.second)
+    for (const auto& production : rule.second)
     {
-      for (auto& token : production)
+      for (const auto& token : production)
       {
         if (token._token.front () != '"' and
             token._token.front () != '/')
@@ -265,23 +265,23 @@ void Grammar::validate () const
 
   // Undefined value - these are definitions that appear in token, but are
   // not in _rules.
-  for (auto& nd : notDefined)
+  for (const auto& nd : notDefined)
     if (nd != "є")
       throw format ("Definition '{1}' referenced, but not defined.", nd);
 
   // Circular definitions - these are names in _rules that also appear as
   // the only token in any of the alternates for that definition.
-  for (auto& lr : allLeftRecursive)
+  for (const auto& lr : allLeftRecursive)
     throw format ("Definition '{1}' is left recursive.", lr);
 
-  for (auto& r : allRules)
+  for (const auto& r : allRules)
     if (r[0] == '"' or
         r[0] == '/')
       throw format ("Definition '{1}' must not be a literal.");
 
   // Unused definitions - these are names in _rules that are never
   // referenced as token.
-  for (auto& nu : notUsed)
+  for (const auto& nu : notUsed)
     if (nu != _start)
       throw format ("Definition '{1}' is defined, but not referenced.", nu);
 }

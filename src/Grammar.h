@@ -68,11 +68,11 @@ private:
   void validate () const;
 
 private:
-  std::string _start;
+  std::string _start {};
   //        rule name    rule
   //        |            |
   std::map <std::string, Grammar::Rule> _rules;
-  bool _debug;
+  bool _debug {false};
 };
 
 #endif
