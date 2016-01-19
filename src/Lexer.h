@@ -43,7 +43,7 @@ public:
                     op,
                     word };
 
-  Lexer (const std::string&);
+  explicit Lexer (const std::string&);
   bool token (std::string&, Lexer::Type&);
   static std::string typeToString (Lexer::Type);
 
@@ -78,9 +78,9 @@ public:
   bool isWord         (std::string&, Lexer::Type&);
 
 private:
-  std::string _text;
-  std::size_t _cursor;
-  std::size_t _eos;
+  std::string _text   {};
+  std::size_t _cursor {0};
+  std::size_t _eos    {0};
 };
 
 #endif

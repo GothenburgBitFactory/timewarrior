@@ -34,7 +34,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 Lexer::Lexer (const std::string& text)
 : _text (text)
-, _cursor (0)
 , _eos (text.size ())
 {
 }
