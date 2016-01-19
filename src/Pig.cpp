@@ -26,7 +26,6 @@
 
 #include <cmake.h>
 #include <Pig.h>
-#include <Lexer.h>
 #include <unicode.h>
 #include <utf8.h>
 #include <sstream>
