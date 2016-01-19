@@ -35,9 +35,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 Pig::Pig (const std::string& text)
-: _text (text)
-, _cursor (0)
-, _saved (0)
+: _text {text}
 {
 }
 
@@ -217,6 +215,7 @@ bool Pig::getDigits (int& result)
       _cursor = prev;
       break;
     }
+
     prev = _cursor;
   }
 
@@ -419,7 +418,7 @@ bool Pig::getOneOf (
   const std::vector <std::string>& options,
   std::string& found)
 {
-  for (auto& option : options)
+  for (const auto& option : options)
   {
     if (skipLiteral (option))
     {
@@ -469,7 +468,7 @@ std::string Pig::peek (const int quantity) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string::size_type Pig::cursor ()
+std::string::size_type Pig::cursor () const
 {
   return _cursor;
 }

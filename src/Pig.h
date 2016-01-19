@@ -33,7 +33,7 @@
 class Pig
 {
 public:
-  Pig (const std::string&);
+  explicit Pig (const std::string&);
 
   bool skip (int);
   bool skipN (const int quantity = 1);
@@ -56,7 +56,7 @@ public:
   bool eos () const;
   int peek () const;
   std::string peek (const int) const;
-  std::string::size_type cursor ();
+  std::string::size_type cursor () const;
   std::string::size_type save ();
   std::string::size_type restore ();
 
@@ -64,8 +64,8 @@ public:
 
 private:
   const std::string&     _text;
-  std::string::size_type _cursor;
-  std::string::size_type _saved;
+  std::string::size_type _cursor {0};
+  std::string::size_type _saved  {0};
 };
 
 #endif
