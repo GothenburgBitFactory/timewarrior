@@ -5,18 +5,16 @@ endif()
 
 include_directories (${CMAKE_SOURCE_DIR}
                      ${CMAKE_SOURCE_DIR}/src
-                     ${CMAKE_SOURCE_DIR}/src/common
-                     ${CMAKE_SOURCE_DIR}/test
-                     ${TIMEW_INCLUDE_DIRS})
+                     ${CMAKE_SOURCE_DIR}/test)
 
-set (test_SRCS color.t fs.t grammar.t lexer.t list.t lr0.t pig.t rules.t rx.t table.t text.t unicode.t utf8.t)
+include_directories (${CMAKE_INSTALL_PREFIX}/include)
+link_directories(${CMAKE_INSTALL_PREFIX}/lib)
+
+set (test_SRCS grammar.t lexer.t lr0.t pig.t rules.t)
 
 add_custom_target (test ./run_all --verbose
-                        DEPENDS ${test_SRCS} timew_executable
+                        DEPENDS ${test_SRCS}
                         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test)
-
-add_custom_target (build_tests DEPENDS ${test_SRCS}
-                               WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/test)
 
 foreach (src_FILE ${test_SRCS})
   add_executable (${src_FILE} "${src_FILE}.cpp" test.cpp)
