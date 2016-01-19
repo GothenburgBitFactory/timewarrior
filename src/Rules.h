@@ -32,7 +32,6 @@
 class Rules
 {
 public:
-  Rules ();
   std::string dump () const;
 };
 
