@@ -40,6 +40,7 @@ ExternalProject_Add (common-1.0
                      )
 
 add_subdirectory (src)
+add_subdirectory (doc)
 if (EXISTS ${CMAKE_SOURCE_DIR}/test)
   add_subdirectory (test EXCLUDE_FROM_ALL)
 endif (EXISTS ${CMAKE_SOURCE_DIR}/test)

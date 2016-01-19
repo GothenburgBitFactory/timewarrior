@@ -1,0 +1,66 @@
+.TH timew 1 2015-11-29 "${PACKAGE_STRING}" "User Manuals"
+
+.SH NAME
+timew \- A command line time tracker.
+
+.SH SYNOPSIS
+.B timew <command>
+
+.SH DESCRIPTION
+Timewarrior is a command line time tracker. It allows you to very easily track
+your time spent on projects, and generate summary reports.
+
+.SH SUBCOMMANDS
+
+Timewarrior supports many commands.
+
+.SH CONFIGURATION FILE AND OVERRIDE OPTIONS
+Timewarrior stores its configuration in a file in the user's home directory:
+~/.timewrc.
+
+.SH MORE EXAMPLES
+
+For examples please see the online documentation starting at:
+
+.RS
+<http://taskwarrior.org/???>
+.RE
+
+Note that the online documentation can be more detailed and more current than
+this man page.
+
+.SH FILES
+
+.TP
+~/.timewrc
+User configuration file - see also timewrc(5).  Note that this can be
+overridden on the command line or by the TIMEWRC environment variable.
+
+.SH "CREDITS & COPYRIGHTS"
+Copyright (C) 2015 \- 2016 P. Beckingham, F. Hernandez.
+
+Timewarrior is distributed under the MIT license. See
+http://www.opensource.org/licenses/mit-license.php for more information.
+
+.SH SEE ALSO
+.BR timewrc(5)
+
+For more information regarding Timewarrior, see the following:
+
+.TP
+The official site at
+<http://taskwarrior.org>
+
+.TP
+The official code repository at
+<https://git.tasktools.org/scm/tm/timew.git>
+
+.TP
+You can contact the project by emailing
+<support@taskwarrior.org>
+
+.SH REPORTING BUGS
+.TP
+Bugs in Timewarrior may be reported to the issue-tracker at
+<https://bug.tasktools.org/>
+
