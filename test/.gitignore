@@ -2,5 +2,4 @@ all.log
 grammar.t
 lexer.t
 lr0.t
-pig.t
 rules.t
