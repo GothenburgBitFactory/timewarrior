@@ -84,7 +84,7 @@ private:
   std::vector <std::map <std::string, std::string>> _actions;
   std::vector <std::map <std::string, std::string>> _goto;
 
-  bool _debug;
+  bool _debug {false};
 };
 
 #endif

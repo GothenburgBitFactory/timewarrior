@@ -50,22 +50,22 @@ void LR0::initialize (const Grammar& grammar)
   {
     std::cout << "Augmented Grammar\n";
     auto count = 0;
-    for (auto& item : _augmented)
+    for (const auto& item : _augmented)
     {
       std::cout << "  [" << count++ << "]";
-      for (auto& term : item)
+      for (const auto& term : item)
         std::cout << " " << term;
       std::cout << "\n";
     }
 
     std::cout << "\n";
     std::cout << "Rules\n";
-    for (auto& r : _rules)
+    for (const auto& r : _rules)
       std::cout << "  " << r << "\n";
 
     std::cout << "\n";
     std::cout << "Terminals\n";
-    for (auto& t : _terminals)
+    for (const auto& t : _terminals)
       std::cout << "  " << t << "\n";
 
     std::cout << "\n";
@@ -186,11 +186,11 @@ void LR0::createParseTable (States& states)
   {
     // Create a column for every terminal.
     _actions.push_back ({});
-    for (auto& terminal : _terminals)
+    for (const auto& terminal : _terminals)
       _actions[state][terminal] = "";
 
     _goto.push_back ({});
-    for (auto& rule : _rules)
+    for (const auto& rule : _rules)
       _goto[state][rule] = "";
   }
 
@@ -203,7 +203,7 @@ void LR0::createParseTable (States& states)
         if (states[state][item]._grammarRule == 0)
           _actions[state]["$"] = "acc";
         else
-          for (auto& terminal : _terminals)
+          for (const auto& terminal : _terminals)
             _actions[state][terminal] = format ("r{1}", states[state][item]._grammarRule);
       }
 
@@ -355,10 +355,10 @@ std::string LR0::dump () const
 
   // Add columns.
   t.add ("State", true);
-  for (auto& terminal : _terminals)
+  for (const auto& terminal : _terminals)
     t.add (terminal, true);
 
-  for (auto& rule : _rules)
+  for (const auto& rule : _rules)
     t.add (rule, true);
 
   // Add cells.
@@ -368,7 +368,7 @@ std::string LR0::dump () const
     int col = 0;
     t.set (row, col++, state);
 
-    for (auto& terminal : _terminals)
+    for (const auto& terminal : _terminals)
     {
       auto data = _actions[state].at (terminal);
       Color color (data[0] == 'r' ? "rgb535 on rgb412" :
@@ -378,7 +378,7 @@ std::string LR0::dump () const
       t.set (row, col++, data, color);
     }
 
-    for (auto& rule : _rules)
+    for (const auto& rule : _rules)
     {
       auto data = _goto[state].at (rule);
       Color color (data != "" ? "rgb045 on rgb015" : "");
@@ -478,7 +478,7 @@ std::string LR0::States::dump () const
   for (unsigned int state = 0; state < this->size (); ++state)
   {
     out << "  State " << state << "\n";
-    for (auto& item : (*this)[state])
+    for (const auto& item : (*this)[state])
       out << "    " << item.dump () << "\n";
   }
 
