@@ -36,7 +36,7 @@ configure_file (
 ExternalProject_Add (common-1.0
                      GIT_REPOSITORY      "ssh://git@git.tasktools.org/tm/common.git"
                      GIT_TAG             "master"
-#                     UPDATE_DISCONNECTED 1 # Needs 3.2
+                     #UPDATE_DISCONNECTED 1 # Needs 3.2
                      )
 
 add_subdirectory (src)
