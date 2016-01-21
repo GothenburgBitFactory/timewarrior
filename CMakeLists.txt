@@ -28,6 +28,13 @@ set (PACKAGE_TARNAME "${PACKAGE}")
 set (PACKAGE_VERSION "${VERSION}")
 set (PACKAGE_STRING "${PACKAGE} ${VERSION}")
 
+if (FREEBSD)
+SET (TIMEW_MAN1DIR man/man1 CACHE STRING "Installation directory for man pages, section 1")
+SET (TIMEW_MAN5DIR man/man5 CACHE STRING "Installation directory for man pages, section 5")
+else (FREEBSD)
+SET (TIMEW_MAN1DIR share/man/man1 CACHE STRING "Installation directory for man pages, section 1")
+SET (TIMEW_MAN5DIR share/man/man5 CACHE STRING "Installation directory for man pages, section 5")
+endif (FREEBSD)
 SET (TIMEW_DOCDIR  share/doc/timew CACHE STRING "Installation directory for doc files")
 
 message ("-- Configuring cmake.h")
