@@ -28,6 +28,8 @@ set (PACKAGE_TARNAME "${PACKAGE}")
 set (PACKAGE_VERSION "${VERSION}")
 set (PACKAGE_STRING "${PACKAGE} ${VERSION}")
 
+SET (TIMEW_DOCDIR  share/doc/timew CACHE STRING "Installation directory for doc files")
+
 message ("-- Configuring cmake.h")
 configure_file (
   ${CMAKE_SOURCE_DIR}/cmake.h.in
