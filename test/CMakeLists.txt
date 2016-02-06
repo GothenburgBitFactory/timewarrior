@@ -22,4 +22,5 @@ foreach (src_FILE ${test_SRCS})
 endforeach (src_FILE)
 
 configure_file(run_all run_all COPYONLY)
+configure_file(problems problems COPYONLY)
 
