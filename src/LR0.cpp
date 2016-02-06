@@ -30,6 +30,7 @@
 #include <Table.h>
 #include <Color.h>
 #include <common.h>
+#include <format.h>
 #include <iostream>
 #include <sstream>
 
