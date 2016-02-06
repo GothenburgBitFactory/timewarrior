@@ -19,6 +19,9 @@ except ImportError:
     # python 3
     from queue import Queue, Empty
 
+# Look for taskd in $PATH instead of task/src/
+os.environ["TASKD_USE_PATH"] = "1"
+
 TIMEOUT = .2
 
 
@@ -180,7 +183,7 @@ class TestRunner(object):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Run Timewarrior tests")
+    parser = argparse.ArgumentParser(description="Run Taskwarrior tests")
     parser.add_argument('--verbose', '-v', action="store_true",
                         help="Also send TAP output to stdout")
     parser.add_argument('--logging', '-l', action="count",
