@@ -24,12 +24,10 @@ cli: "start" :ai
      help               # Non-terminal, cannot contain є.
      є
 
-
 help: "help" :ai topic
       "help" :ai
 
 topic: "usage" :ai
        /dates?/ :ai
        /times?/ :ai
-
 

@@ -35,7 +35,7 @@
 class Grammar
 {
 public:
-  Grammar ();
+  Grammar () = default;
   void loadFromFile (File&);
   void loadFromString (const std::string&);
   std::string start () const;
@@ -68,11 +68,11 @@ private:
   void validate () const;
 
 private:
-  std::string _start {};
   //        rule name    rule
   //        |            |
-  std::map <std::string, Grammar::Rule> _rules;
-  bool _debug {false};
+  std::map <std::string, Grammar::Rule> _rules {};
+  std::string _start                           {};
+  bool _debug                                  {false};
 };
 
 #endif
