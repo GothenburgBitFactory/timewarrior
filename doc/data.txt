@@ -3,56 +3,37 @@ Data Files
 Intervals of tracked time are stored in a text file, with one line of text
 representing one day. Here is a single tracked interval:
 
-  YYYY-MM-DD <start>-<end> <tagset>
+  YYYY-MM-DDTHH:MM - YYYY-MM-DDTHH:MM :: <tagset>
 
 Here is an open-ended, currently tracked active interval, notice the missing
 <end> timestamp:
 
-  YYYY-MM-DD <start>- <tagset>
+  YYYY-MM-DDTHH:MM - <tagset>
 
 A typical day might look like this:
 
-  2015-12-10 480-720 Upgrade Planning, 780- Upgrade Presentation "ABCD Inc"
+  2016-02-28T08:00 - 2016-02-28T12:00 :: Upgrade Planning
+  2016-02-28T13:00                    :: Upgrade Presentation "ABCD Inc"
 
-The "480-720" is a time range, in this case from 8:00am to 12:00pm, associated
-with the two tags "Upgrade" and "Planning". A second interval started at 1:00pm
-and is incomplete, associated with three tags "Upgrade", "Presentation" and
-"ABCD Inc". A tag must be quoted, if it contains whitespace.
+The first four-hour interval is associated with the tags "Upgrade" and "Planning".
+The second interval is open-ended, and has three tags, the third of which is a
+quoted string because of the embedded space.
+
+An open-ended interval that continue into a weekend, remains a single,
+open-ended interval, and does not get flattened into a set of related by distinct
+intervals.
+
+
+Archiving
+---------
+Automatic data archiving would effectively freeze older data, based on a
+configurable duration, to limit the scope of backfill features and reto-active
+corrections.
 
 ---
 
-P: Instead of one day per line, one interval per line:
+If old data is frozen, what does that mean?  It should mean that the inclusions and exclusions are collapsed, and the net inclusions recorded and frozen. This prevents changes to the work week from modifying old information.
 
-   YYYY-MM-DDTHH:MM-                 tag1 tag2
-   YYYY-MM-DDTHH:MM-YYYY-MM-DDTHH:MM tag3
-
-   The first has no 'end' timestamp, and is therefore an open track, ie active
-   now. The second is a bounded range.
-
-
-F: have an archive file as well?(edited)
-P: I was thinking that we could auto-archive, moving out records older than X into another file.  Queries would then know in advance whether it needed to read the archive.
-
-
-F: Should there be a possibility to freeze entries?
-P: hmm.  Good point, I tihnk yes.
-   For old data?  Or so that a workweek redefine has no effect?
-F: the first yes. the latter, hm. perhaps. would make sense to get the reports correct that depend on that.
-
-   --> If old data is frozen, what does that mean?  It should mean that the inclusions and exclusions are collapsed, and the net inclusions recorded and frozen. This prevents changes to the work week from modifying old information.
-
-
-P: So in this case I think I want to change it, so it’s not one day per line, but one interval per line.
-   That’s issue 1.  2 is archiving.  3 is freezing, which might be the same as archiving.
-F: I guess 1 is for easier parsing.
-P: Yes, but there’s more.  Suppose I run:
-   $ timew start monday 9am tag1
-   Then on thursday:
-   $ timew stop
-   I would rather create one interval than four:
-   2015-12-14T09:00:00-2015-12-17T16:15:00 tag1
-   The above assumes that we just run with one long interval, ignoring exclusions.  That was from your email, and it’s a good idea.
-F: One intervall is good.
 
 
 F: Regarding the exclusions...
