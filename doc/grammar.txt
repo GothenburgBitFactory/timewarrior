@@ -1,5 +1,6 @@
 CLI Syntax
 ----------
+
 The CLI shall have a well-defined and unambiguous grammar.
 
     timew start [<tagset>]
@@ -30,6 +31,12 @@ The CLI shall have a well-defined and unambiguous grammar.
 CLI Grammar
 -----------
 
+Assumed built-in types:
+  <datetime>
+  <time>
+  <duration>
+  <string>
+
   interval:  <timestamp> "-" <timestamp>
              <timestamp> "to" <timestamp>
              "from" <timestamp> "to" <timestamp>
@@ -38,33 +45,9 @@ CLI Grammar
 
   timestamp: <day> <time>
 
-  month:     "january"
-             "february"
-             ...
-
-  day:       "monday"
-             "tuesday"
-             ...
-
-  time:      \d{4}
-             \d{1,2} ":" \d{2} <ampm>
-             \d{1,2} ":" \d{2}
-             \d{1,2} <ampm>
-             \d{1,2}
-
-  ampm:      "AM"
-             "am"
-             "a.m."
-             "PM"
-             "pm"
-             "p.m."
-
   tagset:    <tag>+
 
   tag:       string
-
-  string:    "\"" .+ "\""
-             .+
 
 
 Rules Grammar
