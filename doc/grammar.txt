@@ -1,6 +1,5 @@
 CLI Syntax
 ----------
-
 The CLI shall have a well-defined and unambiguous grammar.
 
     timew start [<tagset>]
@@ -30,7 +29,6 @@ The CLI shall have a well-defined and unambiguous grammar.
 
 CLI Grammar
 -----------
-
 Assumed built-in types:
   <datetime>
   <time>
@@ -52,6 +50,6 @@ Assumed built-in types:
 
 Rules Grammar
 -------------
-
+TBD.
 
 ---
