@@ -1,75 +1,90 @@
+Timewarrior Data
+================
+Timewarrior has a conceptual timeline, which is a continuum onto which the
+inclusions and exclusions are mapped.
+
+An inclusion is a block of time with associated tags, i.e. data captured or
+provided by the user representing ongoing work.
+
+An exclusion is also a block of time but represents untrackable time, and acts
+as a mask for the inclusions. Here is a visual example:
+
+  Inclusion:           |-----------------------------------| tag1
+  Exclusion:                           |---| lunch
+  Exclusion                                                    |---| dinner
+
+  Timeline:     >--o---o---o---o---o---o---o---o---o---o---o---o---o-->
+                   7   8   9   10  11  12  1   2   3   4   5   6   7 
+                   am                  pm
+
+In the example, there is one incluѕion, a block of time from 8am - 5pm, tagged
+with 'tag1'. That was data captured from the command line, perhaps with this
+command:
+
+  $ timew track 8am - 5pm tag1
+
+There are several ways to track time that result in the same inclusion, for
+example, if these commands were run at 8am and 5pm respectively:
+
+  [at 8am] $ timew start tag1
+  [at 5pm] $ timew stop
+
+It can be seen that some combination of all the incluѕions and exclusions will
+yield a complete record of tracked time.
+
+
+Exclusions
+----------
+Exclusions are stored as configuration, and there are several commands that
+allow easy manipulation of this. Whenever an exclusion changes, the set of all
+exclusions are written to the data file. This is because all subsequent
+inclusions are to be resolved against the active set of exlcusions.
+
+
+Inclusions
+----------
+Inclusions are captured from the command line in many different ways, but all
+results in an incluѕion record being written to the data file.
+
+If there is an open-ended inclusion at the time an exclusion is changed, then
+the open-ended inclusion is closed, the exclusions written, and a new open-ended
+inclusion is added.
+
+
 Data Files
 ==========
-Intervals of tracked time are stored in a text file, with one line of text
-representing one day. Here is a single tracked interval:
+The data file is a text file, which grows in length. It begins with a set of
+exclusions, followed by a set of inclusion records that utilize the prior set of
+exclusions.
 
-  YYYY-MM-DDTHH:MM - YYYY-MM-DDTHH:MM :: <tagset>
+An example file looks like this:
 
-Here is an open-ended, currently tracked active interval, notice the missing
-<end> timestamp:
+  exclusion holidays eng-USA
+  exclusion work 2015-11-26
+  exclusion workweek mon,tue,wed,thu,fri
+  exclusion workday start 8:30am
+  exclusion workday end 1730
+  exclusion workday tue end 3pm
 
-  YYYY-MM-DDTHH:MM - <tagset>
+  inclusion 2016-02-28T08:00 - 2016-02-28T12:00 # Upgrade Planning
+  inclusion 2016-02-28T13:00                    # Upgrade Presentation "ABCD Inc"
 
-A typical day might look like this:
+White space is ignored. Here we see a sect of exlcusions that define a work week
+and a two inclusions, the first of which represents a four hour block of time
+with two tags 'Upgrade' and 'Planning'. The second inclusion is open ended,
+having only a start time (1pm), but three tags 'Upgrade', 'Presentation' and
+'ABCD Inc'. The third tag is a quoted string because of the embedded space.
 
-  2016-02-28T08:00 - 2016-02-28T12:00 :: Upgrade Planning
-  2016-02-28T13:00                    :: Upgrade Presentation "ABCD Inc"
-
-The first four-hour interval is associated with the tags "Upgrade" and "Planning".
-The second interval is open-ended, and has three tags, the third of which is a
-quoted string because of the embedded space.
-
-An open-ended interval that continue into a weekend, remains a single,
-open-ended interval, and does not get flattened into a set of related by distinct
-intervals.
+An open-ended inclusion like this means that the tracking continues, but the
+exlcusions prevent an excess time buildup of the 63 hours that compries the
+weekend (Friday 5:30pm until Monday 8:30am).
 
 
 Archiving
 ---------
-Automatic data archiving would effectively freeze older data, based on a
-configurable duration, to limit the scope of backfill features and reto-active
-corrections.
+Automatically archiving this data, based on a configurable duration, is simply a
+process of breaking the file at an arbitrary line, and making sure the active
+set of exclusions are inserted after the break, thus leaving each file in a
+readable state with no data loss.
 
 ---
-
-If old data is frozen, what does that mean?  It should mean that the inclusions and exclusions are collapsed, and the net inclusions recorded and frozen. This prevents changes to the work week from modifying old information.
-
-
-
-F: Regarding the exclusions...
-   I just had an idea. Which would help with 3.
-   Say we have all the definitions for exclusions.
-   These only affect the NOW and the future. Once a day (or time intervall has passed) they are recorded together with the corresponding intervall.
-   So in your example with exclusions for monday, tuesday, wednesday and thursday.
-   With that they “are” immutable for definition changes. And aren’t rewritten.
-   You have to tell timew to change them.
-   I would also help in the calculation of the reports.
-P: So if you run “timew define workday end 1745”, then that constitutes a change to the exclusions, and gets recorded in the timeline.
-   Then we essentially auto-freeze.
-   And we can reconstruct intervals and exclusions perfectly, provided we read the data, in sequence, going back to the previous exclusion change.
-   Did I get it right?
-F: Hm. I guess I meant that when you run timew stop tag1 all exclusion definitions affecting the intervall are saved together with the timestamp information of that intervall...
-P: Ah, so every line.
-F: I think so.
-   So the line would contain workday start and ends, etc.
-   Then you have all exclusion definitions affecting this particular intervall stored together with it.
-P: That is equivalent to doing this:
-   on “timew stop”, combine the intervals with the exclusions, and store only the inclusions.
-F: But then you can’t “rewrite” history in case you need. You don’t now which definitions were valid.
-P: True
-   So every line in the data contains one interval of recorded time, and all exclusions, even if they don’t change day to day.  Because they might change.
-F: Yes. And these would not be affected by redefinitions as they only apply to the future recordings.
-   Kind of like saving the “current state”.
-P: Good, I understand it.  Nice.
-   Zero loss of information.
-F: Then it is just the question when to save them. At the end, when you finish the tracking of that tag? In between as well, when doing redefinitions? Look through open intervalls, recored the current definition that is changed if it affects the intervall.
-   I would guess both.
-P: I say both
-F: Cool.
-P: If a redefine occurs in the middle of an interval, stop the first interval and record exlcusions as-is, then add a new interval to continue, but with the new settings.
-   Then a redefine just creates two adjacent intervals with different settings.
-   Great, [1] and [3] taken care of.  [2] archiving...
-   Archiving is a feature we could ignore and come to no harm.  But if we do archive, to reduce clutter, should it be automatic?  ie anything older than a month?
-   Archiving also improves performance for “timew stop”, which has less data to scan,  when closing an interval.
-F: Automatic would be good. Configurable. Then perhaps an explicite archive. Say you have terminated the work for the client, have sent the bill, got the cash. Then you could tell timew to archive the corresponding entries.
-
