@@ -1,60 +1,52 @@
 Reporting
 =========
-Some basic requirements:
+As we cannot anticipate all reporting needs, custom reports are necessary.
+Rather than copy the Taskwarrior design where a report is a combination of a
+filter, sort, columns and labels, a more flexible approach could encourage
+shared custom reports.
 
-- Reports can be filtered by date range and/or tags.
-- Reports should have multiple output formats: TTY, JSON, HTML.
-- There will be a few different types of reports:
-  - Tabular Calendar
-  - List with subtotals, total
-- Reports will be decorated, for example, subtotals, legend, title.
-- It should be possible to extend Timewarrior to add custom reports, via a
-  simple hook mechanism.
+Іf all reports are extension scripts/programs, utilizing some form of API,
+then there is no restriction on the kind of report generated, which would
+allow for HTML reports, rather than simply supporting tabular text.
+
+
+Requirements
+------------
+Timewarrior should ship with several reports, which serve as example extensions
+for users to evolve‥
+
+Timewarrior should handle the command line options for reports, then pass off
+a standardized set of parameters to the report extension. These parameters will
+include:
+
+- Date range. Although Timewarrior might support "last month" as a reporting
+  range, the extensions themselves would be passed precise values, therefore
+  reducing the complexity of the extensions.
+
+- Data will be filtered by Timewarrior, so that extensions do not need to
+  implement this.
 
 
 Report Mockups
 --------------
 Purely as an example of what might be implemented, here are some report mockups:
 
-... (calendar like "task calendar" with table below)
+TBD (calendar like "task calendar" with table below)
 
-... (large weekly calendar, 5 days, every half-hour)
+TBD (large weekly calendar, 5 days, every half-hour)
 
-... (timeline, l-r)
+TBD (timeline, l-r)
 
-... (table with subtotals)
+TBD (table with subtotals)
 
+
+Example Commands
+----------------
+Here are some provisional examples of report commands:
+
+  $ timew report day [monday] [±<tag> ...]
+  $ timew report week [±<tag> ...]
+  $ timew report month
 
 ---
-
-P: Reports:  We need some built-in reports:
-   $ timew report day
-   $ timew report day monday
-   $ timew report week
-   $ timew report month
-   $ timew report week +tag1 -tag2    <— has tag1, missing tag2, for creating client-specific reports
-P: But we can’t anticipate all reports, and don’t have the manpower to implement them, therefore we need report extensions.  Something like hooks for tw.
-F: what would these create anyway? basic output format - some columns on the screen? how formatted?
-   I assume most people would want to feed the numbers into something else.
-P: Yeah, not sure.  Some kind of list, tabular, with subtotals.
-   Agree about what people might want.
-   But we could do this:
-
-   $ timew report week :tty                 (default)
-   $ timew report week :json
-   $ timew report week :html
-
-   They would support tags for filtering.
-F: good.
-P: But yes, most people will want custom, I expect. The number of reports would grow over time I think.
-
-
-P: I think the variations are going to be things like:
-
-   - a title
-   - sort by this
-   - break by that
-   - subtotal by this
-
-   We could provide all reports as extension scripts.  Might not be a bad idea.
 
