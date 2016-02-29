@@ -88,3 +88,7 @@ set of exclusions are inserted after the break, thus leaving each file in a
 readable state with no data loss.
 
 ---
+
+- If the data files have the year and month in the name ('2016-02.data') then
+  archiving is a non-issue.
+
