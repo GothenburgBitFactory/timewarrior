@@ -80,15 +80,11 @@ exlcusions prevent an excess time buildup of the 63 hours that compries the
 weekend (Friday 5:30pm until Monday 8:30am).
 
 
-Archiving
----------
-Automatically archiving this data, based on a configurable duration, is simply a
-process of breaking the file at an arbitrary line, and making sure the active
-set of exclusions are inserted after the break, thus leaving each file in a
-readable state with no data loss.
+Data File Names
+---------------
+The data file names will have the year and month embedded, which acts as a
+heuristic for filtering, keeps the data files small and therefore quicker to
+manipulate, and eliminates the need for any sophisticated archiving.
 
 ---
-
-- If the data files have the year and month in the name ('2016-02.data') then
-  archiving is a non-issue.
 
