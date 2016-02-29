@@ -38,7 +38,6 @@ files may be included:
 
 The syntax of rules is Python-like, in that indentation is significant.
 
-
 Types of Rules
 --------------
 There are several different types of rules, for example there is the rule that

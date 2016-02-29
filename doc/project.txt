@@ -1,62 +1,38 @@
-Timewarrior
-===========
-Tracking time is complex and means different things to different people. It can
-range from being as simple as:
+Timewarrior Project
+===================
+Timewarrior is a program that records tagged time blocks that represent tracked
+time. This data is then used to create reports that shwo how time was spent.
 
-  $ timew track 9am - now "Prepare for staff meeting"
-  $ timew track "Staff meeting"
+To make this task easier, and more useful, Timewarrior can access holidays, a
+pre-defined working schedule, and support flexible time/date specifications,
+implement a simple stop-watch tracking feature, generate custom reports, and
+apply a set of rules to impose constraints and check the data.
 
-Or as sophisticated as:
+Using a hook scripts, Timewarrior can be used as a backend time-tracking
+feature for Taskwarrior, any other program, or as a standalone utility.
 
-  $ timew track backfill last week "Design proposal"
-
-It is not necessary to define tags, or define a set of work week exclusions,
-and without these, the software is a simple start/stop clock with tags.
-
-For fully automated time tracking, as the line above exhibits, weekly and daily
-schedules must be considered. For such a tool to be useful, it must support all
-the above, and make time tracking very simple.
+Timewarrior aims to be the tool of choice if you need to track time and generate
+timesheets.
 
 
 Goals
 -----
 Provide a personal tool to easily track time spent and generate reports in
 multiple formats and styles. The tool will "do the right thing" as much as
-possible, to make detailed time tracking easy, and not a burden.
+possible, to make detailed time tracking easy, and low friction.
 
-Open Source. Localized.
+Data will be stored as plain UTF8 text.
+
+Open Source.
 
 
 Non-Goals
 ---------
-- No cloud support.
-- No multi-user support.
-- No sync support.
+- No cloud support, no sync support, all data is local. Tracked time is
+  sensitive personal data and wll not be transmitted.
+- No explicit multi-user support, although using tags to track individuals is
+  possible.
 - No precision higher than a minute.
-
-
-Integration
------------
-- As a sister-product to Taskwarrior and Tasksh, integration should be as
-  simple as installing a hook script.
-- An export and import feature, using JSON, will allow further integration with
-  arbitrary tools.
-
-
-Definitions
------------
-- A timeline is a continuum that is the one-dimensional space that timestamps
-  and intervals map onto.
-- A timestamp is a point on a timeline.
-- An interval is a span of time on a timeline, consisting of two timestamps,
-  with associated tags. An interval may be an inclusion or an exclusion. A
-  weekend is an exclusion, time spent working is an inclusion.
-- A tag is an arbitrary UTF8 string, which may contain whitespace.
-- A workweek is defined by exclusions - a set of excluded intervals representing
-  time not spent working. Those intervals are tagged to be easily identifiable.
-- Lunch could be an inclusion, but tagged as non-work. It could also be an
-  exclusion.
-- The time resolution is 1 minute.
 
 
 Tags
@@ -68,6 +44,15 @@ A tag may be used without being defined, but if a tag is defined, then it may
 have associated metadata, such as a start date representing the first date on
 which it may be used, or an end date, when it expires. A tag may have a budget,
 which is the maximum trackable time for a period.
+
+
+Macros
+------
+A macro is a keyword that can take arguments, and expands to a set of one or
+more other timew commands, with some dynamic aspect. For example, the macro
+named 'staff meeting' could be an interval that is on Wednesdays at 10:00, and
+has a set of associated tags. This would then create an appropriately tagged
+interval.
 
 
 Commands
@@ -84,71 +69,21 @@ The command set may include:
   x              Run extension 'x'
 
 
-Macros
-------
-A macro is a keyword that can take arguments, and expands to a set of one or
-more other timew commands, with some dynamic aspect. For example, the macro
-named 'staff meeting' could be an interval that is on Wednesdays at 10:00, and
-has a set of associated tags. This would then create an appropriately tagged
-interval.
-
-
-General Use Cases
------------------
-Suppose 'today' is 2015-11-24, a Tuesday at noon. This date is chosen because
-it is mid-week, a holiday is coming up, and workday exceptions are typical.
-Here is the timeline, with the successive exclusions added, as a work week is
-defined:
-
-      2015
-      November                                                                            December
-      W48                                                                                 W49
-      23rd        24th        25th        26th        27th        28th        29th        30th
-      Monday      Tuesday     Wednesday   Thursday    Friday      Saturday    Sunday      Monday
-      :           :           :           :           :           :           :           :
-      :..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..:..
-      0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18 0  6  12 18
-                        |
-                        |                 ------------                                                 $ timew define holidays eng-USA
-                        |                                         ------------------------             $ timew define workweek mon-fri
-      ----        ----  |     ----        ----        ----        ----        ----        ----         $ timew define workday start 8:30am
-               ---      |  ---         ---         ---         ---         ---         ---         --- $ timew define workday end 1730
-                        | ----                                                                         $ timew define workday tue end 3pm
-                        |
-          +++++       ++++        +++++                   +++++                               +++++    Resulting work week
-                        |
-                        now
-
-On that same timeline, here are some example tracked intervals:
-
-                        |
-      ++++++++++++ tag1 tag2                                                                           $ timew track +tag1 +tag2 yesterday
-                  ++++++++++++ tag1 tag2                                                               $ timew track +tag1 +tag2 today
-                        + tag1 tag2                                                                    $ timew start +tag1 +tag2
-      +++++++++++++++++++ tag1 tag2                                                                    $ timew start +tag1 +tag2 backfill
-              + tag3    |                                                                              $ timew track +tag3 yesterday 2pm - 4pm
-              + tag4    |                                                                              $ timew track -tag3 +tag4 yesterday 2pm - 4pm
-                        |
-                        now
-
-
 Extensions
 ----------
-A simple extension mechanism, similar to Taskwarrior would require an executable
-script found in a defined location with a conformant name, which then is fed
-queried raw data as stdin.
+A simple extension mechanism would require an executable script found in a
+defined location with a conformant name, which then is fed queried raw data as
+stdin.
 
 For example, this script clearly defines that it is a 'report' extension named
 'abc'.
 
   ~/.timewarrior/extensions/report_abc
 
+---
 
-Unsolved Issues
----------------
-- Multiple timelines?
-- Terminology for backwards and forwards tracking (backfill for the past, and
-  just assume everythign else is for the future)?
+- Need Terminology for backwards and forwards tracking (backfill for the past, and just assume everything else is for the future)?
+
 - Given this:
     $ timew track yesterday 9am - 5pm tag1
   What does this do:
@@ -157,46 +92,18 @@ Unsolved Issues
     a) yesterday 540-1020 tag, 600-660 tag2                      # overlap
     b) yesterday 540-600 tag1, 600-660 tag2, 660-1020 tag1       # no overlap
     c) yesterday 540-600 tag1, 600-660 tag1 tag2, 660-1020 tag1  # explicit overlap
-  Stating 'track yesterday 10am - 11am tag2' sounds imperative, thus overriding
-  any existing tags in that interval. Perhaps a 'merge' keyword could be added
-  to combined the results (track yesterday 10am - 11am tag2 merge)?
-- If the timelines are not collapsed until needed (report/export), then a command
-  like this on day 1:
-    $ timew start tag1
-  Followed by this on day 5:
-    $ timew stop
-  Needs to create a tracking record for each of the 5 days.
+  Stating 'track yesterday 10am - 11am tag2' sounds imperative, thus overriding any existing tags in that interval. Perhaps a 'merge' keyword could be added to combined the results (track yesterday 10am - 11am tag2 merge)?
 
----
+- Need an undo feature.
 
-F: start (frontfill) and backfill (end) could be considered orthogonal to each other. They just operate into different directions. but I think they behave the same, more or less.
+- Need a log file, controlled by a logging rule.
 
+- start (frontfill) and backfill (end) could be considered orthogonal to each other. They just operate into different directions. but I think they behave the same, more or less.
 
-F: Which brings me to the topic of overlapping intervals. While most of things would not be multitasking/overlapping. I could think of a few things that could be reported overlapping.
-P: Agreed, I can multitask and be pursuing two results at the same time.
+- Intervals for different tags may overlap. We multitask.
 
+- Need syntax to adjust any unarchived recorded data.
 
-F: What about IDs to make this even easier or just “stop” that actuates on the last start?
-P: I think a “start” leaves and open-ended time range:    2015-12-10 791- “Painting the kitchen"
-   The 791 corresponds to my local 1631EST (60 * 16 + 31), with no end time.
-F: yes. but i mean more like...
-   $ timew track “Packing my bags"
-   Tracking [1] “packing my bags"
-   $ timew stop 1
-   or just
-   $ timew stop
-P: The latter works in this example, so no need for ID there.  IDs might be useful if I’m tracking two things at once, ie no single active thing.
-F: exactly. it would avoid typing descriptions...
-P: okay, good.  Noted.
-P: So only if you define a workweek, does the following make sense:
-   $ timew track last week “Installing shelves"
-   “last week” clearly means all week, so it can query the timeline for a list of untracked time, then add intervals to fill it.  Similarly:
-   $ timew track today “Paint door”
-   That can mean fill all time up until now.  You could add a keyword “fill” to that, and maybe it goes to end of day.
-P: Right.  My point here is that “backfill” and “fill” are not necessarily needed, and can be implied from the “last week”.  Obviously this implies no fill:
-   $ timew track yesterday 2pm - 4pm “Do this"
-   Yes - “today until now” could be an explicit version of “today”.  “Today from now” is the same as “track”.
-F: the fill thing could be used to indicate just a direction:
 P: There is no open-ended fill though.  The future is infinite, so we don’t want to actually record much.  Anything bounded, yes (“until eod”), but anything unbounded (“track ‘do this’”) just leaves it open.
 F: it fills from the last good point, goes backwards in time until it hits a stop/interval limit.
 P: Yes, unless you bound it.  ie   “timew track last week ‘this thing’” can back fill within the “last week”, but exclude any otherwise tracked intervals.
@@ -214,8 +121,7 @@ P: Let’s explore that.  Suppose “last week” is 39 hours of nothing, and 1 
    Or 40 hours of “paint the thing”, and the meeting is gone
 F: hm, b would be first choice.
    “a" would be second or third.
-P: Configurable maybe, or overridden with a keyword.
-F: yeah. you could get a warning.
+
 F: I think we could generally use it to “fill” around other already tracked events.
 P: So a normal human only does one thing at a time.
 F: Yes but then also to make a difference between this
@@ -234,32 +140,8 @@ P: There is a use-case for double tracking.  Suppose I am a manager, and I do th
    $ timew track yesterday “paint the door” fredde
    $ timew track yesterday “paint the window” paul
    It’s a valid use case.  So there would be some kind of configuration that says “this tag can overlap with that tag, but not itself”.
-   I thought of this: Using a tag with pre-defining it is what we have discussed so far.
+t  I thought of this: Using a tag with pre-defining it is what we have discussed so far.
    But if a tag is predefined somehow (timew define tag “…”) then it could live in configuration, and have metadata, such as an expiration date.  This corresponds to “you can’t bill this client after EOM”.
    It could have a start date, which means “cannot bill before next month”.
    Could also define overlap.  This could be implemented using Rules.
 
-
-P: So there are lots of time specification formats to support:
-      until 4pm
-      from 11am
-      since 11am
-      3pm - 4pm
-      etc.  Assume we support them all.
-   Also ranges:
-      last week
-      last month
-      monday
-      last monday
-      yesterday
-      etc.  Assume we support them all
-
-
-F: I think we should not only have an undo file, but also a log file.
-P: Undo like tw?
-   ie single stack?
-F: Yes. Log file: so we can see what the rules system does.
-P: Good point.
-   I like that.  I’ll add something.
-   Good for debugging also.
-   So there will now be a logging rule, to define what happens.
