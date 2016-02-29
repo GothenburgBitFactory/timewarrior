@@ -52,28 +52,34 @@ int main (int argc, const char** argv)
       // TODO Load CLI grammar.
       // TODO Load from string, else file on config override.
       // TODO Migrate from loading a grammar from file, to a default string.
+/*
       File cliFile ("./cli.grammar");
       Grammar cliGrammar;
       cliGrammar.debug (debug);
       cliGrammar.loadFromFile (cliFile);
-
+*/
       // Instantiate the parser.
+/*
       LR0 cliParser;
       cliParser.debug (debug);
       cliParser.initialize (cliGrammar);
+*/
 
       // TODO Parse CLI.
 
       // TODO Load rule grammar.
+/*
       File ruleFile ("./rule.grammar");
       Grammar ruleGrammar;
       ruleGrammar.debug (debug);
       ruleGrammar.loadFromFile (ruleFile);
-
+*/
       // Instantiate the parser.
+/*
       LR0 ruleParser;
       ruleParser.debug (debug);
       ruleParser.initialize (ruleGrammar);
+*/
 
       // TODO Load rules.
       // TODO Parse rules.
