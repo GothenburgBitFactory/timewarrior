@@ -84,6 +84,26 @@ Similarly, this command will do the same thing:
 These two examples assume that there is no empty slot at the end of yesterday,
 because it would also be filled.
 
+Backfill involves looking backwards from the stated date/time, looking for an
+interval to define the start.
+
+
+[5.2] Fill: Fill (forwards)
+---------------------------
+If a time range is bounded, then :fill can determine an end point, and fill the
+gap. For example:
+
+  $ timew track today tag1
+
+The 'today' is a bounded range, and this command will use 'tag1' for an interval
+that extends all day today. Similarly 'tomorrow', 'next week' are bounded.
+
+
+[5.3] Fill: Autofill
+--------------------
+
+
+
 
 
 
