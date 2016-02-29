@@ -63,16 +63,16 @@ The command set may include:
   track          Record tracked time
   report         Run a report
   tags           Show all tags
-  query          Extract an interval set
   import         Import JSON data
   export         Export JSON data
+  help           Show help text
   x              Run extension 'x'
 
 
 Extensions
 ----------
 A simple extension mechanism would require an executable script found in a
-defined location with a conformant name, which then is fed queried raw data as
+defined location with a conformant name, which then is fed exported data on
 stdin.
 
 For example, this script clearly defines that it is a 'report' extension named
@@ -96,27 +96,7 @@ For example, this script clearly defines that it is a 'report' extension named
 
 - Need a log file, controlled by a logging rule.
 
-- start (frontfill) and backfill (end) could be considered orthogonal to each other. They just operate into different directions. but I think they behave the same, more or less.
-
 - Intervals for different tags may overlap. We multitask.
 
-- Need syntax to adjust any unarchived recorded data.
-
-P: There is no open-ended fill though.  The future is infinite, so we don’t want to actually record much.  Anything bounded, yes (“until eod”), but anything unbounded (“track ‘do this’”) just leaves it open.
-F: it fills from the last good point, goes backwards in time until it hits a stop/interval limit.
-P: Yes, unless you bound it.  ie   “timew track last week ‘this thing’” can back fill within the “last week”, but exclude any otherwise tracked intervals.
-   Then we can support a “merge” keyword to overlap any tracked intervals.
-F: If you add fill to this I would expect it to start at the end of last week, find the empty intervall and fill it until it hits a limit or another already filled interval.
-   So it only does one thing.
-   while the command without fill would operate on the entire week instead.
-   but this would just be me.
-P: Let’s explore that.  Suppose “last week” is 39 hours of nothing, and 1 hour of a meeting.  Suppose we indicate (for clarity here) keywords as “:keyword”.  The question then becomes what do the following do:
-   $ timew track last week “paint the thing”
-   $ timew track last week “paint the thing” :fill
-   Our choices are:
-   39 hours of “paint the thing” filled around the 1 hour “meeting”.
-   Or 40 hours of “paint the thing” overlapping with 1 hour “meeting”
-   Or 40 hours of “paint the thing”, and the meeting is gone
-F: hm, b would be first choice.
-   “a" would be second or third.
+- Need syntax to adjust any recorded data.
 
