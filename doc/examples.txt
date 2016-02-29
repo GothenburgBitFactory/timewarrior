@@ -4,6 +4,7 @@ This document contains a set of use cases and expected behavior. This will
 gradually change into a feature spec. The use cases are grouped functionally:
 
   [1] Basic Usage
+  [2] Reports
 
 
 [1.1] Basic Usage: clock
@@ -40,6 +41,17 @@ interval, with associated tags:
   2016-02-29  8:00:00 - now, 3:11:24 total, using 'tag1'
 
 
+[2.1] Reports: Summaries
+------------------------
+There are several time-based default reports which summaries tracked time over
+preset periods:
+
+  $ timew report day
+  $ timew report week
+  $ timew report month
+  $ timew report quarter
+  $ timew report year
+  $ timew report
 
 
 
