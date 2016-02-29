@@ -94,8 +94,6 @@ For example, this script clearly defines that it is a 'report' extension named
 
 - Need an undo feature.
 
-- Need a log file, controlled by a logging rule.
-
 - Intervals for different tags may overlap. We multitask.
 
 - Need syntax to adjust any recorded data.
