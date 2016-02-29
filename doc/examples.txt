@@ -160,3 +160,6 @@ associated metadata:
   no overlaps, but allowing overlapping intervals might need configuration to
   allow this.
 
+- Do we need arbitrary exclusions?  Lunch?  Dentist Appointment? or are those
+  just different inclusions?
+
