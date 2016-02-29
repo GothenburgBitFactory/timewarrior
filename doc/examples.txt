@@ -44,13 +44,31 @@ then this creates overlapping intervals:
 
 Track time but backfill to the most recent interval end:
 
-  $ timew track fill tag1
+  $ timew track :backfill tag1
 
 Record yesterday's time:
 
   $ timew track yesterday tag1
 
-Defining Exclusions:
+
+Fill Examples
+-------------
+If the time is 12:13pm, the workday starts at 8:00am, and you have already
+tracked a 9am-10am meeting, then this command will automatically backfill
+the 8am-9am interval only:
+
+  $ timew track 8am "Reading email"
+
+Similarly, this command will do the same thing:
+
+  $ timew track 8:23am "Reading email" backfill
+
+These two example assume that there is no empty slot at the end of yesterday,
+because it would also be filled.
+
+
+Defining Exclusions
+-------------------
 
   $ timew define holidays eng-USA
   $ timew define holidays work 2015-11-26
@@ -72,4 +90,14 @@ associated metadata:
   $ timew define tag "tag1" overlap
 
 ---
+
+- Need to break all these out into separate sections, where each is discussed in
+  sufficient detail to then generate user docs and code.
+
+- Need to differentiate ":fill", ":backfill" and automatic fill.
+
+- Outline case for double-tracking, perhaps where a manager tracks the time of
+  several employees. This would require that tracked time for a single tag has
+  no overlaps, but allowing overlapping intervals might need configuration to
+  allow this.
 

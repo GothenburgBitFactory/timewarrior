@@ -82,8 +82,6 @@ For example, this script clearly defines that it is a 'report' extension named
 
 ---
 
-- Need Terminology for backwards and forwards tracking (backfill for the past, and just assume everything else is for the future)?
-
 - Given this:
     $ timew track yesterday 9am - 5pm tag1
   What does this do:
@@ -121,27 +119,4 @@ P: Let’s explore that.  Suppose “last week” is 39 hours of nothing, and 1 
    Or 40 hours of “paint the thing”, and the meeting is gone
 F: hm, b would be first choice.
    “a" would be second or third.
-
-F: I think we could generally use it to “fill” around other already tracked events.
-P: So a normal human only does one thing at a time.
-F: Yes but then also to make a difference between this
-   say you had this:
-   timew track 9-10 meeting
-   so now a noon you realise that you don’t have anything tracked for 8-9 and 10-12.
-   If I then do timew track 8 "reading email” it either stops automatic tracking for email at 9 (or continues and erases meeting - whatever if that makes sence).
-   but with timew track 8 “reading email” fill it would do 8-9 mail and 10-12 mail around the 9-10 meeting.
-   I think it would be more logic to stop a tracking of an event if a new event comes along.
-P: I like that:  “timew track 8 read” fills in 8-9 and stops.  “timew track 8 read :fill” fills in 8-9, 10-12.
-F: Yes.
-F: Perhaps this could be used in the same way for the yesterday example... So the double tracking would not occur.
-P: Agreed.
-F: Only when doing it explicitly.
-P: There is a use-case for double tracking.  Suppose I am a manager, and I do this:
-   $ timew track yesterday “paint the door” fredde
-   $ timew track yesterday “paint the window” paul
-   It’s a valid use case.  So there would be some kind of configuration that says “this tag can overlap with that tag, but not itself”.
-t  I thought of this: Using a tag with pre-defining it is what we have discussed so far.
-   But if a tag is predefined somehow (timew define tag “…”) then it could live in configuration, and have metadata, such as an expiration date.  This corresponds to “you can’t bill this client after EOM”.
-   It could have a start date, which means “cannot bill before next month”.
-   Could also define overlap.  This could be implemented using Rules.
 
