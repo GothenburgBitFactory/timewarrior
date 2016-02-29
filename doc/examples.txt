@@ -1,9 +1,36 @@
 Use Cases
 =========
-Simplest usage, as a clock:
+This document contains a set of use cases and expected behavior. This will
+gradually change into a feature spec.
+
+
+[1.1] Basic Usage: clock
+------------------------
+Using the 'start' and 'stop' commands without tags just records time intervals:
 
   $ timew start
+  ...
   $ timew stop
+
+This results in a recorded interval with the 'default' tag.
+
+
+[1.2] Basic Usage: clock + tags
+-------------------------------
+Using the 'start' and 'stop' commands with tags just records time intervals:
+
+  $ timew start tag1
+  ...
+  $ timew start tag2
+  ...
+  $ timew stop
+
+This results in two consecutive recorded intervals with the 'tag1' and 'tag2' tags.
+As these tags are not defined, there is no additional metadata.
+
+
+
+
 
 This uses a 'default' tag. By using tags, this becomes:
 
