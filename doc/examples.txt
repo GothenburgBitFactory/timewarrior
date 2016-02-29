@@ -69,6 +69,20 @@ preset periods:
   $ timew define workday tue end 3pm
 
 
+[5.1] Fill: Backfill
+--------------------
+If the time is 12:13pm, the workday starts at 8:00am, and you have already
+tracked a 9am-10am meeting, then this command will automatically backfill
+the 8am-9am interval only:
+
+  $ timew track 8am "Reading email"
+
+Similarly, this command will do the same thing:
+
+  $ timew track 8:23am "Reading email" :backfill
+
+These two examples assume that there is no empty slot at the end of yesterday,
+because it would also be filled.
 
 
 
@@ -120,20 +134,6 @@ Record yesterday's time:
   $ timew track yesterday tag1
 
 
-Fill Examples
--------------
-If the time is 12:13pm, the workday starts at 8:00am, and you have already
-tracked a 9am-10am meeting, then this command will automatically backfill
-the 8am-9am interval only:
-
-  $ timew track 8am "Reading email"
-
-Similarly, this command will do the same thing:
-
-  $ timew track 8:23am "Reading email" backfill
-
-These two example assume that there is no empty slot at the end of yesterday,
-because it would also be filled.
 
 
 The above examples simply use ad-hoc tags, which is an undefined tag. They are
