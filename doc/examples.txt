@@ -5,6 +5,7 @@ gradually change into a feature spec. The use cases are grouped functionally:
 
   [1] Basic Usage
   [2] Reports
+  [3] Exclusions
 
 
 [1.1] Basic Usage: clock
@@ -54,8 +55,23 @@ preset periods:
   $ timew report
 
 
+[3.1] Exclusions: Work Week
+--------------------------
 
-This uses a 'default' tag. By using tags, this becomes:
+  $ timew define holidays eng-USA
+  $ timew define holidays work 2015-11-26
+  $ timew define workweek mon-fri
+  $ timew define workday start 8:30am
+  $ timew define workday end 1730
+  $ timew define workday tue end 3pm
+
+
+
+
+
+
+
+By using tags, this becomes:
 
   $ timew start tag1                             # Start tracking now
   $ timew start "Home Improvement Project"       # Stop old interval, start new interval now
@@ -116,16 +132,6 @@ Similarly, this command will do the same thing:
 These two example assume that there is no empty slot at the end of yesterday,
 because it would also be filled.
 
-
-Defining Exclusions
--------------------
-
-  $ timew define holidays eng-USA
-  $ timew define holidays work 2015-11-26
-  $ timew define workweek mon-fri
-  $ timew define workday start 8:30am
-  $ timew define workday end 1730
-  $ timew define workday tue end 3pm
 
 The above examples simply use ad-hoc tags, which is an undefined tag. They are
 simply used as tags, and have no metadata. Defining a tag allows it to have
