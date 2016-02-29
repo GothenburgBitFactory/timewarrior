@@ -6,6 +6,8 @@ The CLI shall have a well-defined and unambiguous grammar.
     timew stop [<tagset>]
     timew track [<interval>] [<tagset>]
     timew [<filter>] report <report>
+    timew <filter> clear
+    timew
 
     timew define holidays <locale>
     timew define holidays work <date>
@@ -25,6 +27,8 @@ The CLI shall have a well-defined and unambiguous grammar.
 
     timew export ...
     timew import ...
+
+    timew help ...
 
 
 CLI Grammar
