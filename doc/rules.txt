@@ -128,6 +128,16 @@ and start/end dates for use:
     budget      400 hours total
 
 
+rule Type: Logging
+------------------
+A logoging rule manages all log-related controls:
+
+  define logging:
+    file   "/path/to/log"
+    debug  off
+    level  info
+
+
 Built-in Functions
 ------------------
 There are several built-in functions, which may be used by rules:
