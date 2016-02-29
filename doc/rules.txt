@@ -140,3 +140,6 @@ There are several built-in functions, which may be used by rules:
 
 ---
 
+- Need to distinguish between regular time and over time, with different rates
+  and limits.
+
