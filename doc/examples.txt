@@ -183,3 +183,16 @@ associated metadata:
 - Do we need arbitrary exclusions?  Lunch?  Dentist Appointment? or are those
   just different inclusions?
 
+- Suppose “last week” is 39 hours of nothing, and 1 hour of a meeting.  The
+  question becomes what do the following do:
+
+   [1] $ timew track last week “paint the thing”
+   [2] $ timew track last week “paint the thing” :fill
+
+   Our choices are:
+   [a] 39 hours of “paint the thing” filled around the 1 hour “meeting”.
+   [b] 40 hours of “paint the thing” overlapping with 1 hour “meeting”
+   [c] 40 hours of “paint the thing”, and the meeting is gone
+
+  Consensus: [b], but configurable.
+
