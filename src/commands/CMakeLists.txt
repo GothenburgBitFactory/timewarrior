@@ -7,7 +7,8 @@ include_directories (${CMAKE_SOURCE_DIR}
 set (commands_SRCS CmdDefault.cpp
                    CmdHelp.cpp
                    CmdStart.cpp
-                   CmdStop.cpp)
+                   CmdStop.cpp
+                   CmdTrack.cpp)
 
 add_library (commands STATIC ${commands_SRCS})
 
