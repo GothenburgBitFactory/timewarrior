@@ -26,6 +26,8 @@
 
 #include <cmake.h>
 #include <Grammar.h>
+#include <common.h>
+#include <commands.h>
 #include <LR0.h>
 #include <iostream>
 #include <new>
@@ -85,6 +87,16 @@ int main (int argc, const char** argv)
       // TODO Parse rules.
 
       // TODO Dispatch to commands.
+      if (argc > 1)
+      {
+        // TODO argv[1] is a command.
+        if (closeEnough ("help", argv[1], 2))
+          CmdHelp ();
+      }
+      else if (argc == 1)
+      {
+        // TODO Default command
+      }
     }
 
     catch (const std::string& error)
