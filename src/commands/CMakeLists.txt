@@ -5,7 +5,8 @@ include_directories (${CMAKE_SOURCE_DIR}
                      ${TIMEW_INCLUDE_DIRS})
 
 set (commands_SRCS CmdDefault.cpp
-                   CmdHelp.cpp)
+                   CmdHelp.cpp
+                   CmdStart.cpp)
 
 add_library (commands STATIC ${commands_SRCS})
 
