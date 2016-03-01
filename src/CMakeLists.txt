@@ -3,11 +3,12 @@ include_directories (${CMAKE_SOURCE_DIR}
                      ${CMAKE_SOURCE_DIR}/src
                      ${TIMEW_INCLUDE_DIRS})
 
-set (timew_SRCS Grammar.cpp     Grammar.h
-                JSON.cpp        JSON.h
-                Lexer.cpp       Lexer.h
-                LR0.cpp         LR0.h
-                Rules.cpp       Rules.h)
+set (timew_SRCS Database.cpp   Database.h
+                Grammar.cpp    Grammar.h
+                JSON.cpp       JSON.h
+                Lexer.cpp      Lexer.h
+                LR0.cpp        LR0.h
+                Rules.cpp      Rules.h)
 
 add_library (timew STATIC ${timew_SRCS})
 include_directories(${CMAKE_INSTALL_PREFIX}/include)
