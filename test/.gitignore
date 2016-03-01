@@ -1,5 +1,7 @@
 all.log
+*.pyc
 grammar.t
 lexer.t
 lr0.t
 rules.t
+json.t
