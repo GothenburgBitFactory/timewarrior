@@ -8,7 +8,6 @@ set (timew_SRCS Database.cpp   Database.h
                 Extensions.cpp Extensions.h
                 Grammar.cpp    Grammar.h
                 Interval.cpp   Interval.h
-                JSON.cpp       JSON.h
                 Lexer.cpp      Lexer.h
                 LR0.cpp        LR0.h
                 Rules.cpp      Rules.h)
