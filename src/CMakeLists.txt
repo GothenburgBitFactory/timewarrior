@@ -4,6 +4,7 @@ include_directories (${CMAKE_SOURCE_DIR}
                      ${TIMEW_INCLUDE_DIRS})
 
 set (timew_SRCS Grammar.cpp     Grammar.h
+                JSON.cpp        JSON.h
                 Lexer.cpp       Lexer.h
                 LR0.cpp         LR0.h
                 Rules.cpp       Rules.h)
