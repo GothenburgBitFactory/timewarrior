@@ -89,9 +89,15 @@ int main (int argc, const char** argv)
       // TODO Dispatch to commands.
       if (argc > 1)
       {
-        // TODO argv[1] is a command.
-        if (closeEnough ("help", argv[1], 2))
-          CmdHelp ();
+             if (closeEnough ("help",    argv[1], 2)) CmdHelp   ();
+        else if (closeEnough ("clear",   argv[1], 2)) CmdClear  ();
+        else if (closeEnough ("define",  argv[1], 2)) CmdDefine ();
+        else if (closeEnough ("export",  argv[1], 2)) CmdExport ();
+        else if (closeEnough ("import",  argv[1], 2)) CmdImport ();
+        else if (closeEnough ("report",  argv[1], 2)) CmdReport ();
+        else if (closeEnough ("start",   argv[1], 2)) CmdStart  ();
+        else if (closeEnough ("stop",    argv[1], 2)) CmdStop   ();
+        else if (closeEnough ("track",   argv[1], 2)) CmdTrack  ();
       }
       else if (argc == 1)
       {
