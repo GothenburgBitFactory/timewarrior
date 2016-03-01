@@ -27,17 +27,17 @@
 #ifndef INCLUDED_COMMANDS
 #define INCLUDED_COMMANDS
 
-void CmdClear     ();
-void CmdDefault   ();
-void CmdDefine    ();
-void CmdExport    ();
-void CmdExtension ();
-void CmdHelp      ();
-void CmdImport    ();
-void CmdReport    ();
-void CmdStart     ();
-void CmdStop      ();
-void CmdTrack     ();
+int CmdClear     ();
+int CmdDefault   ();
+int CmdDefine    ();
+int CmdExport    ();
+int CmdExtension ();
+int CmdHelp      ();
+int CmdImport    ();
+int CmdReport    ();
+int CmdStart     ();
+int CmdStop      ();
+int CmdTrack     ();
 
 #endif
 
