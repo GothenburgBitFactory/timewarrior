@@ -8,6 +8,7 @@ set (commands_SRCS CmdDefault.cpp
                    CmdExport.cpp
                    CmdHelp.cpp
                    CmdImport.cpp
+                   CmdReport.cpp
                    CmdStart.cpp
                    CmdStop.cpp
                    CmdTrack.cpp)
