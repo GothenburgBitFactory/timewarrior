@@ -119,6 +119,8 @@ If your fix doesn't pass all tests, change it, and squash your commits into one
 commit that works. We do continuous integration, and we want all commits, if
 possible, to not fail.
 
+If you add new functionality, add new tests.
+
 Make a patch file:
 
     $ git format-patch HEAD^
@@ -126,7 +128,7 @@ Make a patch file:
 Take the resulting 0001-xxxxxxx.patch file and attach it to an email that is
 addressed to support@taskwarrior.org. Do not paste the patch inline in the
 message, attach it instead. This allows the maintainer to save the attachment
-intact and not modified by the mail client.
+intact and unmodified by the mail client.
 
 In your message, be sure to convince us that you ran the test suite. If you
 want to go the extra mile, update the ChangeLog and add your name to the
@@ -140,11 +142,13 @@ Your patch will be reviewed by the maintainers. You may receive feedback, which
 may include requested changes. Your patch may be accepted and applied
 immediately.
 
-Your authorship will be preserved in the commit. We want you properly credited.
+Your authorship will be preserved in the commit. We want you to be properly
+credited for your work.
 
-When a release is imminent, your patch may be held until the next development
-cycle begins, unless it is shown to be minimal and not destabilizing. In mid-
-cycle your patch may be immediately applied and pushed.
+Near the end of the development cycle, when a release is close, your patch may
+be held until the next development cycle begins, unless it is shown to be
+minimal and not destabilizing. In mid-cycle your patch may be immediately
+applied and pushed.
 
 
 What are the causes for a patch to be rejected?
@@ -165,15 +169,15 @@ Here are some reasons that cause patch rejection:
 - New functionality, or modified behavior was not first cleared by the
   maintainers as being desirable. We don't want you to waste your time either.
   But we do have a plan, and all changes must conform to the plan, otherwise
-  it morphs the project into something else.
+  it morphs the project into something we don't want.
 
 - The code does not follow the formatting of the surrounding code. Your code
   should blend in perfectly, and not stand out for reasons of formatting,
-  naming convention.
+  naming convention, tabs etc.
 
 - The changes need supporting documentation changes which were not made.
 
-- Inefficient, non-portable, broken code.
+- Inefficient, non-portable, or broken code.
 
 
 http://taskwarrior.org
