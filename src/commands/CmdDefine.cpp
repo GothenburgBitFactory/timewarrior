@@ -24,19 +24,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef INCLUDED_GRAMMAR
-#define INCLUDED_GRAMMAR
+#include <cmake.h>
+#include <iostream>
 
-void CmdDefault ();
-void CmdDefine  ();
-void CmdExport  ();
-void CmdHelp    ();
-void CmdImport  ();
-void CmdReport  ();
-void CmdStart   ();
-void CmdStop    ();
-void CmdTrack   ();
-
-#endif
+////////////////////////////////////////////////////////////////////////////////
+void CmdDefine ()
+{
+  std::cout << "# define\n";
+}
 
 ////////////////////////////////////////////////////////////////////////////////
