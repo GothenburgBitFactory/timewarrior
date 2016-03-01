@@ -1,10 +1,13 @@
 cmake_minimum_required (VERSION 2.8)
 include_directories (${CMAKE_SOURCE_DIR}
                      ${CMAKE_SOURCE_DIR}/src
+                     ${CMAKE_SOURCE_DIR}/src/commands
                      ${TIMEW_INCLUDE_DIRS})
 
 set (timew_SRCS Database.cpp   Database.h
+                Extensions.cpp Extensions.h
                 Grammar.cpp    Grammar.h
+                Interval.cpp   Interval.h
                 JSON.cpp       JSON.h
                 Lexer.cpp      Lexer.h
                 LR0.cpp        LR0.h
@@ -16,7 +19,7 @@ link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 add_executable (timew_executable timew.cpp)
 add_executable (gr_executable gr.cpp)
 
-target_link_libraries (timew_executable timew common ${TIMEW_LIBRARIES})
+target_link_libraries (timew_executable timew commands common ${TIMEW_LIBRARIES})
 target_link_libraries (gr_executable timew common ${TIMEW_LIBRARIES})
 
 set_property (TARGET timew_executable PROPERTY OUTPUT_NAME "timew")
