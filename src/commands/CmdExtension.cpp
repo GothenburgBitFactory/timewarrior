@@ -24,21 +24,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef INCLUDED_COMMANDS
-#define INCLUDED_COMMANDS
+#include <cmake.h>
+#include <iostream>
 
-void CmdClear     ();
-void CmdDefault   ();
-void CmdDefine    ();
-void CmdExport    ();
-void CmdExtension ();
-void CmdHelp      ();
-void CmdImport    ();
-void CmdReport    ();
-void CmdStart     ();
-void CmdStop      ();
-void CmdTrack     ();
-
-#endif
+////////////////////////////////////////////////////////////////////////////////
+void CmdExtension ()
+{
+  std::cout << "# extension\n";
+}
 
 ////////////////////////////////////////////////////////////////////////////////
