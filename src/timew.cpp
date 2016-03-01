@@ -95,7 +95,7 @@ int main (int argc, const char** argv)
       }
       else if (argc == 1)
       {
-        // TODO Default command
+        CmdDefault ();
       }
     }
 
