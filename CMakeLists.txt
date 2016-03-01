@@ -49,6 +49,7 @@ ExternalProject_Add (common-1.0
                      )
 
 add_subdirectory (src)
+add_subdirectory (src/commands)
 add_subdirectory (doc)
 if (EXISTS ${CMAKE_SOURCE_DIR}/test)
   add_subdirectory (test EXCLUDE_FROM_ALL)
@@ -66,5 +67,6 @@ set (CPACK_SOURCE_PACKAGE_FILE_NAME ${PACKAGE_NAME}-${PACKAGE_VERSION})
 set (CPACK_SOURCE_IGNORE_FILES  "CMakeCache" "CMakeFiles" "CPackConfig" "CPackSourceConfig"
                                 "_CPack_Packages" "cmake_install" "install_manifest" "Makefile$"
                                 "test" "package-config" "src/timew$" "src/libtimew.a"
+                                "src/commands/libcommands.a"
                                 "/\\\\.gitignore" "/\\\\.git/" "swp$" "src/gr$")
 include (CPack)
