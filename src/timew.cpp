@@ -35,74 +35,65 @@
 //#include <LR0.h>
 #include <iostream>
 #include <new>
-#include <cstring>
 
 // No global data.
 
 ////////////////////////////////////////////////////////////////////////////////
 int main (int argc, const char** argv)
 {
+  // Lightweight version checking that doesn't require initialization or I/O.
   int status = 0;
-  bool debug = true;
+  if (lightweightVersionCheck (argc, argv))
+    return status;
 
-  // Lightweight version checking that doesn't require initialization or any I/O.
-  if (argc == 2 && ! strcmp (argv[1], "--version"))
+  try
   {
-    std::cout << VERSION << "\n";
+    // Load the configuration, prepare the database, but do not read data.
+    Configuration configuration;
+    Database database;
+    initializeData (configuration, database);
+
+    // TODO Arrange the following to minimize memory use.
+    // TODO Load CLI grammar.
+    // TODO Load from string, else file on config override.
+    // TODO Migrate from loading a grammar from file, to a default string.
+/*
+    File cliFile ("./cli.grammar");
+    Grammar cliGrammar;
+    cliGrammar.debug (debug);
+    cliGrammar.loadFromFile (cliFile);
+
+    // Instantiate the parser.
+    LR0 cliParser;
+    cliParser.debug (debug);
+    cliParser.initialize (cliGrammar);
+    // TODO Parse CLI.
+*/
+
+    // Load the rules.
+    Rules rules;
+    initializeRules (configuration, rules);
+
+    // Dispatch to commands.
+    status = dispatchCommand (argc, argv, configuration, rules);
   }
-  else
+
+  catch (const std::string& error)
   {
-    try
-    {
-      // Load the configuration, prepare the database, but do not read data.
-      Configuration configuration;
-      Database database;
-      initializeData (configuration, database);
+    std::cerr << error << "\n";
+    status = -1;
+  }
 
-      // TODO Arrange the following to minimize memory use.
-      // TODO Load CLI grammar.
-      // TODO Load from string, else file on config override.
-      // TODO Migrate from loading a grammar from file, to a default string.
-/*
-      File cliFile ("./cli.grammar");
-      Grammar cliGrammar;
-      cliGrammar.debug (debug);
-      cliGrammar.loadFromFile (cliFile);
-*/
-      // Instantiate the parser.
-/*
-      LR0 cliParser;
-      cliParser.debug (debug);
-      cliParser.initialize (cliGrammar);
-*/
+  catch (std::bad_alloc& error)
+  {
+    std::cerr << "Error: Memory allocation failed: " << error.what () << "\n";
+    status = -3;
+  }
 
-      // TODO Parse CLI.
-
-      // Load the rules.
-      Rules rules;
-      initializeRules (configuration, rules);
-
-      // Dispatch to commands.
-      status = dispatchCommand (argc, argv, configuration, rules);
-    }
-
-    catch (const std::string& error)
-    {
-      std::cerr << error << "\n";
-      status = -1;
-    }
-
-    catch (std::bad_alloc& error)
-    {
-      std::cerr << "Error: Memory allocation failed: " << error.what () << "\n";
-      status = -3;
-    }
-
-    catch (...)
-    {
-      std::cerr << "Error: Unknown problem, please report.\n";
-      status = -2;
-    }
+  catch (...)
+  {
+    std::cerr << "Error: Unknown problem, please report.\n";
+    status = -2;
   }
 
   return status;

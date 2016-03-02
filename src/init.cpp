@@ -34,7 +34,20 @@
 #include <commands.h>
 #include <vector>
 #include <string>
-#include <iostream> // TODO Remove
+#include <cstring>
+#include <iostream>
+
+////////////////////////////////////////////////////////////////////////////////
+bool lightweightVersionCheck (int argc, const char** argv)
+{
+  if (argc == 2 && ! std::strcmp (argv[1], "--version"))
+  {
+    std::cout << VERSION << "\n";
+    return true;
+  }
+
+  return false;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 void initializeData (Configuration& configuration, Database& database)

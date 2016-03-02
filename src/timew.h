@@ -32,6 +32,7 @@
 #include <Rules.h>
 
 // init.cpp
+bool lightweightVersionCheck (int, const char**);
 void initializeData (Configuration&, Database&);
 void initializeRules (Configuration&, Rules&);
 int dispatchCommand (int, const char**, Configuration&, Rules&);
