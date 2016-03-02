@@ -28,6 +28,7 @@
 #include <Configuration.h>
 #include <Database.h>
 #include <Rules.h>
+#include <Extensions.h>
 //#include <Grammar.h>
 //#include <LR0.h>
 #include <common.h>
@@ -73,6 +74,11 @@ void initializeRules (Configuration& configuration, Rules& rules)
   ruleParser.initialize (ruleGrammar);
 */
 
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void initializeExtensions (Configuration& configuration, Extensions& extensions)
+{
 }
 
 ////////////////////////////////////////////////////////////////////////////////

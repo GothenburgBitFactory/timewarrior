@@ -35,6 +35,7 @@
 bool lightweightVersionCheck (int, const char**);
 void initializeData (Configuration&, Database&);
 void initializeRules (Configuration&, Rules&);
+void initializeExtensions (Configuration&, Extensions&);
 int dispatchCommand (int, const char**, Configuration&, Rules&);
 
 #endif

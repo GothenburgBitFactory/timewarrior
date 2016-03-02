@@ -28,6 +28,7 @@
 #include <Configuration.h>
 #include <Database.h>
 #include <Rules.h>
+#include <Extensions.h>
 //#include <Grammar.h>
 #include <common.h>
 #include <commands.h>
@@ -73,6 +74,10 @@ int main (int argc, const char** argv)
     // Load the rules.
     Rules rules;
     initializeRules (configuration, rules);
+
+    // Load extension script info.
+    Extensions extensions;
+    initializeExtensions (configuration, extensions);
 
     // Dispatch to commands.
     status = dispatchCommand (argc, argv, configuration, rules);
