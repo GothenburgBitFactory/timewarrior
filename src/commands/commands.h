@@ -27,9 +27,11 @@
 #ifndef INCLUDED_COMMANDS
 #define INCLUDED_COMMANDS
 
+#include <Rules.h>
+
 int CmdClear     ();
 int CmdDefault   ();
-int CmdDefine    ();
+int CmdDefine    (Rules&);
 int CmdExport    ();
 int CmdExtension ();
 int CmdHelp      ();

@@ -27,8 +27,10 @@
 #ifndef INCLUDED_TIMEW
 #define INCLUDED_TIMEW
 
+#include <Rules.h>
+
 // init.cpp
-int dispatchCommand (int, const char**);
+int dispatchCommand (int, const char**, Rules&);
 
 #endif
 

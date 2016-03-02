@@ -32,7 +32,7 @@
 #include <iostream> // TODO Remove
 
 ////////////////////////////////////////////////////////////////////////////////
-int dispatchCommand (int argc, const char** argv)
+int dispatchCommand (int argc, const char** argv, Rules& rules)
 {
   int status {0};
 
@@ -52,7 +52,7 @@ int dispatchCommand (int argc, const char** argv)
         // command to fn mapping.
              if (closeEnough (allCommands[0], argv[1], 2)) status = CmdHelp   ();
         else if (closeEnough (allCommands[1], argv[1], 2)) status = CmdClear  ();
-        else if (closeEnough (allCommands[2], argv[1], 2)) status = CmdDefine ();
+        else if (closeEnough (allCommands[2], argv[1], 2)) status = CmdDefine (rules);
         else if (closeEnough (allCommands[3], argv[1], 2)) status = CmdExport ();
         else if (closeEnough (allCommands[4], argv[1], 2)) status = CmdImport ();
         else if (closeEnough (allCommands[5], argv[1], 2)) status = CmdReport ();

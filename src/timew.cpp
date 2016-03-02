@@ -89,8 +89,8 @@ int main (int argc, const char** argv)
       // TODO Load rules.
       // TODO Parse rules.
 
-      // TODO Dispatch to commands.
-      status = dispatchCommand (argc, argv);
+      // Dispatch to commands.
+      status = dispatchCommand (argc, argv, rules);
     }
 
     catch (const std::string& error)
