@@ -80,7 +80,7 @@ int main (int argc, const char** argv)
     initializeExtensions (configuration, extensions);
 
     // Dispatch to commands.
-    status = dispatchCommand (argc, argv, configuration, rules);
+    status = dispatchCommand (argc, argv, configuration, rules, extensions);
   }
 
   catch (const std::string& error)

@@ -86,7 +86,8 @@ int dispatchCommand (
   int argc,
   const char** argv,
   Configuration& configuration,
-  Rules& rules)
+  Rules& rules,
+  Extensions& extensions)
 {
   int status {0};
 
