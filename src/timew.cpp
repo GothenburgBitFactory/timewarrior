@@ -25,7 +25,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
-#include <Grammar.h>
+//#include <Grammar.h>
+#include <Rules.h>
 #include <common.h>
 #include <commands.h>
 #include <timew.h>
@@ -84,6 +85,7 @@ int main (int argc, const char** argv)
       ruleParser.initialize (ruleGrammar);
 */
 
+      Rules rules;
       // TODO Load rules.
       // TODO Parse rules.
 
