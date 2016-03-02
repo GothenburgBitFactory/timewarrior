@@ -28,6 +28,7 @@
 #include <Grammar.h>
 #include <common.h>
 #include <commands.h>
+#include <timew.h>
 #include <LR0.h>
 #include <iostream>
 #include <new>
@@ -87,22 +88,7 @@ int main (int argc, const char** argv)
       // TODO Parse rules.
 
       // TODO Dispatch to commands.
-      if (argc > 1)
-      {
-             if (closeEnough ("help",    argv[1], 2)) status = CmdHelp   ();
-        else if (closeEnough ("clear",   argv[1], 2)) status = CmdClear  ();
-        else if (closeEnough ("define",  argv[1], 2)) status = CmdDefine ();
-        else if (closeEnough ("export",  argv[1], 2)) status = CmdExport ();
-        else if (closeEnough ("import",  argv[1], 2)) status = CmdImport ();
-        else if (closeEnough ("report",  argv[1], 2)) status = CmdReport ();
-        else if (closeEnough ("start",   argv[1], 2)) status = CmdStart  ();
-        else if (closeEnough ("stop",    argv[1], 2)) status = CmdStop   ();
-        else if (closeEnough ("track",   argv[1], 2)) status = CmdTrack  ();
-      }
-      else if (argc == 1)
-      {
-        status = CmdDefault ();
-      }
+      status = dispatchCommand (argc, argv);
     }
 
     catch (const std::string& error)
