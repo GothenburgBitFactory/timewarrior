@@ -33,6 +33,16 @@ std::string Interval::dump () const
 {
   std::stringstream out;
 
+  out << "Interval _from '"
+      << _from.toEpoch ()
+      << "' _to '"
+      << _to.toEpoch ()
+      << "' _tags";
+
+  for (const auto& tag : _tags)
+    out << " '" << tag << "'";
+
+  out << "\n";
   return out.str ();
 }
 

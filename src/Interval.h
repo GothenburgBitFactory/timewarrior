@@ -27,7 +27,9 @@
 #ifndef INCLUDED_INTERVAL
 #define INCLUDED_INTERVAL
 
+#include <vector>
 #include <string>
+#include <Datetime.h>
 
 class Interval
 {
@@ -36,6 +38,9 @@ public:
   std::string dump () const;
 
 private:
+  Datetime                  _from {0};
+  Datetime                  _to   {0};
+  std::vector <std::string> _tags {};
 };
 
 #endif
