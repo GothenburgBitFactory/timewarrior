@@ -98,7 +98,7 @@ int main (int argc, const char** argv)
       initializeRules (configuration, rules);
 
       // Dispatch to commands.
-      status = dispatchCommand (argc, argv, rules);
+      status = dispatchCommand (argc, argv, configuration, rules);
     }
 
     catch (const std::string& error)

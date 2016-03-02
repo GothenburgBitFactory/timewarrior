@@ -47,7 +47,11 @@ void initializeRules (Configuration& configuration, Rules& rules)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-int dispatchCommand (int argc, const char** argv, Rules& rules)
+int dispatchCommand (
+  int argc,
+  const char** argv,
+  Configuration& configuration,
+  Rules& rules)
 {
   int status {0};
 
