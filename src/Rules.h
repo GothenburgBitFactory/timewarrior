@@ -32,6 +32,7 @@
 class Rules
 {
 public:
+  Rules () = default;
   std::string dump () const;
 };
 
