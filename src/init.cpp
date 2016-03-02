@@ -25,6 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <Configuration.h>
 #include <Database.h>
 #include <Rules.h>
 #include <common.h>
@@ -34,7 +35,7 @@
 #include <iostream> // TODO Remove
 
 ////////////////////////////////////////////////////////////////////////////////
-void initializeDatabase (Database& database)
+void initializeData (Configuration& configuration, Database& database)
 {
 }
 
