@@ -27,9 +27,11 @@
 #ifndef INCLUDED_TIMEW
 #define INCLUDED_TIMEW
 
+#include <Database.h>
 #include <Rules.h>
 
 // init.cpp
+void initializeDatabase (Database&);
 int dispatchCommand (int, const char**, Rules&);
 
 #endif

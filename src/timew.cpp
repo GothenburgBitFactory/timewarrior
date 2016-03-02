@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 //#include <Grammar.h>
+#include <Database.h>
 #include <Rules.h>
 #include <common.h>
 #include <commands.h>
@@ -51,6 +52,8 @@ int main (int argc, const char** argv)
     try
     {
       // TODO Load configuration ~/.timewrc || $TIMEWRC.
+      Database database;
+      initializeDatabase (database);
 
       // TODO Arrange the following to minimize memory use.
       // TODO Load CLI grammar.
