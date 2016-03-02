@@ -34,9 +34,11 @@ class Database
 {
 public:
   Database () = default;
+  void initialize (const std::string&);
   std::string dump () const;
 
 private:
+  std::string               _location   {"~/.timewarrior"};
   std::vector <std::string> _data_files {};
 };
 

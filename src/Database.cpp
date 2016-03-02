@@ -26,7 +26,25 @@
 
 #include <cmake.h>
 #include <Database.h>
+#include <FS.h>
 #include <sstream>
+#include <iostream> // TODO Remove
+
+////////////////////////////////////////////////////////////////////////////////
+void Database::initialize (const std::string& location)
+{
+  _location = location;
+
+  Directory d (_location);
+  for (const auto& file : d.list ())
+  {
+    if (1 /* looks like one of our data files */)
+    {
+      _data_files.push_back (file);
+      std::cout << "# data file " << file << "\n";
+    }
+  }
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 std::string Database::dump () const
