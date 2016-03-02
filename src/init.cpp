@@ -94,6 +94,7 @@ int dispatchCommand (
   int argc,
   const char** argv,
   Configuration& configuration,
+  Database& database,
   Rules& rules,
   Extensions& extensions)
 {
