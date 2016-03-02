@@ -33,6 +33,7 @@
 
 // init.cpp
 void initializeData (Configuration&, Database&);
+void initializeRules (Configuration&, Rules&);
 int dispatchCommand (int, const char**, Rules&);
 
 #endif

@@ -40,6 +40,11 @@ void initializeData (Configuration& configuration, Database& database)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void initializeRules (Configuration& configuration, Rules& rules)
+{
+}
+
+////////////////////////////////////////////////////////////////////////////////
 int dispatchCommand (int argc, const char** argv, Rules& rules)
 {
   int status {0};
