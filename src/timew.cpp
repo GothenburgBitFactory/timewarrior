@@ -92,9 +92,10 @@ int main (int argc, const char** argv)
       ruleParser.initialize (ruleGrammar);
 */
 
-      Rules rules;
       // TODO Load rules.
       // TODO Parse rules.
+      Rules rules;
+      initializeRules (configuration, rules);
 
       // Dispatch to commands.
       status = dispatchCommand (argc, argv, rules);
