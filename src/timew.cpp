@@ -37,6 +37,8 @@
 #include <new>
 #include <cstring>
 
+// No global data.
+
 ////////////////////////////////////////////////////////////////////////////////
 int main (int argc, const char** argv)
 {
@@ -52,7 +54,7 @@ int main (int argc, const char** argv)
   {
     try
     {
-      // TODO Load configuration ~/.timewrc || $TIMEWRC.
+      // Load the configuration, prepare the database, but do not read data.
       Configuration configuration;
       Database database;
       initializeData (configuration, database);
