@@ -10,7 +10,8 @@ set (timew_SRCS Database.cpp   Database.h
                 Interval.cpp   Interval.h
                 Lexer.cpp      Lexer.h
                 LR0.cpp        LR0.h
-                Rules.cpp      Rules.h)
+                Rules.cpp      Rules.h
+                init.cpp)
 
 add_library (timew STATIC ${timew_SRCS})
 include_directories(${CMAKE_INSTALL_PREFIX}/include)
