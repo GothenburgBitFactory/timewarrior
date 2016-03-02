@@ -122,8 +122,9 @@ int dispatchCommand (
     }
     else
     {
-      std::cout << "Timwarrior '" << argv[1] << "', is not a command. "
-                << "Did you mean one of these:\n";
+      std::cout << "timew: '" << argv[1] << "' is not a command. See 'timew help'.\n"
+                << "\n"
+                << "Did you mean one of these?\n";
 
       for (const auto& command : matches)
         std::cout << "  " << command << "\n";
