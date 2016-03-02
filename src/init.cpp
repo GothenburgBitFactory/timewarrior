@@ -28,6 +28,8 @@
 #include <Configuration.h>
 #include <Database.h>
 #include <Rules.h>
+//#include <Grammar.h>
+//#include <LR0.h>
 #include <common.h>
 #include <commands.h>
 #include <vector>
@@ -44,6 +46,20 @@ void initializeData (Configuration& configuration, Database& database)
 ////////////////////////////////////////////////////////////////////////////////
 void initializeRules (Configuration& configuration, Rules& rules)
 {
+  // TODO Load rule grammar.
+/*
+  File ruleFile ("./rule.grammar");
+  Grammar ruleGrammar;
+  ruleGrammar.debug (debug);
+  ruleGrammar.loadFromFile (ruleFile);
+*/
+  // Instantiate the parser.
+/*
+  LR0 ruleParser;
+  ruleParser.debug (debug);
+  ruleParser.initialize (ruleGrammar);
+*/
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////

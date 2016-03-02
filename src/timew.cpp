@@ -32,7 +32,7 @@
 #include <common.h>
 #include <commands.h>
 #include <timew.h>
-#include <LR0.h>
+//#include <LR0.h>
 #include <iostream>
 #include <new>
 #include <cstring>
@@ -78,22 +78,7 @@ int main (int argc, const char** argv)
 
       // TODO Parse CLI.
 
-      // TODO Load rule grammar.
-/*
-      File ruleFile ("./rule.grammar");
-      Grammar ruleGrammar;
-      ruleGrammar.debug (debug);
-      ruleGrammar.loadFromFile (ruleFile);
-*/
-      // Instantiate the parser.
-/*
-      LR0 ruleParser;
-      ruleParser.debug (debug);
-      ruleParser.initialize (ruleGrammar);
-*/
-
-      // TODO Load rules.
-      // TODO Parse rules.
+      // Load the rules.
       Rules rules;
       initializeRules (configuration, rules);
 
