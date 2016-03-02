@@ -115,8 +115,11 @@ int dispatchCommand (
     }
     else
     {
-      // TODO ambiguous.
-      std::cout << "# ambiguous\n";
+      std::cout << "Timwarrior '" << argv[1] << "', is not a command. "
+                << "Did you mean one of these:\n";
+
+      for (const auto& command : matches)
+        std::cout << "  " << command << "\n";
     }
   }
   else if (argc == 1)
