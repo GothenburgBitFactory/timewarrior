@@ -32,6 +32,7 @@
 std::string Rules::dump () const
 {
   std::stringstream out;
+  out << "Rules\n";
 
   return out.str ();
 }

@@ -35,6 +35,7 @@ class Extensions
 public:
   Extensions () = default;
   void initialize ();
+  std::string dump () const;
 
 private:
   std::vector <std::string>& buildExtensionArgs (std::vector <std::string>&) const;

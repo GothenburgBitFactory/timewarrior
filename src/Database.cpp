@@ -50,8 +50,9 @@ void Database::initialize (const std::string& location)
 std::string Database::dump () const
 {
   std::stringstream out;
+  out << "Database\n";
   for (const auto& file : _data_files)
-    out << "# Data file: " << file << "\n";
+    out << "  Data: " << file << "\n";
 
   return out.str ();
 }

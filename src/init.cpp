@@ -55,6 +55,12 @@ void initializeData (Configuration& configuration, Database& database)
 {
   // TODO Load configuration ~/.timewrc || $TIMEWRC.
   // TODO Init database (no data read).
+
+  std::cout << "# Configuration\n";
+  for (const auto& name : configuration.all ())
+    std::cout << "#   " << name << "=" << configuration[name] << "\n";
+
+  std::cout << "# " << database.dump ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -74,11 +80,13 @@ void initializeRules (Configuration& configuration, Rules& rules)
   ruleParser.initialize (ruleGrammar);
 */
 
+  std::cout << "# " << rules.dump ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void initializeExtensions (Configuration& configuration, Extensions& extensions)
 {
+  std::cout << "# " << extensions.dump ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
