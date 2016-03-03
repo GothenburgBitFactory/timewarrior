@@ -53,7 +53,32 @@ bool lightweightVersionCheck (int argc, const char** argv)
 ////////////////////////////////////////////////////////////////////////////////
 void initializeData (Configuration& configuration, Database& database)
 {
-  // TODO Load configuration ~/.timewrc || $TIMEWRC.
+  // The $TIMEWARRIORDB environment variable overrides the default value of
+  // ~/.timewarrior‥
+  Directory dbLocation;
+  char* override = getenv ("TIMEWARRIORDB");
+  if (override)
+  {
+    std::cout << "# TIMEWARRIORDB " << override << "\n";
+    dbLocation = Directory (override);
+  }
+  else
+  {
+    dbLocation = Directory ("~/.timewarrior");
+    std::cout << "# Using default DB location " << dbLocation._data << "\n";
+  }
+
+  // TODO If dbLocation does not exist, ask whether it should be created.
+  // TODO IF dbLocation exists, but is not readable/writable/executable, error.
+
+  // TODO Load the configuration data.
+
+  // This value is not written out to disk, as there would be no point. Having
+  // located the config file, the 'db' location is already known. This is just
+  // for subsequent internal use.
+  configuration.set ("db", dbLocation._data);
+  std::cout << "#   rc.db=" << configuration.get ("db") << "\n";
+
   // TODO Init database (no data read).
 
   std::cout << "# Configuration\n";
