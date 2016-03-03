@@ -4,21 +4,21 @@
 timewrc \- Configuration details for the timew(1) command
 
 .SH SYNOPSIS
-.B $HOME/.timewrc
+.B $HOME/.timewarrior
 .br
-.B TIMEWRC=<directory-path>/.timewrc timew ...
+.B TIMEWARRIORDB=<directory-path> timew ...
 
 .SH DESCRIPTION
 .B Timewarrior
 obtains its configuration data from a file called
-.I .timewrc
-\&. This file is normally located in the user's home directory:
+.I timewarrior.cfg
+which is found in the Timewarrior database directory, which defaults to:
 
 .RS
-$HOME/.timewrc
+$HOME/.timewarrior
 .RE
 
-...
+Although this can be overridden by using the TIMEWARRIORDB environment variable.
 
 .SH EDITING
 
@@ -35,8 +35,8 @@ Valid variable names and their default values are:
 
 .TP
 .TP
-.B name=value
-...
+.B debug=1
+This generates diagnostic information for troubleshooting. Default value is 0.
 
 .SS DATES
 
