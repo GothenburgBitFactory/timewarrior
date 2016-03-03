@@ -32,6 +32,8 @@
 //#include <Grammar.h>
 //#include <LR0.h>
 #include <common.h>
+#include <format.h>
+#include <FS.h>
 #include <commands.h>
 #include <vector>
 #include <string>
@@ -69,15 +71,38 @@ void initializeData (Configuration& configuration, Database& database)
   }
 
   // TODO If dbLocation does not exist, ask whether it should be created.
-  // TODO IF dbLocation exists, but is not readable/writable/executable, error.
+  bool shinyNewDatabase = false;
+  if (! dbLocation.exists () /* &&
+      confirm ("Create Timewarrior database in " + dbLocation._data + "?")*/)
+  {
+    dbLocation.create (0700);
+    std::cout << "# Created missing database in " << dbLocation._data << "\n";
+    shinyNewDatabase = true;
+  }
 
-  // TODO Load the configuration data.
+  // If dbLocation exists, but is not readable/writable/executable, error.
+  if (dbLocation.exists () &&
+      (! dbLocation.readable () ||
+       ! dbLocation.writable () ||
+       ! dbLocation.executable ()))
+  {
+    throw format ("Database is not readable at '{1}'", dbLocation._data);
+  }
+
+  // Load the configuration data.
+  File configFile (dbLocation);
+  configFile += "timewarrior.cfg";
+  configFile.create (0600);
+  configuration.load (configFile._data);
 
   // This value is not written out to disk, as there would be no point. Having
   // located the config file, the 'db' location is already known. This is just
   // for subsequent internal use.
   configuration.set ("db", dbLocation._data);
   std::cout << "#   rc.db=" << configuration.get ("db") << "\n";
+
+  // Perhaps some later code would like to know this is a new db.
+  configuration.set ("shiny", 1);
 
   // TODO Init database (no data read).
 
