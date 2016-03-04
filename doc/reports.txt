@@ -50,3 +50,6 @@ Here are some provisional examples of report commands:
 
 ---
 
+- Taskwarrior Hook script needs to allow 'project' (default) or an arbitrary
+  UDA for time categorization.
+
