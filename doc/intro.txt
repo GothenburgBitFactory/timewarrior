@@ -1,0 +1,87 @@
+Introduction
+============
+Timewarrior is a time tracking application, which allows you to record your
+time spent on activities. At its simplest, you tell it to start and stop
+tracking time:
+
+  $ timew start
+  ...
+  $ timew stop
+
+This will record a block of time as active, between the two timestamps that
+were recorded when the 'start' and 'stop' commands were run.
+
+By using tags, you can label the blocks of active time:
+
+  $ timew start Home Cleaning
+  ...
+  $ timew stop
+
+This tags the block of time with the two tags 'Home' and 'Cleaning'. The tags
+allow you to identify how you spent that time, and is used by the reporting
+system to summarize time.
+
+You cna also record time retroactively. If you forgot to start recording this
+morning, you can do this:
+
+  $ timew start 8:30am Home Cleaning
+
+Or if you forgot a whole activity:
+
+  $ timew track 8:00am - 8:30am Exercise
+  $ timew start 8:30am Home Cleaning
+
+More sophisticated use is possible if you have defined your work week:
+
+  $ timew define workweek mon-fri
+  $ timew define workday start 8:30am
+  $ timew define workday end 1730
+  
+  $ timew track yesterday Home Painting
+
+Once the work week is recorded, vague terms like 'yesterday' can be resolved
+into actual start/stop timestamps. If you define holidays, then it knows not to
+track time on those days:
+
+  $ timew define holidays eng-USA
+
+Furthermore, Timewarrior can fill in gaps. For example:
+
+  $ timew track last tuesday :fill Reasearch
+
+There is a :backfill and :fill hint that tells Timewarrior how to fill the time,
+for example:
+
+  $ timew track yesetrday 8am - 10am Meeting
+  $ timew track yesterday 3pm - 17:00:00 Training
+  $ timew track yesterday 2pm ProjectA :backfill
+  $ timew track yesterday ProjectB :fill
+
+And the 'ProjectB' tagged interval will range from 2pm - 3pm.
+
+Tags can have their own metadata, for example you can make a tag valid for a
+given time range:
+
+  $ timew define tag ProjectA end 2016-06-30
+  $ timew define tag ProjectA budget 400 hours total
+
+This is managed by a rules system that can impose constraints.
+
+To see the currently active interval:
+
+  $ timew
+
+Reporting tracked time can be done with a simple report:
+
+  $ timew report today
+  $ timew report week Home
+  $ timew report summary last week
+
+  (sample output not available)
+
+Or the data can be exported in JSON:
+
+  $ timew export last month > February.json
+
+---
+
