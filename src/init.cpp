@@ -80,6 +80,12 @@ void initializeData (Configuration& configuration, Database& database)
     shinyNewDatabase = true;
   }
 
+  // Create extensions subdirectory if necessary.
+  Directory extensions (dbLocation);
+  extensions += "extensions";
+  if (! extensions.exists ())
+    extensions.create (0700);
+
   // If dbLocation exists, but is not readable/writable/executable, error.
   if (dbLocation.exists () &&
       (! dbLocation.readable () ||
