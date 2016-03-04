@@ -70,10 +70,10 @@ void initializeData (Configuration& configuration, Database& database)
     std::cout << "# Using default DB location " << dbLocation._data << "\n";
   }
 
-  // TODO If dbLocation does not exist, ask whether it should be created.
+  // If dbLocation does not exist, ask whether it should be created.
   bool shinyNewDatabase = false;
-  if (! dbLocation.exists () /* &&
-      confirm ("Create Timewarrior database in " + dbLocation._data + "?")*/)
+  if (! dbLocation.exists () &&
+      confirm ("Create new database in " + dbLocation._data + "?"))
   {
     dbLocation.create (0700);
     std::cout << "# Created missing database in " << dbLocation._data << "\n";
