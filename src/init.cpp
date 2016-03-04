@@ -101,16 +101,18 @@ void initializeData (Configuration& configuration, Database& database)
   configuration.set ("db", dbLocation._data);
   std::cout << "#   rc.db=" << configuration.get ("db") << "\n";
 
-  // Perhaps some later code would like to know this is a new db.
-  configuration.set ("shiny", 1);
+  // Perhaps some subsequent code would like to know this is a new db and
+  // possibly a first run.
+  configuration.set ("shiny", (shinyNewDatabase ? 1 : 0));
 
-  // TODO Init database (no data read).
+  // Initialize the database (no data read), but files are enumerated.
+  database.initialize (dbLocation._data);
 
   std::cout << "# Configuration\n";
   for (const auto& name : configuration.all ())
     std::cout << "#   " << name << "=" << configuration[name] << "\n";
 
-  std::cout << "# " << database.dump ();
+  std::cout << database.dump ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
