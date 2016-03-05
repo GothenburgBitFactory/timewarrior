@@ -150,6 +150,11 @@ void initializeRules (Configuration& configuration, Rules& rules)
 ////////////////////////////////////////////////////////////////////////////////
 void initializeExtensions (Configuration& configuration, Extensions& extensions)
 {
+  Directory extDir (configuration.get ("db"));
+  extDir += "extensions";
+
+  extensions.initialize (extDir._data);
+
   std::cout << "# " << extensions.dump ();
 }
 
