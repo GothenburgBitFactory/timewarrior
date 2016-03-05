@@ -38,10 +38,8 @@ public:
   std::string dump () const;
 
 private:
-  std::string               _location   {"~/.timewarrior"};
+  std::string               _location   {"~/.timewarrior/data"};
   std::vector <std::string> _data_files {};
 };
 
 #endif
-
-////////////////////////////////////////////////////////////////////////////////

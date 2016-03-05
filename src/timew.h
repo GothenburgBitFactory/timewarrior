@@ -40,5 +40,3 @@ void initializeExtensions (Configuration&, Extensions&);
 int dispatchCommand (int, const char**, Configuration&, Database&, Rules&, Extensions&);
 
 #endif
-
-////////////////////////////////////////////////////////////////////////////////
