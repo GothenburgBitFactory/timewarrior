@@ -38,7 +38,11 @@ public:
   std::string dump () const;
 
 private:
+  std::string currentDataFile () const;
+
+private:
   std::string               _location   {"~/.timewarrior/data"};
+  std::string               _current    {};
   std::vector <std::string> _data_files {};
 };
 

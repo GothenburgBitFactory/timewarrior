@@ -29,21 +29,29 @@
 #include <FS.h>
 #include <sstream>
 #include <iostream> // TODO Remove
+#include <iomanip>
+#include <ctime>
 
 ////////////////////////////////////////////////////////////////////////////////
 void Database::initialize (const std::string& location)
 {
   _location = location;
+  _current = currentDataFile ();
+  _data_files.push_back (_current);
 
   Directory d (_location);
   for (const auto& file : d.list ())
   {
     if (1 /* looks like one of our data files */)
     {
-      _data_files.push_back (file);
+      if (file != _current)
+        _data_files.push_back (file);
+
       std::cout << "# data file " << file << "\n";
     }
   }
+
+  // TODO If there is no data file named YYYY—MM.data, then create it.
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -53,6 +61,24 @@ std::string Database::dump () const
   out << "# Database\n";
   for (const auto& file : _data_files)
     out << "#   Data: " << file << "\n";
+
+  return out.str ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string Database::currentDataFile () const
+{
+  time_t current;
+  time (&current);
+  struct tm* t = gmtime (&current);
+
+  std::stringstream out;
+  out << _location
+      << '/'
+      << std::setw (4) << std::setfill ('0') << (t->tm_year + 1900)
+      << '-'
+      << std::setw (2) << std::setfill ('0') << (t->tm_mon + 1)
+      << ".data";
 
   return out.str ();
 }
