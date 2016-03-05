@@ -86,6 +86,12 @@ void initializeData (Configuration& configuration, Database& database)
   if (! extensions.exists ())
     extensions.create (0700);
 
+  // Create extensions subdirectory if necessary.
+  Directory data (dbLocation);
+  data += "data";
+  if (! data.exists ())
+    data.create (0700);
+
   // If dbLocation exists, but is not readable/writable/executable, error.
   if (dbLocation.exists () &&
       (! dbLocation.readable () ||
@@ -112,7 +118,7 @@ void initializeData (Configuration& configuration, Database& database)
   configuration.set ("shiny", (shinyNewDatabase ? 1 : 0));
 
   // Initialize the database (no data read), but files are enumerated.
-  database.initialize (dbLocation._data);
+  database.initialize (data._data);
 
   std::cout << "# Configuration\n";
   for (const auto& name : configuration.all ())
