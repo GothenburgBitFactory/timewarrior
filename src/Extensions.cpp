@@ -26,11 +26,23 @@
 
 #include <cmake.h>
 #include <Extensions.h>
+#include <FS.h>
 #include <sstream>
+#include <algorithm>
 
 ////////////////////////////////////////////////////////////////////////////////
-void Extensions::initialize ()
+void Extensions::initialize (const std::string& location)
 {
+  // Scan extension directory.
+  Directory d (location);
+  if (d.is_directory () &&
+      d.readable ())
+  {
+    _scripts = d.list ();
+    std::sort (_scripts.begin (), _scripts.end ());
+  }
+  else
+    throw std::string ("Extension directory not readable: ") + d._data;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

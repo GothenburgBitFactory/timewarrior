@@ -34,7 +34,7 @@ class Extensions
 {
 public:
   Extensions () = default;
-  void initialize ();
+  void initialize (const std::string&);
   std::string dump () const;
 
 private:
