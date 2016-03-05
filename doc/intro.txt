@@ -21,7 +21,7 @@ This tags the block of time with the two tags 'Home' and 'Cleaning'. The tags
 allow you to identify how you spent that time, and is used by the reporting
 system to summarize time.
 
-You cna also record time retroactively. If you forgot to start recording this
+You can also record time retroactively. If you forgot to start recording this
 morning, you can do this:
 
   $ timew start 8:30am Home Cleaning
@@ -47,7 +47,7 @@ track time on those days:
 
 Furthermore, Timewarrior can fill in gaps. For example:
 
-  $ timew track last tuesday :fill Reasearch
+  $ timew track last tuesday :fill Research
 
 There is a :backfill and :fill hint that tells Timewarrior how to fill the time,
 for example:
