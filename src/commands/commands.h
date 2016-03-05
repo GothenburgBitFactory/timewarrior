@@ -34,6 +34,7 @@ int CmdDefault   ();
 int CmdDefine    (Rules&);
 int CmdExport    ();
 int CmdExtension ();
+int CmdHelpUsage ();
 int CmdHelp      ();
 int CmdImport    ();
 int CmdReport    ();

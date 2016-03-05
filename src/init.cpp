@@ -195,8 +195,7 @@ int dispatchCommand (
     }
     else if (matches.size () == 0)
     {
-      // TODO usage.
-      std::cout << "# usage\n";
+      CmdHelpUsage ();
     }
     else
     {
