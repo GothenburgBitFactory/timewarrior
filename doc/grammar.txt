@@ -88,6 +88,19 @@ When resolving an interval, vague terms are influenced by configured exclusions
 and rules.  Precise terms _always_ override rules.
 
 
+Tagset
+------
+A tagset is a set of unique UTF-8 strings, each indentifying some trackable
+entity, for example:
+
+  $ timew start Home Garden "Sprint 2016"
+                ---- ------ -------------
+                tag  tag    tag
+
+                -------------------------
+                tagset
+
+
 Keywords
 --------
 There are built-in and custom keywords, that look like this:
