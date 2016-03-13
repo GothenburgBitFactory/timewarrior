@@ -58,4 +58,22 @@ Assumed built-in types:
 
   tag:       string
 
+
+Keywords
+--------
+There are built-in and custom keywords, that look like this:
+
+  :fill
+  :quiet
+
+They begin with a colon, and are heuristics for Timewarrior. They can override
+feedback (:quiet) or offer guidance on how to create an interval (:fill). The
+supported keywords are:
+
+  :fill
+  :backfill
+  :interrupt
+  :quiet
+  :x          (user­defined via rules)
+
 ---
