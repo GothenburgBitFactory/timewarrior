@@ -84,7 +84,11 @@ Data File Names
 ---------------
 The data file names will have the year and month embedded, which acts as a
 heuristic for filtering, keeps the data files small and therefore quicker to
-manipulate, and eliminates the need for any sophisticated archiving.
+manipulate, and eliminates the need for any sophisticated archiving. For
+example:
+
+  ~/.timewarrior/data/2016-02.data
+  ~/.timewarrior/data/2016-03.data
 
 ---
 
