@@ -78,7 +78,7 @@ configuration names flattened, i.e. no hierarchy.
 ---
 
 - The Taskwarrior hook script should use a set of attributes for time tracking
-  tags. Those will include: UUID, project, tags, and any chosen UDAs.
+  tags. Those will include: UUID, project, tags, description, and any chosen UDAs.
 
 - Need a JSON --> CSV converter, for spreadsheet folks.
 
