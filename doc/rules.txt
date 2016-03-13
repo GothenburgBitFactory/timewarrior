@@ -131,6 +131,7 @@ and start/end dates for use:
     end         2016-06-30
     budget      20 hours per week
     budget      400 hours total
+    overlap     yes
 
 
 rule Type: Logging
