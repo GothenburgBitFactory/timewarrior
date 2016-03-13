@@ -99,6 +99,10 @@ Yielding:
     interval workday end 1730
     interval workday tue end 3pm
 
+If you want to track your lunch breaks, then you would make a tag for it, and
+track it like any other project. If you do not want to track that time, add an
+exclusion for it.
+
 
 Rule Type: General
 ------------------
