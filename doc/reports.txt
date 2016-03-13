@@ -31,13 +31,12 @@ Report Mockups
 --------------
 Purely as an example of what might be implemented, here are some report mockups:
 
-TBD (calendar like "task calendar" with table below)
+  ./report.week.txt
+  ./report.day.1.txt
 
-TBD (large weekly calendar, 5 days, every half-hour)
-
-TBD (timeline, l-r)
-
-TBD (table with subtotals)
+  TBD (calendar like "task calendar" with table below)
+  TBD (timeline, l-r)
+  TBD (table with subtotals)
 
 
 Example Commands
