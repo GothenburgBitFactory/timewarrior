@@ -32,8 +32,9 @@ Using the 'start' and 'stop' commands with tags just records time intervals:
   ...
   $ timew stop
 
-This results in two consecutive recorded intervals with the 'tag1' and 'tag2' tags.
-As these tags are not defined, there is no additional metadata.
+This results in the 'tag1' interval being automatically stopped, and the new
+'tag2' interval starting.  The 'stop' command stops all tracking. As these tags
+are not defined, there is no additional metadata.
 
 
 [1.3] Basic Usage: no arguments
@@ -43,6 +44,8 @@ interval, with associated tags:
 
   $ timew
   2016-02-29  8:00:00 - now, 3:11:24 total, using 'tag1'
+
+If 'tag1' has a defined color, it is used here to color the 'tag1' string.
 
 
 [2.1] Reports: Summaries
@@ -86,6 +89,8 @@ because it would also be filled.
 
 Backfill involves looking backwards from the stated date/time, looking for an
 interval to define the start.
+
+Only when a range is bounded can :fill and :backfill determine the interval.
 
 
 [5.2] Fill: Fill (forwards)
