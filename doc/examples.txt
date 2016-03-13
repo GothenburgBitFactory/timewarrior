@@ -201,7 +201,25 @@ associated metadata:
 
   Consensus: [b], but configurable.
 
-- The command 'timew freeze before yesterday' or 'timew freeze tag1', where
-  'freeze' could equally be 'lock', could be used to prevent subsequent
-  modifications. There would need to be a symmetrical 'unfreeze'/'unlock'.
+- Given this scenario:
+
+  Exclusion:     ------|
+  Exclusion:                                               |----------
+  Inclusion:               |-|
+  Now:                                  |
+  Timeline:     >--o---o---o---o---o---o---o---o---o---o---o---o---o-->
+                   7   8   9   10  11  12  1   2   3   4   5   6   7
+                   am                  pm
+
+  $ timew track this morning :fill tag             inc 8am    - 9am # tag
+
+  $ timew track this morning :fill :active tag     inc 8am    - 9am # tag
+                                                   inc 9:30am -     # tag
+
+  $ timew track today tag                          inc 8am    - 9am # tag
+                                                   inc 9:30am -     # tag
+
+  $ timew track 8am - 9am tag                      inc 8am    - 9am # tag
+
+  $ timew start tag1 :fill                         inc 9:30am -     # tag
 
