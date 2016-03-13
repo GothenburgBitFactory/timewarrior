@@ -87,3 +87,6 @@ configuration names flattened, i.e. no hierarchy.
 
 - Need a JSON --> CSV converter, for spreadsheet folks.
 
+- Use display granularity/resolution to see more or less details.  This would
+  combine nicely with a tag hierarchy. (Tomas Babej)
+
