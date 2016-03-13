@@ -143,9 +143,9 @@ and start/end dates for use:
     overlap     yes
 
 
-rule Type: Logging
+Rule Type: Logging
 ------------------
-A logoging rule manages all log-related controls:
+A logging rule manages all log-related controls:
 
   define logging:
     file   "/path/to/log"
