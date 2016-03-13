@@ -143,16 +143,6 @@ and start/end dates for use:
     overlap     yes
 
 
-Rule Type: Logging
-------------------
-A logging rule manages all log-related controls:
-
-  define logging:
-    file   "/path/to/log"
-    debug  off
-    level  info
-
-
 Rule Type: Configuration
 ------------------------
 Configuration settings are stored in the 'configuration' rule, which uses a
@@ -166,6 +156,13 @@ hierarchy for grouping:
 
 In the example, value2 can be referred to by it's normalized name
 'group1.group2.name2'.
+
+An example is logging:
+
+  define configuration:
+    logging:
+      file: /path/to/log/file
+      categories: a b c !d
 
 
 Built-in Functions
