@@ -5,7 +5,7 @@ $ timew report day last monday
 
 Day Report, 2016-03-13 15:14:03, week 32
 
-      Mon
+      Monday
  8:00 [48;5;235m                                              [0m
  9:00 [37;44mStaff Meeting                                 [0m
 10:00 [37;44m                                              [0m

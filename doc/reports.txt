@@ -26,6 +26,9 @@ include:
 - Data will be filtered by Timewarrior, so that extensions will not need to
   reimplement this.
 
+There will be a default report, which is configurable so that one of the reports
+can be hte default.
+
 
 Report Mockups
 --------------
