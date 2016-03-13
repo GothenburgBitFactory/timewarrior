@@ -112,10 +112,11 @@ They begin with a colon, and are heuristics for Timewarrior. They can override
 feedback (:quiet) or offer guidance on how to create an interval (:fill). The
 supported keywords are:
 
-  :fill
-  :backfill
-  :interrupt
-  :quiet
-  :x          (user­defined via rules)
+  :fill       Fill in gap
+  :backfill   Fill in gap, backwards only
+  :interrupt  Identify the interval as a temporary interruption
+  :noreport   Prevent the interval being reported
+  :quiet      No feedback
+  :x          User defined
 
 ---
