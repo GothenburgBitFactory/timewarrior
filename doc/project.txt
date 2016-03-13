@@ -17,23 +17,24 @@ timesheets.
 
 Goals
 -----
-Provide a personal tool to easily track time spent and generate reports in
-multiple formats and styles. The tool will "do the right thing" as much as
-possible, to make detailed time tracking easy, and low friction.
-
-Data will be stored as plain UTF8 text.
-
-Open Source.
+- Provide a personal tools to easily track time spent and generate reports with
+  low friction.
+- Support all workflows.
+- Provide an extension-friendly tool.
+- Support policies via the rules system.
+- Integrate with Taskwarrior, Tasksh.
+- Store data in plain UTF-8 text.
 
 
 Non-Goals
 ---------
+- Completely independent from Taskwarrior, Taskserver, Tasksh.
 - No cloud support, no sync support, all data is local. Tracked time is
   sensitive personal data and wll not be transmitted.
 - No explicit multi-user support, although using tags to track individuals is
   possible.
-- No precision higher than a second.
 - There is no hook system as Timewarrior is a data sink, not a data source.
+- No features without a compelling use case.
 
 
 Tags
