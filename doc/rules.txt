@@ -193,3 +193,18 @@ There are several built-in functions, which may be used by rules:
 - A nice feature would be to define a ':keyword' using the rules, which would
   replace the notion of macros/aliases.
 
+- While there are no plans to add hooks, there could be rules that are triggered
+  by events in a similar manner:
+
+    define rule on_start:
+      ...
+
+    define rule on_stop:
+      ...
+
+- Policy support involves things like:
+  - warn after 40 hrs/wk
+  - cut off tracking a tag at x hrs/wk
+  - auto-tag intervals that exceed 40 hrs/wk
+  - auto-tag intervals during exclusion time
+
