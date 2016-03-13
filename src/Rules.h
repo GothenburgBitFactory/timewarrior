@@ -33,7 +33,10 @@ class Rules
 {
 public:
   Rules () = default;
+  std::string get (const std::string&, const std::string&) const;
   std::string dump () const;
+
+private:
 };
 
 #endif

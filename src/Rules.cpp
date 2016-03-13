@@ -29,6 +29,14 @@
 #include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
+// define r:
+//    name value
+std::string Rules::get (const std::string& rule, const std::string& name) const
+{
+  return ""; // TODO Replace
+}
+
+////////////////////////////////////////////////////////////////////////////////
 std::string Rules::dump () const
 {
   std::stringstream out;
