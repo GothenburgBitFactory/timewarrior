@@ -118,5 +118,7 @@ A simple extension mechanism allows custom reports to be written and shared.
 
 - Need syntax to adjust any recorded data.
 
-- It should be forgiving when you forgot to stop a task. Maybe a specific command, instead of "stop" use "forgot" or directly "edit".  Then I would like to express either "stopped 30min ago" or "it lasted only 1hour”
+- It should be forgiving when you forgot to stop a task. Maybe a specific command, instead of "stop" use "forgot" or directly "edit".  Then I would like to express either "stopped 30min ago" or "it lasted only 1hour”.
+
+- There is no hook system, but there will be rules that accomplish the same thing, almost.
 
