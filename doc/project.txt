@@ -32,7 +32,7 @@ Non-Goals
   sensitive personal data and wll not be transmitted.
 - No explicit multi-user support, although using tags to track individuals is
   possible.
-- No precision higher than a minute.
+- No precision higher than a second.
 - There is no hook system as Timewarrior is a data sink, not a data source.
 
 
