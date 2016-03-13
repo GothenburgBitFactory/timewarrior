@@ -26,6 +26,9 @@ include:
 - Data will be filtered by Timewarrior, so that extensions will not need to
   reimplement this.
 
+- Reports will be sized according to need, not according to available terminal
+  width. If a report does not fit in a window, it is not an error.
+
 There will be a default report, which is configurable so that one of the reports
 can be hte default.
 
