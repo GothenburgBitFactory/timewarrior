@@ -59,6 +59,35 @@ Assumed built-in types:
   tag:       string
 
 
+Intervals
+---------
+An interval defines a block of time, either using precise values, or vague
+values that are interpreted according to context, yielding precise values. The
+general form is:
+
+  Precise:
+    YYYY-MM-DDTHH:MM:SS[Z|±HH:MM]
+    now
+    8:23:00
+    9am
+
+  Vague (and precise interpretation):
+    today                   :backfill - now      :active
+    this morning            :backfill - 12:00:00
+    last tuesday            YYYY-MM-DD :fill
+    yesterday               YYYY-MM-DD :fill
+
+An interval may be open ended:
+
+      - B
+    A - B
+    A -
+    A
+
+When resolving an interval, vague terms are influenced by configured exclusions
+and rules.  Precise terms _always_ override rules.
+
+
 Keywords
 --------
 There are built-in and custom keywords, that look like this:
