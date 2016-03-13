@@ -165,3 +165,6 @@ There are several built-in functions, which may be used by rules:
     define A
       B C
 
+- A nice feature would be to define a ':keyword' using the rules, which would
+  replace the notion of macros/aliases.
+
