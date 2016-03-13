@@ -38,7 +38,7 @@ Non-Goals
 Tags
 ----
 Tags represent tracking categories. Tags are arbitrary UTF8 strings. A tag may
-be a single unquoted word, or a quoted phrase.
+be a single unquoted word, or a quoted string if it includes spaces.
 
 A tag may be used without being defined, but if a tag is defined, then it may
 have associated metadata, such as a start date representing the first date on
@@ -62,23 +62,26 @@ The command set may include:
   define         Modify configuration
   track          Record tracked time
   report         Run a report
+  undo           Undo a change
   tags           Show all tags
+  gaps           Show untracked gaps in the schedule
   import         Import JSON data
   export         Export JSON data
   help           Show help text
   x              Run extension 'x'
 
 
+Undo
+----
+All commands than change configuration or data need to be logged as-is in the
+undo.data file, so that an 'undo' command can later rewind the changes.
+
+All undo will happen at the command level, not the delta level.
+
+
 Extensions
 ----------
-A simple extension mechanism would require an executable script found in a
-defined location with a conformant name, which then is fed exported data on
-stdin.
-
-For example, this script clearly defines that it is a 'report' extension named
-'abc'.
-
-  ~/.timewarrior/extensions/report_abc
+A simple extension mechanism allows custom reports to be written and shared.
 
 ---
 

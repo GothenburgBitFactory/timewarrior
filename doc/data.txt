@@ -90,5 +90,12 @@ example:
   ~/.timewarrior/data/2016-02.data
   ~/.timewarrior/data/2016-03.data
 
+
+Undo Data
+---------
+The undo stack will be stored as:
+
+  ~/.timewarrior/undo.data
+
 ---
 

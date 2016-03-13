@@ -25,6 +25,8 @@ The CLI shall have a well-defined and unambiguous grammar.
     timew define tag <tag> budget <number> <units> total
     timew define tag <tag> overlap
 
+    timew undo
+
     timew tags
     timew gaps [<interval>]
 
