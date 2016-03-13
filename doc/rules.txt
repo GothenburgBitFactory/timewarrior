@@ -34,9 +34,10 @@ Format
 The rules are written in a UTF8 text file, in a known location. Other rules
 files may be included:
 
-  import /path/to/other/rules
+  import /path/to/other/rule/file
 
 The syntax of rules is Python-like, in that indentation is significant.
+
 
 Types of Rules
 --------------
@@ -69,7 +70,7 @@ Should be stored in a rule, whose purpose is to return a set of exclusion
 intervals:
 
   define exclusions:
-    include workweek mon,tue,wed,thu,fri
+    workweek mon,tue,wed,thu,fri
 
 Further definitions will build on this rule:
 
@@ -78,8 +79,8 @@ Further definitions will build on this rule:
 Yields a combined:
 
   define exclusions:
-    interval workweek mon,tue,wed,thu,fri
-    interval workday start 8:30am
+    workweek mon,tue,wed,thu,fri
+    workday start 8:30am
 
 Possible exclusions include:
 
@@ -92,12 +93,12 @@ Possible exclusions include:
 Yielding:
 
   define exclusions:
-    interval holidays eng-USA
-    interval work 2015-11-26
-    interval workweek mon,tue,wed,thu,fri
-    interval workday start 8:30am
-    interval workday end 1730
-    interval workday tue end 3pm
+    holidays eng-USA
+    work 2015-11-26
+    workweek mon,tue,wed,thu,fri
+    workday start 8:30am
+    workday end 1730
+    workday tue end 3pm
 
 If you want to track your lunch breaks, then you would make a tag for it, and
 track it like any other project. If you do not want to track that time, add an
