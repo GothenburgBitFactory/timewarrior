@@ -59,15 +59,15 @@ exclusions.
 
 An example file looks like this:
 
-  exclusion holidays eng-USA
-  exclusion work 2015-11-26
-  exclusion workweek mon,tue,wed,thu,fri
-  exclusion workday start 8:30am
-  exclusion workday end 1730
-  exclusion workday tue end 3pm
+  exc holidays eng-USA
+  exc work 2015-11-26
+  exc workweek mon,tue,wed,thu,fri
+  exc workday start 8:30am
+  exc workday end 1730
+  exc workday tue end 3pm
 
-  inclusion 2016-02-28T08:00 - 2016-02-28T12:00 # Upgrade Planning
-  inclusion 2016-02-28T13:00                    # Upgrade Presentation "ABCD Inc"
+  inc 2016-02-28T08:00 - 2016-02-28T12:00 # Upgrade Planning
+  inc 2016-02-28T13:00                    # Upgrade Presentation "ABCD Inc"
 
 White space is ignored. Here we see a sect of exlcusions that define a work week
 and a two inclusions, the first of which represents a four hour block of time
