@@ -38,12 +38,13 @@ CLI Grammar
 -----------
 Assumed built-in types:
   <datetime>
-  <time>
   <duration>
+  <time>
   <string>
 
   interval:  <timestamp> "-" <timestamp>
              <timestamp> "to" <timestamp>
+             <timestamp> "for" <duration>
              "from" <timestamp> "to" <timestamp>
              "until" <timestamp>
              "from" <timestamp>
