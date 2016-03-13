@@ -33,6 +33,7 @@ Non-Goals
 - No explicit multi-user support, although using tags to track individuals is
   possible.
 - No precision higher than a minute.
+- There is no hook system as Timewarrior is a data sink, not a data source.
 
 
 Tags
