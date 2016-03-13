@@ -210,9 +210,6 @@ associated metadata:
   no overlaps, but allowing overlapping intervals might need configuration to
   allow this.
 
-- Do we need arbitrary exclusions?  Lunch?  Dentist Appointment? or are those
-  just different inclusions?
-
 - Suppose "last week" is 39 hours of nothing, and 1 hour of a meeting.  The
   question becomes what do the following do:
 
