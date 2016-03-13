@@ -7,3 +7,4 @@ commit.h
 cmake_install.cmake
 install_manifest.txt
 common-1.0-prefix
+patches
