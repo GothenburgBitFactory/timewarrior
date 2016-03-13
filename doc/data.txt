@@ -97,5 +97,33 @@ The undo stack will be stored as:
 
   ~/.timewarrior/undo.data
 
+
+Logging
+-------
+Timewarrior will log many messages, but the logging will be configurable. The
+configuration will be:
+
+  define configuration:
+    logging:
+      file /path/to/log/file
+      categories a,b,c,!d
+
+This indicates that categories 'a', 'b', and 'c' are desired, and 'd' is
+explicitly not desired. The categories are:
+
+  command        (distinguishes tty and non-tty commands)
+  performance
+  rules
+  io
+  parsing
+  warnings
+  errors
+  info
+
+A log entry will have this form:
+
+  YYYY-MM-DDTHH:MM:SS <version> <category> <message>
+
+
 ---
 
