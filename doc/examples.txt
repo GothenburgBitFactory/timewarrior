@@ -109,8 +109,35 @@ that extends all day today. Similarly 'tomorrow', 'next week' are bounded.
 
 
 
+[6.1] Configuration: Storing/accessing settings
+-----------------------------------------------
+With a 'config' command, all configuration data will be accessible. The command:
 
+  $ timew config name value
 
+Will result in an update to the configuration rule:
+
+  define configuration:
+    name value
+
+Using the '.' character allows the rule to reflect hierarchical configuration
+data:
+
+  $ timew config one two three four
+  $ timew config one two five six
+
+Will construct the rule like this:
+
+  define configuration:
+    one:
+      two:
+        three four
+        five six
+
+The process of converting this rule structure to 'one.two.three four' is called
+normalizing.
+
+---
 
 
 By using tags, this becomes:
@@ -172,8 +199,6 @@ associated metadata:
   $ timew define tag "tag1" budget 20 hours per week
   $ timew define tag "tag1" budget 400 hours total
   $ timew define tag "tag1" overlap
-
----
 
 - Need to break all these out into separate sections, where each is discussed in
   sufficient detail to then generate user docs and code.

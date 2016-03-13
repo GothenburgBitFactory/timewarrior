@@ -47,6 +47,14 @@ defines all exclusions:
   define exclusions:
     ...
 
+There is a rule that contains all the general configuration data:
+
+  define configuration:
+    name1 value1
+    group1:
+      group2:
+        name2 value2
+
 There are general rules triggered by changes to the data:
 
   define rule one:
@@ -85,20 +93,21 @@ Yields a combined:
 Possible exclusions include:
 
   $ timew define holidays eng-USA
-  $ timew define workweek mon-fri
-  $ timew define workday start 8:30am
-  $ timew define workday end 1730
-  $ timew define workday tue end 3pm
+  $ timew define week mon-fri
+  $ timew define day start 8:30am
+  $ timew define day end 1730
+  $ timew define day tue end 3pm
 
 Yielding:
 
   define exclusions:
     holidays eng-USA
     work 2015-11-26
-    workweek mon,tue,wed,thu,fri
-    workday start 8:30am
-    workday end 1730
-    workday tue end 3pm
+    week mon,tue,wed,thu,fri
+    day:
+      start 8:30am
+      end 1730
+      tue end 3pm
 
 If you want to track your lunch breaks, then you would make a tag for it, and
 track it like any other project. If you do not want to track that time, add an
