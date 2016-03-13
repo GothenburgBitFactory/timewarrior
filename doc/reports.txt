@@ -80,7 +80,8 @@ That is, the input it line-oriented, with first a header block of name/value
 pairs, then a blank line, then the JSON filtered data. The header block has all
 configuration names flattened, i.e. no hierarchy.
 
----
+
+--- Raw Notes ---
 
 - The Taskwarrior hook script should use a set of attributes for time tracking
   tags. Those will include: UUID, project, tags, description, and any chosen UDAs.

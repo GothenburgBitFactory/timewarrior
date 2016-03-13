@@ -194,7 +194,8 @@ There are several built-in functions, which may be used by rules:
   log("...")           Logs and continues
   sum_week("tag1")     Sums minutes in the current week for "tag1"
 
----
+
+--- Raw Notes ---
 
 - Need to distinguish between regular time and over time, with different rates
   and limits.

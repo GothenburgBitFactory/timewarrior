@@ -137,8 +137,8 @@ Will construct the rule like this:
 The process of converting this rule structure to 'one.two.three four' is called
 normalizing.
 
----
 
+--- Raw Notes ---
 
 By using tags, this becomes:
 

@@ -102,7 +102,8 @@ Extensions
 ----------
 A simple extension mechanism allows custom reports to be written and shared.
 
----
+
+--- Raw Notes ---
 
 - Given this:
     $ timew track yesterday 9am - 5pm tag1

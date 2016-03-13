@@ -124,6 +124,5 @@ A log entry will have this form:
 
   YYYY-MM-DDTHH:MM:SS <version> <category> <message>
 
-
----
+--- Raw Notes ---
 

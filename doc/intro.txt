@@ -83,5 +83,6 @@ Or the data can be exported in JSON:
 
   $ timew export last month > February.json
 
----
+
+--- Raw Notes ---
 
