@@ -153,6 +153,21 @@ A logging rule manages all log-related controls:
     level  info
 
 
+Rule Type: Configuration
+------------------------
+Configuration settings are stored in the 'configuration' rule, which uses a
+hierarchy for grouping:
+
+  define configuration:
+    name1 value1
+    group1:
+      group2:
+        name2 value2
+
+In the example, value2 can be referred to by it's normalized name
+'group1.group2.name2'.
+
+
 Built-in Functions
 ------------------
 There are several built-in functions, which may be used by rules:
