@@ -165,6 +165,25 @@ An example is logging:
       categories: a b c !d
 
 
+Rule Type: Color Theme
+----------------------
+A color theme is defined by a rule, and consists of color definitions for
+various report and feedback elements:
+
+  define color-theme:
+    description "A monochrome, 256-color theme"
+    color:
+      today "black on rgb521"
+      ...
+    palette:
+      1 "white on red"
+      2 "white on blue"
+      ...
+
+The palette group is a list (more is better) of themed colors for use when auto-
+coloring tags.
+
+
 Built-in Functions
 ------------------
 There are several built-in functions, which may be used by rules:
