@@ -9,6 +9,7 @@ set (commands_SRCS CmdClear.cpp
                    CmdContinue.cpp
                    CmdDefault.cpp
                    CmdDefine.cpp
+                   CmdDiagnostics.cpp
                    CmdExport.cpp
                    CmdExtension.cpp
                    CmdGaps.cpp
