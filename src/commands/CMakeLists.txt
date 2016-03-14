@@ -19,7 +19,8 @@ set (commands_SRCS CmdClear.cpp
                    CmdStart.cpp
                    CmdStop.cpp
                    CmdTags.cpp
-                   CmdTrack.cpp)
+                   CmdTrack.cpp
+                   CmdUndo.cpp)
 
 add_library (commands STATIC ${commands_SRCS})
 

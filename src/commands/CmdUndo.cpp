@@ -24,28 +24,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef INCLUDED_COMMANDS
-#define INCLUDED_COMMANDS
+#include <cmake.h>
+#include <iostream>
 
-#include <Rules.h>
+////////////////////////////////////////////////////////////////////////////////
+int CmdUndo ()
+{
+  std::cout << "# undo\n";
+  return 0;
+}
 
-int CmdClear     ();
-int CmdConfig    ();
-int CmdContinue  ();
-int CmdDefault   ();
-int CmdDefine    (Rules&);
-int CmdExport    ();
-int CmdExtension ();
-int CmdGaps      ();
-int CmdHelpUsage ();
-int CmdHelp      ();
-int CmdLog       ();
-int CmdImport    ();
-int CmdReport    ();
-int CmdStart     ();
-int CmdStop      ();
-int CmdTags      ();
-int CmdTrack     ();
-int CmdUndo      ();
-
-#endif
+////////////////////////////////////////////////////////////////////////////////
