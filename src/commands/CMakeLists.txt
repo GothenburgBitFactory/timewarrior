@@ -6,6 +6,7 @@ include_directories (${CMAKE_SOURCE_DIR}
 
 set (commands_SRCS CmdClear.cpp
                    CmdConfig.cpp
+                   CmdContinue.cpp
                    CmdDefault.cpp
                    CmdDefine.cpp
                    CmdExport.cpp
