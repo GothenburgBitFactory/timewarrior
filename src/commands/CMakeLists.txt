@@ -10,6 +10,7 @@ set (commands_SRCS CmdClear.cpp
                    CmdDefine.cpp
                    CmdExport.cpp
                    CmdExtension.cpp
+                   CmdGaps.cpp
                    CmdHelp.cpp
                    CmdImport.cpp
                    CmdReport.cpp

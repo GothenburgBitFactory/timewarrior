@@ -173,7 +173,7 @@ int dispatchCommand (
   {
     std::vector <std::string> allCommands =
     {
-      "help", "clear", "config", "define", "export", "import", "report",
+      "help", "clear", "config", "define", "export", "gaps", "import", "report",
       "start", "stop", "tags", "track"
     };
 
@@ -183,17 +183,18 @@ int dispatchCommand (
     {
       // These signatures are æxpected to be all different, therefore no
       // command to fn mapping.
-           if (closeEnough (allCommands[0], argv[1], 2)) status = CmdHelp   ();
-      else if (closeEnough (allCommands[1], argv[1], 2)) status = CmdClear  ();
-      else if (closeEnough (allCommands[1], argv[1], 2)) status = CmdConfig ();
-      else if (closeEnough (allCommands[2], argv[1], 2)) status = CmdDefine (rules);
-      else if (closeEnough (allCommands[3], argv[1], 2)) status = CmdExport ();
-      else if (closeEnough (allCommands[4], argv[1], 2)) status = CmdImport ();
-      else if (closeEnough (allCommands[5], argv[1], 2)) status = CmdReport ();
-      else if (closeEnough (allCommands[6], argv[1], 2)) status = CmdStart  ();
-      else if (closeEnough (allCommands[7], argv[1], 2)) status = CmdStop   ();
-      else if (closeEnough (allCommands[8], argv[1], 2)) status = CmdTags   ();
-      else if (closeEnough (allCommands[9], argv[1], 2)) status = CmdTrack  ();
+           if (closeEnough (allCommands[0],  argv[1], 2)) status = CmdHelp   ();
+      else if (closeEnough (allCommands[1],  argv[1], 2)) status = CmdClear  ();
+      else if (closeEnough (allCommands[2],  argv[1], 2)) status = CmdConfig ();
+      else if (closeEnough (allCommands[3],  argv[1], 2)) status = CmdDefine (rules);
+      else if (closeEnough (allCommands[4],  argv[1], 2)) status = CmdExport ();
+      else if (closeEnough (allCommands[5],  argv[1], 2)) status = CmdGaps   ();
+      else if (closeEnough (allCommands[6],  argv[1], 2)) status = CmdImport ();
+      else if (closeEnough (allCommands[7],  argv[1], 2)) status = CmdReport ();
+      else if (closeEnough (allCommands[8],  argv[1], 2)) status = CmdStart  ();
+      else if (closeEnough (allCommands[9],  argv[1], 2)) status = CmdStop   ();
+      else if (closeEnough (allCommands[10], argv[1], 2)) status = CmdTags   ();
+      else if (closeEnough (allCommands[11], argv[1], 2)) status = CmdTrack  ();
     }
     else if (matches.size () == 0)
     {
