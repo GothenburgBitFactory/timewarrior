@@ -174,7 +174,7 @@ int dispatchCommand (
     std::vector <std::string> allCommands =
     {
       "help", "clear", "config", "continue", "define", "export", "gaps",
-      "import", "report", "start", "stop", "tags", "track"
+      "import", "log", "report", "start", "stop", "tags", "track"
     };
 
     std::vector <std::string> matches;
@@ -191,11 +191,12 @@ int dispatchCommand (
       else if (closeEnough (allCommands[5],  argv[1], 2)) status = CmdExport   ();
       else if (closeEnough (allCommands[6],  argv[1], 2)) status = CmdGaps     ();
       else if (closeEnough (allCommands[7],  argv[1], 2)) status = CmdImport   ();
-      else if (closeEnough (allCommands[8],  argv[1], 2)) status = CmdReport   ();
-      else if (closeEnough (allCommands[9],  argv[1], 2)) status = CmdStart    ();
-      else if (closeEnough (allCommands[10], argv[1], 2)) status = CmdStop     ();
-      else if (closeEnough (allCommands[11], argv[1], 2)) status = CmdTags     ();
-      else if (closeEnough (allCommands[12], argv[1], 2)) status = CmdTrack    ();
+      else if (closeEnough (allCommands[8],  argv[1], 2)) status = CmdLog      ();
+      else if (closeEnough (allCommands[9],  argv[1], 2)) status = CmdReport   ();
+      else if (closeEnough (allCommands[10], argv[1], 2)) status = CmdStart    ();
+      else if (closeEnough (allCommands[11], argv[1], 2)) status = CmdStop     ();
+      else if (closeEnough (allCommands[12], argv[1], 2)) status = CmdTags     ();
+      else if (closeEnough (allCommands[13], argv[1], 2)) status = CmdTrack    ();
     }
     else if (matches.size () == 0)
     {
