@@ -173,8 +173,8 @@ int dispatchCommand (
   {
     std::vector <std::string> allCommands =
     {
-      "help", "clear", "define", "export", "import",
-      "report", "start", "stop", "tags", "track"
+      "help", "clear", "config", "define", "export", "import", "report",
+      "start", "stop", "tags", "track"
     };
 
     std::vector <std::string> matches;
@@ -185,6 +185,7 @@ int dispatchCommand (
       // command to fn mapping.
            if (closeEnough (allCommands[0], argv[1], 2)) status = CmdHelp   ();
       else if (closeEnough (allCommands[1], argv[1], 2)) status = CmdClear  ();
+      else if (closeEnough (allCommands[1], argv[1], 2)) status = CmdConfig ();
       else if (closeEnough (allCommands[2], argv[1], 2)) status = CmdDefine (rules);
       else if (closeEnough (allCommands[3], argv[1], 2)) status = CmdExport ();
       else if (closeEnough (allCommands[4], argv[1], 2)) status = CmdImport ();

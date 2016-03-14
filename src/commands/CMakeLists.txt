@@ -5,6 +5,7 @@ include_directories (${CMAKE_SOURCE_DIR}
                      ${TIMEW_INCLUDE_DIRS})
 
 set (commands_SRCS CmdClear.cpp
+                   CmdConfig.cpp
                    CmdDefault.cpp
                    CmdDefine.cpp
                    CmdExport.cpp

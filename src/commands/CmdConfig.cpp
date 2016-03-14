@@ -24,24 +24,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef INCLUDED_COMMANDS
-#define INCLUDED_COMMANDS
+#include <cmake.h>
+#include <iostream>
 
-#include <Rules.h>
+////////////////////////////////////////////////////////////////////////////////
+int CmdConfig ()
+{
+  std::cout << "# config\n";
+  return 0;
+}
 
-int CmdClear     ();
-int CmdConfig    ();
-int CmdDefault   ();
-int CmdDefine    (Rules&);
-int CmdExport    ();
-int CmdExtension ();
-int CmdHelpUsage ();
-int CmdHelp      ();
-int CmdImport    ();
-int CmdReport    ();
-int CmdStart     ();
-int CmdStop      ();
-int CmdTags      ();
-int CmdTrack     ();
-
-#endif
+////////////////////////////////////////////////////////////////////////////////
