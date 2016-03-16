@@ -28,6 +28,7 @@
 #define INCLUDED_COMMANDS
 
 #include <Rules.h>
+#include <Log.h>
 
 int CmdClear       ();
 int CmdConfig      ();
@@ -40,7 +41,7 @@ int CmdExtension   ();
 int CmdGaps        ();
 int CmdHelpUsage   ();
 int CmdHelp        ();
-int CmdLog         ();
+int CmdLog         (Log&);
 int CmdImport      ();
 int CmdReport      ();
 int CmdStart       ();

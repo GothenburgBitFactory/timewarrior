@@ -29,6 +29,7 @@
 #include <Database.h>
 #include <Rules.h>
 #include <Extensions.h>
+#include <Log.h>
 //#include <Grammar.h>
 //#include <LR0.h>
 #include <shared.h>
@@ -53,7 +54,10 @@ bool lightweightVersionCheck (int argc, const char** argv)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void initializeData (Configuration& configuration, Database& database)
+void initializeData (
+  Configuration& configuration,
+  Database& database,
+  Log& log)
 {
   // The $TIMEWARRIORDB environment variable overrides the default value of
   // ~/.timewarrior‥
@@ -120,6 +124,9 @@ void initializeData (Configuration& configuration, Database& database)
   // Initialize the database (no data read), but files are enumerated.
   database.initialize (data._data);
 
+  // TODO Give the log file a temp fake name.  To be removed.
+  log.file (dbLocation._data + "/timewarrior.log");
+
   std::cout << "# Configuration\n";
   for (const auto& name : configuration.all ())
     std::cout << "#   " << name << "=" << configuration[name] << "\n";
@@ -128,7 +135,10 @@ void initializeData (Configuration& configuration, Database& database)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void initializeRules (Configuration& configuration, Rules& rules)
+void initializeRules (
+  Configuration& configuration,
+  Rules& rules,
+  Log& log)
 {
   // TODO Load rule grammar.
 /*
@@ -148,7 +158,10 @@ void initializeRules (Configuration& configuration, Rules& rules)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void initializeExtensions (Configuration& configuration, Extensions& extensions)
+void initializeExtensions (
+  Configuration& configuration,
+  Extensions& extensions,
+  Log& log)
 {
   Directory extDir (configuration.get ("db"));
   extDir += "extensions";
@@ -165,7 +178,8 @@ int dispatchCommand (
   Configuration& configuration,
   Database& database,
   Rules& rules,
-  Extensions& extensions)
+  Extensions& extensions,
+  Log& log)
 {
   int status {0};
 
@@ -193,7 +207,7 @@ int dispatchCommand (
       else if (closeEnough (allCommands[6],  argv[1], 2)) status = CmdExport      ();
       else if (closeEnough (allCommands[7],  argv[1], 2)) status = CmdGaps        ();
       else if (closeEnough (allCommands[8],  argv[1], 2)) status = CmdImport      ();
-      else if (closeEnough (allCommands[9],  argv[1], 2)) status = CmdLog         ();
+      else if (closeEnough (allCommands[9],  argv[1], 2)) status = CmdLog         (log);
       else if (closeEnough (allCommands[10], argv[1], 2)) status = CmdReport      ();
       else if (closeEnough (allCommands[11], argv[1], 2)) status = CmdStart       ();
       else if (closeEnough (allCommands[12], argv[1], 2)) status = CmdStop        ();

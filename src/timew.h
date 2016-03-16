@@ -31,12 +31,13 @@
 #include <Database.h>
 #include <Rules.h>
 #include <Extensions.h>
+#include <Log.h>
 
 // init.cpp
 bool lightweightVersionCheck (int, const char**);
-void initializeData (Configuration&, Database&);
-void initializeRules (Configuration&, Rules&);
-void initializeExtensions (Configuration&, Extensions&);
-int dispatchCommand (int, const char**, Configuration&, Database&, Rules&, Extensions&);
+void initializeData (Configuration&, Database&, Log&);
+void initializeRules (Configuration&, Rules&, Log&);
+void initializeExtensions (Configuration&, Extensions&, Log&);
+int dispatchCommand (int, const char**, Configuration&, Database&, Rules&, Extensions&, Log&);
 
 #endif

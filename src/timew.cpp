@@ -29,6 +29,7 @@
 #include <Database.h>
 #include <Rules.h>
 #include <Extensions.h>
+#include <Log.h>
 //#include <Grammar.h>
 #include <shared.h>
 #include <commands.h>
@@ -42,6 +43,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int argc, const char** argv)
 {
+  // The log is needed early, in order to capture as much as possible, but will
+  // only be given a file name once configuration is loaded. The log therefore
+  // buffers the messages until it has a file name to write to.
+  Log log;
+
   // Lightweight version checking that doesn't require initialization or I/O.
   int status = 0;
   if (lightweightVersionCheck (argc, argv))
@@ -52,7 +58,7 @@ int main (int argc, const char** argv)
     // Load the configuration, prepare the database, but do not read data.
     Configuration configuration;
     Database database;
-    initializeData (configuration, database);
+    initializeData (configuration, database, log);
 
     // TODO Arrange the following to minimize memory use.
     // TODO Load CLI grammar.
@@ -73,31 +79,36 @@ int main (int argc, const char** argv)
 
     // Load the rules.
     Rules rules;
-    initializeRules (configuration, rules);
+    initializeRules (configuration, rules, log);
 
     // Load extension script info.
     Extensions extensions;
-    initializeExtensions (configuration, extensions);
+    initializeExtensions (configuration, extensions, log);
 
     // Dispatch to commands.
-    status = dispatchCommand (argc, argv, configuration, database, rules, extensions);
+    status = dispatchCommand (argc, argv, configuration, database, rules, extensions, log);
   }
 
   catch (const std::string& error)
   {
     std::cerr << error << "\n";
+    log.write ("error", error);
     status = -1;
   }
 
   catch (std::bad_alloc& error)
   {
-    std::cerr << "Error: Memory allocation failed: " << error.what () << "\n";
+    auto message = std::string ("Memory allocation failed: ") + error.what ();
+    std::cerr << "Error: " << message << "\n";
+    log.write ("error", message);
     status = -3;
   }
 
   catch (...)
   {
-    std::cerr << "Error: Unknown problem, please report.\n";
+    auto message = "Unknown problem, please report.";
+    std::cerr << "Error: " << message << "\n";
+    log.write ("error", message);
     status = -2;
   }
 
