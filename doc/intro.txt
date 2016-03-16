@@ -71,18 +71,59 @@ To see the currently active interval:
 
   $ timew
 
+  (not yet determined)
+
 Reporting tracked time can be done with a simple report:
 
   $ timew report today
   $ timew report week Home
   $ timew report summary last week
 
-  (sample output not available)
+Some early report mockups:
+
+  http://picpaste.com/week-zWdSp3UI.png
+  http://picpaste.com/day-kAqffFmZ.png
 
 Or the data can be exported in JSON:
 
   $ timew export last month > February.json
 
+Some or all of the reports are written using an extension mechanism, and
+will be examples of how to write other reports. Report extensions can be shared
+and enhanced by the community. It shoudl be possible to implement any kind of
+report using the extension mechanism.
+
+There is an 'undo' command for reversing changes, and a 'clear' command to
+free up a slot:
+
+  $ timew clear yesterday
+
+  $ timew clear 8am - 11am
+
+You can start, stop and resume tracking:
+
+  $ timew start Training
+  ...
+  $ timew stop
+  ...
+  $ timew continue
+
+There is also a rules system that can impose constraints on the data, such as
+automatically shutting off tracking after 40 hours is tracked per week, warnings
+about overtime, and more.
+
+There is built-in configuration support, logging, and assorted tools to help
+you enact policy.
+
+The data will be stored as plain text, and there will a way to merge data from
+multiple sources.
+
 
 --- Raw Notes ---
+
+- add more report mockups
+- demo 'config' command
+- demo 'tags' command
+- demo 'gaps' command
+- demo interval adjustment, corrections
 
