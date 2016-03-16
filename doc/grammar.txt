@@ -121,3 +121,7 @@ supported keywords are:
 
 
 --- Raw Notes ---
+
+- 'timew merge <file>' for combining data.  Or is this the same as
+  'timew import <file>'?  Probably is.
+
