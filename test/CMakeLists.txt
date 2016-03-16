@@ -18,7 +18,7 @@ add_custom_target (test ./run_all --verbose
 
 foreach (src_FILE ${test_SRCS})
   add_executable (${src_FILE} "${src_FILE}.cpp" test.cpp)
-  target_link_libraries (${src_FILE} timew common ${TIMEW_LIBRARIES})
+  target_link_libraries (${src_FILE} timew shared ${TIMEW_LIBRARIES})
 endforeach (src_FILE)
 
 configure_file(run_all run_all COPYONLY)

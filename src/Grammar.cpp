@@ -27,7 +27,7 @@
 #include <cmake.h>
 #include <Grammar.h>
 #include <Lexer.h>
-#include <common.h>
+#include <shared.h>
 #include <format.h>
 #include <iostream>
 #include <sstream>

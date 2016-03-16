@@ -30,7 +30,7 @@
 #include <Rules.h>
 #include <Extensions.h>
 //#include <Grammar.h>
-#include <common.h>
+#include <shared.h>
 #include <commands.h>
 #include <timew.h>
 //#include <LR0.h>

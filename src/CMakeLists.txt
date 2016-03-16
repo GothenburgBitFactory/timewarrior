@@ -9,6 +9,7 @@ set (timew_SRCS Database.cpp   Database.h
                 Grammar.cpp    Grammar.h
                 Interval.cpp   Interval.h
                 Lexer.cpp      Lexer.h
+                Log.cpp        Log.h
                 LR0.cpp        LR0.h
                 Rules.cpp      Rules.h
                 init.cpp)
@@ -19,8 +20,8 @@ link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 add_executable (timew_executable timew.cpp)
 add_executable (gr_executable gr.cpp)
 
-target_link_libraries (timew_executable timew commands common ${TIMEW_LIBRARIES})
-target_link_libraries (gr_executable timew common ${TIMEW_LIBRARIES})
+target_link_libraries (timew_executable timew commands shared ${TIMEW_LIBRARIES})
+target_link_libraries (gr_executable timew shared ${TIMEW_LIBRARIES})
 
 set_property (TARGET timew_executable PROPERTY OUTPUT_NAME "timew")
 set_property (TARGET gr_executable PROPERTY OUTPUT_NAME "gr")

@@ -29,7 +29,7 @@
 #include <Lexer.h>
 #include <Table.h>
 #include <Color.h>
-#include <common.h>
+#include <shared.h>
 #include <format.h>
 #include <iostream>
 #include <sstream>

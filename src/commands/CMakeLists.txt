@@ -3,6 +3,7 @@ include_directories (${CMAKE_SOURCE_DIR}
                      ${CMAKE_SOURCE_DIR}/src
                      ${CMAKE_SOURCE_DIR}/src/commands
                      ${TIMEW_INCLUDE_DIRS})
+include_directories(${CMAKE_INSTALL_PREFIX}/include)
 
 set (commands_SRCS CmdClear.cpp
                    CmdConfig.cpp
