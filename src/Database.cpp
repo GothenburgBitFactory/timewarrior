@@ -28,7 +28,6 @@
 #include <Database.h>
 #include <FS.h>
 #include <sstream>
-#include <iostream> // TODO Remove
 #include <iomanip>
 #include <ctime>
 
@@ -46,8 +45,6 @@ void Database::initialize (const std::string& location)
     {
       if (file != _current)
         _data_files.push_back (file);
-
-      std::cout << "# data file " << file << "\n";
     }
   }
 
@@ -58,9 +55,9 @@ void Database::initialize (const std::string& location)
 std::string Database::dump () const
 {
   std::stringstream out;
-  out << "# Database\n";
+  out << "Database\n";
   for (const auto& file : _data_files)
-    out << "#   Data: " << file << "\n";
+    out << "  Data: " << file << "\n";
 
   return out.str ();
 }
