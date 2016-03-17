@@ -13,7 +13,8 @@ set (timew_SRCS Database.cpp   Database.h
                 Log.cpp        Log.h
                 LR0.cpp        LR0.h
                 Rules.cpp      Rules.h
-                init.cpp)
+                init.cpp
+                util.cpp)
 
 set (libshared_SRCS libshared/src/Args.cpp          libshared/src/Args.h
                     libshared/src/Color.cpp         libshared/src/Color.h
