@@ -25,8 +25,19 @@
 ###############################################################################
 
 # TODO First color theme - build this one and when it stabilizes, add more.
+define color-theme:
+  description "A default, 256-color theme"
+  color:
+    # General UI color.
+    today "black on rgb521"
 
-# TODO General UI color.
-
-# TODO Rotating Color Palette for tags.
+  # Rotating Color Palette for tags.
+  palette:
+    1 "white on red"
+    2 "white on blue"
+    3 "black on green"
+    4 "black on magenta"
+    5 "black on cyan"
+    6 "black on yellow"
+    7 "black on white"
 
