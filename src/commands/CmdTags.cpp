@@ -31,6 +31,20 @@
 int CmdTags ()
 {
   std::cout << "# tags\n";
+
+  // TODO Enumerate all data files.
+  // TODO For each data file.
+  //   TODO For each inclusion.
+  //     TODO Extract tags.
+  //     TODO Add tags to unique set.
+
+  // TODO Determine sort order - most recent first?
+  // TODO Determine sort order - most common first?
+
+  // TODO For each tag in set.
+  //   TODO Load metadata.
+  //   TODO Display.
+
   return 0;
 }
 
