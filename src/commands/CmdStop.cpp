@@ -31,6 +31,11 @@
 int CmdStop ()
 {
   std::cout << "# stop\n";
+
+  // TODO Load the most recent interval.
+  // TODO Verify the interval is open.
+  // TODO Close the interval.
+
   return 0;
 }
 
