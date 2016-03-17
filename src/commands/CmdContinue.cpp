@@ -31,6 +31,11 @@
 int CmdContinue ()
 {
   std::cout << "# continue\n";
+
+  // TODO Extract most recent interval.
+  // TODO Verify the most recent interval is closed.
+  // TODO Open an identical interval.
+
   return 0;
 }
 
