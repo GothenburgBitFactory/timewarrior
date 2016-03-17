@@ -183,7 +183,18 @@ int dispatchCommand (
 {
   int status {0};
 
-  if (argc > 1)
+  // Log the command line.
+  std::string combined;
+  for (auto& arg : args)
+  {
+    if (arg.find (' ') != std::string::npos)
+      combined += "'" + arg + "' ";
+    else
+      combined += arg + " ";
+  }
+  log.write ("command", combined);
+
+  if (args.size () > 1)
   {
     std::vector <std::string> allCommands =
     {
@@ -193,27 +204,27 @@ int dispatchCommand (
     };
 
     std::vector <std::string> matches;
-    autoComplete (argv[1], allCommands, matches);
+    autoComplete (args[1], allCommands, matches);
     if (matches.size () == 1)
     {
       // These signatures are æxpected to be all different, therefore no
       // command to fn mapping.
-           if (closeEnough (allCommands[0],  argv[1], 2)) status = CmdHelp        ();
-      else if (closeEnough (allCommands[1],  argv[1], 2)) status = CmdClear       ();
-      else if (closeEnough (allCommands[2],  argv[1], 2)) status = CmdConfig      ();
-      else if (closeEnough (allCommands[3],  argv[1], 2)) status = CmdContinue    ();
-      else if (closeEnough (allCommands[4],  argv[1], 2)) status = CmdDefine      (rules);
-      else if (closeEnough (allCommands[5],  argv[1], 2)) status = CmdDiagnostics ();
-      else if (closeEnough (allCommands[6],  argv[1], 2)) status = CmdExport      ();
-      else if (closeEnough (allCommands[7],  argv[1], 2)) status = CmdGaps        ();
-      else if (closeEnough (allCommands[8],  argv[1], 2)) status = CmdImport      ();
-      else if (closeEnough (allCommands[9],  argv[1], 2)) status = CmdLog         (log);
-      else if (closeEnough (allCommands[10], argv[1], 2)) status = CmdReport      ();
-      else if (closeEnough (allCommands[11], argv[1], 2)) status = CmdStart       ();
-      else if (closeEnough (allCommands[12], argv[1], 2)) status = CmdStop        ();
-      else if (closeEnough (allCommands[13], argv[1], 2)) status = CmdTags        ();
-      else if (closeEnough (allCommands[14], argv[1], 2)) status = CmdTrack       ();
-      else if (closeEnough (allCommands[15], argv[1], 2)) status = CmdUndo        ();
+           if (closeEnough (allCommands[0],  args[1], 2)) status = CmdHelp        ();
+      else if (closeEnough (allCommands[1],  args[1], 2)) status = CmdClear       ();
+      else if (closeEnough (allCommands[2],  args[1], 2)) status = CmdConfig      ();
+      else if (closeEnough (allCommands[3],  args[1], 2)) status = CmdContinue    ();
+      else if (closeEnough (allCommands[4],  args[1], 2)) status = CmdDefine      (rules);
+      else if (closeEnough (allCommands[5],  args[1], 2)) status = CmdDiagnostics ();
+      else if (closeEnough (allCommands[6],  args[1], 2)) status = CmdExport      ();
+      else if (closeEnough (allCommands[7],  args[1], 2)) status = CmdGaps        ();
+      else if (closeEnough (allCommands[8],  args[1], 2)) status = CmdImport      ();
+      else if (closeEnough (allCommands[9],  args[1], 2)) status = CmdLog         (log);
+      else if (closeEnough (allCommands[10], args[1], 2)) status = CmdReport      ();
+      else if (closeEnough (allCommands[11], args[1], 2)) status = CmdStart       ();
+      else if (closeEnough (allCommands[12], args[1], 2)) status = CmdStop        ();
+      else if (closeEnough (allCommands[13], args[1], 2)) status = CmdTags        ();
+      else if (closeEnough (allCommands[14], args[1], 2)) status = CmdTrack       ();
+      else if (closeEnough (allCommands[15], args[1], 2)) status = CmdUndo        ();
     }
     else if (matches.size () == 0)
     {
@@ -221,7 +232,7 @@ int dispatchCommand (
     }
     else
     {
-      std::cout << "timew: '" << argv[1] << "' is not a command. See 'timew help'.\n"
+      std::cout << "timew: '" << args[1] << "' is not a command. See 'timew help'.\n"
                 << "\n"
                 << "Did you mean one of these?\n";
 
@@ -229,7 +240,7 @@ int dispatchCommand (
         std::cout << "  " << command << "\n";
     }
   }
-  else if (argc == 1)
+  else if (args.size () == 1)
   {
     status = CmdDefault ();
   }
