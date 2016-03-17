@@ -31,6 +31,7 @@
 int CmdHelpUsage ()
 {
   std::cout << "# usage\n";
+  // TODO List all extensions.
   return 0;
 }
 
