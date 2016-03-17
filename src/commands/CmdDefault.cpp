@@ -30,9 +30,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdDefault ()
 {
-  // TODO Query database for currently active interval, obtain a summary and
-  //      display the results.
   std::cout << "# default\n";
+
+  // TODO Load the most recent interval.
+  // TODO Summarїze the info and display.
+
   return 0;
 }
 
