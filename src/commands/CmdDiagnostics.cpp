@@ -120,6 +120,13 @@ int CmdDiagnostics (Log& log)
       << (env ? env : "-")
       << "\n";
 
+  // Determine rc.editor/$EDITOR/$VISUAL.
+  char* peditor;
+  if ((peditor = getenv ("VISUAL")) != NULL)
+    out << "        $VISUAL: " << peditor << "\n";
+  else if ((peditor = getenv ("EDITOR")) != NULL)
+    out << "      $EDITOR: " << peditor << "\n";
+
   out << "\n";
   std::cout << out.str ();
   log.write ("info", out.str ());
