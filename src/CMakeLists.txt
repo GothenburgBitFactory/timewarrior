@@ -39,8 +39,8 @@ add_library (libshared STATIC ${libshared_SRCS})
 add_executable (timew_executable timew.cpp)
 add_executable (gr_executable gr.cpp)
 
-target_link_libraries (timew_executable timew commands libshared ${TIMEW_LIBRARIES})
-target_link_libraries (gr_executable    timew          libshared ${TIMEW_LIBRARIES})
+target_link_libraries (timew_executable timew libshared commands libshared timew ${TIMEW_LIBRARIES})
+target_link_libraries (gr_executable    timew                    libshared       ${TIMEW_LIBRARIES})
 
 set_property (TARGET timew_executable PROPERTY OUTPUT_NAME "timew")
 set_property (TARGET gr_executable    PROPERTY OUTPUT_NAME "gr")
