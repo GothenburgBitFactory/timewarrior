@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Log.h>
+#include <shared.h>
 #include <format.h>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -50,6 +51,16 @@ void Log::write (const std::string& category, const std::string& line)
 
   if (line != "")
   {
+    // If line contains newlines, split it into separate lines and log each one.
+    if (line.find ("\n") != std::string::npos)
+    {
+      for (const auto& single : split (line, '\n'))
+        write (category, single);
+
+      return;
+    }
+
+    // Single line.
     if (line == _prior)
     {
       ++_repetition;
