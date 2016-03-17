@@ -26,7 +26,29 @@
 
 #include <cmake.h>
 #include <Rules.h>
+#include <FS.h>
 #include <sstream>
+
+////////////////////////////////////////////////////////////////////////////////
+// Nested files are supported, with the following construct:
+//   import /absolute/path/to/file
+void Rules::load (const std::string& file, int nest /* = 1 */)
+{
+  if (nest > 10)
+    throw std::string ("Rules files may only be nested to 10 levels.");
+
+  // First time in, load the default values.
+  if (nest == 1)
+  {
+    // This is where defaults would be set.
+    _original_file = File (file);
+  }
+
+  // Read the file, then parse the contents.
+  std::string contents;
+  if (File::read (file, contents) && contents.length ())
+    parse (contents, nest);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // define r:
@@ -40,9 +62,16 @@ std::string Rules::get (const std::string& rule, const std::string& name) const
 std::string Rules::dump () const
 {
   std::stringstream out;
-  out << "Rules\n";
+  out << "Rules\n"
+      << "  _original_file " << _original_file
+      << "\n";
 
   return out.str ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Rules::parse (const std::string& input, int nest /* = 1 */)
+{
 }
 
 ////////////////////////////////////////////////////////////////////////////////

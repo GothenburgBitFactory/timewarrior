@@ -33,10 +33,15 @@ class Rules
 {
 public:
   Rules () = default;
+  void load (const std::string&, int next = 1);
   std::string get (const std::string&, const std::string&) const;
   std::string dump () const;
 
 private:
+  void parse (const std::string&, int next = 1);
+
+private:
+  std::string _original_file {};
 };
 
 #endif
