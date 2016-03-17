@@ -25,12 +25,105 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <Log.h>
+#include <format.h>
+#include <timew.h>
 #include <iostream>
+#include <sstream>
+
+#ifdef HAVE_COMMIT
+#include <commit.h>
+#endif
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdDiagnostics ()
+int CmdDiagnostics (Log& log)
 {
-  std::cout << "# diagnostics\n";
+  std::stringstream out;
+  out << "\n"
+      << PACKAGE_STRING
+      << "\n";
+
+  out << "       Platform: " << osName ()
+      << "\n\n";
+
+  // Compiler.
+  out << "Compiler:\n"
+#ifdef __VERSION__
+      << "        Version: " << __VERSION__ << "\n"
+#endif
+      << "           Caps:"
+#ifdef __STDC__
+      << " +stdc"
+#endif
+#ifdef __STDC_HOSTED__
+      << " +stdc_hosted"
+#endif
+#ifdef __STDC_VERSION__
+      << " +" << __STDC_VERSION__
+#endif
+#ifdef _POSIX_VERSION
+      << " +" << _POSIX_VERSION
+#endif
+#ifdef _POSIX2_C_VERSION
+      << " +" << _POSIX2_C_VERSION
+#endif
+#ifdef _ILP32
+      << " +ILP32"
+#endif
+#ifdef _LP64
+      << " +LP64"
+#endif
+      << " +c"      << 8 * sizeof (char)
+      << " +i"      << 8 * sizeof (int)
+      << " +l"      << 8 * sizeof (long)
+      << " +vp"     << 8 * sizeof (void*)
+      << " +time_t" << 8 * sizeof (time_t)
+      << "\n";
+
+  // Compiler compliance level.
+  std::string compliance = "non-compliant";
+#ifdef __cplusplus
+  int level = __cplusplus;
+  if (level == 199711)
+    compliance = "C++98/03";
+  else if (level == 201103)
+    compliance = "C++11";
+  else
+    compliance = format (level);
+#endif
+  out << "     Compliance: "
+      << compliance
+      << "\n\n";
+
+  out << "Build Features\n"
+
+  // Build date.
+      << "          Built: " << __DATE__ << " " << __TIME__ << "\n"
+#ifdef HAVE_COMMIT
+      << "         Commit: " << COMMIT << "\n"
+#endif
+      << "          CMake: " << CMAKE_VERSION << "\n";
+
+  out << "     Build type: "
+#ifdef CMAKE_BUILD_TYPE
+      << CMAKE_BUILD_TYPE
+#else
+      << "-"
+#endif
+      << "\n\n";
+
+  // Config: .taskrc found, readable, writable
+  out << "Configuration\n";
+
+  char* env = getenv ("TIMEWARRIORDB");
+  out << "  TIMEWARRIORDB: "
+      << (env ? env : "-")
+      << "\n";
+
+  out << "\n";
+  std::cout << out.str ();
+  log.write ("info", out.str ());
+
   return 0;
 }
 
