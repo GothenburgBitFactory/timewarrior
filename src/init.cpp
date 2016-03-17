@@ -168,13 +168,12 @@ void initializeExtensions (
 
   extensions.initialize (extDir._data);
 
-  std::cout << "# " << extensions.dump ();
+  log.write ("info", extensions.dump ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 int dispatchCommand (
-  int argc,
-  const char** argv,
+  const std::vector <std::string>& args,
   Configuration& configuration,
   Database& database,
   Rules& rules,
