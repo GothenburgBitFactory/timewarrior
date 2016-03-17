@@ -31,6 +31,11 @@
 int CmdStart ()
 {
   std::cout << "# start\n";
+
+  // TODO Load the most recent interval.
+  // TODO If the interval is open, close it.
+  // TODO Create a new interval.
+
   return 0;
 }
 
