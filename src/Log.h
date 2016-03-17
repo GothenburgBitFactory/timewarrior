@@ -29,6 +29,8 @@
 
 #include <FS.h>
 #include <Datetime.h>
+#include <vector>
+#include <set>
 #include <string>
 #include <stdio.h>
 
@@ -39,6 +41,7 @@ public:
   ~Log () = default;
 
   void file (const std::string&);
+  void ignore (const std::string&);
   void write (const std::string&, const std::string&);
 
 private:
@@ -47,6 +50,7 @@ private:
   File                      _file       {};
   std::string               _prior      {"none"};
   int                       _repetition {0};
+  std::set <std::string>    _ignore     {};
 };
 
 #endif
