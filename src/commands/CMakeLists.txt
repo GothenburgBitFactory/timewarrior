@@ -2,8 +2,8 @@ cmake_minimum_required (VERSION 2.8)
 include_directories (${CMAKE_SOURCE_DIR}
                      ${CMAKE_SOURCE_DIR}/src
                      ${CMAKE_SOURCE_DIR}/src/commands
+                     ${CMAKE_SOURCE_DIR}/src/libshared/src
                      ${TIMEW_INCLUDE_DIRS})
-include_directories(${CMAKE_INSTALL_PREFIX}/include)
 
 set (commands_SRCS CmdClear.cpp
                    CmdConfig.cpp

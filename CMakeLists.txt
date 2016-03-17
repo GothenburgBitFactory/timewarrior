@@ -5,7 +5,6 @@ set (HAVE_CMAKE true)
 
 project (timew)
 include (CXXSniffer)
-include (ExternalProject)
 
 set (PROJECT_VERSION "0.1.0")
 
@@ -42,12 +41,6 @@ configure_file (
   ${CMAKE_SOURCE_DIR}/cmake.h.in
   ${CMAKE_SOURCE_DIR}/cmake.h)
 
-ExternalProject_Add (libshared
-                     GIT_REPOSITORY      "https://git.tasktools.org/scm/tm/libshared.git"
-                     GIT_TAG             "master"
-                     #UPDATE_DISCONNECTED 1 # Needs 3.2
-                     )
-
 add_subdirectory (src)
 add_subdirectory (src/commands)
 add_subdirectory (doc)
@@ -67,6 +60,6 @@ set (CPACK_SOURCE_PACKAGE_FILE_NAME ${PACKAGE_NAME}-${PACKAGE_VERSION})
 set (CPACK_SOURCE_IGNORE_FILES  "CMakeCache" "CMakeFiles" "CPackConfig" "CPackSourceConfig"
                                 "_CPack_Packages" "cmake_install" "install_manifest" "Makefile$"
                                 "test" "package-config" "src/timew$" "src/libtimew.a"
-                                "src/commands/libcommands.a" "libshared-prefix"
+                                "src/commands/libcommands.a"
                                 "/\\\\.gitignore" "/\\\\.git/" "swp$" "src/gr$")
 include (CPack)
