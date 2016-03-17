@@ -28,6 +28,7 @@
 #include <Grammar.h>
 #include <test.h>
 #include <iostream>
+#include <algorithm>
 
 ////////////////////////////////////////////////////////////////////////////////
 void testBadGrammarFile (UnitTest& t, File& file)
