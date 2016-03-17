@@ -34,7 +34,7 @@
 #include <Log.h>
 
 // init.cpp
-bool lightweightVersionCheck (int, const char**);
+bool lightweightVersionCheck (const std::vector <std::string>&);
 void initializeData (Configuration&, Database&, Log&);
 void initializeRules (Configuration&, Rules&, Log&);
 void initializeExtensions (Configuration&, Extensions&, Log&);

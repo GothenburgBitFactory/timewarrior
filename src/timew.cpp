@@ -48,9 +48,14 @@ int main (int argc, const char** argv)
   // buffers the messages until it has a file name to write to.
   Log log;
 
+  // Make a vector of args, instead of argc/argv.
+  std::vector <std::string> args;
+  for (int i = 0; i < argc; i++)
+    args.push_back (argv[i]);
+
   // Lightweight version checking that doesn't require initialization or I/O.
   int status = 0;
-  if (lightweightVersionCheck (argc, argv))
+  if (lightweightVersionCheck (args))
     return status;
 
   try
