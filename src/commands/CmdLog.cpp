@@ -29,10 +29,10 @@
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
+// TODO This may be removed.
 int CmdLog (Log& log)
 {
-  std::cout << "# log\n";
-  log.write ("debug", "----8<----");
+  log.write ("debug", "---- 8< ----");
   return 0;
 }
 
