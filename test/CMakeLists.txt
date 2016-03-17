@@ -5,6 +5,7 @@ endif()
 
 include_directories (${CMAKE_SOURCE_DIR}
                      ${CMAKE_SOURCE_DIR}/src
+                     ${CMAKE_SOURCE_DIR}/src/libshared/src
                      ${CMAKE_SOURCE_DIR}/test)
 
 include_directories (${CMAKE_INSTALL_PREFIX}/include)
@@ -18,7 +19,7 @@ add_custom_target (test ./run_all --verbose
 
 foreach (src_FILE ${test_SRCS})
   add_executable (${src_FILE} "${src_FILE}.cpp" test.cpp)
-  target_link_libraries (${src_FILE} timew shared ${TIMEW_LIBRARIES})
+  target_link_libraries (${src_FILE} timew libshared ${TIMEW_LIBRARIES})
 endforeach (src_FILE)
 
 configure_file(run_all run_all COPYONLY)
