@@ -1,7 +1,7 @@
 
 1.0.0 () -
 
-- Introduced the new shared library
+- Introduced the new shared library as a git submodule.
 
 
 Design completed 2015-12-XX

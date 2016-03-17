@@ -3,25 +3,9 @@ New Features in 1.0.0
 
   - 
 
-New Commands in 1.0.0
-
-  - 
-
-New Configuration Options in 1.0.0
-
-  -
-
-Newly Deprecated Features in 1.0.0
-
-  - None, this is the first release.
-
-Removed Features in 1.0.0
-
-  - None, this is the first release.
-
 Known Issues
 
-  - https://bug.tasktools.org/
+  - See https://bug.tasktools.org/
 
 Timewarrior has been built and tested on the following configurations:
 
