@@ -61,6 +61,7 @@ int main (int argc, const char** argv)
   try
   {
     // Load the configuration, prepare the database, but do not read data.
+    // TODO Rules will eventually phase out Configuration.
     Configuration configuration;
     Database database;
     initializeData (configuration, database, log);
@@ -83,6 +84,7 @@ int main (int argc, const char** argv)
 */
 
     // Load the rules.
+    // TODO Rules will eventually phase out Configuration.
     Rules rules;
     initializeRules (configuration, rules, log);
 
