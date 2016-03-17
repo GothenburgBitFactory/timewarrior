@@ -40,4 +40,7 @@ void initializeRules (Configuration&, Rules&, Log&);
 void initializeExtensions (Configuration&, Extensions&, Log&);
 int dispatchCommand (int, const char**, Configuration&, Database&, Rules&, Extensions&, Log&);
 
+// utiŀ.cpp
+std::string osName ();
+
 #endif
