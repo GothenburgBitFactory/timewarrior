@@ -90,7 +90,7 @@ int main (int argc, const char** argv)
 
     // Load extension script info.
     Extensions extensions;
-    initializeExtensions (configuration, extensions, log);
+    initializeExtensions (configuration, rules, extensions, log);
 
     // Dispatch to commands.
     status = dispatchCommand (args, configuration, database, rules, extensions, log);

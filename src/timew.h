@@ -37,7 +37,7 @@
 bool lightweightVersionCheck (const std::vector <std::string>&);
 void initializeData (Configuration&, Database&, Log&);
 void initializeRules (Configuration&, Rules&, Log&);
-void initializeExtensions (Configuration&, Extensions&, Log&);
+void initializeExtensions (Configuration&, Rules&, Extensions&, Log&);
 int dispatchCommand (const std::vector <std::string>&, Configuration&, Database&, Rules&, Extensions&, Log&);
 
 // utiŀ.cpp

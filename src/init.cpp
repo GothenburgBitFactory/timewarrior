@@ -65,13 +65,13 @@ void initializeData (
   char* override = getenv ("TIMEWARRIORDB");
   if (override)
   {
-    std::cout << "# TIMEWARRIORDB " << override << "\n";
+    log.write ("info", std::string ("TIMEWARRIORDB ") + override);
     dbLocation = Directory (override);
   }
   else
   {
     dbLocation = Directory ("~/.timewarrior");
-    std::cout << "# Using default DB location " << dbLocation._data << "\n";
+    log.write ("info", std::string ("Using default DB location ") + dbLocation._data);
   }
 
   // If dbLocation does not exist, ask whether it should be created.
@@ -80,7 +80,7 @@ void initializeData (
       confirm ("Create new database in " + dbLocation._data + "?"))
   {
     dbLocation.create (0700);
-    std::cout << "# Created missing database in " << dbLocation._data << "\n";
+    log.write ("info", std::string ("Created missing database in ") + dbLocation._data);
     shinyNewDatabase = true;
   }
 
@@ -115,7 +115,7 @@ void initializeData (
   // located the config file, the 'db' location is already known. This is just
   // for subsequent internal use.
   configuration.set ("db", dbLocation._data);
-  std::cout << "#   rc.db=" << configuration.get ("db") << "\n";
+  log.write ("info", std::string ("  rc.db=") + configuration.get ("db"));
 
   // Perhaps some subsequent code would like to know this is a new db and
   // possibly a first run.
@@ -127,11 +127,11 @@ void initializeData (
   // TODO Give the log file a temp fake name.  To be removed.
   log.file (dbLocation._data + "/timewarrior.log");
 
-  std::cout << "# Configuration\n";
+  log.write ("info", "Configuration");
   for (const auto& name : configuration.all ())
-    std::cout << "#   " << name << "=" << configuration[name] << "\n";
+    log.write ("info", std::string ("  ") + name + "=" + configuration[name]);
 
-  std::cout << database.dump ();
+  log.write ("info", database.dump ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -154,12 +154,15 @@ void initializeRules (
   ruleParser.initialize (ruleGrammar);
 */
 
-  std::cout << "# " << rules.dump ();
+  rules.load (configuration.get ("db") + "/timewarrior.cfg");
+
+  log.write ("info", rules.dump ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void initializeExtensions (
   Configuration& configuration,
+  Rules& rules,
   Extensions& extensions,
   Log& log)
 {
