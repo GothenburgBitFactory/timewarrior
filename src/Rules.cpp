@@ -46,7 +46,7 @@ void Rules::load (const std::string& file, int nest /* = 1 */)
   if (nest == 1)
   {
     // This is where defaults would be set.
-    _original_file = File (file);
+    _original_file = File (file)._data;
   }
 
   // Read the file, then parse the contents.
