@@ -125,7 +125,7 @@ int CmdDiagnostics (Log& log)
   if ((peditor = getenv ("VISUAL")) != NULL)
     out << "        $VISUAL: " << peditor << "\n";
   else if ((peditor = getenv ("EDITOR")) != NULL)
-    out << "      $EDITOR: " << peditor << "\n";
+    out << "        $EDITOR: " << peditor << "\n";
 
   out << "\n";
   std::cout << out.str ();
