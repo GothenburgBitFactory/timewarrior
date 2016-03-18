@@ -25,7 +25,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
-#include <Configuration.h>
 #include <Database.h>
 #include <Rules.h>
 #include <Extensions.h>
@@ -55,7 +54,6 @@ bool lightweightVersionCheck (const std::vector <std::string>& args)
 
 ////////////////////////////////////////////////////////////////////////////////
 void initializeData (
-  Configuration& configuration,
   Database& database,
   Log& log)
 {
@@ -109,17 +107,23 @@ void initializeData (
   File configFile (dbLocation);
   configFile += "timewarrior.cfg";
   configFile.create (0600);
+/*
   configuration.load (configFile._data);
+*/
 
   // This value is not written out to disk, as there would be no point. Having
   // located the config file, the 'db' location is already known. This is just
   // for subsequent internal use.
+/*
   configuration.set ("db", dbLocation._data);
   log.write ("info", std::string ("  rc.db=") + configuration.get ("db"));
+*/
 
   // Perhaps some subsequent code would like to know this is a new db and
   // possibly a first run.
+/*
   configuration.set ("shiny", (shinyNewDatabase ? 1 : 0));
+*/
 
   // Initialize the database (no data read), but files are enumerated.
   database.initialize (data._data);
@@ -127,16 +131,17 @@ void initializeData (
   // TODO Give the log file a temp fake name.  To be removed.
   log.file (dbLocation._data + "/timewarrior.log");
 
+/*
   log.write ("info", "Configuration");
   for (const auto& name : configuration.all ())
     log.write ("info", std::string ("  ") + name + "=" + configuration[name]);
+*/
 
   log.write ("info", database.dump ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void initializeRules (
-  Configuration& configuration,
   Rules& rules,
   Log& log)
 {
@@ -154,22 +159,25 @@ void initializeRules (
   ruleParser.initialize (ruleGrammar);
 */
 
+/*
   rules.load (configuration.get ("db") + "/timewarrior.cfg");
+*/
 
   log.write ("info", rules.dump ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void initializeExtensions (
-  Configuration& configuration,
   Rules& rules,
   Extensions& extensions,
   Log& log)
 {
+/*
   Directory extDir (configuration.get ("db"));
   extDir += "extensions";
 
   extensions.initialize (extDir._data);
+*/
 
   log.write ("info", extensions.dump ());
 }
@@ -177,7 +185,6 @@ void initializeExtensions (
 ////////////////////////////////////////////////////////////////////////////////
 int dispatchCommand (
   const std::vector <std::string>& args,
-  Configuration& configuration,
   Database& database,
   Rules& rules,
   Extensions& extensions,

@@ -27,7 +27,6 @@
 #ifndef INCLUDED_TIMEW
 #define INCLUDED_TIMEW
 
-#include <Configuration.h>
 #include <Database.h>
 #include <Rules.h>
 #include <Extensions.h>
@@ -35,10 +34,10 @@
 
 // init.cpp
 bool lightweightVersionCheck (const std::vector <std::string>&);
-void initializeData (Configuration&, Database&, Log&);
-void initializeRules (Configuration&, Rules&, Log&);
-void initializeExtensions (Configuration&, Rules&, Extensions&, Log&);
-int dispatchCommand (const std::vector <std::string>&, Configuration&, Database&, Rules&, Extensions&, Log&);
+void initializeData (Database&, Log&);
+void initializeRules (Rules&, Log&);
+void initializeExtensions (Rules&, Extensions&, Log&);
+int dispatchCommand (const std::vector <std::string>&, Database&, Rules&, Extensions&, Log&);
 
 // utiŀ.cpp
 std::string osName ();

@@ -25,7 +25,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
-#include <Configuration.h>
 #include <Database.h>
 #include <Rules.h>
 #include <Extensions.h>
@@ -44,7 +43,7 @@
 int main (int argc, const char** argv)
 {
   // The log is needed early, in order to capture as much as possible, but will
-  // only be given a file name once configuration is loaded. The log therefore
+  // only be given a file name once the rules is loaded. The log therefore
   // buffers the messages until it has a file name to write to.
   Log log;
 
@@ -60,11 +59,9 @@ int main (int argc, const char** argv)
 
   try
   {
-    // Load the configuration, prepare the database, but do not read data.
-    // TODO Rules will eventually phase out Configuration.
-    Configuration configuration;
+    // Prepare the database, but do not read data.
     Database database;
-    initializeData (configuration, database, log);
+    initializeData (database, log);
 
     // TODO Arrange the following to minimize memory use.
     // TODO Load CLI grammar.
@@ -84,16 +81,15 @@ int main (int argc, const char** argv)
 */
 
     // Load the rules.
-    // TODO Rules will eventually phase out Configuration.
     Rules rules;
-    initializeRules (configuration, rules, log);
+    initializeRules (rules, log);
 
     // Load extension script info.
     Extensions extensions;
-    initializeExtensions (configuration, rules, extensions, log);
+    initializeExtensions (rules, extensions, log);
 
     // Dispatch to commands.
-    status = dispatchCommand (args, configuration, database, rules, extensions, log);
+    status = dispatchCommand (args, database, rules, extensions, log);
   }
 
   catch (const std::string& error)
