@@ -148,12 +148,10 @@ void initializeExtensions (
   Extensions& extensions,
   Log& log)
 {
-/*
-  Directory extDir (configuration.get ("db"));
+  Directory extDir (rules.get ("db"));
   extDir += "extensions";
 
   extensions.initialize (extDir._data);
-*/
 
   log.write ("info", extensions.dump ());
 }
