@@ -30,6 +30,7 @@
 #include <Extensions.h>
 #include <Log.h>
 //#include <Grammar.h>
+#include <FS.h>
 #include <shared.h>
 #include <commands.h>
 #include <timew.h>
@@ -61,7 +62,8 @@ int main (int argc, const char** argv)
   {
     // Prepare the database, but do not read data.
     Database database;
-    initializeData (database, log);
+    Rules rules;
+    initializeData (database, rules, log);
 
     // TODO Arrange the following to minimize memory use.
     // TODO Load CLI grammar.
@@ -81,7 +83,6 @@ int main (int argc, const char** argv)
 */
 
     // Load the rules.
-    Rules rules;
     initializeRules (rules, log);
 
     // Load extension script info.

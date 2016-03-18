@@ -55,6 +55,7 @@ bool lightweightVersionCheck (const std::vector <std::string>& args)
 ////////////////////////////////////////////////////////////////////////////////
 void initializeData (
   Database& database,
+  Rules& rules,
   Log& log)
 {
   // The $TIMEWARRIORDB environment variable overrides the default value of
@@ -88,7 +89,7 @@ void initializeData (
   if (! extensions.exists ())
     extensions.create (0700);
 
-  // Create extensions subdirectory if necessary.
+  // Create data subdirectory if necessary.
   Directory data (dbLocation);
   data += "data";
   if (! data.exists ())
@@ -107,22 +108,19 @@ void initializeData (
   File configFile (dbLocation);
   configFile += "timewarrior.cfg";
   configFile.create (0600);
-/*
-  configuration.load (configFile._data);
-*/
 
   // This value is not written out to disk, as there would be no point. Having
   // located the config file, the 'db' location is already known. This is just
   // for subsequent internal use.
 /*
-  configuration.set ("db", dbLocation._data);
-  log.write ("info", std::string ("  rc.db=") + configuration.get ("db"));
+  rules.set ("db", dbLocation._data);
+  log.write ("info", std::string ("  rc.db=") + rules.get ("db"));
 */
 
   // Perhaps some subsequent code would like to know this is a new db and
   // possibly a first run.
 /*
-  configuration.set ("shiny", (shinyNewDatabase ? 1 : 0));
+  rules.set ("shiny", (shinyNewDatabase ? 1 : 0));
 */
 
   // Initialize the database (no data read), but files are enumerated.
