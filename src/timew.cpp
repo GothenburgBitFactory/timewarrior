@@ -63,27 +63,13 @@ int main (int argc, const char** argv)
     // Prepare the database, but do not read data.
     Database database;
     Rules rules;
-    initializeData (database, rules, log);
+    initializeDataAndRules (database, rules, log);
 
     // TODO Arrange the following to minimize memory use.
     // TODO Load CLI grammar.
     // TODO Load from string, else file on config override.
     // TODO Migrate from loading a grammar from file, to a default string.
-/*
-    File cliFile ("./cli.grammar");
-    Grammar cliGrammar;
-    cliGrammar.debug (debug);
-    cliGrammar.loadFromFile (cliFile);
-
-    // Instantiate the parser.
-    LR0 cliParser;
-    cliParser.debug (debug);
-    cliParser.initialize (cliGrammar);
     // TODO Parse CLI.
-*/
-
-    // Load the rules.
-    initializeRules (rules, log);
 
     // Load extension script info.
     Extensions extensions;

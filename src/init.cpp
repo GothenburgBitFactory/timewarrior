@@ -53,7 +53,7 @@ bool lightweightVersionCheck (const std::vector <std::string>& args)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void initializeData (
+void initializeDataAndRules (
   Database& database,
   Rules& rules,
   Log& log)
@@ -104,10 +104,24 @@ void initializeData (
     throw format ("Database is not readable at '{1}'", dbLocation._data);
   }
 
+  // TODO Load rule grammar.
+/*
+  File ruleFile ("./rule.grammar");
+  Grammar ruleGrammar;
+  ruleGrammar.debug (debug);
+  ruleGrammar.loadFromFile (ruleFile);
+
+  // Instantiate the parser.
+  LR0 ruleParser;
+  ruleParser.debug (debug);
+  ruleParser.initialize (ruleGrammar);
+*/
+
   // Load the configuration data.
   File configFile (dbLocation);
   configFile += "timewarrior.cfg";
   configFile.create (0600);
+  rules.load (configFile._data);
 
   // This value is not written out to disk, as there would be no point. Having
   // located the config file, the 'db' location is already known. This is just
@@ -121,42 +135,10 @@ void initializeData (
 
   // Initialize the database (no data read), but files are enumerated.
   database.initialize (data._data);
+  log.write ("info", database.dump ());
 
   // TODO Give the log file a temp fake name.  To be removed.
   log.file (dbLocation._data + "/timewarrior.log");
-
-/*
-  log.write ("info", "Configuration");
-  for (const auto& name : configuration.all ())
-    log.write ("info", std::string ("  ") + name + "=" + configuration[name]);
-*/
-
-  log.write ("info", database.dump ());
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void initializeRules (
-  Rules& rules,
-  Log& log)
-{
-  // TODO Load rule grammar.
-/*
-  File ruleFile ("./rule.grammar");
-  Grammar ruleGrammar;
-  ruleGrammar.debug (debug);
-  ruleGrammar.loadFromFile (ruleFile);
-*/
-  // Instantiate the parser.
-/*
-  LR0 ruleParser;
-  ruleParser.debug (debug);
-  ruleParser.initialize (ruleGrammar);
-*/
-
-/*
-  rules.load (configuration.get ("db") + "/timewarrior.cfg");
-*/
-
   log.write ("info", rules.dump ());
 }
 
