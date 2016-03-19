@@ -35,6 +35,8 @@
 void Database::initialize (const std::string& location)
 {
   _location = location;
+
+  // _data_files[0] is always the current one, which may not exist.
   _current = currentDataFile ();
   _data_files.push_back (_current);
 
