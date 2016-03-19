@@ -26,13 +26,11 @@
 
 #include <cmake.h>
 #include <Rules.h>
-#include <Lexer.h>
 #include <FS.h>
 #include <shared.h>
 #include <format.h>
 #include <sstream>
-//#include <iostream> // TODO Remove
-#include <stack>
+#include <tuple>
 #include <inttypes.h>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -164,73 +162,95 @@ std::string Rules::dump () const
 ////////////////////////////////////////////////////////////////////////////////
 void Rules::parse (const std::string& input, int nest /* = 1 */)
 {
-  // Indentation stack.
-  std::stack <int> indent;
-  indent.push (0);
+  bool inRule = false;
+  std::string ruleDef;
 
-  // Parse each line.
+  // Remove comments from input.
+  std::string cleansed;
   for (auto& line : split (input, '\n'))
   {
-    // Remove comments.
     auto comment = line.find ("#");
     if (comment != std::string::npos)
-      line = line.substr (0, comment);
-
-    // Skip empty lines.
-    line = rtrim (line);
-    if (line.length () > 0)
     {
-//      std::cout << "# Rules::parse " << line << "\n";
+      line.resize (comment);
+      line = rtrim (line);
+    }
 
-      // TODO Count spaces at SOL.
-      auto indentation = line.find_first_not_of (' ');
-//      if (indentation && indentation != std::string::npos)
-//        std::cout << "#   indentation " << indentation << "\n";
+    // Tokenize the line for convenience, but capture the indentation level.
+    // tokens.
+    auto indent = line.find_first_not_of (' ');
 
-      // Tokenize the line.
-      std::vector <std::string> tokens;
-      std::string token;
-      Lexer::Type type;
-      Lexer lexer (line);
-      while (lexer.token (token, type))
-        tokens.push_back (token);
-
-      // This may be an import statement.
-      if (tokens[0] == "import")
+    auto tokens = Lexer::tokenize (line);
+    if (tokens.size ())
+    {
+      if (inRule)
       {
-        if (tokens.size () == 2)
+        if (indent == 0)
         {
-          Path imported (tokens[1]);
-          if (imported.is_absolute ())
-          {
-            if (imported.readable ())
-              load (imported, nest + 1);
-            else
-              throw format ("Could not read imported file '{1}'.", imported._data);
-          }
-          else
-            throw format ("Can only import files with absolute paths, not '{1}'.", imported._data);
+          inRule = false;
+          parseRule (ruleDef);
+          ruleDef = "";
         }
         else
-          throw std::string ("An 'import' statement requires a file to import.");
+          ruleDef += line + "\n";
       }
 
-      else if (tokens[0] == "define")
+      // Note: this should NOT be an 'else' to the above 'if (inRule)', because
+      //       there are lines where both blocks need to run.
+      if (! inRule)
       {
-      }
+        auto firstWord = std::get <0> (tokens[0]);
 
-/*
-      auto equal = line.find ("=");
-      if (equal != std::string::npos)
-      {
-        std::string key   = trim (line.substr (0, equal));
-        std::string value = trim (line.substr (equal+1, line.length () - equal));
+        // Top-level rule definition:
+        //   'define'
+        //      ...
+        //
+        if (firstWord == "define")
+        {
+          inRule = true;
+          ruleDef = line + "\n";
+        }
 
-        (*this)[key] = jsonDecode (value);
+        // Top-level import:
+        //   'import' <file>
+        else if (firstWord == "import" &&
+                 tokens.size () == 2   &&
+                 std::get <1> (tokens[1]) == Lexer::Type::path)
+        {
+          File imported (std::get <0> (tokens[1]));
+          if (! imported.is_absolute ())
+            throw format ("Can only import files with absolute paths, not '{1}'.", imported._data);
+
+          if (! imported.readable ())
+            throw format ("Could not read imported file '{1}'.", imported._data);
+
+          load (imported._data, nest + 1);
+        }
+
+        // Top-level settings:
+        //   <name> '=' <value>
+        else if (tokens.size () >= 3 &&
+                 std::get <0> (tokens[1]) == "=")
+        {
+          // Extract the words from the 3rd - Nth tuple.
+          std::vector <std::string> words;
+          for (const auto& token : std::vector <std::tuple <std::string, Lexer::Type>> (tokens.begin () + 2, tokens.end ()))
+            words.push_back (std::get <0> (token));
+
+          set (firstWord, join (" ", words));
+        }
+
+        // Admit defeat.
+        else
+          throw format ("Unrecognized construct: {1}", line);
       }
-*/
     }
   }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Rules::parseRule (const std::string& input)
+{
 }
 
 ////////////////////////////////////////////////////////////////////////////////

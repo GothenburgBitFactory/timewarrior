@@ -27,6 +27,7 @@
 #ifndef INCLUDED_RULES
 #define INCLUDED_RULES
 
+#include <Lexer.h>
 #include <map>
 #include <vector>
 #include <string>
@@ -54,6 +55,7 @@ public:
 
 private:
   void parse (const std::string&, int next = 1);
+  void parseRule (const std::string&);
 
 private:
   std::string                         _original_file {};
