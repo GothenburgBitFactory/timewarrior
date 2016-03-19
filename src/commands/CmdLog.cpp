@@ -26,18 +26,21 @@
 
 #include <cmake.h>
 #include <Log.h>
+#include <shared.h>
 #include <vector>
 #include <string>
-#include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
-// TODO This may be removed.
+// TODO This may be removed, unless it proves useful.
 int CmdLog (const std::vector <std::string>& args, Log& log)
 {
-  log.write ("debug", "---- 8< ----");
+  // If no (extra) arguments, simply write a marker.
+  if (args.size () < 3)
+    log.write ("debug", "-------- 8< --------");
 
-  // TODO If no arguments, write marker.
-  // TODO Else write entry.
+  // Othewise write args to the log.
+  else
+    log.write ("info", join (" ", std::vector <std::string> (args.begin () + 2, args.end ())));
 
   return 0;
 }
