@@ -49,7 +49,11 @@ int CmdHelpUsage ()
 //      maps to the the appropriate ones. Then display a list of any ambiguous
 //      requests, or the appropriate doc for single hits. Perhaps a 'See also'.
 //
+// TODO Should the CmdXxx functions themselves be responsible for providing both
+//      the command syntax and the help text?
+//
 // Strict 80-character limit.
+// Provide examples where appropriate - enough to cover all uses.
 int CmdHelp (const std::vector <std::string>& args, Log& log)
 {
   if (args.size () > 2)
