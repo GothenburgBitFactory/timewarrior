@@ -30,7 +30,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdTrack ()
 {
-  std::cout << "# track\n";
+  std::cout << "[track: record an old interval]\n";
 
   // TODO Parse interval.
   // TODO Parse tags.

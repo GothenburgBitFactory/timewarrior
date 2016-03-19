@@ -30,7 +30,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdContinue ()
 {
-  std::cout << "# continue\n";
+  std::cout << "[continue: allows resuming a stopped interval]\n";
 
   // TODO Extract most recent interval.
   // TODO Verify the most recent interval is closed.

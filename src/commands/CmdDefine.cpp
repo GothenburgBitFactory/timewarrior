@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdDefine (Rules& rules)
 {
-  std::cout << "# define\n";
+  std::cout << "[define: rule tweaking]\n";
   return 0;
 }
 

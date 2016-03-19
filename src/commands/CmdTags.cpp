@@ -30,7 +30,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdTags ()
 {
-  std::cout << "# tags\n";
+  std::cout << "[tags: enumerate tags in use]\n";
 
   // TODO Enumerate all data files.
   // TODO For each data file.

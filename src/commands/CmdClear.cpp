@@ -30,7 +30,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdClear ()
 {
-  std::cout << "# clear\n";
+  std::cout << "[clear: allows removal of tags form intervals]\n";
 
   // TODO Parse interval.
   // TODO Parser tags.

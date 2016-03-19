@@ -30,7 +30,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdStop ()
 {
-  std::cout << "# stop\n";
+  std::cout << "[stop: end an open tracking interval]\n";
 
   // TODO Load the most recent interval.
   // TODO Verify the interval is open.

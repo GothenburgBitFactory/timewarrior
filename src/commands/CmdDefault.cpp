@@ -30,7 +30,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdDefault ()
 {
-  std::cout << "# default command, or current interval summary\n";
+  std::cout << "[default command or current interval summary]\n";
 
   // TODO If there is a default command.
   //   TODO Run it.

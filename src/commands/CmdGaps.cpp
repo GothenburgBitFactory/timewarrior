@@ -30,7 +30,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdGaps ()
 {
-  std::cout << "# gaps\n";
+  std::cout << "[gaps: shows untracked gaps in the current day/week/month]\n";
 
   // TODO Load all data.
   // TODO Apply filter.

@@ -30,7 +30,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdConfig ()
 {
-  std::cout << "# config\n";
+  std::cout << "[config: allows set/reset/removal and enumeration of configuration settings]\n";
 
   // TODO Determine form:
   //      timew config name value       Set name=value

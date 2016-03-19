@@ -30,7 +30,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdReport ()
 {
-  std::cout << "# report\n";
+  std::cout << "[report: run a specific report/extension]\n";
 
   // TODO Load all data.
   // TODO Apply filter.

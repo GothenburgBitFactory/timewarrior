@@ -30,7 +30,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdUndo ()
 {
-  std::cout << "# undo\n";
+  std::cout << "[undo: revert last change]\n";
 
   // TODO Extract most recent transaction.
   // TODO Apply inverse.

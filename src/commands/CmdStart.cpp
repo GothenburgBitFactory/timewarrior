@@ -30,7 +30,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdStart ()
 {
-  std::cout << "# start\n";
+  std::cout << "[start: begin a new tracking interval]\n";
 
   // TODO Load the most recent interval.
   // TODO If the interval is open, close it.

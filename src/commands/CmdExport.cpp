@@ -30,7 +30,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdExport ()
 {
-  std::cout << "# export\n";
+  std::cout << "[export: JSON data export]\n";
 
   // TODO Load all data.
   // TODO Apply filter.

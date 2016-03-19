@@ -30,7 +30,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdImport ()
 {
-  std::cout << "# import\n";
+  std::cout << "[import: import and merge JSON data]\n";
 
   // TODO Load all data.
   // TODO For each file.
