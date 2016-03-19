@@ -65,6 +65,20 @@ bool Lexer::token (std::string& token, Lexer::Type& type)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::vector <std::tuple <std::string, Lexer::Type>> Lexer::tokenize (const std::string& input)
+{
+  std::vector <std::tuple <std::string, Lexer::Type>> tokens;
+
+  std::string token;
+  Lexer::Type type;
+  Lexer lexer (input);
+  while (lexer.token (token, type))
+    tokens.push_back (std::tuple <std::string, Lexer::Type> (token, type));
+
+  return tokens;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // No L10N - these are for internal purposes.
 const std::string Lexer::typeName (const Lexer::Type& type)
 {
