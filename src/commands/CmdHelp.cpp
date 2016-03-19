@@ -30,12 +30,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdHelpUsage ()
 {
-  // TODO List all commands.
-  // TODO List all extensions.
   std::cout << "\n"
             << "Usage: timew [--version]\n"
             << "       timew diagnostics\n"
             << "\n";
+
+  // TODO List all commands.
+  // TODO List all extensions.
+
   return 0;
 }
 
