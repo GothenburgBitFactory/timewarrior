@@ -33,9 +33,9 @@ Or if you forgot a whole activity:
 
 More sophisticated use is possible if you have defined your work week:
 
-  $ timew define workweek mon-fri
-  $ timew define workday start 8:30am
-  $ timew define workday end 1730
+  $ timew define week mon-fri
+  $ timew define day start 8:30am
+  $ timew define day end 1730
   
   $ timew track yesterday Home Painting
 
@@ -71,7 +71,7 @@ To see the currently active interval:
 
   $ timew
 
-  (not yet determined)
+  (TBD)
 
 Reporting tracked time can be done with a simple report:
 
@@ -90,7 +90,7 @@ Or the data can be exported in JSON:
 
 Some or all of the reports are written using an extension mechanism, and
 will be examples of how to write other reports. Report extensions can be shared
-and enhanced by the community. It shoudl be possible to implement any kind of
+and enhanced by the community. It should be possible to implement any kind of
 report using the extension mechanism.
 
 There is an 'undo' command for reversing changes, and a 'clear' command to
