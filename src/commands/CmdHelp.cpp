@@ -38,7 +38,22 @@ int CmdHelpUsage ()
             << "       timew log [<message>]\n"
             << "\n";
 
-  // TODO List all commands.
+  // TODO clear
+  // TODO config
+  // TODO continue
+  // TODO define
+  // TODO export
+  // TODO extension
+  // TODO gaps
+  // TODO help
+  // TODO import
+  // TODO report
+  // TODO start
+  // TODO stop
+  // TODO tags
+  // TODO track
+  // TODO undo
+
   // TODO List all extensions.
 
   return 0;
@@ -58,6 +73,11 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
 {
   if (args.size () > 2)
   {
+  // TODO clear
+  // TODO config
+  // TODO continue
+  // TODO define
+
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     if (args[2] == "diagnostics")
@@ -70,6 +90,12 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
                 << "The purpose of this command is to help diagnose configuration problems, and\n"
                 << "provide supplemental information when reporting a problem.\n"
                 << "\n";
+
+  // TODO export
+  // TODO extension
+  // TODO gaps
+  // TODO help
+  // TODO import
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
@@ -84,6 +110,14 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
                 << "Note: Your log file is found here:\n"
                 << "  " << log.file () << "\n"
                 << "\n";
+
+  // TODO report
+  // TODO start
+  // TODO stop
+  // TODO tags
+  // TODO track
+  // TODO undo
+
     else
       std::cout << "No help available for '" << args[2] << "'\n";
 
