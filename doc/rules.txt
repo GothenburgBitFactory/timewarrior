@@ -11,7 +11,7 @@ access configuration, exclusions, and tracking data.
 
 Ref: http://martinfowler.com/bliki/RulesEngine.html
 
-Instead of configuration, a rules system stores various settings and
+In addition to configuration, a rules system stores various settings and
 configuration data as rules. There are several different types of rules, which
 are loaded at launch time, and applied at various times during execution.
 
@@ -152,7 +152,7 @@ hierarchy for grouping:
     name1 value1
     group1:
       group2:
-        name2 value2
+        name2=value2
 
 In the example, value2 can be referred to by it's normalized name
 'group1.group2.name2'.
@@ -161,8 +161,15 @@ An example is logging:
 
   define configuration:
     logging:
-      file: /path/to/log/file
-      categories: a b c !d
+      file=/path/to/log/file
+      categories=a b c !d
+
+Initially, all settings are stored as simple name/value pairs at the top level
+of the configuration files:
+
+  name=value
+
+The hierarchy and 'configuration' rule will suupercede these.
 
 
 Rule Type: Color Theme
@@ -199,13 +206,6 @@ There are several built-in functions, which may be used by rules:
 
 - Need to distinguish between regular time and over time, with different rates
   and limits.
-
-- The general form is:
-
-    $ timew define A B C
-
-    define A
-      B C
 
 - A nice feature would be to define a ':keyword' using the rules, which would
   replace the notion of macros/aliases.
