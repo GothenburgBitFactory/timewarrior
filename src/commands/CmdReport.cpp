@@ -31,6 +31,14 @@
 int CmdReport ()
 {
   std::cout << "# report\n";
+
+  // TODO Load all data.
+  // TODO Apply filter.
+  // TODO Identify report.
+  // TODO Compose Header info.
+  // TODO Compose JSON.
+  // TODO Run report.
+
   return 0;
 }
 
