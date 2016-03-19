@@ -14,6 +14,11 @@ your time spent on projects, and generate summary reports.
 
 Timewarrior supports many commands.
 
+.TP
+.B timew log [<message>]
+Writes the info <message> to the Timewarrior log file. If <message> is ommitted,
+writes a cut marker ('-------- 8< --------') line to the log file.
+
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS
 Timewarrior stores its configuration in a file in the user's home directory:
 ~/.timewrc.
