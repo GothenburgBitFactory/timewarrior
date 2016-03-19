@@ -31,6 +31,10 @@
 int CmdUndo ()
 {
   std::cout << "# undo\n";
+
+  // TODO Extract most recent transaction.
+  // TODO Apply inverse.
+
   return 0;
 }
 
