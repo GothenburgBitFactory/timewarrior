@@ -3,7 +3,10 @@
 
 0.1.0 () -
 
-- Introduced the new shared library as a git submodule.
+- Added 'diagnostics' command.
+- Added 'help' command.
+- Added 'log' command.
+- Integrated libshared.git.
 
 
 Design completed 2015-12-XX
