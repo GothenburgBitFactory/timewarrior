@@ -31,6 +31,13 @@
 int CmdGaps ()
 {
   std::cout << "# gaps\n";
+
+  // TODO Load all data.
+  // TODO Apply filter.
+  // TODO Invert the union exclusions and incluѕions
+  // TODO For each interval
+  // TODO   Display
+
   return 0;
 }
 
