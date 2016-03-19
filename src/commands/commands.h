@@ -30,6 +30,8 @@
 #include <Rules.h>
 #include <Database.h>
 #include <Log.h>
+#include <vector>
+#include <string>
 
 int CmdClear       ();
 int CmdConfig      ();
@@ -42,7 +44,7 @@ int CmdExtension   ();
 int CmdGaps        ();
 int CmdHelpUsage   ();
 int CmdHelp        ();
-int CmdLog         (Log&);
+int CmdLog         (const std::vector <std::string>&, Log&);
 int CmdImport      ();
 int CmdReport      ();
 int CmdStart       ();

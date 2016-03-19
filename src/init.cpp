@@ -201,7 +201,7 @@ int dispatchCommand (
       else if (closeEnough (allCommands[6],  args[1], 2)) status = CmdExport      ();
       else if (closeEnough (allCommands[7],  args[1], 2)) status = CmdGaps        ();
       else if (closeEnough (allCommands[8],  args[1], 2)) status = CmdImport      ();
-      else if (closeEnough (allCommands[9],  args[1], 2)) status = CmdLog         (log);
+      else if (closeEnough (allCommands[9],  args[1], 2)) status = CmdLog         (args, log);
       else if (closeEnough (allCommands[10], args[1], 2)) status = CmdReport      ();
       else if (closeEnough (allCommands[11], args[1], 2)) status = CmdStart       ();
       else if (closeEnough (allCommands[12], args[1], 2)) status = CmdStop        ();

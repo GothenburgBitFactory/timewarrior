@@ -26,11 +26,13 @@
 
 #include <cmake.h>
 #include <Log.h>
+#include <vector>
+#include <string>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
 // TODO This may be removed.
-int CmdLog (Log& log)
+int CmdLog (const std::vector <std::string>& args, Log& log)
 {
   log.write ("debug", "---- 8< ----");
 
