@@ -27,6 +27,7 @@
 #ifndef INCLUDED_DATABASE
 #define INCLUDED_DATABASE
 
+#include <Datafile.h>
 #include <vector>
 #include <string>
 
@@ -41,9 +42,9 @@ private:
   std::string currentDataFile () const;
 
 private:
-  std::string               _location   {"~/.timewarrior/data"};
-  std::string               _current    {};
-  std::vector <std::string> _data_files {};
+  std::string            _location   {"~/.timewarrior/data"};
+  std::string            _current    {};
+  std::vector <Datafile> _files      {};
 };
 
 #endif

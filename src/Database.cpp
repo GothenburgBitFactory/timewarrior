@@ -36,17 +36,23 @@ void Database::initialize (const std::string& location)
 {
   _location = location;
 
-  // _data_files[0] is always the current one, which may not exist.
+  // _data_files[0] is always the current file.
   _current = currentDataFile ();
-  _data_files.push_back (_current);
+  Datafile currentFile;
+  currentFile.initialize (_current);
+  _files.push_back (currentFile);
 
   Directory d (_location);
   for (const auto& file : d.list ())
   {
-    if (1 /* looks like one of our data files */)
+    if (1 /* TODO looks like one of our data files */)
     {
       if (file != _current)
-        _data_files.push_back (file);
+      {
+        Datafile oldFile;
+        oldFile.initialize (file);
+        _files.push_back (oldFile);
+      }
     }
   }
 
@@ -58,8 +64,8 @@ std::string Database::dump () const
 {
   std::stringstream out;
   out << "Database\n";
-  for (const auto& file : _data_files)
-    out << "  Data: " << file << "\n";
+  for (const auto& file : _files)
+    out << "  Datafile: " << file.name () << "\n";
 
   return out.str ();
 }
