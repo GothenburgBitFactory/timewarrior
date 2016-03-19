@@ -15,6 +15,13 @@ your time spent on projects, and generate summary reports.
 Timewarrior supports many commands.
 
 .TP
+.B timew diagnostics
+This command shows details about your version of Timewarrior, platform, how it
+was built, compiler features, configuration, file access, extensions and more.
+The purpose of this command is to help diagnose configuration problems, and
+provide supplemental information when reporting a problem.
+
+.TP
 .B timew log [<message>]
 Writes the info <message> to the Timewarrior log file. If <message> is ommitted,
 writes a cut marker ('-------- 8< --------') line to the log file.
