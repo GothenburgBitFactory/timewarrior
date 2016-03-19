@@ -26,6 +26,8 @@
 
 #include <cmake.h>
 #include <iostream>
+#include <vector>
+#include <string>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdHelpUsage ()
@@ -44,7 +46,7 @@ int CmdHelpUsage ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdHelp ()
+int CmdHelp (const std::vector <std::string>& args)
 {
   std::cout << "# help\n";
   return 0;

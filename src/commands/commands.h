@@ -43,7 +43,7 @@ int CmdExport      ();
 int CmdExtension   ();
 int CmdGaps        ();
 int CmdHelpUsage   ();
-int CmdHelp        ();
+int CmdHelp        (const std::vector <std::string>&);
 int CmdLog         (const std::vector <std::string>&, Log&);
 int CmdImport      ();
 int CmdReport      ();
