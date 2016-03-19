@@ -30,10 +30,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdDefault ()
 {
-  std::cout << "# default\n";
+  std::cout << "# default command, or current interval summary\n";
 
-  // TODO Load the most recent interval.
-  // TODO Summarїze the info and display.
+  // TODO If there is a default command.
+  //   TODO Run it.
+  // TODO Else.
+  //   TODO Load the most recent interval.
+  //   TODO Summarїze the info and display.
 
   return 0;
 }
