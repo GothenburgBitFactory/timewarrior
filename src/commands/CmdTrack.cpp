@@ -31,6 +31,12 @@
 int CmdTrack ()
 {
   std::cout << "# track\n";
+
+  // TODO Parse interval.
+  // TODO Parse tags.
+  // TODO Add new interval.
+  // TODO Summarize.
+
   return 0;
 }
 
