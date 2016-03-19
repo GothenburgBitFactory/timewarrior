@@ -28,6 +28,7 @@
 #define INCLUDED_COMMANDS
 
 #include <Rules.h>
+#include <Database.h>
 #include <Log.h>
 
 int CmdClear       ();
@@ -35,7 +36,7 @@ int CmdConfig      ();
 int CmdContinue    ();
 int CmdDefault     ();
 int CmdDefine      (Rules&);
-int CmdDiagnostics (Log&);
+int CmdDiagnostics (Database&, Log&);
 int CmdExport      ();
 int CmdExtension   ();
 int CmdGaps        ();
