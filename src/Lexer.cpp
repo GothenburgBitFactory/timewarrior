@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <Lexer.h>
 #include <algorithm>
+#include <tuple>
 #include <ctype.h>
 #include <unicode.h>
 #include <utf8.h>
@@ -73,7 +74,7 @@ std::vector <std::tuple <std::string, Lexer::Type>> Lexer::tokenize (const std::
   Lexer::Type type;
   Lexer lexer (input);
   while (lexer.token (token, type))
-    tokens.push_back (std::tuple <std::string, Lexer::Type> (token, type));
+    tokens.push_back (std::make_tuple (token, type));
 
   return tokens;
 }
