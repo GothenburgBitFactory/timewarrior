@@ -30,9 +30,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdHelpUsage ()
 {
+  // TODO This is going to need formatting.
   std::cout << "\n"
             << "Usage: timew [--version]\n"
             << "       timew diagnostics\n"
+            << "       timew log [<message>]\n"
             << "\n";
 
   // TODO List all commands.
