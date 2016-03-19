@@ -120,6 +120,10 @@ int CmdDiagnostics (Database& database, Log& log)
       << (env ? env : "-")
       << "\n";
 
+  out << "       Database: "
+      << database.location ()
+      << "\n";
+
   // Determine rc.editor/$EDITOR/$VISUAL.
   char* peditor;
   if ((peditor = getenv ("VISUAL")) != NULL)
