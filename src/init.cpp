@@ -64,13 +64,13 @@ void initializeDataAndRules (
   char* override = getenv ("TIMEWARRIORDB");
   if (override)
   {
-    log.write ("info", std::string ("TIMEWARRIORDB ") + override);
+    log.write ("debug", std::string ("TIMEWARRIORDB ") + override);
     dbLocation = Directory (override);
   }
   else
   {
     dbLocation = Directory ("~/.timewarrior");
-    log.write ("info", std::string ("Using default DB location ") + dbLocation._data);
+    log.write ("debug", std::string ("Using default DB location ") + dbLocation._data);
   }
 
   // If dbLocation does not exist, ask whether it should be created.
@@ -79,7 +79,7 @@ void initializeDataAndRules (
       confirm ("Create new database in " + dbLocation._data + "?"))
   {
     dbLocation.create (0700);
-    log.write ("info", std::string ("Created missing database in ") + dbLocation._data);
+    log.write ("debug", std::string ("Created missing database in ") + dbLocation._data);
     shinyNewDatabase = true;
   }
 
@@ -127,7 +127,7 @@ void initializeDataAndRules (
   // located the config file, the 'db' location is already known. This is just
   // for subsequent internal use.
   rules.set ("db", dbLocation._data);
-  log.write ("info", std::string ("  rc.db=") + rules.get ("db"));
+  log.write ("debug", std::string ("  rc.db=") + rules.get ("db"));
 
   // Perhaps some subsequent code would like to know this is a new db and
   // possibly a first run.
@@ -135,11 +135,11 @@ void initializeDataAndRules (
 
   // Initialize the database (no data read), but files are enumerated.
   database.initialize (data._data);
-  log.write ("info", database.dump ());
+  log.write ("debug", database.dump ());
 
   // TODO Give the log file a temp fake name.  To be removed.
   log.file (dbLocation._data + "/timewarrior.log");
-  log.write ("info", rules.dump ());
+  log.write ("debug", rules.dump ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -153,7 +153,7 @@ void initializeExtensions (
 
   extensions.initialize (extDir._data);
 
-  log.write ("info", extensions.dump ());
+  log.write ("debug", extensions.dump ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
