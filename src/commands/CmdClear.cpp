@@ -31,6 +31,14 @@
 int CmdClear ()
 {
   std::cout << "# clear\n";
+
+  // TODO Parse interval.
+  // TODO Parser tags.
+  // TODO Load all data.
+  // TODO Apply filter.
+  // TODO For each interval.
+  //   TODO Remove tags.
+
   return 0;
 }
 
