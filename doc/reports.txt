@@ -3,20 +3,20 @@ Reporting
 Anticipating all reporting needs is impossible, therefore custom reports are
 required. Rather than copy the Taskwarrior design where a report is a
 combination of a filter, sort, columns and labels, a more flexible approach
-could encourage shared custom reports.
+could encourage shared custom reports, and use a more complete API.
 
-Іf all reports are extension scripts/programs, utilizing some form of API,
-then there is no restriction on the kind of report generated, which would
-allow for HTML reports, rather than simply supporting tabular text.
+Іf all reports are extension scripts/programs, utilizing an API, then there is
+no restriction on the kind of report generated, which would allow for HTML
+reports, rather than simply supporting tabular text.
 
 
 Requirements
 ------------
 Timewarrior will ship with several reports, which serve as example extensions
-for users to evolve.
+for users to modify and improve.
 
-Timewarrior should handle the command line options for reports, then pass off
-a standardized set of parameters to the report extension. These parameters will
+Timewarrior will handle the command line options for reports, then pass off a
+standardized set of parameters to the report extension. These parameters will
 include:
 
 - Date range. Although Timewarrior might support "last month" as a reporting
@@ -30,7 +30,7 @@ include:
   width. If a report does not fit in a window, it is not an error.
 
 There will be a default report, which is configurable so that one of the reports
-can be hte default.
+or commands can be the default.
 
 
 Report Mockups
@@ -76,7 +76,7 @@ With standard input consisting of:
   ...
   ]
 
-That is, the input it line-oriented, with first a header block of name/value
+That is, the input is line-oriented, with first a header block of name/value
 pairs, then a blank line, then the JSON filtered data. The header block has all
 configuration names flattened, i.e. no hierarchy.
 
