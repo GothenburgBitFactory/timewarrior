@@ -31,6 +31,12 @@
 int CmdImport ()
 {
   std::cout << "# import\n";
+
+  // TODO Load all data.
+  // TODO For each file.
+  //   TODO Parse JSON.
+  //   TODO Merge JSON and data.
+
   return 0;
 }
 
