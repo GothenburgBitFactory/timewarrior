@@ -60,9 +60,22 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
   {
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
-    if (args[2] == "log")
+    if (args[2] == "diagnostics")
       std::cout << "\n"
-                << "timew log [<message>]\n"
+                << "Syntax: timew diagnostics\n"
+                << "\n"
+                << "This command shows details about your version of Timewarrior, platform, how it\n"
+                << "was built, compiler features, configuration, file access, extensions and more.\n"
+                << "\n"
+                << "The purpose of this command is to help diagnose configuration problems, and\n"
+                << "provide supplemental information when reporting a problem.\n"
+                << "\n";
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (args[2] == "log")
+      std::cout << "\n"
+                << "Syntax: timew log [<message>]\n"
                 << "\n"
                 << "Writes the info <message> to the Timewarrior log file. The <message> may be\n"
                 << "multiple words, or a quoted string. If <message> is ommitted, writes a cut\n"
