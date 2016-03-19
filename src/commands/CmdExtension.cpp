@@ -31,6 +31,10 @@
 int CmdExtension ()
 {
   std::cout << "# extension\n";
+
+  // TODO Enumerate all extensions.
+  // TODO Display list.
+
   return 0;
 }
 
