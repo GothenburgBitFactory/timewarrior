@@ -33,6 +33,10 @@
 int CmdLog (Log& log)
 {
   log.write ("debug", "---- 8< ----");
+
+  // TODO If no arguments, write marker.
+  // TODO Else write entry.
+
   return 0;
 }
 
