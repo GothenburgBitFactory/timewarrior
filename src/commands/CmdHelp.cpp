@@ -45,11 +45,35 @@ int CmdHelpUsage ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// TODO Perhaps have a set of 'documents' to display, and a keyword index that
+//      maps to the the appropriate ones. Then display a list of any ambiguous
+//      requests, or the appropriate doc for single hits. Perhaps a 'See also'.
+//
 // Strict 80-character limit.
 int CmdHelp (const std::vector <std::string>& args, Log& log)
 {
-  std::cout << "# help\n";
-  return 0;
+  if (args.size () > 2)
+  {
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    if (args[2] == "log")
+      std::cout << "\n"
+                << "timew log [<message>]\n"
+                << "\n"
+                << "Writes the info <message> to the Timewarrior log file. The <message> may be\n"
+                << "multiple words, or a quoted string. If <message> is ommitted, writes a cut\n"
+                << "marker ('-------- 8< --------') line to the log file.\n"
+                << "\n"
+                << "Note: Your log file is found here:\n"
+                << "  " << log.file () << "\n"
+                << "\n";
+    else
+      std::cout << "No help available for '" << args[2] << "'\n";
+
+    return 0;
+  }
+
+  return CmdHelpUsage ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
