@@ -181,9 +181,9 @@ int dispatchCommand (
   {
     std::vector <std::string> allCommands =
     {
-      "help", "clear", "config", "continue", "define", "diagnostics", "export",
-      "gaps", "import", "log", "report", "start", "stop", "tags", "track",
-      "undo"
+      "clear", "config", "continue", "define", "diagnostics", "export",
+      "extension", "gaps", "help", "import", "log", "report", "start", "stop",
+      "tags", "track", "undo"
     };
 
     std::vector <std::string> matches;
@@ -192,22 +192,23 @@ int dispatchCommand (
     {
       // These signatures are æxpected to be all different, therefore no
       // command to fn mapping.
-           if (closeEnough (allCommands[1],  args[1], 2)) status = CmdClear       ();
-      else if (closeEnough (allCommands[2],  args[1], 2)) status = CmdConfig      ();
-      else if (closeEnough (allCommands[3],  args[1], 2)) status = CmdContinue    ();
-      else if (closeEnough (allCommands[4],  args[1], 2)) status = CmdDefine      (rules);
-      else if (closeEnough (allCommands[5],  args[1], 2)) status = CmdDiagnostics (database, log);
-      else if (closeEnough (allCommands[6],  args[1], 2)) status = CmdExport      ();
+           if (closeEnough (allCommands[0],  args[1], 2)) status = CmdClear       ();
+      else if (closeEnough (allCommands[1],  args[1], 2)) status = CmdConfig      ();
+      else if (closeEnough (allCommands[2],  args[1], 2)) status = CmdContinue    ();
+      else if (closeEnough (allCommands[3],  args[1], 2)) status = CmdDefine      (rules);
+      else if (closeEnough (allCommands[4],  args[1], 2)) status = CmdDiagnostics (database, log);
+      else if (closeEnough (allCommands[5],  args[1], 2)) status = CmdExport      ();
+      else if (closeEnough (allCommands[6],  args[1], 2)) status = CmdExtension   (extensions);
       else if (closeEnough (allCommands[7],  args[1], 2)) status = CmdGaps        ();
-      else if (closeEnough (allCommands[0],  args[1], 2)) status = CmdHelp        (args, log);
-      else if (closeEnough (allCommands[8],  args[1], 2)) status = CmdImport      ();
-      else if (closeEnough (allCommands[9],  args[1], 2)) status = CmdLog         (args, log);
-      else if (closeEnough (allCommands[10], args[1], 2)) status = CmdReport      ();
-      else if (closeEnough (allCommands[11], args[1], 2)) status = CmdStart       ();
-      else if (closeEnough (allCommands[12], args[1], 2)) status = CmdStop        ();
-      else if (closeEnough (allCommands[13], args[1], 2)) status = CmdTags        ();
-      else if (closeEnough (allCommands[14], args[1], 2)) status = CmdTrack       ();
-      else if (closeEnough (allCommands[15], args[1], 2)) status = CmdUndo        ();
+      else if (closeEnough (allCommands[8],  args[1], 2)) status = CmdHelp        (args, log);
+      else if (closeEnough (allCommands[9],  args[1], 2)) status = CmdImport      ();
+      else if (closeEnough (allCommands[10], args[1], 2)) status = CmdLog         (args, log);
+      else if (closeEnough (allCommands[11], args[1], 2)) status = CmdReport      ();
+      else if (closeEnough (allCommands[12], args[1], 2)) status = CmdStart       ();
+      else if (closeEnough (allCommands[13], args[1], 2)) status = CmdStop        ();
+      else if (closeEnough (allCommands[14], args[1], 2)) status = CmdTags        ();
+      else if (closeEnough (allCommands[15], args[1], 2)) status = CmdTrack       ();
+      else if (closeEnough (allCommands[16], args[1], 2)) status = CmdUndo        ();
     }
     else if (matches.size () == 0)
     {
