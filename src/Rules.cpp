@@ -57,6 +57,12 @@ void Rules::load (const std::string& file, int nest /* = 1 */)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::string Rules::file () const
+{
+  return _original_file;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 bool Rules::has (const std::string& key) const
 {
   return _settings.find (key) != _settings.end ();

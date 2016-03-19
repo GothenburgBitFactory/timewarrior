@@ -36,6 +36,7 @@ class Rules
 public:
   Rules () = default;
   void load (const std::string&, int next = 1);
+  std::string file () const;
 
   bool        has        (const std::string&) const;
   std::string get        (const std::string&) const;
