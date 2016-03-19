@@ -31,6 +31,13 @@
 int CmdConfig ()
 {
   std::cout << "# config\n";
+
+  // TODO Determine form:
+  //      timew config name value       Set name=value
+  //      timew config name ''          Set name=''
+  //      timew config name             Remove name
+  //      timew config                  Show all config
+
   return 0;
 }
 
