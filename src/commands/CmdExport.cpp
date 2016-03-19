@@ -31,6 +31,11 @@
 int CmdExport ()
 {
   std::cout << "# export\n";
+
+  // TODO Load all data.
+  // TODO Apply filter.
+  // TODO Compose JSON.
+
   return 0;
 }
 
