@@ -6,6 +6,7 @@ include_directories (${CMAKE_SOURCE_DIR}
                      ${TIMEW_INCLUDE_DIRS})
 
 set (timew_SRCS Database.cpp   Database.h
+                Datafile.cpp   Datafile.h
                 Extensions.cpp Extensions.h
                 Grammar.cpp    Grammar.h
                 Interval.cpp   Interval.h
