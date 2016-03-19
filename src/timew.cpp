@@ -47,6 +47,7 @@ int main (int argc, const char** argv)
   // only be given a file name once the rules is loaded. The log therefore
   // buffers the messages until it has a file name to write to.
   Log log;
+  CmdLog ({"timew", "log"}, log);
 
   // Make a vector of args, instead of argc/argv.
   std::vector <std::string> args;
