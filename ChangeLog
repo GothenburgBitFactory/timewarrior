@@ -1,6 +1,8 @@
 
 1.0.0 () -
 
+0.1.0 () -
+
 - Introduced the new shared library as a git submodule.
 
 

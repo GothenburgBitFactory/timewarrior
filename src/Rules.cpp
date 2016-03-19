@@ -44,7 +44,8 @@ void Rules::load (const std::string& file, int nest /* = 1 */)
   // First time in, load the default values.
   if (nest == 1)
   {
-    // This is where defaults would be set.
+    // TODO This is where defaults would be set.
+
     _original_file = File (file)._data;
   }
 
@@ -154,7 +155,7 @@ std::string Rules::dump () const
 
   out << "  Settings\n";
   for (const auto& item : _settings)
-    out << "    " << item.first << " " << item.second << "\n";
+    out << "    " << item.first << "=" << item.second << "\n";
 
   return out.str ();
 }
