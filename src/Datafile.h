@@ -35,6 +35,7 @@ class Datafile
 public:
   Datafile () = default;
   void initialize (const std::string&);
+  std::string name () const;
   std::string dump () const;
 
 private:
