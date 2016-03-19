@@ -26,8 +26,7 @@
 
 #include <cmake.h>
 #include <iostream>
-#include <vector>
-#include <string>
+#include <commands.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdHelpUsage ()
@@ -46,7 +45,8 @@ int CmdHelpUsage ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdHelp (const std::vector <std::string>& args)
+// Strict 80-character limit.
+int CmdHelp (const std::vector <std::string>& args, Log& log)
 {
   std::cout << "# help\n";
   return 0;
