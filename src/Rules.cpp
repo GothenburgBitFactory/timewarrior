@@ -26,11 +26,12 @@
 
 #include <cmake.h>
 #include <Rules.h>
+#include <Lexer.h>
 #include <FS.h>
 #include <shared.h>
 #include <format.h>
 #include <sstream>
-#include <iostream> // TODO Remove
+//#include <iostream> // TODO Remove
 #include <stack>
 #include <inttypes.h>
 
@@ -173,12 +174,44 @@ void Rules::parse (const std::string& input, int nest /* = 1 */)
     line = rtrim (line);
     if (line.length () > 0)
     {
-      std::cout << "# Rules::parse " << line << "\n";
+//      std::cout << "# Rules::parse " << line << "\n";
 
       // TODO Count spaces at SOL.
       auto indentation = line.find_first_not_of (' ');
-      if (indentation && indentation != std::string::npos)
-        std::cout << "#   indentation " << indentation << "\n";
+//      if (indentation && indentation != std::string::npos)
+//        std::cout << "#   indentation " << indentation << "\n";
+
+      // Tokenize the line.
+      std::vector <std::string> tokens;
+      std::string token;
+      Lexer::Type type;
+      Lexer lexer (line);
+      while (lexer.token (token, type))
+        tokens.push_back (token);
+
+      // This may be an import statement.
+      if (tokens[0] == "import")
+      {
+        if (tokens.size () == 2)
+        {
+          Path imported (tokens[1]);
+          if (imported.is_absolute ())
+          {
+            if (imported.readable ())
+              load (imported, nest + 1);
+            else
+              throw format ("Could not read imported file '{1}'.", imported._data);
+          }
+          else
+            throw format ("Can only import files with absolute paths, not '{1}'.", imported._data);
+        }
+        else
+          throw std::string ("An 'import' statement requires a file to import.");
+      }
+
+      else if (tokens[0] == "define")
+      {
+      }
 
 /*
       auto equal = line.find ("=");
@@ -188,25 +221,6 @@ void Rules::parse (const std::string& input, int nest /* = 1 */)
         std::string value = trim (line.substr (equal+1, line.length () - equal));
 
         (*this)[key] = jsonDecode (value);
-      }
-      else
-      {
-        auto include = line.find ("include");
-        if (include != std::string::npos)
-        {
-          Path included (trim (line.substr (include + 7)));
-          if (included.is_absolute ())
-          {
-            if (included.readable ())
-              load (included, nest + 1);
-            else
-              throw format ("Could not read include file '{1}'.", included._data);
-          }
-          else
-            throw format ("Can only include files with absolute paths, not '{1}'", included._data);
-        }
-        else
-          throw format ("Malformed entry '{1}' in config file.", line);
       }
 */
     }
