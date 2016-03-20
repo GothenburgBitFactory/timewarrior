@@ -62,13 +62,13 @@ int main (int, char**)
 
   // std::string serialize () const;
   Interval i3;
-  t.is (i3.serialize (), "inc  -  #", "Interval().serialize -> 'inc  -  #'");
+  t.is (i3.serialize (), "inc", "Interval().serialize -> 'inc'");
   i3.tag ("foo");
-  t.is (i3.serialize (), "inc  -  # foo", "Interval().serialize -> 'inc  -  # foo'");
+  t.is (i3.serialize (), "inc # foo", "Interval().serialize -> 'inc # foo'");
   i3.tag ("bar");
-  t.is (i3.serialize (), "inc  -  # bar foo", "Interval().serialize -> 'inc  -  # bar foo'");
+  t.is (i3.serialize (), "inc # bar foo", "Interval().serialize -> 'inc # bar foo'");
   i3.start (Datetime(1));
-  t.is (i3.serialize (), "inc 19700101T000001Z -  # bar foo", "Interval(Datetime(1)).serialize -> 'inc 19700101T000001Z -  # bar foo'");
+  t.is (i3.serialize (), "inc 19700101T000001Z # bar foo", "Interval(Datetime(1)).serialize -> 'inc 19700101T000001Z # bar foo'");
   i3.end (Datetime(2));
   t.is (i3.serialize (), "inc 19700101T000001Z - 19700101T000002Z # bar foo", "Interval(Datetime(1)).serialize -> 'inc 19700101T000001Z - 19700101T000002Z # bar foo'");
 
