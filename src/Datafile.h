@@ -27,6 +27,7 @@
 #ifndef INCLUDED_DATAFILE
 #define INCLUDED_DATAFILE
 
+#include <Interval.h>
 #include <vector>
 #include <string>
 
@@ -36,6 +37,11 @@ public:
   Datafile () = default;
   void initialize (const std::string&);
   std::string name () const;
+
+  void addExclusion (const std::string&);
+  void addInterval (const Interval&);
+  void modifyInterval (const Interval&);
+
   std::string dump () const;
 
 private:
