@@ -35,6 +35,10 @@ class Interval
 {
 public:
   Interval () = default;
+
+  Datetime from () const;
+  void from (Datetime&);
+
   std::string dump () const;
 
 private:
