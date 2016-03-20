@@ -42,6 +42,10 @@ and 'Home & Garden'), the second of which requires quotes.
 
 Quotes are harmless if used every time. See also 'stop', 'track'.
 
+.TP
+.B timew stop
+Stops tracking time.  See also 'start', 'track'.
+
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS
 Timewarrior stores its configuration in a file in the user's home directory:
 ~/.timewrc.
