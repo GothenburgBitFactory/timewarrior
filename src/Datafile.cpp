@@ -81,12 +81,14 @@ void Datafile::addExclusion (const std::string& exclusion)
 ////////////////////////////////////////////////////////////////////////////////
 void Datafile::addInterval (const Interval& interval)
 {
+  _lines_added.push_back (interval.serialize ());
   _dirty = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Datafile::modifyInterval (const Interval& interval)
 {
+  _lines_modified.push_back (interval.serialize ());
   _dirty = true;
 }
 

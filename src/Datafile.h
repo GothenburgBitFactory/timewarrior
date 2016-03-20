@@ -55,6 +55,10 @@ private:
 
 private:
   File                      _file           {};
+  std::vector <std::string> _lines          {};
+  std::vector <std::string> _lines_added    {};
+  std::vector <std::string> _lines_modified {};
+  bool                      _lines_loaded   {false};
   bool                      _dirty          {false};
   Datetime                  _day1           {0};
   Datetime                  _dayN           {0};
