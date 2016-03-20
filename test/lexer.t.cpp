@@ -34,7 +34,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (344);
+  UnitTest t (351);
 
   std::vector <std::pair <std::string, Lexer::Type>> tokens;
   std::string token;
@@ -267,6 +267,16 @@ int main (int, char**)
   t.is (Lexer::trim ("xxx",           " \t"), "xxx",       "Lexer::trim 'xxx' -> 'xxx'");
   t.is (Lexer::trim ("  \t xxx \t  "),        "\t xxx \t", "Lexer::trim '  \\t xxx \\t  ' -> '\\t xxx \\t'");
   t.is (Lexer::trim ("  \t xxx \t  ", " \t"), "xxx",       "Lexer::trim '  \\t xxx \\t  ' -> 'xxx'");
+
+  // std::vector <std::tuple <std::string, Lexer::Type>> Lexer::tokenize (const std::string& input)
+  auto tokenized = Lexer::tokenize (" one two   three   ");
+  t.is ((int)tokenized.size (), 3, "Lexer::tokenize ' one two  three   ' --> 3");
+  t.is (std::get <0> (tokenized[0]), "one",               "Lexer::tokenize ' one two  three   ' [0] --> 'one'");
+  t.ok (std::get <1> (tokenized[0]) == Lexer::Type::word, "Lexer::tokenize ' one two  three   ' [0] --> word");
+  t.is (std::get <0> (tokenized[1]), "two",               "Lexer::tokenize ' one two  three   ' [1] --> 'two'");
+  t.ok (std::get <1> (tokenized[1]) == Lexer::Type::word, "Lexer::tokenize ' one two  three   ' [1] --> word");
+  t.is (std::get <0> (tokenized[2]), "three",             "Lexer::tokenize ' one two  three   ' [2] --> 'three'");
+  t.ok (std::get <1> (tokenized[2]) == Lexer::Type::word, "Lexer::tokenize ' one two  three   ' [2] --> word");
 
   return 0;
 }
