@@ -53,17 +53,15 @@ void Interval::to (Datetime& value)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Interval::isOpen () const
+bool Interval::isStarted () const
 {
-  return _from.toEpoch () > 0 &&
-         _to.toEpoch   () == 0;
+  return _from.toEpoch () > 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Interval::isClosed () const
+bool Interval::isEnded () const
 {
-  return _from.toEpoch () > 0 &&
-         _to.toEpoch   () > 0;
+  return _to.toEpoch   () > 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

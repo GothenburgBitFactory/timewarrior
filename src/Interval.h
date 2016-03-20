@@ -42,8 +42,8 @@ public:
   Datetime to () const;
   void to (Datetime&);
 
-  bool isOpen () const;
-  bool isClosed () const;
+  bool isStarted () const;
+  bool isEnded () const;
 
   std::set <std::string> tags () const;
   void tag (const std::string&);
