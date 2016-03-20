@@ -36,7 +36,7 @@
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdDiagnostics (Rules& rules, Database& database, Log& log)
+int CmdDiagnostics (Rules& rules, Database& database, Extensions& extensions, Log& log)
 {
   std::stringstream out;
   out << "\n"
