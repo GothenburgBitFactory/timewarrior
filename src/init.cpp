@@ -152,8 +152,6 @@ void initializeExtensions (
   extDir += "extensions";
 
   extensions.initialize (extDir._data);
-
-  log.write ("debug", extensions.dump ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
