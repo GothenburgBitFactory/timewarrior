@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Interval.h>
+#include <timew.h>
 #include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -93,7 +94,7 @@ std::string Interval::serialize () const
   {
     out << " #";
     for (auto& tag : _tags)
-      out << " " << tag;
+      out << ' ' << quoteIfNeeded (tag);
   }
 
   return out.str ();
