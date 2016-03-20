@@ -36,6 +36,7 @@
 int CmdExtensions (Rules& rules, Extensions& extensions)
 {
   Table t;
+  t.width (1024);
   t.colorHeader (Color ("underline"));
   t.add ("Extension", true);
   t.add ("Status", true);
@@ -53,6 +54,8 @@ int CmdExtensions (Rules& rules, Extensions& extensions)
          if (! program.readable ())   perms = "Not readable";
     else if (! program.executable ()) perms = "No executable";
     else                              perms = "Active";
+
+    if (program.is_link ())           perms += " (link)";
 
     t.set (row, 1, perms);
   }
