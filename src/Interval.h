@@ -36,11 +36,11 @@ class Interval
 public:
   Interval () = default;
 
-  Datetime from () const;
-  void from (Datetime&);
+  Datetime start () const;
+  void start (Datetime);
 
-  Datetime to () const;
-  void to (Datetime&);
+  Datetime end () const;
+  void end (Datetime);
 
   bool isStarted () const;
   bool isEnded () const;
@@ -51,9 +51,9 @@ public:
   std::string dump () const;
 
 private:
-  Datetime               _from {0};
-  Datetime               _to   {0};
-  std::set <std::string> _tags {};
+  Datetime               _start {0};
+  Datetime               _end   {0};
+  std::set <std::string> _tags  {};
 };
 
 #endif

@@ -29,39 +29,39 @@
 #include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
-Datetime Interval::from () const
+Datetime Interval::start () const
 {
-  return _from;
+  return _start;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Interval::from (Datetime& value)
+void Interval::start (Datetime value)
 {
-  _from = value;
+  _start = value;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Datetime Interval::to () const
+Datetime Interval::end () const
 {
-  return _to;
+  return _end;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Interval::to (Datetime& value)
+void Interval::end (Datetime value)
 {
-  _to = value;
+  _end = value;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 bool Interval::isStarted () const
 {
-  return _from.toEpoch () > 0;
+  return _start.toEpoch () > 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 bool Interval::isEnded () const
 {
-  return _to.toEpoch   () > 0;
+  return _end.toEpoch   () > 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -82,10 +82,10 @@ std::string Interval::dump () const
 {
   std::stringstream out;
 
-  out << "Interval _from '"
-      << _from.toEpoch ()
-      << "' _to '"
-      << _to.toEpoch ()
+  out << "Interval _start '"
+      << _start.toEpoch ()
+      << "' _end '"
+      << _end.toEpoch ()
       << "' _tags";
 
   for (const auto& tag : _tags)
