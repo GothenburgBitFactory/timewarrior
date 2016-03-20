@@ -41,7 +41,7 @@ int CmdDefault     ();
 int CmdDefine      (Rules&);
 int CmdDiagnostics (Database&, Log&);
 int CmdExport      ();
-int CmdExtension   (Extensions&);
+int CmdExtension   (Rules&, Extensions&);
 int CmdGaps        ();
 int CmdHelpUsage   ();
 int CmdHelp        (const std::vector <std::string>&, Log&);

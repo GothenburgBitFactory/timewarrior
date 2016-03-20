@@ -29,7 +29,8 @@
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdExtension (Extensions& extensions)
+// Enumerate all extensions.
+int CmdExtension (Rules& rules, Extensions& extensions)
 {
   std::cout << "[extension: enumerate all extensions]\n";
 
