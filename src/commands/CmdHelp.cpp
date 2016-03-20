@@ -101,8 +101,8 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
       std::cout << "\n"
                 << "Syntax: timew extensions\n"
                 << "\n"
-                << "Displays the directory containing the extension programs, and a table with each\n"
-                << "of the extensions and status.\n"
+                << "Displays the directory containing the extension programs, and a table showing\n"
+                << "each extensions and its status.\n"
                 << "\n"
                 << "See also 'diagnostics'.\n"
                 << "\n";

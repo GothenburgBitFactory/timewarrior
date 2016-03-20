@@ -25,8 +25,8 @@ See also 'extensions'.
 
 .TP
 .B timew extensions
-Displays the directory containing the extension programs, and a table with each
-of the extensions and status.
+Displays the directory containing the extension programs, and a table showing
+each extention and its status.
 
 See also 'diagnostics'.
 

@@ -4,6 +4,7 @@
 0.1.0 () -
 
 - Added 'diagnostics' command.
+- Added 'extensions' command.
 - Added 'help' command.
 - Added 'log' command.
 - Integrated libshared.git.
