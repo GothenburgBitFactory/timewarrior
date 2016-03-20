@@ -39,6 +39,9 @@ public:
   Datetime from () const;
   void from (Datetime&);
 
+  Datetime to () const;
+  void to (Datetime&);
+
   std::string dump () const;
 
 private:
