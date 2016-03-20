@@ -48,6 +48,7 @@ public:
   std::set <std::string> tags () const;
   void tag (const std::string&);
 
+  std::string serialize () const;
   std::string dump () const;
 
 private:

@@ -78,6 +78,22 @@ void Interval::tag (const std::string& tag)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::string Interval::serialize () const
+{
+  std::stringstream out;
+  out << "inc "
+      << (_start.toEpoch () ? _start.toISO () : "")
+      << " - "
+      << (_end.toEpoch () ? _end.toISO () : "")
+      << " #";
+
+  for (auto& tag : _tags)
+    out << " " << tag;
+
+  return out.str ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
 std::string Interval::dump () const
 {
   std::stringstream out;
