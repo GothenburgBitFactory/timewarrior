@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <commands.h>
+#include <Interval.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -33,11 +34,29 @@ int CmdStop (
   Database& database,
   Log& log)
 {
-  std::cout << "[stop: end an open tracking interval]\n";
+  // Load the most recent interval.
+  auto latest = database.getLatestInterval ();
 
-  // TODO Load the most recent interval.
-  // TODO Verify the interval is open.
-  // TODO Close the interval.
+  // Verify the interval is open.
+  if (  latest.isStarted () &&
+      ! latest.isEnded ())
+  {
+    // Stop it.
+    latest.end (Datetime ());
+
+    // Update database.
+    database.modifyInterval (latest);
+    log.write ("debug", std::string ("Stopped tracking: ") + latest.serialize ());
+
+    // TODO User feedback.
+    // TODO Summarize closed interval.
+  }
+  else
+  {
+    std::string message = "There is no time currently being tracked.";
+    std::cout << "Warning: " << message << "\n";
+    log.write ("warning", message);
+  }
 
   return 0;
 }
