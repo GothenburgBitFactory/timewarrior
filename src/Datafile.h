@@ -52,16 +52,21 @@ public:
   std::string dump () const;
 
 private:
+  void load_lines ();
 
 private:
-  File                      _file           {};
-  std::vector <std::string> _lines          {};
-  std::vector <std::string> _lines_added    {};
-  std::vector <std::string> _lines_modified {};
-  bool                      _lines_loaded   {false};
-  bool                      _dirty          {false};
-  Datetime                  _day1           {0};
-  Datetime                  _dayN           {0};
+  // File representing data.
+  File                      _file             {};
+  bool                      _dirty            {false};
+
+  // Lines read from file, not parsed.
+  std::vector <std::string> _lines            {};
+  std::vector <std::string> _lines_added      {};
+  std::vector <std::string> _lines_modified   {};
+  bool                      _lines_loaded     {false};
+
+  Datetime                  _day1             {0};
+  Datetime                  _dayN             {0};
 };
 
 #endif
