@@ -49,7 +49,7 @@ int CmdLog         (const std::vector <std::string>&,                           
 int CmdImport      (                                                                      );
 int CmdReport      (                                                                      );
 int CmdStart       (const std::vector <std::string>&, Rules&, Database&,              Log&);
-int CmdStop        (                                                                      );
+int CmdStop        (                                          Database&,              Log&);
 int CmdTags        (                                                                      );
 int CmdTrack       (                                                                      );
 int CmdUndo        (                                                                      );
