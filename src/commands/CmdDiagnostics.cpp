@@ -114,6 +114,17 @@ int CmdDiagnostics (Rules& rules, Database& database, Extensions& extensions, Lo
 
   // Config: .taskrc found, readable, writable
   out << "Configuration\n";
+/*
+      << "       File: " << context.config._original_file._data << " "
+      << (context.config._original_file.exists ()
+           ? STRING_CMD_DIAG_FOUND
+           : STRING_CMD_DIAG_MISSING)
+      << ", " << context.config._original_file.size () << " " << "bytes"
+      << ", mode "
+      << std::setbase (8)
+      << context.config._original_file.mode ()
+      << "\n";
+*/
 
   char* env = getenv ("TIMEWARRIORDB");
   out << "  TIMEWARRIORDB: "
@@ -130,6 +141,43 @@ int CmdDiagnostics (Rules& rules, Database& database, Extensions& extensions, Lo
     out << "        $VISUAL: " << peditor << "\n";
   else if ((peditor = getenv ("EDITOR")) != NULL)
     out << "        $EDITOR: " << peditor << "\n";
+
+  out << "\n";
+
+  // Display extensions.
+  Directory extDir (rules.get ("db"));
+  extDir += "extensions";
+
+  out << "Extensions\n"
+      << "       Location: "
+      << extDir._data
+      << "\n";
+
+  auto exts = extensions.all ();
+  if (exts.size ())
+  {
+    unsigned int longest = 0;
+    for (auto& e : exts)
+      if (e.length () > longest)
+        longest = e.length ();
+    longest -= extDir._data.length () + 1;
+    std::cout << "# longest " << longest << "\n";
+
+    for (auto& ext : exts)
+    {
+      File file (ext);
+      auto name = file.name ();
+
+      out << "                 ";
+      out.width (longest);
+      out << std::left << name
+          << (file.executable () ? " (executable)" : " (not executable)")
+          << (file.is_link () ? " (symlink)" : "")
+          << "\n";
+    }
+  }
+  else
+    out << "               (None)\n";
 
   out << "\n";
   std::cout << out.str ();
