@@ -65,6 +65,8 @@ void Database::commit ()
 {
   if (_dirty)
   {
+    for (auto& file : _files)
+      file.commit ();
 
     _dirty = false;
   }
