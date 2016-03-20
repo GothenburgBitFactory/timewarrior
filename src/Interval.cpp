@@ -26,8 +26,8 @@
 
 #include <cmake.h>
 #include <Interval.h>
-#include <Duration.h>
 #include <timew.h>
+#include <Duration.h>
 #include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
