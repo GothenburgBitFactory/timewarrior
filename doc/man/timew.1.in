@@ -21,6 +21,15 @@ was built, compiler features, configuration, file access, extensions and more.
 The purpose of this command is to help diagnose configuration problems, and
 provide supplemental information when reporting a problem.
 
+See also 'extension'.
+
+.TP
+.B timew extension
+Displays the directory containing the extension programs, and a table with each
+of the extensions and status.
+
+See also 'diagnostics'.
+
 .TP
 .B timew log [<message>]
 Writes the info <message> to the Timewarrior log file. If <message> is ommitted,
