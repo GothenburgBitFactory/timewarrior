@@ -245,6 +245,14 @@ void Rules::parse (const std::string& input, int nest /* = 1 */)
           set (firstWord, join (" ", words));
         }
 
+        // Top-level settings, with no value:
+        //   <name> '='
+        else if (tokens.size () == 2 &&
+                 std::get <0> (tokens[1]) == "=")
+        {
+          set (firstWord, "");
+        }
+
         // Admit defeat.
         else
           throw format ("Unrecognized construct: {1}", line);
