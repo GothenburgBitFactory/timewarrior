@@ -1,6 +1,7 @@
 all.log
 *.pyc
 grammar.t
+interval.t
 lexer.t
 lr0.t
 rules.t

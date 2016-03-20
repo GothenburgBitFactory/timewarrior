@@ -11,7 +11,7 @@ include_directories (${CMAKE_SOURCE_DIR}
 include_directories (${CMAKE_INSTALL_PREFIX}/include)
 link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 
-set (test_SRCS grammar.t lexer.t lr0.t rules.t)
+set (test_SRCS grammar.t interval.t lexer.t lr0.t rules.t)
 
 add_custom_target (test ./run_all --verbose
                         DEPENDS ${test_SRCS}
