@@ -36,8 +36,6 @@ int CmdStart (
   Database& database,
   Log& log)
 {
-  std::cout << "[start: begin a new tracking interval]\n";
-
   // Load the most recent interval.
   auto latest = database.getLatestInterval ();
 
@@ -50,7 +48,9 @@ int CmdStart (
 
     // Update database.
     database.modifyInterval (latest);
-    log.write ("debug", std::string ("Closed open interval: ") + latest.serialize ());
+    log.write ("debug", std::string ("Stopped tracking: ") + latest.serialize ());
+
+    // TODO User feedback.
   }
 
   // Create a new interval.
@@ -63,7 +63,9 @@ int CmdStart (
 
   // Update database.
   database.addInterval (now);
-  log.write ("debug", std::string ("Opened new interval: ") + now.serialize ());
+  log.write ("debug", std::string ("Started tracking: ") + now.serialize ());
+
+  // TODO User feedback.
 
   return 0;
 }
