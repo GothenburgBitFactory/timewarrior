@@ -38,6 +38,8 @@ public:
   Database () = default;
   void initialize (const std::string&);
 
+  Interval getLatestInterval () const;
+
   void addExclusion (const std::string&);
   void addInterval (const Interval&);
   void modifyInterval (const Interval&);

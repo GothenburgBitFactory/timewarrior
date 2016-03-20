@@ -61,6 +61,12 @@ void Database::initialize (const std::string& location)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+Interval Database::getLatestInterval () const
+{
+  return _files[0].getLatestInterval ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void Database::addExclusion (const std::string& exclusion)
 {
   _files[0].addExclusion (exclusion);
