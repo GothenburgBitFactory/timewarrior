@@ -132,7 +132,7 @@ int CmdDiagnostics (Rules& rules, Database& database, Extensions& extensions, Lo
       << "\n";
 
   out << "       Database: "
-      << database.location ()
+      << rules.get ("db") << "/data"
       << "\n";
 
   // Determine rc.editor/$EDITOR/$VISUAL.

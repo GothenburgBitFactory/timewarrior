@@ -36,7 +36,6 @@ class Database
 public:
   Database () = default;
   void initialize (const std::string&);
-  std::string location () const;
   std::string dump () const;
 
 private:
