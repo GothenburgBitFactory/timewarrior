@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (15);
+  UnitTest t (16);
 
   // bool isStarted () const;
   // bool isEnded () const;
@@ -71,6 +71,8 @@ int main (int, char**)
   t.is (i3.serialize (), "inc 19700101T000001Z # bar foo", "Interval(Datetime(1)).serialize -> 'inc 19700101T000001Z # bar foo'");
   i3.end (Datetime(2));
   t.is (i3.serialize (), "inc 19700101T000001Z - 19700101T000002Z # bar foo", "Interval(Datetime(1)).serialize -> 'inc 19700101T000001Z - 19700101T000002Z # bar foo'");
+  i3.tag ("Trans-Europe Express");
+  t.is (i3.serialize (), "inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo", "Interval(Datetime(1)).serialize -> 'inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo'");
 
   return 0;
 }
