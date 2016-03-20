@@ -73,7 +73,7 @@ void Database::commit ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Interval Database::getLatestInterval () const
+Interval Database::getLatestInterval ()
 {
   return _files[0].getLatestInterval ();
 }

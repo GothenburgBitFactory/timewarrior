@@ -39,7 +39,7 @@ public:
   void initialize (const std::string&);
   void commit ();
 
-  Interval getLatestInterval () const;
+  Interval getLatestInterval ();
 
   void addExclusion (const std::string&);
   void addInterval (const Interval&);

@@ -41,7 +41,7 @@ std::string Datafile::name () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Interval Datafile::getLatestInterval () const
+Interval Datafile::getLatestInterval ()
 {
   return Interval ();
 }
