@@ -50,7 +50,8 @@ int CmdStart (
     database.modifyInterval (latest);
     log.write ("debug", std::string ("Stopped tracking: ") + latest.serialize ());
 
-    // TODO User feedback.
+    // User feedback.
+    std::cout << latest.summarize ();
   }
 
   // Create a new interval.
@@ -65,8 +66,8 @@ int CmdStart (
   database.addInterval (now);
   log.write ("debug", std::string ("Started tracking: ") + now.serialize ());
 
-  // TODO User feedback.
-
+  // User feedback.
+  std::cout << now.summarize ();
   return 0;
 }
 
