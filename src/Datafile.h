@@ -51,6 +51,8 @@ public:
 private:
   std::string _name  {};
   bool        _dirty {false};
+  Datetime    _day1  {0};
+  Datetime    _dayN  {0};
 };
 
 #endif

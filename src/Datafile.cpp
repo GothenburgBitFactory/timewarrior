@@ -26,12 +26,23 @@
 
 #include <cmake.h>
 #include <Datafile.h>
+#include <FS.h>
 #include <sstream>
+#include <stdlib.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 void Datafile::initialize (const std::string& name)
 {
   _name = name;
+
+  // From the name, which is of the form YYYY-MM.data, extract the YYYY and MM.
+  auto basename = File (_name).name ();
+  auto year  = strtol (basename.substr (0, 4).c_str (), NULL, 10);
+  auto month = strtol (basename.substr (5, 2).c_str (), NULL, 10);
+
+  // Construct two dates that
+  _day1 = Datetime (month, 1,                                   year,  0 , 0,  0);
+  _dayN = Datetime (month, Datetime::daysInMonth (year, month), year, 23, 59, 59);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -79,8 +90,10 @@ void Datafile::commit ()
 std::string Datafile::dump () const
 {
   std::stringstream out;
-  out << "Datafile\n";
-  out << "  Name: " << _name << "\n";
+  out << "Datafile\n"
+      << "  Name: " << _name << "\n"
+      << "  day1: " << _day1.toISO () << "\n"
+      << "  dayN: " << _dayN.toISO () << "\n";
 
   return out.str ();
 }
