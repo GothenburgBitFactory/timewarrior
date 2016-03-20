@@ -61,6 +61,16 @@ void Database::initialize (const std::string& location)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void Database::commit ()
+{
+  if (_dirty)
+  {
+
+    _dirty = false;
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 Interval Database::getLatestInterval () const
 {
   return _files[0].getLatestInterval ();
@@ -70,18 +80,21 @@ Interval Database::getLatestInterval () const
 void Database::addExclusion (const std::string& exclusion)
 {
   _files[0].addExclusion (exclusion);
+  _dirty = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Database::addInterval (const Interval& interval)
 {
   _files[0].addInterval (interval);
+  _dirty = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Database::modifyInterval (const Interval& interval)
 {
   _files[0].modifyInterval (interval);
+  _dirty = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -93,6 +106,8 @@ std::string Database::dump () const
     out << "  Datafile: " << file.name ()
         << (file.name () == _current ? " (current)" : "")
         << "\n";
+
+  out << "  Dirty: " << (_dirty ? "true" : "false") << "\n";
 
   return out.str ();
 }

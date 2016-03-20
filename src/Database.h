@@ -37,6 +37,7 @@ class Database
 public:
   Database () = default;
   void initialize (const std::string&);
+  void commit ();
 
   Interval getLatestInterval () const;
 
@@ -53,6 +54,7 @@ private:
   std::string            _location   {"~/.timewarrior/data"};
   std::string            _current    {};
   std::vector <Datafile> _files      {};
+  bool                   _dirty      {false};
 };
 
 #endif
