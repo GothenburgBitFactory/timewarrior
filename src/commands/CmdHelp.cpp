@@ -73,10 +73,10 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
 {
   if (args.size () > 2)
   {
-  // TODO clear
-  // TODO config
-  // TODO continue
-  // TODO define
+    // TODO clear
+    // TODO config
+    // TODO continue
+    // TODO define
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
@@ -89,13 +89,27 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
                 << "\n"
                 << "The purpose of this command is to help diagnose configuration problems, and\n"
                 << "provide supplemental information when reporting a problem.\n"
+                << "\n"
+                << "See also 'extension'.\n"
                 << "\n";
 
-  // TODO export
-  // TODO extension
-  // TODO gaps
-  // TODO help
-  // TODO import
+    // TODO export
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (args[2] == "extension")
+      std::cout << "\n"
+                << "Syntax: timew extension\n"
+                << "\n"
+                << "Displays the directory containing the extension programs, and a table with each\n"
+                << "of the extensions and status.\n"
+                << "\n"
+                << "See also 'diagnostics'.\n"
+                << "\n";
+
+    // TODO gaps
+    // TODO help
+    // TODO import
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
@@ -111,12 +125,12 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
                 << "  " << log.file () << "\n"
                 << "\n";
 
-  // TODO report
-  // TODO start
-  // TODO stop
-  // TODO tags
-  // TODO track
-  // TODO undo
+    // TODO report
+    // TODO start
+    // TODO stop
+    // TODO tags
+    // TODO track
+    // TODO undo
 
     else
       std::cout << "No help available for '" << args[2] << "'\n";
