@@ -39,6 +39,8 @@ public:
   std::string name () const;
 
   Interval getLatestInterval ();
+  std::vector <Interval> getAllIntervalsSince (Datetime);
+  std::vector <Interval> getAllIntervals ();
 
   void addExclusion (const std::string&);
   void addInterval (const Interval&);
@@ -47,6 +49,8 @@ public:
   void commit ();
 
   std::string dump () const;
+
+private:
 
 private:
   std::string _name  {};

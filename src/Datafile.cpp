@@ -55,6 +55,22 @@ std::string Datafile::name () const
 Interval Datafile::getLatestInterval ()
 {
   return Interval ();
+  // TODO Load data
+  // TODO Return the last element in _lines.
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector <Interval> Datafile::getAllIntervalsSince (Datetime)
+{
+  // TODO Load data
+  return {};
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector <Interval> Datafile::getAllIntervals ()
+{
+  // TODO Load data
+  return {};
 }
 
 ////////////////////////////////////////////////////////////////////////////////
