@@ -34,24 +34,24 @@
 #include <vector>
 #include <string>
 
-int CmdClear       ();
-int CmdConfig      ();
-int CmdContinue    ();
-int CmdDefault     ();
-int CmdDefine      (Rules&);
-int CmdDiagnostics (Rules&, Database&, Extensions&, Log&);
-int CmdExport      ();
-int CmdExtensions  (Rules&, Extensions&);
-int CmdGaps        ();
-int CmdHelpUsage   ();
-int CmdHelp        (const std::vector <std::string>&, Log&);
-int CmdLog         (const std::vector <std::string>&, Log&);
-int CmdImport      ();
-int CmdReport      ();
-int CmdStart       ();
-int CmdStop        ();
-int CmdTags        ();
-int CmdTrack       ();
-int CmdUndo        ();
+int CmdClear       (                                                                      );
+int CmdConfig      (                                                                      );
+int CmdContinue    (                                                                      );
+int CmdDefault     (                                                                      );
+int CmdDefine      (                                  Rules&                              );
+int CmdDiagnostics (                                  Rules&, Database&, Extensions&, Log&);
+int CmdExport      (                                                                      );
+int CmdExtensions  (                                  Rules&,            Extensions&      );
+int CmdGaps        (                                                                      );
+int CmdHelpUsage   (                                                                      );
+int CmdHelp        (const std::vector <std::string>&,                                 Log&);
+int CmdLog         (const std::vector <std::string>&,                                 Log&);
+int CmdImport      (                                                                      );
+int CmdReport      (                                                                      );
+int CmdStart       (const std::vector <std::string>&, Rules&, Database&,              Log&);
+int CmdStop        (                                                                      );
+int CmdTags        (                                                                      );
+int CmdTrack       (                                                                      );
+int CmdUndo        (                                                                      );
 
 #endif

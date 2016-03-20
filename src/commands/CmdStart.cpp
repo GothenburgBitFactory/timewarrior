@@ -25,10 +25,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <commands.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdStart ()
+int CmdStart (
+  const std::vector <std::string>& args,
+  Rules& rules,
+  Database& database,
+  Log& log)
 {
   std::cout << "[start: begin a new tracking interval]\n";
 
