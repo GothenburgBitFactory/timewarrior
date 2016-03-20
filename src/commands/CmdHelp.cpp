@@ -38,6 +38,7 @@ int CmdHelpUsage ()
             << "       timew extensions\n"
             << "       timew log [<message>]\n"
             << "       timew start [<tag> ...]\n"
+            << "       timew stop\n"
             << "\n";
 
   // TODO clear
@@ -49,7 +50,6 @@ int CmdHelpUsage ()
   // TODO help
   // TODO import
   // TODO report
-  // TODO stop
   // TODO tags
   // TODO track
   // TODO undo
@@ -145,7 +145,17 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
                 << "See also 'stop', 'track'.\n"
                 << "\n";
 
-    // TODO stop
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (args[2] == "stop")
+      std::cout << "\n"
+                << "Syntax: timew stop\n"
+                << "\n"
+                << "Stops tracking time.\n"
+                << "\n"
+                << "See also 'start', 'track'.\n"
+                << "\n";
+
     // TODO tags
     // TODO track
     // TODO undo
