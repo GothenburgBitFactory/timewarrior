@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Interval.h>
+#include <Duration.h>
 #include <timew.h>
 #include <sstream>
 
@@ -76,6 +77,48 @@ void Interval::tag (const std::string& tag)
 {
   if (_tags.find (tag) == _tags.end ())
     _tags.insert (tag);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string Interval::summarize () const
+{
+  std::stringstream out;
+
+  if (isStarted ())
+  {
+    if (isEnded ())
+    {
+      Duration dur (Datetime (_end) - Datetime (_start));
+      out << "Recorded interval from "
+          << _start.toISOLocalExtended ()
+          << " to "
+          << _end.toISOLocalExtended ()
+          << ", length "
+          << dur.format ();
+    }
+    else
+    {
+      Duration dur (Datetime () - _start);
+      out << "Active interval since "
+          << _start.toISOLocalExtended ();
+
+      if (dur.toTime_t () > 10)
+        out << ", length "
+            << dur.format ();
+    }
+
+    // TODO Colorize tags.
+    if (_tags.size ())
+    {
+      out << ", using tags";
+      for (auto& tag : _tags)
+        out << ' ' << quoteIfNeeded (tag);
+    }
+
+    out << "\n";
+  }
+
+  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
