@@ -26,17 +26,16 @@
 
 #include <cmake.h>
 #include <Datafile.h>
-#include <FS.h>
 #include <sstream>
 #include <stdlib.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 void Datafile::initialize (const std::string& name)
 {
-  _name = name;
+  _file = File (name);
 
   // From the name, which is of the form YYYY-MM.data, extract the YYYY and MM.
-  auto basename = File (_name).name ();
+  auto basename = _file.name ();
   auto year  = strtol (basename.substr (0, 4).c_str (), NULL, 10);
   auto month = strtol (basename.substr (5, 2).c_str (), NULL, 10);
 
@@ -48,7 +47,7 @@ void Datafile::initialize (const std::string& name)
 ////////////////////////////////////////////////////////////////////////////////
 std::string Datafile::name () const
 {
-  return _name;
+  return _file.name ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -107,7 +106,7 @@ std::string Datafile::dump () const
 {
   std::stringstream out;
   out << "Datafile\n"
-      << "  Name: " << _name << "\n"
+      << "  Name: " << _file.name () << "\n"
       << "  day1: " << _day1.toISO () << "\n"
       << "  dayN: " << _dayN.toISO () << "\n";
 

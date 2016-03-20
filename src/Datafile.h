@@ -28,6 +28,7 @@
 #define INCLUDED_DATAFILE
 
 #include <Interval.h>
+#include <FS.h>
 #include <vector>
 #include <string>
 
@@ -53,10 +54,10 @@ public:
 private:
 
 private:
-  std::string _name  {};
-  bool        _dirty {false};
-  Datetime    _day1  {0};
-  Datetime    _dayN  {0};
+  File                      _file           {};
+  bool                      _dirty          {false};
+  Datetime                  _day1           {0};
+  Datetime                  _dayN           {0};
 };
 
 #endif
