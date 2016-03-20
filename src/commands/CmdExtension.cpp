@@ -26,17 +26,46 @@
 
 #include <cmake.h>
 #include <commands.h>
+#include <Table.h>
+#include <Color.h>
+#include <FS.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Enumerate all extensions.
 int CmdExtension (Rules& rules, Extensions& extensions)
 {
-  std::cout << "[extension: enumerate all extensions]\n";
+  Table t;
+  t.colorHeader (Color ("underline"));
+  t.add ("Extension", true);
+  t.add ("Status", true);
 
-  // TODO Enumerate all extensions.
-  // TODO Display list.
+  for (auto& ext : extensions.all ())
+  {
+    File program (ext);
 
+    // Show program name.
+    auto row = t.addRow ();
+    t.set (row, 0, program.name ());
+
+    // Show extension status.
+    std::string perms;
+         if (! program.readable ())   perms = "Not readable";
+    else if (! program.executable ()) perms = "No executable";
+    else                              perms = "Active";
+
+    t.set (row, 1, perms);
+  }
+
+  Directory extDir (rules.get ("db"));
+  extDir += "extensions";
+
+  std::cout << "\n"
+            << "Extensions located in:\n"
+            << "  " << extDir._data << "\n"
+            << "\n"
+            << t.render ()
+            << "\n";
   return 0;
 }
 
