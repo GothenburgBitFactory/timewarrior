@@ -28,6 +28,7 @@
 #define INCLUDED_DATABASE
 
 #include <Datafile.h>
+#include <Interval.h>
 #include <vector>
 #include <string>
 
@@ -36,6 +37,11 @@ class Database
 public:
   Database () = default;
   void initialize (const std::string&);
+
+  void addExclusion (const std::string&);
+  void addInterval (const Interval&);
+  void modifyInterval (const Interval&);
+
   std::string dump () const;
 
 private:

@@ -47,6 +47,7 @@ void Database::initialize (const std::string& location)
   {
     if (1 /* TODO looks like one of our data files */)
     {
+      // Don't add the current file twice.
       if (file != _current)
       {
         Datafile oldFile;
@@ -57,6 +58,21 @@ void Database::initialize (const std::string& location)
   }
 
   // TODO If there is no data file named YYYY—MM.data, then create it.
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Database::addExclusion (const std::string& exclusion)
+{
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Database::addInterval (const Interval& interval)
+{
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Database::modifyInterval (const Interval& interval)
+{
 }
 
 ////////////////////////////////////////////////////////////////////////////////
