@@ -56,3 +56,26 @@ std::string osName ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Escape all 'c' --> '\c'.
+std::string escape (const std::string& input, int c)
+{
+  std::string output;
+
+  auto last = input.begin ();
+  for (auto i = input.begin (); i != input.end (); ++i)
+  {
+    if (*i == c)
+    {
+      output.append (last, i);
+      output += std::string ("\\") + *i;
+      last = i + 1;
+    }
+
+    // Default NOP.
+  }
+
+  output.append (last, input.end ());
+  return output;
+}
+
+////////////////////////////////////////////////////////////////////////////////

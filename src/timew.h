@@ -40,5 +40,6 @@ int dispatchCommand (const std::vector <std::string>&, Database&, Rules&, Extens
 
 // utiŀ.cpp
 std::string osName ();
+std::string escape (const std::string&, int);
 
 #endif
