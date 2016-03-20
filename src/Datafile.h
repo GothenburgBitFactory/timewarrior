@@ -38,6 +38,8 @@ public:
   void initialize (const std::string&);
   std::string name () const;
 
+  Interval getLatestInterval () const;
+
   void addExclusion (const std::string&);
   void addInterval (const Interval&);
   void modifyInterval (const Interval&);
