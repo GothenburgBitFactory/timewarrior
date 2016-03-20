@@ -19,21 +19,28 @@ Timewarrior supports many commands.
 This command shows details about your version of Timewarrior, platform, how it
 was built, compiler features, configuration, file access, extensions and more.
 The purpose of this command is to help diagnose configuration problems, and
-provide supplemental information when reporting a problem.
-
-See also 'extensions'.
+provide supplemental information when reporting a problem. See also 'extensions'.
 
 .TP
 .B timew extensions
 Displays the directory containing the extension programs, and a table showing
-each extention and its status.
-
-See also 'diagnostics'.
+each extention and its status. See also 'diagnostics'.
 
 .TP
 .B timew log [<message>]
 Writes the info <message> to the Timewarrior log file. If <message> is ommitted,
 writes a cut marker ('-------- 8< --------') line to the log file.
+
+.TP
+.B timew start [<tag> ...]
+Begins tracking using the current time, and the specified optional set of tags.
+If a tag contains multiple words, and therefore contains spaces, use quotes to
+surround the whole tag. For example, this command specifies two tags ('weekend'
+and 'Home & Garden'), the second of which requires quotes.
+
+  $ timew start weekend 'Home & Garden'
+
+Quotes are harmless if used every time. See also 'stop', 'track'.
 
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS
 Timewarrior stores its configuration in a file in the user's home directory:
