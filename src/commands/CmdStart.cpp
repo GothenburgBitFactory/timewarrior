@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <commands.h>
+#include <Interval.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -37,9 +38,32 @@ int CmdStart (
 {
   std::cout << "[start: begin a new tracking interval]\n";
 
-  // TODO Load the most recent interval.
-  // TODO If the interval is open, close it.
-  // TODO Create a new interval.
+  // Load the most recent interval.
+  auto latest = database.getLatestInterval ();
+
+  // If the latest interval is open, close it.
+  if (  latest.isStarted () &&
+      ! latest.isEnded ())
+  {
+    // Stop it.
+    latest.end (Datetime ());
+
+    // Update database.
+    database.modifyInterval (latest);
+    log.write ("debug", std::string ("Closed open interval: ") + latest.serialize ());
+  }
+
+  // Create a new interval.
+  Interval now;
+  now.start (Datetime ());
+
+  // Apply tags.
+  for (auto& tag : std::vector <std::string> (args.begin () + 2, args.end ()))
+    now.tag (tag);
+
+  // Update database.
+  database.addInterval (now);
+  log.write ("debug", std::string ("Opened new interval: ") + now.serialize ());
 
   return 0;
 }
