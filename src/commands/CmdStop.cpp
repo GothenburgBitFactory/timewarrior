@@ -41,6 +41,9 @@ int CmdStop (
   if (  latest.isStarted () &&
       ! latest.isEnded ())
   {
+    // TODO If there are tags, remove the individual tags.
+    // TODO If there are none, simply close the interval.
+
     // Stop it.
     latest.end (Datetime ());
 
@@ -48,13 +51,13 @@ int CmdStop (
     database.modifyInterval (latest);
     log.write ("debug", std::string ("Stopped tracking: ") + latest.serialize ());
 
-    // TODO User feedback.
-    // TODO Summarize closed interval.
+    // User feedback.
+    std::cout << latest.summarize ();
   }
   else
   {
     std::string message = "There is no time currently being tracked.";
-    std::cout << "Warning: " << message << "\n";
+    std::cout << message << "\n";
     log.write ("warning", message);
   }
 
