@@ -44,10 +44,13 @@ public:
   void addInterval (const Interval&);
   void modifyInterval (const Interval&);
 
+  void commit ();
+
   std::string dump () const;
 
 private:
-  std::string _name {};
+  std::string _name  {};
+  bool        _dirty {false};
 };
 
 #endif
