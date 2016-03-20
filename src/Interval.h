@@ -27,7 +27,7 @@
 #ifndef INCLUDED_INTERVAL
 #define INCLUDED_INTERVAL
 
-#include <vector>
+#include <set>
 #include <string>
 #include <Datetime.h>
 
@@ -45,12 +45,15 @@ public:
   bool isOpen () const;
   bool isClosed () const;
 
+  std::set <std::string> tags () const;
+  void tag (const std::string&);
+
   std::string dump () const;
 
 private:
-  Datetime                  _from {0};
-  Datetime                  _to   {0};
-  std::vector <std::string> _tags {};
+  Datetime               _from {0};
+  Datetime               _to   {0};
+  std::set <std::string> _tags {};
 };
 
 #endif
