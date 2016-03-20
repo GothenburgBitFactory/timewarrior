@@ -25,6 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <timew.h>
 #include <string>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -75,6 +76,28 @@ std::string escape (const std::string& input, int c)
   }
 
   output.append (last, input.end ());
+  return output;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string quoteIfNeeded (const std::string& input)
+{
+  auto quote = input.find ('"');
+  auto space = input.find (' ');
+
+  if (quote == std::string::npos &&
+      space == std::string::npos)
+    return input;
+
+  std::string output;
+  if (quote != std::string::npos)
+    output = escape (input, '"');
+  else
+    output = input;
+
+  if (space != std::string::npos)
+    output = std::string ("\"") + output + "\"";
+
   return output;
 }
 
