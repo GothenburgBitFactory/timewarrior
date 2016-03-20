@@ -42,6 +42,9 @@ public:
   Datetime to () const;
   void to (Datetime&);
 
+  bool isOpen () const;
+  bool isClosed () const;
+
   std::string dump () const;
 
 private:
