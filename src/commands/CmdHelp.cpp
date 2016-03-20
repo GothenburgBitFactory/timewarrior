@@ -37,6 +37,7 @@ int CmdHelpUsage ()
             << "       timew diagnostics\n"
             << "       timew extensions\n"
             << "       timew log [<message>]\n"
+            << "       timew start [<tag> ...]\n"
             << "\n";
 
   // TODO clear
@@ -48,7 +49,6 @@ int CmdHelpUsage ()
   // TODO help
   // TODO import
   // TODO report
-  // TODO start
   // TODO stop
   // TODO tags
   // TODO track
@@ -126,7 +126,25 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
                 << "\n";
 
     // TODO report
-    // TODO start
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (args[2] == "start")
+      std::cout << "\n"
+                << "Syntax: timew start [<tag> ...]\n"
+                << "\n"
+                << "Begins tracking using the current time, and the specified optional set of tags.\n"
+                << "If a tag contains multiple words, and therefore contains spaces, use quotes to\n"
+                << "surround the whole tag. For example, this command specifies two tags ('weekend'\n"
+                << "and 'Home & Garden'), the second of which requires quotes.\n"
+                << "\n"
+                << "  $ timew start weekend 'Home & Garden'\n"
+                << "\n"
+                << "Quotes are harmless if used every time.\n"
+                << "\n"
+                << "See also 'stop', 'track'.\n"
+                << "\n";
+
     // TODO stop
     // TODO tags
     // TODO track
