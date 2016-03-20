@@ -33,7 +33,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Enumerate all extensions.
-int CmdExtension (Rules& rules, Extensions& extensions)
+int CmdExtensions (Rules& rules, Extensions& extensions)
 {
   Table t;
   t.colorHeader (Color ("underline"));

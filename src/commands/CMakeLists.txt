@@ -12,7 +12,7 @@ set (commands_SRCS CmdClear.cpp
                    CmdDefine.cpp
                    CmdDiagnostics.cpp
                    CmdExport.cpp
-                   CmdExtension.cpp
+                   CmdExtensions.cpp
                    CmdGaps.cpp
                    CmdHelp.cpp
                    CmdImport.cpp

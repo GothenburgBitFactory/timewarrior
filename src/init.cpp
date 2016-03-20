@@ -182,7 +182,7 @@ int dispatchCommand (
     std::vector <std::string> allCommands =
     {
       "clear", "config", "continue", "define", "diagnostics", "export",
-      "extension", "gaps", "help", "import", "log", "report", "start", "stop",
+      "extensions", "gaps", "help", "import", "log", "report", "start", "stop",
       "tags", "track", "undo"
     };
 
@@ -198,7 +198,7 @@ int dispatchCommand (
       else if (closeEnough (allCommands[3],  args[1], 2)) status = CmdDefine      (rules);
       else if (closeEnough (allCommands[4],  args[1], 2)) status = CmdDiagnostics (database, log);
       else if (closeEnough (allCommands[5],  args[1], 2)) status = CmdExport      ();
-      else if (closeEnough (allCommands[6],  args[1], 2)) status = CmdExtension   (rules, extensions);
+      else if (closeEnough (allCommands[6],  args[1], 2)) status = CmdExtensions  (rules, extensions);
       else if (closeEnough (allCommands[7],  args[1], 2)) status = CmdGaps        ();
       else if (closeEnough (allCommands[8],  args[1], 2)) status = CmdHelp        (args, log);
       else if (closeEnough (allCommands[9],  args[1], 2)) status = CmdImport      ();

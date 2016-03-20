@@ -35,6 +35,7 @@ int CmdHelpUsage ()
   std::cout << "\n"
             << "Usage: timew [--version]\n"
             << "       timew diagnostics\n"
+            << "       timew extensions\n"
             << "       timew log [<message>]\n"
             << "\n";
 
@@ -43,7 +44,6 @@ int CmdHelpUsage ()
   // TODO continue
   // TODO define
   // TODO export
-  // TODO extension
   // TODO gaps
   // TODO help
   // TODO import
@@ -90,16 +90,16 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
                 << "The purpose of this command is to help diagnose configuration problems, and\n"
                 << "provide supplemental information when reporting a problem.\n"
                 << "\n"
-                << "See also 'extension'.\n"
+                << "See also 'extensions'.\n"
                 << "\n";
 
     // TODO export
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
-    else if (args[2] == "extension")
+    else if (args[2] == "extensions")
       std::cout << "\n"
-                << "Syntax: timew extension\n"
+                << "Syntax: timew extensions\n"
                 << "\n"
                 << "Displays the directory containing the extension programs, and a table with each\n"
                 << "of the extensions and status.\n"
