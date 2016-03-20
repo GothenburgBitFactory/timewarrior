@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (5);
+  UnitTest t (7);
 
   // std::string escape (const std::string& input, int c)
   t.is (escape ("", 'x'),    "",        "escape '','x' --> ''");
@@ -39,6 +39,10 @@ int main (int, char**)
   t.is (escape ("foo", 'f'), "\\foo",   "escape 'foo','f' --> '\\foo'");
   t.is (escape ("foo", 'o'), "f\\o\\o", "escape 'foo','o' --> 'f\\o\\o'");
   t.is (escape ("\"", '"'),  "\\\"",    "escape '\"','\"' --> '\\\"'");
+
+  // std::string quoteIfNeeded (const std::string& input)
+  t.is (quoteIfNeeded ("foo"), "foo",         "quoteIfNeeded 'foo' --> 'foo'");
+  t.is (quoteIfNeeded ("f o o"), "\"f o o\"", "quoteIfNeeded 'f o o' --> '\"f o o\"'");
 
   return 0;
 }
