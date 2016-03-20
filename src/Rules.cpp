@@ -33,6 +33,11 @@
 #include <tuple>
 #include <inttypes.h>
 
+static std::map <std::string, std::string> defaultSettings =
+{
+  {"confirmation", "yes"},
+};
+
 ////////////////////////////////////////////////////////////////////////////////
 // Nested files are supported, with the following construct:
 //   import /absolute/path/to/file
@@ -44,8 +49,7 @@ void Rules::load (const std::string& file, int nest /* = 1 */)
   // First time in, load the default values.
   if (nest == 1)
   {
-    // TODO This is where defaults would be set.
-
+    _settings = defaultSettings;
     _original_file = File (file)._data;
   }
 
