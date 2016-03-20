@@ -5,3 +5,4 @@ interval.t
 lexer.t
 lr0.t
 rules.t
+util.t
