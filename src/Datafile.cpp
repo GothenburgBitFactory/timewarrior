@@ -118,7 +118,8 @@ void Datafile::commit ()
         _file.append (std::string(""));  // Seek to end of file
 
         // Write out all the added lines.
-        _file.append (_lines_added);
+        for (auto& line : _lines_added)
+          _file.write_raw (line + "\n");
 
         _lines_added.clear ();
         _file.close ();
@@ -140,7 +141,8 @@ void Datafile::commit ()
           _file.write_raw (line + "\n");
 
         // Write out all the added lines.
-        _file.append (_lines_added);
+        for (auto& line : _lines_added)
+          _file.write_raw (line + "\n");
 
         _lines_added.clear ();
         _file.close ();
