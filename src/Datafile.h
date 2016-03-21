@@ -53,6 +53,7 @@ public:
 
 private:
   void load_lines ();
+  void load_intervals ();
 
 private:
   // File representing data.
@@ -64,6 +65,10 @@ private:
   std::vector <std::string> _lines_added      {};
   std::vector <std::string> _lines_modified   {};
   bool                      _lines_loaded     {false};
+
+  // Intervals parsed from lines.
+  std::vector <Interval>    _intervals        {};
+  bool                      _intervals_loaded {false};
 
   Datetime                  _day1             {0};
   Datetime                  _dayN             {0};

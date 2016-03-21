@@ -116,6 +116,35 @@ std::string Datafile::dump () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void Datafile::load_intervals ()
+{
+  if (! _lines_loaded)
+  {
+    load_lines ();
+
+    // Apply previously added lines.
+    for (auto& line : _lines_added)
+      _lines.push_back (line);
+  }
+
+  for (auto& line : _lines)
+  {
+    if (line[0] == 'i')
+    {
+      Interval i;
+      i.initialize (line);
+      _intervals.push_back (i);
+    }
+    else if (line[0] == 'e')
+      ;  // TODO Exclusions.
+    else
+      ;  // TODO Ignore blank lines?
+  }
+
+  _intervals_loaded = true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void Datafile::load_lines ()
 {
   if (_file.open ())
