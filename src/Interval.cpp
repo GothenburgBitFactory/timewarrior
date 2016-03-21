@@ -27,8 +27,52 @@
 #include <cmake.h>
 #include <Interval.h>
 #include <timew.h>
+#include <format.h>
 #include <Duration.h>
+#include <Lexer.h>
 #include <sstream>
+
+////////////////////////////////////////////////////////////////////////////////
+// Syntax:
+//   'inc' [ [ <iso>] [ '-' <iso> ] [ '#' <tag> [ <tag> ... ] ]]
+void Interval::initialize (const std::string& line)
+{
+  Lexer lexer (line);
+  std::vector <std::string> tokens;
+  std::string token;
+  Lexer::Type type;
+  while (lexer.token (token, type))
+    tokens.push_back (token);
+
+  if (tokens[0] == "inc" &&
+      tokens[1].length () == 16)
+  {
+    _start = Datetime (tokens[1]);
+
+    if (tokens.size () >= 4)
+    {
+      unsigned int offset = 0;
+      if (tokens[2] == "-" &&
+          tokens[3].length () == 16)
+      {
+        offset += 2;
+        _end = Datetime (tokens[3]);
+      }
+
+      if (tokens.size () >= 4 + offset &&
+          tokens[2 + offset] == "#")
+      {
+        for (unsigned int i = 3 + offset; i < tokens.size (); ++i)
+          _tags.insert (tokens[i]);
+      }
+    }
+
+    // Success;
+    return;
+  }
+
+  throw format ("Unrecognizable line '{1}'.", line);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 Datetime Interval::start () const

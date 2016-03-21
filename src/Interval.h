@@ -35,6 +35,7 @@ class Interval
 {
 public:
   Interval () = default;
+  void initialize (const std::string&);
 
   Datetime start () const;
   void start (Datetime);
