@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (16);
+  UnitTest t (24);
 
   // bool isStarted () const;
   // bool isEnded () const;
@@ -73,6 +73,39 @@ int main (int, char**)
   t.is (i3.serialize (), "inc 19700101T000001Z - 19700101T000002Z # bar foo", "Interval(Datetime(1)).serialize -> 'inc 19700101T000001Z - 19700101T000002Z # bar foo'");
   i3.tag ("Trans-Europe Express");
   t.is (i3.serialize (), "inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo", "Interval(Datetime(1)).serialize -> 'inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo'");
+
+  // Round-trip parsing.
+  Interval i4;
+  i4.initialize ("inc");
+  t.is (i4.serialize (), "inc", "Round-trip 'inc'");
+
+  Interval i5;
+  i5.initialize ("inc # foo");
+  t.is (i5.serialize (), "inc # foo", "Round-trip 'inc # foo'");
+
+  Interval i6;
+  i6.initialize ("inc # bar foo");
+  t.is (i6.serialize (), "inc # bar foo", "Round-trip 'inc # bar foo'");
+
+  Interval i7;
+  i7.initialize ("inc 19700101T000001Z");
+  t.is (i7.serialize (), "inc 19700101T000001Z", "Round-trip 'inc 19700101T000001Z'");
+
+  Interval i8;
+  i8.initialize ("inc 19700101T000001Z - 19700101T000002Z");
+  t.is (i8.serialize (), "inc 19700101T000001Z - 19700101T000002Z", "Round-trip 'inc 19700101T000001Z - 19700101T000002Z'");
+
+  Interval i9;
+  i9.initialize ("inc 19700101T000001Z # bar foo");
+  t.is (i9.serialize (), "inc 19700101T000001Z # bar foo", "Round-trip 'inc 19700101T000001Z # bar foo'");
+
+  Interval i10;
+  i10.initialize ("inc 19700101T000001Z - 19700101T000002Z # bar foo");
+  t.is (i10.serialize (), "inc 19700101T000001Z - 19700101T000002Z # bar foo", "Round-trip 'inc 19700101T000001Z - 19700101T000002Z # bar foo'");
+
+  Interval i11;
+  i11.initialize ("inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo");
+  t.is (i11.serialize (), "inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo", "Round-trip 'inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo'");
 
   return 0;
 }
