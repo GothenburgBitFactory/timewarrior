@@ -68,8 +68,10 @@ std::vector <Interval> Datafile::getAllIntervalsSince (Datetime)
 ////////////////////////////////////////////////////////////////////////////////
 std::vector <Interval> Datafile::getAllIntervals ()
 {
-  // TODO Load data
-  return {};
+  if (! _intervals_loaded)
+    load_intervals ();
+
+  return _intervals;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
