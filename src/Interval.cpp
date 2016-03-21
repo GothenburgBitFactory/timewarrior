@@ -162,7 +162,7 @@ std::string Interval::summarize () const
     // TODO Colorize tags.
     if (_tags.size ())
     {
-      out << ", using tags";
+      out << ", using tags:";
       for (auto& tag : _tags)
         out << ' ' << quoteIfNeeded (tag);
     }
