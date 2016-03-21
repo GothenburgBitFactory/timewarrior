@@ -7,10 +7,11 @@
 - Added 'extensions' command.
 - Added 'help' command.
 - Added 'log' command.
+- Added 'start' command.
+- Added 'stop' command.
 - Integrated libshared.git.
 
-
-Design completed 2015-12-XX
+Design completed 2016-03-13
 Project started  2015-11-29
 
 ------ current release ---------------------------
