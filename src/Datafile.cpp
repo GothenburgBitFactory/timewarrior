@@ -103,9 +103,50 @@ void Datafile::modifyInterval (const Interval& interval)
 ////////////////////////////////////////////////////////////////////////////////
 void Datafile::commit ()
 {
+  // The _dirty flag indicates that the file needs to be written.
   if (_dirty)
   {
+    // Special case: added but no modified means just append to the file.
+    if (! _lines_modified.size () &&
+        _lines_added.size ())
+    {
+      if (_file.open ())
+      {
+        _file.lock ();
 
+        // Write out all the added intervals.
+        _file.append (std::string(""));  // Seek to end of file
+
+        // Write out all the added lines.
+        _file.append (_lines_added);
+
+        _lines_added.clear ();
+        _file.close ();
+
+        _dirty = false;
+      }
+    }
+    else
+    {
+      if (_file.open ())
+      {
+        _file.lock ();
+
+        // Truncate the file and rewrite.
+        _file.truncate ();
+
+        _file.append (std::string(""));  // Seek to end of file
+        for (auto& line : _lines)
+          _file.write_raw (line + "\n");
+
+        // Write out all the added lines.
+        _file.append (_lines_added);
+
+        _lines_added.clear ();
+        _file.close ();
+        _dirty = false;
+      }
+    }
 
     _dirty = false;
   }
