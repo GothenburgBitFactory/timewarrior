@@ -107,8 +107,17 @@ void Datafile::addInterval (const Interval& interval)
 ////////////////////////////////////////////////////////////////////////////////
 void Datafile::modifyInterval (const Interval& interval)
 {
-  _lines_modified.push_back (interval.serialize ());
-  _dirty = true;
+  for (auto& i : _intervals)
+  {
+    if (i.start () == interval.start () &&
+        i.tags () == interval.tags ())
+    {
+      i = interval;
+      _dirty = true;
+      _lines_modified = true;
+      break;
+    }
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -118,8 +127,8 @@ void Datafile::commit ()
   if (_dirty)
   {
     // Special case: added but no modified means just append to the file.
-    if (! _lines_modified.size () &&
-        _lines_added.size ())
+    if (_lines_added.size () &&
+        ! _lines_modified)
     {
       if (_file.open ())
       {
@@ -147,9 +156,10 @@ void Datafile::commit ()
         // Truncate the file and rewrite.
         _file.truncate ();
 
+        // Rewrite all the intervals, because at least one was modified.
         _file.append (std::string(""));  // Seek to end of file
-        for (auto& line : _lines)
-          _file.write_raw (line + "\n");
+        for (auto& interval : _intervals)
+          _file.write_raw (interval.serialize () + "\n");
 
         // Write out all the added lines.
         for (auto& line : _lines_added)

@@ -63,7 +63,7 @@ private:
   // Lines read from file, not parsed.
   std::vector <std::string> _lines            {};
   std::vector <std::string> _lines_added      {};
-  std::vector <std::string> _lines_modified   {};
+  bool                      _lines_modified   {false};
   bool                      _lines_loaded     {false};
 
   // Intervals parsed from lines.
