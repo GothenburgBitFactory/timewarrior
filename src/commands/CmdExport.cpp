@@ -31,12 +31,27 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdExport (Database& database)
 {
-  std::cout << "[export: JSON data export]\n";
+  // Load all data.
+  auto intervals = database.getAllIntervals ();
 
-  // TODO Load all data.
   // TODO Apply filter.
-  // TODO Compose JSON.
 
+  // Compose JSON.
+  std::cout << "[\n";
+  int counter = 0;
+  for (auto& interval : intervals)
+  {
+    if (counter)
+      std::cout << ",\n";
+
+    std::cout << interval.json ();
+    ++counter;
+  }
+
+  if (intervals.size ())
+    std::cout << "\n";
+
+  std::cout << "]\n";
   return 0;
 }
 
