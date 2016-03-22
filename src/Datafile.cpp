@@ -65,9 +65,20 @@ Interval Datafile::getLatestInterval ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> Datafile::getAllIntervalsSince (Datetime)
+std::vector <Interval> Datafile::getAllIntervalsSince (Datetime when)
 {
-  // TODO Load data
+  if (when >= _day1 && when <= _dayN)
+  {
+    if (! _intervals_loaded)
+      load_intervals ();
+
+    // Rely on intervals being sorted by start time.
+    std::vector <Interval>::iterator i;
+    for (i = _intervals.begin (); i != _intervals.end (); i++)
+      if (i->start () >= when)
+        return std::vector <Interval> (i, _intervals.end ());
+  }
+
   return {};
 }
 
