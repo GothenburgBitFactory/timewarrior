@@ -20,6 +20,10 @@ When run with no arguments, the default command is run, which indicates whether
 there is any active tracking, and if so, shows a summary.
 
 .TP
+.B timew continue
+Resumes tracking the most recently closed interval. See also 'start', 'stop'.
+
+.TP
 .B timew diagnostics
 This command shows details about your version of Timewarrior, platform, how it
 was built, compiler features, configuration, file access, extensions and more.
@@ -49,11 +53,11 @@ and 'Home & Garden'), the second of which requires quotes.
 
   $ timew start weekend 'Home & Garden'
 
-Quotes are harmless if used every time. See also 'stop', 'track'.
+Quotes are harmless if used every time. See also 'continue', 'stop', 'track'.
 
 .TP
 .B timew stop
-Stops tracking time.  See also 'start', 'track'.
+Stops tracking time.  See also 'continue', 'start', 'track'.
 
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS
 Timewarrior stores its configuration in a file in the user's home directory:
