@@ -224,7 +224,7 @@ int dispatchCommand (
   }
   else if (args.size () == 1)
   {
-    status = CmdDefault ();
+    status = CmdDefault (rules, database);
   }
 
   return status;

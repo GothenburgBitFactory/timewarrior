@@ -37,7 +37,7 @@
 int CmdClear       (                                                                      );
 int CmdConfig      (                                                                      );
 int CmdContinue    (                                                                      );
-int CmdDefault     (                                                                      );
+int CmdDefault     (                                  Rules&, Database&                   );
 int CmdDefine      (                                  Rules&                              );
 int CmdDiagnostics (                                  Rules&, Database&, Extensions&, Log&);
 int CmdExport      (                                                                      );
