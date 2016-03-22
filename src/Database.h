@@ -38,6 +38,7 @@ public:
   Database () = default;
   void initialize (const std::string&);
   void commit ();
+  std::vector <std::string> files () const;
 
   Interval getLatestInterval ();
   std::vector <Interval> getAllIntervals ();

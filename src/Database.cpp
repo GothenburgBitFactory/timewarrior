@@ -74,6 +74,16 @@ void Database::commit ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::vector <std::string> Database::files () const
+{
+  std::vector <std::string> all;
+  for (auto& file : _files)
+    all.push_back (file.name ());
+
+  return all;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 Interval Database::getLatestInterval ()
 {
   return _files[0].getLatestInterval ();
