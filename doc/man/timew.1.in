@@ -27,6 +27,10 @@ The purpose of this command is to help diagnose configuration problems, and
 provide supplemental information when reporting a problem. See also 'extensions'.
 
 .TP
+.B timew export
+Exports all the tracked time in JSON format. See also 'import'.
+
+.TP
 .B timew extensions
 Displays the directory containing the extension programs, and a table showing
 each extention and its status. See also 'diagnostics'.
