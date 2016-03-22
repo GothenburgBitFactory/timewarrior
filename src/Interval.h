@@ -51,6 +51,7 @@ public:
 
   std::string summarize () const;
   std::string serialize () const;
+  std::string json () const;
   std::string dump () const;
 
 private:
