@@ -40,7 +40,6 @@ public:
   std::string name () const;
 
   Interval getLatestInterval ();
-  std::vector <Interval> getAllIntervalsSince (Datetime);
   std::vector <Interval> getAllIntervals ();
 
   void addExclusion (const std::string&);
