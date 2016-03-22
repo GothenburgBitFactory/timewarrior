@@ -40,7 +40,7 @@ int CmdContinue    (                                                            
 int CmdDefault     (                                  Rules&, Database&                   );
 int CmdDefine      (                                  Rules&                              );
 int CmdDiagnostics (                                  Rules&, Database&, Extensions&, Log&);
-int CmdExport      (                                                                      );
+int CmdExport      (                                          Database&                   );
 int CmdExtensions  (                                  Rules&,            Extensions&      );
 int CmdGaps        (                                                                      );
 int CmdHelpUsage   (                                                                      );

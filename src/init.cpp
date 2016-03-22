@@ -195,7 +195,7 @@ int dispatchCommand (
       else if (closeEnough (allCommands[2],  args[1], 2)) status = CmdContinue    (                                      );
       else if (closeEnough (allCommands[3],  args[1], 2)) status = CmdDefine      (      rules                           );
       else if (closeEnough (allCommands[4],  args[1], 2)) status = CmdDiagnostics (      rules, database, extensions, log);
-      else if (closeEnough (allCommands[5],  args[1], 2)) status = CmdExport      (                                      );
+      else if (closeEnough (allCommands[5],  args[1], 2)) status = CmdExport      (             database                 );
       else if (closeEnough (allCommands[6],  args[1], 2)) status = CmdExtensions  (      rules,           extensions     );
       else if (closeEnough (allCommands[7],  args[1], 2)) status = CmdGaps        (                                      );
       else if (closeEnough (allCommands[8],  args[1], 2)) status = CmdHelp        (args,                              log);
