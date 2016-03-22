@@ -135,6 +135,9 @@ int CmdDiagnostics (Rules& rules, Database& database, Extensions& extensions, Lo
       << rules.get ("db") << "/data"
       << "\n";
 
+  for (auto& file : database.files ())
+    out << "                 " << file << "\n";
+
   // Determine rc.editor/$EDITOR/$VISUAL.
   char* peditor;
   if ((peditor = getenv ("VISUAL")) != NULL)
