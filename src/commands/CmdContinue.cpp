@@ -33,11 +33,30 @@ int CmdContinue (
   Database& database,
   Log& log)
 {
-  std::cout << "[continue: allows resuming a stopped interval]\n";
+  // Load the most recent interval.
+  auto latest = database.getLatestInterval ();
 
-  // TODO Extract most recent interval.
-  // TODO Verify the most recent interval is closed.
-  // TODO Open an identical interval.
+  // Verify the most recent interval is closed.
+  if (latest.isStarted () &&
+      latest.isEnded ())
+  {
+    // Open an identical interval.
+    latest.start ({});
+    latest.end ({0});
+
+    // Update database.
+    database.addInterval (latest);
+    log.write ("debug", std::string ("Continued tracking: ") + latest.serialize ());
+
+    // User feedback.
+    std::cout << latest.summarize ();
+  }
+  else
+  {
+    std::string message = "There is already active tracking.";
+    std::cout << message << "\n";
+    log.write ("warning", message);
+  }
 
   return 0;
 }
