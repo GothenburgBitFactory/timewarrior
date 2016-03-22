@@ -32,7 +32,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdStart (
   const std::vector <std::string>& args,
-  Rules& rules,
   Database& database,
   Log& log)
 {
