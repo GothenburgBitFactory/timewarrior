@@ -3,7 +3,9 @@
 
 0.1.0 () -
 
+- Added 'continue' command.
 - Added 'diagnostics' command.
+- Added 'export' command.
 - Added 'extensions' command.
 - Added 'help' command.
 - Added 'log' command.
