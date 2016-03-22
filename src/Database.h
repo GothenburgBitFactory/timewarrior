@@ -40,6 +40,7 @@ public:
   void commit ();
 
   Interval getLatestInterval ();
+  std::vector <Interval> getAllIntervals ();
 
   void addExclusion (const std::string&);
   void addInterval (const Interval&);

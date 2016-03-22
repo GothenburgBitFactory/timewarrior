@@ -28,6 +28,7 @@
 #include <Database.h>
 #include <FS.h>
 #include <sstream>
+#include <iterator>
 #include <iomanip>
 #include <ctime>
 
@@ -76,6 +77,21 @@ void Database::commit ()
 Interval Database::getLatestInterval ()
 {
   return _files[0].getLatestInterval ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector <Interval> Database::getAllIntervals ()
+{
+  std::vector <Interval> all;
+  for (auto& file : _files)
+  {
+    auto i = file.getAllIntervals ();
+    all.insert (all.end (),
+                std::make_move_iterator (i.begin ()),
+                std::make_move_iterator (i.end ()));
+  }
+
+  return all;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
