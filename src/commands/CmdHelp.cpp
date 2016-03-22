@@ -35,6 +35,7 @@ int CmdHelpUsage ()
   std::cout << "\n"
             << "Usage: timew [--version]\n"
             << "       timew diagnostics\n"
+            << "       timew export\n"
             << "       timew extensions\n"
             << "       timew log [<message>]\n"
             << "       timew start [<tag> ...]\n"
@@ -45,7 +46,6 @@ int CmdHelpUsage ()
   // TODO config
   // TODO continue
   // TODO define
-  // TODO export
   // TODO gaps
   // TODO help
   // TODO import
@@ -93,7 +93,16 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
                 << "See also 'extensions'.\n"
                 << "\n";
 
-    // TODO export
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (args[2] == "export")
+      std::cout << "\n"
+                << "Syntax: timew export\n"
+                << "\n"
+                << "Exports all the tracked time in JSON format.\n"
+                << "\n"
+                << "See also 'import'.\n"
+                << "\n";
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
