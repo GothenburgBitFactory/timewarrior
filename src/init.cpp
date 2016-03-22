@@ -192,7 +192,7 @@ int dispatchCommand (
       // command to fn mapping.
            if (closeEnough (allCommands[0],  args[1], 2)) status = CmdClear       (                                      );
       else if (closeEnough (allCommands[1],  args[1], 2)) status = CmdConfig      (                                      );
-      else if (closeEnough (allCommands[2],  args[1], 2)) status = CmdContinue    (                                      );
+      else if (closeEnough (allCommands[2],  args[1], 2)) status = CmdContinue    (             database,             log);
       else if (closeEnough (allCommands[3],  args[1], 2)) status = CmdDefine      (      rules                           );
       else if (closeEnough (allCommands[4],  args[1], 2)) status = CmdDiagnostics (      rules, database, extensions, log);
       else if (closeEnough (allCommands[5],  args[1], 2)) status = CmdExport      (             database                 );

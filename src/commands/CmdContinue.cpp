@@ -25,10 +25,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <commands.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdContinue ()
+int CmdContinue (
+  Database& database,
+  Log& log)
 {
   std::cout << "[continue: allows resuming a stopped interval]\n";
 
