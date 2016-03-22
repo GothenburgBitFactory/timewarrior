@@ -34,6 +34,7 @@ int CmdHelpUsage ()
   // TODO This is going to need formatting.
   std::cout << "\n"
             << "Usage: timew [--version]\n"
+            << "       timew continue\n"
             << "       timew diagnostics\n"
             << "       timew export\n"
             << "       timew extensions\n"
@@ -44,7 +45,6 @@ int CmdHelpUsage ()
 
   // TODO clear
   // TODO config
-  // TODO continue
   // TODO define
   // TODO gaps
   // TODO help
@@ -75,12 +75,22 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
   {
     // TODO clear
     // TODO config
-    // TODO continue
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    if (args[2] == "continue")
+      std::cout << "\n"
+                << "Syntax: timew continue\n"
+                << "\n"
+                << "Resumes tracking the most recently closed interval.\n"
+                << "\n"
+                << "See also 'start', 'stop'.\n"
+                << "\n";
     // TODO define
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
-    if (args[2] == "diagnostics")
+    else if (args[2] == "diagnostics")
       std::cout << "\n"
                 << "Syntax: timew diagnostics\n"
                 << "\n"
@@ -151,7 +161,7 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
                 << "\n"
                 << "Quotes are harmless if used every time.\n"
                 << "\n"
-                << "See also 'stop', 'track'.\n"
+                << "See also 'continue', 'stop', 'track'.\n"
                 << "\n";
 
     // Ruler                 1         2         3         4         5         6         7         8
@@ -162,7 +172,7 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
                 << "\n"
                 << "Stops tracking time.\n"
                 << "\n"
-                << "See also 'start', 'track'.\n"
+                << "See also 'continue', 'start', 'track'.\n"
                 << "\n";
 
     // TODO tags
