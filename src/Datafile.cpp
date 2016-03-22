@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Datafile.h>
+#include <format.h>
 #include <sstream>
 #include <stdlib.h>
 
@@ -146,6 +147,8 @@ void Datafile::commit ()
 
         _dirty = false;
       }
+      else
+        throw format ("Could not write to data file {1}", _file._data);
     }
     else
     {
@@ -169,6 +172,8 @@ void Datafile::commit ()
         _file.close ();
         _dirty = false;
       }
+      else
+        throw format ("Could not write to data file {1}", _file._data);
     }
 
     _dirty = false;
