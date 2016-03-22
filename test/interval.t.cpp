@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (24);
+  UnitTest t (32);
 
   // bool isStarted () const;
   // bool isEnded () const;
@@ -76,36 +76,85 @@ int main (int, char**)
 
   // Round-trip parsing.
   Interval i4;
-  i4.initialize ("inc");
-  t.is (i4.serialize (), "inc", "Round-trip 'inc'");
+  i4.initialize (        "inc");
+  t.is (i4.serialize (), "inc",
+             "Round-trip 'inc'");
 
   Interval i5;
-  i5.initialize ("inc # foo");
-  t.is (i5.serialize (), "inc # foo", "Round-trip 'inc # foo'");
+  i5.initialize (        "inc # foo");
+  t.is (i5.serialize (), "inc # foo",
+             "Round-trip 'inc # foo'");
 
   Interval i6;
-  i6.initialize ("inc # bar foo");
-  t.is (i6.serialize (), "inc # bar foo", "Round-trip 'inc # bar foo'");
+  i6.initialize (        "inc # bar foo");
+  t.is (i6.serialize (), "inc # bar foo",
+             "Round-trip 'inc # bar foo'");
 
   Interval i7;
-  i7.initialize ("inc 19700101T000001Z");
-  t.is (i7.serialize (), "inc 19700101T000001Z", "Round-trip 'inc 19700101T000001Z'");
+  i7.initialize (        "inc 19700101T000001Z");
+  t.is (i7.serialize (), "inc 19700101T000001Z",
+             "Round-trip 'inc 19700101T000001Z'");
 
   Interval i8;
-  i8.initialize ("inc 19700101T000001Z - 19700101T000002Z");
-  t.is (i8.serialize (), "inc 19700101T000001Z - 19700101T000002Z", "Round-trip 'inc 19700101T000001Z - 19700101T000002Z'");
+  i8.initialize (        "inc 19700101T000001Z - 19700101T000002Z");
+  t.is (i8.serialize (), "inc 19700101T000001Z - 19700101T000002Z",
+             "Round-trip 'inc 19700101T000001Z - 19700101T000002Z'");
 
   Interval i9;
-  i9.initialize ("inc 19700101T000001Z # bar foo");
-  t.is (i9.serialize (), "inc 19700101T000001Z # bar foo", "Round-trip 'inc 19700101T000001Z # bar foo'");
+  i9.initialize (        "inc 19700101T000001Z # bar foo");
+  t.is (i9.serialize (), "inc 19700101T000001Z # bar foo",
+             "Round-trip 'inc 19700101T000001Z # bar foo'");
 
   Interval i10;
-  i10.initialize ("inc 19700101T000001Z - 19700101T000002Z # bar foo");
-  t.is (i10.serialize (), "inc 19700101T000001Z - 19700101T000002Z # bar foo", "Round-trip 'inc 19700101T000001Z - 19700101T000002Z # bar foo'");
+  i10.initialize (        "inc 19700101T000001Z - 19700101T000002Z # bar foo");
+  t.is (i10.serialize (), "inc 19700101T000001Z - 19700101T000002Z # bar foo",
+              "Round-trip 'inc 19700101T000001Z - 19700101T000002Z # bar foo'");
 
   Interval i11;
-  i11.initialize ("inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo");
-  t.is (i11.serialize (), "inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo", "Round-trip 'inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo'");
+  i11.initialize (        "inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo");
+  t.is (i11.serialize (), "inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo",
+              "Round-trip 'inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo'");
+
+  // std::string json () const;
+  Interval i12;
+  i12.initialize (   "inc");
+  t.is (i12.json (), "{\"type\":\"inc\"}",
+               "JSON '{\"type\":\"inc\"}'");
+
+  Interval i13;
+  i13.initialize (   "inc # foo");
+  t.is (i13.json (), "{\"type\":\"inc\",\"tags\":[\"foo\"]}",
+               "JSON '{\"type\":\"inc\",\"tags\":[\"foo\"]}'");
+
+  Interval i14;
+  i14.initialize (   "inc # bar foo");
+  t.is (i14.json (), "{\"type\":\"inc\",\"tags\":[\"bar\",\"foo\"]}",
+               "JSON '{\"type\":\"inc\",\"tags\":[\"bar\",\"foo\"]}'");
+
+  Interval i15;
+  i15.initialize (   "inc 19700101T000001Z");
+  t.is (i15.json (), "{\"type\":\"inc\",\"start\":\"19700101T000001Z\"}",
+               "JSON '{\"type\":\"inc\",\"start\":\"19700101T000001Z\"}'");
+
+  Interval i16;
+  i16.initialize (   "inc 19700101T000001Z - 19700101T000002Z");
+  t.is (i16.json (), "{\"type\":\"inc\",\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\"}",
+               "JSON '{\"type\":\"inc\",\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\"}'");
+
+  Interval i17;
+  i17.initialize (   "inc 19700101T000001Z # bar foo");
+  t.is (i17.json (), "{\"type\":\"inc\",\"start\":\"19700101T000001Z\",\"tags\":[\"bar\",\"foo\"]}",
+               "JSON '{\"type\":\"inc\",\"start\":\"19700101T000001Z\",\"tags\":[\"bar\",\"foo\"]}'");
+
+  Interval i18;
+  i18.initialize (   "inc 19700101T000001Z - 19700101T000002Z # bar foo");
+  t.is (i18.json (), "{\"type\":\"inc\",\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"bar\",\"foo\"]}",
+               "JSON '{\"type\":\"inc\",\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"bar\",\"foo\"]}'");
+
+  Interval i19;
+  i19.initialize (   "inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo");
+  t.is (i19.json (), "{\"type\":\"inc\",\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"Trans-Europe Express\",\"bar\",\"foo\"]}",
+               "JSON '{\"type\":\"inc\",\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"Trans-Europe Express\",\"bar\",\"foo\"]}'");
 
   return 0;
 }
