@@ -145,8 +145,9 @@ std::string Interval::summarize () const
           << _start.toISOLocalExtended ()
           << " to "
           << _end.toISOLocalExtended ()
-          << ", length "
-          << dur.format ();
+          << " ("
+          << dur.format ()
+          << ")";
     }
     else
     {
@@ -155,14 +156,15 @@ std::string Interval::summarize () const
           << _start.toISOLocalExtended ();
 
       if (dur.toTime_t () > 10)
-        out << ", length "
-            << dur.format ();
+        out << " ("
+            << dur.format ()
+            << ")";
     }
 
     // TODO Colorize tags.
     if (_tags.size ())
     {
-      out << ", using tags:";
+      out << ", tagged:";
       for (auto& tag : _tags)
         out << ' ' << quoteIfNeeded (tag);
     }
