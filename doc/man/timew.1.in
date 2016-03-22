@@ -15,6 +15,11 @@ your time spent on projects, and generate summary reports.
 Timewarrior supports many commands.
 
 .TP
+.B timew
+When run with no arguments, the default command is run, which indicates whether
+there is any active tracking, and if so, shows a summary.
+
+.TP
 .B timew diagnostics
 This command shows details about your version of Timewarrior, platform, how it
 was built, compiler features, configuration, file access, extensions and more.
