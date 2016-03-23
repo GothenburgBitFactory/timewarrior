@@ -274,6 +274,37 @@ void Rules::parse (const std::string& input, int nest /* = 1 */)
 ////////////////////////////////////////////////////////////////////////////////
 void Rules::parseRule (const std::string& input)
 {
+  // Break the rule def into lines.
+  auto lines = split (input, '\n');
+
+  // Tokenize the first line.
+  std::vector <std::string> tokens;
+  std::string token;
+  Lexer::Type type;
+  Lexer lexer (lines[0]);
+  while (lexer.token (token, type))
+    tokens.push_back (token);
+
+  // Based on the tokens of the first line, determine which rule ﬆype needs to
+  // be parsed.
+  if (tokens.size () >= 2 &&
+      tokens[0] == "define")
+  {
+    // define rule xxx:
+    if (tokens.size () == 3 &&
+        tokens[1] == "rule" &&
+        tokens[2][tokens[2].length() - 1] == ':')
+      parseRuleGeneral (lines);
+
+    // define theme:
+    else if (tokens.size () == 2 &&
+             tokens[1] == "theme:")
+      parseRuleTheme (lines);
+
+    // Error.
+    else
+      throw format ("Unrecognized rule type '{1}'", join (" ", tokens));
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
