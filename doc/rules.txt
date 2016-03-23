@@ -50,10 +50,10 @@ defines all exclusions:
 There is a rule that contains all the general configuration data:
 
   define configuration:
-    name1 value1
+    name1 = value1
     group1:
       group2:
-        name2 value2
+        name2 = value2
 
 There are general rules triggered by changes to the data:
 
@@ -101,13 +101,13 @@ Possible exclusions include:
 Yielding:
 
   define exclusions:
-    holidays eng-USA
-    work 2015-11-26
-    week mon,tue,wed,thu,fri
+    holidays = eng-USA
+    work = 2015-11-26
+    week = mon,tue,wed,thu,fri
     day:
-      start 8:30am
-      end 1730
-      tue end 3pm
+      start = 8:30am
+      end = 1730
+      tue = end 3pm
 
 If you want to track your lunch breaks, then you would make a tag for it, and
 track it like any other project. If you do not want to track that time, add an
@@ -135,12 +135,12 @@ A defined tag is a way to associate metadata with a tag, such as a description
 and start/end dates for use:
 
   define tag "tag1":
-    description "Description of tag1"
-    start       2016-01-01
-    end         2016-06-30
-    budget      20 hours per week
-    budget      400 hours total
-    overlap     yes
+    description = "Description of tag1"
+    start       = 2016-01-01
+    end         = 2016-06-30
+    budget      = 20 hours per week
+    budget      = 400 hours total
+    overlap     = yes
 
 
 Rule Type: Configuration
@@ -149,10 +149,10 @@ Configuration settings are stored in the 'configuration' rule, which uses a
 hierarchy for grouping:
 
   define configuration:
-    name1 value1
+    name1 = value1
     group1:
       group2:
-        name2=value2
+        name2 = value2
 
 In the example, value2 can be referred to by it's normalized name
 'group1.group2.name2'.
@@ -161,30 +161,30 @@ An example is logging:
 
   define configuration:
     logging:
-      file=/path/to/log/file
-      categories=a b c !d
+      file = /path/to/log/file
+      categories = a b c !d
 
 Initially, all settings are stored as simple name/value pairs at the top level
 of the configuration files:
 
-  name=value
+  name = value
 
 The hierarchy and 'configuration' rule will suupercede these.
 
 
-Rule Type: Color Theme
+Rule Type: Theme
 ----------------------
 A color theme is defined by a rule, and consists of color definitions for
 various report and feedback elements:
 
-  define color-theme:
-    description "A monochrome, 256-color theme"
+  define theme:
+    description = "A monochrome, 256-color theme"
     color:
-      today "black on rgb521"
+      today = "black on rgb521"
       ...
     palette:
-      1 "white on red"
-      2 "white on blue"
+      color1 = "white on red"
+      color2 = "white on blue"
       ...
 
 The palette group is a list (more is better) of themed colors for use when auto-
