@@ -41,6 +41,7 @@ int CmdHelpUsage ()
             << "       timew log [<message>]\n"
             << "       timew start [<tag> ...]\n"
             << "       timew stop\n"
+            << "       timew tags\n"
             << "\n";
 
   // TODO clear
@@ -175,7 +176,15 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
                 << "See also 'continue', 'start', 'track'.\n"
                 << "\n";
 
-    // TODO tags
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (args[2] == "tags")
+      std::cout << "\n"
+                << "Syntax: timew tags\n"
+                << "\n"
+                << "Displays all the tags that have been used.\n"
+                << "\n";
+
     // TODO track
     // TODO undo
 
