@@ -201,13 +201,17 @@ std::string Interval::serialize () const
 std::string Interval::json () const
 {
   std::stringstream out;
-  out << "{";
+  out << '{';
 
   if (_start.toEpoch ())
     out << "\"start\":\"" << _start.toISO () << "\"";
 
   if (_end.toEpoch ())
-    out << ",\"end\":\"" << _end.toISO () << "\"";
+  {
+    if (_start.toEpoch ())
+      out << ',';
+    out << "\"end\":\"" << _end.toISO () << "\"";
+  }
 
   if (_tags.size ())
   {
@@ -215,14 +219,18 @@ std::string Interval::json () const
     for (auto& tag : _tags)
     {
       if (tags[0])
-        tags += ",";
+        tags += ',';
 
       tags += "\"" + tag + "\"";
     }
 
-    out << ",\"tags\":["
+    if (_start.toEpoch () ||
+        _end.toEpoch ())
+      out << ',';
+
+    out << "\"tags\":["
         << tags
-        << "]";
+        << ']';
   }
 
   out << "}";
