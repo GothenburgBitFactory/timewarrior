@@ -26,25 +26,26 @@
 
 #include <cmake.h>
 #include <commands.h>
+#include <algorithm>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdTags (Database& database, Log& log)
 {
-  std::cout << "[tags: enumerate tags in use]\n";
-
-  // TODO Enumerate all data files.
-  // TODO For each data file.
-  //   TODO For each inclusion.
-  //     TODO Extract tags.
-  //     TODO Add tags to unique set.
+  // Generate a unique, ordered list of tags.
+  std::vector <std::string> tags;
+  for (auto& interval : database.getAllIntervals ())
+    for (auto& tag : interval.tags ())
+      if (std::find (tags.begin (), tags.end (), tag) == tags.end ())
+        tags.push_back (tag);
 
   // TODO Determine sort order - most recent first?
   // TODO Determine sort order - most common first?
 
-  // TODO For each tag in set.
-  //   TODO Load metadata.
-  //   TODO Display.
+  // Shows all tags.
+  // TODO Show all tag metadata.
+  for (auto& tag : tags)
+    std::cout << tag << "\n";
 
   return 0;
 }
