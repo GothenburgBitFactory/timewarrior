@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <Database.h>
 #include <FS.h>
+#include <algorithm>
 #include <sstream>
 #include <iterator>
 #include <iomanip>
@@ -36,29 +37,29 @@
 void Database::initialize (const std::string& location)
 {
   _location = location;
-
-  // _data_files[0] is always the current file.
   _current = currentDataFile ();
-  Datafile currentFile;
-  currentFile.initialize (_current);
-  _files.push_back (currentFile);
 
+  // Because the data files have names YYYY-MM.data, sorting them by name also
+  // sorts by the intervals within.
   Directory d (_location);
-  for (const auto& file : d.list ())
+  auto files = d.list ();
+  std::sort (files.begin (), files.end ());
+
+  // Ensure the list always contains the name of the current file, even if it
+  // does not exist.
+  if (std::find (files.begin (), files.end (), _current) == files.end ())
+    files.push_back (_current);
+
+  for (auto& file : files)
   {
-    if (1 /* TODO looks like one of our data files */)
+    // If it looks like a data file.
+    if (file.find (".data") == file.length () - 5)
     {
-      // Don't add the current file twice.
-      if (file != _current)
-      {
-        Datafile oldFile;
-        oldFile.initialize (file);
-        _files.push_back (oldFile);
-      }
+      Datafile df;
+      df.initialize (file);
+      _files.push_back (df);
     }
   }
-
-  // TODO If there is no data file named YYYY—MM.data, then create it.
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -86,7 +87,7 @@ std::vector <std::string> Database::files () const
 ////////////////////////////////////////////////////////////////////////////////
 Interval Database::getLatestInterval ()
 {
-  return _files[0].getLatestInterval ();
+  return _files.back ().getLatestInterval ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -107,21 +108,21 @@ std::vector <Interval> Database::getAllIntervals ()
 ////////////////////////////////////////////////////////////////////////////////
 void Database::addExclusion (const std::string& exclusion)
 {
-  _files[0].addExclusion (exclusion);
+  _files.back ().addExclusion (exclusion);
   _dirty = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Database::addInterval (const Interval& interval)
 {
-  _files[0].addInterval (interval);
+  _files.back ().addInterval (interval);
   _dirty = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Database::modifyInterval (const Interval& interval)
 {
-  _files[0].modifyInterval (interval);
+  _files.back ().modifyInterval (interval);
   _dirty = true;
 }
 
