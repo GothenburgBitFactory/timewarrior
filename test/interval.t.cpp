@@ -118,43 +118,43 @@ int main (int, char**)
   // std::string json () const;
   Interval i12;
   i12.initialize (   "inc");
-  t.is (i12.json (), "{\"type\":\"inc\"}",
-               "JSON '{\"type\":\"inc\"}'");
+  t.is (i12.json (), "{}",
+               "JSON '{}'");
 
   Interval i13;
   i13.initialize (   "inc # foo");
-  t.is (i13.json (), "{\"type\":\"inc\",\"tags\":[\"foo\"]}",
-               "JSON '{\"type\":\"inc\",\"tags\":[\"foo\"]}'");
+  t.is (i13.json (), "{\"tags\":[\"foo\"]}",
+               "JSON '{\"tags\":[\"foo\"]}'");
 
   Interval i14;
   i14.initialize (   "inc # bar foo");
-  t.is (i14.json (), "{\"type\":\"inc\",\"tags\":[\"bar\",\"foo\"]}",
-               "JSON '{\"type\":\"inc\",\"tags\":[\"bar\",\"foo\"]}'");
+  t.is (i14.json (), "{\"tags\":[\"bar\",\"foo\"]}",
+               "JSON '{\"tags\":[\"bar\",\"foo\"]}'");
 
   Interval i15;
   i15.initialize (   "inc 19700101T000001Z");
-  t.is (i15.json (), "{\"type\":\"inc\",\"start\":\"19700101T000001Z\"}",
-               "JSON '{\"type\":\"inc\",\"start\":\"19700101T000001Z\"}'");
+  t.is (i15.json (), "{\"start\":\"19700101T000001Z\"}",
+               "JSON '{\"start\":\"19700101T000001Z\"}'");
 
   Interval i16;
   i16.initialize (   "inc 19700101T000001Z - 19700101T000002Z");
-  t.is (i16.json (), "{\"type\":\"inc\",\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\"}",
-               "JSON '{\"type\":\"inc\",\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\"}'");
+  t.is (i16.json (), "{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\"}",
+               "JSON '{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\"}'");
 
   Interval i17;
   i17.initialize (   "inc 19700101T000001Z # bar foo");
-  t.is (i17.json (), "{\"type\":\"inc\",\"start\":\"19700101T000001Z\",\"tags\":[\"bar\",\"foo\"]}",
-               "JSON '{\"type\":\"inc\",\"start\":\"19700101T000001Z\",\"tags\":[\"bar\",\"foo\"]}'");
+  t.is (i17.json (), "{\"start\":\"19700101T000001Z\",\"tags\":[\"bar\",\"foo\"]}",
+               "JSON '{\"start\":\"19700101T000001Z\",\"tags\":[\"bar\",\"foo\"]}'");
 
   Interval i18;
   i18.initialize (   "inc 19700101T000001Z - 19700101T000002Z # bar foo");
-  t.is (i18.json (), "{\"type\":\"inc\",\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"bar\",\"foo\"]}",
-               "JSON '{\"type\":\"inc\",\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"bar\",\"foo\"]}'");
+  t.is (i18.json (), "{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"bar\",\"foo\"]}",
+               "JSON '{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"bar\",\"foo\"]}'");
 
   Interval i19;
   i19.initialize (   "inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo");
-  t.is (i19.json (), "{\"type\":\"inc\",\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"Trans-Europe Express\",\"bar\",\"foo\"]}",
-               "JSON '{\"type\":\"inc\",\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"Trans-Europe Express\",\"bar\",\"foo\"]}'");
+  t.is (i19.json (), "{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"Trans-Europe Express\",\"bar\",\"foo\"]}",
+               "JSON '{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"Trans-Europe Express\",\"bar\",\"foo\"]}'");
 
   return 0;
 }
