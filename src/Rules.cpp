@@ -196,7 +196,9 @@ void Rules::parse (const std::string& input, int nest /* = 1 */)
           ruleDef = "";
         }
         else
+        {
           ruleDef += line + "\n";
+        }
       }
 
       // Note: this should NOT be an 'else' to the above 'if (inRule)', because
@@ -211,6 +213,12 @@ void Rules::parse (const std::string& input, int nest /* = 1 */)
         //
         if (firstWord == "define")
         {
+          if (ruleDef != "")
+          {
+            parseRule (ruleDef);
+            ruleDef = "";
+          }
+
           inRule = true;
           ruleDef = line + "\n";
         }
@@ -258,6 +266,9 @@ void Rules::parse (const std::string& input, int nest /* = 1 */)
       }
     }
   }
+
+  if (ruleDef != "")
+    parseRule (ruleDef);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
