@@ -28,12 +28,38 @@
 #include <Log.h>
 #include <format.h>
 #include <timew.h>
+#include <algorithm>
 #include <iostream>
 #include <sstream>
 
 #ifdef HAVE_COMMIT
 #include <commit.h>
 #endif
+
+////////////////////////////////////////////////////////////////////////////////
+std::string describeFile (File& file)
+{
+  std::stringstream out;
+  out << file._data
+      << " ("
+      << (file.is_link ()
+            ? 'l'
+            : (file.is_directory ()
+                 ? 'd'
+                 : '-'))
+      << (file.readable ()
+            ? 'r'
+            : '-')
+      << (file.writable ()
+            ? 'w'
+            : '-')
+      << (file.executable ()
+            ? 'x'
+            : '-')
+      << " " << file.size () << " bytes)";
+
+  return out.str ();
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdDiagnostics (Rules& rules, Database& database, Extensions& extensions, Log& log)
@@ -131,12 +157,18 @@ int CmdDiagnostics (Rules& rules, Database& database, Extensions& extensions, Lo
       << (env ? env : "-")
       << "\n";
 
-  out << "       Database: "
-      << rules.get ("db") << "/data"
-      << "\n";
+  File cfg (rules.get ("db") + "/timewarrior.cfg");
+  out << "            Cfg: " << describeFile (cfg) << "\n";
+
+  Directory db (rules.get ("db"));
+  out << "       Database: " << describeFile (db) << "\n";
 
   for (auto& file : database.files ())
-    out << "                 " << file << "\n";
+  {
+    File df (rules.get ("db") + "/data");
+    df += file;
+    out << "                 " << describeFile (df) << "\n";
+  }
 
   // Determine rc.editor/$EDITOR/$VISUAL.
   char* peditor;
@@ -152,9 +184,7 @@ int CmdDiagnostics (Rules& rules, Database& database, Extensions& extensions, Lo
   extDir += "extensions";
 
   out << "Extensions\n"
-      << "       Location: "
-      << extDir._data
-      << "\n";
+      << "       Location: " << describeFile (extDir) << "\n";
 
   auto exts = extensions.all ();
   if (exts.size ())
@@ -164,7 +194,6 @@ int CmdDiagnostics (Rules& rules, Database& database, Extensions& extensions, Lo
       if (e.length () > longest)
         longest = e.length ();
     longest -= extDir._data.length () + 1;
-    std::cout << "# longest " << longest << "\n";
 
     for (auto& ext : exts)
     {
@@ -173,10 +202,7 @@ int CmdDiagnostics (Rules& rules, Database& database, Extensions& extensions, Lo
 
       out << "                 ";
       out.width (longest);
-      out << std::left << name
-          << (file.executable () ? " (executable)" : " (not executable)")
-          << (file.is_link () ? " (symlink)" : "")
-          << "\n";
+      out << describeFile (file) << "\n";
     }
   }
   else
