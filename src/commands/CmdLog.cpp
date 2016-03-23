@@ -35,7 +35,8 @@
 int CmdLog (const std::vector <std::string>& args, Log& log)
 {
   // If no (extra) arguments, simply write a marker.
-  if (args.size () < 3)
+  if (args.size () >= 3 &&
+      args[2] == "mark")
     log.write ("debug", "-------- 8< --------");
 
   // Othewise write args to the log.
