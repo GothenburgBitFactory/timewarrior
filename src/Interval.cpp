@@ -201,17 +201,16 @@ std::string Interval::serialize () const
 std::string Interval::json () const
 {
   std::stringstream out;
-  out << "{\"type\":\"inc\"";
+  out << "{";
 
   if (_start.toEpoch ())
-    out << ",\"start\":\"" << _start.toISO () << "\"";
+    out << "\"start\":\"" << _start.toISO () << "\"";
 
   if (_end.toEpoch ())
     out << ",\"end\":\"" << _end.toISO () << "\"";
 
   if (_tags.size ())
   {
-
     std::string tags;
     for (auto& tag : _tags)
     {
