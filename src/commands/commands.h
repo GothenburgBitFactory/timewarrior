@@ -50,7 +50,7 @@ int CmdImport      (                                                            
 int CmdReport      (                                                                      );
 int CmdStart       (const std::vector <std::string>&,         Database&,              Log&);
 int CmdStop        (                                          Database&,              Log&);
-int CmdTags        (                                                                      );
+int CmdTags        (                                          Database&,              Log&);
 int CmdTrack       (                                                                      );
 int CmdUndo        (                                                                      );
 
