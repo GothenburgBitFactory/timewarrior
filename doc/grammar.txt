@@ -25,7 +25,7 @@ The CLI shall have a well-defined and unambiguous grammar.
 
     timew undo
 
-    timew tags
+    timew tags [<filter>]
     timew gaps [<interval>]
     timew extensions
 
