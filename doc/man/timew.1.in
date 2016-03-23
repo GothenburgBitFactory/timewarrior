@@ -59,6 +59,10 @@ Quotes are harmless if used every time. See also 'continue', 'stop', 'track'.
 .B timew stop
 Stops tracking time.  See also 'continue', 'start', 'track'.
 
+.TP
+.B timew tags
+Displays all the tags that have been used.
+
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS
 Timewarrior stores its configuration in a file in the user's home directory:
 ~/.timewrc.
