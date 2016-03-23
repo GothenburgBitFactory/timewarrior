@@ -171,7 +171,6 @@ void Rules::parse (const std::string& input, int nest /* = 1 */)
   std::string ruleDef;
 
   // Remove comments from input.
-  std::string cleansed;
   for (auto& line : split (input, '\n'))
   {
     auto comment = line.find ("#");
