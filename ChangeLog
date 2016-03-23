@@ -11,6 +11,7 @@
 - Added 'log' command.
 - Added 'start' command.
 - Added 'stop' command.
+- Added 'tags' command.
 - Integrated libshared.git.
 
 Design completed 2016-03-13
