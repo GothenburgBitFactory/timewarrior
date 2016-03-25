@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <Extensions.h>
 #include <FS.h>
+#include <shared.h>
 #include <sstream>
 #include <algorithm>
 
@@ -69,7 +70,13 @@ int Extensions::callExtension (
   const std::vector <std::string>& input,
   std::vector <std::string>& output) const
 {
+  auto inputStr = join ("\n", input);
+
+  // Measure time for each hook if running in debug
   int status = 0;
+  std::string outputStr;
+  status = execute (script, {}, inputStr, outputStr);
+  output = split (outputStr, '\n');
 
   return status;
 }
