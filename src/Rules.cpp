@@ -296,6 +296,12 @@ void Rules::parseRule (const std::string& input)
         tokens[2][tokens[2].length() - 1] == ':')
       parseRuleGeneral (lines);
 
+    // define tag xxx:
+    if (tokens.size () == 3 &&
+        tokens[1] == "tag" &&
+        tokens[2][tokens[2].length() - 1] == ':')
+      parseRuleTag (lines);
+
     // define exclusions:
     else if (tokens.size () == 2 && tokens[1] == "exclusions:")
       parseRuleExclusions (lines);
@@ -322,6 +328,11 @@ void Rules::parseRuleTheme (const std::vector <std::string>& lines)
 
 ////////////////////////////////////////////////////////////////////////////////
 void Rules::parseRuleExclusions (const std::vector <std::string>& lines)
+{
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Rules::parseRuleTag (const std::vector <std::string>& lines)
 {
 }
 
