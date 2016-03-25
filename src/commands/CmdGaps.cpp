@@ -32,6 +32,9 @@ int CmdGaps ()
 {
   std::cout << "[gaps: shows untracked gaps in the current day/week/month]\n";
 
+  // TODO If there are no exclusions defineѕ.
+  //   TODO Error
+
   // TODO Load all data.
   // TODO Apply filter.
   // TODO Invert the union exclusions and incluѕions
