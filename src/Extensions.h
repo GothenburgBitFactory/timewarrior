@@ -39,7 +39,6 @@ public:
   std::string dump () const;
 
 private:
-  std::vector <std::string>& buildExtensionArgs (std::vector <std::string>&) const;
   int callExtension (const std::string&, const std::vector <std::string>&, std::vector <std::string>&) const;
 
 private:

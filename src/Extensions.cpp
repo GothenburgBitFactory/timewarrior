@@ -64,12 +64,6 @@ std::string Extensions::dump () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <std::string>& Extensions::buildExtensionArgs (std::vector <std::string>& args) const
-{
-  return args;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 int Extensions::callExtension (
   const std::string& script,
   const std::vector <std::string>& input,
