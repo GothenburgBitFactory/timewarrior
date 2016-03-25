@@ -169,9 +169,19 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (args[2] == "stop")
       std::cout << "\n"
-                << "Syntax: timew stop\n"
+                << "Syntax: timew stop [<tag> ...]\n"
                 << "\n"
-                << "Stops tracking time.\n"
+                << "Stops tracking time.  If tags are specified, then they are no longer tracked.\n"
+                << "If no tags are specified, all tracking stops. For example:\n"
+                << "\n"
+                << "  $ timew start tag1 tag2\n"
+                << "  ...\n"
+                << "  $ timew stop tag1\n"
+                << "\n"
+                << "Initially time is tracked for both 'tag1' and 'tag2', then 'tag1' tracking is\n"
+                << "stopped, leaving tag2 active. To stop all tracking:\n"
+                << "\n"
+                << "  $ timew stop\n"
                 << "\n"
                 << "See also 'continue', 'start', 'track'.\n"
                 << "\n";
