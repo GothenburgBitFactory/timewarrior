@@ -35,7 +35,15 @@ int CmdReport ()
   // TODO Load all data.
   // TODO Apply filter.
   // TODO Identify report.
+
   // TODO Compose Header info.
+  //   TODO Configuration.
+  //   TODO Exclusions.
+  //   TODO Filter.
+  //   TODO CLI.
+  //   TODO Directory containing *.data files.
+  //   TODO cmake.h VERSION
+
   // TODO Compose JSON.
   // TODO Run report.
 
