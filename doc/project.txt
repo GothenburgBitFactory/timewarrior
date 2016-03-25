@@ -76,7 +76,7 @@ interval.
 
 Commands
 --------
-The command set may include:
+The command set will include:
 
   define         Modify configuration
   track          Record tracked time
