@@ -54,6 +54,27 @@ int CmdStop (
 
     // User feedback.
     std::cout << latest.summarize ();
+
+    // If tags were specified, and after removing those tags, there are still
+    // tags remaining, then add a contiguous interval.
+    if (args.size () > 2)
+    {
+      for (auto& tag : std::vector <std::string> (args.begin () + 2, args.end ()))
+        latest.untag (tag);
+
+      if (latest.tags ().size ())
+      {
+        // Contiguous with previous interval.
+        latest.start (latest.end ());
+        latest.end ({0});
+
+        database.addInterval (latest);
+        log.write ("debug", std::string ("Started tracking: ") + latest.serialize ());
+
+        // User feedback.
+        std::cout << latest.summarize ();
+      }
+    }
   }
   else
   {
