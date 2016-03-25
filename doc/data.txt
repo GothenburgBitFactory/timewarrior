@@ -122,7 +122,7 @@ explicitly not desired. The categories are:
 
 A log entry will have this form:
 
-  YYYY-MM-DDTHH:MM:SS <version> <category> <message>
+  YYYY-MM-DDTHH:MM:SS <version> <category> <message...>
 
 --- Raw Notes ---
 
