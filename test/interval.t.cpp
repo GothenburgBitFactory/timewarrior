@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (32);
+  UnitTest t (34);
 
   // bool isStarted () const;
   // bool isEnded () const;
@@ -55,10 +55,14 @@ int main (int, char**)
   t.ok (i2.tags () == std::set <std::string> {}, "Interval(tag=) -> {}");
   i2.tag ("foo");
   t.ok (i2.tags () == std::set <std::string> {"foo"}, "Interval(tag=foo) -> {foo}");
-  i2.tag ("foo");
+  i2.tag ("foo");  // Duplicate
   t.ok (i2.tags () == std::set <std::string> {"foo"}, "Interval(tag=foo,foo) -> {foo}");
   i2.tag ("bar");
   t.ok (i2.tags () == std::set <std::string> {"foo", "bar"}, "Interval(tag=foo,bar) -> {foo,bar}");
+  i2.tag ("baz");
+  t.ok (i2.tags () == std::set <std::string> {"foo", "bar", "baz"}, "Interval(tag=foo,bar,baz) -> {foo,bar,baz}");
+  i2.untag ("foo");
+  t.ok (i2.tags () == std::set <std::string> {"bar", "baz"}, "Interval(tag=bar,baz) -> {bar,baz}");
 
   // std::string serialize () const;
   Interval i3;
