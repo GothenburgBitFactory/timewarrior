@@ -291,15 +291,11 @@ void Rules::parseRule (const std::string& input)
       tokens[0] == "define")
   {
     // define rule xxx:
-    if (tokens.size () == 3 &&
-        tokens[1] == "rule" &&
-        tokens[2][tokens[2].length() - 1] == ':')
+    if (tokens.size () >= 3 && tokens[1] == "rule")
       parseRuleGeneral (lines);
 
     // define tag xxx:
-    if (tokens.size () == 3 &&
-        tokens[1] == "tag" &&
-        tokens[2][tokens[2].length() - 1] == ':')
+    else if (tokens.size () >= 3 && tokens[1] == "tag")
       parseRuleTag (lines);
 
     // define exclusions:
