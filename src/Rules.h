@@ -58,6 +58,7 @@ private:
   void parseRule (const std::string&);
   void parseRuleGeneral (const std::vector <std::string>&);
   void parseRuleTheme (const std::vector <std::string>&);
+  void parseRuleExclusions (const std::vector <std::string>&);
 
 private:
   std::string                         _original_file {};
