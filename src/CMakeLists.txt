@@ -5,7 +5,8 @@ include_directories (${CMAKE_SOURCE_DIR}
                      ${CMAKE_SOURCE_DIR}/src/libshared/src
                      ${TIMEW_INCLUDE_DIRS})
 
-set (timew_SRCS Database.cpp   Database.h
+set (timew_SRCS Classifier.cpp Classifier.h
+                Database.cpp   Database.h
                 Datafile.cpp   Datafile.h
                 Extensions.cpp Extensions.h
                 Grammar.cpp    Grammar.h
