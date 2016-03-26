@@ -91,3 +91,5 @@ configuration names flattened, i.e. no hierarchy.
 - Use display granularity/resolution to see more or less details.  This would
   combine nicely with a tag hierarchy. (Tomas Babej)
 
+- Need reports to help users doing fixed-rate work - finding the longest task
+  for example.
