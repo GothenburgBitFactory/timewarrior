@@ -1,0 +1,12 @@
+Timewarrior Extensions
+======================
+
+debug.py
+  This is a debug extension that simply echoes back everything it sees in its
+  input. It's handy to see how the command line affects what an extension sees
+  and will likely be removed before release.
+
+on-modify.timewarrior
+  This is hook script that will integrate Taskwarrior and Timewarrior.
+
+
