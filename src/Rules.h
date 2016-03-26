@@ -62,6 +62,7 @@ private:
   void parseRuleTag        (const std::vector <std::string>&);
 
   unsigned int getIndentation (const std::string&);
+  std::vector <std::string> tokenizeLine (const std::string&);
 
 private:
   std::string                         _original_file {};

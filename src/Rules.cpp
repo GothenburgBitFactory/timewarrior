@@ -343,3 +343,17 @@ unsigned int Rules::getIndentation (const std::string& line)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Tokenize the line. This loses whitespace information and token types.
+std::vector <std::string> Rules::tokenizeLine (const std::string& line)
+{
+  std::vector <std::string> tokens;
+  std::string token;
+  Lexer::Type type;
+  Lexer lexer (line);
+  while (lexer.token (token, type))
+    tokens.push_back (token);
+
+  return tokens;
+}
+
+////////////////////////////////////////////////////////////////////////////////
