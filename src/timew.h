@@ -38,6 +38,9 @@ void initializeDataAndRules (Database&, Rules&, Log&);
 void initializeExtensions (Rules&, Extensions&, Log&);
 int dispatchCommand (const std::vector <std::string>&, Database&, Rules&, Extensions&, Log&);
 
+// classifier.cpp
+std::vector <std::string> getKeywords (const std::vector <std::string>&);
+
 // utiŀ.cpp
 std::string osName ();
 std::string escape (const std::string&, int);

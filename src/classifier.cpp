@@ -24,15 +24,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef INCLUDED_CLASSIFIER
-#define INCLUDED_CLASSIFIER
+#include <cmake.h>
+#include <timew.h>
 
-class Classifier
+////////////////////////////////////////////////////////////////////////////////
+std::vector <std::string> getKeywords (const std::vector <std::string>& args)
 {
-public:
-  Classifier () = default;
+  std::vector <std::string> keywords;
+  for (auto& arg : args)
+    if (arg[0] == ':')
+      keywords.push_back (arg);
 
-private:
-};
+  return keywords;
+}
 
-#endif
+////////////////////////////////////////////////////////////////////////////////
