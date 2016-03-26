@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <commands.h>
 #include <iostream>
+#include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdReport (
@@ -36,22 +37,47 @@ int CmdReport (
   Extensions& extensions,
   Log& log)
 {
-  std::cout << "[report: run a specific report/extension]\n";
+  // Load all data.
+  auto intervals = database.getAllIntervals ();
 
-  // TODO Load all data.
   // TODO Apply filter.
+
   // TODO Identify report.
 
   // TODO Compose Header info.
+  std::stringstream header;
   //   TODO Configuration.
   //   TODO Exclusions.
   //   TODO Filter.
   //   TODO CLI.
   //   TODO Directory containing *.data files.
-  //   TODO cmake.h VERSION
+  header << "version=" << VERSION << "\n";
 
-  // TODO Compose JSON.
+  // Compose JSON.
+  std::stringstream json;
+  json << "[\n";
+  int counter = 0;
+  for (auto& interval : intervals)
+  {
+    if (counter)
+      json << ",\n";
+
+    json << interval.json ();
+    ++counter;
+  }
+
+  if (intervals.size ())
+    json << "\n";
+
+  json << "]\n";
+
   // TODO Run report.
+  auto input = header.str ()
+             + "\n"
+             + json.str ();
+
+  std::vector <std::string> output;
+  // extensions.callExtension (pathToScript, split (input, '\n'), output);
 
   return 0;
 }
