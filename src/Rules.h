@@ -49,7 +49,7 @@ public:
   void set (const std::string&, const double);
   void set (const std::string&, const std::string&);
 
-  std::vector <std::string> all () const;
+  std::vector <std::string> all (const std::string& stem = "") const;
 
   std::string dump () const;
 

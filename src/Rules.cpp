@@ -146,12 +146,14 @@ void Rules::set (const std::string& key, const std::string& value)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Provide a vector of all configuration keys.
-std::vector <std::string> Rules::all () const
+// Provide a vector of all configuration keys. If a stem is provided, only
+// return matching keys.
+std::vector <std::string> Rules::all (const std::string& stem) const
 {
   std::vector <std::string> items;
   for (const auto& it : _settings)
-    items.push_back (it.first);
+    if (stem == "" || it.first.find (stem) == 0)
+      items.push_back (it.first);
 
   return items;
 }
