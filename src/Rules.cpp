@@ -310,12 +310,11 @@ void Rules::parseRule (const std::string& input)
       parseRuleExclusions (lines);
 
     // define theme:
-    else if (tokens.size () == 2 && tokens[1] == "theme:")
-      parseRuleSettings (lines);
-
     // define holidays:
-    else if (tokens.size () == 2 && tokens[1] == "holidays:")
-      parseRuleHolidays (lines);
+    else if (tokens.size () == 2 &&
+             (tokens[1] == "theme:" ||
+              tokens[1] == "holidays:"))
+      parseRuleSettings (lines);
 
     // Error.
     else
@@ -393,14 +392,6 @@ void Rules::parseRuleExclusions (const std::vector <std::string>& lines)
 
 ////////////////////////////////////////////////////////////////////////////////
 void Rules::parseRuleTag (const std::vector <std::string>& lines)
-{
-  for (auto& line : lines)
-  {
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void Rules::parseRuleHolidays (const std::vector <std::string>& lines)
 {
   for (auto& line : lines)
   {
