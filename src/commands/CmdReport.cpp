@@ -25,10 +25,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <commands.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdReport ()
+int CmdReport (
+  const std::vector <std::string>& args,
+  Rules& rules,
+  Database& database,
+  Extensions& extensions,
+  Log& log)
 {
   std::cout << "[report: run a specific report/extension]\n";
 

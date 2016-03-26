@@ -47,7 +47,7 @@ int CmdHelpUsage   (                                                            
 int CmdHelp        (const std::vector <std::string>&,                                 Log&);
 int CmdLog         (const std::vector <std::string>&,                                 Log&);
 int CmdImport      (                                                                      );
-int CmdReport      (                                                                      );
+int CmdReport      (const std::vector <std::string>&, Rules&, Database&, Extensions&, Log&);
 int CmdStart       (const std::vector <std::string>&,         Database&,              Log&);
 int CmdStop        (const std::vector <std::string>&,         Database&,              Log&);
 int CmdTags        (                                          Database&,              Log&);

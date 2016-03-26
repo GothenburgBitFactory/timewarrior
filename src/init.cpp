@@ -201,7 +201,7 @@ int dispatchCommand (
       else if (closeEnough (allCommands[8],  args[1], 2)) status = CmdHelp        (args,                              log);
       else if (closeEnough (allCommands[9],  args[1], 2)) status = CmdImport      (                                      );
       else if (closeEnough (allCommands[10], args[1], 2)) status = CmdLog         (args,                              log);
-      else if (closeEnough (allCommands[11], args[1], 2)) status = CmdReport      (                                      );
+      else if (closeEnough (allCommands[11], args[1], 2)) status = CmdReport      (args, rules, database, extensions, log);
       else if (closeEnough (allCommands[12], args[1], 2)) status = CmdStart       (args,        database,             log);
       else if (closeEnough (allCommands[13], args[1], 2)) status = CmdStop        (args,        database,             log);
       else if (closeEnough (allCommands[14], args[1], 2)) status = CmdTags        (             database,             log);
