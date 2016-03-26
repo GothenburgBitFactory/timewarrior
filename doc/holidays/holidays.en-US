@@ -27,25 +27,17 @@
 #
 ###############################################################################
 
-holiday.en-US12.name=New Year's Day
-holiday.en-US12.date=20160101
-holiday.en-US13.name=Birthday of Martin Luther King, Jr.
-holiday.en-US13.date=20160118
-holiday.en-US14.name=Washington's Birthday
-holiday.en-US14.date=20160215
-holiday.en-US15.name=Patriots' Day
-holiday.en-US15.date=20160418
-holiday.en-US16.name=Memorial Day
-holiday.en-US16.date=20160530
-holiday.en-US17.name=Independence Day
-holiday.en-US17.date=20160704
-holiday.en-US18.name=Labor Day
-holiday.en-US18.date=20160905
-holiday.en-US19.name=Columbus Day
-holiday.en-US19.date=20161010
-holiday.en-US20.name=Veterans Day
-holiday.en-US20.date=20161111
-holiday.en-US21.name=Thanksgiving Day
-holiday.en-US21.date=20161124
-holiday.en-US22.name=Christmas Day
-holiday.en-US22.date=20161225
+define holidays:
+  en-US:
+    2016-01-01 = New Year's Day
+    2016-01-18 = Birthday of Martin Luther King, Jr.
+    2016-01-25 = Washington's Birthday
+    2016-04-18 = Patriots' Day
+    2016-05-30 = Memorial Day
+    2016-07-04 = Independence Day
+    2016-09-05 = Labor Day
+    2016-10-10 = Columbus Day
+    2016-11-11 = Veterans Day
+    2016-11-24 = Thanksgiving Day
+    2016-12-25 = Christmas Day
+
