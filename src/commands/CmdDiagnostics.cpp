@@ -177,6 +177,10 @@ int CmdDiagnostics (Rules& rules, Database& database, Extensions& extensions, Lo
   else if ((peditor = getenv ("EDITOR")) != NULL)
     out << "        $EDITOR: " << peditor << "\n";
 
+  // Theme description, if present.
+  if (rules.has ("theme.description"))
+    out << "    Color theme: " << rules.get ("theme.description") << "\n";
+
   out << "\n";
 
   // Display extensions.
