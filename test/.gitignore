@@ -1,5 +1,6 @@
 all.log
 *.pyc
+classifier.t
 grammar.t
 interval.t
 lexer.t
