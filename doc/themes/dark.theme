@@ -26,7 +26,7 @@
 
 # TODO First color theme - build this one and when it stabilizes, add more.
 define theme:
-  description = "A default, 256-color theme"
+  description = "dark.theme: A default, 256-color theme"
   colors:
     # General UI color.
     free  = "white on gray4"    # May not be needed
