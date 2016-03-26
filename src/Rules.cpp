@@ -357,3 +357,24 @@ std::vector <std::string> Rules::tokenizeLine (const std::string& line)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// {"one","two:"}   --> "two"
+// {"one two", ":"} --> "one two"
+// {"one"}          --> ""
+std::string Rules::parseGroup (const std::vector <std::string>& tokens)
+{
+  auto count = tokens.size ();
+  if (count)
+  {
+    auto last = tokens.back ();
+
+    if (count >= 2 && last == ":")
+      return tokens[count - 2];
+
+    else if (count >= 1 && last[last.length () - 1] == ':')
+      return last.substr (0, last.length () - 1);
+  }
+
+  return "";
+}
+
+////////////////////////////////////////////////////////////////////////////////
