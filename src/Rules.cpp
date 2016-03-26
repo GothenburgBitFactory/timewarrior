@@ -311,7 +311,7 @@ void Rules::parseRule (const std::string& input)
 
     // define theme:
     else if (tokens.size () == 2 && tokens[1] == "theme:")
-      parseRuleTheme (lines);
+      parseRuleSettings (lines);
 
     // define holidays:
     else if (tokens.size () == 2 && tokens[1] == "holidays:")
@@ -333,7 +333,7 @@ void Rules::parseRuleGeneral (const std::vector <std::string>& lines)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Rules::parseRuleTheme (const std::vector <std::string>& lines)
+void Rules::parseRuleSettings (const std::vector <std::string>& lines)
 {
   std::vector <unsigned int> indents;
   std::vector <std::string> hierarchy;

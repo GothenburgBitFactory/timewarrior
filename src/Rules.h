@@ -57,7 +57,7 @@ private:
   void parse               (const std::string&, int next = 1);
   void parseRule           (const std::string&);
   void parseRuleGeneral    (const std::vector <std::string>&);
-  void parseRuleTheme      (const std::vector <std::string>&);
+  void parseRuleSettings   (const std::vector <std::string>&);
   void parseRuleExclusions (const std::vector <std::string>&);
   void parseRuleTag        (const std::vector <std::string>&);
   void parseRuleHolidays   (const std::vector <std::string>&);
