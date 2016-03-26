@@ -29,6 +29,8 @@ define theme:
   description = "A default, 256-color theme"
   colors:
     # General UI color.
+    free  = "white on gray4"
+    busy  = "white on gray8"
     today = "black on rgb521"
 
   # Rotating Color Palette for tags.
