@@ -122,6 +122,8 @@ int CmdReport (
     for (auto& line : output)
       std::cout << line << "\n";
   }
+  else
+    throw std::string ("Specify which report to run.");
 
   return 0;
 }
