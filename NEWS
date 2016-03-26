@@ -1,7 +1,8 @@
 
 New Features in 1.0.0
 
-  - 
+  - The 'start' and 'stop' commands record the duration.
+  - The 'export' command emits all data in JSON format.
 
 Known Issues
 
