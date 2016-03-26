@@ -70,47 +70,58 @@ int CmdReport (
   Extensions& extensions,
   Log& log)
 {
-  // Load all data.
-  auto intervals = database.getAllIntervals ();
-
-  // TODO Apply filter.
-
   // TODO Identify report.
-
-  // TODO Compose Header info.
-  std::stringstream header;
-  //   TODO Configuration.
-  //   TODO Exclusions.
-  //   TODO Filter.
-  //   TODO CLI.
-  //   TODO Directory containing *.data files.
-  header << "version=" << VERSION << "\n";
-
-  // Compose JSON.
-  std::stringstream json;
-  json << "[\n";
-  int counter = 0;
-  for (auto& interval : intervals)
+  if (args.size () > 2)
   {
-    if (counter)
-      json << ",\n";
+    auto script = findExtension (extensions, args[2]);
 
-    json << interval.json ();
-    ++counter;
+    // TODO Default report?
+
+    // Load all data.
+    auto intervals = database.getAllIntervals ();
+
+    // TODO Apply filter.
+
+    // Compose Header info.
+    std::stringstream header;
+    //   TODO Configuration.
+    //   TODO Exclusions.
+    //   TODO Filter.
+    //   TODO CLI.
+    //   TODO Directory containing *.data files.
+    header << "version=" << VERSION << "\n";
+
+    // Compose JSON.
+    std::stringstream json;
+    json << "[\n";
+    int counter = 0;
+    for (auto& interval : intervals)
+    {
+      if (counter)
+        json << ",\n";
+
+      json << interval.json ();
+      ++counter;
+    }
+
+    if (intervals.size ())
+      json << "\n";
+
+    json << "]\n";
+
+    // Compose the input for the script.
+    auto input = header.str ()
+               + "\n"
+               + json.str ();
+
+    // Run the extensions.
+    std::vector <std::string> output;
+    extensions.callExtension (script, split (input, '\n'), output);
+
+    // Display the output.
+    for (auto& line : output)
+      std::cout << line << "\n";
   }
-
-  if (intervals.size ())
-    json << "\n";
-
-  json << "]\n";
-
-  // TODO Run report.
-  auto input = header.str ()
-             + "\n"
-             + json.str ();
-
-  std::vector <std::string> output;
-  // extensions.callExtension (pathToScript, split (input, '\n'), output);
 
   return 0;
 }
