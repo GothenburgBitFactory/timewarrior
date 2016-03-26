@@ -57,7 +57,7 @@ private:
   void parse               (const std::string&, int next = 1);
   void parseRule           (const std::string&);
   void parseRuleGeneral    (const std::vector <std::string>&);
-  void parseRuleSettings   (const std::vector <std::string>&);
+  void parseRuleSettings   (const std::vector <std::string>&, const std::string& prefix = "");
   void parseRuleExclusions (const std::vector <std::string>&);
   void parseRuleTag        (const std::vector <std::string>&);
 

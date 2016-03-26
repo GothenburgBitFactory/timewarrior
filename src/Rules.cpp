@@ -334,11 +334,16 @@ void Rules::parseRuleGeneral (const std::vector <std::string>& lines)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Rules::parseRuleSettings (const std::vector <std::string>& lines)
+void Rules::parseRuleSettings (
+  const std::vector <std::string>& lines,
+  const std::string& prefix)
 {
   std::vector <unsigned int> indents;
-  std::vector <std::string> hierarchy;
   indents.push_back (0);
+
+  std::vector <std::string> hierarchy;
+  if (prefix != "")
+    hierarchy.push_back (prefix);
 
   for (auto& line : lines)
   {
@@ -379,8 +384,7 @@ void Rules::parseRuleSettings (const std::vector <std::string>& lines)
 
   // Should arrive here with indents and hierarchy in their original state.
   if (indents.size () != 1 ||
-      indents[0] != 0      ||
-      hierarchy.size () != 0)
+      indents[0] != 0)
     throw std::string ("Syntax error - indentation is not right.");
 }
 
