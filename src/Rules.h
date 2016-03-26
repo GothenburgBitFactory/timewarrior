@@ -61,6 +61,8 @@ private:
   void parseRuleExclusions (const std::vector <std::string>&);
   void parseRuleTag        (const std::vector <std::string>&);
 
+  unsigned int getIndentation (const std::string&);
+
 private:
   std::string                         _original_file {};
   std::map <std::string, std::string> _settings      {};

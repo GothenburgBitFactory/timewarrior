@@ -333,3 +333,13 @@ void Rules::parseRuleTag (const std::vector <std::string>& lines)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+unsigned int Rules::getIndentation (const std::string& line)
+{
+  auto indent = line.find_first_not_of (" ");
+  if (indent == std::string::npos)
+    indent = 0;
+
+  return indent;
+}
+
+////////////////////////////////////////////////////////////////////////////////
