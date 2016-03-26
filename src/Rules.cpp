@@ -328,12 +328,59 @@ void Rules::parseRuleGeneral (const std::vector <std::string>& lines)
 {
   for (auto& line : lines)
   {
+//    std::cout << "# general line '" << line << "'\n";
   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Rules::parseRuleTheme (const std::vector <std::string>& lines)
 {
+  std::vector <unsigned int> indents;
+  std::vector <std::string> hierarchy;
+  indents.push_back (0);
+
+  for (auto& line : lines)
+  {
+    auto indent = getIndentation (line);
+    auto tokens = tokenizeLine (line);
+    auto group = parseGroup (tokens);
+
+    // Capture increased indentation.
+    if (indent > indents.back ())
+      indents.push_back (indent);
+
+    // If indent decreased.
+    else if (indent < indents.back ())
+    {
+      while (indents.size () && indent != indents.back ())
+      {
+        indents.pop_back ();
+        hierarchy.pop_back ();
+      }
+
+      // Spot raggedy-ass indentation.
+      if (indent != indents.back ())
+        throw std::string ("Syntax error in rule: mismatched indent.");
+    }
+
+    // Descend.
+    if (group != "")
+      hierarchy.push_back (group);
+
+    // Settings.
+    if (tokens.size () >= 3 && tokens[1] == "=")
+    {
+      auto name  = join (".", hierarchy) + "." + tokens[0];
+      auto value = Lexer::dequote (join (" ", std::vector <std::string> (tokens.begin () + 2, tokens.end ())));
+      set (name, value);
+    }
+  }
+
+  // Should arrive here with indents and hierarchy in their original state.
+  if (indents.size () != 1 ||
+      indents[0] != 0      ||
+      hierarchy.size () != 0)
+    throw std::string ("Syntax error - indentation is not right.");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
