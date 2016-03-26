@@ -53,18 +53,6 @@ std::vector <std::string> Extensions::all () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string Extensions::dump () const
-{
-  std::stringstream out;
-
-  out << "Extensions\n";
-  for (const auto& script : _scripts)
-    out << "  " << script << "\n";
-
-  return out.str ();
-}
-
-////////////////////////////////////////////////////////////////////////////////
 int Extensions::callExtension (
   const std::string& script,
   const std::vector <std::string>& input,
@@ -79,6 +67,18 @@ int Extensions::callExtension (
   output = split (outputStr, '\n');
 
   return status;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string Extensions::dump () const
+{
+  std::stringstream out;
+
+  out << "Extensions\n";
+  for (const auto& script : _scripts)
+    out << "  " << script << "\n";
+
+  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

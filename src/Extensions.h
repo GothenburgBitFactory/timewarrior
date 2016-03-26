@@ -36,10 +36,8 @@ public:
   Extensions () = default;
   void initialize (const std::string&);
   std::vector <std::string> all () const;
-  std::string dump () const;
-
-private:
   int callExtension (const std::string&, const std::vector <std::string>&, std::vector <std::string>&) const;
+  std::string dump () const;
 
 private:
   std::vector <std::string> _scripts {};
