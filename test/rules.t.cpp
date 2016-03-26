@@ -31,8 +31,23 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (1);
-  t.skip ("No tests");
+  UnitTest t (6);
+
+  Rules r;
+  r.set ("string", "234");
+  t.is (r.get ("string"),         "234", "Rules set string, get string");
+  t.is (r.getInteger ("string"),  234,   "Rules set string, get string");
+
+  r.set ("integer", 123);
+  t.is (r.getInteger ("integer"), 123,   "Rules set integer, get integer");
+  t.is (r.get        ("integer"), "123", "Rules set integer, get string");
+
+  r.set ("one.two",       12);
+  r.set ("one.two.three", 123);
+  r.set ("one.two.four",  124);
+  t.ok (r.all ().size () == 5,           "Rules all (\"\") --> 5");
+  t.ok (r.all ("one.two").size () == 3,  "Rules all (\"one.two\") --> 3");
+
   return 0;
 }
 
