@@ -1,0 +1,15 @@
+Timewarrior Holiday Files
+=========================
+
+The holiday files were created using http://holidata.net data by the 'refresh'
+script. This data can be updated using these commands:
+
+  $ ./refresh
+
+If you need another locale (for example xx-XX), do this:
+
+  $ touch holidays.xx-XX
+  $ ./refresh
+
+If the locale is not supported by holidata.net, you will see an error.
+
