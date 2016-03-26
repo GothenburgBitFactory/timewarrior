@@ -58,6 +58,8 @@ static std::string findExtension (
   for (auto& script : scripts)
     if (File (script).name () == matches[0])
       return script;
+
+  return "";
 }
 
 ////////////////////////////////////////////////////////////////////////////////
