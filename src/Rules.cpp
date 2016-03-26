@@ -50,7 +50,14 @@ void Rules::load (const std::string& file, int nest /* = 1 */)
   if (nest == 1)
   {
     _settings = defaultSettings;
-    _original_file = File (file)._data;
+    File originalFile (file);
+    _original_file = originalFile._data;
+
+    if (! originalFile.exists ())
+      throw std::string ("ERROR: Configuration file not found.");
+
+    if (! originalFile.readable ())
+      throw std::string ("ERROR: Configuration file cannot be read (insufficient privileges).");
   }
 
   // Read the file, then parse the contents.
