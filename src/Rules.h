@@ -60,6 +60,7 @@ private:
   void parseRuleTheme      (const std::vector <std::string>&);
   void parseRuleExclusions (const std::vector <std::string>&);
   void parseRuleTag        (const std::vector <std::string>&);
+  void parseRuleHolidays   (const std::vector <std::string>&);
 
   unsigned int getIndentation (const std::string&);
   std::vector <std::string> tokenizeLine (const std::string&);
