@@ -305,7 +305,7 @@ void Rules::parseRule (const std::string& input)
 
     // define tag xxx:
     else if (tokens.size () >= 3 && tokens[1] == "tag")
-      parseRuleTag (lines);
+      parseRuleSettings (lines, "tag");
 
     // define exclusions:
     else if (tokens.size () == 2 && tokens[1] == "exclusions:")
