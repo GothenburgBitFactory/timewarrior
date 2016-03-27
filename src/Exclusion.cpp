@@ -28,6 +28,12 @@
 #include <Exclusion.h>
 
 ////////////////////////////////////////////////////////////////////////////////
+// An exclusion represents untrackable time such as holidays, weekends, evenings
+// and lunch. By default there are none, but they may be configured. Once there
+// are exclusions defined, the :fill functionality is enabled.
+//
+// Exclusions are instantiated from the 'define exclusions:' rule.
+//
 // Syntax:
 //   'exc' ?
 void Exclusion::initialize (const std::string& line)
