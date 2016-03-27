@@ -44,7 +44,7 @@ static std::string findExtension (
     options.push_back (File (script).name ());
 
   std::vector <std::string> matches;
-  autoComplete (partial, options, matches, 3);
+  autoComplete (partial, options, matches);
 
   if (matches.size () == 0)
     throw format ("The report '{1}' is not recognized.", partial);
