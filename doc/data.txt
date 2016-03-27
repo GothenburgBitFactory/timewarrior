@@ -61,10 +61,10 @@ An example file looks like this:
 
   exc holidays en-US
   exc work 2015-11-26
-  exc workweek mon,tue,wed,thu,fri
-  exc workday start 8:30am
-  exc workday end 1730
-  exc workday tue end 3pm
+  exc week mon,tue,wed,thu,fri
+  exc day start 8:30am
+  exc day end 1730
+  exc day tue end 3pm
 
   inc 2016-02-28T08:00 - 2016-02-28T12:00 # Upgrade Planning
   inc 2016-02-28T13:00                    # Upgrade Presentation "ABCD Inc"
