@@ -1,8 +1,6 @@
 
 1.0.0 () -
 
-0.1.0 () -
-
 - TD-49   Log when file management fails
           (thanks to Ben Boeckel).
 - TD-115  Throw error when config file is missing or not readable

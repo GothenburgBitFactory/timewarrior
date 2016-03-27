@@ -62,11 +62,35 @@ void Timeline::end (const Datetime& when)
 ////////////////////////////////////////////////////////////////////////////////
 void Timeline::include (const Interval& interval)
 {
+  _inclusions.push_back (interval);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Timeline::exclude (const Exclusion& exclusion)
 {
+  _exclusions.push_back (exclusion);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector <Interval> Timeline::tracked () const
+{
+  std::vector <Interval> combined;
+
+  // TODO Combine _inclusions and _exclusions to yield a set of collapsed
+  //      intervals.
+
+  return combined;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector <Interval> Timeline::untracked () const
+{
+  std::vector <Interval> combined;
+
+  // TODO Combine _inclusions and _exclusions to yield a set of collapsed
+  //      unracked intervals.
+
+  return combined;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

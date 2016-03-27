@@ -30,6 +30,7 @@
 #include <Datetime.h>
 #include <Interval.h>
 #include <Exclusion.h>
+#include <vector>
 
 class Timeline
 {
@@ -40,11 +41,14 @@ public:
   void include (const Interval&);
   void exclude (const Exclusion&);
 
+  std::vector <Interval> tracked () const;
+  std::vector <Interval> untracked () const;
+
 private:
-  // TODO List of inclusions.
-  // TODO List of exclusions.
-  Datetime _start {0};
-  Datetime _end   {0};
+  Datetime                _start      {0};
+  Datetime                _end        {0};
+  std::vector <Interval>  _inclusions {};
+  std::vector <Exclusion> _exclusions {};
 };
 
 #endif
