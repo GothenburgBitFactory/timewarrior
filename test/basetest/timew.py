@@ -35,7 +35,7 @@ class Timew(object):
         # Configuration of the isolated environment
         self._original_pwd = os.getcwd()
         self.datadir = tempfile.mkdtemp(prefix="timew_")
-        self.timewrc = os.path.join(self.datadir, "test.rc")
+        self.timewrc = os.path.join (self.datadir, 'timewarrior.cfg')
 
         # Ensure any instance is properly destroyed at session end
         atexit.register(lambda: self.destroy())
@@ -62,8 +62,8 @@ class Timew(object):
         # Copy all env variables to avoid clashing subprocess environments
         self.env = os.environ.copy()
 
-        # As well as TIMEWRC
-        self.env["TIMEWRC"] = self.timewrc
+        # As well as TIMEWARRIORDB
+        self.env["TIMEWARRIORDB"] = self.datadir
 
     def config(self, var, value):
         """Run setup `var` as `value` in timew config
