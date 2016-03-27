@@ -98,7 +98,7 @@ void Exclusion::initialize (const std::string& line)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <std::string> Exclusions::tokens () const
+std::vector <std::string> Exclusion::tokens () const
 {
   return _tokens;
 }
