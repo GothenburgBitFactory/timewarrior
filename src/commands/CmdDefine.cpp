@@ -29,6 +29,18 @@
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
+// timew define holidays <locale>|none
+// timew define holidays [work] <date>
+// timew define week <day>[- <day>] [, <day>] ...
+// timew define day [<day>] start|end <time>
+//
+// timew define tag <tag> description <string>
+// timew define tag <tag> start|end <date>
+// timew define tag <tag> budget <number> <units> per <unit>
+// timew define tag <tag> budget <number> <units> total
+// timew define tag <tag> overlap
+// timew define tag <tag> color <color>
+//
 int CmdDefine (
   const std::vector <std::string>& args,
   Rules& rules,

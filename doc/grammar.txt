@@ -15,7 +15,6 @@ The CLI shall have a well-defined and unambiguous grammar.
     timew define week <day>[- <day>] [, <day>] ...
     timew define day [<day>] start|end <time>
 
-    timew define tag <tag>
     timew define tag <tag> description <string>
     timew define tag <tag> start|end <date>
     timew define tag <tag> budget <number> <units> per <unit>
