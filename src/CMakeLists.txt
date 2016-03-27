@@ -14,6 +14,7 @@ set (timew_SRCS Database.cpp   Database.h
                 Lexer.cpp      Lexer.h
                 LR0.cpp        LR0.h
                 Rules.cpp      Rules.h
+                Timeline.cpp   Timeline.h
                 classifier.cpp
                 init.cpp
                 util.cpp)
