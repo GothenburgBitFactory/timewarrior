@@ -35,6 +35,7 @@ class Exclusion
 public:
   Exclusion () = default;
   void initialize (const std::string&);
+  std::vector <std::string> tokens () const;
 
 private:
   std::vector <std::string> _tokens;
