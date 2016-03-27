@@ -26,6 +26,8 @@
 
 #include <cmake.h>
 #include <commands.h>
+#include <shared.h>
+#include <format.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,7 +49,34 @@ int CmdDefine (
   Database& database,
   Log& log)
 {
-  std::cout << "[define: rule tweaking]\n";
+  if (args.size () >= 3 &&
+      closeEnough ("define", args[1], 3))
+  {
+    std::vector <std::string> subcommands = {"holidays", "week", "day", "tag"};
+    std::vector <std::string> matches;
+    autoComplete (args[2], subcommands, matches);
+
+    if (matches.size () != 1)
+      throw format ("Unrecognized definition '{1}'.", args[2]);
+
+    if (matches[0] == "holidays")
+    {
+      std::cout << "# define holidays ...\n";
+    }
+    else if (matches[0] == "week")
+    {
+      std::cout << "# define week ...\n";
+    }
+    else if (matches[0] == "day")
+    {
+      std::cout << "# define day ...\n";
+    }
+    else if (matches[0] == "tag")
+    {
+      std::cout << "# define tag ...\n";
+    }
+  }
+
   return 0;
 }
 
