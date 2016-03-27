@@ -28,6 +28,26 @@
 #include <Timeline.h>
 
 ////////////////////////////////////////////////////////////////////////////////
+// The Timeline object represents a continuum with a defined start and end
+// point. Between these two points there may be incluѕions (tracked time), and
+// exclusions (untrackable time). When all known incluѕions and exclusions are
+// added to a timeline, it is possible to extract (a) untracked gaps, and (b)
+// blocks of tracked time. For example:
+//
+// Inputs:
+//
+//   |------------------------------------------------------| Timeline
+//           |-------------------------------------|          Inclusion
+//   |--------|          |--------|          |--------|       Exclusion
+//
+// Derived:
+//
+//            |----------|        |----------|                Tracked
+//   |-------|                                        |-----| Untracked
+//
+////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////
 void Timeline::start (const Datetime& when)
 {
   _start = when;
