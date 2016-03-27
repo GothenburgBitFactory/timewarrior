@@ -33,8 +33,12 @@ int CmdExport (Database& database)
 {
   // Load all data.
   auto intervals = database.getAllIntervals ();
+  // TODO Apply filter to intervals..
 
-  // TODO Apply filter.
+  // TODO Create Timeline.
+  // TODO Add intervals to Timeline.
+  // TODO Add exclusions to Timeline.
+  // TODO Extract tracked intervals from Timeline.
 
   // Compose JSON.
   std::cout << "[\n";
