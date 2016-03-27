@@ -27,12 +27,24 @@
 #ifndef INCLUDED_TIMELINE
 #define INCLUDED_TIMELINE
 
+#include <Datetime.h>
+#include <Interval.h>
+#include <Exclusion.h>
+
 class Timeline
 {
 public:
   Timeline () = default;
+  void start (const Datetime&);
+  void end (const Datetime&);
+  void include (const Interval&);
+  void exclude (const Exclusion&);
 
 private:
+  // TODO List of inclusions.
+  // TODO List of exclusions.
+  Datetime _start {0};
+  Datetime _end   {0};
 };
 
 #endif
