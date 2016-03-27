@@ -190,23 +190,23 @@ int dispatchCommand (
     {
       // These signatures are æxpected to be all different, therefore no
       // command to fn mapping.
-           if (closeEnough (allCommands[0],  args[1], 2)) status = CmdClear       (                                      );
-      else if (closeEnough (allCommands[1],  args[1], 2)) status = CmdConfig      (                                      );
-      else if (closeEnough (allCommands[2],  args[1], 2)) status = CmdContinue    (             database,             log);
-      else if (closeEnough (allCommands[3],  args[1], 2)) status = CmdDefine      (      rules                           );
-      else if (closeEnough (allCommands[4],  args[1], 2)) status = CmdDiagnostics (      rules, database, extensions, log);
-      else if (closeEnough (allCommands[5],  args[1], 2)) status = CmdExport      (             database                 );
-      else if (closeEnough (allCommands[6],  args[1], 2)) status = CmdExtensions  (      rules,           extensions     );
-      else if (closeEnough (allCommands[7],  args[1], 2)) status = CmdGaps        (                                      );
-      else if (closeEnough (allCommands[8],  args[1], 2)) status = CmdHelp        (args,                              log);
-      else if (closeEnough (allCommands[9],  args[1], 2)) status = CmdImport      (                                      );
-      else if (closeEnough (allCommands[10], args[1], 2)) status = CmdLog         (args,                              log);
-      else if (closeEnough (allCommands[11], args[1], 2)) status = CmdReport      (args, rules, database, extensions, log);
-      else if (closeEnough (allCommands[12], args[1], 2)) status = CmdStart       (args,        database,             log);
-      else if (closeEnough (allCommands[13], args[1], 2)) status = CmdStop        (args,        database,             log);
-      else if (closeEnough (allCommands[14], args[1], 2)) status = CmdTags        (             database,             log);
-      else if (closeEnough (allCommands[15], args[1], 2)) status = CmdTrack       (                                      );
-      else if (closeEnough (allCommands[16], args[1], 2)) status = CmdUndo        (                                      );
+           if (matches[0] == allCommands[0])  status = CmdClear       (                                      );
+      else if (matches[0] == allCommands[1])  status = CmdConfig      (                                      );
+      else if (matches[0] == allCommands[2])  status = CmdContinue    (             database,             log);
+      else if (matches[0] == allCommands[3])  status = CmdDefine      (      rules                           );
+      else if (matches[0] == allCommands[4])  status = CmdDiagnostics (      rules, database, extensions, log);
+      else if (matches[0] == allCommands[5])  status = CmdExport      (             database                 );
+      else if (matches[0] == allCommands[6])  status = CmdExtensions  (      rules,           extensions     );
+      else if (matches[0] == allCommands[7])  status = CmdGaps        (                                      );
+      else if (matches[0] == allCommands[8])  status = CmdHelp        (args,                              log);
+      else if (matches[0] == allCommands[9])  status = CmdImport      (                                      );
+      else if (matches[0] == allCommands[10]) status = CmdLog         (args,                              log);
+      else if (matches[0] == allCommands[11]) status = CmdReport      (args, rules, database, extensions, log);
+      else if (matches[0] == allCommands[12]) status = CmdStart       (args,        database,             log);
+      else if (matches[0] == allCommands[13]) status = CmdStop        (args,        database,             log);
+      else if (matches[0] == allCommands[14]) status = CmdTags        (             database,             log);
+      else if (matches[0] == allCommands[15]) status = CmdTrack       (                                      );
+      else if (matches[0] == allCommands[16]) status = CmdUndo        (                                      );
     }
     else if (matches.size () == 0)
     {
