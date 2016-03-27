@@ -193,7 +193,7 @@ int dispatchCommand (
            if (matches[0] == allCommands[0])  status = CmdClear       (                                      );
       else if (matches[0] == allCommands[1])  status = CmdConfig      (                                      );
       else if (matches[0] == allCommands[2])  status = CmdContinue    (             database,             log);
-      else if (matches[0] == allCommands[3])  status = CmdDefine      (      rules                           );
+      else if (matches[0] == allCommands[3])  status = CmdDefine      (args, rules, database,             log);
       else if (matches[0] == allCommands[4])  status = CmdDiagnostics (      rules, database, extensions, log);
       else if (matches[0] == allCommands[5])  status = CmdExport      (             database                 );
       else if (matches[0] == allCommands[6])  status = CmdExtensions  (      rules,           extensions     );

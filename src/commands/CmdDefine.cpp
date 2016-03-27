@@ -25,11 +25,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
-#include <Rules.h>
+#include <commands.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdDefine (Rules& rules)
+int CmdDefine (
+  const std::vector <std::string>& args,
+  Rules& rules,
+  Database& database,
+  Log& log)
 {
   std::cout << "[define: rule tweaking]\n";
   return 0;
