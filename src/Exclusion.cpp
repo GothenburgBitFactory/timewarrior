@@ -26,6 +26,10 @@
 
 #include <cmake.h>
 #include <Exclusion.h>
+#include <Lexer.h>
+#include <Datetime.h>
+#include <shared.h>
+#include <format.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // An exclusion represents untrackable time such as holidays, weekends, evenings
@@ -35,9 +39,62 @@
 // Exclusions are instantiated from the 'define exclusions:' rule.
 //
 // Syntax:
-//   'exc' ?
+//   exc holidays en-US
+//   exc work 2015-11-26
+//   exc week mon,tue,wed,thu,fri
+//   exc day start 8:30am
+//   exc day end 1730
+//   exc day tue end 3pm
+
 void Exclusion::initialize (const std::string& line)
 {
+  Lexer lexer (line);
+  std::string token;
+  Lexer::Type type;
+  while (lexer.token (token, type))
+    _tokens.push_back (Lexer::dequote (token));
+
+  if (_tokens.size () >= 3 &&
+      _tokens[0] == "exc")
+  {
+    if (_tokens.size () == 3      &&
+        _tokens[1] == "holidays"  &&
+        _tokens[2].length () == 5 &&
+        _tokens[2][2] == '-')
+    {
+      return;
+    }
+    else if (_tokens.size () == 3 &&
+             _tokens[1] == "work")
+    {
+      return;
+    }
+    else if (_tokens.size () == 3 &&
+             _tokens[1]      == "week")
+    {
+      for (auto& day : split (_tokens[2], ','))
+        if (Datetime::dayOfWeek (day) == -1)
+          throw format ("Unrecognized days in '{1}'", _tokens[2]);
+
+      return;
+    }
+    else if (_tokens[1] == "day")
+    {
+      if (_tokens.size () == 4 &&
+          (_tokens[2] == "start" || _tokens[2] == "end"))
+      {
+        return;
+      }
+      else if (_tokens.size () == 5                   &&
+               Datetime::dayOfWeek (_tokens[2]) != -1 &&
+               (_tokens[3] == "start" || _tokens[3] == "end"))
+      {
+        return;
+      }
+    }
+  }
+
+  throw format ("Unrecognized exclusion syntax: '{1}'.", line);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

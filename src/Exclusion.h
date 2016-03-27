@@ -27,6 +27,7 @@
 #ifndef INCLUDED_EXCLUSION
 #define INCLUDED_EXCLUSION
 
+#include <vector>
 #include <string>
 
 class Exclusion
@@ -36,6 +37,7 @@ public:
   void initialize (const std::string&);
 
 private:
+  std::vector <std::string> _tokens;
 };
 
 #endif
