@@ -92,7 +92,7 @@ Yields a combined:
 
 Possible exclusions include:
 
-  $ timew define holidays eng-USA
+  $ timew define holidays en-US
   $ timew define week mon-fri
   $ timew define day start 8:30am
   $ timew define day end 1730
@@ -101,7 +101,7 @@ Possible exclusions include:
 Yielding:
 
   define exclusions:
-    holidays = eng-USA
+    holidays = en-US
     work = 2015-11-26
     week = mon,tue,wed,thu,fri
     day:

@@ -59,7 +59,7 @@ exclusions.
 
 An example file looks like this:
 
-  exc holidays eng-USA
+  exc holidays en-US
   exc work 2015-11-26
   exc workweek mon,tue,wed,thu,fri
   exc workday start 8:30am

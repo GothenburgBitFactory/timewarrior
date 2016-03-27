@@ -64,7 +64,7 @@ preset periods:
 [3.1] Exclusions: Work Week
 --------------------------
 
-  $ timew define holidays eng-USA
+  $ timew define holidays en-US
   $ timew define holidays work 2015-11-26
   $ timew define week mon-fri
   $ timew define day start 8:30am

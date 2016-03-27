@@ -43,7 +43,7 @@ Once the work week is recorded, vague terms like 'yesterday' can be resolved
 into actual start/stop timestamps. If you define holidays, then it knows not to
 track time on those days:
 
-  $ timew define holidays eng-USA
+  $ timew define holidays en-US
 
 Furthermore, Timewarrior can fill in gaps. For example:
 
