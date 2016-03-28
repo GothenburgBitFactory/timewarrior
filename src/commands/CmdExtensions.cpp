@@ -60,7 +60,7 @@ int CmdExtensions (Rules& rules, Extensions& extensions)
     t.set (row, 1, perms);
   }
 
-  Directory extDir (rules.get ("db"));
+  Directory extDir (rules.get ("temp.db"));
   extDir += "extensions";
 
   std::cout << "\n"

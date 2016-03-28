@@ -126,12 +126,12 @@ void initializeDataAndRules (
   // This value is not written out to disk, as there would be no point. Having
   // located the config file, the 'db' location is already known. This is just
   // for subsequent internal use.
-  rules.set ("db", dbLocation._data);
-  log.write ("debug", std::string ("  rc.db=") + rules.get ("db"));
+  rules.set ("temp.db", dbLocation._data);
+  log.write ("debug", std::string ("  rc.db=") + rules.get ("temp.db"));
 
   // Perhaps some subsequent code would like to know this is a new db and
   // possibly a first run.
-  rules.set ("shiny", (shinyNewDatabase ? 1 : 0));
+  rules.set ("temp.shiny", (shinyNewDatabase ? 1 : 0));
 
   // Initialize the database (no data read), but files are enumerated.
   database.initialize (data._data);
@@ -148,7 +148,7 @@ void initializeExtensions (
   Extensions& extensions,
   Log& log)
 {
-  Directory extDir (rules.get ("db"));
+  Directory extDir (rules.get ("temp.db"));
   extDir += "extensions";
 
   extensions.initialize (extDir._data);

@@ -157,15 +157,15 @@ int CmdDiagnostics (Rules& rules, Database& database, Extensions& extensions, Lo
       << (env ? env : "-")
       << "\n";
 
-  File cfg (rules.get ("db") + "/timewarrior.cfg");
+  File cfg (rules.get ("temp.db") + "/timewarrior.cfg");
   out << "            Cfg: " << describeFile (cfg) << "\n";
 
-  Directory db (rules.get ("db"));
+  Directory db (rules.get ("temp.db"));
   out << "       Database: " << describeFile (db) << "\n";
 
   for (auto& file : database.files ())
   {
-    File df (rules.get ("db") + "/data");
+    File df (rules.get ("temp.db") + "/data");
     df += file;
     out << "                 " << describeFile (df) << "\n";
   }
@@ -184,7 +184,7 @@ int CmdDiagnostics (Rules& rules, Database& database, Extensions& extensions, Lo
   out << "\n";
 
   // Display extensions.
-  Directory extDir (rules.get ("db"));
+  Directory extDir (rules.get ("temp.db"));
   extDir += "extensions";
 
   out << "Extensions\n"
