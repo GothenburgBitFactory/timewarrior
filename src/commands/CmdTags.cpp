@@ -30,7 +30,7 @@
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdTags (Database& database, Log& log)
+int CmdTags (Rules& rules, Database& database, Log& log)
 {
   // Generate a unique, ordered list of tags.
   std::vector <std::string> tags;
