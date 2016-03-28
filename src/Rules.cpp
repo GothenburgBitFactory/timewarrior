@@ -30,6 +30,7 @@
 #include <shared.h>
 #include <format.h>
 #include <sstream>
+#include <iostream> // TODO Remove
 #include <tuple>
 #include <inttypes.h>
 
@@ -375,7 +376,12 @@ void Rules::parseRuleSettings (
     if (tokens.size () >= 3 && tokens[1] == "=")
     {
       auto name  = join (".", hierarchy) + "." + tokens[0];
-      auto value = Lexer::dequote (join (" ", std::vector <std::string> (tokens.begin () + 2, tokens.end ())));
+
+      auto equals = line.find ('=');
+      if (equals == std::string::npos)
+        throw format ("Syntax error in rule: missing '=' in line '{1}'.", line);
+
+      auto value = Lexer::dequote (trim (line.substr (equals + 1)));
       set (name, value);
     }
   }
