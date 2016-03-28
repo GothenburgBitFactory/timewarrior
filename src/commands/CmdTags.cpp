@@ -26,6 +26,8 @@
 
 #include <cmake.h>
 #include <commands.h>
+#include <Table.h>
+#include <Color.h>
 #include <algorithm>
 #include <iostream>
 
@@ -39,14 +41,32 @@ int CmdTags (Rules& rules, Database& database, Log& log)
       if (std::find (tags.begin (), tags.end (), tag) == tags.end ())
         tags.push_back (tag);
 
-  // TODO Determine sort order - most recent first?
-  // TODO Determine sort order - most common first?
-
   // Shows all tags.
+  Table t;
+  t.width (1024);
+  t.colorHeader (Color ("underline"));
+  t.add ("Tag");
+  t.add ("Description");
   // TODO Show all tag metadata.
-  for (auto& tag : tags)
-    std::cout << tag << "\n";
 
+  for (auto& tag : tags)
+  {
+    auto row = t.addRow ();
+
+    Color c;
+    std::string name = std::string ("tag.") + tag + ".color";
+    if (rules.has (name))
+      c = Color (rules.get (name));
+
+    t.set (row, 0, tag, c);
+
+    name = std::string ("tag.") + tag + ".description";
+    t.set (row, 1, rules.get (name));
+  }
+
+  std::cout << "\n"
+            << t.render ()
+            << "\n";
   return 0;
 }
 
