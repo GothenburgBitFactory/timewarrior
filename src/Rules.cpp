@@ -387,14 +387,6 @@ void Rules::parseRuleSettings (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Rules::parseRuleExclusions (const std::vector <std::string>& lines)
-{
-  for (auto& line : lines)
-  {
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////
 unsigned int Rules::getIndentation (const std::string& line)
 {
   auto indent = line.find_first_not_of (" ");

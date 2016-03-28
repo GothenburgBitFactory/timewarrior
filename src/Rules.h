@@ -58,7 +58,6 @@ private:
   void parseRule           (const std::string&);
   void parseRuleGeneral    (const std::vector <std::string>&);
   void parseRuleSettings   (const std::vector <std::string>&, const std::string& prefix = "");
-  void parseRuleExclusions (const std::vector <std::string>&);
 
   unsigned int getIndentation (const std::string&);
   std::vector <std::string> tokenizeLine (const std::string&);
