@@ -26,7 +26,6 @@
 
 #include <cmake.h>
 #include <Exclusion.h>
-#include <Lexer.h>
 #include <Datetime.h>
 #include <shared.h>
 #include <format.h>
@@ -48,11 +47,7 @@
 
 void Exclusion::initialize (const std::string& line)
 {
-  Lexer lexer (line);
-  std::string token;
-  Lexer::Type type;
-  while (lexer.token (token, type))
-    _tokens.push_back (Lexer::dequote (token));
+  _tokens = split (line);
 
   if (_tokens.size () >= 3 &&
       _tokens[0] == "exc")
