@@ -30,7 +30,6 @@
 #include <shared.h>
 #include <format.h>
 #include <sstream>
-#include <iostream> // TODO Remove
 #include <tuple>
 #include <inttypes.h>
 
@@ -326,10 +325,6 @@ void Rules::parseRule (const std::string& input)
 ////////////////////////////////////////////////////////////////////////////////
 void Rules::parseRuleGeneral (const std::vector <std::string>& lines)
 {
-  for (auto& line : lines)
-  {
-//    std::cout << "# general line '" << line << "'\n";
-  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
