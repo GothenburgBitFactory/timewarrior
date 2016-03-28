@@ -307,15 +307,13 @@ void Rules::parseRule (const std::string& input)
     else if (tokens.size () >= 3 && tokens[1] == "tag")
       parseRuleSettings (lines, "tag");
 
-    // define exclusions:
-    else if (tokens.size () == 2 && tokens[1] == "exclusions:")
-      parseRuleExclusions (lines);
-
     // define theme:
     // define holidays:
-    else if (tokens.size () == 2 &&
-             (tokens[1] == "theme:" ||
-              tokens[1] == "holidays:"))
+    // define exclusions:
+    else if (tokens.size () == 2       &&
+             (tokens[1] == "theme:"    ||
+              tokens[1] == "holidays:" ||
+              tokens[1] == "exclusions:"))
       parseRuleSettings (lines);
 
     // Error.
