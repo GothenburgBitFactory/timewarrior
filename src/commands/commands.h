@@ -36,7 +36,7 @@
 
 int CmdClear       (                                                                      );
 int CmdConfig      (                                                                      );
-int CmdContinue    (                                          Database&,              Log&);
+int CmdContinue    (                                  Rules&, Database&,              Log&);
 int CmdDefault     (                                  Rules&, Database&                   );
 int CmdDefine      (const std::vector <std::string>&, Rules&, Database&,              Log&);
 int CmdDiagnostics (                                  Rules&, Database&, Extensions&, Log&);
