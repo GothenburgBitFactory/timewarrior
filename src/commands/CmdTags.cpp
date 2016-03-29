@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <commands.h>
+#include <timew.h>
 #include <Table.h>
 #include <Color.h>
 #include <algorithm>
@@ -52,16 +53,10 @@ int CmdTags (Rules& rules, Database& database, Log& log)
   for (auto& tag : tags)
   {
     auto row = t.addRow ();
+    t.set (row, 0, tag, tagColor (rules, tag));
 
-    Color c;
-    std::string name = std::string ("tag.") + tag + ".color";
-    if (rules.has (name))
-      c = Color (rules.get (name));
-
-    t.set (row, 0, tag, c);
-
-    name = std::string ("tag.") + tag + ".description";
-    t.set (row, 1, rules.get (name));
+    auto name = std::string ("tag.") + tag + ".description";
+    t.set (row, 1, rules.has (name) ? rules.get (name) : "-");
   }
 
   std::cout << "\n"
