@@ -202,7 +202,7 @@ int dispatchCommand (
       else if (matches[0] == allCommands[9])  status = CmdImport      (                                      );
       else if (matches[0] == allCommands[10]) status = CmdLog         (args,                              log);
       else if (matches[0] == allCommands[11]) status = CmdReport      (args, rules, database, extensions, log);
-      else if (matches[0] == allCommands[12]) status = CmdStart       (args,        database,             log);
+      else if (matches[0] == allCommands[12]) status = CmdStart       (args, rules, database,             log);
       else if (matches[0] == allCommands[13]) status = CmdStop        (args,        database,             log);
       else if (matches[0] == allCommands[14]) status = CmdTags        (      rules, database,             log);
       else if (matches[0] == allCommands[15]) status = CmdTrack       (                                      );
