@@ -28,7 +28,6 @@
 #include <Interval.h>
 #include <timew.h>
 #include <format.h>
-#include <Duration.h>
 #include <Lexer.h>
 #include <sstream>
 
@@ -135,50 +134,6 @@ void Interval::tag (const std::string& tag)
 void Interval::untag (const std::string& tag)
 {
   _tags.erase (tag);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-std::string Interval::summarize () const
-{
-  std::stringstream out;
-
-  if (isStarted ())
-  {
-    if (isEnded ())
-    {
-      Duration dur (Datetime (_end) - Datetime (_start));
-      out << "Recorded interval from "
-          << _start.toISOLocalExtended ()
-          << " to "
-          << _end.toISOLocalExtended ()
-          << " ("
-          << dur.format ()
-          << ")";
-    }
-    else
-    {
-      Duration dur (Datetime () - _start);
-      out << "Active interval since "
-          << _start.toISOLocalExtended ();
-
-      if (dur.toTime_t () > 10)
-        out << " ("
-            << dur.format ()
-            << ")";
-    }
-
-    // TODO Colorize tags.
-    if (_tags.size ())
-    {
-      out << ", tagged:";
-      for (auto& tag : _tags)
-        out << ' ' << quoteIfNeeded (tag);
-    }
-
-    out << "\n";
-  }
-
-  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

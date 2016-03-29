@@ -50,7 +50,6 @@ public:
   void tag (const std::string&);
   void untag (const std::string&);
 
-  std::string summarize () const;
   std::string serialize () const;
   std::string json () const;
   std::string dump () const;
