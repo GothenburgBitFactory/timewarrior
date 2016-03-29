@@ -29,22 +29,17 @@
 #include <Rules.h>
 #include <Extensions.h>
 #include <Log.h>
-//#include <Grammar.h>
-#include <FS.h>
 #include <shared.h>
 #include <commands.h>
 #include <timew.h>
-//#include <LR0.h>
 #include <iostream>
 #include <new>
-
-// No global data.
 
 ////////////////////////////////////////////////////////////////////////////////
 int main (int argc, const char** argv)
 {
   // The log is needed early, in order to capture as much as possible, but will
-  // only be given a file name once the rules is loaded. The log therefore
+  // only be given a file name once the rules are loaded. The log therefore
   // buffers the messages until it has a file name to write to.
   Log log;
   CmdLog ({"timew", "log", "mark"}, log);
@@ -65,12 +60,6 @@ int main (int argc, const char** argv)
     Database database;
     Rules rules;
     initializeDataAndRules (database, rules, log);
-
-    // TODO Arrange the following to minimize memory use.
-    // TODO Load CLI grammar.
-    // TODO Load from string, else file on config override.
-    // TODO Migrate from loading a grammar from file, to a default string.
-    // TODO Parse CLI.
 
     // Load extension script info.
     Extensions extensions;
