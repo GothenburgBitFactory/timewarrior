@@ -36,6 +36,9 @@
 class Lexer
 {
 public:
+  // These are overridable.
+  static std::string dateFormat;
+
   enum class Type { number, hex,
                     string,
                     url,

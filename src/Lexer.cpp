@@ -32,6 +32,8 @@
 #include <unicode.h>
 #include <utf8.h>
 
+std::string Lexer::dateFormat = "";
+
 ////////////////////////////////////////////////////////////////////////////////
 Lexer::Lexer (const std::string& text)
 : _text (text)
