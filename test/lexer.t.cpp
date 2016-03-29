@@ -34,7 +34,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (351);
+  UnitTest t (479);
 
   std::vector <std::pair <std::string, Lexer::Type>> tokens;
   std::string token;
@@ -67,15 +67,15 @@ int main (int, char**)
   t.is (tokens[0].first,         "1",                       "tokens[0] == '1'");
   t.is ((int) tokens[0].second,  (int) Lexer::Type::number, "tokens[0] == Type::number");
   t.is (tokens[1].first,         "12",                      "tokens[1] == '12'");
-  t.is ((int) tokens[1].second,  (int) Lexer::Type::number, "tokens[1] == Type::date");
+  t.is ((int) tokens[1].second,  (int) Lexer::Type::number, "tokens[1] == Type::number");
   t.is (tokens[2].first,         "123",                     "tokens[2] == '123'");
   t.is ((int) tokens[2].second,  (int) Lexer::Type::number, "tokens[2] == Type::number"); // 70
   t.is (tokens[3].first,         "1234",                    "tokens[3] == '1234'");
-  t.is ((int) tokens[3].second,  (int) Lexer::Type::number, "tokens[3] == Type::date");
+  t.is ((int) tokens[3].second,  (int) Lexer::Type::date,   "tokens[3] == Type::date");
   t.is (tokens[4].first,         "12345",                   "tokens[4] == '12345'");
   t.is ((int) tokens[4].second,  (int) Lexer::Type::number, "tokens[4] == Type::number");
   t.is (tokens[5].first,         "123456",                  "tokens[5] == '123456'");
-  t.is ((int) tokens[5].second,  (int) Lexer::Type::number, "tokens[5] == Type::date");
+  t.is ((int) tokens[5].second,  (int) Lexer::Type::date,   "tokens[5] == Type::date");
   t.is (tokens[6].first,         "1234567",                 "tokens[6] == '1234567'");
   t.is ((int) tokens[6].second,  (int) Lexer::Type::number, "tokens[6] == Type::number");
 
@@ -198,6 +198,30 @@ int main (int, char**)
     { "(",                                            { { "(",                                            Lexer::Type::op           }, NO, NO, NO, NO }, },
     { ")",                                            { { ")",                                            Lexer::Type::op           }, NO, NO, NO, NO }, },
 
+    // Date
+    { "2015-W01",                                     { { "2015-W01",                                     Lexer::Type::date         }, NO, NO, NO, NO }, },
+    { "2015-02-17",                                   { { "2015-02-17",                                   Lexer::Type::date         }, NO, NO, NO, NO }, },
+    { "2013-11-29T22:58:00Z",                         { { "2013-11-29T22:58:00Z",                         Lexer::Type::date         }, NO, NO, NO, NO }, },
+    { "20131129T225800Z",                             { { "20131129T225800Z",                             Lexer::Type::date         }, NO, NO, NO, NO }, },
+    { "9th",                                          { { "9th",                                          Lexer::Type::date         }, NO, NO, NO, NO }, },
+    { "10th",                                         { { "10th",                                         Lexer::Type::date         }, NO, NO, NO, NO }, },
+    { "today",                                        { { "today",                                        Lexer::Type::date         }, NO, NO, NO, NO }, },
+
+    // Duration
+    { "year",                                         { { "year",                                         Lexer::Type::duration     }, NO, NO, NO, NO }, },
+    { "4weeks",                                       { { "4weeks",                                       Lexer::Type::duration     }, NO, NO, NO, NO }, },
+    { "PT23H",                                        { { "PT23H",                                        Lexer::Type::duration     }, NO, NO, NO, NO }, },
+    { "1second",                                      { { "1second",                                      Lexer::Type::duration     }, NO, NO, NO, NO }, },
+    { "1s",                                           { { "1s",                                           Lexer::Type::duration     }, NO, NO, NO, NO }, },
+    { "1minute",                                      { { "1minute",                                      Lexer::Type::duration     }, NO, NO, NO, NO }, },
+    { "2hour",                                        { { "2hour",                                        Lexer::Type::duration     }, NO, NO, NO, NO }, },
+    { "3 days",                                       { { "3 days",                                       Lexer::Type::duration     }, NO, NO, NO, NO }, },
+    { "4w",                                           { { "4w",                                           Lexer::Type::duration     }, NO, NO, NO, NO }, },
+    { "5mo",                                          { { "5mo",                                          Lexer::Type::duration     }, NO, NO, NO, NO }, },
+    { "6 years",                                      { { "6 years",                                      Lexer::Type::duration     }, NO, NO, NO, NO }, },
+    { "P1Y",                                          { { "P1Y",                                          Lexer::Type::duration     }, NO, NO, NO, NO }, },
+    { "PT1H",                                         { { "PT1H",                                         Lexer::Type::duration     }, NO, NO, NO, NO }, },
+    { "P1Y1M1DT1H1M1S",                               { { "P1Y1M1DT1H1M1S",                               Lexer::Type::duration     }, NO, NO, NO, NO }, },
   };
   #define NUM_TESTS (sizeof (lexerTests) / sizeof (lexerTests[0]))
 
@@ -240,6 +264,8 @@ int main (int, char**)
   t.is (Lexer::typeName (Lexer::Type::pattern),      "pattern",      "Lexer::typeName (Lexer::Type::pattern)");
   t.is (Lexer::typeName (Lexer::Type::op),           "op",           "Lexer::typeName (Lexer::Type::op)");
   t.is (Lexer::typeName (Lexer::Type::word),         "word",         "Lexer::typeName (Lexer::Type::word)");
+  t.is (Lexer::typeName (Lexer::Type::date),         "date",         "Lexer::typeName (Lexer::Type::date)");
+  t.is (Lexer::typeName (Lexer::Type::duration),     "duration",     "Lexer::typeName (Lexer::Type::duration)");
 
   // std::string Lexer::trimLeft (const std::string& in, const std::string&)
   t.is (Lexer::trimLeft (""),                     "",            "Lexer::trimLeft '' -> ''");
