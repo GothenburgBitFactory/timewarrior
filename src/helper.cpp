@@ -26,6 +26,8 @@
 
 #include <cmake.h>
 #include <timew.h>
+#include <Duration.h>
+#include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
 Color tagColor (const Rules& rules, const std::string& tag)
@@ -36,6 +38,51 @@ Color tagColor (const Rules& rules, const std::string& tag)
     c = Color (rules.get (name));
 
   return c;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string intervalSummarize (const Rules& rules, const Interval& interval)
+{
+  std::stringstream out;
+
+  if (interval.isStarted ())
+  {
+    if (interval.isEnded ())
+    {
+      Duration dur (Datetime (interval.end ()) - Datetime (interval.start ()));
+      out << "Recorded interval from "
+          << interval.start ().toISOLocalExtended ()
+          << " to "
+          << interval.end ().toISOLocalExtended ()
+          << " ("
+          << dur.format ()
+          << ")";
+    }
+    else
+    {
+      Duration dur (Datetime () - interval.start ());
+      out << "Active interval since "
+          << interval.start ().toISOLocalExtended ();
+
+      if (dur.toTime_t () > 10)
+        out << " ("
+            << dur.format ()
+            << ")";
+    }
+
+    // Colorize tags.
+    auto tags = interval.tags ();
+    if (tags.size ())
+    {
+      out << ", tagged:";
+      for (auto& tag : tags)
+        out << ' ' << tagColor (rules, tag).colorize (quoteIfNeeded (tag));
+    }
+
+    out << "\n";
+  }
+
+  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
