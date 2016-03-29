@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <commands.h>
+#include <timew.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +51,7 @@ int CmdContinue (
     log.write ("debug", std::string ("Continued tracking: ") + latest.serialize ());
 
     // User feedback.
-    std::cout << latest.summarize ();
+    std::cout << intervalSummarize (rules, latest);
   }
   else
   {
