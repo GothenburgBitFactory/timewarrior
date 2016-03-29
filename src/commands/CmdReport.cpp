@@ -84,12 +84,13 @@ int CmdReport (
 
     // Compose Header info.
     std::stringstream header;
-    //   TODO Configuration.
-    //   TODO Exclusions.
     //   TODO Filter.
     //   TODO CLI.
     //   TODO Directory containing *.data files.
-    header << "version=" << VERSION << "\n";
+
+    // All configuration.
+    for (auto& name : rules.all ())
+      header << name << "=" << rules.get (name) << "\n";
 
     // Compose JSON.
     std::stringstream json;
