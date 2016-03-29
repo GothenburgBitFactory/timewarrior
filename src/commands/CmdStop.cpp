@@ -32,6 +32,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdStop (
   const std::vector <std::string>& args,
+  Rules& rules,
   Database& database,
   Log& log)
 {
