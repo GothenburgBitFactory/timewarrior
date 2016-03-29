@@ -30,6 +30,7 @@
 #include <Database.h>
 #include <Rules.h>
 #include <Extensions.h>
+#include <Interval.h>
 #include <Log.h>
 #include <Color.h>
 
@@ -44,6 +45,7 @@ std::vector <std::string> getKeywords (const std::vector <std::string>&);
 
 // helper.cpp
 Color tagColor (const Rules&, const std::string&);
+std::string intervalSummarize (const Rules&, const Interval&);
 
 // utiŀ.cpp
 std::string osName ();

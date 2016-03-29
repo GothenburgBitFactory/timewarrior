@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <commands.h>
+#include <timew.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -39,7 +40,7 @@ int CmdDefault (Rules& rules, Database& database)
   auto interval = database.getLatestInterval ();
   if (interval.isStarted () && ! interval.isEnded ())
     std::cout << "\n"
-              << database.getLatestInterval ().summarize ()
+              << intervalSummarize (rules, database.getLatestInterval ())
               << "\n";
   else
     std::cout << "\n"
