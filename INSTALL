@@ -83,6 +83,26 @@ get absolute installation directories:
   CMAKE_INSTALL_PREFIX/TIMEW_MAN5DIR  /usr/local/share/man/man5
 
 
+Updating Timewarrior build
+--------------------------
+
+This section concerns itself with the description of the procedure needed to
+update the local Timewarrior build from the 'timew' git repository.
+
+To update the local Timewarrior build, you need to update the git repository,
+including the 'src/libshared' submodule. To do that, run:
+
+  $ git pull --recurse-submodules
+  $ git submodule update
+
+At this point you have the fully updated sources at your disposal and you can
+update your local build following the regular build instructions:
+
+  $ cmake .
+  $ make
+  $ sudo make install
+
+
 Uninstallation
 --------------
 
