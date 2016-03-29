@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <commands.h>
+#include <timew.h>
 #include <Interval.h>
 #include <iostream>
 
@@ -51,7 +52,7 @@ int CmdStart (
     log.write ("debug", std::string ("Stopped tracking: ") + latest.serialize ());
 
     // User feedback.
-    std::cout << latest.summarize ();
+    std::cout << intervalSummarize (rules, latest);
   }
 
   // Create a new interval.
@@ -67,7 +68,7 @@ int CmdStart (
   log.write ("debug", std::string ("Started tracking: ") + now.serialize ());
 
   // User feedback.
-  std::cout << now.summarize ();
+  std::cout << intervalSummarize (rules, now);
   return 0;
 }
 
