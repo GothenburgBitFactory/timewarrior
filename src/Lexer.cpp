@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Lexer.h>
+#include <Datetime.h>
 #include <algorithm>
 #include <tuple>
 #include <ctype.h>
@@ -55,6 +56,7 @@ bool Lexer::token (std::string& token, Lexer::Type& type)
     return false;
 
   if (isString    (token, type, "'\"") ||
+      isDate      (token, type)        ||
       isURL       (token, type)        ||
       isHexNumber (token, type)        ||
       isNumber    (token, type)        ||
@@ -95,6 +97,7 @@ const std::string Lexer::typeName (const Lexer::Type& type)
   case Lexer::Type::pattern:      return "pattern";
   case Lexer::Type::op:           return "op";
   case Lexer::Type::word:         return "word";
+  case Lexer::Type::date:         return "date";
   }
 
   return "unknown";
@@ -376,6 +379,25 @@ bool Lexer::isString (std::string& token, Lexer::Type& type, const std::string& 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Lexer::Type::date
+//   <Datetime>
+bool Lexer::isDate (std::string& token, Lexer::Type& type)
+{
+  // Try an ISO date parse.
+  std::size_t i = 0;
+  Datetime d;
+  if (d.parse (_text.substr (_cursor), i, Lexer::dateFormat))
+  {
+    type = Lexer::Type::date;
+    token = _text.substr (_cursor, i);
+    _cursor += i;
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Lexer::Type::hex
 //   0xX+
 bool Lexer::isHexNumber (std::string& token, Lexer::Type& type)
@@ -617,6 +639,7 @@ std::string Lexer::typeToString (Lexer::Type type)
   else if (type == Lexer::Type::pattern)      return std::string ("\033[37;42m")                 + "pattern"      + "\033[0m";
   else if (type == Lexer::Type::op)           return std::string ("\033[38;5;7m\033[48;5;203m")  + "op"           + "\033[0m";
   else if (type == Lexer::Type::word)         return std::string ("\033[38;5;15m\033[48;5;236m") + "word"         + "\033[0m";
+  else if (type == Lexer::Type::date)         return std::string ("\033[38;5;15m\033[48;5;34m")  + "date"         + "\033[0m";
   else                                        return std::string ("\033[37;41m")                 + "unknown"      + "\033[0m";
 }
 
