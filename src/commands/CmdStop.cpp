@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <commands.h>
+#include <timew.h>
 #include <Interval.h>
 #include <iostream>
 
@@ -54,7 +55,7 @@ int CmdStop (
     log.write ("debug", std::string ("Stopped tracking: ") + latest.serialize ());
 
     // User feedback.
-    std::cout << latest.summarize ();
+    std::cout << intervalSummarize (rules, latest);
 
     // If tags were specified, and after removing those tags, there are still
     // tags remaining, then add a contiguous interval.
@@ -73,7 +74,7 @@ int CmdStop (
         log.write ("debug", std::string ("Started tracking: ") + latest.serialize ());
 
         // User feedback.
-        std::cout << latest.summarize ();
+        std::cout << intervalSummarize (rules, latest);
       }
     }
   }
