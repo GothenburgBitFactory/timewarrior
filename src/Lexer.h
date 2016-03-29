@@ -46,7 +46,7 @@ public:
                     pattern,
                     op,
                     word,
-                    date };
+                    date, duration };
 
   explicit Lexer (const std::string&);
   bool token (std::string&, Lexer::Type&);
@@ -75,6 +75,7 @@ public:
   bool isEOS          () const;
   bool isString       (std::string&, Lexer::Type&, const std::string&);
   bool isDate         (std::string&, Lexer::Type&);
+  bool isDuration     (std::string&, Lexer::Type&);
   bool isNumber       (std::string&, Lexer::Type&);
   bool isInteger      (std::string&, Lexer::Type&);
   bool isHexNumber    (std::string&, Lexer::Type&);

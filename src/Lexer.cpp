@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <Lexer.h>
 #include <Datetime.h>
+#include <Duration.h>
 #include <algorithm>
 #include <tuple>
 #include <ctype.h>
@@ -57,6 +58,7 @@ bool Lexer::token (std::string& token, Lexer::Type& type)
 
   if (isString    (token, type, "'\"") ||
       isDate      (token, type)        ||
+      isDuration  (token, type)        ||
       isURL       (token, type)        ||
       isHexNumber (token, type)        ||
       isNumber    (token, type)        ||
@@ -98,6 +100,7 @@ const std::string Lexer::typeName (const Lexer::Type& type)
   case Lexer::Type::op:           return "op";
   case Lexer::Type::word:         return "word";
   case Lexer::Type::date:         return "date";
+  case Lexer::Type::duration:     return "duration";
   }
 
   return "unknown";
@@ -398,6 +401,34 @@ bool Lexer::isDate (std::string& token, Lexer::Type& type)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Lexer::Type::duration
+//   <Duration>
+bool Lexer::isDuration (std::string& token, Lexer::Type& type)
+{
+  std::size_t marker = _cursor;
+
+  std::string extractedToken;
+  Lexer::Type extractedType;
+  if (isOperator(extractedToken, extractedType))
+  {
+    _cursor = marker;
+    return false;
+  }
+
+  marker = 0;
+  Duration dur;
+  if (dur.parse (_text.substr (_cursor), marker))
+  {
+    type = Lexer::Type::duration;
+    token = _text.substr (_cursor, marker);
+    _cursor += marker;
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Lexer::Type::hex
 //   0xX+
 bool Lexer::isHexNumber (std::string& token, Lexer::Type& type)
@@ -640,6 +671,7 @@ std::string Lexer::typeToString (Lexer::Type type)
   else if (type == Lexer::Type::op)           return std::string ("\033[38;5;7m\033[48;5;203m")  + "op"           + "\033[0m";
   else if (type == Lexer::Type::word)         return std::string ("\033[38;5;15m\033[48;5;236m") + "word"         + "\033[0m";
   else if (type == Lexer::Type::date)         return std::string ("\033[38;5;15m\033[48;5;34m")  + "date"         + "\033[0m";
+  else if (type == Lexer::Type::duration)     return std::string ("\033[38;5;15m\033[48;5;34m")  + "duration"     + "\033[0m";
   else                                        return std::string ("\033[37;41m")                 + "unknown"      + "\033[0m";
 }
 
