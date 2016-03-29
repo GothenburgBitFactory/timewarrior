@@ -17,6 +17,7 @@ set (timew_SRCS Database.cpp   Database.h
                 Timeline.cpp   Timeline.h
                 classifier.cpp
                 init.cpp
+                helper.cpp
                 util.cpp)
 
 set (libshared_SRCS libshared/src/Args.cpp          libshared/src/Args.h

@@ -24,30 +24,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef INCLUDED_TIMEW
-#define INCLUDED_TIMEW
+#include <cmake.h>
+#include <timew.h>
 
-#include <Database.h>
-#include <Rules.h>
-#include <Extensions.h>
-#include <Log.h>
-#include <Color.h>
+////////////////////////////////////////////////////////////////////////////////
+Color tagColor (const Rules& rules, const std::string& tag)
+{
+  Color c;
+  std::string name = std::string ("tag.") + tag + ".color";
+  if (rules.has (name))
+    c = Color (rules.get (name));
 
-// init.cpp
-bool lightweightVersionCheck (const std::vector <std::string>&);
-void initializeDataAndRules (Database&, Rules&, Log&);
-void initializeExtensions (Rules&, Extensions&, Log&);
-int dispatchCommand (const std::vector <std::string>&, Database&, Rules&, Extensions&, Log&);
+  return c;
+}
 
-// classifier.cpp
-std::vector <std::string> getKeywords (const std::vector <std::string>&);
-
-// helper.cpp
-Color tagColor (const Rules&, const std::string&);
-
-// utiŀ.cpp
-std::string osName ();
-std::string escape (const std::string&, int);
-std::string quoteIfNeeded (const std::string&);
-
-#endif
+////////////////////////////////////////////////////////////////////////////////
