@@ -1,12 +1,15 @@
 # Disclaimer during ongoing development
 
 We want to discourage you from using the development version of Timewarrior. As
-a new project, it has initially no functionality, and will only annoy you.
+a new project, it has initially no functionality, and will only annoy you. At
+time of first release, there will be online documentation that explaions what
+the prodcut is, and how it can help you. Until then, everything is a work in
+progress.
 
-The development branch is a work in progress and may not pass all quality tests,
-therefore it may harm your data. In fact, as a new project, it doesn't have
-adequate tests to prove anything works. We do not guarantee proper or even
-adequate functionality, performance or timely fixes.
+The development branch is being actively updated and may not pass all quality
+tests, therefore it may harm your data. In fact, as a new project, it doesn't
+have adequate tests to prove that anything works. We do not guarantee proper or
+even adequate functionality, performance or timely fixes.
 
 We welcome bug reports from beta- and release-level software, but generally not
 development versions. If you are undaunted by this, please:
