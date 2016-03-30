@@ -38,6 +38,7 @@ int main (int, char**)
   c.add ("right", 4, Color ("on blue"));
   t.diag (c.str ());
 
+  t.skip ("No implemented tests");
   return 0;
 }
 
