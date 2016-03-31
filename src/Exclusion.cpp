@@ -35,7 +35,8 @@
 // and lunch. By default there are none, but they may be configured. Once there
 // are exclusions defined, the :fill functionality is enabled.
 //
-// Exclusions are instantiated from the 'define exclusions:' rule.
+// Exclusions are instantiated from the 'define exclusions:' rule. This method
+// simply validates.
 //
 // Syntax:
 //   exc holidays en-US
@@ -96,6 +97,57 @@ void Exclusion::initialize (const std::string& line)
 std::vector <std::string> Exclusion::tokens () const
 {
   return _tokens;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// A single exclusion directive is expanded to a tuple of start/end timestamps,
+// when evaluated within a closed range. These tuples represent windows of time
+// that are not available for tracking.
+std::vector <Interval> Exclusion::intervals (
+  const Interval& interval) const
+{
+       if (_tokens[1] == "holidays") return expandIntervalsHolidays (interval);
+  else if (_tokens[1] == "work")     return expandIntervalsWork     (interval);
+  else if (_tokens[1] == "week")     return expandIntervalsWeek     (interval);
+  else if (_tokens[1] == "day")      return expandIntervalsDay      (interval);
+
+  throw std::string ("Exclusion is not initialized.");
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector <Interval> Exclusion::expandIntervalsHolidays (
+  const Interval& interval) const
+{
+  std::vector <Interval> result;
+
+  return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector <Interval> Exclusion::expandIntervalsWork (
+  const Interval& interval) const
+{
+  std::vector <Interval> result;
+
+  return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector <Interval> Exclusion::expandIntervalsWeek (
+  const Interval& interval) const
+{
+  std::vector <Interval> result;
+
+  return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector <Interval> Exclusion::expandIntervalsDay (
+  const Interval& interval) const
+{
+  std::vector <Interval> result;
+
+  return result;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
