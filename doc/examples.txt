@@ -106,7 +106,20 @@ that extends all day today. Similarly 'tomorrow', 'next week' are bounded.
 
 [5.3] Fill: Autofill
 --------------------
+Given an exclusion that ends at 8am, and another that begins at 5pm (defining a
+work day), then the following commands need to be explained:
 
+  $ timew track today ...
+
+This will create an open tracking interval starting at 8am, because of the lack
+of a specific start time, and the presence of configured exclusions.
+
+  $ timew track 7:45am ...
+
+This will create an open tracking interval starting at 7:45am, because of the
+specific start time, which always overrides exclusions. This means is possible
+to track time that exists entirely within an exclusion, provided there is a
+specific start and stop time.
 
 
 [6.1] Configuration: Storing/accessing settings

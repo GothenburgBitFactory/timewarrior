@@ -106,6 +106,7 @@ three changes associated with the one command.
 Extensions
 ----------
 A simple extension mechanism allows custom reports to be written and shared.
+Most reports will be external scripts that use the extension API.
 
 
 --- Raw Notes ---

@@ -123,6 +123,8 @@ supported keywords are:
 
 --- Raw Notes ---
 
-- 'timew merge <file>' for combining data.  Or is this the same as
-  'timew import <file>'?  Probably is.
+- 'timew import <file>' will merge data.
+
+- A command for a daily and weekly view of exclusions is needed. To verify that
+  it is correctly defined. A text-based list should accompany it.
 
