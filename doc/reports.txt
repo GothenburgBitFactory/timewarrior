@@ -39,6 +39,7 @@ Purely as an example of what might be implemented, here are some report mockups:
 
   ./report.week.txt
   ./report.day.1.txt
+  ./report.exc.week.txt
 
   TBD (calendar like "task calendar" with table below)
   TBD (timeline, l-r)
