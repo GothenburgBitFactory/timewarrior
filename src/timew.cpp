@@ -55,7 +55,15 @@ int main (int argc, const char** argv)
   CLI cli;
   initializeEntities (cli);
 
+  // Capture the args.
+  for (int i = 0; i < argc; i++)
+    cli.add (argv[i]);
+
+  // TODO Remove.
+  std::cout << cli.dump () << "\n";
+
   // Make a vector of args, instead of argc/argv.
+  // TODO Deprecated.
   std::vector <std::string> args;
   for (int i = 0; i < argc; i++)
     args.push_back (argv[i]);
