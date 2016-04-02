@@ -37,13 +37,6 @@ public:
   Exclusion () = default;
   void initialize (const std::string&);
   std::vector <std::string> tokens () const;
-  std::vector <Interval> intervals (const Interval&) const;
-
-private:
-  std::vector <Interval> expandIntervalsHolidays (const Interval&) const;
-  std::vector <Interval> expandIntervalsWork     (const Interval&) const;
-  std::vector <Interval> expandIntervalsWeek     (const Interval&) const;
-  std::vector <Interval> expandIntervalsDay      (const Interval&) const;
 
 private:
   std::vector <std::string> _tokens;

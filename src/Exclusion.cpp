@@ -39,54 +39,28 @@
 // simply validates.
 //
 // Syntax:
-//   exc holidays en-US
-//   exc work 2015-11-26
-//   exc week mon,tue,wed,thu,fri
-//   exc day start 8:30am
-//   exc day end 1730
-//   exc day tue end 3pm
+//   exc monday 8:00:00-12:00:00 12:45:00-17:30:00
+//   exc day on 2016-01-01
+//   exc day off 2016-01-02
 
 void Exclusion::initialize (const std::string& line)
 {
   _tokens = split (line);
 
-  if (_tokens.size () >= 3 &&
+  // Validate syntax only. Do nothing with the data.
+  if (_tokens.size () >= 2 &&
       _tokens[0] == "exc")
   {
-    if (_tokens.size () == 3      &&
-        _tokens[1] == "holidays"  &&
-        _tokens[2].length () == 5 &&
-        _tokens[2][2] == '-')
+    if (_tokens.size () == 4 &&
+        _tokens[1] == "day"  &&
+        (_tokens[2] == "on" || _tokens[2] == "off"))
     {
       return;
     }
-    else if (_tokens.size () == 3 &&
-             _tokens[1] == "work")
+    else if (Datetime::dayOfWeek (_tokens[1]) != -1)
+             // TODO Check the time range args.
     {
       return;
-    }
-    else if (_tokens.size () == 3 &&
-             _tokens[1]      == "week")
-    {
-      for (auto& day : split (_tokens[2], ','))
-        if (Datetime::dayOfWeek (day) == -1)
-          throw format ("Unrecognized days in '{1}'", _tokens[2]);
-
-      return;
-    }
-    else if (_tokens[1] == "day")
-    {
-      if (_tokens.size () == 4 &&
-          (_tokens[2] == "start" || _tokens[2] == "end"))
-      {
-        return;
-      }
-      else if (_tokens.size () == 5                   &&
-               Datetime::dayOfWeek (_tokens[2]) != -1 &&
-               (_tokens[3] == "start" || _tokens[3] == "end"))
-      {
-        return;
-      }
     }
   }
 
@@ -97,57 +71,6 @@ void Exclusion::initialize (const std::string& line)
 std::vector <std::string> Exclusion::tokens () const
 {
   return _tokens;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// A single exclusion directive is expanded to a tuple of start/end timestamps,
-// when evaluated within a closed range. These tuples represent windows of time
-// that are not available for tracking.
-std::vector <Interval> Exclusion::intervals (
-  const Interval& interval) const
-{
-       if (_tokens[1] == "holidays") return expandIntervalsHolidays (interval);
-  else if (_tokens[1] == "work")     return expandIntervalsWork     (interval);
-  else if (_tokens[1] == "week")     return expandIntervalsWeek     (interval);
-  else if (_tokens[1] == "day")      return expandIntervalsDay      (interval);
-
-  throw std::string ("Exclusion is not initialized.");
-}
-
-////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> Exclusion::expandIntervalsHolidays (
-  const Interval& interval) const
-{
-  std::vector <Interval> result;
-
-  return result;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> Exclusion::expandIntervalsWork (
-  const Interval& interval) const
-{
-  std::vector <Interval> result;
-
-  return result;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> Exclusion::expandIntervalsWeek (
-  const Interval& interval) const
-{
-  std::vector <Interval> result;
-
-  return result;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> Exclusion::expandIntervalsDay (
-  const Interval& interval) const
-{
-  std::vector <Interval> result;
-
-  return result;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
