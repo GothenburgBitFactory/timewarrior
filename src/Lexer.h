@@ -61,6 +61,7 @@ public:
   static bool isBoundary                     (int, int);
   static bool isHardBoundary                 (int, int);
   static bool isPunctuation                  (int);
+  static bool wasQuoted                      (const std::string&);
   static bool readWord                       (const std::string&, const std::string&, std::string::size_type&, std::string&);
   static bool readWord                       (const std::string&, std::string::size_type&, std::string&);
   static int hexToInt                        (int);

@@ -305,6 +305,17 @@ std::string Lexer::dequote (const std::string& input, const std::string& quotes)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Detects characters in an input string that indicate quotes were required, or
+// escapes, to get them past the shell.
+bool Lexer::wasQuoted (const std::string& input)
+{
+  if (input.find_first_of (" \t()<>&~") != std::string::npos)
+    return true;
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 bool Lexer::isEOS () const
 {
   return _cursor >= _eos;
