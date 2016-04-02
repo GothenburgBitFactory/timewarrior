@@ -111,21 +111,9 @@ Most reports will be external scripts that use the extension API.
 
 --- Raw Notes ---
 
-- Given this:
-    $ timew track yesterday 9am - 5pm tag1
-  What does this do:
-    $ timew track yesterday 10am - 11am tag2
-  Does it yield:
-    a) yesterday 540-1020 tag, 600-660 tag2                      # overlap
-    b) yesterday 540-600 tag1, 600-660 tag2, 660-1020 tag1       # no overlap
-    c) yesterday 540-600 tag1, 600-660 tag1 tag2, 660-1020 tag1  # explicit overlap
-  Stating 'track yesterday 10am - 11am tag2' sounds imperative, thus overriding any existing tags in that interval. Perhaps a 'merge' keyword could be added to combined the results (track yesterday 10am - 11am tag2 merge)?
-
-- Intervals for different tags may overlap. We multitask.
-
 - Need syntax to adjust any recorded data.
 
-- It should be forgiving when you forgot to stop a task. Maybe a specific command, instead of "stop" use "forgot" or directly "edit".  Then I would like to express either "stopped 30min ago" or "it lasted only 1hour”.
-
-- There is no hook system, but there will be rules that accomplish the same thing, almost.
+- It should be forgiving when you forgot to stop a task. Maybe a specific
+  command, instead of "stop" use "forgot" or directly "edit".  Then I would
+  like to express either "stopped 30min ago" or "it lasted only 1hour”.
 
