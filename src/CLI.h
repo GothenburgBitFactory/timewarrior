@@ -37,6 +37,14 @@ class A2
 {
 public:
   A2 (const std::string&, Lexer::Type);
+  bool hasTag (const std::string&) const;
+  void tag (const std::string&);
+  void attribute (const std::string&, const std::string&);
+
+public:
+  Lexer::Type                         _lextype     {Lexer::Type::word};
+  std::vector <std::string>           _tags        {};
+  std::map <std::string, std::string> _attributes  {};
 };
 
 // Represents the command line.
