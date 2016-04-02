@@ -28,6 +28,7 @@
 #define INCLUDED_CLI
 
 #include <string>
+#include <vector>
 #include <map>
 
 // Represents the command line.
@@ -36,6 +37,7 @@ class CLI
 public:
   CLI () = default;
   void entity (const std::string&, const std::string&);
+  bool canonicalize (std::string&, const std::string&, const std::string&) const;
 
 public:
   std::multimap <std::string, std::string>           _entities             {};

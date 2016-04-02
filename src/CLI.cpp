@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <CLI.h>
+#include <shared.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 void CLI::entity (const std::string& category, const std::string& name)
@@ -38,6 +39,39 @@ void CLI::entity (const std::string& category, const std::string& name)
 
   // The category/name pair was not found, therefore add it.
   _entities.insert (std::pair <std::string, std::string> (category, name));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Search for 'value' in _entities category, return canonicalized value.
+bool CLI::canonicalize (
+  std::string& canonicalized,
+  const std::string& category,
+  const std::string& value) const
+{
+  // Extract a list of entities for category.
+  std::vector <std::string> options;
+  auto c = _entities.equal_range (category);
+  for (auto e = c.first; e != c.second; ++e)
+  {
+    // Shortcut: if an exact match is found, success.
+    if (value == e->second)
+    {
+      canonicalized = value;
+      return true;
+    }
+
+    options.push_back (e->second);
+  }
+
+  // Match against the options, throw away results.
+  std::vector <std::string> matches;
+  if (autoComplete (value, options, matches) == 1)
+  {
+    canonicalized = matches[0];
+    return true;
+  }
+
+  return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
