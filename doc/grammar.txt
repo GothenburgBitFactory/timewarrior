@@ -10,10 +10,8 @@ The CLI shall have a well-defined and unambiguous grammar.
 
     timew [<filter>] report <report>
 
-    timew define holidays <locale>|none
-    timew define holidays [work] <date>
-    timew define week <day>[- <day>] [, <day>] ...
-    timew define day [<day>] start|end <time>
+    timew define day <day> <start> - <end> [, <start> - <end> ...]
+    timew define day on|off <date>
 
     timew define tag <tag> description <string>
     timew define tag <tag> start|end <date>
