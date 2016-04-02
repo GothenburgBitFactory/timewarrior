@@ -136,11 +136,26 @@ void CLI::add (const std::string& argument)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Arg0 is the first argument, which is the name and potentially a relative or
+// absolute path to the invoked binary.
+void CLI::handleArg0 ()
+{
+  // Capture arg0 separately, because it is the command that was run, and could
+  // need special handling.
+  auto raw = _original_args[0].attribute ("raw");
+  A2 a (raw, Lexer::Type::word);
+  a.tag ("BINARY");
+
+  _args.push_back (a);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Intended to be called after ::add() to perform the final analysis.
 void CLI::analyze ()
 {
   // Process _original_args.
   _args.clear ();
+  handleArg0 ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

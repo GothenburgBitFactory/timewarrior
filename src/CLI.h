@@ -62,6 +62,9 @@ public:
   bool canonicalize (std::string&, const std::string&, const std::string&) const;
   const std::string dump (const std::string& title = "CLI Parser") const;
 
+private:
+  void handleArg0 ();
+
 public:
   std::multimap <std::string, std::string>           _entities             {};
   std::vector <A2>                                   _original_args        {};
