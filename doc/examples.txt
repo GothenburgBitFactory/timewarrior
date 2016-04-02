@@ -64,12 +64,13 @@ preset periods:
 [3.1] Exclusions: Work Week
 --------------------------
 
-  $ timew define holidays en-US
-  $ timew define holidays work 2015-11-26
-  $ timew define week mon-fri
-  $ timew define day start 8:30am
-  $ timew define day end 1730
-  $ timew define day tue end 3pm
+  $ timew define day monday    8am - 12pm, 12:45pm - 5:30pm
+  $ timew define day tuesday   8am - 12pm, 12:45pm - 6:30pm
+  $ timew define day wednesday 8am - 12pm, 1:30pm - 5:30pm
+  $ timew define day thursday  8am - 12pm, 12:45pm - 5:30pm
+  $ timew define day friday    8am - 12pm, 12:45pm - 5:30pm
+  $ timew define day on 2016-01-02
+  $ timew define day off 2016-01-01
 
 
 [5.1] Fill: Backfill
