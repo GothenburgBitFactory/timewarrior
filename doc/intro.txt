@@ -33,10 +33,12 @@ Or if you forgot a whole activity:
 
 More sophisticated use is possible if you have defined your work week:
 
-  $ timew define week mon-fri
-  $ timew define day start 8:30am
-  $ timew define day end 1730
-  
+  $ timew define day monday    9am - 5pm
+  $ timew define day tuesday   9am - 6pm
+  $ timew define day wednesday 9am - 5pm
+  $ timew define day thursday  9am - 5pm
+  $ timew define day friday    9am - 5pm
+
   $ timew track yesterday Home Painting
 
 Once the work week is recorded, vague terms like 'yesterday' can be resolved
