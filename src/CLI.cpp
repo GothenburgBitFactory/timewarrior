@@ -80,6 +80,26 @@ const std::string A2::attribute (const std::string& name) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+const std::string A2::dump () const
+{
+  auto output = Lexer::typeToString (_lextype);
+
+  // Dump attributes.
+  std::string atts;
+  for (const auto& a : _attributes)
+    atts += a.first + "='\033[33m" + a.second + "\033[0m' ";
+
+  // Dump tags.
+  std::string tags;
+  for (const auto& tag : _tags)
+  {
+    tags += "\033[32m" + tag + "\033[0m ";
+  }
+
+  return output + " " + atts + tags;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void CLI::entity (const std::string& category, const std::string& name)
 {
   // Walk the list of entities for category.
