@@ -34,7 +34,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (479);
+  UnitTest t (482);
 
   std::vector <std::pair <std::string, Lexer::Type>> tokens;
   std::string token;
@@ -303,6 +303,11 @@ int main (int, char**)
   t.ok (std::get <1> (tokenized[1]) == Lexer::Type::word, "Lexer::tokenize ' one two  three   ' [1] --> word");
   t.is (std::get <0> (tokenized[2]), "three",             "Lexer::tokenize ' one two  three   ' [2] --> 'three'");
   t.ok (std::get <1> (tokenized[2]) == Lexer::Type::word, "Lexer::tokenize ' one two  three   ' [2] --> word");
+
+  // bool wasQuoted (const std::string& input)
+  t.notok (Lexer::wasQuoted (""),        "Lexer::wasQuoted '' --> false");
+  t.notok (Lexer::wasQuoted ("abc"),     "Lexer::wasQuoted 'abc' --> false");
+  t.ok    (Lexer::wasQuoted ("one two"), "Lexer::wasQuoted 'one two' --> true");
 
   return 0;
 }
