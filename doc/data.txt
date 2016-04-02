@@ -59,16 +59,16 @@ exclusions.
 
 An example file looks like this:
 
-  exc monday 8am - 12pm, 12:45pm - 5:30pm
-  exc tuesday 8am - 12pm, 12:45pm - 6:30pm
-  exc wednesday 8am - 12pm, 1:30pm - 5:30pm
-  exc thursday 8am - 12pm, 12:45pm - 5:30pm
-  exc friday 8am - 12pm, 12:45pm - 5:30pm
+  exc monday 8:00:00-12:00:00 12:45:00-17:30:00
+  exc tuesday 8:00:00-12:00:00 12:45:00-18:30:00
+  exc wednesday 8:00:00-12:00:00 13:30:00-17:30:00
+  exc thursday 8:00:00-12:00:00 12:45:00-17:30:00
+  exc friday 8:00:00-12:00:00 12:45:00-17:30:00
   exc day on 2016-01-01
   exc day off 2016-01-02
 
-  inc 2016-02-28T08:00 - 2016-02-28T12:00 # Upgrade Planning
-  inc 2016-02-28T13:00                    # Upgrade Presentation "ABCD Inc"
+  inc 2016-02-28T08:00:00 - 2016-02-28T12:00:00 # Upgrade Planning
+  inc 2016-02-28T13:00:00                       # Upgrade Presentation "ABCD Inc"
 
 White space is ignored. Here we see a sect of exlcusions that define a work week
 and a two inclusions, the first of which represents a four hour block of time
