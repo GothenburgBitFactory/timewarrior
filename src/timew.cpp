@@ -38,6 +38,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int argc, const char** argv)
 {
+  // Lightweight version checking that doesn't require initialization or I/O.
+  int status = 0;
+  if (lightweightVersionCheck (argc, argv))
+    return status;
+
   // The log is needed early, in order to capture as much as possible, but will
   // only be given a file name once the rules are loaded. The log therefore
   // buffers the messages until it has a file name to write to.
@@ -48,11 +53,6 @@ int main (int argc, const char** argv)
   std::vector <std::string> args;
   for (int i = 0; i < argc; i++)
     args.push_back (argv[i]);
-
-  // Lightweight version checking that doesn't require initialization or I/O.
-  int status = 0;
-  if (lightweightVersionCheck (args))
-    return status;
 
   try
   {

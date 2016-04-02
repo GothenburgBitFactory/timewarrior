@@ -41,9 +41,9 @@
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
-bool lightweightVersionCheck (const std::vector <std::string>& args)
+bool lightweightVersionCheck (int argc, const char** argv)
 {
-  if (args.size () == 2 && args[1] == "--version")
+  if (argc == 2 && std::string (argv[1]) == "--version")
   {
     std::cout << VERSION << "\n";
     return true;

@@ -35,7 +35,7 @@
 #include <Color.h>
 
 // init.cpp
-bool lightweightVersionCheck (const std::vector <std::string>&);
+bool lightweightVersionCheck (int, const char**);
 void initializeDataAndRules (Database&, Rules&, Log&);
 void initializeExtensions (Rules&, Extensions&, Log&);
 int dispatchCommand (const std::vector <std::string>&, Database&, Rules&, Extensions&, Log&);
