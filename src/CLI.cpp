@@ -50,6 +50,17 @@ void A2::tag (const std::string& tag)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void A2::unTag (const std::string& tag)
+{
+  for (auto i = _tags.begin (); i != _tags.end (); ++i)
+    if (*i == tag)
+    {
+      _tags.erase (i);
+      break;
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Accessor for attributes.
 void A2::attribute (const std::string& name, const std::string& value)
 {

@@ -39,6 +39,7 @@ public:
   A2 (const std::string&, Lexer::Type);
   bool hasTag (const std::string&) const;
   void tag (const std::string&);
+  void unTag (const std::string&);
   void attribute (const std::string&, const std::string&);
 
 public:
