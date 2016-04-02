@@ -58,6 +58,7 @@ public:
   CLI () = default;
   void entity (const std::string&, const std::string&);
   void add (const std::string&);
+  void analyze ();
   bool canonicalize (std::string&, const std::string&, const std::string&) const;
   const std::string dump (const std::string& title = "CLI Parser") const;
 

@@ -136,6 +136,14 @@ void CLI::add (const std::string& argument)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Intended to be called after ::add() to perform the final analysis.
+void CLI::analyze ()
+{
+  // Process _original_args.
+  _args.clear ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Search for 'value' in _entities category, return canonicalized value.
 bool CLI::canonicalize (
   std::string& canonicalized,

@@ -59,6 +59,8 @@ int main (int argc, const char** argv)
   for (int i = 0; i < argc; i++)
     cli.add (argv[i]);
 
+  cli.analyze ();
+
   // TODO Remove.
   std::cout << cli.dump () << "\n";
 
