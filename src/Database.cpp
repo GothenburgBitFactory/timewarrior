@@ -87,7 +87,15 @@ std::vector <std::string> Database::files () const
 ////////////////////////////////////////////////////////////////////////////////
 Interval Database::getLatestInterval ()
 {
-  return _files.back ().getLatestInterval ();
+  std::vector <Datafile>::reverse_iterator ri;
+  for (ri = _files.rbegin (); ri != _files.rend (); ri++)
+  {
+    auto i = ri->getLatestInterval ();
+    if (! i.empty ())
+      return i;
+  }
+
+  return Interval ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
