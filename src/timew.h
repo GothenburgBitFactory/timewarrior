@@ -40,7 +40,7 @@ bool lightweightVersionCheck (int, const char**);
 void initializeEntities (CLI&);
 void initializeDataAndRules (Database&, Rules&, Log&);
 void initializeExtensions (Rules&, Extensions&, Log&);
-int dispatchCommand (const std::vector <std::string>&, Database&, Rules&, Extensions&, Log&);
+int dispatchCommand (const std::vector <std::string>&, CLI&, Database&, Rules&, Extensions&, Log&);
 
 // classifier.cpp
 std::vector <std::string> getKeywords (const std::vector <std::string>&);

@@ -183,6 +183,7 @@ void initializeExtensions (
 ////////////////////////////////////////////////////////////////////////////////
 int dispatchCommand (
   const std::vector <std::string>& args,
+  CLI& cli,
   Database& database,
   Rules& rules,
   Extensions& extensions,
