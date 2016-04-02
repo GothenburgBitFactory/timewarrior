@@ -65,6 +65,7 @@ public:
 private:
   void handleArg0 ();
   void lexArguments ();
+  bool findCommand ();
   bool exactMatch (const std::string&, const std::string&) const;
 
 public:
