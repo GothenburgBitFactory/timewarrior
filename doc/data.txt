@@ -59,12 +59,13 @@ exclusions.
 
 An example file looks like this:
 
-  exc holidays en-US
-  exc work 2015-11-26
-  exc week mon,tue,wed,thu,fri
-  exc day start 8:30am
-  exc day end 1730
-  exc day tue end 3pm
+  exc monday 8am - 12pm, 12:45pm - 5:30pm
+  exc tuesday 8am - 12pm, 12:45pm - 6:30pm
+  exc wednesday 8am - 12pm, 1:30pm - 5:30pm
+  exc thursday 8am - 12pm, 12:45pm - 5:30pm
+  exc friday 8am - 12pm, 12:45pm - 5:30pm
+  exc day on 2016-01-01
+  exc day off 2016-01-02
 
   inc 2016-02-28T08:00 - 2016-02-28T12:00 # Upgrade Planning
   inc 2016-02-28T13:00                    # Upgrade Presentation "ABCD Inc"
