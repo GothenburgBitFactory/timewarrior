@@ -286,3 +286,18 @@ const std::string CLI::dump (const std::string& title) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Search for exact 'value' in _entities category.
+bool CLI::exactMatch (
+  const std::string& category,
+  const std::string& value) const
+{
+  // Extract a list of entities for category.
+  auto c = _entities.equal_range (category);
+  for (auto e = c.first; e != c.second; ++e)
+    if (value == e->second)
+      return true;
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////

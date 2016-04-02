@@ -65,6 +65,7 @@ public:
 private:
   void handleArg0 ();
   void lexArguments ();
+  bool exactMatch (const std::string&, const std::string&) const;
 
 public:
   std::multimap <std::string, std::string>           _entities             {};
