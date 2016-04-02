@@ -82,6 +82,14 @@ void Interval::initialize (const std::string& line)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+bool Interval::empty () const
+{
+  return _start.toEpoch () == 0 &&
+         _end.toEpoch ()   == 0 &&
+         _tags.size ()     == 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 Datetime Interval::start () const
 {
   return _start;
