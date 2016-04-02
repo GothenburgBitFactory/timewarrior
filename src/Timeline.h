@@ -45,8 +45,7 @@ public:
   std::vector <Interval> untracked () const;
 
 private:
-  Datetime                _start      {0};
-  Datetime                _end        {0};
+  Interval                _range      {};
   std::vector <Interval>  _inclusions {};
   std::vector <Exclusion> _exclusions {};
 };
