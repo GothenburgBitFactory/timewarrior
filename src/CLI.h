@@ -64,6 +64,7 @@ public:
 
 private:
   void handleArg0 ();
+  void lexArguments ();
 
 public:
   std::multimap <std::string, std::string>           _entities             {};

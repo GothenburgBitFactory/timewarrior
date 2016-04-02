@@ -150,12 +150,77 @@ void CLI::handleArg0 ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// All arguments must be individually and wholly recognized by the Lexer. Any
+// argument not recognized is considered a Lexer::Type::word.
+void CLI::lexArguments ()
+{
+  // Note: Starts iterating at index 1, because ::handleArg0 has already
+  //       processed it.
+  for (unsigned int i = 1; i < _original_args.size (); ++i)
+  {
+    bool quoted = Lexer::wasQuoted (_original_args[i].attribute ("raw"));
+
+    std::string lexeme;
+    Lexer::Type type;
+    Lexer lex (_original_args[i].attribute ("raw"));
+    if (lex.token (lexeme, type) &&
+        lex.isEOS ())
+    {
+      A2 a (_original_args[i].attribute ("raw"), type);
+      if (quoted)
+        a.tag ("QUOTED");
+
+      if (_original_args[i].hasTag ("ORIGINAL"))
+        a.tag ("ORIGINAL");
+
+      _args.push_back (a);
+    }
+    else
+    {
+      std::string quote = "'";
+      auto escaped = str_replace (_original_args[i].attribute ("raw"), quote, "\\'");
+
+      std::string::size_type cursor = 0;
+      std::string word;
+      if (Lexer::readWord (quote + escaped + quote, quote, cursor, word))
+      {
+        Lexer::dequote (word);
+        A2 unknown (word, Lexer::Type::word);
+        if (Lexer::wasQuoted (_original_args[i].attribute ("raw")))
+          unknown.tag ("QUOTED");
+
+        if (_original_args[i].hasTag ("ORIGINAL"))
+          unknown.tag ("ORIGINAL");
+
+        _args.push_back (unknown);
+      }
+
+      // This branch may have no use-case.
+      else
+      {
+        A2 unknown (_original_args[i].attribute ("raw"), Lexer::Type::word);
+        unknown.tag ("UNKNOWN");
+
+        if (Lexer::wasQuoted (_original_args[i].attribute ("raw")))
+          unknown.tag ("QUOTED");
+
+        if (_original_args[i].hasTag ("ORIGINAL"))
+          unknown.tag ("ORIGINAL");
+
+        _args.push_back (unknown);
+      }
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Intended to be called after ::add() to perform the final analysis.
 void CLI::analyze ()
 {
   // Process _original_args.
   _args.clear ();
   handleArg0 ();
+  lexArguments ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
