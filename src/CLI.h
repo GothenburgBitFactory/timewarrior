@@ -41,6 +41,7 @@ public:
   void tag (const std::string&);
   void unTag (const std::string&);
   void attribute (const std::string&, const std::string&);
+  const std::string attribute (const std::string&) const;
 
 public:
   Lexer::Type                         _lextype     {Lexer::Type::word};

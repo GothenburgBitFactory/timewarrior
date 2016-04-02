@@ -68,6 +68,18 @@ void A2::attribute (const std::string& name, const std::string& value)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Accessor for attributes.
+const std::string A2::attribute (const std::string& name) const
+{
+  // Prevent autovivification.
+  auto i = _attributes.find (name);
+  if (i != _attributes.end ())
+    return i->second;
+
+  return "";
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void CLI::entity (const std::string& category, const std::string& name)
 {
   // Walk the list of entities for category.
