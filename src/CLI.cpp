@@ -93,6 +93,18 @@ void CLI::entity (const std::string& category, const std::string& name)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Capture a single argument.
+void CLI::add (const std::string& argument)
+{
+  A2 arg (Lexer::trim (argument), Lexer::Type::word);
+  arg.tag ("ORIGINAL");
+  _original_args.push_back (arg);
+
+  // Adding a new argument invalidates prior analysis.
+  _args.clear ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Search for 'value' in _entities category, return canonicalized value.
 bool CLI::canonicalize (
   std::string& canonicalized,

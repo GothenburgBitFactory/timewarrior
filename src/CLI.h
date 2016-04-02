@@ -55,10 +55,13 @@ class CLI
 public:
   CLI () = default;
   void entity (const std::string&, const std::string&);
+  void add (const std::string&);
   bool canonicalize (std::string&, const std::string&, const std::string&) const;
 
 public:
   std::multimap <std::string, std::string>           _entities             {};
+  std::vector <A2>                                   _original_args        {};
+  std::vector <A2>                                   _args                 {};
 };
 
 #endif
