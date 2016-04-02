@@ -43,6 +43,9 @@ int dispatchCommand (const std::vector <std::string>&, Database&, Rules&, Extens
 // classifier.cpp
 std::vector <std::string> getKeywords (const std::vector <std::string>&);
 
+enum class ArgType { binary, command, positional, keyword };
+ArgType classifyArg (const std::string&);
+
 // helper.cpp
 Color tagColor (const Rules&, const std::string&);
 std::string intervalSummarize (const Rules&, const Interval&);

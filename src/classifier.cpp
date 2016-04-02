@@ -39,3 +39,21 @@ std::vector <std::string> getKeywords (const std::vector <std::string>& args)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// enum class ArgType { binary, command, positional, keyword };
+ArgType classifyArg (const std::string& arg)
+{
+  if (arg.find ("timew") == arg.length () - 5 ||
+      arg.find ("ti")    == arg.length () - 2)
+    return ArgType::binary;
+
+  // TODO Commands are a problem.
+
+  if (arg[0] == ':')
+    return ArgType::keyword;
+
+  // The positional args are really just the remainder after the others are
+  // excluded.
+  return ArgType::positional;
+}
+
+////////////////////////////////////////////////////////////////////////////////
