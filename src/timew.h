@@ -27,6 +27,7 @@
 #ifndef INCLUDED_TIMEW
 #define INCLUDED_TIMEW
 
+#include <CLI.h>
 #include <Database.h>
 #include <Rules.h>
 #include <Extensions.h>
@@ -36,6 +37,7 @@
 
 // init.cpp
 bool lightweightVersionCheck (int, const char**);
+void initializeEntities (CLI&);
 void initializeDataAndRules (Database&, Rules&, Log&);
 void initializeExtensions (Rules&, Extensions&, Log&);
 int dispatchCommand (const std::vector <std::string>&, Database&, Rules&, Extensions&, Log&);

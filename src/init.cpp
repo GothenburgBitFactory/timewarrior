@@ -25,6 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <CLI.h>
 #include <Database.h>
 #include <Rules.h>
 #include <Extensions.h>
@@ -50,6 +51,31 @@ bool lightweightVersionCheck (int argc, const char** argv)
   }
 
   return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void initializeEntities (CLI& cli)
+{
+  // Command entities.
+  cli.entity ("command", "clear");
+  cli.entity ("command", "config");
+  cli.entity ("command", "continue");
+  cli.entity ("command", "define");
+  cli.entity ("command", "diagnostics");
+  cli.entity ("command", "export");
+  cli.entity ("command", "extensions");
+  cli.entity ("command", "gaps");
+  cli.entity ("command", "help");
+  cli.entity ("command", "import");
+  cli.entity ("command", "log");
+  cli.entity ("command", "report");
+  cli.entity ("command", "start");
+  cli.entity ("command", "stop");
+  cli.entity ("command", "tags");
+  cli.entity ("command", "track");
+  cli.entity ("command", "undo");
+
+  // TODO Keyword entities.
 }
 
 ////////////////////////////////////////////////////////////////////////////////

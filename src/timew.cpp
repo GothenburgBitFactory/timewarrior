@@ -25,10 +25,11 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <Log.h>
+#include <CLI.h>
 #include <Database.h>
 #include <Rules.h>
 #include <Extensions.h>
-#include <Log.h>
 #include <shared.h>
 #include <commands.h>
 #include <timew.h>
@@ -48,6 +49,11 @@ int main (int argc, const char** argv)
   // buffers the messages until it has a file name to write to.
   Log log;
   CmdLog ({"timew", "log", "mark"}, log);
+
+  // Add entities so that command line tokens such as 'help' are recognized as
+  // commands.
+  CLI cli;
+  initializeEntities (cli);
 
   // Make a vector of args, instead of argc/argv.
   std::vector <std::string> args;
