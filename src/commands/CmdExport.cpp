@@ -29,7 +29,11 @@
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdExport (Database& database)
+int CmdExport (
+  const std::vector <std::string>& args,
+  Rules& rules,
+  Database& database,
+  Log& log)
 {
   // Load all data.
   auto intervals = database.getAllIntervals ();

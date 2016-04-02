@@ -40,7 +40,7 @@ int CmdContinue    (                                  Rules&, Database&,        
 int CmdDefault     (                                  Rules&, Database&                   );
 int CmdDefine      (const std::vector <std::string>&, Rules&, Database&,              Log&);
 int CmdDiagnostics (                                  Rules&, Database&, Extensions&, Log&);
-int CmdExport      (                                          Database&                   );
+int CmdExport      (const std::vector <std::string>&, Rules&, Database&,              Log&);
 int CmdExtensions  (                                  Rules&,            Extensions&      );
 int CmdGaps        (                                                                      );
 int CmdHelpUsage   (                                                                      );
