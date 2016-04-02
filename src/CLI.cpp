@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <CLI.h>
 #include <algorithm>
+#include <Color.h>
 #include <shared.h>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -155,6 +156,35 @@ bool CLI::canonicalize (
   }
 
   return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+const std::string CLI::dump (const std::string& title) const
+{
+  std::stringstream out;
+
+  out << "\033[1m" << title << "\033[0m\n"
+      << "  _original_args\n    ";
+
+  Color colorArgs ("gray10 on gray4");
+  for (auto i = _original_args.begin (); i != _original_args.end (); ++i)
+  {
+    if (i != _original_args.begin ())
+      out << ' ';
+
+    out << colorArgs.colorize (i->attribute ("raw"));
+  }
+
+  out << "\n";
+
+  if (_args.size ())
+  {
+    out << "  _args\n";
+    for (const auto& a : _args)
+      out << "    " << a.dump () << "\n";
+  }
+
+  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

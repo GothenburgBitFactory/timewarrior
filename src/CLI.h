@@ -58,6 +58,7 @@ public:
   void entity (const std::string&, const std::string&);
   void add (const std::string&);
   bool canonicalize (std::string&, const std::string&, const std::string&) const;
+  const std::string dump (const std::string& title = "CLI Parser") const;
 
 public:
   std::multimap <std::string, std::string>           _entities             {};
