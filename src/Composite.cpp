@@ -61,8 +61,13 @@ void Composite::add (
 ////////////////////////////////////////////////////////////////////////////////
 // overlay == true    means there is no color blending.
 // overlay == false   means there is color blending.
-std::string Composite::str (bool overlay)
+std::string Composite::str (bool overlay) const
 {
+  // TODO Find the longest string.
+  // TODO Create a vector of ints the same length, where each int is the index.
+
+
+
   return "";
 }
 
