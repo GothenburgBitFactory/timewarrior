@@ -27,9 +27,17 @@
 #ifndef INCLUDED_CLI
 #define INCLUDED_CLI
 
+#include <Lexer.h>
 #include <string>
 #include <vector>
 #include <map>
+
+// Represents a single argument.
+class A2
+{
+public:
+  A2 (const std::string&, Lexer::Type);
+};
 
 // Represents the command line.
 class CLI
