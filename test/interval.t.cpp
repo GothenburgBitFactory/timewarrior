@@ -31,17 +31,19 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (34);
+  UnitTest t (36);
 
   // bool isStarted () const;
   // bool isEnded () const;
   Interval i1;
+  t.is (i1.empty (),     true,  "Interval().empty -> true");
   t.is (i1.isStarted (), false, "Interval().isStarted -> false");
   t.is (i1.isEnded (),   false, "Interval().isEnded -> false");
 
   // void start (Datetime);
   i1.start (Datetime ());
-  t.is (i1.isStarted (), true, "Interval(start=now).isStarted -> true");
+  t.is (i1.empty (),     false, "Interval().empty -> false");
+  t.is (i1.isStarted (), true,  "Interval(start=now).isStarted -> true");
   t.is (i1.isEnded (),   false, "Interval(start=now).isEnded -> false");
 
   // void end (Datetime);
