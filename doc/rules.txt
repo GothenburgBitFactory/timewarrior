@@ -72,42 +72,38 @@ Because exclusions are resolved at run time, and only when needed, they should
 be stored in a form very close to the command line syntax, with no expansion.
 For example:
 
-  $ timew define workweek mon - fri
+  $ timew define monday    8am - 12pm, 12:45pm - 5:30pm
+  $ timew define tuesday   8am - 12pm, 12:45pm - 6:30pm
+  $ timew define wednesday 8am - 12pm, 1:30pm - 5:30pm
+  $ timew define thursday  8am - 12pm, 12:45pm - 5:30pm
+  $ timew define friday    8am - 12pm, 12:45pm - 5:30pm
 
-Should be stored in a rule, whose purpose is to return a set of exclusion
+Will be stored in a rule, whose purpose is to return a set of exclusion
 intervals:
 
   define exclusions:
-    workweek mon,tue,wed,thu,fri
+    monday    = 8am-12pm, 12:45pm-5:30pm
+    tuesday   = 8am-12pm, 12:45pm-6:30pm
+    wednesday = 8am-12pm, 1:30pm-5:30pm
+    thursday  = 8am-12pm, 12:45pm-5:30pm
+    friday    = 8am-12pm, 12:45pm-5:30pm
 
-Further definitions will build on this rule:
+Additional exclusions include:
 
-  $ timew define workday start 8:30am
-
-Yields a combined:
-
-  define exclusions:
-    workweek mon,tue,wed,thu,fri
-    workday start 8:30am
-
-Possible exclusions include:
-
-  $ timew define holidays en-US
-  $ timew define week mon-fri
-  $ timew define day start 8:30am
-  $ timew define day end 1730
-  $ timew define day tue end 3pm
+  $ timew define day on 2016-01-02
+  $ timew define day off 2016-01-01
 
 Yielding:
 
   define exclusions:
-    holidays = en-US
-    work = 2015-11-26
-    week = mon,tue,wed,thu,fri
-    day:
-      start = 8:30am
-      end = 1730
-      tue = end 3pm
+    monday    = 8am-12pm, 12:45pm-5:30pm
+    tuesday   = 8am-12pm, 12:45pm-6:30pm
+    wednesday = 8am-12pm, 1:30pm-5:30pm
+    thursday  = 8am-12pm, 12:45pm-5:30pm
+    friday    = 8am-12pm, 12:45pm-5:30pm
+    days:
+      2016_01_01 = On
+      2016_01_02 = Off
 
 If you want to track your lunch breaks, then you would make a tag for it, and
 track it like any other project. If you do not want to track that time, add an
