@@ -106,7 +106,7 @@ const std::string A2::dump () const
   {
          if (tag == "BINARY")        tags += "\033[1;37;44m"           + tag + "\033[0m ";
     else if (tag == "CMD")           tags += "\033[1;37;46m"           + tag + "\033[0m ";
-    else if (tag == "KEYWORD")       tags += "\033[1;37;43m"           + tag + "\033[0m ";
+    else if (tag == "HINT")          tags += "\033[1;37;43m"           + tag + "\033[0m ";
     else                             tags += "\033[32m"                + tag + "\033[0m ";
   }
 
@@ -332,16 +332,16 @@ void CLI::canonicalizeNames ()
     }
 
     // Commands.
-    if (exactMatch ("keyword", raw))
+    if (exactMatch ("hint", raw))
     {
       a.attribute ("canonical", raw);
-      a.tag ("KEYWORD");
+      a.tag ("HINT");
       continue;
     }
-    else if (canonicalize (canonical, "keyword", raw))
+    else if (canonicalize (canonical, "hint", raw))
     {
-      a.attribute ("keyword", canonical);
-      a.tag ("KEYWORD");
+      a.attribute ("hint", canonical);
+      a.tag ("HINT");
       continue;
     }
   }

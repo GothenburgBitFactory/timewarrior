@@ -28,18 +28,18 @@
 #include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <std::string> getKeywords (const std::vector <std::string>& args)
+std::vector <std::string> getHints (const std::vector <std::string>& args)
 {
-  std::vector <std::string> keywords;
+  std::vector <std::string> hints;
   for (auto& arg : args)
     if (arg[0] == ':')
-      keywords.push_back (arg);
+      hints.push_back (arg);
 
-  return keywords;
+  return hints;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// enum class ArgType { binary, command, positional, keyword };
+// enum class ArgType { binary, command, positional, hint };
 ArgType classifyArg (const std::string& arg)
 {
   if (arg.find ("timew") == arg.length () - 5 ||
@@ -49,7 +49,7 @@ ArgType classifyArg (const std::string& arg)
   // TODO Commands are a problem.
 
   if (arg[0] == ':')
-    return ArgType::keyword;
+    return ArgType::hint;
 
   // The positional args are really just the remainder after the others are
   // excluded.

@@ -73,9 +73,9 @@ void initializeEntities (CLI& cli)
   cli.entity ("command", "track");
   cli.entity ("command", "undo");
 
-  // TODO Keyword entities.
-  cli.entity ("keyword", ":week");   // TODO Guess
-  cli.entity ("keyword", ":fill");
+  // TODO Hint entities.
+  cli.entity ("hint", ":week");   // TODO Guess
+  cli.entity ("hint", ":fill");
 
   // TODO Extension names.
 }

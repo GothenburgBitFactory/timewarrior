@@ -43,9 +43,9 @@ void initializeExtensions (Rules&, Extensions&, Log&);
 int dispatchCommand (const std::vector <std::string>&, CLI&, Database&, Rules&, Extensions&, Log&);
 
 // classifier.cpp
-std::vector <std::string> getKeywords (const std::vector <std::string>&);
+std::vector <std::string> getHints (const std::vector <std::string>&);
 
-enum class ArgType { binary, command, positional, keyword };
+enum class ArgType { binary, command, positional, hint };
 ArgType classifyArg (const std::string&);
 
 // helper.cpp
