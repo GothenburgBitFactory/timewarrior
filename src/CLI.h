@@ -60,6 +60,7 @@ public:
   void add (const std::string&);
   void analyze ();
   bool canonicalize (std::string&, const std::string&, const std::string&) const;
+  std::string getCommand () const;
   const std::string dump (const std::string& title = "CLI Parser") const;
 
 private:

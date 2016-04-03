@@ -261,6 +261,16 @@ bool CLI::canonicalize (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::string CLI::getCommand () const
+{
+  for (const auto& a : _args)
+    if (a.hasTag ("CMD"))
+      return a.attribute ("canonical");
+
+  return "";
+}
+
+////////////////////////////////////////////////////////////////////////////////
 const std::string CLI::dump (const std::string& title) const
 {
   std::stringstream out;
