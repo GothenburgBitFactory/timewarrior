@@ -188,16 +188,21 @@ void Datafile::load_intervals ()
 
   for (auto& line : _lines)
   {
+    // "inc ..."
     if (line[0] == 'i')
     {
       Interval i;
       i.initialize (line);
       _intervals.push_back (i);
     }
+
+    // "exc ..."
     else if (line[0] == 'e')
       ;  // TODO Exclusions.
     else
-      ;  // TODO Ignore blank lines?
+    {
+      // TODO Ignore blank lines?
+    }
   }
 
   _intervals_loaded = true;
