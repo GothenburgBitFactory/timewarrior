@@ -16,6 +16,7 @@
 - Added 'tags' command.
 - Integrated libshared.git.
 - Colored tags supported.
+- Added Taskwarrior hook script to integrate Timewarrior.
 
 Design completed 2016-03-13
 Project started  2015-11-29

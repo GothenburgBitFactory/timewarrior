@@ -3,6 +3,8 @@ New Features in 1.0.0
 
   - The 'start' and 'stop' commands record the duration.
   - The 'export' command emits all data in JSON format.
+  - The 'on-modify.timewarrior' script is a Taskwarrior hook script to integrate
+    Timewarrior into the 'start' and 'stop' commands.
 
 Known Issues
 
