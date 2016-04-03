@@ -7,6 +7,5 @@ debug.py
   and will likely be removed before release.
 
 on-modify.timewarrior
-  This is hook script that will integrate Taskwarrior and Timewarrior.
-
+  This is a Taskwarrior hook script that will integrate Timewarrior.
 
