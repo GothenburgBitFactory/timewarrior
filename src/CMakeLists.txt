@@ -11,10 +11,8 @@ set (timew_SRCS CLI.cpp        CLI.h
                 Datafile.cpp   Datafile.h
                 Exclusion.cpp  Exclusion.h
                 Extensions.cpp Extensions.h
-                Grammar.cpp    Grammar.h
                 Interval.cpp   Interval.h
                 Lexer.cpp      Lexer.h
-                LR0.cpp        LR0.h
                 Rules.cpp      Rules.h
                 Timeline.cpp   Timeline.h
                 classifier.cpp
@@ -44,13 +42,10 @@ set (libshared_SRCS libshared/src/Args.cpp          libshared/src/Args.h
 add_library (timew     STATIC ${timew_SRCS})
 add_library (libshared STATIC ${libshared_SRCS})
 add_executable (timew_executable timew.cpp)
-add_executable (gr_executable gr.cpp)
 
 target_link_libraries (timew_executable timew libshared commands timew libshared ${TIMEW_LIBRARIES})
-target_link_libraries (gr_executable    timew                          libshared ${TIMEW_LIBRARIES})
 
 set_property (TARGET timew_executable PROPERTY OUTPUT_NAME "timew")
-set_property (TARGET gr_executable    PROPERTY OUTPUT_NAME "gr")
 
 install (TARGETS timew_executable DESTINATION bin)
 

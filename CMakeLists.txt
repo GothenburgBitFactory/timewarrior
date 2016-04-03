@@ -61,5 +61,5 @@ set (CPACK_SOURCE_IGNORE_FILES  "CMakeCache" "CMakeFiles" "CPackConfig" "CPackSo
                                 "_CPack_Packages" "cmake_install" "install_manifest" "Makefile$"
                                 "test" "package-config" "src/timew$" "src/libtimew.a"
                                 "src/commands/libcommands.a"
-                                "/\\\\.gitignore" "/\\\\.git/" "swp$" "src/gr$")
+                                "/\\\\.gitignore" "/\\\\.git/" "swp$")
 include (CPack)
