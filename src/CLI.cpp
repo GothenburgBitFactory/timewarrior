@@ -106,6 +106,7 @@ const std::string A2::dump () const
   {
          if (tag == "BINARY")        tags += "\033[1;37;44m"           + tag + "\033[0m ";
     else if (tag == "CMD")           tags += "\033[1;37;46m"           + tag + "\033[0m ";
+    else if (tag == "KEYWORD")       tags += "\033[1;37;43m"           + tag + "\033[0m ";
     else                             tags += "\033[32m"                + tag + "\033[0m ";
   }
 
