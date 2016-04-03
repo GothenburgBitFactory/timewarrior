@@ -33,11 +33,11 @@ int main (int, char**)
 {
   UnitTest t (3);
 
-  // std::vector <std::string> getKeywords (const std::vector <std::string>&);
-  auto result = getKeywords ({"foo", ":keyword1", ":keyword2"});
-  t.ok (result.size () == 2, "getKeywords (foo :keyword1 :keyword2) --> 2");
-  t.is (result[0], ":keyword1", "getKeywords (foo :keyword1 :keyword2) [0] --> :keyword1");
-  t.is (result[1], ":keyword2", "getKeywords (foo :keyword1 :keyword2) [1] --> :keyword2");
+  // std::vector <std::string> getHints (const std::vector <std::string>&);
+  auto result = getHints ({"foo", ":keyword1", ":keyword2"});
+  t.ok (result.size () == 2, "getHints (foo :keyword1 :keyword2) --> 2");
+  t.is (result[0], ":keyword1", "getHints (foo :keyword1 :keyword2) [0] --> :keyword1");
+  t.is (result[1], ":keyword2", "getHints (foo :keyword1 :keyword2) [1] --> :keyword2");
 
   return 0;
 }
