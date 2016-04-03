@@ -204,54 +204,31 @@ int dispatchCommand (
   }
   log.write ("command", combined);
 
-  if (args.size () > 1)
+  // Dispatch to the right command function.
+  std::string command = cli.getCommand ();
+  if (command != "")
   {
-    std::vector <std::string> allCommands =
-    {
-      "clear", "config", "continue", "define", "diagnostics", "export",
-      "extensions", "gaps", "help", "import", "log", "report", "start", "stop",
-      "tags", "track", "undo"
-    };
-
-    std::vector <std::string> matches;
-    autoComplete (args[1], allCommands, matches);
-    if (matches.size () == 1)
-    {
-      // These signatures are æxpected to be all different, therefore no
-      // command to fn mapping.
-           if (matches[0] == allCommands[0])  status = CmdClear       (                                      );
-      else if (matches[0] == allCommands[1])  status = CmdConfig      (                                      );
-      else if (matches[0] == allCommands[2])  status = CmdContinue    (      rules, database,             log);
-      else if (matches[0] == allCommands[3])  status = CmdDefine      (args, rules, database,             log);
-      else if (matches[0] == allCommands[4])  status = CmdDiagnostics (      rules, database, extensions, log);
-      else if (matches[0] == allCommands[5])  status = CmdExport      (args, rules, database,             log);
-      else if (matches[0] == allCommands[6])  status = CmdExtensions  (      rules,           extensions     );
-      else if (matches[0] == allCommands[7])  status = CmdGaps        (                                      );
-      else if (matches[0] == allCommands[8])  status = CmdHelp        (args,                              log);
-      else if (matches[0] == allCommands[9])  status = CmdImport      (                                      );
-      else if (matches[0] == allCommands[10]) status = CmdLog         (args,                              log);
-      else if (matches[0] == allCommands[11]) status = CmdReport      (args, rules, database, extensions, log);
-      else if (matches[0] == allCommands[12]) status = CmdStart       (args, rules, database,             log);
-      else if (matches[0] == allCommands[13]) status = CmdStop        (args, rules, database,             log);
-      else if (matches[0] == allCommands[14]) status = CmdTags        (      rules, database,             log);
-      else if (matches[0] == allCommands[15]) status = CmdTrack       (                                      );
-      else if (matches[0] == allCommands[16]) status = CmdUndo        (                                      );
-    }
-    else if (matches.size () == 0)
-    {
-      CmdHelpUsage ();
-    }
-    else
-    {
-      std::cout << "timew: '" << args[1] << "' is not a command. See 'timew help'.\n"
-                << "\n"
-                << "Did you mean one of these?\n";
-
-      for (const auto& command : matches)
-        std::cout << "  " << command << "\n";
-    }
+    // These signatures are æxpected to be all different, therefore no
+    // command to fn mapping.
+         if (command == "clear")       status = CmdClear       (                                      );
+    else if (command == "config")      status = CmdConfig      (                                      );
+    else if (command == "continue")    status = CmdContinue    (      rules, database,             log);
+    else if (command == "define")      status = CmdDefine      (args, rules, database,             log);
+    else if (command == "diagnostics") status = CmdDiagnostics (      rules, database, extensions, log);
+    else if (command == "export")      status = CmdExport      (args, rules, database,             log);
+    else if (command == "extensions")  status = CmdExtensions  (      rules,           extensions     );
+    else if (command == "gaps")        status = CmdGaps        (                                      );
+    else if (command == "help")        status = CmdHelp        (args,                              log);
+    else if (command == "import")      status = CmdImport      (                                      );
+    else if (command == "log")         status = CmdLog         (args,                              log);
+    else if (command == "report")      status = CmdReport      (args, rules, database, extensions, log);
+    else if (command == "start")       status = CmdStart       (args, rules, database,             log);
+    else if (command == "stop")        status = CmdStop        (args, rules, database,             log);
+    else if (command == "tags")        status = CmdTags        (      rules, database,             log);
+    else if (command == "track")       status = CmdTrack       (                                      );
+    else if (command == "undo")        status = CmdUndo        (                                      );
   }
-  else if (args.size () == 1)
+  else
   {
     status = CmdDefault (rules, database);
   }
