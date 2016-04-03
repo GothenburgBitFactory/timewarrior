@@ -74,6 +74,8 @@ void initializeEntities (CLI& cli)
   cli.entity ("command", "undo");
 
   // TODO Keyword entities.
+  cli.entity ("keyword", ":week");   // TODO Guess
+  cli.entity ("keyword", ":fill");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
