@@ -223,7 +223,6 @@ void CLI::analyze ()
   _args.clear ();
   handleArg0 ();
   lexArguments ();
-  findCommand ();
   canonicalizeNames ();
 }
 
@@ -326,38 +325,6 @@ void CLI::canonicalizeNames ()
       continue;
     }
   }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// Scan all arguments and if any are an exact match for a command name, then
-// tag as CMD. If an argument is an exact match for an attribute, despite being
-// an inexact match for a command, then it is not a command.
-bool CLI::findCommand ()
-{
-  for (auto& a : _args)
-  {
-    auto raw = a.attribute ("raw");
-    std::string canonical;
-
-    // If the arg canonicalized to a 'cmd', but is also not an exact match
-    // for an 'attribute', proceed. Example:
-    //   task project=foo list
-    //        ^cmd        ^cmd
-    //        ^attribute
-    if (exactMatch ("command", raw))
-      canonical = raw;
-    else if (! canonicalize (canonical, "command", raw))
-      continue;
-
-    a.attribute ("canonical", canonical);
-    a.tag ("CMD");
-
-    // Stop and indicate command found.
-    return true;
-  }
-
-  // Indicate command not found.
-  return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
