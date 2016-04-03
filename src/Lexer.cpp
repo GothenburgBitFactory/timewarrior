@@ -34,6 +34,9 @@
 #include <unicode.h>
 #include <utf8.h>
 
+static const std::string uuid_pattern = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+static const unsigned int uuid_min_length = 8;
+
 std::string Lexer::dateFormat = "";
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -57,6 +60,7 @@ bool Lexer::token (std::string& token, Lexer::Type& type)
     return false;
 
   if (isString    (token, type, "'\"") ||
+      isUUID      (token, type, true)  ||
       isDate      (token, type)        ||
       isDuration  (token, type)        ||
       isURL       (token, type)        ||
@@ -91,6 +95,7 @@ const std::string Lexer::typeName (const Lexer::Type& type)
 {
   switch (type)
   {
+  case Lexer::Type::uuid:         return "uuid";
   case Lexer::Type::number:       return "number";
   case Lexer::Type::hex:          return "hex";
   case Lexer::Type::string:       return "string";
@@ -440,6 +445,50 @@ bool Lexer::isDuration (std::string& token, Lexer::Type& type)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Lexer::Type::uuid
+//   XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+//   XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXX
+//   XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXX
+//   XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXX
+//   ...
+//   XXXXXXXX-XX
+//   XXXXXXXX-X
+//   XXXXXXXX-
+//   XXXXXXXX
+//   Followed only by EOS, whitespace, or single character operator.
+bool Lexer::isUUID (std::string& token, Lexer::Type& type, bool endBoundary)
+{
+  std::size_t marker = _cursor;
+
+  // Greedy.
+  std::size_t i = 0;
+  for (; i < 36 && marker + i < _eos; i++)
+  {
+    if (uuid_pattern[i] == 'x')
+    {
+      if (! unicodeHexDigit (_text[marker + i]))
+        break;
+    }
+    else if (uuid_pattern[i] != _text[marker + i])
+      break;
+  }
+
+  if (i >= uuid_min_length              &&
+      (! endBoundary                    ||
+       ! _text[marker + i]              ||
+       unicodeWhitespace (_text[marker + i]) ||
+       isSingleCharOperator (_text[marker + i])))
+  {
+    token = _text.substr (_cursor, i);
+    type = Lexer::Type::uuid;
+    _cursor += i;
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Lexer::Type::hex
 //   0xX+
 bool Lexer::isHexNumber (std::string& token, Lexer::Type& type)
@@ -674,6 +723,7 @@ bool Lexer::isOperator (std::string& token, Lexer::Type& type)
 std::string Lexer::typeToString (Lexer::Type type)
 {
        if (type == Lexer::Type::string)       return std::string ("\033[38;5;7m\033[48;5;3m")    + "string"       + "\033[0m";
+  else if (type == Lexer::Type::uuid)         return std::string ("\033[38;5;7m\033[48;5;10m")   + "uuid"         + "\033[0m";
   else if (type == Lexer::Type::hex)          return std::string ("\033[38;5;7m\033[48;5;14m")   + "hex"          + "\033[0m";
   else if (type == Lexer::Type::number)       return std::string ("\033[38;5;7m\033[48;5;6m")    + "number"       + "\033[0m";
   else if (type == Lexer::Type::url)          return std::string ("\033[38;5;7m\033[48;5;4m")    + "url"          + "\033[0m";
