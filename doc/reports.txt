@@ -94,3 +94,7 @@ configuration names flattened, i.e. no hierarchy.
 
 - Need reports to help users doing fixed-rate work - finding the longest task
   for example.
+
+- If an interval has more than one tag with a defined color, and is being
+  rendered, then use the first tag color. It doesn't really matter which.
+
