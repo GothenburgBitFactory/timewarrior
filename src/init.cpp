@@ -76,6 +76,8 @@ void initializeEntities (CLI& cli)
   // TODO Keyword entities.
   cli.entity ("keyword", ":week");   // TODO Guess
   cli.entity ("keyword", ":fill");
+
+  // TODO Extension names.
 }
 
 ////////////////////////////////////////////////////////////////////////////////
