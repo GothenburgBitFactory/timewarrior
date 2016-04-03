@@ -169,7 +169,7 @@ The hierarchy and 'configuration' rule will suupercede these.
 
 
 Rule Type: Theme
-----------------------
+----------------
 A color theme is defined by a rule, and consists of color definitions for
 various report and feedback elements:
 
@@ -187,6 +187,37 @@ The palette group is a list (more is better) of themed colors for use when auto-
 coloring tags.
 
 
+Rule Type: Hook
+---------------
+While there may not be hooks in the traditional sense, with fixed arguments,
+there will be rules that have the same role. Hook rules will allow an internal
+event to trigger a rule that calls an external script, and passes an arbitrary
+set of arguments.
+
+[Mechanism TBD]
+
+    define rule hook on_start:
+      ...
+
+    define rule hook on_stop:
+      ...
+
+    define rule hook on_modify:
+      ...
+
+
+Rules Type: Hint
+----------------
+Hints may be defined using the rules system, to augment the built-in hints that
+are used by almost every command.
+
+    define hint staff:
+      tag 'Staff Meeting'
+      tag 'Admin'
+
+[More TBD]
+
+
 Built-in Functions
 ------------------
 There are several built-in functions, which may be used by rules:
@@ -202,18 +233,6 @@ There are several built-in functions, which may be used by rules:
 
 - Need to distinguish between regular time and over time, with different rates
   and limits.
-
-- A nice feature would be to define a ':keyword' using the rules, which would
-  replace the notion of macros/aliases.
-
-- While there are no plans to add hooks, there could be rules that are triggered
-  by events in a similar manner:
-
-    define rule on_start:
-      ...
-
-    define rule on_stop:
-      ...
 
 - Policy support involves things like:
   - warn after 40 hrs/wk

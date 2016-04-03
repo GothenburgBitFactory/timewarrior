@@ -65,13 +65,15 @@ however, both 'tag1' and 'tag2' are defined with the 'overlap' metadata, then
 there will not be an automatic stop for 'tag1'.
 
 
-Macros
-------
-A macro is a keyword that can take arguments, and expands to a set of one or
-more other timew commands, with some dynamic aspect. For example, the macro
-named 'staff meeting' could be an interval that is on Wednesdays at 10:00, and
-has a set of associated tags. This would then create an appropriately tagged
-interval.
+Hints
+-----
+There are built-in hints, that influence processing. For example, ':debug' puts
+the program in debug mode, and ':fill' indicates to a 'track' command that you
+wish to fill in the available time. Another hint, ':week' means that a command
+should only affect the last week.
+
+There are user-defined hints, that can act as macros⁄aliases, for example the
+':staff' hint could mean a 'Staff Meeting' and 'Admin' tag set.
 
 
 Commands

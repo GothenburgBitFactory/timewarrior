@@ -100,16 +100,15 @@ entity, for example:
 Tags must be quoted if they contains spaces.
 
 
-Keywords
---------
-There are built-in and custom keywords, that look like this:
+Hints
+-----
+There are built-in and custom hints, that look like this:
 
   :fill
-  :quiet
 
 They begin with a colon, and are heuristics for Timewarrior. They can override
 feedback (:quiet) or offer guidance on how to create an interval (:fill). The
-supported keywords are:
+supported hints are:
 
   :fill       Fill in gap
   :backfill   Fill in gap, backwards only
@@ -117,6 +116,8 @@ supported keywords are:
   :noreport   Prevent the interval being reported
   :quiet      No feedback
   :x          User defined
+  :week       Macro that means 'this week'
+  :debug      Turns on debugging mode
 
 
 --- Raw Notes ---
