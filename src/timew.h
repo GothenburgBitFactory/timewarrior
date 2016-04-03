@@ -42,12 +42,6 @@ void initializeDataAndRules (Database&, Rules&, Log&);
 void initializeExtensions (Rules&, Extensions&, Log&);
 int dispatchCommand (const std::vector <std::string>&, CLI&, Database&, Rules&, Extensions&, Log&);
 
-// classifier.cpp
-std::vector <std::string> getHints (const std::vector <std::string>&);
-
-enum class ArgType { binary, command, positional, hint };
-ArgType classifyArg (const std::string&);
-
 // helper.cpp
 Color tagColor (const Rules&, const std::string&);
 std::string intervalSummarize (const Rules&, const Interval&);

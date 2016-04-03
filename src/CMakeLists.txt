@@ -15,7 +15,6 @@ set (timew_SRCS CLI.cpp        CLI.h
                 Lexer.cpp      Lexer.h
                 Rules.cpp      Rules.h
                 Timeline.cpp   Timeline.h
-                classifier.cpp
                 init.cpp
                 helper.cpp
                 util.cpp)
