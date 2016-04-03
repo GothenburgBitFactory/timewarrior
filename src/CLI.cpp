@@ -224,6 +224,7 @@ void CLI::analyze ()
   handleArg0 ();
   lexArguments ();
   findCommand ();
+  canonicalizeNames ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -286,6 +287,45 @@ const std::string CLI::dump (const std::string& title) const
   }
 
   return out.str ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Scan all arguments and canonicalize names that need it.
+void CLI::canonicalizeNames ()
+{
+  for (auto& a : _args)
+  {
+    auto raw = a.attribute ("raw");
+    std::string canonical;
+
+    // Commands.
+    if (exactMatch ("command", raw))
+    {
+      a.attribute ("canonical", raw);
+      a.tag ("CMD");
+      continue;
+    }
+    else if (canonicalize (canonical, "command", raw))
+    {
+      a.attribute ("canonical", canonical);
+      a.tag ("CMD");
+      continue;
+    }
+
+    // Commands.
+    if (exactMatch ("keyword", raw))
+    {
+      a.attribute ("canonical", raw);
+      a.tag ("KEYWORD");
+      continue;
+    }
+    else if (canonicalize (canonical, "keyword", raw))
+    {
+      a.attribute ("keyword", canonical);
+      a.tag ("KEYWORD");
+      continue;
+    }
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
