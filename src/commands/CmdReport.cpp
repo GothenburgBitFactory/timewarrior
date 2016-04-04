@@ -64,16 +64,17 @@ static std::string findExtension (
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdReport (
-  const std::vector <std::string>& args,
+  CLI& cli,
   Rules& rules,
   Database& database,
   Extensions& extensions,
   Log& log)
 {
   // TODO Identify report.
-  if (args.size () > 2)
+  auto words = cli.getWords ();
+  if (words.size ())
   {
-    auto script = findExtension (extensions, args[2]);
+    auto script = findExtension (extensions, words[0]);
 
     // TODO Default report?
 

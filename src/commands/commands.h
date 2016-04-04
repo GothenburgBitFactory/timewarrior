@@ -35,24 +35,24 @@
 #include <vector>
 #include <string>
 
-int CmdClear       (                                                                      );
-int CmdConfig      (                                                                      );
+int CmdClear       (                                          );
+int CmdConfig      (                                          );
 int CmdContinue    (                                  Rules&, Database&,              Log&);
 int CmdDefault     (                                  Rules&, Database&                   );
 int CmdDefine      (const std::vector <std::string>&, Rules&, Database&,              Log&);
 int CmdDiagnostics (                                  Rules&, Database&, Extensions&, Log&);
 int CmdExport      (const std::vector <std::string>&, Rules&, Database&,              Log&);
 int CmdExtensions  (                                  Rules&,            Extensions&      );
-int CmdGaps        (                                                                      );
-int CmdHelpUsage   (                                                                      );
+int CmdGaps        (                                          );
+int CmdHelpUsage   (                                          );
 int CmdHelp        (CLI&,                                 Log&);
 int CmdLog         (CLI&,                                 Log&);
-int CmdImport      (                                                                      );
-int CmdReport      (const std::vector <std::string>&, Rules&, Database&, Extensions&, Log&);
+int CmdImport      (                                          );
+int CmdReport      (CLI&, Rules&, Database&, Extensions&, Log&);
 int CmdStart       (const std::vector <std::string>&, Rules&, Database&,              Log&);
 int CmdStop        (const std::vector <std::string>&, Rules&, Database&,              Log&);
 int CmdTags        (                                  Rules&, Database&,              Log&);
-int CmdTrack       (                                                                      );
-int CmdUndo        (                                                                      );
+int CmdTrack       (                                          );
+int CmdUndo        (                                          );
 
 #endif
