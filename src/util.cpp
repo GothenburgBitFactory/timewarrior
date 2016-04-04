@@ -82,6 +82,9 @@ std::string escape (const std::string& input, int c)
 ////////////////////////////////////////////////////////////////////////////////
 std::string quoteIfNeeded (const std::string& input)
 {
+  if (input[0] == '"' || input[0] == '\'')
+    return input;
+
   auto quote = input.find ('"');
   auto space = input.find (' ');
 
