@@ -41,9 +41,9 @@ public:
   void tag (const std::string&);
   void unTag (const std::string&);
   void attribute (const std::string&, const std::string&);
-  const std::string attribute (const std::string&) const;
-  const std::string getToken () const;
-  const std::string dump () const;
+  std::string attribute (const std::string&) const;
+  std::string getToken () const;
+  std::string dump () const;
 
 public:
   Lexer::Type                         _lextype     {Lexer::Type::word};
@@ -62,7 +62,7 @@ public:
   bool canonicalize (std::string&, const std::string&, const std::string&) const;
   std::string getBinary () const;
   std::string getCommand () const;
-  const std::string dump (const std::string& title = "CLI Parser") const;
+  std::string dump (const std::string& title = "CLI Parser") const;
 
 private:
   void handleArg0 ();

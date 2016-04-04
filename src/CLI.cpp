@@ -71,7 +71,7 @@ void A2::attribute (const std::string& name, const std::string& value)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Accessor for attributes.
-const std::string A2::attribute (const std::string& name) const
+std::string A2::attribute (const std::string& name) const
 {
   // Prevent autovivification.
   auto i = _attributes.find (name);
@@ -82,7 +82,7 @@ const std::string A2::attribute (const std::string& name) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-const std::string A2::getToken () const
+std::string A2::getToken () const
 {
   auto i = _attributes.find ("canonical");
   if (i == _attributes.end ())
@@ -92,7 +92,7 @@ const std::string A2::getToken () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-const std::string A2::dump () const
+std::string A2::dump () const
 {
   auto output = Lexer::typeToString (_lextype);
 
@@ -281,7 +281,7 @@ std::string CLI::getCommand () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-const std::string CLI::dump (const std::string& title) const
+std::string CLI::dump (const std::string& title) const
 {
   std::stringstream out;
 
