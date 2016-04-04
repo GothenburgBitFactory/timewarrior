@@ -83,7 +83,7 @@ Displays all the tags that have been used.
 
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS
 Timewarrior stores its configuration in a file in the user's home directory:
-~/.timewrc.
+~/.timewarrior/timewarrior.cfg.
 
 .SH MORE EXAMPLES
 
