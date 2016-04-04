@@ -82,6 +82,7 @@ void initializeEntities (CLI& cli)
 
 ////////////////////////////////////////////////////////////////////////////////
 void initializeDataAndRules (
+  CLI& cli,
   Database& database,
   Rules& rules,
   Log& log)

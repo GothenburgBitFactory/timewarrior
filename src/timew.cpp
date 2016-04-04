@@ -69,17 +69,15 @@ int main (int argc, const char** argv)
   }
   log.write ("command", commandLine);
 
-  cli.analyze ();
-
-  // TODO Remove.
-  std::cout << cli.dump () << "\n";
-
   try
   {
+    // One-time command line scan.
+    cli.analyze ();
+
     // Prepare the database, but do not read data.
     Database database;
     Rules rules;
-    initializeDataAndRules (database, rules, log);
+    initializeDataAndRules (cli, database, rules, log);
 
     // Load extension script info.
     Extensions extensions;

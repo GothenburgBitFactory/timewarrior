@@ -38,7 +38,7 @@
 // init.cpp
 bool lightweightVersionCheck (int, const char**);
 void initializeEntities (CLI&);
-void initializeDataAndRules (Database&, Rules&, Log&);
+void initializeDataAndRules (CLI&, Database&, Rules&, Log&);
 void initializeExtensions (Rules&, Extensions&, Log&);
 int dispatchCommand (CLI&, Database&, Rules&, Extensions&, Log&);
 
