@@ -133,19 +133,6 @@ void initializeDataAndRules (
     throw format ("Database is not readable at '{1}'", dbLocation._data);
   }
 
-  // TODO Load rule grammar.
-/*
-  File ruleFile ("./rule.grammar");
-  Grammar ruleGrammar;
-  ruleGrammar.debug (debug);
-  ruleGrammar.loadFromFile (ruleFile);
-
-  // Instantiate the parser.
-  LR0 ruleParser;
-  ruleParser.debug (debug);
-  ruleParser.initialize (ruleGrammar);
-*/
-
   // Load the configuration data.
   File configFile (dbLocation);
   configFile += "timewarrior.cfg";
