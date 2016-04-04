@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <CLI.h>
+#include <sstream>
 #include <algorithm>
 #include <Color.h>
 #include <shared.h>
