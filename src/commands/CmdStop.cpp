@@ -32,7 +32,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdStop (
-  const std::vector <std::string>& args,
+  CLI& cli,
   Rules& rules,
   Database& database,
   Log& log)
@@ -59,10 +59,11 @@ int CmdStop (
 
     // If tags were specified, and after removing those tags, there are still
     // tags remaining, then add a contiguous interval.
-    if (args.size () > 2)
+    auto words = cli.getWords ();
+    if (words.size ())
     {
-      for (auto& tag : std::vector <std::string> (args.begin () + 2, args.end ()))
-        latest.untag (tag);
+      for (auto& word : words)
+        latest.untag (word);
 
       if (latest.tags ().size ())
       {

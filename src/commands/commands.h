@@ -32,8 +32,6 @@
 #include <Database.h>
 #include <Extensions.h>
 #include <Log.h>
-#include <vector>
-#include <string>
 
 int CmdClear       (                                          );
 int CmdConfig      (                                          );
@@ -50,7 +48,7 @@ int CmdLog         (CLI&,                                 Log&);
 int CmdImport      (                                          );
 int CmdReport      (CLI&, Rules&, Database&, Extensions&, Log&);
 int CmdStart       (CLI&, Rules&, Database&,              Log&);
-int CmdStop        (const std::vector <std::string>&, Rules&, Database&,              Log&);
+int CmdStop        (CLI&, Rules&, Database&,              Log&);
 int CmdTags        (      Rules&, Database&,              Log&);
 int CmdTrack       (                                          );
 int CmdUndo        (                                          );
