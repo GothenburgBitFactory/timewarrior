@@ -115,9 +115,9 @@ supported hints are:
   :interrupt  Identify the interval as a temporary interruption
   :noreport   Prevent the interval being reported
   :quiet      No feedback
-  :x          User defined
   :week       Macro that means 'this week'
   :debug      Turns on debugging mode
+  :x          User defined
 
 
 --- Raw Notes ---

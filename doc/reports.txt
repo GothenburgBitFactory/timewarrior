@@ -6,8 +6,8 @@ combination of a filter, sort, columns and labels, a more flexible approach
 could encourage shared custom reports, and use a more complete API.
 
 Іf all reports are extension scripts/programs, utilizing an API, then there is
-no restriction on the kind of report generated, which would allow for HTML
-reports, rather than simply supporting tabular text.
+no restriction on the kind of report generated, which would allow, for example,
+for PDF or HTML reports, rather than simply supporting tabular text.
 
 
 Requirements
@@ -83,9 +83,6 @@ configuration names flattened, i.e. no hierarchy.
 
 
 --- Raw Notes ---
-
-- The Taskwarrior hook script should use a set of attributes for time tracking
-  tags. Those will include: UUID, project, tags, description, and any chosen UDAs.
 
 - Need a JSON --> CSV converter, for spreadsheet folks.
 

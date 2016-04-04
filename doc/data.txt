@@ -120,6 +120,7 @@ explicitly not desired. The categories are:
   warnings
   errors
   info
+  debug
 
 A log entry will have this form:
 

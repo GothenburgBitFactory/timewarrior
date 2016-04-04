@@ -9,7 +9,7 @@ implement a simple stop-watch tracking feature, generate custom reports, and
 apply a set of rules to impose constraints and check the data.
 
 Using a hook scripts, Timewarrior can be used as a backend time-tracking
-feature for Taskwarrior, any other program, or as a standalone utility.
+feature for Taskwarrior, any other program, or simply as a standalone utility.
 
 Timewarrior aims to be the tool of choice if you need to track time and generate
 timesheets.
@@ -17,8 +17,8 @@ timesheets.
 
 Goals
 -----
-- Provide a personal tools to easily track time spent and generate reports with
-  low friction.
+- Provide a personal tool to easily track and report time spent, with low
+  friction.
 - Support all workflows.
 - Provide an extension-friendly tool.
 - Support policies via the rules system.

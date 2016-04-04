@@ -1,7 +1,8 @@
 Introduction
 ============
 Timewarrior is a time tracking application, which allows you to record your
-time spent on activities. At its simplest, you tell it to start and stop
+time spent on activities. You may be tracking time for pure curiosity, or your
+work may require it. At its simplest, you tell it to start and stop
 tracking time:
 
   $ timew start

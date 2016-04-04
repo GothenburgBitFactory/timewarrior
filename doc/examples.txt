@@ -137,22 +137,33 @@ Will result in an update to the configuration rule:
 Using the '.' character allows the rule to reflect hierarchical configuration
 data:
 
-  $ timew config one two three four
-  $ timew config one two five six
+  $ timew config one.two.three four
+  $ timew config one.two.five six
 
 Will construct the rule like this:
 
   define configuration:
     one:
       two:
-        three four
-        five six
+        three = four
+        five  = six
 
 The process of converting this rule structure to 'one.two.three four' is called
 normalizing.
 
 
+[6.2] Configuration: Running in debug mode
+------------------------------------------
+Running in debug mode reveals internal details that aid troubleshooting. To run
+in debug mode, add the ':debug' hint to the command line:
+
+  $ timew ... :debug
+
+
 --- Raw Notes ---
+
+- Incorporate the following old notes into the above doc:
+
 
 By using tags, this becomes:
 

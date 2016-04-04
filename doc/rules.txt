@@ -65,6 +65,11 @@ There are rules that define tags and their metadata:
   define tag "tag1":
     ...
 
+There are rules that will serve as hooks:
+
+  define rule hook on_stop:
+    ...
+
 
 Rule Type: Exclusions
 ---------------------
