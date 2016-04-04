@@ -59,6 +59,7 @@ public:
   void entity (const std::string&, const std::string&);
   void add (const std::string&);
   void analyze ();
+  std::vector <std::string> getWords () const;
   bool canonicalize (std::string&, const std::string&, const std::string&) const;
   std::string getBinary () const;
   std::string getCommand () const;

@@ -229,6 +229,20 @@ void CLI::analyze ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Return all the unknown args.
+std::vector <std::string> CLI::getWords () const
+{
+  std::vector <std::string> words;
+  for (const auto& a : _args)
+    if (! a.hasTag ("BINARY") &&
+        ! a.hasTag ("CMD")    &&
+        ! a.hasTag ("HINT"))
+      words.push_back (a.attribute ("raw"));
+
+  return words;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Search for 'value' in _entities category, return canonicalized value.
 bool CLI::canonicalize (
   std::string& canonicalized,
