@@ -327,22 +327,28 @@ std::string CLI::dump (const std::string& title) const
 // Scan all arguments and canonicalize names that need it.
 void CLI::canonicalizeNames ()
 {
+  bool alreadyFoundArg = false;
+
   for (auto& a : _args)
   {
     auto raw = a.attribute ("raw");
     std::string canonical;
 
     // Commands.
-    if (exactMatch ("command", raw))
+    if (! alreadyFoundArg &&
+        exactMatch ("command", raw))
     {
       a.attribute ("canonical", raw);
       a.tag ("CMD");
+      alreadyFoundArg = true;
       continue;
     }
-    else if (canonicalize (canonical, "command", raw))
+    else if (! alreadyFoundArg &&
+             canonicalize (canonical, "command", raw))
     {
       a.attribute ("canonical", canonical);
       a.tag ("CMD");
+      alreadyFoundArg = true;
       continue;
     }
 
