@@ -73,8 +73,9 @@ void initializeEntities (CLI& cli)
   cli.entity ("command", "track");
   cli.entity ("command", "undo");
 
-  // TODO Hint entities.
-  cli.entity ("hint", ":week");   // TODO Guess
+  // Hint entities.
+  cli.entity ("hint", ":debug");
+  cli.entity ("hint", ":week");   // TODO Guessing that this is needed.
   cli.entity ("hint", ":fill");
 
   // TODO Extension names.
@@ -87,6 +88,14 @@ void initializeDataAndRules (
   Rules& rules,
   Log& log)
 {
+  bool debugMode = std::any_of (cli._args.begin (),
+                                cli._args.end (),
+                                [](A2 i){ return i.hasTag ("HINT") && i.attribute ("canonical") == ":debug"; });
+  if (debugMode)
+    std::cout << cli.dump () << "\n";
+  else
+    log.ignore ("debug");
+
   // The $TIMEWARRIORDB environment variable overrides the default value of
   // ~/.timewarrior‥
   Directory dbLocation;
@@ -140,6 +149,10 @@ void initializeDataAndRules (
   rules.load (configFile._data);
 
   // TODO Provide the exclusions to the database, for use with new files.
+
+  // Debug mode activated by hint.
+  if (debugMode)
+    rules.set ("debug", "on");
 
   // This value is not written out to disk, as there would be no point. Having
   // located the config file, the 'db' location is already known. This is just
