@@ -25,8 +25,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
-#include <iostream>
 #include <commands.h>
+#include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdHelpUsage ()
@@ -70,16 +70,17 @@ int CmdHelpUsage ()
 //
 // Strict 80-character limit.
 // Provide examples where appropriate - enough to cover all uses.
-int CmdHelp (const std::vector <std::string>& args, Log& log)
+int CmdHelp (CLI& cli, Log& log)
 {
-  if (args.size () > 2)
+  auto words = cli.getWords ();
+  if (words.size ())
   {
     // TODO clear
     // TODO config
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
-    if (args[2] == "continue")
+    if (words[0] == "continue")
       std::cout << "\n"
                 << "Syntax: timew continue\n"
                 << "\n"
@@ -97,7 +98,7 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
-    else if (args[2] == "diagnostics")
+    else if (words[0] == "diagnostics")
       std::cout << "\n"
                 << "Syntax: timew diagnostics\n"
                 << "\n"
@@ -112,7 +113,7 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
-    else if (args[2] == "export")
+    else if (words[0] == "export")
       std::cout << "\n"
                 << "Syntax: timew export\n"
                 << "\n"
@@ -123,7 +124,7 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
-    else if (args[2] == "extensions")
+    else if (words[0] == "extensions")
       std::cout << "\n"
                 << "Syntax: timew extensions\n"
                 << "\n"
@@ -139,7 +140,7 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
-    else if (args[2] == "log")
+    else if (words[0] == "log")
       std::cout << "\n"
                 << "Syntax: timew log [<message>]\n"
                 << "\n"
@@ -155,7 +156,7 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
-    else if (args[2] == "start")
+    else if (words[0] == "start")
       std::cout << "\n"
                 << "Syntax: timew start [<tag> ...]\n"
                 << "\n"
@@ -173,7 +174,7 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
-    else if (args[2] == "stop")
+    else if (words[0] == "stop")
       std::cout << "\n"
                 << "Syntax: timew stop [<tag> ...]\n"
                 << "\n"
@@ -194,7 +195,7 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
-    else if (args[2] == "tags")
+    else if (words[0] == "tags")
       std::cout << "\n"
                 << "Syntax: timew tags\n"
                 << "\n"
@@ -205,7 +206,7 @@ int CmdHelp (const std::vector <std::string>& args, Log& log)
     // TODO undo
 
     else
-      std::cout << "No help available for '" << args[2] << "'\n";
+      std::cout << "No help available for '" << words[0] << "'\n";
 
     return 0;
   }

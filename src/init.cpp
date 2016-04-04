@@ -212,23 +212,23 @@ int dispatchCommand (
   {
     // These signatures are æxpected to be all different, therefore no
     // command to fn mapping.
-         if (command == "clear")       status = CmdClear       (                                      );
-    else if (command == "config")      status = CmdConfig      (                                      );
-    else if (command == "continue")    status = CmdContinue    (      rules, database,             log);
+         if (command == "clear")       status = CmdClear       (                                     );
+    else if (command == "config")      status = CmdConfig      (                                     );
+    else if (command == "continue")    status = CmdContinue    (     rules, database,             log);
     else if (command == "define")      status = CmdDefine      (args, rules, database,             log);
-    else if (command == "diagnostics") status = CmdDiagnostics (      rules, database, extensions, log);
+    else if (command == "diagnostics") status = CmdDiagnostics (     rules, database, extensions, log);
     else if (command == "export")      status = CmdExport      (args, rules, database,             log);
-    else if (command == "extensions")  status = CmdExtensions  (      rules,           extensions     );
-    else if (command == "gaps")        status = CmdGaps        (                                      );
-    else if (command == "help")        status = CmdHelp        (args,                              log);
-    else if (command == "import")      status = CmdImport      (                                      );
-    else if (command == "log")         status = CmdLog         (cli,                               log);
+    else if (command == "extensions")  status = CmdExtensions  (     rules,           extensions     );
+    else if (command == "gaps")        status = CmdGaps        (                                     );
+    else if (command == "help")        status = CmdHelp        (cli,                              log);
+    else if (command == "import")      status = CmdImport      (                                     );
+    else if (command == "log")         status = CmdLog         (cli,                              log);
     else if (command == "report")      status = CmdReport      (args, rules, database, extensions, log);
     else if (command == "start")       status = CmdStart       (args, rules, database,             log);
     else if (command == "stop")        status = CmdStop        (args, rules, database,             log);
-    else if (command == "tags")        status = CmdTags        (      rules, database,             log);
-    else if (command == "track")       status = CmdTrack       (                                      );
-    else if (command == "undo")        status = CmdUndo        (                                      );
+    else if (command == "tags")        status = CmdTags        (     rules, database,             log);
+    else if (command == "track")       status = CmdTrack       (                                     );
+    else if (command == "undo")        status = CmdUndo        (                                     );
   }
   else
   {

@@ -45,8 +45,8 @@ int CmdExport      (const std::vector <std::string>&, Rules&, Database&,        
 int CmdExtensions  (                                  Rules&,            Extensions&      );
 int CmdGaps        (                                                                      );
 int CmdHelpUsage   (                                                                      );
-int CmdHelp        (const std::vector <std::string>&,                                 Log&);
-int CmdLog         (CLI&,                                                             Log&);
+int CmdHelp        (CLI&,                                 Log&);
+int CmdLog         (CLI&,                                 Log&);
 int CmdImport      (                                                                      );
 int CmdReport      (const std::vector <std::string>&, Rules&, Database&, Extensions&, Log&);
 int CmdStart       (const std::vector <std::string>&, Rules&, Database&,              Log&);
