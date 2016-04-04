@@ -30,7 +30,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdExport (
-  const std::vector <std::string>& args,
+  CLI& cli,
   Rules& rules,
   Database& database,
   Log& log)
