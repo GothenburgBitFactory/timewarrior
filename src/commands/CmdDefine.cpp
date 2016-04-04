@@ -44,20 +44,20 @@
 // timew define tag <tag> color <color>
 //
 int CmdDefine (
-  const std::vector <std::string>& args,
+  CLI& cli,
   Rules& rules,
   Database& database,
   Log& log)
 {
-  if (args.size () >= 3 &&
-      closeEnough ("define", args[1], 3))
+  auto words = cli.getWords ();
+  if (words.size () >= 1)
   {
     std::vector <std::string> subcommands = {"holidays", "week", "day", "tag"};
     std::vector <std::string> matches;
-    autoComplete (args[2], subcommands, matches);
+    autoComplete (words[0], subcommands, matches);
 
     if (matches.size () != 1)
-      throw format ("Unrecognized definition '{1}'.", args[2]);
+      throw format ("Unrecognized definition '{1}'.", words[0]);
 
     if (matches[0] == "holidays")
     {

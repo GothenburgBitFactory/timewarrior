@@ -215,7 +215,7 @@ int dispatchCommand (
          if (command == "clear")       status = CmdClear       (                                     );
     else if (command == "config")      status = CmdConfig      (                                     );
     else if (command == "continue")    status = CmdContinue    (     rules, database,             log);
-    else if (command == "define")      status = CmdDefine      (args, rules, database,             log);
+    else if (command == "define")      status = CmdDefine      (cli, rules, database,             log);
     else if (command == "diagnostics") status = CmdDiagnostics (     rules, database, extensions, log);
     else if (command == "export")      status = CmdExport      (cli, rules, database,             log);
     else if (command == "extensions")  status = CmdExtensions  (     rules,           extensions     );
