@@ -21,7 +21,7 @@ there is any active tracking, and if so, shows a summary.
 
 .TP
 .B timew continue
-Resumes tracking the most recently closed interval. For exqample:
+Resumes tracking the most recently closed interval. For example:
 
   $ timew track yesterday 9am - 5pm tag1 tag2
   $ timew continue
