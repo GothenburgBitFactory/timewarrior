@@ -32,7 +32,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdStart (
-  const std::vector <std::string>& args,
+  CLI& cli,
   Rules& rules,
   Database& database,
   Log& log)
@@ -60,8 +60,9 @@ int CmdStart (
   now.start (Datetime ());
 
   // Apply tags.
-  for (auto& tag : std::vector <std::string> (args.begin () + 2, args.end ()))
-    now.tag (tag);
+  auto words = cli.getWords ();
+  for (auto& word : words)
+    now.tag (word);
 
   // Update database.
   database.addInterval (now);

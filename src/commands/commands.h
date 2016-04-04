@@ -49,7 +49,7 @@ int CmdHelp        (CLI&,                                 Log&);
 int CmdLog         (CLI&,                                 Log&);
 int CmdImport      (                                          );
 int CmdReport      (CLI&, Rules&, Database&, Extensions&, Log&);
-int CmdStart       (const std::vector <std::string>&, Rules&, Database&,              Log&);
+int CmdStart       (CLI&, Rules&, Database&,              Log&);
 int CmdStop        (const std::vector <std::string>&, Rules&, Database&,              Log&);
 int CmdTags        (      Rules&, Database&,              Log&);
 int CmdTrack       (                                          );
