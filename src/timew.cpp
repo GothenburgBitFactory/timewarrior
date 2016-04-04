@@ -57,19 +57,22 @@ int main (int argc, const char** argv)
   initializeEntities (cli);
 
   // Capture the args.
+  std::string commandLine;
   for (int i = 0; i < argc; i++)
+  {
     cli.add (argv[i]);
+
+    if (i)
+      commandLine += " ";
+
+    commandLine += quoteIfNeeded (argv[i]);
+  }
+  log.write ("command", commandLine);
 
   cli.analyze ();
 
   // TODO Remove.
   std::cout << cli.dump () << "\n";
-
-  // Make a vector of args, instead of argc/argv.
-  // TODO Deprecated.
-  std::vector <std::string> args;
-  for (int i = 0; i < argc; i++)
-    args.push_back (argv[i]);
 
   try
   {
@@ -83,7 +86,7 @@ int main (int argc, const char** argv)
     initializeExtensions (rules, extensions, log);
 
     // Dispatch to commands.
-    status = dispatchCommand (args, cli, database, rules, extensions, log);
+    status = dispatchCommand (cli, database, rules, extensions, log);
 
     // Save any outstanding changes.
     database.commit ();

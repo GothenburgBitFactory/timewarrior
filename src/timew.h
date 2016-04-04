@@ -40,7 +40,7 @@ bool lightweightVersionCheck (int, const char**);
 void initializeEntities (CLI&);
 void initializeDataAndRules (Database&, Rules&, Log&);
 void initializeExtensions (Rules&, Extensions&, Log&);
-int dispatchCommand (const std::vector <std::string>&, CLI&, Database&, Rules&, Extensions&, Log&);
+int dispatchCommand (CLI&, Database&, Rules&, Extensions&, Log&);
 
 // helper.cpp
 Color tagColor (const Rules&, const std::string&);

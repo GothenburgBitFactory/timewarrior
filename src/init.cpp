@@ -186,7 +186,6 @@ void initializeExtensions (
 
 ////////////////////////////////////////////////////////////////////////////////
 int dispatchCommand (
-  const std::vector <std::string>& args,
   CLI& cli,
   Database& database,
   Rules& rules,
@@ -194,17 +193,6 @@ int dispatchCommand (
   Log& log)
 {
   int status {0};
-
-  // Log the command line.
-  std::string combined;
-  for (auto& arg : args)
-  {
-    if (arg.find (' ') != std::string::npos)
-      combined += "'" + arg + "' ";
-    else
-      combined += arg + " ";
-  }
-  log.write ("command", combined);
 
   // Dispatch to the right command function.
   std::string command = cli.getCommand ();
