@@ -222,7 +222,7 @@ int dispatchCommand (
     else if (command == "gaps")        status = CmdGaps        (                                      );
     else if (command == "help")        status = CmdHelp        (args,                              log);
     else if (command == "import")      status = CmdImport      (                                      );
-    else if (command == "log")         status = CmdLog         (args,                              log);
+    else if (command == "log")         status = CmdLog         (cli,                               log);
     else if (command == "report")      status = CmdReport      (args, rules, database, extensions, log);
     else if (command == "start")       status = CmdStart       (args, rules, database,             log);
     else if (command == "stop")        status = CmdStop        (args, rules, database,             log);

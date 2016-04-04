@@ -25,23 +25,29 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
-#include <Log.h>
+#include <commands.h>
 #include <shared.h>
 #include <vector>
 #include <string>
+#include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
 // TODO This may be removed, unless it proves useful.
-int CmdLog (const std::vector <std::string>& args, Log& log)
+int CmdLog (CLI& cli, Log& log)
 {
-  // If no (extra) arguments, simply write a marker.
-  if (args.size () >= 3 &&
-      args[2] == "mark")
-    log.write ("debug", "-------- 8< --------");
+  auto words = cli.getWords ();
+  if (words.size ())
+  {
+    // 'timew log mark' writes a marker.
+    if (words[0] == "mark")
+      log.write ("debug", "-------- 8< --------");
 
-  // Othewise write args to the log.
+    // 'timew log ...' writes '...' to log.
+    else
+      log.write ("info", join (" ", words));
+  }
   else
-    log.write ("info", join (" ", std::vector <std::string> (args.begin () + 2, args.end ())));
+    std::cout << "No message specified.\n";
 
   return 0;
 }

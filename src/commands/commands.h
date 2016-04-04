@@ -27,6 +27,7 @@
 #ifndef INCLUDED_COMMANDS
 #define INCLUDED_COMMANDS
 
+#include <CLI.h>
 #include <Rules.h>
 #include <Database.h>
 #include <Extensions.h>
@@ -45,7 +46,7 @@ int CmdExtensions  (                                  Rules&,            Extensi
 int CmdGaps        (                                                                      );
 int CmdHelpUsage   (                                                                      );
 int CmdHelp        (const std::vector <std::string>&,                                 Log&);
-int CmdLog         (const std::vector <std::string>&,                                 Log&);
+int CmdLog         (CLI&,                                                             Log&);
 int CmdImport      (                                                                      );
 int CmdReport      (const std::vector <std::string>&, Rules&, Database&, Extensions&, Log&);
 int CmdStart       (const std::vector <std::string>&, Rules&, Database&,              Log&);

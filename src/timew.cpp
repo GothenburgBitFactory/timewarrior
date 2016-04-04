@@ -48,7 +48,8 @@ int main (int argc, const char** argv)
   // only be given a file name once the rules are loaded. The log therefore
   // buffers the messages until it has a file name to write to.
   Log log;
-  CmdLog ({"timew", "log", "mark"}, log);
+  // TODO Need a simpler way to call this.
+//  CmdLog ({"timew", "log", "mark"}, log);
 
   // Add entities so that command line tokens such as 'help' are recognized as
   // commands.
