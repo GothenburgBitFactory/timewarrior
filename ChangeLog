@@ -17,6 +17,7 @@
 - Integrated libshared.git.
 - Colored tags supported.
 - Added Taskwarrior hook script to integrate Timewarrior.
+- Added support for the ':debug' hint.
 
 Design completed 2016-03-13
 Project started  2015-11-29
