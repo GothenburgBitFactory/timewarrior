@@ -81,7 +81,7 @@ int CmdStop (
   }
   else
   {
-    std::string message = "There is no time currently being tracked.";
+    std::string message = "There is no active time tracking.";
     std::cout << message << "\n";
     log.write ("warning", message);
   }
