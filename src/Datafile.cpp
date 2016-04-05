@@ -88,12 +88,12 @@ void Datafile::addInterval (const Interval& interval)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Only checks if the start time matches.
 void Datafile::modifyInterval (const Interval& interval)
 {
   for (auto& i : _intervals)
   {
-    if (i.start () == interval.start () &&
-        i.tags () == interval.tags ())
+    if (i.start () == interval.start ())
     {
       i = interval;
       _dirty = true;
