@@ -361,7 +361,7 @@ void CLI::canonicalizeNames ()
     }
     else if (canonicalize (canonical, "hint", raw))
     {
-      a.attribute ("hint", canonical);
+      a.attribute ("canonical", canonical);
       a.tag ("HINT");
       continue;
     }
