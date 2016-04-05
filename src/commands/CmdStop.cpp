@@ -44,15 +44,8 @@ int CmdStop (
   if (  latest.isStarted () &&
       ! latest.isEnded ())
   {
-    // TODO If there are tags, remove the individual tags.
-    // TODO If there are none, simply close the interval.
-
     // Stop it.
     latest.end (Datetime ());
-
-    // Update database.
-    database.modifyInterval (latest);
-    log.write ("debug", std::string ("Stopped tracking: ") + latest.serialize ());
 
     // User feedback.
     std::cout << intervalSummarize (rules, latest);
@@ -61,22 +54,24 @@ int CmdStop (
     // tags remaining, then add a contiguous interval.
     auto words = cli.getWords ();
     if (words.size ())
-    {
-      for (auto& word : words)
+      for (auto& word : cli.getWords ())
         latest.untag (word);
 
-      if (latest.tags ().size ())
-      {
-        // Contiguous with previous interval.
-        latest.start (latest.end ());
-        latest.end ({0});
+    database.modifyInterval (latest);
+    log.write ("debug", std::string ("Stopped tracking: ") + latest.serialize ());
 
-        database.addInterval (latest);
-        log.write ("debug", std::string ("Started tracking: ") + latest.serialize ());
+    if (words.size () &&
+        latest.tags ().size ())
+    {
+      // Contiguous with previous interval.
+      latest.start (latest.end ());
+      latest.end ({0});
 
-        // User feedback.
-        std::cout << intervalSummarize (rules, latest);
-      }
+      database.addInterval (latest);
+      log.write ("debug", std::string ("Started tracking: ") + latest.serialize ());
+
+      // User feedback.
+      std::cout << "\n" << intervalSummarize (rules, latest);
     }
   }
   else
