@@ -31,7 +31,6 @@ The CLI shall have a well-defined and unambiguous grammar.
 
     timew help [<command>|<keyword>|examples]
     timew diagnostics
-    timew log mark|<string>
 
 
 CLI Grammar

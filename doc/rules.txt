@@ -158,13 +158,6 @@ hierarchy for grouping:
 In the example, value2 can be referred to by it's normalized name
 'group1.group2.name2'.
 
-An example is logging:
-
-  define configuration:
-    logging:
-      file = /path/to/log/file
-      categories = a b c !d
-
 Initially, all settings are stored as simple name/value pairs at the top level
 of the configuration files:
 
@@ -227,10 +220,9 @@ Built-in Functions
 ------------------
 There are several built-in functions, which may be used by rules:
 
-  error("...")         Logs, emits and terminates
-  warning("...")       Logs, emits and continues
-  info("...")          Logs, emits and continues
-  log("...")           Logs and continues
+  error("...")         Emits and terminates
+  warning("...")       Emits and continues
+  info("...")          Emits and continues
   sum_week("tag1")     Sums minutes in the current week for "tag1"
 
 

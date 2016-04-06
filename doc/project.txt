@@ -97,7 +97,7 @@ to be added as extensions, while being handled as though they were built-ins.
 
 Undo
 ----
-All commands that change configuration or data need to be logged as-is in the
+All commands that change configuration or data need to be recorded as-is in the
 undo.data file, so that an 'undo' command can later rewind the changes properly.
 
 All undo will happen at the command level, not the delta level. That means if

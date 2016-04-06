@@ -10,7 +10,6 @@
 - Added 'export' command.
 - Added 'extensions' command.
 - Added 'help' command.
-- Added 'log' command.
 - Added 'start' command.
 - Added 'stop' command.
 - Added 'tags' command.

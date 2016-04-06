@@ -115,8 +115,8 @@ There is also a rules system that can impose constraints on the data, such as
 automatically shutting off tracking after 40 hours is tracked per week, warnings
 about overtime, and more.
 
-There is built-in configuration support, logging, and assorted tools to help
-you enact policy.
+There is built-in configuration support and assorted tools to help you enact
+policy.
 
 The data will be stored as plain text, and there will a way to merge data from
 multiple sources.
