@@ -33,13 +33,18 @@
 #include <tuple>
 #include <inttypes.h>
 
-static std::map <std::string, std::string> defaultSettings =
+////////////////////////////////////////////////////////////////////////////////
+Rules::Rules ()
 {
-  {"confirmation", "yes"},
-  {"version",      VERSION},
-  {"debug",        "off"},
-  {"verbose",      "on"},
-};
+  // Load the default values.
+  _settings =
+  {
+    {"confirmation", "yes"},
+    {"version",      VERSION},
+    {"debug",        "off"},
+    {"verbose",      "on"},
+  };
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Nested files are supported, with the following construct:
@@ -49,10 +54,8 @@ void Rules::load (const std::string& file, int nest /* = 1 */)
   if (nest > 10)
     throw std::string ("Rules files may only be nested to 10 levels.");
 
-  // First time in, load the default values.
   if (nest == 1)
   {
-    _settings = defaultSettings;
     File originalFile (file);
     _original_file = originalFile._data;
 

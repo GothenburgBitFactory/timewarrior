@@ -35,7 +35,7 @@
 class Rules
 {
 public:
-  Rules () = default;
+  Rules ();
   void load (const std::string&, int next = 1);
   std::string file () const;
 
