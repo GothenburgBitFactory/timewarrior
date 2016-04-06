@@ -51,7 +51,8 @@ int CmdStop (
     log.write ("debug", std::string ("Stopped tracking: ") + latest.serialize ());
 
     // User feedback.
-    std::cout << intervalSummarize (rules, latest);
+    if (! rules.getBoolean ("quiet"))
+      std::cout << intervalSummarize (rules, latest);
 
     // If tags were specified, and after removing those tags, there are still
     // tags remaining, then add a contiguous interval.
@@ -71,14 +72,16 @@ int CmdStop (
       log.write ("debug", std::string ("Started tracking: ") + latest.serialize ());
 
       // User feedback.
-      std::cout << "\n" << intervalSummarize (rules, latest);
+      if (! rules.getBoolean ("quiet"))
+        std::cout << "\n" << intervalSummarize (rules, latest);
     }
   }
   else
   {
     std::string message = "There is no active time tracking.";
-    std::cout << message << "\n";
     log.write ("warning", message);
+    if (! rules.getBoolean ("quiet"))
+      std::cout << message << "\n";
   }
 
   return 0;
