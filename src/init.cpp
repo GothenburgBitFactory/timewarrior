@@ -222,7 +222,7 @@ int dispatchCommand (
     else if (command == "start")       status = CmdStart       (cli, rules, database,             log);
     else if (command == "stop")        status = CmdStop        (cli, rules, database,             log);
     else if (command == "tags")        status = CmdTags        (     rules, database,             log);
-    else if (command == "track")       status = CmdTrack       (                                     );
+    else if (command == "track")       status = CmdTrack       (cli, rules, database,             log);
     else if (command == "undo")        status = CmdUndo        (                                     );
   }
   else

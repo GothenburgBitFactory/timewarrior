@@ -25,10 +25,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <commands.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdTrack ()
+int CmdTrack (
+  CLI& cli,
+  Rules& rules,
+  Database& database,
+  Log& log)
 {
   std::cout << "[track: record an old interval]\n";
 
