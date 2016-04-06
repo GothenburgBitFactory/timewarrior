@@ -111,6 +111,14 @@ A simple extension mechanism allows custom reports to be written and shared.
 Most reports will be external scripts that use the extension API.
 
 
+DOM Access
+----------
+Timewarrior will support a DOM, allowing rules and extensions to access internal
+data.
+
+[TBD]
+
+
 --- Raw Notes ---
 
 - Need syntax to adjust any recorded data.
