@@ -1,0 +1,47 @@
+DOM - Document Object Model
+===========================
+Timewarrior needs DOM support, so that it can operate a 'get' command, and also
+provide data access to rules.
+
+
+Data to be Accessed
+-------------------
+Here are the data accessible via DOM references:
+
+- Configuration
+- Exclusions
+- Command line args in raw form (for rules, not 'get')
+
+
+Syntax
+------
+All DOM references have this form:
+
+  dom.<name>
+
+
+--- Raw Notes ---
+
+- Possible DOM references to support:
+
+  dom.active                      --> 0/1                 Boolean indicator that tracking is active
+  dom.active.tags                 --> 2                   Active tag count
+  dom.active.tag.1                --> 'tag'               Active 1st tag
+  dom.active.start                --> YYYYMMDDTHHMMSSZ    Active start time
+  dom.active.duration             --> PT1H25M8S           Active elapsed
+
+  dom.tracked.year                --> 231                 Quantity this year
+  dom.tracked.quarter             --> 64                  Quantity this quarter
+  dom.tracked.month               --> 21                  Quantity this month
+  dom.tracked.week                --> 6                   Quantity this week
+  dom.tracked.today               --> 2                   Quantity today
+  dom.tracked.today.1             --> {...}               1st interval today JSON
+  dom.tracked.today.1.start       --> YYYYMMDDTHHMMSSZ    1st interval today start
+  dom.tracked.today.1.end         --> YYYYMMDDTÞHMMSSZ    1st interval today end
+  dom.tracked.today.1.tags        --> 1                   1st interval today tag count
+  dom.tracked.today.1.tag.1       --> 'tag1'              1st interval today tag
+  dom.tracked.today.1.duration    --> P1H25M8S            1st interval today duration
+
+  dom.gap.today
+  ...
+
