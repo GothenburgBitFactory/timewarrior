@@ -129,10 +129,9 @@ With a 'config' command, all configuration data will be accessible. The command:
 
   $ timew config name value
 
-Will result in an update to the configuration rule:
+Will result in an update to the configuration file:
 
-  define configuration:
-    name value
+  name = value
 
 Using the '.' character allows the rule to reflect hierarchical configuration
 data:
@@ -158,6 +157,14 @@ Running in debug mode reveals internal details that aid troubleshooting. To run
 in debug mode, add the ':debug' hint to the command line:
 
   $ timew ... :debug
+
+
+[6.3] Configuration: Running without generating output
+------------------------------------------------------
+Running in quiet mode prevents all feedback. This is useful for automation
+scripts. To run un quiet mode, add the ':quiet' hint to the command line:
+
+  $ timew ... :quiet
 
 
 --- Raw Notes ---
