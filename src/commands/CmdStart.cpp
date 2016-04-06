@@ -52,7 +52,8 @@ int CmdStart (
     log.write ("debug", std::string ("Stopped tracking: ") + latest.serialize ());
 
     // User feedback.
-    std::cout << intervalSummarize (rules, latest);
+    if (! rules.getBoolean ("quiet"))
+      std::cout << intervalSummarize (rules, latest);
   }
 
   // Create a new interval.
@@ -69,7 +70,9 @@ int CmdStart (
   log.write ("debug", std::string ("Started tracking: ") + now.serialize ());
 
   // User feedback.
-  std::cout << intervalSummarize (rules, now);
+  if (! rules.getBoolean ("quiet"))
+    std::cout << intervalSummarize (rules, now);
+
   return 0;
 }
 
