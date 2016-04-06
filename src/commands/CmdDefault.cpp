@@ -43,9 +43,7 @@ int CmdDefault (Rules& rules, Database& database)
               << intervalSummarize (rules, database.getLatestInterval ())
               << "\n";
   else
-    std::cout << "\n"
-              << "There is no active time tracking.\n"
-              << "\n";
+    std::cout << "There is no active time tracking.\n";
 
   return 0;
 }
