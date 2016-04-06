@@ -75,6 +75,7 @@ void initializeEntities (CLI& cli)
 
   // Hint entities.
   cli.entity ("hint", ":debug");
+  cli.entity ("hint", ":quiet");
   cli.entity ("hint", ":week");   // TODO Guessing that this is needed.
   cli.entity ("hint", ":fill");
 
@@ -88,10 +89,19 @@ void initializeDataAndRules (
   Rules& rules,
   Log& log)
 {
-  bool debugMode = std::any_of (cli._args.begin (),
-                                cli._args.end (),
-                                [](A2 i){ return i.hasTag ("HINT") && i.attribute ("canonical") == ":debug"; });
-  if (debugMode)
+  // Make common hints available via rules:
+  //   :debug
+  //   :quiet
+  for (auto& arg : cli._args)
+  {
+    if (arg.hasTag ("HINT"))
+    {
+      if (arg.attribute ("canonical") == ":debug") rules.set ("debug", "on");
+      if (arg.attribute ("canonical") == ":quiet") rules.set ("quiet", "on");
+    }
+  }
+
+  if (rules.getBoolean ("debug"))
     std::cout << cli.dump () << "\n";
   else
     log.ignore ("debug");
@@ -149,10 +159,6 @@ void initializeDataAndRules (
   rules.load (configFile._data);
 
   // TODO Provide the exclusions to the database, for use with new files.
-
-  // Debug mode activated by hint.
-  if (debugMode)
-    rules.set ("debug", "on");
 
   // This value is not written out to disk, as there would be no point. Having
   // located the config file, the 'db' location is already known. This is just
