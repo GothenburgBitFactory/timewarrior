@@ -81,6 +81,13 @@ See also 'continue', 'start', 'track'.
 .B timew tags
 Displays all the tags that have been used.
 
+.SH HINTS
+Hints are words on the command line that influence Timewarrior behavior. Many
+commands make use of hints. Supported hints are:
+
+  :quiet         Turns off all feedback. For automation
+  :debug         Runs in debug mode, shows many runtime details
+
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS
 Timewarrior stores its configuration in a file in the user's home directory:
 ~/.timewarrior/timewarrior.cfg.
@@ -99,9 +106,12 @@ this man page.
 .SH FILES
 
 .TP
-~/.timewrc
-User configuration file - see also timewrc(5).  Note that this can be
-overridden on the command line or by the TIMEWRC environment variable.
+~/.timewarrior/timewarrior.cfg
+User configuration file.
+
+.TP
+~/.timewarrior/data/YYYY-MM.data
+Time tracking data files.
 
 .SH "CREDITS & COPYRIGHTS"
 Copyright (C) 2015 \- 2016 P. Beckingham, F. Hernandez.
