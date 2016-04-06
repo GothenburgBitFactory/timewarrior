@@ -32,16 +32,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdDefault (Rules& rules, Database& database)
 {
-  // TODO If there is a default command.
-  //   TODO Run it.
-  // TODO Else.
-
   // Load the most recent interval, summarize and display.
   auto interval = database.getLatestInterval ();
   if (interval.isStarted () && ! interval.isEnded ())
-    std::cout << "\n"
-              << intervalSummarize (rules, database.getLatestInterval ())
-              << "\n";
+    std::cout << intervalSummarize (rules, database.getLatestInterval ());
   else
     std::cout << "There is no active time tracking.\n";
 
