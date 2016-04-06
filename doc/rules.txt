@@ -163,7 +163,7 @@ of the configuration files:
 
   name = value
 
-The hierarchy and 'configuration' rule will suupercede these.
+The hierarchy rule will supercede these.
 
 
 Rule Type: Theme

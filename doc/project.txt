@@ -34,6 +34,8 @@ Non-Goals
 - No explicit multi-user support, although using tags to track individuals is
   possible.
 - There is no hook system as Timewarrior is a data sink, not a data source.
+  That said, there will be rules that can act as hooks, but will be more
+  flexible.
 - No features without a compelling use case.
 
 

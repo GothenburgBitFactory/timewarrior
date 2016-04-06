@@ -277,3 +277,7 @@ associated metadata:
 
   $ timew start tag1 :fill                         inc 9:30am -     # tag
 
+- Need example and handling for people with exclusions that are not based on a
+  seven-day cycle. Example, I have have every other friday off. This should be
+  a supported exclusion, not 26 exceptions.
+
