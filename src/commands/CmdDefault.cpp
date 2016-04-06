@@ -32,12 +32,15 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdDefault (Rules& rules, Database& database)
 {
-  // Load the most recent interval, summarize and display.
-  auto interval = database.getLatestInterval ();
-  if (interval.isStarted () && ! interval.isEnded ())
-    std::cout << intervalSummarize (rules, database.getLatestInterval ());
-  else
-    std::cout << "There is no active time tracking.\n";
+  if (rules.getBoolean ("verbose"))
+  {
+    // Load the most recent interval, summarize and display.
+    auto interval = database.getLatestInterval ();
+    if (interval.isStarted () && ! interval.isEnded ())
+      std::cout << intervalSummarize (rules, database.getLatestInterval ());
+    else
+      std::cout << "There is no active time tracking.\n";
+  }
 
   return 0;
 }
