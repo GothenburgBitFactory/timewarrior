@@ -28,6 +28,7 @@
 #include <commands.h>
 #include <timew.h>
 #include <Interval.h>
+#include <Lexer.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -46,6 +47,8 @@ int CmdStop (
   {
     // Stop it.
     latest.end (Datetime ());
+    database.modifyInterval (latest);
+    log.write ("debug", std::string ("Stopped tracking: ") + latest.serialize ());
 
     // User feedback.
     std::cout << intervalSummarize (rules, latest);
@@ -55,10 +58,7 @@ int CmdStop (
     auto words = cli.getWords ();
     if (words.size ())
       for (auto& word : cli.getWords ())
-        latest.untag (word);
-
-    database.modifyInterval (latest);
-    log.write ("debug", std::string ("Stopped tracking: ") + latest.serialize ());
+        latest.untag (Lexer::dequote (word));
 
     if (words.size () &&
         latest.tags ().size ())
