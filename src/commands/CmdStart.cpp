@@ -70,7 +70,6 @@ int CmdStart (
   log.write ("debug", std::string ("Started tracking: ") + now.serialize ());
 
   // User feedback.
-  std::cout << "# rules verbose " << rules.get ("verbose") << "\n";
   if (rules.getBoolean ("verbose"))
     std::cout << intervalSummarize (rules, now);
 
