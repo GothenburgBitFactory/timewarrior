@@ -36,7 +36,9 @@
 static std::map <std::string, std::string> defaultSettings =
 {
   {"confirmation", "yes"},
-  {"version", VERSION},
+  {"version",      VERSION},
+  {"debug",        "off"},
+  {"quiet",        "off"},
 };
 
 ////////////////////////////////////////////////////////////////////////////////
