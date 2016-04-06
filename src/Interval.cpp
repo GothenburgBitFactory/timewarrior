@@ -217,7 +217,7 @@ std::string Interval::dump () const
       << _end.toEpoch ()
       << "' _tags";
 
-  for (const auto& tag : _tags)
+  for (auto& tag : _tags)
     out << " '" << tag << "'";
 
   out << "\n";

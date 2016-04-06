@@ -152,7 +152,7 @@ void Rules::set (const std::string& key, const std::string& value)
 std::vector <std::string> Rules::all (const std::string& stem) const
 {
   std::vector <std::string> items;
-  for (const auto& it : _settings)
+  for (auto& it : _settings)
     if (stem == "" || it.first.find (stem) == 0)
       items.push_back (it.first);
 
@@ -168,7 +168,7 @@ std::string Rules::dump () const
       << "\n";
 
   out << "  Settings\n";
-  for (const auto& item : _settings)
+  for (auto& item : _settings)
     out << "    " << item.first << "=" << item.second << "\n";
 
   return out.str ();
@@ -256,7 +256,7 @@ void Rules::parse (const std::string& input, int nest /* = 1 */)
         {
           // Extract the words from the 3rd - Nth tuple.
           std::vector <std::string> words;
-          for (const auto& token : std::vector <std::tuple <std::string, Lexer::Type>> (tokens.begin () + 2, tokens.end ()))
+          for (auto& token : std::vector <std::tuple <std::string, Lexer::Type>> (tokens.begin () + 2, tokens.end ()))
             words.push_back (std::get <0> (token));
 
           set (firstWord, join (" ", words));

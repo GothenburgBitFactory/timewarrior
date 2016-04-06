@@ -139,7 +139,7 @@ std::string Database::dump () const
 {
   std::stringstream out;
   out << "Database\n";
-  for (const auto& file : _files)
+  for (auto& file : _files)
     out << "  Datafile: " << file.name ()
         << (file.name () == _current ? " (current)" : "")
         << "\n";

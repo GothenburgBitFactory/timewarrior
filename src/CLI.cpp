@@ -98,12 +98,12 @@ std::string A2::dump () const
 
   // Dump attributes.
   std::string atts;
-  for (const auto& a : _attributes)
+  for (auto& a : _attributes)
     atts += a.first + "='\033[33m" + a.second + "\033[0m' ";
 
   // Dump tags.
   std::string tags;
-  for (const auto& tag : _tags)
+  for (auto& tag : _tags)
   {
          if (tag == "BINARY")        tags += "\033[1;37;44m"           + tag + "\033[0m ";
     else if (tag == "CMD")           tags += "\033[1;37;46m"           + tag + "\033[0m ";
@@ -233,7 +233,7 @@ void CLI::analyze ()
 std::vector <std::string> CLI::getWords () const
 {
   std::vector <std::string> words;
-  for (const auto& a : _args)
+  for (auto& a : _args)
     if (! a.hasTag ("BINARY") &&
         ! a.hasTag ("CMD")    &&
         ! a.hasTag ("HINT"))
@@ -287,7 +287,7 @@ std::string CLI::getBinary () const
 ////////////////////////////////////////////////////////////////////////////////
 std::string CLI::getCommand () const
 {
-  for (const auto& a : _args)
+  for (auto& a : _args)
     if (a.hasTag ("CMD"))
       return a.attribute ("canonical");
 
@@ -316,7 +316,7 @@ std::string CLI::dump (const std::string& title) const
   if (_args.size ())
   {
     out << "  _args\n";
-    for (const auto& a : _args)
+    for (auto& a : _args)
       out << "    " << a.dump () << "\n";
   }
 

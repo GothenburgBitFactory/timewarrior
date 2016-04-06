@@ -75,7 +75,7 @@ std::string Extensions::dump () const
   std::stringstream out;
 
   out << "Extensions\n";
-  for (const auto& script : _scripts)
+  for (auto& script : _scripts)
     out << "  " << script << "\n";
 
   return out.str ();
