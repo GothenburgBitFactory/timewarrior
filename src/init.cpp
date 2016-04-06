@@ -90,14 +90,14 @@ void initializeDataAndRules (
   Log& log)
 {
   // Make common hints available via rules:
-  //   :debug
-  //   :quiet
+  //   :debug --> debug
+  //   :quiet --> verbose
   for (auto& arg : cli._args)
   {
     if (arg.hasTag ("HINT"))
     {
       if (arg.attribute ("canonical") == ":debug") rules.set ("debug", "on");
-      if (arg.attribute ("canonical") == ":quiet") rules.set ("quiet", "on");
+      if (arg.attribute ("canonical") == ":quiet") rules.set ("verbose", "off");
     }
   }
 
