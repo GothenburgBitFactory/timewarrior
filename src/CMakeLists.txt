@@ -26,7 +26,6 @@ set (libshared_SRCS libshared/src/Args.cpp          libshared/src/Args.h
                     libshared/src/Duration.cpp      libshared/src/Duration.h
                     libshared/src/FS.cpp            libshared/src/FS.h
                     libshared/src/JSON.cpp          libshared/src/JSON.h
-                    libshared/src/Log.cpp           libshared/src/Log.h
                     libshared/src/Msg.cpp           libshared/src/Msg.h
                     libshared/src/Pig.cpp           libshared/src/Pig.h
                     libshared/src/RX.cpp            libshared/src/RX.h

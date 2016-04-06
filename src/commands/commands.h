@@ -44,7 +44,6 @@ int CmdExtensions  (      Rules&,            Extensions&      );
 int CmdGaps        (                                          );
 int CmdHelpUsage   (                                          );
 int CmdHelp        (CLI&,                                 Log&);
-int CmdLog         (CLI&,                                 Log&);
 int CmdImport      (                                          );
 int CmdReport      (CLI&, Rules&, Database&, Extensions&, Log&);
 int CmdStart       (CLI&, Rules&, Database&,              Log&);

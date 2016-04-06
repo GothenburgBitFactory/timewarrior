@@ -38,7 +38,6 @@ int CmdHelpUsage ()
             << "       timew diagnostics\n"
             << "       timew export\n"
             << "       timew extensions\n"
-            << "       timew log [<message>]\n"
             << "       timew start [<tag> ...]\n"
             << "       timew stop\n"
             << "       timew tags\n"
@@ -137,21 +136,6 @@ int CmdHelp (CLI& cli, Log& log)
     // TODO gaps
     // TODO help
     // TODO import
-
-    // Ruler                 1         2         3         4         5         6         7         8
-    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
-    else if (words[0] == "log")
-      std::cout << "\n"
-                << "Syntax: timew log [<message>]\n"
-                << "\n"
-                << "Writes the info <message> to the Timewarrior log file. The <message> may be\n"
-                << "multiple words, or a quoted string. If <message> is ommitted, writes a cut\n"
-                << "marker ('-------- 8< --------') line to the log file.\n"
-                << "\n"
-                << "Note: Your log file is found here:\n"
-                << "  " << log.file () << "\n"
-                << "\n";
-
     // TODO report
 
     // Ruler                 1         2         3         4         5         6         7         8
