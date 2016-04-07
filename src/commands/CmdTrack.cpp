@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <commands.h>
+#include <timew.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -34,12 +35,54 @@ int CmdTrack (
   Rules& rules,
   Database& database)
 {
-  std::cout << "[track: record an old interval]\n";
-
   // TODO Parse interval.
   // TODO Parse tags.
+  std::string start {""};
+  std::string end   {""};
+  std::vector <std::string> tags;
+  for (auto& arg : cli._args)
+  {
+    if (arg.hasTag ("BINARY") ||
+        arg.hasTag ("CMD"))
+      continue;
+
+    if (arg.hasTag ("HINT"))
+    {
+      expandIntervalHint (arg.attribute ("canonical"), start, end);
+    }
+    else if (arg._lextype == Lexer::Type::date)
+    {
+      if (start == "")
+        start = arg.attribute ("raw");
+      else if (end == "")
+        end = arg.attribute ("raw");
+
+      // TODO Is this workable?  Using excess date fields as tags. Might just
+      //      be a coincidence.
+      else
+        tags.push_back (arg.attribute ("raw"));
+    }
+    else
+    {
+      tags.push_back (arg.attribute ("raw"));
+    }
+  }
+
   // TODO Add new interval.
-  // TODO Summarize.
+  Interval tracked;
+  tracked.start (Datetime (start));
+  tracked.end (Datetime (end));
+  for (auto& tag : tags)
+    tracked.tag (tag);
+
+  // TODO Apply exclusions.
+
+  // Update database.
+  database.addInterval (tracked);
+
+  // User feedback.
+  if (rules.getBoolean ("verbose"))
+    std::cout << intervalSummarize (rules, tracked);
 
   return 0;
 }
