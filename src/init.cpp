@@ -162,8 +162,7 @@ void initializeDataAndRules (
 ////////////////////////////////////////////////////////////////////////////////
 void initializeExtensions (
   Rules& rules,
-  Extensions& extensions,
-  Log& log)
+  Extensions& extensions)
 {
   Directory extDir (rules.get ("temp.db"));
   extDir += "extensions";
