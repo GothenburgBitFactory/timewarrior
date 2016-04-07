@@ -74,7 +74,10 @@ void initializeEntities (CLI& cli)
   // Hint entities.
   cli.entity ("hint", ":debug");
   cli.entity ("hint", ":quiet");
-  cli.entity ("hint", ":week");   // TODO Guessing that this is needed.
+  cli.entity ("hint", ":week");
+  cli.entity ("hint", ":month");
+  cli.entity ("hint", ":quarter");
+  cli.entity ("hint", ":year");
   cli.entity ("hint", ":fill");
 
   // TODO Extension names.
