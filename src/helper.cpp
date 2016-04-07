@@ -30,7 +30,7 @@
 #include <sstream>
 #include <iomanip>
 #include <map>
-#include <tuple>
+#include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////
 Color tagColor (const Rules& rules, const std::string& tag)
@@ -90,19 +90,18 @@ void expandIntervalHint (
   std::string& start,
   std::string& end)
 {
-  static std::map <std::string, std::tuple <std::string, std::string>> hints
+  static std::map <std::string, std::vector <std::string>> hints
   {
-    {":week",    std::make_tuple ("socw", "eocw")},
-    {":month",   std::make_tuple ("socw", "eocw")},
-    {":quarter", std::make_tuple ("socw", "eocw")},
-    {":year",    std::make_tuple ("socw", "eocw")},
+    {":week",    {"socw", "eocw"}},
+    {":month",   {"socw", "eocw"}},
+    {":quarter", {"socw", "eocw"}},
+    {":year",    {"socw", "eocw"}},
   };
 
-  if (hints.find (hint) == hints.end ())
   if (hints.find (hint) != hints.end ())
   {
-    start = std::get <0> (hints[hint]);
-    end   = std::get <1> (hints[hint]);
+    start = hints[hint][0];
+    end   = hints[hint][1];
   }
 }
 
