@@ -77,7 +77,7 @@ int main (int argc, const char** argv)
     // Prepare the database, but do not read data.
     Database database;
     Rules rules;
-    initializeDataAndRules (cli, database, rules, log);
+    initializeDataAndRules (cli, database, rules);
 
     // Load extension script info.
     Extensions extensions;
