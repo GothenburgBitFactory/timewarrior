@@ -42,7 +42,7 @@ void Datafile::initialize (const std::string& name)
 
   // Construct two dates that
   _day1 = Datetime (month, 1,                                   year,  0 , 0,  0);
-  _dayN = Datetime (month, Datetime::daysInMonth (year, month), year, 23, 59, 59);
+  _dayN = Datetime (month, Datetime::daysInMonth (month, year), year, 23, 59, 59);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -198,7 +198,15 @@ void Datafile::load_intervals ()
 
     // "exc ..."
     else if (line[0] == 'e')
-      ;  // TODO Exclusions.
+    {
+/*
+      Exclusion e;
+      e.initialize (line);
+      _intervals.push_back (i);
+*/
+    }
+
+    // ?
     else
     {
       // TODO Ignore blank lines?
