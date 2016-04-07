@@ -25,7 +25,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
-#include <Log.h>
 #include <format.h>
 #include <timew.h>
 #include <algorithm>
@@ -62,7 +61,7 @@ std::string describeFile (File& file)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdDiagnostics (Rules& rules, Database& database, Extensions& extensions, Log& log)
+int CmdDiagnostics (Rules& rules, Database& database, Extensions& extensions)
 {
   std::stringstream out;
   out << "\n"
@@ -214,7 +213,6 @@ int CmdDiagnostics (Rules& rules, Database& database, Extensions& extensions, Lo
 
   out << "\n";
   std::cout << out.str ();
-  log.write ("info", out.str ());
 
   return 0;
 }
