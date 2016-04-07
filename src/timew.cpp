@@ -25,7 +25,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
-#include <Log.h>
 #include <CLI.h>
 #include <Database.h>
 #include <Rules.h>
@@ -44,13 +43,6 @@ int main (int argc, const char** argv)
   if (lightweightVersionCheck (argc, argv))
     return status;
 
-  // The log is needed early, in order to capture as much as possible, but will
-  // only be given a file name once the rules are loaded. The log therefore
-  // buffers the messages until it has a file name to write to.
-  Log log;
-  // TODO Need a simpler way to call this.
-//  CmdLog ({"timew", "log", "mark"}, log);
-
   // Add entities so that command line tokens such as 'help' are recognized as
   // commands.
   CLI cli;
@@ -67,7 +59,6 @@ int main (int argc, const char** argv)
 
     commandLine += quoteIfNeeded (argv[i]);
   }
-  log.write ("command", commandLine);
 
   try
   {
@@ -93,7 +84,6 @@ int main (int argc, const char** argv)
   catch (const std::string& error)
   {
     std::cerr << error << "\n";
-    log.write ("error", error);
     status = -1;
   }
 
@@ -101,7 +91,6 @@ int main (int argc, const char** argv)
   {
     auto message = std::string ("Memory allocation failed: ") + error.what ();
     std::cerr << "Error: " << message << "\n";
-    log.write ("error", message);
     status = -3;
   }
 
@@ -109,7 +98,6 @@ int main (int argc, const char** argv)
   {
     auto message = "Unknown problem, please report.";
     std::cerr << "Error: " << message << "\n";
-    log.write ("error", message);
     status = -2;
   }
 

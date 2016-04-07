@@ -29,7 +29,6 @@
 #include <Database.h>
 #include <Rules.h>
 #include <Extensions.h>
-#include <Log.h>
 #include <shared.h>
 #include <format.h>
 #include <FS.h>
