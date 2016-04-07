@@ -34,8 +34,7 @@
 int CmdStart (
   CLI& cli,
   Rules& rules,
-  Database& database,
-  Log& log)
+  Database& database)
 {
   // Load the most recent interval.
   auto latest = database.getLatestInterval ();
@@ -49,7 +48,6 @@ int CmdStart (
 
     // Update database.
     database.modifyInterval (latest);
-    log.write ("debug", std::string ("Stopped tracking: ") + latest.serialize ());
 
     // User feedback.
     if (rules.getBoolean ("verbose"))
@@ -67,7 +65,6 @@ int CmdStart (
 
   // Update database.
   database.addInterval (now);
-  log.write ("debug", std::string ("Started tracking: ") + now.serialize ());
 
   // User feedback.
   if (rules.getBoolean ("verbose"))
