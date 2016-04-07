@@ -216,6 +216,7 @@ int dispatchCommand (
     else if (command == "gaps")        status = CmdGaps        (                                );
     else if (command == "help")        status = CmdHelp        (cli                             );
     else if (command == "import")      status = CmdImport      (                                );
+    else if (command == "report")      status = CmdReport      (cli, rules, database, extensions);
   }
   else
   {

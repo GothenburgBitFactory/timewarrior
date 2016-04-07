@@ -67,8 +67,7 @@ int CmdReport (
   CLI& cli,
   Rules& rules,
   Database& database,
-  Extensions& extensions,
-  Log& log)
+  Extensions& extensions)
 {
   // TODO Identify report.
   auto words = cli.getWords ();
