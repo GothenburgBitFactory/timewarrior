@@ -32,15 +32,14 @@
 #include <Rules.h>
 #include <Extensions.h>
 #include <Interval.h>
-#include <Log.h>
 #include <Color.h>
 
 // init.cpp
 bool lightweightVersionCheck (int, const char**);
 void initializeEntities (CLI&);
-int dispatchCommand (CLI&, Database&, Rules&, Extensions&, Log&);
 void initializeDataAndRules (CLI&, Database&, Rules&);
 void initializeExtensions (Rules&, Extensions&);
+int dispatchCommand (CLI&, Database&, Rules&, Extensions&);
 
 // helper.cpp
 Color tagColor (const Rules&, const std::string&);

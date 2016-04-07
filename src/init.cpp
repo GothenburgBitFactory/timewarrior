@@ -175,8 +175,7 @@ int dispatchCommand (
   CLI& cli,
   Database& database,
   Rules& rules,
-  Extensions& extensions,
-  Log& log)
+  Extensions& extensions)
 {
   int status {0};
 

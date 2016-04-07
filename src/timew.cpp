@@ -84,7 +84,7 @@ int main (int argc, const char** argv)
     initializeExtensions (rules, extensions);
 
     // Dispatch to commands.
-    status = dispatchCommand (cli, database, rules, extensions, log);
+    status = dispatchCommand (cli, database, rules, extensions);
 
     // Save any outstanding changes.
     database.commit ();
