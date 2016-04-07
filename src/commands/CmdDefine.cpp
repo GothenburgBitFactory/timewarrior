@@ -46,8 +46,7 @@
 int CmdDefine (
   CLI& cli,
   Rules& rules,
-  Database& database,
-  Log& log)
+  Database& database)
 {
   auto words = cli.getWords ();
   if (words.size () >= 1)

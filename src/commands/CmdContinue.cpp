@@ -32,8 +32,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdContinue (
   Rules& rules,
-  Database& database,
-  Log& log)
+  Database& database)
 {
   // Load the most recent interval.
   auto latest = database.getLatestInterval ();
@@ -48,16 +47,13 @@ int CmdContinue (
 
     // Update database.
     database.addInterval (latest);
-    log.write ("debug", std::string ("Continued tracking: ") + latest.serialize ());
 
     // User feedback.
     std::cout << intervalSummarize (rules, latest);
   }
   else
   {
-    std::string message = "There is already active tracking.";
-    std::cout << message << "\n";
-    log.write ("warning", message);
+    std::cout << "There is already active tracking.\n";
   }
 
   return 0;

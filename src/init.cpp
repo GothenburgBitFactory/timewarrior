@@ -206,10 +206,6 @@ int dispatchCommand (
   {
     // These signatures are æxpected to be all different, therefore no
     // command to fn mapping.
-         if (command == "clear")       status = CmdClear       (                                     );
-    else if (command == "config")      status = CmdConfig      (                                     );
-    else if (command == "continue")    status = CmdContinue    (     rules, database,             log);
-    else if (command == "define")      status = CmdDefine      (cli, rules, database,             log);
     else if (command == "diagnostics") status = CmdDiagnostics (     rules, database, extensions, log);
     else if (command == "export")      status = CmdExport      (cli, rules, database,             log);
     else if (command == "extensions")  status = CmdExtensions  (     rules,           extensions     );
@@ -222,6 +218,10 @@ int dispatchCommand (
     else if (command == "tags")        status = CmdTags        (     rules, database,             log);
     else if (command == "track")       status = CmdTrack       (cli, rules, database,             log);
     else if (command == "undo")        status = CmdUndo        (                                     );
+         if (command == "clear")       status = CmdClear       (                                );
+    else if (command == "config")      status = CmdConfig      (                                );
+    else if (command == "continue")    status = CmdContinue    (     rules, database            );
+    else if (command == "define")      status = CmdDefine      (cli, rules, database            );
   }
   else
   {
