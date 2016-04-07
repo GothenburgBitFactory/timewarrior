@@ -220,6 +220,8 @@ int dispatchCommand (
     else if (command == "start")       status = CmdStart       (cli, rules, database            );
     else if (command == "stop")        status = CmdStop        (cli, rules, database            );
     else if (command == "tags")        status = CmdTags        (     rules, database            );
+    else if (command == "track")       status = CmdTrack       (cli, rules, database            );
+    else if (command == "undo")        status = CmdUndo        (                                );
   }
   else
   {

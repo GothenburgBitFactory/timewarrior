@@ -31,10 +31,7 @@
 #include <Rules.h>
 #include <Database.h>
 #include <Extensions.h>
-#include <Log.h>
 
-int CmdTrack       (CLI&, Rules&, Database&,              Log&);
-int CmdUndo        (                                          );
 int CmdClear       (                                    );
 int CmdConfig      (                                    );
 int CmdContinue    (      Rules&, Database&             );
@@ -51,5 +48,7 @@ int CmdReport      (CLI&, Rules&, Database&, Extensions&);
 int CmdStart       (CLI&, Rules&, Database&             );
 int CmdStop        (CLI&, Rules&, Database&             );
 int CmdTags        (      Rules&, Database&             );
+int CmdTrack       (CLI&, Rules&, Database&             );
+int CmdUndo        (                                    );
 
 #endif

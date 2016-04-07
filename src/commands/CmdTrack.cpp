@@ -32,8 +32,7 @@
 int CmdTrack (
   CLI& cli,
   Rules& rules,
-  Database& database,
-  Log& log)
+  Database& database)
 {
   std::cout << "[track: record an old interval]\n";
 
