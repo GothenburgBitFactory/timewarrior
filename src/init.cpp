@@ -218,6 +218,7 @@ int dispatchCommand (
     else if (command == "import")      status = CmdImport      (                                );
     else if (command == "report")      status = CmdReport      (cli, rules, database, extensions);
     else if (command == "start")       status = CmdStart       (cli, rules, database            );
+    else if (command == "stop")        status = CmdStop        (cli, rules, database            );
   }
   else
   {

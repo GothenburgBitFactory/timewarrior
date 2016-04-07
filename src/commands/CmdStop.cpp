@@ -35,8 +35,7 @@
 int CmdStop (
   CLI& cli,
   Rules& rules,
-  Database& database,
-  Log& log)
+  Database& database)
 {
   // Load the most recent interval.
   auto latest = database.getLatestInterval ();
@@ -48,7 +47,6 @@ int CmdStop (
     // Stop it.
     latest.end (Datetime ());
     database.modifyInterval (latest);
-    log.write ("debug", std::string ("Stopped tracking: ") + latest.serialize ());
 
     // User feedback.
     if (rules.getBoolean ("verbose"))
@@ -69,7 +67,6 @@ int CmdStop (
       latest.end ({0});
 
       database.addInterval (latest);
-      log.write ("debug", std::string ("Started tracking: ") + latest.serialize ());
 
       // User feedback.
       if (rules.getBoolean ("verbose"))
@@ -79,7 +76,6 @@ int CmdStop (
   else
   {
     std::string message = "There is no active time tracking.";
-    log.write ("warning", message);
     if (rules.getBoolean ("verbose"))
       std::cout << message << "\n";
   }
