@@ -38,7 +38,7 @@ Exclusions
 Exclusions are stored as configuration, and there are several commands that
 allow easy manipulation of this. Whenever an exclusion changes, the set of all
 exclusions are written to the data file. This is because all subsequent
-inclusions are to be resolved against the active set of exlcusions.
+inclusions are to be resolved against the active set of exclusions.
 
 
 Inclusions
@@ -70,23 +70,22 @@ An example file looks like this:
   inc 2016-02-28T08:00:00 - 2016-02-28T12:00:00 # Upgrade Planning
   inc 2016-02-28T13:00:00                       # Upgrade Presentation "ABCD Inc"
 
-White space is ignored. Here we see a sect of exlcusions that define a work week
+White space is ignored. Here we see a sect of exclusions that define a work week
 and a two inclusions, the first of which represents a four hour block of time
 with two tags 'Upgrade' and 'Planning'. The second inclusion is open ended,
 having only a start time (1pm), but three tags 'Upgrade', 'Presentation' and
 'ABCD Inc'. The third tag is a quoted string because of the embedded space.
 
 An open-ended inclusion like this means that the tracking continues, but the
-exlcusions prevent an excess time buildup of the 63 hours that compries the
+exclusions prevent an excess time buildup of the 63 hours that comprise the
 weekend (Friday 5:30pm until Monday 8:30am).
 
 
 Data File Names
 ---------------
-The data file names will have the year and month embedded, which acts as a
-heuristic for filtering, keeps the data files small and therefore quicker to
-manipulate, and eliminates the need for any sophisticated archiving. For
-example:
+The data file names will have the year and month numbers, which keeps the data
+files small and therefore quicker to manipulate, eliminating the need for any
+sophisticated archiving. For example:
 
   ~/.timewarrior/data/2016-02.data
   ~/.timewarrior/data/2016-03.data
@@ -100,4 +99,6 @@ The undo stack will be stored as:
 
 
 --- Raw Notes ---
+
+- Recurring inclusions: meetings
 

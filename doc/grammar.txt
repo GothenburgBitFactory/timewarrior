@@ -2,24 +2,15 @@ CLI Syntax
 ----------
 The CLI shall have a well-defined and unambiguous grammar.
 
+    timew
     timew start|stop [<tagset>]
     timew track <interval> [<tagset>]
     timew clear <tagset>|<interval>
     timew continue
-    timew
 
-    timew [<filter>] report <report>
+    timew report <report> [<filter>]
 
-    timew define day <day> <start> - <end> [, <start> - <end> ...]
-    timew define day on|off <date>
-
-    timew define tag <tag> description <string>
-    timew define tag <tag> start|end <date>
-    timew define tag <tag> budget <number> <units> per <unit>
-    timew define tag <tag> budget <number> <units> total
-    timew define tag <tag> overlap
-    timew define tag <tag> color <color>
-
+    timew config [<name> [<value>]]
     timew undo
 
     timew tags [<filter>]

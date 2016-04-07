@@ -82,7 +82,7 @@ Commands
 --------
 The command set will include:
 
-  define         Modify configuration
+  config         Modify configuration
   track          Record tracked time
   report         Run a report
   undo           Undo a change

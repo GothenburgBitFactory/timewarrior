@@ -74,31 +74,7 @@ There are rules that will serve as hooks:
 Rule Type: Exclusions
 ---------------------
 Because exclusions are resolved at run time, and only when needed, they should
-be stored in a form very close to the command line syntax, with no expansion.
-For example:
-
-  $ timew define monday    8am - 12pm, 12:45pm - 5:30pm
-  $ timew define tuesday   8am - 12pm, 12:45pm - 6:30pm
-  $ timew define wednesday 8am - 12pm, 1:30pm - 5:30pm
-  $ timew define thursday  8am - 12pm, 12:45pm - 5:30pm
-  $ timew define friday    8am - 12pm, 12:45pm - 5:30pm
-
-Will be stored in a rule, whose purpose is to return a set of exclusion
-intervals:
-
-  define exclusions:
-    monday    = 8:00:00-12:00:00 12:45:00-17:30:00
-    tuesday   = 8:00:00-12:00:00 12:45:00-18:30:00
-    wednesday = 8:00:00-12:00:00 13:30:00-17:30:00
-    thursday  = 8:00:00-12:00:00 12:45:00-17:30:00
-    friday    = 8:00:00-12:00:00 12:45:00-17:30:00
-
-Additional exclusions include:
-
-  $ timew define day on 2016-01-02
-  $ timew define day off 2016-01-01
-
-Yielding:
+be stored in a readily-interpreted form:
 
   define exclusions:
     monday    = 8:00:00-12:00:00 12:45:00-17:30:00
@@ -107,7 +83,7 @@ Yielding:
     thursday  = 8:00:00-12:00:00 12:45:00-17:30:00
     friday    = 8:00:00-12:00:00 12:45:00-17:30:00
     days:
-      2016_01_01 = On
+      2016_01_01 = Working
       2016_01_02 = Off
 
 If you want to track your lunch breaks, then you would make a tag for it, and

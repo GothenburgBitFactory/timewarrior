@@ -53,24 +53,13 @@ If 'tag1' has a defined color, it is used here to color the 'tag1' string.
 There are several time-based default reports which summaries tracked time over
 preset periods:
 
-  $ timew report day
-  $ timew report week
-  $ timew report month
-  $ timew report quarter
-  $ timew report year
-  $ timew report
-
-
-[3.1] Exclusions: Work Week
---------------------------
-
-  $ timew define day monday    8am - 12pm, 12:45pm - 5:30pm
-  $ timew define day tuesday   8am - 12pm, 12:45pm - 6:30pm
-  $ timew define day wednesday 8am - 12pm, 1:30pm - 5:30pm
-  $ timew define day thursday  8am - 12pm, 12:45pm - 5:30pm
-  $ timew define day friday    8am - 12pm, 12:45pm - 5:30pm
-  $ timew define day on 2016-01-02
-  $ timew define day off 2016-01-01
+  $ timew report summary :day
+  $ timew report summary :week
+  $ timew report summary :month
+  $ timew report summary :quarter
+  $ timew report summary :year
+  $ timew report summary <from> - <to>
+  $ timew report summary
 
 
 [5.1] Fill: Backfill
@@ -141,13 +130,12 @@ data:
 
 Will construct the rule like this:
 
-  define configuration:
-    one:
-      two:
-        three = four
-        five  = six
+  one:
+    two:
+      three = four
+      five  = six
 
-The process of converting this rule structure to 'one.two.three four' is called
+The process of converting this structure to 'one.two.three four' is called
 normalizing.
 
 
@@ -224,13 +212,13 @@ The above examples simply use ad-hoc tags, which is an undefined tag. They are
 simply used as tags, and have no metadata. Defining a tag allows it to have
 associated metadata:
 
-  $ timew define tag "tag1"
-  $ timew define tag "tag1" description "Description of tag1"
-  $ timew define tag "tag1" start 2016-01-01
-  $ timew define tag "tag1" end 2016-06-30
-  $ timew define tag "tag1" budget 20 hours per week
-  $ timew define tag "tag1" budget 400 hours total
-  $ timew define tag "tag1" overlap
+  $ timew config tag "tag1"
+  $ timew config tag "tag1" description "Description of tag1"
+  $ timew config tag "tag1" start 2016-01-01
+  $ timew config tag "tag1" end 2016-06-30
+  $ timew config tag "tag1" budget 20 hours per week
+  $ timew config tag "tag1" budget 400 hours total
+  $ timew config tag "tag1" overlap
 
 - Need to break all these out into separate sections, where each is discussed in
   sufficient detail to then generate user docs and code.
