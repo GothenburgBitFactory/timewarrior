@@ -92,10 +92,10 @@ void expandIntervalHint (
 {
   static std::map <std::string, std::tuple <std::string, std::string>> hints
   {
-    {":week",    {"socw", "eocw"}},
-    {":month",   {"socw", "eocw"}},
-    {":quarter", {"socw", "eocw"}},
-    {":year",    {"socw", "eocw"}},
+    {":week",    std::make_tuple ("socw", "eocw")},
+    {":month",   std::make_tuple ("socw", "eocw")},
+    {":quarter", std::make_tuple ("socw", "eocw")},
+    {":year",    std::make_tuple ("socw", "eocw")},
   };
 
   if (hints.find (hint) == hints.end ())
