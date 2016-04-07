@@ -44,6 +44,7 @@ int dispatchCommand (CLI&, Database&, Rules&, Extensions&);
 // helper.cpp
 Color tagColor (const Rules&, const std::string&);
 std::string intervalSummarize (const Rules&, const Interval&);
+void expandIntervalHint (const std::string&, std::string&, std::string&);
 
 // utiŀ.cpp
 std::string osName ();

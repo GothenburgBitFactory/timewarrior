@@ -29,6 +29,8 @@
 #include <Duration.h>
 #include <sstream>
 #include <iomanip>
+#include <map>
+#include <tuple>
 
 ////////////////////////////////////////////////////////////////////////////////
 Color tagColor (const Rules& rules, const std::string& tag)
@@ -80,6 +82,28 @@ std::string intervalSummarize (const Rules& rules, const Interval& interval)
   }
 
   return out.str ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void expandIntervalHint (
+  const std::string& hint,
+  std::string& start,
+  std::string& end)
+{
+  static std::map <std::string, std::tuple <std::string, std::string>> hints
+  {
+    {":week",    {"socw", "eocw"}},
+    {":month",   {"socw", "eocw"}},
+    {":quarter", {"socw", "eocw"}},
+    {":year",    {"socw", "eocw"}},
+  };
+
+  if (hints.find (hint) == hints.end ())
+  if (hints.find (hint) != hints.end ())
+  {
+    start = std::get <0> (hints[hint]);
+    end   = std::get <1> (hints[hint]);
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
