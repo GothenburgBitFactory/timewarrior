@@ -32,8 +32,7 @@
 int CmdExport (
   CLI& cli,
   Rules& rules,
-  Database& database,
-  Log& log)
+  Database& database)
 {
   // Load all data.
   auto intervals = database.getAllIntervals ();
