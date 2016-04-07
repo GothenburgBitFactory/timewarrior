@@ -33,11 +33,6 @@
 #include <Extensions.h>
 #include <Log.h>
 
-int CmdExtensions  (      Rules&,            Extensions&      );
-int CmdGaps        (                                          );
-int CmdHelpUsage   (                                          );
-int CmdHelp        (CLI&,                                 Log&);
-int CmdImport      (                                          );
 int CmdReport      (CLI&, Rules&, Database&, Extensions&, Log&);
 int CmdStart       (CLI&, Rules&, Database&,              Log&);
 int CmdStop        (CLI&, Rules&, Database&,              Log&);
@@ -51,5 +46,10 @@ int CmdDefault     (      Rules&, Database&             );
 int CmdDefine      (CLI&, Rules&, Database&             );
 int CmdDiagnostics (      Rules&, Database&, Extensions&);
 int CmdExport      (CLI&, Rules&, Database&             );
+int CmdExtensions  (      Rules&,            Extensions&);
+int CmdGaps        (                                    );
+int CmdHelpUsage   (                                    );
+int CmdHelp        (CLI&                                );
+int CmdImport      (                                    );
 
 #endif

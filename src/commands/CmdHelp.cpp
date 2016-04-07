@@ -69,7 +69,7 @@ int CmdHelpUsage ()
 //
 // Strict 80-character limit.
 // Provide examples where appropriate - enough to cover all uses.
-int CmdHelp (CLI& cli, Log& log)
+int CmdHelp (CLI& cli)
 {
   auto words = cli.getWords ();
   if (words.size ())

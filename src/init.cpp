@@ -206,22 +206,16 @@ int dispatchCommand (
   {
     // These signatures are æxpected to be all different, therefore no
     // command to fn mapping.
-    else if (command == "extensions")  status = CmdExtensions  (     rules,           extensions     );
-    else if (command == "gaps")        status = CmdGaps        (                                     );
-    else if (command == "help")        status = CmdHelp        (cli,                              log);
-    else if (command == "import")      status = CmdImport      (                                     );
-    else if (command == "report")      status = CmdReport      (cli, rules, database, extensions, log);
-    else if (command == "start")       status = CmdStart       (cli, rules, database,             log);
-    else if (command == "stop")        status = CmdStop        (cli, rules, database,             log);
-    else if (command == "tags")        status = CmdTags        (     rules, database,             log);
-    else if (command == "track")       status = CmdTrack       (cli, rules, database,             log);
-    else if (command == "undo")        status = CmdUndo        (                                     );
          if (command == "clear")       status = CmdClear       (                                );
     else if (command == "config")      status = CmdConfig      (                                );
     else if (command == "continue")    status = CmdContinue    (     rules, database            );
     else if (command == "define")      status = CmdDefine      (cli, rules, database            );
     else if (command == "diagnostics") status = CmdDiagnostics (     rules, database, extensions);
     else if (command == "export")      status = CmdExport      (cli, rules, database            );
+    else if (command == "extensions")  status = CmdExtensions  (     rules,           extensions);
+    else if (command == "gaps")        status = CmdGaps        (                                );
+    else if (command == "help")        status = CmdHelp        (cli                             );
+    else if (command == "import")      status = CmdImport      (                                );
   }
   else
   {
