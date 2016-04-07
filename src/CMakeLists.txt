@@ -11,6 +11,7 @@ set (timew_SRCS CLI.cpp        CLI.h
                 Datafile.cpp   Datafile.h
                 Exclusion.cpp  Exclusion.h
                 Extensions.cpp Extensions.h
+                Filter.cpp     Filter.h
                 Interval.cpp   Interval.h
                 Lexer.cpp      Lexer.h
                 Rules.cpp      Rules.h
