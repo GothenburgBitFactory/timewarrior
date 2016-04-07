@@ -66,7 +66,21 @@ std::string Composite::str (bool overlay) const
   // TODO Find the longest string.
   // TODO Create a vector of ints the same length, where each int is the index.
 
+/*
+  Start with an empty temp string.
+  Start with a vector of int.
 
+  for each layer:
+    place layer string into temp string
+    make sure the vector is the same length, extending if necessary
+    mark vector with the index of the layer, for every byte in temp, using -1
+      for unoccupied space
+
+  for each byte in temp string
+    if vector != -1
+      emit color if different from previous
+    emit byte
+*/
 
   return "";
 }
