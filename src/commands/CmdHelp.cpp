@@ -45,7 +45,6 @@ int CmdHelpUsage ()
 
   // TODO clear
   // TODO config
-  // TODO define
   // TODO gaps
   // TODO help
   // TODO import
@@ -93,7 +92,6 @@ int CmdHelp (CLI& cli)
                 << "\n"
                 << "See also 'start', 'stop'.\n"
                 << "\n";
-    // TODO define
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890

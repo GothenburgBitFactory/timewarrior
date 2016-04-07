@@ -190,7 +190,6 @@ int dispatchCommand (
          if (command == "clear")       status = CmdClear       (                                );
     else if (command == "config")      status = CmdConfig      (                                );
     else if (command == "continue")    status = CmdContinue    (     rules, database            );
-    else if (command == "define")      status = CmdDefine      (cli, rules, database            );
     else if (command == "diagnostics") status = CmdDiagnostics (     rules, database, extensions);
     else if (command == "export")      status = CmdExport      (cli, rules, database            );
     else if (command == "extensions")  status = CmdExtensions  (     rules,           extensions);

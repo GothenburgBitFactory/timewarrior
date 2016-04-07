@@ -9,7 +9,6 @@ set (commands_SRCS CmdClear.cpp
                    CmdConfig.cpp
                    CmdContinue.cpp
                    CmdDefault.cpp
-                   CmdDefine.cpp
                    CmdDiagnostics.cpp
                    CmdExport.cpp
                    CmdExtensions.cpp
