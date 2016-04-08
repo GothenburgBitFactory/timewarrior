@@ -35,44 +35,14 @@ int CmdTrack (
   Rules& rules,
   Database& database)
 {
-  // TODO Parse interval.
-  // TODO Parse tags.
-  std::string start {""};
-  std::string end   {""};
-  std::vector <std::string> tags;
-  for (auto& arg : cli._args)
-  {
-    if (arg.hasTag ("BINARY") ||
-        arg.hasTag ("CMD"))
-      continue;
-
-    if (arg.hasTag ("HINT"))
-    {
-      expandIntervalHint (arg.attribute ("canonical"), start, end);
-    }
-    else if (arg._lextype == Lexer::Type::date)
-    {
-      if (start == "")
-        start = arg.attribute ("raw");
-      else if (end == "")
-        end = arg.attribute ("raw");
-
-      // TODO Is this workable?  Using excess date fields as tags. Might just
-      //      be a coincidence.
-      else
-        tags.push_back (arg.attribute ("raw"));
-    }
-    else
-    {
-      tags.push_back (arg.attribute ("raw"));
-    }
-  }
+  // Set up a filter based on the command line.
+  auto filter = initializeFilterFromCLI (cli);
 
   // TODO Add new interval.
   Interval tracked;
-  tracked.start (Datetime (start));
-  tracked.end (Datetime (end));
-  for (auto& tag : tags)
+  tracked.start (filter.start ());
+  tracked.end (filter.end ());
+  for (auto& tag : filter.tags ())
     tracked.tag (tag);
 
   // TODO Apply exclusions.
