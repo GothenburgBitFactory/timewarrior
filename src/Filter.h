@@ -46,6 +46,8 @@ public:
   std::set <std::string> tags () const;
   void tag (const std::string&);
 
+  std::string dump () const;
+
 private:
   Datetime               _start {0};
   Datetime               _end   {0};

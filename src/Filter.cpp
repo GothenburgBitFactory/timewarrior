@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Filter.h>
+#include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
 bool Filter::empty () const
@@ -70,6 +71,24 @@ void Filter::tag (const std::string& tag)
 {
   if (_tags.find (tag) == _tags.end ())
     _tags.insert (tag);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string Filter::dump () const
+{
+  std::stringstream out;
+
+  out << "Filter _start '"
+      << _start.toEpoch ()
+      << "' _end '"
+      << _end.toEpoch ()
+      << "' _tags";
+
+  for (auto& tag : _tags)
+    out << " '" << tag << "'";
+
+  out << "\n";
+  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
