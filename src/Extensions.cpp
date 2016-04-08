@@ -27,8 +27,10 @@
 #include <cmake.h>
 #include <Extensions.h>
 #include <FS.h>
+#include <Timer.h>
 #include <shared.h>
 #include <sstream>
+#include <iostream>
 #include <algorithm>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -64,13 +66,39 @@ int Extensions::callExtension (
   const std::vector <std::string>& input,
   std::vector <std::string>& output) const
 {
+  if (_debug)
+  {
+    std::cout << "Extension: Calling " << script << "\n"
+              << "Extension: input";
+
+    for (auto& i : input)
+      std::cout << "  " << i << "\n";
+  }
+
   auto inputStr = join ("\n", input);
 
   // Measure time for each hook if running in debug
   int status = 0;
   std::string outputStr;
-  status = execute (script, {}, inputStr, outputStr);
+
+  if (_debug)
+  {
+    Timer t ("Extension: execute (" + script + ")");
+    status = execute (script, {}, inputStr, outputStr);
+  }
+  else
+    status = execute (script, {}, inputStr, outputStr);
   output = split (outputStr, '\n');
+
+  if (_debug)
+  {
+    std::cout << "Extension: output\n";
+    for (auto& i : output)
+      if (i != "")
+        std::cout << "  " << i << "\n";
+
+    std::cout << "Extension: Completed with status " << status << "\n";
+  }
 
   return status;
 }
