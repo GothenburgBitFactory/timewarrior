@@ -45,6 +45,8 @@ public:
   std::vector <Interval> tracked (Rules&) const;
   std::vector <Interval> untracked (Rules&) const;
 
+  std::string dump () const;
+
 private:
   Interval                _range      {};
   std::vector <Interval>  _inclusions {};

@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Timeline.h>
+#include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
 // The Timeline object represents a continuum with a defined start and end
@@ -91,6 +92,20 @@ std::vector <Interval> Timeline::untracked (Rules& rules) const
   //      unracked intervals.
 
   return combined;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string Timeline::dump () const
+{
+  std::stringstream out;
+
+  out << "Timeline _range " << _range.dump ();
+  for (auto& i : _inclusions)
+    out << "  " << i.dump ();
+  for (auto& e : _exclusions)
+    out << "  " << e.dump ();
+
+  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
