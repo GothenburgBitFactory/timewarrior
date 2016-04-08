@@ -48,5 +48,6 @@ int CmdExtensions  (            Rules&,            const Extensions&);
 int CmdHelp        (const CLI&                                      );
 int CmdReport      (const CLI&, Rules&, Database&, const Extensions&);
 int CmdStart       (const CLI&, Rules&, Database&                   );
+int CmdStop        (const CLI&, Rules&, Database&                   );
 
 #endif
