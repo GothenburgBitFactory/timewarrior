@@ -170,6 +170,10 @@ void initializeExtensions (
   extDir += "extensions";
 
   extensions.initialize (extDir._data);
+
+  // Extensions have a debug mode.
+  if (rules.getBoolean ("debug"))
+    extensions.debug ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
