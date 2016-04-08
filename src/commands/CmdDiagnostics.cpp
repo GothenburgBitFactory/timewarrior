@@ -61,7 +61,10 @@ std::string describeFile (File& file)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdDiagnostics (Rules& rules, Database& database, Extensions& extensions)
+int CmdDiagnostics (
+  Rules& rules,
+  Database& database,
+  const Extensions& extensions)
 {
   std::stringstream out;
   out << "\n"
