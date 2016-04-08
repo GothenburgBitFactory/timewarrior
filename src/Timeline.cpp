@@ -72,7 +72,7 @@ void Timeline::exclude (const Exclusion& exclusion)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> Timeline::tracked () const
+std::vector <Interval> Timeline::tracked (Rules& rules) const
 {
   std::vector <Interval> combined;
 
@@ -83,7 +83,7 @@ std::vector <Interval> Timeline::tracked () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> Timeline::untracked () const
+std::vector <Interval> Timeline::untracked (Rules& rules) const
 {
   std::vector <Interval> combined;
 
