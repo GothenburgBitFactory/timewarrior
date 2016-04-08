@@ -33,7 +33,9 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // Enumerate all extensions.
-int CmdExtensions (Rules& rules, Extensions& extensions)
+int CmdExtensions (
+  Rules& rules,
+  const Extensions& extensions)
 {
   Table t;
   t.width (1024);
