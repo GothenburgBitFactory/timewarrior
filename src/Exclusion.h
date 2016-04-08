@@ -38,6 +38,8 @@ public:
   void initialize (const std::string&);
   std::vector <std::string> tokens () const;
 
+  std::string dump () const;
+
 private:
   std::vector <std::string> _tokens;
 };

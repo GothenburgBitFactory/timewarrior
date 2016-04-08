@@ -74,3 +74,15 @@ std::vector <std::string> Exclusion::tokens () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::string Exclusion::dump () const
+{
+  std::stringstream out;
+
+  out << "Exclusion _tokens ";
+  for (auto& token : _tokens)
+    out << " '" << token << "'";
+
+  return out.str ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
