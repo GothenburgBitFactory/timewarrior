@@ -39,7 +39,6 @@ int CmdDefault     (      Rules&, Database&             );
 int CmdGaps        (                                    );
 int CmdHelpUsage   (                                    );
 int CmdImport      (                                    );
-int CmdReport      (CLI&, Rules&, Database&, Extensions&);
 int CmdStart       (CLI&, Rules&, Database&             );
 int CmdTags        (      Rules&, Database&             );
 int CmdTrack       (CLI&, Rules&, Database&             );
@@ -48,5 +47,6 @@ int CmdDiagnostics (            Rules&, Database&, const Extensions&);
 int CmdExport      (const CLI&, Rules&, Database&                   );
 int CmdExtensions  (            Rules&,            const Extensions&);
 int CmdHelp        (const CLI&                                      );
+int CmdReport      (const CLI&, Rules&, Database&, const Extensions&);
 
 #endif

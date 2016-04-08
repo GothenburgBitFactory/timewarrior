@@ -35,7 +35,7 @@
 // Given a partial match for an extension script name, find the full patch of
 // the extension it may match.
 static std::string findExtension (
-  Extensions& extensions,
+  const Extensions& extensions,
   const std::string& partial)
 {
   auto scripts = extensions.all ();
@@ -64,10 +64,10 @@ static std::string findExtension (
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdReport (
-  CLI& cli,
+  const CLI& cli,
   Rules& rules,
   Database& database,
-  Extensions& extensions)
+  const Extensions& extensions)
 {
   // TODO Identify report.
   auto words = cli.getWords ();
