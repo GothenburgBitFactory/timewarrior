@@ -27,12 +27,29 @@
 #ifndef INCLUDED_FILTER
 #define INCLUDED_FILTER
 
+#include <Datetime.h>
+#include <string>
+#include <set>
+
 class Filter
 {
 public:
   Filter () = default;
+  bool empty () const;
+
+  Datetime start () const;
+  void start (Datetime);
+
+  Datetime end () const;
+  void end (Datetime);
+
+  std::set <std::string> tags () const;
+  void tag (const std::string&);
 
 private:
+  Datetime               _start {0};
+  Datetime               _end   {0};
+  std::set <std::string> _tags  {};
 };
 
 #endif
