@@ -154,6 +154,8 @@ Timeline createTimelineFromData (
   const Filter& filter)
 {
   Timeline t;
+  t.start (filter.start ());
+  t.end (filter.end ());
 
   return t;
 }
