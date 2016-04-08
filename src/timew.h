@@ -37,9 +37,9 @@
 // init.cpp
 bool lightweightVersionCheck (int, const char**);
 void initializeEntities (CLI&);
-void initializeDataAndRules (CLI&, Database&, Rules&);
-void initializeExtensions (Rules&, Extensions&);
-int dispatchCommand (CLI&, Database&, Rules&, Extensions&);
+void initializeDataAndRules (const CLI&, Database&, Rules&);
+void initializeExtensions (const Rules&, Extensions&);
+int dispatchCommand (const CLI&, Database&, Rules&, const Extensions&);
 
 // helper.cpp
 Color tagColor (const Rules&, const std::string&);

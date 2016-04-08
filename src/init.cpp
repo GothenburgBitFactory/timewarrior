@@ -85,7 +85,7 @@ void initializeEntities (CLI& cli)
 
 ////////////////////////////////////////////////////////////////////////////////
 void initializeDataAndRules (
-  CLI& cli,
+  const CLI& cli,
   Database& database,
   Rules& rules)
 {
@@ -163,7 +163,7 @@ void initializeDataAndRules (
 
 ////////////////////////////////////////////////////////////////////////////////
 void initializeExtensions (
-  Rules& rules,
+  const Rules& rules,
   Extensions& extensions)
 {
   Directory extDir (rules.get ("temp.db"));
@@ -174,10 +174,10 @@ void initializeExtensions (
 
 ////////////////////////////////////////////////////////////////////////////////
 int dispatchCommand (
-  CLI& cli,
+  const CLI& cli,
   Database& database,
   Rules& rules,
-  Extensions& extensions)
+  const Extensions& extensions)
 {
   int status {0};
 
