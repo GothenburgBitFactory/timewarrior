@@ -127,9 +127,20 @@ Timeline initializeTimelineFromFilter (const Filter& filter)
 void populateTimelineFromData (
   Timeline& timeline,
   const Rules& rules,
-  const Database& database,
+  Database& database,
   const Filter& filter)
 {
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Interval getLatestInterval (
+  Timeline& timeline,
+  Database& database,
+  const Filter& filter)
+{
+  Interval i;
+
+  return i;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

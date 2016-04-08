@@ -49,7 +49,8 @@ std::string intervalSummarize (const Rules&, const Interval&);
 void expandIntervalHint (const std::string&, std::string&, std::string&);
 Filter initializeFilterFromCLI (const CLI&);
 Timeline initializeTimelineFromFilter (const Filter&);
-void populateTimelineFromData (Timeline&, const Rules&, const Database&, const Filter&);
+void populateTimelineFromData (Timeline&, const Rules&, Database&, const Filter&);
+Interval getLatestInterval (Timeline&, Database&, const Filter&);
 
 // utiŀ.cpp
 std::string osName ();
