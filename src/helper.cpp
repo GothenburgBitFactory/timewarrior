@@ -148,12 +148,14 @@ Filter initializeFilterFromCLI (const CLI& cli)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void populateTimelineFromData (
-  Timeline& timeline,
+Timeline createTimelineFromData (
   const Rules& rules,
   Database& database,
   const Filter& filter)
 {
+  Timeline t;
+
+  return t;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
