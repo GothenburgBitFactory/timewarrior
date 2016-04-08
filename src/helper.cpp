@@ -148,16 +148,6 @@ Filter initializeFilterFromCLI (const CLI& cli)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// A filter is a placeholder for a start datetime, end datetime and a set of
-// tags, which makes it essentially an interval.
-Timeline initializeTimelineFromFilter (const Filter& filter)
-{
-  Timeline t;
-
-  return t;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 void populateTimelineFromData (
   Timeline& timeline,
   const Rules& rules,
