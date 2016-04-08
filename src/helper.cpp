@@ -106,11 +106,45 @@ void expandIntervalHint (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// A filter is a placeholder for a start datetime, end datetime and a set of
+// tags, which makes it essentially an interval.
 Filter initializeFilterFromCLI (const CLI& cli)
 {
-  Filter f;
+  Filter filter;
+  std::string start;
+  std::string end;
+  for (auto& arg : cli._args)
+  {
+    if (arg.hasTag ("BINARY") ||
+        arg.hasTag ("CMD"))
+      continue;
 
-  return f;
+    if (arg.hasTag ("HINT"))
+    {
+      expandIntervalHint (arg.attribute ("canonical"), start, end);
+    }
+    else if (arg._lextype == Lexer::Type::date)
+    {
+      if (start == "")
+        start = arg.attribute ("raw");
+      else if (end == "")
+        end = arg.attribute ("raw");
+
+      // TODO Is this workable?  Using excess date fields as tags. Might just
+      //      be a coincidence.
+      else
+        filter.tag (arg.attribute ("raw"));
+    }
+    else
+    {
+      filter.tag (arg.attribute ("raw"));
+    }
+  }
+
+  if (start != "") filter.start (Datetime (start));
+  if (end   != "")   filter.end (Datetime (end));
+
+  return filter;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
