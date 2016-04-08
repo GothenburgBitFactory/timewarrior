@@ -47,7 +47,7 @@ int dispatchCommand (const CLI&, Database&, Rules&, const Extensions&);
 Color tagColor (const Rules&, const std::string&);
 std::string intervalSummarize (const Rules&, const Interval&);
 void expandIntervalHint (const std::string&, std::string&, std::string&);
-Filter initializeFilterFromCLI (const CLI&);
+Filter createFilterFromCLI (const CLI&);
 Timeline createTimelineFromData (const Rules&, Database&, const Filter&);
 Interval getLatestInterval (Timeline&, Database&, const Filter&);
 

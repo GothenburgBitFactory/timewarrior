@@ -36,7 +36,7 @@ int CmdTrack (
   Database& database)
 {
   // Set up a filter based on the command line.
-  auto filter = initializeFilterFromCLI (cli);
+  auto filter = createFilterFromCLI (cli);
 
   // TODO Add new interval.
   Interval tracked;

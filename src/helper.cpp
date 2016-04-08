@@ -108,7 +108,7 @@ void expandIntervalHint (
 ////////////////////////////////////////////////////////////////////////////////
 // A filter is a placeholder for a start datetime, end datetime and a set of
 // tags, which makes it essentially an interval.
-Filter initializeFilterFromCLI (const CLI& cli)
+Filter createFilterFromCLI (const CLI& cli)
 {
   Filter filter;
   std::string start;
