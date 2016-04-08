@@ -33,6 +33,7 @@
 #include <Extensions.h>
 #include <Interval.h>
 #include <Filter.h>
+#include <Timeline.h>
 #include <Color.h>
 
 // init.cpp
@@ -47,6 +48,7 @@ Color tagColor (const Rules&, const std::string&);
 std::string intervalSummarize (const Rules&, const Interval&);
 void expandIntervalHint (const std::string&, std::string&, std::string&);
 Filter initializeFilterFromCLI (const CLI&);
+Timeline initializeTimelineFromFilter (const Filter&);
 
 // utiŀ.cpp
 std::string osName ();
