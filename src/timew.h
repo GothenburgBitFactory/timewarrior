@@ -32,6 +32,7 @@
 #include <Rules.h>
 #include <Extensions.h>
 #include <Interval.h>
+#include <Filter.h>
 #include <Color.h>
 
 // init.cpp
@@ -45,6 +46,7 @@ int dispatchCommand (const CLI&, Database&, Rules&, const Extensions&);
 Color tagColor (const Rules&, const std::string&);
 std::string intervalSummarize (const Rules&, const Interval&);
 void expandIntervalHint (const std::string&, std::string&, std::string&);
+Filter initializeFilterFromCLI (const CLI&);
 
 // utiŀ.cpp
 std::string osName ();
