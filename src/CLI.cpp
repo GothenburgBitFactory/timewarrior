@@ -107,6 +107,7 @@ std::string A2::dump () const
   {
          if (tag == "BINARY")        tags += "\033[1;37;44m"           + tag + "\033[0m ";
     else if (tag == "CMD")           tags += "\033[1;37;46m"           + tag + "\033[0m ";
+    else if (tag == "EXT")           tags += "\033[1;37;42m"           + tag + "\033[0m ";
     else if (tag == "HINT")          tags += "\033[1;37;43m"           + tag + "\033[0m ";
     else                             tags += "\033[32m"                + tag + "\033[0m ";
   }
@@ -332,38 +333,32 @@ void CLI::canonicalizeNames ()
   for (auto& a : _args)
   {
     auto raw = a.attribute ("raw");
-    std::string canonical;
+    std::string canonical = raw;
 
     // Commands.
     if (! alreadyFoundArg &&
-        exactMatch ("command", raw))
-    {
-      a.attribute ("canonical", raw);
-      a.tag ("CMD");
-      alreadyFoundArg = true;
-      continue;
-    }
-    else if (! alreadyFoundArg &&
-             canonicalize (canonical, "command", raw))
+        (exactMatch ("command", raw) ||
+         canonicalize (canonical, "command", raw)))
     {
       a.attribute ("canonical", canonical);
       a.tag ("CMD");
       alreadyFoundArg = true;
-      continue;
     }
 
-    // Commands.
-    if (exactMatch ("hint", raw))
-    {
-      a.attribute ("canonical", raw);
-      a.tag ("HINT");
-      continue;
-    }
-    else if (canonicalize (canonical, "hint", raw))
+    // Hints.
+    else if (exactMatch ("hint", raw) ||
+        canonicalize (canonical, "hint", raw))
     {
       a.attribute ("canonical", canonical);
       a.tag ("HINT");
-      continue;
+    }
+
+    // Extensions.
+    else if (exactMatch ("extension", raw) ||
+        canonicalize (canonical, "extension", raw))
+    {
+      a.attribute ("canonical", canonical);
+      a.tag ("EXT");
     }
   }
 }
