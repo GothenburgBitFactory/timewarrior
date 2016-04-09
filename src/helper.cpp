@@ -117,7 +117,8 @@ Filter createFilterFromCLI (const CLI& cli)
   for (auto& arg : cli._args)
   {
     if (arg.hasTag ("BINARY") ||
-        arg.hasTag ("CMD"))
+        arg.hasTag ("CMD")    ||
+        arg.hasTag ("EXT"))
       continue;
 
     if (arg.hasTag ("HINT"))
