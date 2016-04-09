@@ -196,8 +196,13 @@ Interval getLatestInterval (
 // are found in the interval.
 bool intervalMatchesFilter (const Interval& interval, const Filter& filter)
 {
-  if (interval.end () > filter.start () &&
-      interval.start () < filter.end ())
+  if ((filter.start ().toEpoch () == 0 &&
+       filter.end ().toEpoch () == 0)
+
+      ||
+
+      (interval.end () > filter.start () &&
+       interval.start () < filter.end ()))
   {
     for (auto& tag : filter.tags ())
       if (! interval.hasTag (tag))
