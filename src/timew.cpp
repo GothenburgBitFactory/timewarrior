@@ -62,7 +62,7 @@ int main (int argc, const char** argv)
 
   try
   {
-    // One-time command line scan.
+    // Scan command line.
     cli.analyze ();
 
     // Prepare the database, but do not read data.
@@ -71,8 +71,10 @@ int main (int argc, const char** argv)
     initializeDataAndRules (cli, database, rules);
 
     // Load extension script info.
+    // Re-analyze command because of the new extention entities.
     Extensions extensions;
     initializeExtensions (cli, rules, extensions);
+    cli.analyze ();
 
     // Dispatch to commands.
     status = dispatchCommand (cli, database, rules, extensions);
