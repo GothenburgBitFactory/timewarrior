@@ -179,11 +179,11 @@ set of arguments.
     define rule hook on_modify:
       ...
 
-These rules can call an external script and provide arguments, based on rules
+These rules can run an external script and provide arguments, based on rules
 DOM access:
 
     define rule hook on_modify:
-        call /path/to/my/script <dom1> <dom2>
+        run /path/to/my/script <dom1> <dom2>
 
 
 Rules Type: Hint
