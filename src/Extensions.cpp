@@ -87,18 +87,14 @@ int Extensions::callExtension (
     status = execute (script, {}, inputStr, outputStr);
   }
   else
+  {
     status = execute (script, {}, inputStr, outputStr);
+  }
+
   output = split (outputStr, '\n');
 
   if (_debug)
-  {
-    std::cout << "Extension: output\n";
-    for (auto& i : output)
-      if (i != "")
-        std::cout << "  " << i << "\n";
-
     std::cout << "Extension: Completed with status " << status << "\n";
-  }
 
   return status;
 }
