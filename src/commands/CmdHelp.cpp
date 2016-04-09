@@ -38,6 +38,7 @@ int CmdHelpUsage ()
             << "       timew diagnostics\n"
             << "       timew export\n"
             << "       timew extensions\n"
+            << "       timew help [<command> | hints]\n"
             << "       timew start [<tag> ...]\n"
             << "       timew stop\n"
             << "       timew tags\n"
@@ -46,7 +47,6 @@ int CmdHelpUsage ()
   // TODO clear
   // TODO config
   // TODO gaps
-  // TODO help
   // TODO import
   // TODO report
   // TODO tags
@@ -132,7 +132,19 @@ int CmdHelp (const CLI& cli)
                 << "\n";
 
     // TODO gaps
-    // TODO help
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "help")
+      std::cout << "\n"
+                << "The help command shows detailed descriptions and examples of commands and the\n"
+                << "supported hints. For example:\n"
+                << "\n"
+                << "  $ timew help\n"
+                << "  $ timew help start\n"
+                << "  $ timew help hints\n"
+                << "\n";
+
     // TODO import
     // TODO report
 
@@ -182,6 +194,36 @@ int CmdHelp (const CLI& cli)
                 << "Syntax: timew tags\n"
                 << "\n"
                 << "Displays all the tags that have been used.\n"
+                << "\n";
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "hints")
+      std::cout << "\n"
+                << "Timewarrior supports hints, which are single-word command line features that\n"
+                << "start with a colon like this:\n"
+                << "\n"
+                << "  :week\n"
+                << "\n"
+                << "Hints serve several purposes. This example is a shortcut for the date range\n"
+                << "that defines the current week. Other hints, such as:\n"
+                << "\n"
+                << "  :quiet\n"
+                << "\n"
+                << "Are ways to control the behavior of Timewarrior, in this case eliminating all\n"
+                << "forms of feedback, for purposes of automation. The supported hints are:\n"
+                << "\n"
+                << "  :quiet         Turns off all feedback. For automation\n"
+                << "  :debug         Runs in debug mode, shows many runtime details\n"
+                << "\n"
+                << "  :day           The 24-hours of the current day\n"
+                << "  :week          This week\n"
+                << "  :month         This month\n"
+                << "  :quarter       This quarter\n"
+                << "  :year          This year\n"
+                << "\n"
+                << "  :fill          Expand time to fill surrounding available gap\n"
+                << "                 Only functions when exclusions are provided\n"
                 << "\n";
 
     // TODO track
