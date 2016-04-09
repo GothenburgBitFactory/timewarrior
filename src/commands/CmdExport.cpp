@@ -35,26 +35,9 @@ int CmdExport (
   Rules& rules,
   Database& database)
 {
-  // Set up a filter based on the command line.
   auto filter = createFilterFromCLI (cli);
-
   auto timeline = createTimelineFromData (rules, database, filter);
-
-  std::cout << "[\n";
-  int counter = 0;
-  for (auto& interval : timeline.tracked (rules))
-  {
-    if (counter)
-      std::cout << ",\n";
-
-    std::cout << interval.json ();
-    ++counter;
-  }
-
-  if (counter)
-    std::cout << "\n";
-
-  std::cout << "]\n";
+  std::cout << jsonFromIntervals (timeline.tracked (rules));
   return 0;
 }
 
