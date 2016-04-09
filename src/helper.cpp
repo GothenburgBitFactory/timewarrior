@@ -149,6 +149,18 @@ Filter createFilterFromCLI (const CLI& cli)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// The five different possibilities:
+//
+//               timeline.start      timeline.end
+//               |                   |
+//   [--------]  |                   |
+//          [----|----]              |
+//               |  [------------]   |
+//               |              [----|----]
+//               |                   |   [--------]
+//          [----|-------------------|----]
+//               |                   |
+//
 Timeline createTimelineFromData (
   const Rules& rules,
   Database& database,
@@ -157,6 +169,13 @@ Timeline createTimelineFromData (
   Timeline t;
   t.start (filter.start ());
   t.end (filter.end ());
+
+  // TODO Add filtered exclusions.
+
+  // Add filtered intervals.
+  for (auto& interval : database.getAllIntervals ())
+    if (intervalMatchesFilter (interval, filter))
+      t.include (interval);
 
   return t;
 }
