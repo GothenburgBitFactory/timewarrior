@@ -46,6 +46,15 @@ Displays the directory containing the extension programs, and a table showing
 each extention and its status. See also 'diagnostics'.
 
 .TP
+.B timew help [<command> | hints]
+The help command shows detailed descriptions and examples of commands and the
+supported hints. For example:
+
+  $ timew help
+  $ timew help start
+  $ timew help hints
+
+.TP
 .B timew log [<message>]
 Writes the info <message> to the Timewarrior log file. If <message> is ommitted,
 writes a cut marker ('-------- 8< --------') line to the log file.
@@ -82,11 +91,30 @@ See also 'continue', 'start', 'track'.
 Displays all the tags that have been used.
 
 .SH HINTS
-Hints are words on the command line that influence Timewarrior behavior. Many
-commands make use of hints. Supported hints are:
+Timewarrior supports hints, which are single-word command line features that
+start with a colon like this:
+
+  :week
+
+Hints serve several purposes. This example is a shortcut for the date range
+that defines the current week. Other hints, such as:
+
+  :quiet
+
+Are ways to control the behavior of Timewarrior, in this case eliminating all
+forms of feedback, for purposes of automation. The supported hints are:
 
   :quiet         Turns off all feedback. For automation
   :debug         Runs in debug mode, shows many runtime details
+
+  :day           The 24-hours of the current day
+  :week          This week
+  :month         This month
+  :quarter       This quarter
+  :year          This year
+
+  :fill          Expand time to fill surrounding available gap
+                 Only functions when exclusions are provided
 
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS
 Timewarrior stores its configuration in a file in the user's home directory:
