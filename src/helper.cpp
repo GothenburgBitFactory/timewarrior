@@ -149,17 +149,19 @@ Filter createFilterFromCLI (const CLI& cli)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// The five different possibilities:
+// The five different overlap possibilities:
 //
 //               timeline.start      timeline.end
 //               |                   |
-//   [--------]  |                   |
-//          [----|----]              |
-//               |  [------------]   |
-//               |              [----|----]
-//               |                   |   [--------]
-//          [----|-------------------|----]
+// A [--------]  |                   |
+// B        [----|----]              |
+// C             |  [------------]   |
+// D             |              [----|----]
+// E             |                   |   [--------]
+// F        [----|-------------------|----]
 //               |                   |
+//
+// We really only need to eliminate A and F.
 //
 Timeline createTimelineFromData (
   const Rules& rules,
