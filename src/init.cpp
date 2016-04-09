@@ -188,6 +188,10 @@ int dispatchCommand (
 {
   int status {0};
 
+  // Debug output.
+  if (rules.getBoolean ("debug"))
+    std::cout << cli.dump () << "\n";
+
   // Dispatch to the right command function.
   std::string command = cli.getCommand ();
   if (command != "")
