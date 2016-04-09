@@ -215,3 +215,36 @@ bool intervalMatchesFilter (const Interval& interval, const Filter& filter)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Compose a JSON document of intervals. In the trivial case:
+//   [
+//   ]
+//
+// In the non-trivial case:
+//   [
+//   {...},
+//   {...}
+//   ]
+//
+std::string jsonFromIntervals (const std::vector <Interval>& intervals)
+{
+  std::stringstream out;
+
+  out << "[\n";
+  int counter = 0;
+  for (auto& interval : intervals)
+  {
+    if (counter)
+      out << ",\n";
+
+    out << interval.json ();
+    ++counter;
+  }
+
+  if (counter)
+    out << "\n";
+
+  out << "]\n";
+  return out.str ();
+}
+
+////////////////////////////////////////////////////////////////////////////////

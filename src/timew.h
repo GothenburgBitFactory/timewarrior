@@ -51,6 +51,7 @@ Filter createFilterFromCLI (const CLI&);
 Timeline createTimelineFromData (const Rules&, Database&, const Filter&);
 Interval getLatestInterval (Timeline&, Database&, const Filter&);
 bool intervalMatchesFilter (const Interval&, const Filter&);
+std::string jsonFromIntervals (const std::vector <Interval>&);
 
 // utiŀ.cpp
 std::string osName ();
