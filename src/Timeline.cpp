@@ -75,12 +75,15 @@ void Timeline::exclude (const Exclusion& exclusion)
 ////////////////////////////////////////////////////////////////////////////////
 std::vector <Interval> Timeline::tracked (Rules& rules) const
 {
+/*
   std::vector <Interval> combined;
 
   // TODO Combine _inclusions and _exclusions to yield a set of collapsed
   //      intervals.
 
   return combined;
+*/
+  return _inclusions;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
