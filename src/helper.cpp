@@ -173,3 +173,21 @@ Interval getLatestInterval (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// An interval matches a filter if the start/end overlaps, and all filter tags
+// are found in the interval.
+bool intervalMatchesFilter (const Interval& interval, const Filter& filter)
+{
+  if (interval.end () > filter.start () &&
+      interval.start () < filter.end ())
+  {
+    for (auto& tag : filter.tags ())
+      if (! interval.hasTag (tag))
+        return false;
+
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////

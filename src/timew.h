@@ -50,6 +50,7 @@ void expandIntervalHint (const std::string&, std::string&, std::string&);
 Filter createFilterFromCLI (const CLI&);
 Timeline createTimelineFromData (const Rules&, Database&, const Filter&);
 Interval getLatestInterval (Timeline&, Database&, const Filter&);
+bool intervalMatchesFilter (const Interval&, const Filter&);
 
 // utiŀ.cpp
 std::string osName ();
