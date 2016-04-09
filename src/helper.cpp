@@ -92,10 +92,11 @@ void expandIntervalHint (
 {
   static std::map <std::string, std::vector <std::string>> hints
   {
-    {":week",    {"socw", "eocw"}},
-    {":month",   {"socw", "eocw"}},
-    {":quarter", {"socw", "eocw"}},
-    {":year",    {"socw", "eocw"}},
+    {":day",     {"today", "tomorrow"}},
+    {":week",    {"socw",  "eocw"}},
+    {":month",   {"socw",  "eocw"}},
+    {":quarter", {"socw",  "eocw"}},
+    {":year",    {"socw",  "eocw"}},
   };
 
   if (hints.find (hint) != hints.end ())
