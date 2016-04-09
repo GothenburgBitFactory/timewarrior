@@ -72,7 +72,7 @@ int main (int argc, const char** argv)
 
     // Load extension script info.
     Extensions extensions;
-    initializeExtensions (rules, extensions);
+    initializeExtensions (cli, rules, extensions);
 
     // Dispatch to commands.
     status = dispatchCommand (cli, database, rules, extensions);

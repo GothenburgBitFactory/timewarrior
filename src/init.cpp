@@ -79,8 +79,6 @@ void initializeEntities (CLI& cli)
   cli.entity ("hint", ":quarter");
   cli.entity ("hint", ":year");
   cli.entity ("hint", ":fill");
-
-  // TODO Extension names.
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -163,6 +161,7 @@ void initializeDataAndRules (
 
 ////////////////////////////////////////////////////////////////////////////////
 void initializeExtensions (
+  CLI& cli,
   const Rules& rules,
   Extensions& extensions)
 {
@@ -170,6 +169,10 @@ void initializeExtensions (
   extDir += "extensions";
 
   extensions.initialize (extDir._data);
+
+  // Add extensions as CLI entities.
+  for (auto& ext : extensions.all ())
+    cli.entity ("extension", File (ext).name ());
 
   // Extensions have a debug mode.
   if (rules.getBoolean ("debug"))

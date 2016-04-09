@@ -40,7 +40,7 @@
 bool lightweightVersionCheck (int, const char**);
 void initializeEntities (CLI&);
 void initializeDataAndRules (const CLI&, Database&, Rules&);
-void initializeExtensions (const Rules&, Extensions&);
+void initializeExtensions (CLI&, const Rules&, Extensions&);
 int dispatchCommand (const CLI&, Database&, Rules&, const Extensions&);
 
 // helper.cpp
