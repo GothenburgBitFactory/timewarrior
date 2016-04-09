@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <commands.h>
+#include <timew.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -34,19 +35,14 @@ int CmdExport (
   Rules& rules,
   Database& database)
 {
-  // Load all data.
-  auto intervals = database.getAllIntervals ();
-  // TODO Apply filter to intervals..
+  // Set up a filter based on the command line.
+  auto filter = createFilterFromCLI (cli);
 
-  // TODO Create Timeline.
-  // TODO Add intervals to Timeline.
-  // TODO Add exclusions to Timeline.
-  // TODO Extract tracked intervals from Timeline.
+  auto timeline = createTimelineFromData (rules, database, filter);
 
-  // Compose JSON.
   std::cout << "[\n";
   int counter = 0;
-  for (auto& interval : intervals)
+  for (auto& interval : timeline.tracked (rules))
   {
     if (counter)
       std::cout << ",\n";
@@ -55,7 +51,7 @@ int CmdExport (
     ++counter;
   }
 
-  if (intervals.size ())
+  if (counter)
     std::cout << "\n";
 
   std::cout << "]\n";
