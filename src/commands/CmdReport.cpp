@@ -28,6 +28,7 @@
 #include <commands.h>
 #include <shared.h>
 #include <format.h>
+#include <timew.h>
 #include <iostream>
 #include <sstream>
 
@@ -93,27 +94,12 @@ int CmdReport (
       header << name << "=" << rules.get (name) << "\n";
 
     // Compose JSON.
-    std::stringstream json;
-    json << "[\n";
-    int counter = 0;
-    for (auto& interval : intervals)
-    {
-      if (counter)
-        json << ",\n";
-
-      json << interval.json ();
-      ++counter;
-    }
-
-    if (intervals.size ())
-      json << "\n";
-
-    json << "]\n";
+    auto json = jsonFromIntervals (intervals);
 
     // Compose the input for the script.
     auto input = header.str ()
                + "\n"
-               + json.str ();
+               + json;
 
     // Run the extensions.
     std::vector <std::string> output;
