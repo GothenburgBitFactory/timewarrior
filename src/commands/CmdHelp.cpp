@@ -210,7 +210,7 @@ int CmdHelp (const CLI& cli)
                 << "\n"
                 << "  :quiet\n"
                 << "\n"
-                << "Are ways to control the behavior of Timewarrior, in this case eliminating all\n"
+                << "are ways to control the behavior of Timewarrior, in this case eliminating all\n"
                 << "forms of feedback, for purposes of automation. The supported hints are:\n"
                 << "\n"
                 << "  :quiet         Turns off all feedback. For automation\n"
