@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (36);
+  UnitTest t (38);
 
   // bool isStarted () const;
   // bool isEnded () const;
@@ -161,6 +161,11 @@ int main (int, char**)
   i19.initialize (   "inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo");
   t.is (i19.json (), "{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"Trans-Europe Express\",\"bar\",\"foo\"]}",
                "JSON '{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"Trans-Europe Express\",\"bar\",\"foo\"]}'");
+
+  Interval i20;
+  i20.tag ("foo");
+  t.ok    (i20.hasTag ("foo"), "hasTag positive");
+  t.notok (i20.hasTag ("bar"), "hasTag negative");
 
   return 0;
 }
