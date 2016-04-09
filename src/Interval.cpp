@@ -126,6 +126,12 @@ bool Interval::isEnded () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+bool Interval::hasTag (const std::string& tag) const
+{
+  return std::find (_tags.begin (), _tags.end (), tag) != _tags.end ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
 std::set <std::string> Interval::tags () const
 {
   return _tags;
