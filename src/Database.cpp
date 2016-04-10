@@ -37,7 +37,7 @@
 void Database::initialize (const std::string& location)
 {
   _location = location;
-  _current = currentDataFile ();
+  auto current = currentDataFile ();
 
   // Because the data files have names YYYY-MM.data, sorting them by name also
   // sorts by the intervals within.
@@ -47,8 +47,8 @@ void Database::initialize (const std::string& location)
 
   // Ensure the list always contains the name of the current file, even if it
   // does not exist.
-  if (std::find (files.begin (), files.end (), _current) == files.end ())
-    files.push_back (_current);
+  if (std::find (files.begin (), files.end (), current) == files.end ())
+    files.push_back (current);
 
   for (auto& file : files)
   {
@@ -146,9 +146,7 @@ std::string Database::dump () const
   std::stringstream out;
   out << "Database\n";
   for (auto& file : _files)
-    out << "  Datafile: " << file.name ()
-        << (file.name () == _current ? " (current)" : "")
-        << "\n";
+    out << "  Datafile: " << file.name () << "\n";
 
   out << "  Dirty: " << (_dirty ? "true" : "false") << "\n";
 

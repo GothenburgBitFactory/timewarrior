@@ -56,7 +56,6 @@ private:
 
 private:
   std::string             _location   {"~/.timewarrior/data"};
-  std::string             _current    {};
   std::vector <Datafile>  _files      {};
   bool                    _dirty      {false};
   std::vector <Exclusion> _exclusions {};
