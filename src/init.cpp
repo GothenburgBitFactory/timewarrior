@@ -80,6 +80,8 @@ void initializeEntities (CLI& cli)
   cli.entity ("hint", ":quarter");
   cli.entity ("hint", ":year");
   cli.entity ("hint", ":fill");
+  cli.entity ("hint", ":color");
+  cli.entity ("hint", ":nocolor");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -89,14 +91,18 @@ void initializeDataAndRules (
   Rules& rules)
 {
   // Make common hints available via rules:
-  //   :debug --> debug
-  //   :quiet --> verbose
+  //   :debug   --> debug=on
+  //   :quiet   --> verbose=off
+  //   :color   --> color=on
+  //   :nocolor --> color=off
   for (auto& arg : cli._args)
   {
     if (arg.hasTag ("HINT"))
     {
-      if (arg.attribute ("canonical") == ":debug") rules.set ("debug", "on");
-      if (arg.attribute ("canonical") == ":quiet") rules.set ("verbose", "off");
+      if (arg.attribute ("canonical") == ":debug")   rules.set ("debug", "on");
+      if (arg.attribute ("canonical") == ":quiet")   rules.set ("verbose", "off");
+      if (arg.attribute ("canonical") == ":color")   rules.set ("color", "on");
+      if (arg.attribute ("canonical") == ":nocolor") rules.set ("color", "coff");
     }
   }
 
