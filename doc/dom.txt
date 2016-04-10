@@ -1,7 +1,7 @@
 DOM - Document Object Model
 ===========================
 Timewarrior needs DOM support, so that it can service a 'get' command and
-provide data access to rules. Bothare important for extensions.
+provide access to data and rules. Both are important for extensions.
 
 
 Data to be Accessed
@@ -47,5 +47,6 @@ All DOM references have this form:
 
 - The above needs to support overlapping tags.
 
-- The above needs to support totals.
+- The above does not support totals, as this would turn DOM references into a
+query language. Instead, a 'sum' command could do this.
 
