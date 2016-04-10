@@ -29,6 +29,7 @@ Goals
 Non-Goals
 ---------
 - Completely independent from Taskwarrior, Taskserver, Tasksh.
+- Time tracking is about recording the past, not planning the future.
 - No cloud support, no sync support, all data is local. Tracked time is
   sensitive personal data and will not be transmitted.
 - No explicit multi-user support, although using tags to track individuals is
