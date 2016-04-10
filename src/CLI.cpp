@@ -332,7 +332,7 @@ std::string CLI::dump (const std::string& title) const
 // Scan all arguments and canonicalize names that need it.
 void CLI::canonicalizeNames ()
 {
-  bool alreadyFoundArg = false;
+  bool alreadyFoundCmd = false;
 
   for (auto& a : _args)
   {
@@ -340,29 +340,31 @@ void CLI::canonicalizeNames ()
     std::string canonical = raw;
 
     // Commands.
-    if (! alreadyFoundArg &&
+    if (! alreadyFoundCmd &&
         (exactMatch ("command", raw) ||
          canonicalize (canonical, "command", raw)))
     {
       a.attribute ("canonical", canonical);
       a.tag ("CMD");
-      alreadyFoundArg = true;
+      alreadyFoundCmd = true;
     }
 
     // Hints.
     else if (exactMatch ("hint", raw) ||
-        canonicalize (canonical, "hint", raw))
+             canonicalize (canonical, "hint", raw))
     {
       a.attribute ("canonical", canonical);
       a.tag ("HINT");
     }
 
     // Extensions.
-    else if (exactMatch ("extension", raw) ||
-        canonicalize (canonical, "extension", raw))
+    else if (! alreadyFoundCmd &&
+             (exactMatch ("extension", raw) ||
+              canonicalize (canonical, "extension", raw)))
     {
       a.attribute ("canonical", canonical);
       a.tag ("EXT");
+      alreadyFoundCmd = true;
     }
   }
 }
