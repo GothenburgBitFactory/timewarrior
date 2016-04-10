@@ -40,6 +40,24 @@ Non-Goals
 - No features without a compelling use case.
 
 
+Reports
+-------
+Anticipating all reporting needs is impossible, therefore custom reports are
+required. Rather than copy the Taskwarrior design where flexibility is provided
+via configurable options for fixed-format reports, Timewarrior will use a more
+flexible approach of providing configuration and data via an extension API.
+This will not limit the kind of reports or supported formats that can be added.
+
+Timewarrior will ship with several reports, which serve as example extensions
+for users to modify and improve, perhaps contribute back to the project.
+
+Purely as an example of what might be implemented, here are some report mockups:
+
+  ./report.week.txt
+  ./report.day.1.txt
+  ./report.exc.week.txt
+
+
 Tags
 ----
 Tags represent tracking categories. Tags are arbitrary UTF8 strings. A tag may
@@ -130,3 +148,14 @@ data.
   command, instead of "stop" use "forgot" or directly "edit".  Then I would
   like to express either "stopped 30min ago" or "it lasted only 1hour”.
 
+- Need a JSON --> CSV converter, for spreadsheet folks. Therefore csv.py could
+  be an extension that converts the format.
+
+- Use display granularity/resolution to see more or less details.  This would
+  combine nicely with a tag hierarchy. (Tomas Babej)
+
+- Need reports to help users doing fixed-rate work - finding the longest task
+  for example.
+
+- If an interval has more than one tag with a defined color, and is being
+  rendered, then use the first tag color. It doesn't really matter which.
