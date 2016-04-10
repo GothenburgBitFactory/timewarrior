@@ -60,7 +60,7 @@ void Database::initialize (const std::string& location)
 
       // New files need the set of current exclusions.
       if (! File (file).exists ())
-        df.setExclusions (_exclusion);
+        df.setExclusions (_exclusions);
 
       _files.push_back (df);
     }
@@ -85,6 +85,7 @@ std::vector <std::string> Database::files () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Walk backwards through the files until an interval is found.
 Interval Database::getLatestInterval ()
 {
   std::vector <Datafile>::reverse_iterator ri;
@@ -142,11 +143,12 @@ std::string Database::dump () const
 {
   std::stringstream out;
   out << "Database\n";
-  for (auto& file : _files)
-    out << "  Datafile: " << file.name () << "\n";
-
   for (auto& exclusion : _exclusions)
-    out << "  Exclusion: " << exclusion.serialize () << "\n";
+    out << "  Exclusion: " << exclusion << "\n";
+
+  out << "Datafiles\n";
+  for (auto& df : _files)
+    out << df.dump ();
 
   return out.str ();
 }
