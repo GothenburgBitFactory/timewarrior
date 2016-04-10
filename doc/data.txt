@@ -13,7 +13,7 @@ as a mask for the inclusions. Here is a visual example:
   Exclusion:                           |---| lunch
   Exclusion                                                    |---| dinner
 
-  Timeline:     >--o---o---o---o---o---o---o---o---o---o---o---o---o-->
+  Timeline:      ..:...:...:...:...:...:...:...:...:...:...:...:...:...
                    7   8   9   10  11  12  1   2   3   4   5   6   7 
                    am                  pm
 
@@ -30,15 +30,15 @@ example, if these commands were run at 8am and 5pm respectively:
   [at 5pm] $ timew stop
 
 It can be seen that some combination of all the incluѕions and exclusions will
-yield a complete record of tracked time.
+yield a record of tracked time.
 
 
 Exclusions
 ----------
-Exclusions are stored as configuration, and there are several commands that
-allow easy manipulation of this. Whenever an exclusion changes, the set of all
-exclusions are written to the data file. This is because all subsequent
-inclusions are to be resolved against the active set of exclusions.
+Exclusions are stored as configuration. Whenever an exclusion changes, the set
+of all exclusions are written to the data file. This is because all subsequent
+inclusions are to be resolved against the most recent set of exclusions. So if
+you change from a 9-hour day to an 8-hour day, the tracking remains correct.
 
 
 Inclusions
@@ -48,7 +48,7 @@ results in an incluѕion record being written to the data file.
 
 If there is an open-ended inclusion at the time an exclusion is changed, then
 the open-ended inclusion is closed, the exclusions written, and a new open-ended
-inclusion is added.
+inclusion is added. Starting a new inclusion closes existing inclusions.
 
 
 Data Files
@@ -70,15 +70,15 @@ An example file looks like this:
   inc 2016-02-28T08:00:00 - 2016-02-28T12:00:00 # Upgrade Planning
   inc 2016-02-28T13:00:00                       # Upgrade Presentation "ABCD Inc"
 
-White space is ignored. Here we see a sect of exclusions that define a work week
-and a two inclusions, the first of which represents a four hour block of time
-with two tags 'Upgrade' and 'Planning'. The second inclusion is open ended,
-having only a start time (1pm), but three tags 'Upgrade', 'Presentation' and
-'ABCD Inc'. The third tag is a quoted string because of the embedded space.
+White space is ignored. Here we see a set of exclusions that define a work week
+and two inclusions, the first of which represents a four hour block of time with
+two tags 'Upgrade' and 'Planning'. The second inclusion is open ended, having
+only a start time (1pm), but three tags 'Upgrade', 'Presentation' and 'ABCD
+Inc'. The third tag is a quoted string because of the embedded space.
 
 An open-ended inclusion like this means that the tracking continues, but the
-exclusions prevent an excess time buildup of the 63 hours that comprise the
-weekend (Friday 5:30pm until Monday 8:30am).
+exclusions prevent an excess time buildup of the 62½ hours that comprise the
+weekend (Friday 5:30pm until Monday 8:00am).
 
 
 Data File Names
@@ -89,6 +89,8 @@ sophisticated archiving. For example:
 
   ~/.timewarrior/data/2016-02.data
   ~/.timewarrior/data/2016-03.data
+
+To archive old data, simply move any subset of files out of this directory.
 
 
 Undo Data
