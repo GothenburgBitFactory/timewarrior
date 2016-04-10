@@ -421,7 +421,7 @@ bool Lexer::isDate (std::string& token, Lexer::Type& type)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Lexer::Type::duration
-//   <Duration>
+//   <Duration> (followed by eos, WS, operator)
 bool Lexer::isDuration (std::string& token, Lexer::Type& type)
 {
   std::size_t marker = _cursor;
@@ -434,13 +434,16 @@ bool Lexer::isDuration (std::string& token, Lexer::Type& type)
     return false;
   }
 
-  marker = 0;
+  marker = _cursor;
   Duration dur;
-  if (dur.parse (_text.substr (_cursor), marker))
+  if (dur.parse (_text, marker) &&
+      (marker >= _eos ||
+       unicodeWhitespace (_text[marker]) ||
+       isSingleCharOperator (_text[marker])))
   {
     type = Lexer::Type::duration;
-    token = _text.substr (_cursor, marker);
-    _cursor += marker;
+    token = _text.substr (_cursor, marker - _cursor);
+    _cursor = marker;
     return true;
   }
 
