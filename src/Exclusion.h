@@ -38,6 +38,7 @@ public:
   void initialize (const std::string&);
   std::vector <std::string> tokens () const;
 
+  std::string serialize () const;
   std::string dump () const;
 
 private:

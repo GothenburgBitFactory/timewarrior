@@ -74,15 +74,15 @@ std::vector <std::string> Exclusion::tokens () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::string Exclusion::serialize () const
+{
+  return std::string ("exc") + join (" ", _tokens);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 std::string Exclusion::dump () const
 {
-  std::stringstream out;
-
-  out << "Exclusion _tokens ";
-  for (auto& token : _tokens)
-    out << " '" << token << "'";
-
-  return out.str ();
+  return std::string ("Exclusion ") + join (" ", _tokens);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
