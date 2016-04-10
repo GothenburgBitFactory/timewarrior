@@ -14,6 +14,11 @@ Known Issues
 
 Timewarrior has been built and tested on the following configurations:
 
+  * Arch
+  * Cygwin
+  * Debian
+  * FreeBSD
+  * Ubuntu
   * OS X
 
 ---
