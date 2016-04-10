@@ -150,7 +150,8 @@ void initializeDataAndRules (
 
   // Perhaps some subsequent code would like to know this is a new db and
   // possibly a first run.
-  rules.set ("temp.shiny", (shinyNewDatabase ? 1 : 0));
+  if (shinyNewDatabase)
+    rules.set ("temp.shiny", 1);
 
   // Initialize the database (no data read), but files are enumerated.
   database.initialize (data._data);
