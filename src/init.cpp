@@ -25,6 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <timew.h>
 #include <CLI.h>
 #include <Database.h>
 #include <Rules.h>
@@ -162,6 +163,27 @@ void initializeDataAndRules (
 
   // Initialize the database (no data read), but files are enumerated.
   database.initialize (data._data);
+
+  // Provide the exclusions from configuration to the database.
+  initializeDatabaseExclusions (database, rules);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void initializeDatabaseExclusions (Database& database, const Rules& rules)
+{
+  database.clearExclusions ();
+
+  for (auto& name : rules.all ("exclusions."))
+  {
+    name = lowerCase (name);
+    Exclusion e;
+    if (name.substr (0, 16) == "exclusions.days.")
+      e.initialize ("exc day " + rules.get (name) + " " + name.substr (16));
+    else
+      e.initialize ("exc " + name.substr (11) + " " + rules.get (name));
+
+    database.addExclusion (e);
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
