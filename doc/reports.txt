@@ -1,13 +1,10 @@
 Reporting
 =========
 Anticipating all reporting needs is impossible, therefore custom reports are
-required. Rather than copy the Taskwarrior design where a report is a
-combination of a filter, sort, columns and labels, a more flexible approach
-could encourage shared custom reports, and use a more complete API.
-
-Іf all reports are extension scripts/programs, utilizing an API, then there is
-no restriction on the kind of report generated, which would allow, for example,
-for PDF or HTML reports, rather than simply supporting tabular text.
+required. Rather than copy the Taskwarrior design where flexibility is provided
+via configurable options for fixed-format reports, Timewarrior will use a more
+flexible approach of providing configuration and data via an API. This will not
+limit the kind of reports or supported formats that can be added.
 
 
 Requirements
@@ -94,4 +91,6 @@ configuration names flattened, i.e. no hierarchy.
 
 - If an interval has more than one tag with a defined color, and is being
   rendered, then use the first tag color. It doesn't really matter which.
+
+- Need a formal API description, for extension authors.
 
