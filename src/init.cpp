@@ -99,9 +99,6 @@ void initializeDataAndRules (
     }
   }
 
-  if (rules.getBoolean ("debug"))
-    std::cout << cli.dump () << "\n";
-
   // The $TIMEWARRIORDB environment variable overrides the default value of
   // ~/.timewarrior‥
   Directory dbLocation;
