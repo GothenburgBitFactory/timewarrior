@@ -84,9 +84,17 @@ int CmdReport (
   auto intervals = timeline.tracked (rules);
 
   // Compose Header info.
-  //   TODO Filter.
-  //   TODO CLI.
-  //   TODO Directory containing *.data files.
+  rules.set ("temp.report.start", filter.start ().toEpoch () > 0 ? filter.start ().toISO () : "");
+  rules.set ("temp.report.end",   filter.end ().toEpoch ()   > 0 ? filter.end ().toISO ()   : "");
+  std::string combinedTags;
+  for (auto& tag : filter.tags ())
+  {
+    if (combinedTags != "")
+      combinedTags += ",";
+    combinedTags += quoteIfNeeded (tag);
+  }
+  rules.set ("temp.report.tags", combinedTags);
+
   std::stringstream header;
   for (auto& name : rules.all ())
     header << name << "=" << rules.get (name) << "\n";
