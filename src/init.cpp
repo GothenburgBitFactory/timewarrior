@@ -161,14 +161,17 @@ void initializeDataAndRules (
   if (shinyNewDatabase)
     rules.set ("temp.shiny", 1);
 
+  // Provide the exclusions from configuration to the database. These are used
+  // to seed new Diatafile objects.
+  initializeDatabaseExclusions (database, rules);
+
   // Initialize the database (no data read), but files are enumerated.
   database.initialize (data._data);
-
-  // Provide the exclusions from configuration to the database.
-  initializeDatabaseExclusions (database, rules);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// The exclusions are read from configuration as strings, and passed to the
+// database object as strings.
 void initializeDatabaseExclusions (Database& database, const Rules& rules)
 {
   database.clearExclusions ();
@@ -176,13 +179,10 @@ void initializeDatabaseExclusions (Database& database, const Rules& rules)
   for (auto& name : rules.all ("exclusions."))
   {
     name = lowerCase (name);
-    Exclusion e;
     if (name.substr (0, 16) == "exclusions.days.")
-      e.initialize ("exc day " + rules.get (name) + " " + name.substr (16));
+      database.addExclusion ("exc day " + rules.get (name) + " " + name.substr (16));
     else
-      e.initialize ("exc " + name.substr (11) + " " + rules.get (name));
-
-    database.addExclusion (e);
+      database.addExclusion ("exc " + name.substr (11) + " " + rules.get (name));
   }
 }
 

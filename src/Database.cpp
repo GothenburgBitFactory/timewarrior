@@ -57,6 +57,11 @@ void Database::initialize (const std::string& location)
     {
       Datafile df;
       df.initialize (file);
+
+      // New files need the set of current exclusions.
+      if (! File (file).exists ())
+        df.setExclusions (_exclusion);
+
       _files.push_back (df);
     }
   }
@@ -115,7 +120,7 @@ void Database::clearExclusions ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Database::addExclusion (const Exclusion& exclusion)
+void Database::addExclusion (const std::string& exclusion)
 {
   _exclusions.push_back (exclusion);
 }
