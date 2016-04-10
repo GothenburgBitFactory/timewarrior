@@ -65,13 +65,8 @@ void Database::initialize (const std::string& location)
 ////////////////////////////////////////////////////////////////////////////////
 void Database::commit ()
 {
-  if (_dirty)
-  {
-    for (auto& file : _files)
-      file.commit ();
-
-    _dirty = false;
-  }
+  for (auto& file : _files)
+    file.commit ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -123,21 +118,18 @@ void Database::clearExclusions ()
 void Database::addExclusion (const Exclusion& exclusion)
 {
   _exclusions.push_back (exclusion);
-  _dirty = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Database::addInterval (const Interval& interval)
 {
   _files.back ().addInterval (interval);
-  _dirty = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Database::modifyInterval (const Interval& interval)
 {
   _files.back ().modifyInterval (interval);
-  _dirty = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -147,8 +139,6 @@ std::string Database::dump () const
   out << "Database\n";
   for (auto& file : _files)
     out << "  Datafile: " << file.name () << "\n";
-
-  out << "  Dirty: " << (_dirty ? "true" : "false") << "\n";
 
   for (auto& exclusion : _exclusions)
     out << "  Exclusion: " << exclusion.serialize () << "\n";
