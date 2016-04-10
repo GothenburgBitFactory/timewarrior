@@ -100,10 +100,10 @@ void initializeDataAndRules (
   {
     if (arg.hasTag ("HINT"))
     {
-      if (arg.attribute ("canonical") == ":debug")   rules.set ("debug", "on");
+      if (arg.attribute ("canonical") == ":debug")   rules.set ("debug",   "on");
       if (arg.attribute ("canonical") == ":quiet")   rules.set ("verbose", "off");
-      if (arg.attribute ("canonical") == ":color")   rules.set ("color", "on");
-      if (arg.attribute ("canonical") == ":nocolor") rules.set ("color", "coff");
+      if (arg.attribute ("canonical") == ":color")   rules.set ("color",   "on");
+      if (arg.attribute ("canonical") == ":nocolor") rules.set ("color",   "off");
     }
   }
 
