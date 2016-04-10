@@ -41,10 +41,13 @@ set (libshared_SRCS libshared/src/Args.cpp          libshared/src/Args.h
 add_library (timew     STATIC ${timew_SRCS})
 add_library (libshared STATIC ${libshared_SRCS})
 add_executable (timew_executable timew.cpp)
+add_executable (lex_executable   lex.cpp)
 
 target_link_libraries (timew_executable timew libshared commands timew libshared ${TIMEW_LIBRARIES})
+target_link_libraries (lex_executable   timew libshared                libshared ${TIMEW_LIBRARIES})
 
 set_property (TARGET timew_executable PROPERTY OUTPUT_NAME "timew")
+set_property (TARGET lex_executable   PROPERTY OUTPUT_NAME "lex")
 
 install (TARGETS timew_executable DESTINATION bin)
 
