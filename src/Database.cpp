@@ -114,9 +114,15 @@ std::vector <Interval> Database::getAllIntervals ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Database::addExclusion (const std::string& exclusion)
+void Database::clearExclusions ()
 {
-  _files.back ().addExclusion (exclusion);
+  _exclusions.clear ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Database::addExclusion (const Exclusion& exclusion)
+{
+  _exclusions.push_back (exclusion);
   _dirty = true;
 }
 

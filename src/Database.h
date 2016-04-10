@@ -29,6 +29,7 @@
 
 #include <Datafile.h>
 #include <Interval.h>
+#include <Exclusion.h>
 #include <vector>
 #include <string>
 
@@ -43,7 +44,8 @@ public:
   Interval getLatestInterval ();
   std::vector <Interval> getAllIntervals ();
 
-  void addExclusion (const std::string&);
+  void clearExclusions ();
+  void addExclusion (const Exclusion&);
   void addInterval (const Interval&);
   void modifyInterval (const Interval&);
 
@@ -53,10 +55,11 @@ private:
   std::string currentDataFile () const;
 
 private:
-  std::string            _location   {"~/.timewarrior/data"};
-  std::string            _current    {};
-  std::vector <Datafile> _files      {};
-  bool                   _dirty      {false};
+  std::string             _location   {"~/.timewarrior/data"};
+  std::string             _current    {};
+  std::vector <Datafile>  _files      {};
+  bool                    _dirty      {false};
+  std::vector <Exclusion> _exclusions {};
 };
 
 #endif
