@@ -168,9 +168,17 @@ std::string Datafile::dump () const
 {
   std::stringstream out;
   out << "Datafile\n"
-      << "  Name: " << _file.name () << "\n"
-      << "  day1: " << _day1.toISO () << "\n"
-      << "  dayN: " << _dayN.toISO () << "\n";
+      << "  Name:        " << _file.name () << (_file.exists () ? "" : " (does not exist)") << "\n"
+      << "  dirty:       " << (_dirty ? "true" : "false") << "\n"
+      << "  lines:       " << _lines.size () << "\n"
+      << "    loaded     " << (_lines_loaded ? "true" : "false") << "\n"
+      << "    added:     " << _lines_added.size () << "\n"
+      << "    modified:  " << (_lines_modified ? "true" : "fasle") << "\n"
+      << "  intervals:   " << _intervals.size () << "\n"
+      << "    loaded     " << (_intervals_loaded ? "true" : "false") << "\n"
+      << "  exclusions:  " << _exclusions.size () << "\n"
+      << "  day1:        " << _day1.toISO () << "\n"
+      << "  dayN:        " << _dayN.toISO () << "\n";
 
   return out.str ();
 }
