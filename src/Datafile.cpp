@@ -75,8 +75,9 @@ std::vector <Interval> Datafile::getAllIntervals ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Datafile::addExclusion (const std::string& exclusion)
+void Datafile::setExclusions (const std::vector <std::string>& exclusions)
 {
+  _exclusions = exclusions;
   _dirty = true;
 }
 

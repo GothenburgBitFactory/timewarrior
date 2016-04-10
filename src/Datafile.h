@@ -42,7 +42,7 @@ public:
   Interval getLatestInterval ();
   std::vector <Interval> getAllIntervals ();
 
-  void addExclusion (const std::string&);
+  void setExclusions (const std::vector <std::string>&);
   void addInterval (const Interval&);
   void modifyInterval (const Interval&);
 
@@ -68,6 +68,9 @@ private:
   // Intervals parsed from lines.
   std::vector <Interval>    _intervals        {};
   bool                      _intervals_loaded {false};
+
+  // Exclusions fed from Database.
+  std::vector <std::string> _exclusions       {};
 
   Datetime                  _day1             {0};
   Datetime                  _dayN             {0};
