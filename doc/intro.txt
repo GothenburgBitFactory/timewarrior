@@ -73,20 +73,19 @@ This is managed by a rules system that can impose constraints.
 
 To see the currently active interval:
 
-  $ timew
-
-  (TBD)
+| $ timew
+| (TBD)
 
 Reporting tracked time can be done with a simple report:
 
-  $ timew report today
-  $ timew report week Home
-  $ timew report summary last week
+| $ timew report today
+| $ timew report week Home
+| $ timew report summary last week
 
 Some early report mockups:
 
-  http://picpaste.com/week-zWdSp3UI.png
-  http://picpaste.com/day-kAqffFmZ.png
+| http://picpaste.com/week-zWdSp3UI.png
+| http://picpaste.com/day-kAqffFmZ.png
 
 Or the data can be exported in JSON:
 
@@ -98,7 +97,7 @@ and enhanced by the community. It should be possible to implement any kind of
 report using the extension mechanism.
 
 There is an 'undo' command for reversing changes, and a 'clear' command to
-free up a slot:
+free up slots:
 
   $ timew clear yesterday
 
