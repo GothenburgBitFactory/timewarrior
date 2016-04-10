@@ -198,16 +198,6 @@ are used by almost every command.
 [More TBD]
 
 
-Built-in Functions
-------------------
-There are several built-in functions, which may be used by rules:
-
-  error("...")         Emits and terminates
-  warning("...")       Emits and continues
-  info("...")          Emits and continues
-  sum_week("tag1")     Sums minutes in the current week for "tag1"
-
-
 --- Raw Notes ---
 
 - Need to distinguish between regular time and over time, with different rates
@@ -221,3 +211,13 @@ There are several built-in functions, which may be used by rules:
 
 - Need to distinguish between rules that will be supported at 1.0.0, and the
   long term enhancements.
+
+- There will need to be several built-in functions, for use by rules:
+
+    error("...")         Emits and terminates
+    warning("...")       Emits and continues
+    info("...")          Emits and continues
+    sum_week("tag1")     Sums minutes in the current week for "tag1"
+
+  These are not good examples.
+

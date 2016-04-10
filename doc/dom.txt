@@ -48,5 +48,7 @@ All DOM references have this form:
 - The above needs to support overlapping tags.
 
 - The above does not support totals, as this would turn DOM references into a
-query language. Instead, a 'sum' command could do this.
+  query language. Instead, a 'sum' command could do this. The rules.txt doc
+  already mentions built-in functions.
+
 
