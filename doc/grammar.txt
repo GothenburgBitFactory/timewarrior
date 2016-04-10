@@ -108,6 +108,8 @@ supported hints are:
   :week       Macro that means 'this week'
   :debug      Turns on debugging mode
   :x          User defined
+  :color      Force use of color on
+  :nocolor    Force use of color off
 
 It is not an error to specify extra hints, because they will be simply ignored.
 Unrecognized hints yiled warnings.

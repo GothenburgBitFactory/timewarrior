@@ -106,6 +106,8 @@ forms of feedback, for purposes of automation. The supported hints are:
 
   :quiet         Turns off all feedback. For automation
   :debug         Runs in debug mode, shows many runtime details
+  :color         Force color on, even if not connected to a TTY
+  :nocolor       Force color off, even if connected to a TTY
 
   :day           The 24-hours of the current day
   :week          This week
