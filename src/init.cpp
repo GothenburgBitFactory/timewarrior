@@ -210,6 +210,7 @@ int dispatchCommand (
     else if (command == "tags")        status = CmdTags        (     rules, database            );
     else if (command == "track")       status = CmdTrack       (cli, rules, database            );
     else if (command == "undo")        status = CmdUndo        (                                );
+    else                               status = CmdReport      (cli, rules, database, extensions);
   }
   else
   {

@@ -292,6 +292,10 @@ std::string CLI::getCommand () const
     if (a.hasTag ("CMD"))
       return a.attribute ("canonical");
 
+  for (auto& a : _args)
+    if (a.hasTag ("EXT"))
+      return a.attribute ("canonical");
+
   return "";
 }
 
