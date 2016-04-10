@@ -5,10 +5,10 @@ The CLI shall have a well-defined and unambiguous grammar.
     timew
     timew start|stop [<tagset>]
     timew track <interval> [<tagset>]
-    timew clear <tagset>|<interval>
+|   timew clear <tagset>|<interval>
     timew continue
 
-    timew report <report> [<filter>]
+    timew [report] <report> [<filter>]
 
     timew config [<name> [<value>]]
     timew undo
@@ -27,23 +27,23 @@ The CLI shall have a well-defined and unambiguous grammar.
 CLI Grammar
 -----------
 Assumed built-in types:
-  <datetime>
-  <duration>
-  <time>
-  <string>
+| <datetime>
+| <duration>
+| <time>
+| <string>
 
-  interval:  <timestamp> "-" <timestamp>
-             <timestamp> "to" <timestamp>
-             <timestamp> "for" <duration>
-             "from" <timestamp> "to" <timestamp>
-             "until" <timestamp>
-             "from" <timestamp>
+| interval:  <timestamp> "-" <timestamp>
+|            <timestamp> "to" <timestamp>
+|            <timestamp> "for" <duration>
+|            "from" <timestamp> "to" <timestamp>
+|            "until" <timestamp>
+|            "from" <timestamp>
 
-  timestamp: <day> <time>
+| timestamp: <day> <time>
 
-  tagset:    <tag>+
+| tagset:    <tag>+
 
-  tag:       string
+| tag:       string
 
 
 Intervals
@@ -72,7 +72,7 @@ An interval may be open ended:
     A
 
 When resolving an interval, vague terms are influenced by configured exclusions
-and rules.  Precise terms _always_ override rules.
+and rules.  Precise terms always override rules.
 
 
 Tagset
@@ -87,7 +87,7 @@ entity, for example:
                 -------------------------
                 tagset
 
-Tags must be quoted if they contains spaces.
+Tags must be quoted if they contain spaces.
 
 
 Hints
@@ -109,11 +109,14 @@ supported hints are:
   :debug      Turns on debugging mode
   :x          User defined
 
+It is not an error to specify extra hints, because they will be simply ignored.
+Unrecognized hints yiled warnings.
+
 
 --- Raw Notes ---
 
 - 'timew import <file>' will merge data.
 
 - A command for a daily and weekly view of exclusions is needed. To verify that
-  it is correctly defined. A text-based list should accompany it.
+  they are correctly defined. A text-based list should accompany it.
 
