@@ -70,47 +70,38 @@ int CmdReport (
   Database& database,
   const Extensions& extensions)
 {
-  // TODO Identify report.
-  auto words = cli.getWords ();
-  if (words.size ())
-  {
-    auto script = findExtension (extensions, words[0]);
+  std::string script;
+  for (auto& arg : cli._args)
+    if (arg.hasTag ("EXT"))
+      script = findExtension (extensions, arg.attribute ("canonical"));
 
-    // TODO Default report?
-
-    // Load all data.
-    auto intervals = database.getAllIntervals ();
-
-    // TODO Apply filter.
-
-    // Compose Header info.
-    std::stringstream header;
-    //   TODO Filter.
-    //   TODO CLI.
-    //   TODO Directory containing *.data files.
-
-    // All configuration.
-    for (auto& name : rules.all ())
-      header << name << "=" << rules.get (name) << "\n";
-
-    // Compose JSON.
-    auto json = jsonFromIntervals (intervals);
-
-    // Compose the input for the script.
-    auto input = header.str ()
-               + "\n"
-               + json;
-
-    // Run the extensions.
-    std::vector <std::string> output;
-    extensions.callExtension (script, split (input, '\n'), output);
-
-    // Display the output.
-    for (auto& line : output)
-      std::cout << line << "\n";
-  }
-  else
+  if (script == "")
     throw std::string ("Specify which report to run.");
+
+  // Filter the data.
+  auto filter = createFilterFromCLI (cli);
+  auto timeline = createTimelineFromData (rules, database, filter);
+  auto intervals = timeline.tracked (rules);
+
+  // Compose Header info.
+  //   TODO Filter.
+  //   TODO CLI.
+  //   TODO Directory containing *.data files.
+  std::stringstream header;
+  for (auto& name : rules.all ())
+    header << name << "=" << rules.get (name) << "\n";
+
+  auto input = header.str ()
+             + "\n"
+             + jsonFromIntervals (intervals);
+
+  // Run the extensions.
+  std::vector <std::string> output;
+  extensions.callExtension (script, split (input, '\n'), output);
+
+  // Display the output.
+  for (auto& line : output)
+    std::cout << line << "\n";
 
   return 0;
 }
