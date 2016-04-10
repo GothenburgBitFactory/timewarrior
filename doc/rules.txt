@@ -49,11 +49,11 @@ defines all exclusions:
 
 There is a rule that contains all the general configuration data:
 
-  define configuration:
-    name1 = value1
-    group1:
-      group2:
-        name2 = value2
+| define configuration:
+|   name1 = value1
+|   group1:
+|     group2:
+|       name2 = value2
 
 There are general rules triggered by changes to the data:
 
@@ -219,3 +219,5 @@ There are several built-in functions, which may be used by rules:
   - auto-tag intervals that exceed 40 hrs/wk
   - auto-tag intervals during exclusion time
 
+- Need to distinguish between rules that will be supported at 1.0.0, and the
+  long term enhancements.
