@@ -152,6 +152,9 @@ std::string Database::dump () const
 
   out << "  Dirty: " << (_dirty ? "true" : "false") << "\n";
 
+  for (auto& exclusion : _exclusions)
+    out << "  Exclusion: " << exclusion.serialize () << "\n";
+
   return out.str ();
 }
 
