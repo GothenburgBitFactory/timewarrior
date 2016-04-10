@@ -399,17 +399,20 @@ bool Lexer::isString (std::string& token, Lexer::Type& type, const std::string& 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Lexer::Type::date
-//   <Datetime>
+//   <Datetime> (followed by eos, WS, operator)
 bool Lexer::isDate (std::string& token, Lexer::Type& type)
 {
   // Try an ISO date parse.
-  std::size_t i = 0;
+  std::size_t i = _cursor;
   Datetime d;
-  if (d.parse (_text.substr (_cursor), i, Lexer::dateFormat))
+  if (d.parse (_text, i, Lexer::dateFormat) &&
+      (i >= _eos ||
+       unicodeWhitespace (_text[i]) ||
+       isSingleCharOperator (_text[i])))
   {
     type = Lexer::Type::date;
-    token = _text.substr (_cursor, i);
-    _cursor += i;
+    token = _text.substr (_cursor, i - _cursor);
+    _cursor = i;
     return true;
   }
 
