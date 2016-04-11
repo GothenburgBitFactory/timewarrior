@@ -34,10 +34,8 @@ int CmdContinue (
   Rules& rules,
   Database& database)
 {
-  // Load the most recent interval.
-  auto latest = database.getLatestInterval ();
+  auto latest = getLatestInterval (database);
 
-  // Verify the most recent interval is closed.
   if (latest.isStarted () &&
       latest.isEnded ())
   {
