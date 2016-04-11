@@ -176,20 +176,27 @@ Timeline createTimelineFromData (
   // TODO Add filtered exclusions.
 
   // Add filtered intervals.
-  for (auto& interval : database.getAllIntervals ())
+  for (auto& line : database.allLines ())
+  {
+    Interval interval;
+    interval.initialize (line);
+
     if (intervalMatchesFilter (interval, filter))
       t.include (interval);
+  }
 
   return t;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Interval getLatestInterval (
-  Timeline& timeline,
-  Database& database,
-  const Filter& filter)
+Interval getLatestInterval (Database& database)
 {
   Interval i;
+  auto lastLine = database.lastLine ();
+  if (lastLine != "")
+    i.initialize (lastLine);
+
+  // TODO Mask i against timeline.
 
   return i;
 }
