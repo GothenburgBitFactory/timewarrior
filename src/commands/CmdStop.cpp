@@ -38,19 +38,20 @@ int CmdStop (
   Database& database)
 {
   // Load the most recent interval.
-  auto latest = database.getLatestInterval ();
+  auto latest = getLatestInterval (database);
 
   // Verify the interval is open.
   if (  latest.isStarted () &&
       ! latest.isEnded ())
   {
     // Stop it.
-    latest.end (Datetime ());
-    database.modifyInterval (latest);
+    auto modified {latest};
+    modified.end (Datetime ());
+    database.modifyInterval (latest, modified);
 
     // User feedback.
     if (rules.getBoolean ("verbose"))
-      std::cout << intervalSummarize (rules, latest);
+      std::cout << intervalSummarize (rules, modified);
 
     // If tags were specified, and after removing those tags, there are still
     // tags remaining, then add a contiguous interval.
