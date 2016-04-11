@@ -37,10 +37,15 @@ int CmdTags (Rules& rules, Database& database)
 {
   // Generate a unique, ordered list of tags.
   std::vector <std::string> tags;
-  for (auto& interval : database.getAllIntervals ())
+  for (auto& line : database.allLines ())
+  {
+    Interval interval;
+    interval.initialize (line);
+
     for (auto& tag : interval.tags ())
       if (std::find (tags.begin (), tags.end (), tag) == tags.end ())
         tags.push_back (tag);
+  }
 
   // Shows all tags.
   Table t;
