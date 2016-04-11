@@ -40,18 +40,20 @@ public:
   void commit ();
   std::vector <std::string> files () const;
 
-  Interval getLatestInterval ();
-  std::vector <Interval> getAllIntervals ();
+  std::string lastLine ();
+  std::vector <std::string> allLines ();
 
   void clearExclusions ();
   void addExclusion (const std::string&);
   void addInterval (const Interval&);
-  void modifyInterval (const Interval&);
+  void deleteInterval (const Interval&);
+  void modifyInterval (const Interval&, const Interval&);
 
   std::string dump () const;
 
 private:
   std::string currentDataFile () const;
+  void createNewDatafile (int, int);
 
 private:
   std::string               _location   {"~/.timewarrior/data"};

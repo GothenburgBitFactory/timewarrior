@@ -86,26 +86,22 @@ std::vector <std::string> Database::files () const
 
 ////////////////////////////////////////////////////////////////////////////////
 // Walk backwards through the files until an interval is found.
-Interval Database::getLatestInterval ()
+std::string Database::lastLine ()
 {
   std::vector <Datafile>::reverse_iterator ri;
   for (ri = _files.rbegin (); ri != _files.rend (); ri++)
-  {
-    auto i = ri->getLatestInterval ();
-    if (! i.empty ())
-      return i;
-  }
+    return ri->lastLine ();
 
-  return Interval ();
+  return "";
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> Database::getAllIntervals ()
+std::vector <std::string> Database::allLines ()
 {
-  std::vector <Interval> all;
+  std::vector <std::string> all;
   for (auto& file : _files)
   {
-    auto i = file.getAllIntervals ();
+    auto i = file.allLines ();
     all.insert (all.end (),
                 std::make_move_iterator (i.begin ()),
                 std::make_move_iterator (i.end ()));
@@ -129,13 +125,51 @@ void Database::addExclusion (const std::string& exclusion)
 ////////////////////////////////////////////////////////////////////////////////
 void Database::addInterval (const Interval& interval)
 {
-  _files.back ().addInterval (interval);
+  std::vector <Datafile>::reverse_iterator ri;
+  for (ri = _files.rbegin (); ri != _files.rend (); ri++)
+    if (ri->addInterval (interval))
+      return;
+
+  // Datafile for this interval does not exist. This means the data file was
+  // deleted/removed, or the interval is old. Create the file.
+  createNewDatafile (interval.start ().year (), interval.start ().month ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Database::modifyInterval (const Interval& interval)
+void Database::deleteInterval (const Interval& interval)
 {
-  _files.back ().modifyInterval (interval);
+  std::vector <Datafile>::reverse_iterator ri;
+  for (ri = _files.rbegin (); ri != _files.rend (); ri++)
+    if (ri->deleteInterval (interval))
+      break;
+
+  // Datafile for this interval does not exist. This means the data file was
+  // deleted/removed, or the interval is old. Nothing to do.
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Database::modifyInterval (const Interval& from, const Interval& to)
+{
+  // The algorithm to modify an interval is first to find and remove it from the
+  // Datafile, then add it back to the right Datafile. This is because
+  // modifїcation may involve changing the start date, which could mean the
+  // Interval belongs in a different file.
+
+  // Delete the interval, if found. If not found, then this means the data file
+  // was deleted/moved.
+  std::vector <Datafile>::reverse_iterator ri;
+  for (ri = _files.rbegin (); ri != _files.rend (); ri++)
+    if (ri->deleteInterval (from))
+      break;
+
+  // Add the interval to the right file.
+  for (ri = _files.rbegin (); ri != _files.rend (); ri++)
+    if (ri->addInterval (to))
+      return;
+
+  // There was no file that accepted the interval, which means the data file was
+  // deleted/moved. recreate the file.
+  createNewDatafile (to.start ().year (), to.start ().month ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -169,6 +203,26 @@ std::string Database::currentDataFile () const
       << ".data";
 
   return out.str ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Database::createNewDatafile (int year, int month)
+{
+  std::stringstream file;
+  file << _location
+       << '/'
+       << std::setw (4) << std::setfill ('0') << year
+       << '-'
+       << std::setw (2) << std::setfill ('0') << month
+       << ".data";
+
+  // Create the Datafile. New files need the set of current exclusions.
+  Datafile df;
+  df.initialize (file.str ());
+  df.setExclusions (_exclusions);
+
+  // Insert Datafile into _files. The position is not important.
+  _files.push_back (df);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
