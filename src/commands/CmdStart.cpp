@@ -37,21 +37,22 @@ int CmdStart (
   Database& database)
 {
   // Load the most recent interval.
-  auto latest = database.getLatestInterval ();
+  auto latest = getLatestInterval (database);
 
   // If the latest interval is open, close it.
   if (  latest.isStarted () &&
       ! latest.isEnded ())
   {
     // Stop it.
-    latest.end (Datetime ());
+    auto modified {latest};
+    modified.end (Datetime ());
 
     // Update database.
-    database.modifyInterval (latest);
+    database.modifyInterval (latest, modified);
 
     // User feedback.
     if (rules.getBoolean ("verbose"))
-      std::cout << intervalSummarize (rules, latest);
+      std::cout << intervalSummarize (rules, modified);
   }
 
   // Create a new interval.
