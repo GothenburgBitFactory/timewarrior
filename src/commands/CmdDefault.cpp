@@ -35,9 +35,10 @@ int CmdDefault (Rules& rules, Database& database)
   if (rules.getBoolean ("verbose"))
   {
     // Load the most recent interval, summarize and display.
-    auto interval = database.getLatestInterval ();
+    auto interval = getLatestInterval (database);
+
     if (interval.isStarted () && ! interval.isEnded ())
-      std::cout << intervalSummarize (rules, database.getLatestInterval ());
+      std::cout << intervalSummarize (rules, interval);
     else
       std::cout << "There is no active time tracking.\n";
   }
