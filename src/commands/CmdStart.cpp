@@ -44,8 +44,9 @@ int CmdStart (
       ! latest.isEnded ())
   {
     // Stop it.
-    auto modified {latest};
-    modified.end (Datetime ());
+    Interval modified {latest};
+    Datetime now;
+    modified.end (now);
 
     // Update database.
     database.modifyInterval (latest, modified);
