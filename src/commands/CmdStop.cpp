@@ -65,7 +65,7 @@ int CmdStop (
         latest.tags ().size ())
     {
       // Contiguous with previous interval.
-      latest.start (latest.end ());
+      latest.start (modified.end ());
       latest.end ({0});
 
       database.addInterval (latest);
