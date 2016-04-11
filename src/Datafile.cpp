@@ -83,7 +83,7 @@ void Datafile::setExclusions (const std::vector <std::string>& exclusions)
   // TODO if local copy != exclusion set
   // TODO   remove old exclusion set from _lines
   // TODO   add local copy
-  // TODO   _dirty = ture;
+  // TODO   _dirty = true;
 
   _exclusions = exclusions;
   _dirty = true;
