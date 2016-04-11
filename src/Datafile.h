@@ -39,12 +39,12 @@ public:
   void initialize (const std::string&);
   std::string name () const;
 
-  Interval getLatestInterval ();
-  std::vector <Interval> getAllIntervals ();
+  std::string lastLine ();
+  std::vector <std::string> allLines ();
 
   void setExclusions (const std::vector <std::string>&);
-  void addInterval (const Interval&);
-  void modifyInterval (const Interval&);
+  bool addInterval (const Interval&);
+  bool deleteInterval (const Interval&);
 
   void commit ();
 
@@ -52,7 +52,6 @@ public:
 
 private:
   void load_lines ();
-  void load_intervals ();
 
 private:
   // File representing data.
@@ -61,13 +60,7 @@ private:
 
   // Lines read from file, not parsed.
   std::vector <std::string> _lines            {};
-  std::vector <std::string> _lines_added      {};
-  bool                      _lines_modified   {false};
   bool                      _lines_loaded     {false};
-
-  // Intervals parsed from lines.
-  std::vector <Interval>    _intervals        {};
-  bool                      _intervals_loaded {false};
 
   // Exclusions fed from Database.
   std::vector <std::string> _exclusions       {};

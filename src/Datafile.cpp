@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <Datafile.h>
 #include <format.h>
+#include <algorithm>
 #include <sstream>
 #include <stdlib.h>
 
@@ -52,56 +53,86 @@ std::string Datafile::name () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Interval Datafile::getLatestInterval ()
+std::string Datafile::lastLine ()
 {
-  // Load data
-  if (! _intervals_loaded)
-    load_intervals ();
+  if (! _lines_loaded)
+    load_lines ();
 
-  // Return the last element in _lines.
-  if (_intervals.size ())
-    return _intervals.back ();
+  std::vector <std::string>::reverse_iterator ri;
+  for (ri = _lines.rbegin (); ri != _lines.rend (); ri++)
+    if (ri->operator[] (0) == 'i')
+      return *ri;
 
-  return Interval ();
+  return "";
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> Datafile::getAllIntervals ()
+std::vector <std::string> Datafile::allLines ()
 {
-  if (! _intervals_loaded)
-    load_intervals ();
+  if (! _lines_loaded)
+    load_lines ();
 
-  return _intervals;
+  return _lines;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Datafile::setExclusions (const std::vector <std::string>& exclusions)
 {
+  // TODO Overwrite local copy
+  // TODO load current exclusion set
+  // TODO if local copy != exclusion set
+  // TODO   remove old exclusion set from _lines
+  // TODO   add local copy
+  // TODO   _dirty = ture;
+
   _exclusions = exclusions;
   _dirty = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Datafile::addInterval (const Interval& interval)
+bool Datafile::addInterval (const Interval& interval)
 {
-  _lines_added.push_back (interval.serialize ());
+  // Return false if the interval does not belong in this file.
+  if (interval.start () > _dayN ||
+      interval.end ()   < _day1)
+    return false;
+
+  if (! _lines_loaded)
+    load_lines ();
+
+  // TODO if _lines contains no exclusions
+  // TODO   add _exclusions
+
+  // TODO if interval is not a duplicate
+  // TODO   insert interval.serialize into _lines
+  // TODO   _dirty = true;
+
+  _lines.push_back (interval.serialize ());
   _dirty = true;
+  return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Only checks if the start time matches.
-void Datafile::modifyInterval (const Interval& interval)
+bool Datafile::deleteInterval (const Interval& interval)
 {
-  for (auto& i : _intervals)
+  // Return false if the interval does not belong in this file.
+  if (interval.start () > _dayN ||
+      interval.end ()   < _day1)
+    return false;
+
+  if (! _lines_loaded)
+    load_lines ();
+
+  auto serialized = interval.serialize ();
+  auto i = std::find (_lines.begin (), _lines.end (), serialized);
+  if (i != _lines.end ())
   {
-    if (i.start () == interval.start ())
-    {
-      i = interval;
-      _dirty = true;
-      _lines_modified = true;
-      break;
-    }
+    _lines.erase (i);
+    _dirty = true;
+    return true;
   }
+
+  return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -110,54 +141,21 @@ void Datafile::commit ()
   // The _dirty flag indicates that the file needs to be written.
   if (_dirty)
   {
-    // Special case: added but no modified means just append to the file.
-    if (_lines_added.size () &&
-        ! _lines_modified)
+    if (_file.open ())
     {
-      if (_file.open ())
-      {
-        _file.lock ();
+      _file.lock ();
+      _file.truncate ();
+      _file.append (std::string(""));   // Seek to EOF.
 
-        // Write out all the added intervals.
-        _file.append (std::string(""));  // Seek to end of file
+      // Write out all the lines.
+      for (auto& line : _lines)
+        _file.write_raw (line + "\n");
 
-        // Write out all the added lines.
-        for (auto& line : _lines_added)
-          _file.write_raw (line + "\n");
-
-        _lines_added.clear ();
-        _file.close ();
-
-        _dirty = false;
-      }
-      else
-        throw format ("Could not write to data file {1}", _file._data);
+      _file.close ();
+      _dirty = false;
     }
     else
-    {
-      if (_file.open ())
-      {
-        _file.lock ();
-
-        // Truncate the file and rewrite.
-        _file.truncate ();
-
-        // Rewrite all the intervals, because at least one was modified.
-        _file.append (std::string(""));  // Seek to end of file
-        for (auto& interval : _intervals)
-          _file.write_raw (interval.serialize () + "\n");
-
-        // Write out all the added lines.
-        for (auto& line : _lines_added)
-          _file.write_raw (line + "\n");
-
-        _lines_added.clear ();
-        _file.close ();
-        _dirty = false;
-      }
-      else
-        throw format ("Could not write to data file {1}", _file._data);
-    }
+      throw format ("Could not write to data file {1}", _file._data);
 
     _dirty = false;
   }
@@ -172,57 +170,11 @@ std::string Datafile::dump () const
       << "  dirty:       " << (_dirty ? "true" : "false") << "\n"
       << "  lines:       " << _lines.size () << "\n"
       << "    loaded     " << (_lines_loaded ? "true" : "false") << "\n"
-      << "    added:     " << _lines_added.size () << "\n"
-      << "    modified:  " << (_lines_modified ? "true" : "fasle") << "\n"
-      << "  intervals:   " << _intervals.size () << "\n"
-      << "    loaded     " << (_intervals_loaded ? "true" : "false") << "\n"
       << "  exclusions:  " << _exclusions.size () << "\n"
       << "  day1:        " << _day1.toISO () << "\n"
       << "  dayN:        " << _dayN.toISO () << "\n";
 
   return out.str ();
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void Datafile::load_intervals ()
-{
-  if (! _lines_loaded)
-  {
-    load_lines ();
-
-    // Apply previously added lines.
-    for (auto& line : _lines_added)
-      _lines.push_back (line);
-  }
-
-  for (auto& line : _lines)
-  {
-    // "inc ..."
-    if (line[0] == 'i')
-    {
-      Interval i;
-      i.initialize (line);
-      _intervals.push_back (i);
-    }
-
-    // "exc ..."
-    else if (line[0] == 'e')
-    {
-/*
-      Exclusion e;
-      e.initialize (line);
-      _intervals.push_back (i);
-*/
-    }
-
-    // ?
-    else
-    {
-      // TODO Ignore blank lines?
-    }
-  }
-
-  _intervals_loaded = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
