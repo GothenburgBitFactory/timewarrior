@@ -35,23 +35,29 @@ int CmdContinue (
   Database& database)
 {
   auto latest = getLatestInterval (database);
-
-  if (latest.isStarted () &&
-      latest.isEnded ())
+  if (! latest.empty ())
   {
-    // Open an identical interval.
-    latest.start ({});
-    latest.end ({0});
+    if (latest.isStarted () &&
+        latest.isEnded ())
+    {
+      // Open an identical interval.
+      latest.start ({});
+      latest.end ({0});
 
-    // Update database.
-    database.addInterval (latest);
+      // Update database.
+      database.addInterval (latest);
 
-    // User feedback.
-    std::cout << intervalSummarize (rules, latest);
+      // User feedback.
+      std::cout << intervalSummarize (rules, latest);
+    }
+    else
+    {
+      std::cout << "There is already active tracking.\n";
+    }
   }
   else
   {
-    std::cout << "There is already active tracking.\n";
+    std::cout << "There is no previous tracking to continue.\n";
   }
 
   return 0;
