@@ -35,6 +35,22 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from basetest import Timew, TestCase
 
+# Test methods available:
+#     self.assertEqual(a, b)
+#     self.assertNotEqual(a, b)
+#     self.assertTrue(x)
+#     self.assertFalse(x)
+#     self.assertIs(a, b)
+#     self.assertIsNot(substring, text)
+#     self.assertIsNone(x)
+#     self.assertIsNotNone(x)
+#     self.assertIn(substring, text)
+#     self.assertNotIn(substring, text
+#     self.assertRaises(e)
+#     self.assertRegexpMatches(text, pattern)
+#     self.assertNotRegexpMatches(text, pattern)
+#     self.tap("")
+
 class TestQuietMode(TestCase):
     def setUp(self):
         """Executed before each test in the class"""
