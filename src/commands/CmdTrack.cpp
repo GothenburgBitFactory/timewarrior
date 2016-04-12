@@ -38,14 +38,12 @@ int CmdTrack (
   // Set up a filter based on the command line.
   auto filter = createFilterFromCLI (cli);
 
-  // TODO Add new interval.
+  // Add new interval.
   Interval tracked;
   tracked.start (filter.start ());
   tracked.end (filter.end ());
   for (auto& tag : filter.tags ())
     tracked.tag (tag);
-
-  // TODO Apply exclusions.
 
   // Update database.
   database.addInterval (tracked);
