@@ -57,12 +57,12 @@ class TestContinue(TestCase):
         self.t = Timew()
 
     def test_continue_nothing(self):
-        """Verify that continuing an empty db does nothing"""
+        """Verify that continuing an empty db is an error"""
         code, out, err = self.t("continue")
         self.assertIn("There is no previous tracking to continue.", out)
 
     def test_continue_open(self):
-        """Verify that continuing an open interval does nothing"""
+        """Verify that continuing an open interval is an error"""
         code, out, err = self.t("start tag1 tag2")
         self.assertIn("Tracking tag1 tag2\n", out)
 
