@@ -1,4 +1,7 @@
 cmake_minimum_required (VERSION 2.8)
+
+# See this CMake issue before complaining about the following.
+# https://cmake.org/Bug/view.php?id=16062
 if(POLICY CMP0037)
   cmake_policy(SET CMP0037 OLD)
 endif()
