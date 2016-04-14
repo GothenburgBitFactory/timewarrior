@@ -93,6 +93,24 @@ sophisticated archiving. For example:
 To archive old data, simply move any subset of files out of this directory.
 
 
+Long Inclusions
+---------------
+If an inclusion spans multiple data files, it is broken into adjacent inclusions
+for each data file. For example, with an empty database, an inclusion of:
+
+  inc 20160101T000000Z - 20160415T000000Z # tag1
+
+Will be broken into separate inclusions, each in a separate file:
+
+  2016-01.data: inc 20160101T000000Z - 20160131T000000Z # tag1
+  2016-02.data: inc 20160201T000000Z - 20160229T000000Z # tag1
+  2016-03.data: inc 20160301T000000Z - 20160331T000000Z # tag1
+  2016-04.data: inc 20160401T000000Z - 20160415T000000Z # tag1
+
+If the database is not empty, then checks for overlapping tags will likely
+prevent the above records being written.
+
+
 Undo Data
 ---------
 The undo stack will be stored as:
