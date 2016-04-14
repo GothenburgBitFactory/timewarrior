@@ -67,10 +67,10 @@ An example file looks like this:
   exc day on 2016-01-01
   exc day off 2016-01-02
 
-  inc 2016-02-28T08:00:00 - 2016-02-28T12:00:00 # Upgrade Planning
-  inc 2016-02-28T13:00:00                       # Upgrade Presentation "ABCD Inc"
+  inc 20160228T080000Z - 20160228T120000Z # Upgrade Planning
+  inc 20160228T130000Z                    # Upgrade Presentation "ABCD Inc"
 
-White space is ignored. Here we see a set of exclusions that define a work week
+Blank lines are ignored. Here we see a set of exclusions that define a work week
 and two inclusions, the first of which represents a four hour block of time with
 two tags 'Upgrade' and 'Planning'. The second inclusion is open ended, having
 only a start time (1pm), but three tags 'Upgrade', 'Presentation' and 'ABCD
