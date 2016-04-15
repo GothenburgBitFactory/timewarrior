@@ -4,8 +4,8 @@ The CLI shall have a well-defined and unambiguous grammar.
 
     timew
     timew start|stop [<tagset>]
-    timew track <interval> [<tagset>]
-|   timew clear <tagset>|<interval>
+    timew track <filter>
+    timew clear <filter>
     timew continue
 
     timew [report] <report> [<filter>]
@@ -14,80 +14,50 @@ The CLI shall have a well-defined and unambiguous grammar.
     timew undo
 
     timew tags [<filter>]
-    timew gaps [<interval>]
+    timew gaps [<filter>]
     timew extensions
 
-    timew export [<interval>] [<tagset>]
+    timew export [<filter>]
     timew import <file>|- ...
 
-    timew help [<command>|<keyword>|examples]
+    timew help [<command>|<keyword>|hints|examples]
     timew diagnostics
 
 
-CLI Grammar
------------
-Assumed built-in types:
-| <datetime>
-| <duration>
-| <time>
-| <string>
-
-| interval:  <timestamp> "-" <timestamp>
-|            <timestamp> "to" <timestamp>
-|            <timestamp> "for" <duration>
-|            "from" <timestamp> "to" <timestamp>
-|            "until" <timestamp>
-|            "from" <timestamp>
-
-| timestamp: <day> <time>
-
-| tagset:    <tag>+
-
-| tag:       string
-
-
-Intervals
----------
-An interval defines a block of time, either using precise values, or vague
-values that are interpreted according to context, yielding precise values. The
-general form is:
-
-  Precise:
-    YYYY-MM-DDTHH:MM:SS[Z|±HH:MM]
-    now
-    8:23:00
-    9am
-
-  Vague (and precise interpretation):
-    today                   :backfill - now      :active
-    this morning            :backfill - 12:00:00
-    last tuesday            YYYY-MM-DD :fill
-    yesterday               YYYY-MM-DD :fill
-
-An interval may be open ended:
-
-      - B
-    A - B
-    A -
-    A
-
-When resolving an interval, vague terms are influenced by configured exclusions
-and rules.  Precise terms always override rules.
-
-
-Tagset
+Filter
 ------
+A filter is a combination of an <interval> and <tagset>, both being optional.
+
+An interval is a representation of a time range.
+
+  <interval>:
+    ["from"] <date> ["to"|"-" <date>]
+    ["from"] <date> "for" <duration>
+    <duration> ["before"|"after" <date>]
+
+Examples of an interval:
+
+    2016-04-15
+    29th
+    since socm
+    yesterday
+    from yesterday to tomorrow
+    4wks before socm
+    4wks
+    since socm for 2wks
+
 A tagset is a set of unique UTF-8 strings, each indentifying some trackable
-entity, for example:
+entity.
 
-  $ timew start Home Garden "Sprint 2016"
-                ---- ------ -------------
-                tag  tag    tag
+  <tagset>:
+    <tag> [<tag> ...]
 
-                -------------------------
-                tagset
+Examples of a tagset:
 
-Tags must be quoted if they contain spaces.
+    Home                                    (1 tag)
+    'Fiscal Policy Alignment Project'       (1 tag)
+    Fiscal\ Policy\ Alignment\ Project      (1 tag)
+    Home Garden                             (2 tags)
 
 
 Hints
