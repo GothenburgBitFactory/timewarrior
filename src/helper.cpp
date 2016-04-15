@@ -26,6 +26,8 @@
 
 #include <cmake.h>
 #include <timew.h>
+#include <shared.h>
+#include <Datetime.h>
 #include <Duration.h>
 #include <sstream>
 #include <iomanip>
@@ -112,42 +114,157 @@ bool expandIntervalHint (
 ////////////////////////////////////////////////////////////////////////////////
 // A filter is a placeholder for a start datetime, end datetime and a set of
 // tags, which makes it essentially an interval.
+//
+// Supported interval forms:
+//   ["from"] <date> ["to"|"-" <date>]
+//   ["from"] <date> "for" <duration>
+//   <duration> ["before"|"after" <date>]
+//
 Filter createFilterFromCLI (const CLI& cli)
 {
   Filter filter;
   std::string start;
   std::string end;
+  std::string duration;
+
+  std::vector <std::string> args;
   for (auto& arg : cli._args)
   {
-    if (arg.hasTag ("BINARY") ||
-        arg.hasTag ("CMD")    ||
-        arg.hasTag ("EXT"))
-      continue;
-
-    if (arg.hasTag ("HINT"))
+    if (arg.hasTag ("FILTER"))
     {
-      expandIntervalHint (arg.attribute ("canonical"), start, end);
-    }
-    else if (arg._lextype == Lexer::Type::date)
-    {
-      if (start == "")
-        start = arg.attribute ("raw");
-      else if (end == "")
-        end = arg.attribute ("raw");
+      auto canonical = arg.attribute ("canonical");
+      auto raw       = arg.attribute ("raw");
 
-      // TODO Is this workable?  Using excess date fields as tags. Might just
-      //      be a coincidence.
+      if (arg.hasTag ("HINT"))
+      {
+        if (expandIntervalHint (canonical, start, end))
+        {
+          args.push_back ("<date>");
+          args.push_back ("-");
+          args.push_back ("<date>");
+        }
+
+        // Hints that are not expandable to a date range are ignored.
+      }
+      else if (arg._lextype == Lexer::Type::date)
+      {
+        if (start == "")
+          start = raw;
+        else if (end == "")
+          end = raw;
+
+        args.push_back ("<date>");
+      }
+      else if (arg._lextype == Lexer::Type::duration)
+      {
+        if (duration == "")
+          duration = raw;
+
+        args.push_back ("<duration>");
+      }
+      else if (arg.hasTag ("KEYWORD"))
+      {
+        args.push_back (raw);
+      }
       else
-        filter.tag (arg.attribute ("raw"));
-    }
-    else
-    {
-      filter.tag (arg.attribute ("raw"));
+      {
+        filter.tag (raw);
+      }
     }
   }
 
-  if (start != "") filter.start (Datetime (start));
-  if (end   != "")   filter.end (Datetime (end));
+  // <date>
+  if (args.size () == 1 &&
+      args[0] == "<date>")
+  {
+    filter.start (Datetime (start));
+    filter.end (Datetime ("now"));
+  }
+
+  // from <date>
+  else if (args.size () == 2 &&
+           args[0] == "from" &&
+           args[1] == "<date>")
+  {
+    filter.start (Datetime (start));
+    filter.end (Datetime ("now"));
+  }
+
+  // <date> to/- <date>
+  else if (args.size () == 3                   &&
+           args[0] == "<date>"                 &&
+           (args[1] == "to" || args[1] == "-") &&
+           args[2] == "<date>")
+  {
+    filter.start (Datetime (start));
+    filter.end (Datetime (end));
+  }
+
+  // from/since <date> to/- <date>
+  else if (args.size () == 4                   &&
+           args[0] == "from"                   &&
+           args[1] == "<date>"                 &&
+           (args[2] == "to" || args[2] == "-") &&
+           args[3] == "<date>")
+  {
+    filter.start (Datetime (start));
+    filter.end (Datetime (end));
+  }
+
+  // <date> for <duration>
+  else if (args.size () == 3   &&
+           args[0] == "<date>" &&
+           args[1] == "for"    &&
+           args[2] == "<duration>")
+  {
+    filter.start (Datetime (start));
+    filter.end (Datetime (start) + Duration (duration).toTime_t ());
+  }
+
+  // from/since <date> for <duration>
+  else if (args.size () == 4                         &&
+           (args[0] == "from" || args[0] == "since") &&
+           args[1] == "<date>"                       &&
+           args[2] == "for"                          &&
+           args[3] == "<duration>")
+  {
+    filter.start (Datetime (start));
+    filter.end (Datetime (start) + Duration (duration).toTime_t ());
+  }
+
+  // <duration> before <date>
+  else if (args.size () == 3 &&
+           args[0] == "<duration>" &&
+           args[1] == "before"     &&
+           args[2] == "<date>")
+  {
+    filter.end (Datetime (start) - Duration (duration).toTime_t ());
+    filter.end (Datetime (start));
+  }
+
+  // <duration> after <date>
+  else if (args.size () == 3 &&
+           args[0] == "<duration>" &&
+           args[1] == "after"      &&
+           args[2] == "<date>")
+  {
+    filter.start (Datetime (start));
+    filter.end (Datetime (start) + Duration (duration).toTime_t ());
+  }
+
+  // <duration>
+  else if (args.size () == 1 &&
+           args[0] == "<duration>")
+  {
+    filter.start (Datetime ("now") - Duration (duration).toTime_t ());
+    filter.end (Datetime ("now"));
+  }
+
+  // Unrecognized date range construct.
+  else if (args.size ())
+  {
+    throw std::string ("Unrecognized date range: '") + join (" ", args) + "'.";
+  }
 
   return filter;
 }
