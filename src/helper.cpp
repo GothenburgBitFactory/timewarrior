@@ -153,6 +153,19 @@ Filter createFilterFromCLI (const CLI& cli)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+Interval createIntervalFromFilter (const Filter& filter)
+{
+  Interval interval;
+  interval.start (filter.start ());
+  interval.end (filter.end ());
+
+  for (auto& tag : filter.tags ())
+    interval.tag (tag);
+
+  return interval;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // The five different overlap possibilities:
 //
 //               timeline.start      timeline.end
