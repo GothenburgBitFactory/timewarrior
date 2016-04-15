@@ -273,7 +273,7 @@ std::vector <std::string> intervalToFileNames (const Interval& interval)
   auto end_y = end.year ();
   auto end_m = end.month ();
 
-  while (start_y <= end_y ||
+  while (start_y < end_y ||
          (start_y == end_y && start_m <= end_m))
   {
     std::stringstream name;
