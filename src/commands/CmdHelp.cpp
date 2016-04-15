@@ -84,7 +84,7 @@ int CmdHelp (const CLI& cli)
                 << "\n"
                 << "Resumes tracking the most recently closed interval. For exqample:\n"
                 << "\n"
-                << "  $ timew track yesterday 9am - 5pm tag1 tag2\n"
+                << "  $ timew track 9am - 5pm tag1 tag2\n"
                 << "  $ timew continue\n"
                 << "\n"
                 << "The 'continue' command creates a new interval, starting now, and using the tags\n"
@@ -112,9 +112,11 @@ int CmdHelp (const CLI& cli)
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "export")
       std::cout << "\n"
-                << "Syntax: timew export\n"
+                << "Syntax: timew export [<filter>]\n"
                 << "\n"
-                << "Exports all the tracked time in JSON format.\n"
+                << "Exports all the tracked time in JSON format. Supports filtering. For example:\n"
+                << "\n"
+                << "  $ timew export from 2016-01-01 for 3wks tag1\n"
                 << "\n"
                 << "See also 'import'.\n"
                 << "\n";
