@@ -63,7 +63,7 @@ class TestClock(TestCase):
 
     def test_start_new(self):
         """Verify that 'start' creates an open interval"""
-        code, out, err = self.t("")
+        code, out, err = self.t.runError("")
         self.assertIn("There is no active time tracking.", out)
 
         code, out, err = self.t("start tag1 tag2")
@@ -76,7 +76,7 @@ class TestClock(TestCase):
 
     def test_start_stop(self):
         """Verify that start/stop creates and closes an interval"""
-        code, out, err = self.t("")
+        code, out, err = self.t.runError("")
         self.assertIn("There is no active time tracking.", out)
 
         code, out, err = self.t("start tag1 tag2")
@@ -90,12 +90,12 @@ class TestClock(TestCase):
         self.assertIn('"end":', out)
         self.assertIn('"tags":["tag1","tag2"]', out)
 
-        code, out, err = self.t("")
+        code, out, err = self.t.runError("")
         self.assertIn("There is no active time tracking.", out)
 
     def test_start_additional(self):
         """Verify that 'start' closes an open interval and starts a new one"""
-        code, out, err = self.t("")
+        code, out, err = self.t.runError("")
         self.assertIn("There is no active time tracking.", out)
 
         code, out, err = self.t("start tag1 tag2")
@@ -114,7 +114,7 @@ class TestClock(TestCase):
         self.assertIn('"tags":["tag1","tag2"]', out)
         self.assertIn('"tags":["tag3"]', out)
 
-        code, out, err = self.t("")
+        code, out, err = self.t.runError("")
         self.assertIn("There is no active time tracking.", out)
 
     def test_start_subtract(self):
