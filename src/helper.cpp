@@ -85,7 +85,7 @@ std::string intervalSummarize (const Rules& rules, const Interval& interval)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void expandIntervalHint (
+bool expandIntervalHint (
   const std::string& hint,
   std::string& start,
   std::string& end)
@@ -103,7 +103,10 @@ void expandIntervalHint (
   {
     start = hints[hint][0];
     end   = hints[hint][1];
+    return true;
   }
+
+  return false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
