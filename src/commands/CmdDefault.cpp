@@ -30,20 +30,27 @@
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
+// Returns 0 if tracking is active, 1 if not.
 int CmdDefault (Rules& rules, Database& database)
 {
-  if (rules.getBoolean ("verbose"))
-  {
-    // Load the most recent interval, summarize and display.
-    auto interval = getLatestInterval (database);
+  int status = 0;
 
-    if (interval.isStarted () && ! interval.isEnded ())
+  // Load the most recent interval, summarize and display.
+  auto interval = getLatestInterval (database);
+  if (interval.isStarted () && ! interval.isEnded ())
+  {
+    if (rules.getBoolean ("verbose"))
       std::cout << intervalSummarize (rules, interval);
-    else
+  }
+  else
+  {
+    if (rules.getBoolean ("verbose"))
       std::cout << "There is no active time tracking.\n";
+
+    status = 1;
   }
 
-  return 0;
+  return status;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
