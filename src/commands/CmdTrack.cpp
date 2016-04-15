@@ -35,17 +35,8 @@ int CmdTrack (
   Rules& rules,
   Database& database)
 {
-  // Set up a filter based on the command line.
   auto filter = createFilterFromCLI (cli);
-
-  // Add new interval.
-  Interval tracked;
-  tracked.start (filter.start ());
-  tracked.end (filter.end ());
-  for (auto& tag : filter.tags ())
-    tracked.tag (tag);
-
-  // Update database.
+  auto tracked = createIntervalFromFilter (filter);
   database.addInterval (tracked);
 
   // User feedback.
