@@ -109,6 +109,7 @@ std::string A2::dump () const
     else if (tag == "CMD")           tags += "\033[1;37;46m"           + tag + "\033[0m ";
     else if (tag == "EXT")           tags += "\033[1;37;42m"           + tag + "\033[0m ";
     else if (tag == "HINT")          tags += "\033[1;37;43m"           + tag + "\033[0m ";
+    else if (tag == "FILTER")        tags += "\033[1;37;45m"           + tag + "\033[0m ";
     else                             tags += "\033[32m"                + tag + "\033[0m ";
   }
 
@@ -227,6 +228,7 @@ void CLI::analyze ()
   handleArg0 ();
   lexArguments ();
   canonicalizeNames ();
+  identifyFilter ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -365,6 +367,44 @@ void CLI::canonicalizeNames ()
       a.attribute ("canonical", canonical);
       a.tag ("EXT");
       alreadyFoundCmd = true;
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Locate arguments that are part of a filter.
+void CLI::identifyFilter ()
+{
+  for (auto& a : _args)
+  {
+    auto raw = a.attribute ("raw");
+
+    if (a.hasTag ("HINT"))
+      a.tag ("FILTER");
+
+    else if (a._lextype == Lexer::Type::date ||
+             a._lextype == Lexer::Type::duration)
+    {
+      a.tag ("FILTER");
+    }
+
+    else if (raw == "from"  ||
+             raw == "since" ||
+             raw == "to"    ||
+             raw == "until" ||
+             raw == "-"     ||
+             raw == "for")
+    {
+      a.tag ("FILTER");
+      a.tag ("KEYWORD");
+    }
+
+    else if (! a.hasTag ("CMD") &&
+             ! a.hasTag ("EXT") &&
+             ! a.hasTag ("BINARY"))
+    {
+      a.tag ("FILTER");
+      a.tag ("TAG");
     }
   }
 }
