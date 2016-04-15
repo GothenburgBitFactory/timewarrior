@@ -16,8 +16,10 @@ Timewarrior supports many commands.
 
 .TP
 .B timew
+.br
 When run with no arguments, the default command is run, which indicates whether
-there is any active tracking, and if so, shows a summary.
+there is any active tracking, and if so, shows a summary, and exits with a code
+0. If there is no active time tracking, exit code is 1.
 
 .TP
 .B timew continue
