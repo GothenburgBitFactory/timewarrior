@@ -1,6 +1,7 @@
 all.log
 *.pyc
 composite.t
+daterange.t
 exclusion.t
 interval.t
 lexer.t
