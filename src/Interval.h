@@ -37,6 +37,7 @@ public:
   Interval () = default;
   void initialize (const std::string&);
   bool empty () const;
+  Daterange range () const;
 
   Datetime start () const;
   void start (Datetime);
