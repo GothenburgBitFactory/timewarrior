@@ -142,7 +142,7 @@ Daterange Daterange::intersect (const Daterange& other) const
   {
     // Intersection is choosing the later of the two starts, and the earlier of
     // the two ends, of two overlapping ranges.
-    result.start (start () < other.start () ? start () : other.start ());
+    result.start (start () > other.start () ? start () : other.start ());
 
     if (isEnded ())
     {
