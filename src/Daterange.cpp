@@ -125,12 +125,15 @@ bool Daterange::overlap (const Daterange& other) const
 // Calculate the following intersection cases:
 //
 // this                     |--------|
+// A          |--------|
 // B                   |--------|
 // C                          |----|
 // D                             |--------|
+// E                                      |--------|
 // F                      |-------------|
 // G                      |...
 // H                           |...
+// I                                   |...
 //
 // this                     |...
 // A          |--------|
@@ -174,14 +177,6 @@ Daterange Daterange::intersect (const Daterange& other) const
 // Consider the following overlap cases:
 //
 // this                     |--------|
-// B                   |--------|
-// C                          |----|
-// D                             |--------|
-// F                      |-------------|
-// G                      |...
-// H                           |...
-//
-// this                     |...
 // A          |--------|
 // B                   |--------|
 // C                          |----|
@@ -192,33 +187,46 @@ Daterange Daterange::intersect (const Daterange& other) const
 // H                           |...
 // I                                   |...
 //
+// this                     |...
+// A          |--------|
+// B                   |--------|                              !!!
+// C                          |----|                           !!!
+// D                             |--------|                    !!!
+// E                                      |--------|           !!!
+// F                      |-------------|                      !!!
+// G                      |...
+// H                           |...
+// I                                   |...
+//
 std::vector <Daterange> Daterange::subtract (const Daterange& other) const
 {
   std::vector <Daterange> results;
 
   if (overlap (other))
   {
-    // B C D F G H
     if (start () < other.start ())
     {
-      // C D H
       results.push_back (Daterange (start (), other.start ()));
 
       if (other.isEnded () &&
-          end () > other.end ())
+          (! isEnded () || end () > other.end ()))
       {
-        // C
         results.push_back (Daterange (other.end (), end ()));
       }
     }
     else
     {
-      // B F G
-      if (other.isEnded () &&
-          end () > other.end ())
+      if (other.isEnded ())
       {
-        // B
-        results.push_back (Daterange (other.end (), end ()));
+        if (isEnded ())
+        {
+          if (end () > other.end ())
+            results.push_back (Daterange (other.end (), end ()));
+        }
+        else
+        {
+          results.push_back (Daterange (other.end (), end ()));
+        }
       }
     }
   }
