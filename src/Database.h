@@ -53,7 +53,7 @@ public:
 
 private:
   std::string currentDataFile () const;
-  void createNewDatafile (int, int);
+  void createDatafileIfNecessary (int, int);
 
 private:
   std::string               _location   {"~/.timewarrior/data"};

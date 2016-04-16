@@ -132,7 +132,8 @@ void Database::addInterval (const Interval& interval)
 
   // Datafile for this interval does not exist. This means the data file was
   // deleted/removed, or the interval is old. Create the file.
-  createNewDatafile (interval.start ().year (), interval.start ().month ());
+  createDatafileIfNecessary (interval.start ().year (), interval.start ().month ());
+*/
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -169,7 +170,7 @@ void Database::modifyInterval (const Interval& from, const Interval& to)
 
   // There was no file that accepted the interval, which means the data file was
   // deleted/moved. recreate the file.
-  createNewDatafile (to.start ().year (), to.start ().month ());
+  createDatafileIfNecessary (to.start ().year (), to.start ().month ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -206,7 +207,7 @@ std::string Database::currentDataFile () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Database::createNewDatafile (int year, int month)
+void Database::createDatafileIfNecessary (int year, int month)
 {
   std::stringstream file;
   file << _location
