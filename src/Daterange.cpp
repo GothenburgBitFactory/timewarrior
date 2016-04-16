@@ -28,7 +28,7 @@
 #include <Daterange.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-Daterange::Daterange (const Datetime start, const Datetime end)
+Daterange::Daterange (const Datetime& start, const Datetime& end)
 {
   _start = start;
   _end = end;
@@ -41,7 +41,7 @@ Datetime Daterange::start () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Daterange::start (Datetime value)
+void Daterange::start (const Datetime& value)
 {
   _start = value;
 }
@@ -53,7 +53,7 @@ Datetime Daterange::end () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Daterange::end (Datetime value)
+void Daterange::end (const Datetime& value)
 {
   _end = value;
 }
@@ -91,7 +91,7 @@ bool Daterange::isEnded () const
 // other                  |...                             true
 // other                      |...                         true
 //
-bool Daterange::overlap (const Daterange other) const
+bool Daterange::overlap (const Daterange& other) const
 {
   if (! isStarted () ||
       ! other.isStarted ())

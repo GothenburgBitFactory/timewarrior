@@ -33,17 +33,17 @@ class Daterange
 {
 public:
   Daterange () = default;
-  Daterange (const Datetime, const Datetime);
+  Daterange (const Datetime&, const Datetime&);
 
   Datetime start () const;
-  void start (Datetime);
+  void start (const Datetime&);
 
   Datetime end () const;
-  void end (Datetime);
+  void end (const Datetime&);
 
   bool isStarted () const;
   bool isEnded () const;
-  bool overlap (const Daterange) const;
+  bool overlap (const Daterange&) const;
 
 private:
   Datetime               _start {0};
