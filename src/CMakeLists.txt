@@ -9,6 +9,7 @@ set (timew_SRCS CLI.cpp        CLI.h
                 Composite.cpp  Composite.h
                 Database.cpp   Database.h
                 Datafile.cpp   Datafile.h
+                Daterange.cpp  Daterange.h
                 Exclusion.cpp  Exclusion.h
                 Extensions.cpp Extensions.h
                 Filter.cpp     Filter.h
