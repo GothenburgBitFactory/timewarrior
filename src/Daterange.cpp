@@ -81,22 +81,26 @@ bool Daterange::isEnded () const
 // Detect the following overlap cases:
 //
 // this                     |--------|
-// other      |--------|                                   false  [1]
-// other               |--------|                          true
-// other                      |----|                       true
-// other                         |--------|                true
-// other                                  |--------|       false  [2]
-// other                  |-------------|                  true
-// other                  |...                             true
-// other                       |...                        true
-// other                               |...                false  [3]
+// A          |--------|
+// B                   |--------|
+// C                          |----|
+// D                             |--------|
+// E                                      |--------|
+// F                      |-------------|
+// G                      |...
+// H                           |...
+// I                                   |...
 //
 // this                     |...
-// other      |--------|                                   false  [4]
-// other               |--------|                          true
-// other                      |----|                       true
-// other                  |...                             true
-// other                      |...                         true
+// A          |--------|
+// B                   |--------|
+// C                          |----|
+// D                             |--------|
+// E                                      |--------|
+// F                      |-------------|
+// G                      |...
+// H                           |...
+// I                                   |...
 //
 bool Daterange::overlap (const Daterange& other) const
 {
@@ -104,12 +108,12 @@ bool Daterange::overlap (const Daterange& other) const
       ! other.isStarted ())
     return false;
 
-  // [1], [4] Other range ends before this range starts.
+  // Other range ends before this range starts.
   if (other.isEnded () &&
       other.end () <= start ())
     return false;
 
-  // [2], [3] Other range starts after this range ends.
+  // Other range starts after this range ends.
   if (isEnded () &&
       other.start () >= end ())
     return false;
@@ -121,18 +125,23 @@ bool Daterange::overlap (const Daterange& other) const
 // Calculate the following intersection cases:
 //
 // this                     |--------|
-// other               |--------|
-// other                      |----|
-// other                         |--------|
-// other                  |-------------|
-// other                  |...
-// other                       |...
+// B                   |--------|
+// C                          |----|
+// D                             |--------|
+// F                      |-------------|
+// G                      |...
+// H                           |...
 //
 // this                     |...
-// other               |--------|
-// other                      |----|
-// other                  |...
-// other                      |...
+// A          |--------|
+// B                   |--------|
+// C                          |----|
+// D                             |--------|
+// E                                      |--------|
+// F                      |-------------|
+// G                      |...
+// H                           |...
+// I                                   |...
 //
 Daterange Daterange::intersect (const Daterange& other) const
 {
@@ -159,6 +168,68 @@ Daterange Daterange::intersect (const Daterange& other) const
   }
 
   return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Consider the following overlap cases:
+//
+// this                     |--------|
+// B                   |--------|
+// C                          |----|
+// D                             |--------|
+// F                      |-------------|
+// G                      |...
+// H                           |...
+//
+// this                     |...
+// A          |--------|
+// B                   |--------|
+// C                          |----|
+// D                             |--------|
+// E                                      |--------|
+// F                      |-------------|
+// G                      |...
+// H                           |...
+// I                                   |...
+//
+std::vector <Daterange> Daterange::subtract (const Daterange& other) const
+{
+  std::vector <Daterange> results;
+
+  if (overlap (other))
+  {
+    // B C D F G H
+    if (start () < other.start ())
+    {
+      // C D H
+      results.push_back (Daterange (start (), other.start ()));
+
+      if (other.isEnded () &&
+          end () > other.end ())
+      {
+        // C
+        results.push_back (Daterange (other.end (), end ()));
+      }
+    }
+    else
+    {
+      // B F G
+      if (other.isEnded () &&
+          end () > other.end ())
+      {
+        // B
+        results.push_back (Daterange (other.end (), end ()));
+      }
+    }
+  }
+
+  // Non-overlapping subtraction is a nop.
+  else
+  {
+    results.push_back (*this);
+  }
+
+  return results;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

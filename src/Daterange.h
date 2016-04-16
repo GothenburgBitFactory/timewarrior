@@ -28,6 +28,7 @@
 #define INCLUDED_DATERANGE
 
 #include <Datetime.h>
+#include <vector>
 
 class Daterange
 {
@@ -46,10 +47,11 @@ public:
   bool isEnded () const;
   bool overlap (const Daterange&) const;
   Daterange intersect (const Daterange&) const;
+  std::vector <Daterange> subtract (const Daterange&) const;
 
 private:
-  Datetime               _start {0};
-  Datetime               _end   {0};
+  Datetime _start {0};
+  Datetime _end   {0};
 };
 
 #endif
