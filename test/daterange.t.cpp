@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (21);
+  UnitTest t (36);
 
   // bool isStarted () const;
   // bool isEnded () const;
@@ -99,6 +99,42 @@ int main (int, char**)
   t.ok    (refOpen.overlap (testG), "Daterange:   refOpen.overlap(testG)");
   t.ok    (refOpen.overlap (testH), "Daterange:   refOpen.overlap(testH)");
   t.ok    (refOpen.overlap (testI), "Daterange: ! refOpen.overlap(testI)");
+
+
+  // this                     |--------|
+  // other      |--------|                                   [A] false
+  // other               |--------|                          [B] true
+  // other                      |----|                       [C] true
+  // other                         |--------|                [D] true
+  // other                                  |--------|       [E] false
+  // other                  |-------------|                  [F] true
+  // other                  |...                             [G] true
+  // other                       |...                        [H] true
+  // other                               |...                [I] false
+  Daterange empty;
+  t.ok (refClosed.intersect (testA) == empty,                                        "Daterange: refClosed.intersect(testA) == empty");
+  t.ok (refClosed.intersect (testB) == Daterange (refClosed.start (), testB.end ()), "Daterange: refClosed.intersect(testB) == Daterange(refClosed.start (), testB.end ())");
+  t.ok (refClosed.intersect (testC) == testC,                                        "Daterange: refClosed.intersect(testB) == testC");
+  t.ok (refClosed.intersect (testD) == Daterange (testD.start (), refClosed.end ()), "Daterange: refClosed.intersect(testB) == Daterange(testD.start (), refClosed.end ())");
+  t.ok (refClosed.intersect (testE) == empty,                                        "Daterange: refClosed.intersect(testE) == empty");
+  t.ok (refClosed.intersect (testF) == refClosed,                                    "Daterange: refClosed.intersect(testF) == refClosed");
+  t.ok (refClosed.intersect (testG) == refClosed,                                    "Daterange: refClosed.intersect(testG) == refClosed");
+  t.ok (refClosed.intersect (testH) == Daterange (testH.start (), refClosed.end ()), "Daterange: refClosed.intersect(testH) == Daterange(testH.start (), refClosed.end ())");
+  t.ok (refClosed.intersect (testI) == empty,                                        "Daterange: refClosed.intersect(testI) == empty");
+
+  // this                     |...
+  // other      |--------|                                   [A] false
+  // other               |--------|                          [B] true
+  // other                      |----|                       [C] true
+  // other                  |...                             [G] true
+  // other                       |...                        [H] true
+  // other                               |...                [I] true
+  t.ok (refOpen.intersect (testA) == empty,                                          "Daterange: refOpen.intersect(testA) == empty");
+  t.ok (refOpen.intersect (testB) == Daterange (refOpen.start (), testB.end ()),     "Daterange: refOpen.intersect(testB) == Daterange(refOpen.start (), testB.end ())");
+  t.ok (refOpen.intersect (testC) == testC,                                          "Daterange: refOpen.intersect(testB) == testC");
+  t.ok (refOpen.intersect (testG) == refOpen,                                        "Daterange: refOpen.intersect(testG) == refOpen");
+  t.ok (refOpen.intersect (testH) == testH,                                          "Daterange: refOpen.intersect(testH) == testH");
+  t.ok (refOpen.intersect (testI) == testI,                                          "Daterange: refOpen.intersect(testI) == testI");
 
   return 0;
 }
