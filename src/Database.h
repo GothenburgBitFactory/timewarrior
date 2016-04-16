@@ -29,6 +29,7 @@
 
 #include <Datafile.h>
 #include <Interval.h>
+#include <Daterange.h>
 #include <vector>
 #include <string>
 
@@ -54,6 +55,7 @@ public:
 private:
   std::string currentDataFile () const;
   void createDatafileIfNecessary (int, int);
+  std::vector <Daterange> segmentRange (const Daterange&);
 
 private:
   std::string               _location   {"~/.timewarrior/data"};

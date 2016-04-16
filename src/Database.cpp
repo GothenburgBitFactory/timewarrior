@@ -227,3 +227,52 @@ void Database::createDatafileIfNecessary (int year, int month)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// The input Datarange has a start and end, for example:
+//
+//   2016-01-20 to 2016-04-15
+//
+// Given the monthly storage scheme, split the Datarange into a vector of
+// segmented Dataranges:
+//
+//   2016-01-20 to 2016-02-01
+//   2016-02-01 to 2016-03-01
+//   2016-03-01 to 2016-04-01
+//   2016-04-01 to 2016-05-15
+//
+std::vector <Daterange> Database::segmentRange (const Daterange& range)
+{
+  std::vector <Daterange> segments;
+
+  auto start_y = range.start ().year ();
+  auto start_m = range.start ().month ();
+
+  auto end = range.end ();
+  if (end.toEpoch () == 0)
+    end = Datetime ();
+
+  auto end_y = end.year ();
+  auto end_m = end.month ();
+
+  while (start_y < end_y ||
+         (start_y == end_y && start_m <= end_m))
+  {
+    // Capture date before incrementing month.
+    Datetime segmentStart (start_m, 1, start_y);
+
+    // Next month.
+    start_m += 1;
+    if (start_m > 12)
+    {
+      start_y += 1;
+      start_m = 1;
+    }
+
+    // Capture date after incrementing month.
+    Datetime segmentEnd (start_m, 1, start_y);
+    segments.push_back (Daterange (segmentStart, segmentEnd));
+  }
+
+  return segments;
+}
+
+////////////////////////////////////////////////////////////////////////////////
