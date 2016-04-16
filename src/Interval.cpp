@@ -53,7 +53,7 @@ void Interval::initialize (const std::string& line)
     if (tokens.size () > 1 &&
         tokens[1].length () == 16)
     {
-      _start = Datetime (tokens[1]);
+      _range.start (Datetime (tokens[1]));
       offset = 1;
 
       // Optional '-' <iso>
@@ -61,7 +61,7 @@ void Interval::initialize (const std::string& line)
           tokens[2] == "-"   &&
           tokens[3].length () == 16)
       {
-        _end = Datetime (tokens[3]);
+        _range.end (Datetime (tokens[3]));
         offset = 3;
       }
     }
@@ -84,45 +84,45 @@ void Interval::initialize (const std::string& line)
 ////////////////////////////////////////////////////////////////////////////////
 bool Interval::empty () const
 {
-  return _start.toEpoch () == 0 &&
-         _end.toEpoch ()   == 0 &&
-         _tags.size ()     == 0;
+  return _range.start ().toEpoch () == 0 &&
+         _range.end ().toEpoch ()   == 0 &&
+         _tags.size ()              == 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 Datetime Interval::start () const
 {
-  return _start;
+  return _range.start ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Interval::start (Datetime value)
 {
-  _start = value;
+  _range.start (value);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 Datetime Interval::end () const
 {
-  return _end;
+  return _range.end ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Interval::end (Datetime value)
 {
-  _end = value;
+  _range.end (value);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 bool Interval::isStarted () const
 {
-  return _start.toEpoch () > 0;
+  return _range.isStarted ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 bool Interval::isEnded () const
 {
-  return _end.toEpoch   () > 0;
+  return _range.isEnded ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -156,11 +156,11 @@ std::string Interval::serialize () const
   std::stringstream out;
   out << "inc";
 
-  if (_start.toEpoch ())
-    out << " " << _start.toISO ();
+  if (_range.start ().toEpoch ())
+    out << " " << _range.start ().toISO ();
 
-  if (_end.toEpoch ())
-    out << " - " << _end.toISO ();
+  if (_range.end ().toEpoch ())
+    out << " - " << _range.end ().toISO ();
 
   if (_tags.size ())
   {
@@ -178,14 +178,14 @@ std::string Interval::json () const
   std::stringstream out;
   out << '{';
 
-  if (_start.toEpoch ())
-    out << "\"start\":\"" << _start.toISO () << "\"";
+  if (_range.isStarted ())
+    out << "\"start\":\"" << _range.start ().toISO () << "\"";
 
-  if (_end.toEpoch ())
+  if (_range.isEnded ())
   {
-    if (_start.toEpoch ())
+    if (_range.isStarted ())
       out << ',';
-    out << "\"end\":\"" << _end.toISO () << "\"";
+    out << "\"end\":\"" << _range.end ().toISO () << "\"";
   }
 
   if (_tags.size ())
@@ -199,8 +199,8 @@ std::string Interval::json () const
       tags += "\"" + tag + "\"";
     }
 
-    if (_start.toEpoch () ||
-        _end.toEpoch ())
+    if (_range.start ().toEpoch () ||
+        _range.end ().toEpoch ())
       out << ',';
 
     out << "\"tags\":["
@@ -218,9 +218,9 @@ std::string Interval::dump () const
   std::stringstream out;
 
   out << "Interval _start '"
-      << _start.toEpoch ()
+      << _range.start ().toEpoch ()
       << "' _end '"
-      << _end.toEpoch ()
+      << _range.end ().toEpoch ()
       << "' _tags";
 
   for (auto& tag : _tags)

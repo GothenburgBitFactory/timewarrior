@@ -27,9 +27,9 @@
 #ifndef INCLUDED_INTERVAL
 #define INCLUDED_INTERVAL
 
+#include <Daterange.h>
 #include <set>
 #include <string>
-#include <Datetime.h>
 
 class Interval
 {
@@ -57,8 +57,7 @@ public:
   std::string dump () const;
 
 private:
-  Datetime               _start {0};
-  Datetime               _end   {0};
+  Daterange              _range {};
   std::set <std::string> _tags  {};
 };
 
