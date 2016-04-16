@@ -35,7 +35,7 @@ Daterange::Daterange (const Datetime& start, const Datetime& end)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Daterange::operator== (const Daterange& other)
+bool Daterange::operator== (const Daterange& other) const
 {
   return _start == other._start &&
          _end   == other._end;

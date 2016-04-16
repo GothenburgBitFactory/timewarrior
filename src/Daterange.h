@@ -35,7 +35,7 @@ class Daterange
 public:
   Daterange () = default;
   Daterange (const Datetime&, const Datetime&);
-  bool operator== (const Daterange&);
+  bool operator== (const Daterange&) const;
 
   Datetime start () const;
   void start (const Datetime&);
