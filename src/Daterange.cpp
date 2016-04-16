@@ -71,7 +71,7 @@ bool Daterange::isEnded () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Detect the following cases:
+// Detect the following overlap cases:
 //
 // this                     |--------|
 // other      |--------|                                   false  [1]
@@ -108,6 +108,50 @@ bool Daterange::overlap (const Daterange& other) const
     return false;
 
   return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Calculate the following intersection cases:
+//
+// this                     |--------|
+// other               |--------|
+// other                      |----|
+// other                         |--------|
+// other                  |-------------|
+// other                  |...
+// other                       |...
+//
+// this                     |...
+// other               |--------|
+// other                      |----|
+// other                  |...
+// other                      |...
+//
+Daterange Daterange::intersect (const Daterange& other) const
+{
+  Daterange result;
+
+  if (overlap (other))
+  {
+    // Intersection is choosing the later of the two starts, and the earlier of
+    // the two ends, of two overlapping ranges.
+    result.start (start () < other.start () ? start () : other.start ());
+
+    if (isEnded ())
+    {
+      if (other.isEnded ())
+        result.end (end () < other.end () ? end () : other.end ());
+      else
+        result.end (end ());
+    }
+    else
+    {
+      if (other.isEnded ())
+        result.end (other.end ());
+    }
+  }
+
+  return result;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

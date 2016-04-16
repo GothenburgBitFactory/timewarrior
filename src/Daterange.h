@@ -44,6 +44,7 @@ public:
   bool isStarted () const;
   bool isEnded () const;
   bool overlap (const Daterange&) const;
+  Daterange intersect (const Daterange&) const;
 
 private:
   Datetime               _start {0};
