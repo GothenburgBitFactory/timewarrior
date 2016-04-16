@@ -54,7 +54,6 @@ Timeline createTimelineFromData (const Rules&, Database&, const Filter&);
 Interval getLatestInterval (Database&);
 bool intervalMatchesFilter (const Interval&, const Filter&);
 std::string jsonFromIntervals (const std::vector <Interval>&);
-std::vector <std::string> intervalToFileNames (const Interval&);
 
 // utiŀ.cpp
 std::string osName ();
