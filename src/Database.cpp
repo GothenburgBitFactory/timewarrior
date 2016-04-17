@@ -243,3 +243,25 @@ std::vector <Daterange> Database::segmentRange (const Daterange& range)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void Database::initializeDatafiles ()
+{
+  // Because the data files have names YYYY-MM.data, sorting them by name also
+  // sorts by the intervals within.
+  Directory d (_location);
+  auto files = d.list ();
+  std::sort (files.begin (), files.end ());
+
+  for (auto& file : files)
+  {
+    // If it looks like a data file.
+    if (file.find (".data") == file.length () - 5)
+    {
+      auto basename = File (file).name ();
+      auto year  = strtol (basename.substr (0, 4).c_str (), NULL, 10);
+      auto month = strtol (basename.substr (5, 2).c_str (), NULL, 10);
+      getDatafile (year, month);
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////

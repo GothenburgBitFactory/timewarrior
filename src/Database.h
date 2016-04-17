@@ -55,6 +55,7 @@ public:
 private:
   unsigned int getDatafile (int, int);
   std::vector <Daterange> segmentRange (const Daterange&);
+  void initializeDatafiles ();
 
 private:
   std::string               _location   {"~/.timewarrior/data"};
