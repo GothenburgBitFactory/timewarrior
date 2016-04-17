@@ -113,6 +113,15 @@ void initializeDataAndRules (
   char* override = getenv ("TIMEWARRIORDB");
   dbLocation = Directory (override ? override : "~/.timewarrior");
 
+  // If dbLocation exists, but is not readable/writable/executable, error.
+  if (dbLocation.exists () &&
+      (! dbLocation.readable () ||
+       ! dbLocation.writable () ||
+       ! dbLocation.executable ()))
+  {
+    throw format ("Database is not readable at '{1}'", dbLocation._data);
+  }
+
   // If dbLocation does not exist, ask whether it should be created.
   bool shinyNewDatabase = false;
   if (! dbLocation.exists () &&
@@ -133,15 +142,6 @@ void initializeDataAndRules (
   data += "data";
   if (! data.exists ())
     data.create (0700);
-
-  // If dbLocation exists, but is not readable/writable/executable, error.
-  if (dbLocation.exists () &&
-      (! dbLocation.readable () ||
-       ! dbLocation.writable () ||
-       ! dbLocation.executable ()))
-  {
-    throw format ("Database is not readable at '{1}'", dbLocation._data);
-  }
 
   // Load the configuration data.
   File configFile (dbLocation);
