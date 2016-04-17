@@ -128,11 +128,8 @@ void Database::addInterval (const Interval& interval)
 
     // Intersect the original interval range, and the segment.
     Interval segmentedInterval (interval);
-    if (intervalRange.overlap (segment))
-    {
-      segmentedInterval.range (intervalRange.intersect (segment));
-      _files[df].addInterval (segmentedInterval);
-    }
+    segmentedInterval.range (intervalRange.intersect (segment));
+    _files[df].addInterval (segmentedInterval);
   }
 }
 
