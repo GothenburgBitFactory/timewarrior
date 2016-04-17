@@ -37,34 +37,12 @@
 void Database::initialize (const std::string& location)
 {
   _location = location;
-  auto current = currentDataFile ();
 
   // Because the data files have names YYYY-MM.data, sorting them by name also
   // sorts by the intervals within.
   Directory d (_location);
   auto files = d.list ();
   std::sort (files.begin (), files.end ());
-
-  // Ensure the list always contains the name of the current file, even if it
-  // does not exist.
-  if (std::find (files.begin (), files.end (), current) == files.end ())
-    files.push_back (current);
-
-  for (auto& file : files)
-  {
-    // If it looks like a data file.
-    if (file.find (".data") == file.length () - 5)
-    {
-      Datafile df;
-      df.initialize (file);
-
-      // New files need the set of current exclusions.
-      if (! File (file).exists ())
-        df.setExclusions (_exclusions);
-
-      _files.push_back (df);
-    }
-  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -203,27 +181,8 @@ std::string Database::dump () const
   for (auto& exclusion : _exclusions)
     out << "  Exclusion: " << exclusion << "\n";
 
-  out << "Datafiles\n";
   for (auto& df : _files)
     out << df.dump ();
-
-  return out.str ();
-}
-
-////////////////////////////////////////////////////////////////////////////////
-std::string Database::currentDataFile () const
-{
-  time_t current;
-  time (&current);
-  struct tm* t = gmtime (&current);
-
-  std::stringstream out;
-  out << _location
-      << '/'
-      << std::setw (4) << std::setfill ('0') << (t->tm_year + 1900)
-      << '-'
-      << std::setw (2) << std::setfill ('0') << (t->tm_mon + 1)
-      << ".data";
 
   return out.str ();
 }

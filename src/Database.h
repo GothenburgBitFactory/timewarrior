@@ -53,7 +53,6 @@ public:
   std::string dump () const;
 
 private:
-  std::string currentDataFile () const;
   unsigned int getDatafile (int, int);
   std::vector <Daterange> segmentRange (const Daterange&);
 
