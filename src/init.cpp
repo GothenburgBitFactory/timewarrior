@@ -174,8 +174,6 @@ void initializeDataAndRules (
 // database object as strings.
 void initializeDatabaseExclusions (Database& database, const Rules& rules)
 {
-  database.clearExclusions ();
-
   for (auto& name : rules.all ("exclusions."))
   {
     name = lowerCase (name);
