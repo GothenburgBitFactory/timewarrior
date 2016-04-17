@@ -93,9 +93,6 @@ void Datafile::setExclusions (const std::vector <std::string>& exclusions)
   // TODO   _dirty = true;
 
   _exclusions = exclusions;
-
-  for (auto& exclusion : _exclusions)
-    _lines.push_back (exclusion);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -151,7 +148,7 @@ void Datafile::commit ()
     {
       _file.lock ();
       _file.truncate ();
-      _file.append (std::string(""));   // Seek to EOF.
+      _file.append (std::string (""));   // Seek to EOF.
 
       // Write out all the lines.
       for (auto& line : _lines)
@@ -162,8 +159,6 @@ void Datafile::commit ()
     }
     else
       throw format ("Could not write to data file {1}", _file._data);
-
-    _dirty = false;
   }
 }
 
@@ -189,8 +184,31 @@ void Datafile::load_lines ()
   if (_file.open ())
   {
     _file.lock ();
-    _file.read (_lines);
+
+    // File::read calls read_lines.clear (), so this prevents the exclsions from
+    // being discarded.
+    std::vector <std::string> read_lines;
+    _file.read (read_lines);
     _file.close ();
+
+    bool hasExclusions = false;
+    for (auto& line : read_lines)
+    {
+      if (line[0] == 'e')
+      {
+        hasExclusions = true;
+        break;
+      }
+    }
+
+    // Add the exclusions to new files.
+    if (! hasExclusions)
+      for (auto& e : _exclusions)
+        _lines.push_back (e);
+
+    // Append the lines that were read.
+    for (auto& line : read_lines)
+      _lines.push_back (line);
 
     _lines_loaded = true;
   }

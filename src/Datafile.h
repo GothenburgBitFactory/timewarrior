@@ -46,7 +46,6 @@ public:
   void setExclusions (const std::vector <std::string>&);
   void addInterval (const Interval&);
   void deleteInterval (const Interval&);
-
   void commit ();
 
   std::string dump () const;
@@ -55,17 +54,11 @@ private:
   void load_lines ();
 
 private:
-  // File representing data.
   File                      _file             {};
   bool                      _dirty            {false};
-
-  // Lines read from file, not parsed.
   std::vector <std::string> _lines            {};
   bool                      _lines_loaded     {false};
-
-  // Exclusions fed from Database.
   std::vector <std::string> _exclusions       {};
-
   Daterange                 _range            {};
 };
 
