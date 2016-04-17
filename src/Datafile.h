@@ -44,7 +44,7 @@ public:
 
   void setExclusions (const std::vector <std::string>&);
   void addInterval (const Interval&);
-  bool deleteInterval (const Interval&);
+  void deleteInterval (const Interval&);
 
   void commit ();
 

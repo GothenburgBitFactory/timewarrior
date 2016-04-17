@@ -114,27 +114,24 @@ void Datafile::addInterval (const Interval& interval)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Datafile::deleteInterval (const Interval& interval)
+void Datafile::deleteInterval (const Interval& interval)
 {
   // Return false if the interval does not belong in this file.
   // Note: end date might be zero.
-  if (interval.start () >= _dayN ||
-      (interval.end ().toEpoch () && interval.end () < _day1))
-    return false;
-
-  if (! _lines_loaded)
-    load_lines ();
-
-  auto serialized = interval.serialize ();
-  auto i = std::find (_lines.begin (), _lines.end (), serialized);
-  if (i != _lines.end ())
+  if (interval.start () < _dayN &&
+      (interval.end ().toEpoch () && interval.end () >= _day1))
   {
-    _lines.erase (i);
-    _dirty = true;
-    return true;
-  }
+    if (! _lines_loaded)
+      load_lines ();
 
-  return false;
+    auto serialized = interval.serialize ();
+    auto i = std::find (_lines.begin (), _lines.end (), serialized);
+    if (i != _lines.end ())
+    {
+      _lines.erase (i);
+      _dirty = true;
+    }
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
