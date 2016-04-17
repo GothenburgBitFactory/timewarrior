@@ -29,6 +29,7 @@
 #include <FS.h>
 #include <algorithm>
 #include <sstream>
+#include <iostream> // TODO Remove
 #include <iterator>
 #include <iomanip>
 #include <ctime>
@@ -141,6 +142,9 @@ void Database::deleteInterval (const Interval& interval)
     // Intersect the original interval range, and the segment.
     Interval segmentedInterval (interval);
     segmentedInterval.range (intervalRange.intersect (segment));
+    if (! interval.isEnded ())
+      segmentedInterval.end ({0});
+
     _files[df].deleteInterval (segmentedInterval);
   }
 }
