@@ -86,7 +86,9 @@ void Datafile::setExclusions (const std::vector <std::string>& exclusions)
   // TODO   _dirty = true;
 
   _exclusions = exclusions;
-  _dirty = true;
+
+  for (auto& exclusion : _exclusions)
+    _lines.push_back (exclusion);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
