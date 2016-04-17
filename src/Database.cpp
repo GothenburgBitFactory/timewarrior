@@ -151,28 +151,14 @@ void Database::deleteInterval (const Interval& interval)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// The algorithm to modify an interval is first to find and remove it from the
+// Datafile, then add it back to the right Datafile. This is because
+// modifїcation may involve changing the start date, which could mean the
+// Interval belongs in a different file.
 void Database::modifyInterval (const Interval& from, const Interval& to)
 {
-  // The algorithm to modify an interval is first to find and remove it from the
-  // Datafile, then add it back to the right Datafile. This is because
-  // modifїcation may involve changing the start date, which could mean the
-  // Interval belongs in a different file.
-
-  // Delete the interval, if found. If not found, then this means the data file
-  // was deleted/moved.
-  std::vector <Datafile>::reverse_iterator ri;
-  for (ri = _files.rbegin (); ri != _files.rend (); ri++)
-    if (ri->deleteInterval (from))
-      break;
-
-  // Add the interval to the right file.
-  for (ri = _files.rbegin (); ri != _files.rend (); ri++)
-    if (ri->addInterval (to))
-      return;
-
-  // There was no file that accepted the interval, which means the data file was
-  // deleted/moved. recreate the file.
-  getDatafile (to.start ().year (), to.start ().month ());
+  deleteInterval (from);
+  addInterval (to);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
