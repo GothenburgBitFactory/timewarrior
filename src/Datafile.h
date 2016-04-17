@@ -28,6 +28,7 @@
 #define INCLUDED_DATAFILE
 
 #include <Interval.h>
+#include <Daterange.h>
 #include <FS.h>
 #include <vector>
 #include <string>
@@ -65,8 +66,7 @@ private:
   // Exclusions fed from Database.
   std::vector <std::string> _exclusions       {};
 
-  Datetime                  _day1             {0};
-  Datetime                  _dayN             {0};
+  Daterange                 _range            {};
 };
 
 #endif

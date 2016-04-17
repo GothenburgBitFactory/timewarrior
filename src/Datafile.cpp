@@ -41,9 +41,16 @@ void Datafile::initialize (const std::string& name)
   auto year  = strtol (basename.substr (0, 4).c_str (), NULL, 10);
   auto month = strtol (basename.substr (5, 2).c_str (), NULL, 10);
 
-  // Construct two dates that
-  _day1 = Datetime (month, 1,                                   year,  0 , 0,  0);
-  _dayN = Datetime (month, Datetime::daysInMonth (month, year), year, 23, 59, 59);
+  // The range is a month: [start, end).
+  Datetime start (month, 1, year, 0, 0, 0);
+  month++;
+  if (month > 12)
+  {
+    year++;
+    month = 1;
+  }
+  Datetime end (month, 1, year, 0, 0, 0);
+  _range = Daterange (start, end);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -97,8 +104,7 @@ void Datafile::addInterval (const Interval& interval)
 {
   // Return false if the interval does not belong in this file.
   // Note: end date might be zero.
-  if (interval.start () < _dayN &&
-      (interval.end ().toEpoch () && interval.end () >= _day1))
+  if (_range.overlap (interval.range ()))
   {
     if (! _lines_loaded)
       load_lines ();
@@ -120,8 +126,7 @@ void Datafile::deleteInterval (const Interval& interval)
 {
   // Return false if the interval does not belong in this file.
   // Note: end date might be zero.
-  if (interval.start () < _dayN &&
-      (interval.end ().toEpoch () && interval.end () >= _day1))
+  if (_range.overlap (interval.range ()))
   {
     if (! _lines_loaded)
       load_lines ();
@@ -172,8 +177,8 @@ std::string Datafile::dump () const
       << "  lines:       " << _lines.size () << "\n"
       << "    loaded     " << (_lines_loaded ? "true" : "false") << "\n"
       << "  exclusions:  " << _exclusions.size () << "\n"
-      << "  day1:        " << _day1.toISO () << "\n"
-      << "  dayN:        " << _dayN.toISO () << "\n";
+      << "  range:       " << _range.start ().toISO () << " - "
+                           << _range.end ().toISO () << "\n";
 
   return out.str ();
 }
