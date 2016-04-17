@@ -49,16 +49,16 @@ int main (int, char**)
   t.is (i1.isStarted (), true, "Daterange(start=now,end=now).isStarted -> true");
   t.is (i1.isEnded (),   true, "Daterange(start=now,end=now).isEnded -> true");
 
-  // this                     |--------|
-  // A          |--------|
-  // B                   |--------|
-  // C                          |----|
-  // D                             |--------|
-  // E                                      |--------|
-  // F                      |-------------|
-  // G                      |...
-  // H                           |...
-  // I                                   |...
+  // this                     [--------)
+  // A          [--------)
+  // B                   [--------)
+  // C                          [----|
+  // D                             [--------)
+  // E                                      [--------)
+  // F                      [-------------)
+  // G                      [...
+  // H                           [...
+  // I                                   [...
   Daterange refClosed;
   refClosed.start (Datetime (6,  1, 2016));
   refClosed.end   (Datetime (6, 30, 2016));
@@ -83,16 +83,16 @@ int main (int, char**)
   t.ok    (refClosed.overlap (testH), "Daterange:   refClosed.overlap(testH)");
   t.notok (refClosed.overlap (testI), "Daterange: ! refClosed.overlap(testI)");
 
-  // this                     |...
-  // A          |--------|
-  // B                   |--------|
-  // C                          |----|
-  // D                             |--------|
-  // E                                      |--------|
-  // F                      |-------------|
-  // G                      |...
-  // H                           |...
-  // I                                   |...
+  // this                     [...
+  // A          [--------)
+  // B                   [--------)
+  // C                          [----)
+  // D                             [--------)
+  // E                                      [--------)
+  // F                      [-------------)
+  // G                      [...
+  // H                           [...
+  // I                                   [...
   Daterange refOpen;
   refOpen.start (Datetime (6, 1, 2016));
 
@@ -106,16 +106,16 @@ int main (int, char**)
   t.ok    (refOpen.overlap (testH), "Daterange:   refOpen.overlap(testH)");
   t.ok    (refOpen.overlap (testI), "Daterange:   refOpen.overlap(testI)");
 
-  // this                     |--------|
-  // A          |--------|
-  // B                   |--------|
-  // C                          |----|
-  // D                             |--------|
-  // E                                      |--------|
-  // F                      |-------------|
-  // G                      |...
-  // H                           |...
-  // I                                   |...
+  // this                     [--------)
+  // A          [--------)
+  // B                   [--------)
+  // C                          [----)
+  // D                             [--------)
+  // E                                      [--------)
+  // F                      [-------------)
+  // G                      [...
+  // H                           [...
+  // I                                   [...
   Daterange empty;
   t.ok (refClosed.intersect (testA) == empty,                                         "Daterange: refClosed.intersect(testA) == empty");
   t.ok (refClosed.intersect (testB) == Daterange (refClosed.start (), testB.end ()),  "Daterange: refClosed.intersect(testB) == Daterange(refClosed.start(), testB.end())");
@@ -127,16 +127,16 @@ int main (int, char**)
   t.ok (refClosed.intersect (testH) == Daterange (testH.start (), refClosed.end ()),  "Daterange: refClosed.intersect(testH) == Daterange(testH.start(), refClosed.end())");
   t.ok (refClosed.intersect (testI) == empty,                                         "Daterange: refClosed.intersect(testI) == empty");
 
-  // this                     |...
-  // A          |--------|
-  // B                   |--------|
-  // C                          |----|
-  // D                             |--------|
-  // E                                      |--------|
-  // F                      |-------------|
-  // G                      |...
-  // H                           |...
-  // I                                   |...
+  // this                     [...
+  // A          [--------)
+  // B                   [--------)
+  // C                          [----)
+  // D                             [--------)
+  // E                                      [--------)
+  // F                      [-------------)
+  // G                      [...
+  // H                           [...
+  // I                                   [...
   t.ok (refOpen.intersect (testA) == empty,                                           "Daterange: refOpen.intersect(testA) == empty");
   t.ok (refOpen.intersect (testB) == Daterange (refOpen.start (), testB.end ()),      "Daterange: refOpen.intersect(testB) == Daterange(refOpen.start(), testB.end())");
   t.ok (refOpen.intersect (testC) == testC,                                           "Daterange: refOpen.intersect(testC) == testC");
@@ -147,16 +147,16 @@ int main (int, char**)
   t.ok (refOpen.intersect (testH) == testH,                                           "Daterange: refOpen.intersect(testH) == testH");
   t.ok (refOpen.intersect (testI) == testI,                                           "Daterange: refOpen.intersect(testI) == testI");
 
-  // this                     |--------|
-  // A          |--------|
-  // B                   |--------|
-  // C                          |----|
-  // D                             |--------|
-  // E                                      |--------|
-  // F                      |-------------|
-  // G                      |...
-  // H                           |...
-  // I                                   |...
+  // this                     [--------)
+  // A          [--------)
+  // B                   [--------)
+  // C                          [----)
+  // D                             [--------)
+  // E                                      [--------)
+  // F                      [-------------)
+  // G                      [...
+  // H                           [...
+  // I                                   [...
   std::vector <Daterange> closedSubtractA {refClosed};
   std::vector <Daterange> closedSubtractB {Daterange (testB.end (), refClosed.end ())};
   std::vector <Daterange> closedSubtractC {Daterange (refClosed.start (), testC.start ()), Daterange (testC.end (), refClosed.end ())};
@@ -178,16 +178,16 @@ int main (int, char**)
   t.ok (refClosed.subtract (testH) == closedSubtractH, "Daterange: refClosed.subtract(testH) == {refClosed.start(), testH.start()}");
   t.ok (refClosed.subtract (testI) == closedSubtractI, "Daterange: refClosed.subtract(testI) == {refClosed}");
 
-  // this                     |...
-  // A          |--------|
-  // B                   |--------|
-  // C                          |----|
-  // D                             |--------|
-  // E                                      |--------|
-  // F                      |-------------|
-  // G                      |...
-  // H                           |...
-  // I                                   |...
+  // this                     [...
+  // A          [--------)
+  // B                   [--------)
+  // C                          [----)
+  // D                             [--------)
+  // E                                      [--------)
+  // F                      [-------------)
+  // G                      [...
+  // H                           [...
+  // I                                   [...
   std::vector <Daterange> openSubtractA {refOpen};
   std::vector <Daterange> openSubtractB {Daterange (testB.end (), refOpen.end ())};
   std::vector <Daterange> openSubtractC {Daterange (refOpen.start (), testC.start ()), Daterange (testC.end (), refOpen.end ())};

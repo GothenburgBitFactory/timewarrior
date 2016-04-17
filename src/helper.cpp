@@ -287,12 +287,12 @@ Interval createIntervalFromFilter (const Filter& filter)
 //
 //               timeline.start      timeline.end
 //               |                   |
-// A [--------]  |                   |
-// B        [----|----]              |
-// C             |  [------------]   |
-// D             |              [----|----]
-// E             |                   |   [--------]
-// F        [----|-------------------|----]
+// A [--------)  |                   |
+// B        [----|----)              |
+// C             |  [------------)   |
+// D             |              [----|----)
+// E             |                   |   [--------)
+// F        [----|-------------------|----)
 //               |                   |
 //
 // We really only need to eliminate A and F.

@@ -9,9 +9,9 @@ provided by the user representing ongoing work.
 An exclusion is also a block of time but represents untrackable time, and acts
 as a mask for the inclusions. Here is a visual example:
 
-  Inclusion:           |-----------------------------------| tag1
-  Exclusion:                           |---| lunch
-  Exclusion                                                    |---| dinner
+  Inclusion:           [-----------------------------------) tag1
+  Exclusion:                           [---) lunch
+  Exclusion                                                    [---) dinner
 
   Timeline:      ..:...:...:...:...:...:...:...:...:...:...:...:...:...
                    7   8   9   10  11  12  1   2   3   4   5   6   7 
