@@ -39,10 +39,13 @@
 // simply validates.
 //
 // Syntax:
-//   exc monday 8:00:00-12:00:00 12:45:00-17:30:00
-//   exc day on 2016-01-01
-//   exc day off 2016-01-02
-
+//   exc monday <block> [<block> ...]
+//   exc day on <date>
+//   exc day off <date>
+//
+// block:
+//   <HH:MM:SS | HH:MM:SS-HH:MM:SS | >HH:MM:SS
+//
 void Exclusion::initialize (const std::string& line)
 {
   _tokens = split (line);
