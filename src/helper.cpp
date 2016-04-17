@@ -306,16 +306,25 @@ Timeline createTimelineFromData (
   t.start (filter.start ());
   t.end (filter.end ());
 
-  // TODO Add filtered exclusions.
-
   // Add filtered intervals.
   for (auto& line : database.allLines ())
   {
-    Interval interval;
-    interval.initialize (line);
+    if (line[0] == 'i')
+    {
+      Interval i;
+      i.initialize (line);
 
-    if (intervalMatchesFilter (interval, filter))
-      t.include (interval);
+      if (intervalMatchesFilter (i, filter))
+        t.include (i);
+    }
+    else if (line[0] == 'e')
+    {
+      // Exclusions are not filtered, so they all match.  This makes sure that
+      // the correct exclusions are lined up ahead of the intervals.
+      Exclusion e;
+      e.initialize (line);
+      t.exclude (e);
+    }
   }
 
   return t;
