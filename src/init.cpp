@@ -30,6 +30,7 @@
 #include <Database.h>
 #include <Rules.h>
 #include <Extensions.h>
+#include <Datetime.h>
 #include <shared.h>
 #include <format.h>
 #include <FS.h>
