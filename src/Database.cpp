@@ -101,19 +101,6 @@ void Database::addExclusion (const std::string& exclusion)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// interval had a start and end, for example:
-//   2016-02-20 to 2016-04-15
-//
-// This interval spans four months, which correspond to data files:
-//   2016-02-01 to 2016-03-01
-//   2016-03-01 to 2016-04-01
-//   2016-04-01 to 2016-05-01
-//
-// Intersecting these with the original interval:
-//   2016-02-20 to 2016-03-01
-//   2016-03-01 to 2016-04-01
-//   2016-04-01 to 2016-05-15
-//
 void Database::addInterval (const Interval& interval)
 {
   // TODO Need to verify that interval.tags do not overlap with stored data.
@@ -205,13 +192,12 @@ unsigned int Database::getDatafile (int year, int month)
 ////////////////////////////////////////////////////////////////////////////////
 // The input Datarange has a start and end, for example:
 //
-//   2016-01-20 to 2016-04-15
+//   2016-02-20 to 2016-04-15
 //
 // Given the monthly storage scheme, split the Datarange into a vector of
 // segmented Dataranges:
 //
-//   2016-01-20 to 2016-02-01
-//   2016-02-01 to 2016-03-01
+//   2016-02-20 to 2016-03-01
 //   2016-03-01 to 2016-04-01
 //   2016-04-01 to 2016-05-15
 //
