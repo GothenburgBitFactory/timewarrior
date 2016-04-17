@@ -43,7 +43,7 @@ public:
   std::vector <std::string> allLines ();
 
   void setExclusions (const std::vector <std::string>&);
-  bool addInterval (const Interval&);
+  void addInterval (const Interval&);
   bool deleteInterval (const Interval&);
 
   void commit ();

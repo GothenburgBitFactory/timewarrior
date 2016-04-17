@@ -91,27 +91,26 @@ void Datafile::setExclusions (const std::vector <std::string>& exclusions)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Accepted intervals;   day1 <= interval.start < dayN
-bool Datafile::addInterval (const Interval& interval)
+void Datafile::addInterval (const Interval& interval)
 {
   // Return false if the interval does not belong in this file.
   // Note: end date might be zero.
-  if (interval.start () >= _dayN ||
-      (interval.end ().toEpoch () && interval.end () < _day1))
-    return false;
+  if (interval.start () < _dayN &&
+      (interval.end ().toEpoch () && interval.end () >= _day1))
+  {
+    if (! _lines_loaded)
+      load_lines ();
 
-  if (! _lines_loaded)
-    load_lines ();
+    // TODO if _lines contains no exclusions
+    // TODO   add _exclusions
 
-  // TODO if _lines contains no exclusions
-  // TODO   add _exclusions
+    // TODO if interval is not a duplicate
+    // TODO   insert interval.serialize into _lines
+    // TODO   _dirty = true;
 
-  // TODO if interval is not a duplicate
-  // TODO   insert interval.serialize into _lines
-  // TODO   _dirty = true;
-
-  _lines.push_back (interval.serialize ());
-  _dirty = true;
-  return true;
+    _lines.push_back (interval.serialize ());
+    _dirty = true;
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
