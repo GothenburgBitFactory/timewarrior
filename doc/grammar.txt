@@ -28,7 +28,7 @@ Filter
 ------
 A filter is a combination of an <interval> and <tagset>, both being optional.
 
-An interval is a representation of a time range.
+An interval is a representation of a time range with tags.
 
   <interval>:
     ["from"] <date> ["to"|"-" <date>]
@@ -46,7 +46,7 @@ Examples of an interval:
     4wks
     since socm for 2wks
 
-A tagset is a set of unique UTF-8 strings, each indentifying some trackable
+A tagset is a set of unique UTF-8 strings, each identifying some trackable
 entity.
 
   <tagset>:
@@ -58,6 +58,8 @@ Examples of a tagset:
     'Fiscal Policy Alignment Project'       (1 tag)
     Fiscal\ Policy\ Alignment\ Project      (1 tag)
     Home Garden                             (2 tags)
+
+A tag may have any value that is not a supported form of date or duration.
 
 
 Hints
