@@ -96,13 +96,19 @@ Daterange Interval::range () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void Interval::range (const Daterange& range)
+{
+  _range = range;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 Datetime Interval::start () const
 {
   return _range.start ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Interval::start (Datetime value)
+void Interval::start (const Datetime& value)
 {
   _range.start (value);
 }
@@ -114,7 +120,7 @@ Datetime Interval::end () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Interval::end (Datetime value)
+void Interval::end (const Datetime& value)
 {
   _range.end (value);
 }

@@ -37,13 +37,15 @@ public:
   Interval () = default;
   void initialize (const std::string&);
   bool empty () const;
+
   Daterange range () const;
+  void range (const Daterange&);
 
   Datetime start () const;
-  void start (Datetime);
+  void start (const Datetime&);
 
   Datetime end () const;
-  void end (Datetime);
+  void end (const Datetime&);
 
   bool isStarted () const;
   bool isEnded () const;
