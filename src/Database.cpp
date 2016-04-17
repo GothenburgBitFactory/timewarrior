@@ -123,17 +123,39 @@ void Database::addExclusion (const std::string& exclusion)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// interval had a start and end, for example:
+//   2016-02-20 to 2016-04-15
+//
+// This interval spans four months, which correspond to data files:
+//   2016-02-01 to 2016-03-01
+//   2016-03-01 to 2016-04-01
+//   2016-04-01 to 2016-05-01
+//
+// Intersecting these with the original interval:
+//   2016-02-20 to 2016-03-01
+//   2016-03-01 to 2016-04-01
+//   2016-04-01 to 2016-05-15
+//
 void Database::addInterval (const Interval& interval)
 {
-  std::vector <Datafile>::reverse_iterator ri;
-  for (ri = _files.rbegin (); ri != _files.rend (); ri++)
-    if (ri->addInterval (interval))
-      return;
+  // TODO Need to verify that interval.tags do not overlap with stored data.
+  //      Unless the tags that overlap are allowed to overlap.
 
-  // Datafile for this interval does not exist. This means the data file was
-  // deleted/removed, or the interval is old. Create the file.
-  getDatafile (interval.start ().year (), interval.start ().month ());
-*/
+  auto intervalRange = interval.range ();
+  for (auto& segment : segmentRange (intervalRange))
+  {
+    // Get the index into _files for the appropriate Datafile, which may be
+    // created on demand.
+    auto df = getDatafile (segment.start ().year (), segment.start ().month ());
+
+    // Intersect the original interval range, and the segment.
+    Interval segmentedInterval (interval);
+    if (intervalRange.overlap (segment))
+    {
+      segmentedInterval.range (intervalRange.intersect (segment));
+      _files[df].addInterval (segmentedInterval);
+    }
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
