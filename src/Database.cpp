@@ -64,11 +64,16 @@ std::vector <std::string> Database::files () const
 
 ////////////////////////////////////////////////////////////////////////////////
 // Walk backwards through the files until an interval is found.
+// Note: Not an exclusion.
 std::string Database::lastLine ()
 {
   std::vector <Datafile>::reverse_iterator ri;
   for (ri = _files.rbegin (); ri != _files.rend (); ri++)
-    return ri->lastLine ();
+  {
+    auto line = ri->lastLine ();
+    if (line != "")
+      return line;
+  }
 
   return "";
 }
