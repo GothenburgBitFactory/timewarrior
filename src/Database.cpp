@@ -132,7 +132,7 @@ void Database::addInterval (const Interval& interval)
 
   // Datafile for this interval does not exist. This means the data file was
   // deleted/removed, or the interval is old. Create the file.
-  createDatafileIfNecessary (interval.start ().year (), interval.start ().month ());
+  getDatafile (interval.start ().year (), interval.start ().month ());
 */
 }
 
@@ -170,7 +170,7 @@ void Database::modifyInterval (const Interval& from, const Interval& to)
 
   // There was no file that accepted the interval, which means the data file was
   // deleted/moved. recreate the file.
-  createDatafileIfNecessary (to.start ().year (), to.start ().month ());
+  getDatafile (to.start ().year (), to.start ().month ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -207,7 +207,7 @@ std::string Database::currentDataFile () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Database::createDatafileIfNecessary (int year, int month)
+unsigned int Database::getDatafile (int year, int month)
 {
   std::stringstream file;
   file << _location
@@ -216,14 +216,21 @@ void Database::createDatafileIfNecessary (int year, int month)
        << '-'
        << std::setw (2) << std::setfill ('0') << month
        << ".data";
+  auto name = file.str ();
+
+  // If the datafile is already initialized, return.
+  for (unsigned int i = 0; i < _files.size (); ++i)
+    if (_files[i].name () == name)
+      return i;
 
   // Create the Datafile. New files need the set of current exclusions.
   Datafile df;
-  df.initialize (file.str ());
+  df.initialize (name);
   df.setExclusions (_exclusions);
 
   // Insert Datafile into _files. The position is not important.
   _files.push_back (df);
+  return _files.size () - 1;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

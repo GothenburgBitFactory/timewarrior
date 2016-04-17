@@ -54,7 +54,7 @@ public:
 
 private:
   std::string currentDataFile () const;
-  void createDatafileIfNecessary (int, int);
+  unsigned int getDatafile (int, int);
   std::vector <Daterange> segmentRange (const Daterange&);
 
 private:
