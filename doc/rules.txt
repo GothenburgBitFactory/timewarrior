@@ -77,11 +77,12 @@ Because exclusions are resolved at run time, and only when needed, they should
 be stored in a readily-interpreted form:
 
   define exclusions:
-    monday    = 8:00:00-12:00:00 12:45:00-17:30:00
-    tuesday   = 8:00:00-12:00:00 12:45:00-18:30:00
-    wednesday = 8:00:00-12:00:00 13:30:00-17:30:00
-    thursday  = 8:00:00-12:00:00 12:45:00-17:30:00
-    friday    = 8:00:00-12:00:00 12:45:00-17:30:00
+    monday    = <8:00:00 12:00:00-12:45:00 >17:30:00
+    tuesday   = <8:00:00 12:00:00-12:45:00 >18:30:00
+    wednesday = <8:00:00 12:00:00-13:30:00 >17:30:00
+    thursday  = <8:00:00 12:00:00-12:45:00 >17:30:00
+    friday    = <8:00:00 12:00:00-12:45:00 >17:30:00
+
     days:
       2016_01_01 = Working
       2016_01_02 = Off

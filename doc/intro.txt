@@ -35,11 +35,11 @@ Or if you forgot a whole activity:
 More sophisticated use is possible if you have defined your work week with:
 
   define exclusions:
-    monday    = 8:00:00-12:00:00 12:45:00-17:30:00
-    tuesday   = 8:00:00-12:00:00 12:45:00-18:30:00
-    wednesday = 8:00:00-12:00:00 13:30:00-17:30:00
-    thursday  = 8:00:00-12:00:00 12:45:00-17:30:00
-    friday    = 8:00:00-12:00:00 12:45:00-17:30:00
+    monday    = <8:00:00 12:00:00-12:45:00 >17:30:00
+    tuesday   = <8:00:00 12:00:00-12:45:00 >18:30:00
+    wednesday = <8:00:00 12:00:00-13:30:00 >17:30:00
+    thursday  = <8:00:00 12:00:00-12:45:00 >17:30:00
+    friday    = <8:00:00 12:00:00-12:45:00 >17:30:00
 
   $ timew track yesterday Home Painting
 
