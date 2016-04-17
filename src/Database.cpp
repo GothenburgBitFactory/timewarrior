@@ -37,12 +37,6 @@
 void Database::initialize (const std::string& location)
 {
   _location = location;
-
-  // Because the data files have names YYYY-MM.data, sorting them by name also
-  // sorts by the intervals within.
-  Directory d (_location);
-  auto files = d.list ();
-  std::sort (files.begin (), files.end ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -67,6 +61,9 @@ std::vector <std::string> Database::files () const
 // Note: Not an exclusion.
 std::string Database::lastLine ()
 {
+  if (! _files.size ())
+    initializeDatafiles ();
+
   std::vector <Datafile>::reverse_iterator ri;
   for (ri = _files.rbegin (); ri != _files.rend (); ri++)
   {
@@ -81,6 +78,9 @@ std::string Database::lastLine ()
 ////////////////////////////////////////////////////////////////////////////////
 std::vector <std::string> Database::allLines ()
 {
+  if (! _files.size ())
+    initializeDatafiles ();
+
   std::vector <std::string> all;
   for (auto& file : _files)
   {
