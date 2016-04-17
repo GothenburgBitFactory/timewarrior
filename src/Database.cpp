@@ -121,6 +121,9 @@ void Database::addInterval (const Interval& interval)
     // Intersect the original interval range, and the segment.
     Interval segmentedInterval (interval);
     segmentedInterval.range (intervalRange.intersect (segment));
+    if (! interval.isEnded ())
+      segmentedInterval.end ({0});
+
     _files[df].addInterval (segmentedInterval);
   }
 }
