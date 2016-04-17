@@ -10,9 +10,8 @@ tracking time:
   $ timew stop
 
 This will record a block of time as active, between the two timestamps that
-were recorded when the 'start' and 'stop' commands were run.
-
-By using tags, you can label the blocks of active time:
+were recorded when the 'start' and 'stop' commands were run. By using tags, you
+can label the blocks of active time:
 
   $ timew start Home Cleaning
   ...
@@ -20,10 +19,8 @@ By using tags, you can label the blocks of active time:
 
 This tags the block of time with the two tags 'Home' and 'Cleaning'. The tags
 allow you to identify how you spent that time, and is used by the reporting
-system to summarize time.
-
-You can also record time retroactively. If you forgot to start recording this
-morning, you can do this:
+system to summarize time. You can also record time retroactively. If you forgot
+ito start recording this morning, you can do this:
 
   $ timew start 8:30am Home Cleaning
 
@@ -63,7 +60,7 @@ for example:
 
 And the 'ProjectB' tagged interval will range from 2pm - 3pm.
 
-Tags can have their own metadata, for example you can make a tag valid for a
+Tags may have their own metadata, for example you can make a tag valid for a
 given time range:
 
   $ timew config tag ProjectA end 2016-06-30

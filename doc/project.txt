@@ -21,22 +21,20 @@ Goals
   friction.
 - Support all workflows.
 - Provide an extension-friendly tool.
-- Support policies via the rules system.
+- Support policies, events via the rules system.
 - Integrate with Taskwarrior, Tasksh.
 - Store data in plain UTF-8 text.
 
 
 Non-Goals
 ---------
-- Completely independent from Taskwarrior, Taskserver, Tasksh.
+- No dependency on Taskwarrior, Taskserver and Tasksh.
 - Time tracking is about recording the past, not planning the future.
 - No cloud support, no sync support, all data is local. Tracked time is
   sensitive personal data and will not be transmitted.
 - No explicit multi-user support, although using tags to track individuals is
   possible.
-- There is no hook system as Timewarrior is a data sink, not a data source.
-  That said, there will be rules that can act as hooks, but will be more
-  flexible.
+- There is no hook system.
 - No features without a compelling use case.
 
 
