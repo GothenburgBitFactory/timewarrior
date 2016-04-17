@@ -136,13 +136,18 @@ void Database::addInterval (const Interval& interval)
 ////////////////////////////////////////////////////////////////////////////////
 void Database::deleteInterval (const Interval& interval)
 {
-  std::vector <Datafile>::reverse_iterator ri;
-  for (ri = _files.rbegin (); ri != _files.rend (); ri++)
-    if (ri->deleteInterval (interval))
-      break;
+  auto intervalRange = interval.range ();
+  for (auto& segment : segmentRange (intervalRange))
+  {
+    // Get the index into _files for the appropriate Datafile, which may be
+    // created on demand.
+    auto df = getDatafile (segment.start ().year (), segment.start ().month ());
 
-  // Datafile for this interval does not exist. This means the data file was
-  // deleted/removed, or the interval is old. Nothing to do.
+    // Intersect the original interval range, and the segment.
+    Interval segmentedInterval (interval);
+    segmentedInterval.range (intervalRange.intersect (segment));
+    _files[df].deleteInterval (segmentedInterval);
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
