@@ -177,8 +177,8 @@ Filter createFilterFromCLI (const CLI& cli)
   if (args.size () == 1 &&
       args[0] == "<date>")
   {
-    filter.start (Datetime (start));
-    filter.end (Datetime ("now"));
+    filter.range ().start (Datetime (start));
+    filter.range ().end (Datetime ("now"));
   }
 
   // from <date>
@@ -186,8 +186,8 @@ Filter createFilterFromCLI (const CLI& cli)
            args[0] == "from" &&
            args[1] == "<date>")
   {
-    filter.start (Datetime (start));
-    filter.end (Datetime ("now"));
+    filter.range ().start (Datetime (start));
+    filter.range ().end (Datetime ("now"));
   }
 
   // <date> to/- <date>
@@ -196,8 +196,8 @@ Filter createFilterFromCLI (const CLI& cli)
            (args[1] == "to" || args[1] == "-") &&
            args[2] == "<date>")
   {
-    filter.start (Datetime (start));
-    filter.end (Datetime (end));
+    filter.range ().start (Datetime (start));
+    filter.range ().end (Datetime (end));
   }
 
   // from/since <date> to/- <date>
@@ -207,8 +207,8 @@ Filter createFilterFromCLI (const CLI& cli)
            (args[2] == "to" || args[2] == "-") &&
            args[3] == "<date>")
   {
-    filter.start (Datetime (start));
-    filter.end (Datetime (end));
+    filter.range ().start (Datetime (start));
+    filter.range ().end (Datetime (end));
   }
 
   // <date> for <duration>
@@ -217,8 +217,8 @@ Filter createFilterFromCLI (const CLI& cli)
            args[1] == "for"    &&
            args[2] == "<duration>")
   {
-    filter.start (Datetime (start));
-    filter.end (Datetime (start) + Duration (duration).toTime_t ());
+    filter.range ().start (Datetime (start));
+    filter.range ().end (Datetime (start) + Duration (duration).toTime_t ());
   }
 
   // from/since <date> for <duration>
@@ -228,8 +228,8 @@ Filter createFilterFromCLI (const CLI& cli)
            args[2] == "for"                          &&
            args[3] == "<duration>")
   {
-    filter.start (Datetime (start));
-    filter.end (Datetime (start) + Duration (duration).toTime_t ());
+    filter.range ().start (Datetime (start));
+    filter.range ().end (Datetime (start) + Duration (duration).toTime_t ());
   }
 
   // <duration> before <date>
@@ -238,8 +238,8 @@ Filter createFilterFromCLI (const CLI& cli)
            args[1] == "before"     &&
            args[2] == "<date>")
   {
-    filter.end (Datetime (start) - Duration (duration).toTime_t ());
-    filter.end (Datetime (start));
+    filter.range ().end (Datetime (start) - Duration (duration).toTime_t ());
+    filter.range ().end (Datetime (start));
   }
 
   // <duration> after <date>
@@ -248,16 +248,16 @@ Filter createFilterFromCLI (const CLI& cli)
            args[1] == "after"      &&
            args[2] == "<date>")
   {
-    filter.start (Datetime (start));
-    filter.end (Datetime (start) + Duration (duration).toTime_t ());
+    filter.range ().start (Datetime (start));
+    filter.range ().end (Datetime (start) + Duration (duration).toTime_t ());
   }
 
   // <duration>
   else if (args.size () == 1 &&
            args[0] == "<duration>")
   {
-    filter.start (Datetime ("now") - Duration (duration).toTime_t ());
-    filter.end (Datetime ("now"));
+    filter.range ().start (Datetime ("now") - Duration (duration).toTime_t ());
+    filter.range ().end (Datetime ("now"));
   }
 
   // Unrecognized date range construct.
@@ -273,8 +273,8 @@ Filter createFilterFromCLI (const CLI& cli)
 Interval createIntervalFromFilter (const Filter& filter)
 {
   Interval interval;
-  interval.start (filter.start ());
-  interval.end (filter.end ());
+  interval.range ().start (filter.range ().start ());
+  interval.range ().end (filter.range ().end ());
 
   for (auto& tag : filter.tags ())
     interval.tag (tag);
@@ -303,8 +303,7 @@ Timeline createTimelineFromData (
   const Filter& filter)
 {
   Timeline t;
-  t.start (filter.start ());
-  t.end (filter.end ());
+  t.range (filter.range ());
 
   // Add filtered intervals.
   for (auto& line : database.allLines ())
@@ -348,13 +347,13 @@ Interval getLatestInterval (Database& database)
 // are found in the interval.
 bool intervalMatchesFilter (const Interval& interval, const Filter& filter)
 {
-  if ((filter.start ().toEpoch () == 0 &&
-       filter.end ().toEpoch () == 0)
+  if ((filter.range ().start ().toEpoch () == 0 &&
+       filter.range ().end ().toEpoch () == 0)
 
       ||
 
-      (interval.end () > filter.start () &&
-       interval.start () < filter.end ()))
+      (interval.end () > filter.range ().start () &&
+       interval.start () < filter.range ().end ()))
   {
     for (auto& tag : filter.tags ())
       if (! interval.hasTag (tag))

@@ -27,7 +27,7 @@
 #ifndef INCLUDED_FILTER
 #define INCLUDED_FILTER
 
-#include <Datetime.h>
+#include <Daterange.h>
 #include <string>
 #include <set>
 
@@ -37,11 +37,8 @@ public:
   Filter () = default;
   bool empty () const;
 
-  Datetime start () const;
-  void start (Datetime);
-
-  Datetime end () const;
-  void end (Datetime);
+  Daterange range () const;
+  void range (const Daterange&);
 
   std::set <std::string> tags () const;
   void tag (const std::string&);
@@ -49,8 +46,7 @@ public:
   std::string dump () const;
 
 private:
-  Datetime               _start {0};
-  Datetime               _end   {0};
+  Daterange              _range {};
   std::set <std::string> _tags  {};
 };
 

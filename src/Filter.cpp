@@ -31,33 +31,21 @@
 ////////////////////////////////////////////////////////////////////////////////
 bool Filter::empty () const
 {
-  return _start.toEpoch () == 0 &&
-         _end.toEpoch ()   == 0 &&
-         _tags.size ()     == 0;
+  return _range.start ().toEpoch () == 0 &&
+         _range.end ().toEpoch ()   == 0 &&
+         _tags.size ()           == 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Datetime Filter::start () const
+Daterange Filter::range () const
 {
-  return _start;
+  return _range;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Filter::start (Datetime value)
+void Filter::range (const Daterange& range)
 {
-  _start = value;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-Datetime Filter::end () const
-{
-  return _end;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void Filter::end (Datetime value)
-{
-  _end = value;
+  _range = range;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -78,10 +66,10 @@ std::string Filter::dump () const
 {
   std::stringstream out;
 
-  out << "Filter _start '"
-      << _start.toEpoch ()
-      << "' _end '"
-      << _end.toEpoch ()
+  out << "Filter _range.start '"
+      << _range.start ().toEpoch ()
+      << "' _range.end '"
+      << _range.end ().toEpoch ()
       << "' _tags";
 
   for (auto& tag : _tags)

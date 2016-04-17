@@ -49,15 +49,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-void Timeline::start (const Datetime& when)
+void Timeline::range (const Daterange& range)
 {
-  _range.start (when);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void Timeline::end (const Datetime& when)
-{
-  _range.end (when);
+  _range = range;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -102,7 +96,7 @@ std::string Timeline::dump () const
 {
   std::stringstream out;
 
-  out << "Timeline _range " << _range.dump ();
+  out << "Timeline _range " << _range.start ().toISO () << " - " << _range.end ().toISO () << "\n";
   for (auto& i : _inclusions)
     out << "  " << i.dump ();
   for (auto& e : _exclusions)

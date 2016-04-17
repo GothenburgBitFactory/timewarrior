@@ -27,9 +27,9 @@
 #ifndef INCLUDED_TIMELINE
 #define INCLUDED_TIMELINE
 
-#include <Datetime.h>
 #include <Interval.h>
 #include <Exclusion.h>
+#include <Daterange.h>
 #include <Rules.h>
 #include <vector>
 
@@ -37,8 +37,7 @@ class Timeline
 {
 public:
   Timeline () = default;
-  void start (const Datetime&);
-  void end (const Datetime&);
+  void range (const Daterange&);
   void include (const Interval&);
   void exclude (const Exclusion&);
 
@@ -48,7 +47,7 @@ public:
   std::string dump () const;
 
 private:
-  Interval                _range      {};
+  Daterange               _range      {};
   std::vector <Interval>  _inclusions {};
   std::vector <Exclusion> _exclusions {};
 };
