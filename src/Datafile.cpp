@@ -90,12 +90,13 @@ void Datafile::setExclusions (const std::vector <std::string>& exclusions)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Accepted intervals;   day1 <= interval.start < dayN
 bool Datafile::addInterval (const Interval& interval)
 {
   // Return false if the interval does not belong in this file.
   // Note: end date might be zero.
-  if (interval.start () > _dayN ||
-      (interval.end ().toEpoch () && interval.end ()   < _day1))
+  if (interval.start () >= _dayN ||
+      (interval.end ().toEpoch () && interval.end () < _day1))
     return false;
 
   if (! _lines_loaded)
@@ -118,8 +119,8 @@ bool Datafile::deleteInterval (const Interval& interval)
 {
   // Return false if the interval does not belong in this file.
   // Note: end date might be zero.
-  if (interval.start () > _dayN ||
-      (interval.end ().toEpoch () && interval.end ()   < _day1))
+  if (interval.start () >= _dayN ||
+      (interval.end ().toEpoch () && interval.end () < _day1))
     return false;
 
   if (! _lines_loaded)
