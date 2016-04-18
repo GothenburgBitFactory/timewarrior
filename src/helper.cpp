@@ -173,12 +173,14 @@ Filter createFilterFromCLI (const CLI& cli)
     }
   }
 
+  Daterange range;
+
   // <date>
   if (args.size () == 1 &&
       args[0] == "<date>")
   {
-    filter.range ().start (Datetime (start));
-    filter.range ().end (Datetime ("now"));
+    range.start (Datetime (start));
+    range.end (Datetime ("now"));
   }
 
   // from <date>
@@ -186,8 +188,8 @@ Filter createFilterFromCLI (const CLI& cli)
            args[0] == "from" &&
            args[1] == "<date>")
   {
-    filter.range ().start (Datetime (start));
-    filter.range ().end (Datetime ("now"));
+    range.start (Datetime (start));
+    range.end (Datetime ("now"));
   }
 
   // <date> to/- <date>
@@ -196,8 +198,8 @@ Filter createFilterFromCLI (const CLI& cli)
            (args[1] == "to" || args[1] == "-") &&
            args[2] == "<date>")
   {
-    filter.range ().start (Datetime (start));
-    filter.range ().end (Datetime (end));
+    range.start (Datetime (start));
+    range.end (Datetime (end));
   }
 
   // from/since <date> to/- <date>
@@ -207,8 +209,8 @@ Filter createFilterFromCLI (const CLI& cli)
            (args[2] == "to" || args[2] == "-") &&
            args[3] == "<date>")
   {
-    filter.range ().start (Datetime (start));
-    filter.range ().end (Datetime (end));
+    range.start (Datetime (start));
+    range.end (Datetime (end));
   }
 
   // <date> for <duration>
@@ -217,8 +219,8 @@ Filter createFilterFromCLI (const CLI& cli)
            args[1] == "for"    &&
            args[2] == "<duration>")
   {
-    filter.range ().start (Datetime (start));
-    filter.range ().end (Datetime (start) + Duration (duration).toTime_t ());
+    range.start (Datetime (start));
+    range.end (Datetime (start) + Duration (duration).toTime_t ());
   }
 
   // from/since <date> for <duration>
@@ -228,8 +230,8 @@ Filter createFilterFromCLI (const CLI& cli)
            args[2] == "for"                          &&
            args[3] == "<duration>")
   {
-    filter.range ().start (Datetime (start));
-    filter.range ().end (Datetime (start) + Duration (duration).toTime_t ());
+    range.start (Datetime (start));
+    range.end (Datetime (start) + Duration (duration).toTime_t ());
   }
 
   // <duration> before <date>
@@ -238,8 +240,8 @@ Filter createFilterFromCLI (const CLI& cli)
            args[1] == "before"     &&
            args[2] == "<date>")
   {
-    filter.range ().start (Datetime (start) - Duration (duration).toTime_t ());
-    filter.range ().end (Datetime (start));
+    range.start (Datetime (start) - Duration (duration).toTime_t ());
+    range.end (Datetime (start));
   }
 
   // <duration> after <date>
@@ -248,16 +250,16 @@ Filter createFilterFromCLI (const CLI& cli)
            args[1] == "after"      &&
            args[2] == "<date>")
   {
-    filter.range ().start (Datetime (start));
-    filter.range ().end (Datetime (start) + Duration (duration).toTime_t ());
+    range.start (Datetime (start));
+    range.end (Datetime (start) + Duration (duration).toTime_t ());
   }
 
   // <duration>
   else if (args.size () == 1 &&
            args[0] == "<duration>")
   {
-    filter.range ().start (Datetime ("now") - Duration (duration).toTime_t ());
-    filter.range ().end (Datetime ("now"));
+    range.start (Datetime ("now") - Duration (duration).toTime_t ());
+    range.end (Datetime ("now"));
   }
 
   // Unrecognized date range construct.
@@ -266,6 +268,7 @@ Filter createFilterFromCLI (const CLI& cli)
     throw std::string ("Unrecognized date range: '") + join (" ", args) + "'.";
   }
 
+  filter.range (range);
   return filter;
 }
 
@@ -273,8 +276,8 @@ Filter createFilterFromCLI (const CLI& cli)
 Interval createIntervalFromFilter (const Filter& filter)
 {
   Interval interval;
-  interval.range ().start (filter.range ().start ());
-  interval.range ().end (filter.range ().end ());
+  interval.start (filter.range ().start ());
+  interval.end (filter.range ().end ());
 
   for (auto& tag : filter.tags ())
     interval.tag (tag);
