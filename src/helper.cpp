@@ -238,7 +238,7 @@ Filter createFilterFromCLI (const CLI& cli)
            args[1] == "before"     &&
            args[2] == "<date>")
   {
-    filter.range ().end (Datetime (start) - Duration (duration).toTime_t ());
+    filter.range ().start (Datetime (start) - Duration (duration).toTime_t ());
     filter.range ().end (Datetime (start));
   }
 
