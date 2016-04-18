@@ -276,8 +276,7 @@ Filter createFilterFromCLI (const CLI& cli)
 Interval createIntervalFromFilter (const Filter& filter)
 {
   Interval interval;
-  interval.start (filter.range ().start ());
-  interval.end (filter.range ().end ());
+  interval.range (filter.range ());
 
   for (auto& tag : filter.tags ())
     interval.tag (tag);
