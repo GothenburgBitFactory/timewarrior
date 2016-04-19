@@ -26,12 +26,15 @@
 
 #include <cmake.h>
 #include <Exclusion.h>
+#include <Daterange.h>
+#include <vector>
+#include <iostream>
 #include <test.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (52);
+  UnitTest t (60);
 
   try
   {
@@ -109,6 +112,13 @@ int main (int, char**)
     t.is (tokens[2], "on",                  "Exclusion 'exc day on 2016-01-01' [2] --> 'on'");
     t.is (tokens[3], "2016-01-01",          "Exclusion 'exc day on 2016-01-01' [3] --> '2016-01-01'");
 
+    Daterange r (Datetime ("2015-12-15"), Datetime ("2016-01-15"));
+    auto ranges = e.ranges (r);
+    t.ok (ranges.size () == 1,                                 "Exclusion ranges  --> [1]");
+    t.is (ranges[0].start ().toString ("Y-M-D"), "2016-01-01", "Exclusion range[0] --> 2016-01-01");
+    t.is (ranges[0].end ().toString ("Y-M-D"),   "2016-01-02", "Exclusion range[0] --> 2016-01-02");
+    t.ok (e.additive (),                                       "Exclusion 'day on ...' --> additive");
+
     // exc day off 2016-01-01
     e.initialize ("exc day off 2016-01-01");
     tokens = e.tokens ();
@@ -117,6 +127,12 @@ int main (int, char**)
     t.is (tokens[1], "day",                 "Exclusion 'exc day off 2016-01-01' [1] --> 'day'");
     t.is (tokens[2], "off",                 "Exclusion 'exc day off 2016-01-01' [2] --> 'off'");
     t.is (tokens[3], "2016-01-01",          "Exclusion 'exc day off 2016-01-01' [3] --> '2016-01-01'");
+
+    ranges = e.ranges (r);
+    t.ok (ranges.size () == 1,                                 "Exclusion ranges  --> [1]");
+    t.is (ranges[0].start ().toString ("Y-M-D"), "2016-01-01", "Exclusion range[0] --> 2016-01-01");
+    t.is (ranges[0].end ().toString ("Y-M-D"),   "2016-01-02", "Exclusion range[0] --> 2016-01-02");
+    t.notok (e.additive (),                                    "Exclusion 'day off ...' --> !additive");
   }
 
   catch (const std::string& e)
