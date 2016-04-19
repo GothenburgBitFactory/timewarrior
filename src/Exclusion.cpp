@@ -56,13 +56,21 @@ void Exclusion::initialize (const std::string& line)
   {
     if (_tokens.size () == 4 &&
         _tokens[1] == "day"  &&
-        (_tokens[2] == "on" || _tokens[2] == "off"))
+        _tokens[2] == "on")
     {
+      _additive = true;
+      return;
+    }
+    if (_tokens.size () == 4 &&
+        _tokens[1] == "day"  &&
+        _tokens[2] == "off")
+    {
+      _additive = false;
       return;
     }
     else if (Datetime::dayOfWeek (_tokens[1]) != -1)
-             // TODO Check the time range args.
     {
+      _additive = false;
       return;
     }
   }
@@ -74,6 +82,36 @@ void Exclusion::initialize (const std::string& line)
 std::vector <std::string> Exclusion::tokens () const
 {
   return _tokens;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Within range, yield a collection of recurring ranges as defined by _tokens.
+//   exc monday <block> [<block> ...]
+//   exc day on <date>
+//   exc day off <date>
+std::vector <Daterange> Exclusion::ranges (const Daterange& range) const
+{
+  std::vector <Daterange> results;
+
+  if (_tokens[1] == "day" &&
+      (_tokens[2] == "on" ||
+       _tokens[2] == "off"))
+  {
+    Datetime start (_tokens[3]);
+    Datetime end (start);
+    ++end;
+    Daterange day (start, end);
+    if (range.overlap (day))
+      results.push_back (day);
+  }
+
+  return results;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool Exclusion::additive () const
+{
+  return _additive;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

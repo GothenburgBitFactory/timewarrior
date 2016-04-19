@@ -28,6 +28,7 @@
 #define INCLUDED_EXCLUSION
 
 #include <Interval.h>
+#include <Daterange.h>
 #include <vector>
 #include <string>
 
@@ -37,12 +38,15 @@ public:
   Exclusion () = default;
   void initialize (const std::string&);
   std::vector <std::string> tokens () const;
+  std::vector <Daterange> ranges (const Daterange&) const;
+  bool additive () const;
 
   std::string serialize () const;
   std::string dump () const;
 
 private:
-  std::vector <std::string> _tokens;
+  std::vector <std::string> _tokens   {};
+  bool                      _additive {false};
 };
 
 #endif
