@@ -31,67 +31,74 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (45);
+  UnitTest t (52);
 
   try
   {
-    // exc monday 8:00:00-12:00:00 12:45:00-17:30:00
+    // exc monday <8:00:00 12:00:00-12:45:00 >17:30:00
     Exclusion e;
-    e.initialize ("exc monday 8:00:00-12:00:00 12:45:00-17:30:00");
+    e.initialize ("exc monday <8:00:00 12:00:00-12:45:00 >17:30:00");
     auto tokens = e.tokens ();
-    t.ok (tokens.size () == 4,              "Exclusion 'exc monday 8:00:00-12:00:00 12:45:00-17:30:00' --> 4");
-    t.is (tokens[0], "exc",                 "Exclusion 'exc monday 8:00:00-12:00:00 12:45:00-17:30:00' [0] --> 'exc'");
-    t.is (tokens[1], "monday",              "Exclusion 'exc monday 8:00:00-12:00:00 12:45:00-17:30:00' [1] --> 'monday'");
-    t.is (tokens[2], "8:00:00-12:00:00",    "Exclusion 'exc monday 8:00:00-12:00:00 12:45:00-17:30:00' [2] --> '8:00:00-12:00:00'");
-    t.is (tokens[3], "12:45:00-17:30:00",   "Exclusion 'exc monday 8:00:00-12:00:00 12:45:00-17:30:00' [3] --> '12:45:00-17:30:00'");
+    t.ok (tokens.size () == 5,              "Exclusion 'exc monday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
+    t.is (tokens[0], "exc",                 "Exclusion 'exc monday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
+    t.is (tokens[1], "monday",              "Exclusion 'exc monday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'monday'");
+    t.is (tokens[2], "<8:00:00",            "Exclusion 'exc monday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
+    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exc monday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
+    t.is (tokens[4], ">17:30:00",           "Exclusion 'exc monday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
 
-    e.initialize ("exc tuesday 8:00:00-12:00:00 12:45:00-17:30:00");
+    e.initialize ("exc tuesday <8:00:00 12:00:00-12:45:00 >17:30:00");
     tokens = e.tokens ();
-    t.ok (tokens.size () == 4,              "Exclusion 'exc tuesday 8:00:00-12:00:00 12:45:00-17:30:00' --> 4");
-    t.is (tokens[0], "exc",                 "Exclusion 'exc tuesday 8:00:00-12:00:00 12:45:00-17:30:00' [0] --> 'exc'");
-    t.is (tokens[1], "tuesday",             "Exclusion 'exc tuesday 8:00:00-12:00:00 12:45:00-17:30:00' [1] --> 'tuesday'");
-    t.is (tokens[2], "8:00:00-12:00:00",    "Exclusion 'exc tuesday 8:00:00-12:00:00 12:45:00-17:30:00' [2] --> '8:00:00-12:00:00'");
-    t.is (tokens[3], "12:45:00-17:30:00",   "Exclusion 'exc tuesday 8:00:00-12:00:00 12:45:00-17:30:00' [3] --> '12:45:00-17:30:00'");
+    t.ok (tokens.size () == 5,              "Exclusion 'exc tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
+    t.is (tokens[0], "exc",                 "Exclusion 'exc tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
+    t.is (tokens[1], "tuesday",             "Exclusion 'exc tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'tuesday'");
+    t.is (tokens[2], "<8:00:00",            "Exclusion 'exc tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
+    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exc tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
+    t.is (tokens[4], ">17:30:00",           "Exclusion 'exc tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
 
-    e.initialize ("exc wednesday 8:00:00-12:00:00 12:45:00-17:30:00");
+    e.initialize ("exc wednesday <8:00:00 12:00:00-12:45:00 >17:30:00");
     tokens = e.tokens ();
-    t.ok (tokens.size () == 4,              "Exclusion 'exc wednesday 8:00:00-12:00:00 12:45:00-17:30:00' --> 4");
-    t.is (tokens[0], "exc",                 "Exclusion 'exc wednesday 8:00:00-12:00:00 12:45:00-17:30:00' [0] --> 'exc'");
-    t.is (tokens[1], "wednesday",           "Exclusion 'exc wednesday 8:00:00-12:00:00 12:45:00-17:30:00' [1] --> 'wednesday'");
-    t.is (tokens[2], "8:00:00-12:00:00",    "Exclusion 'exc wednesday 8:00:00-12:00:00 12:45:00-17:30:00' [2] --> '8:00:00-12:00:00'");
-    t.is (tokens[3], "12:45:00-17:30:00",   "Exclusion 'exc wednesday 8:00:00-12:00:00 12:45:00-17:30:00' [3] --> '12:45:00-17:30:00'");
+    t.ok (tokens.size () == 5,              "Exclusion 'exc wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
+    t.is (tokens[0], "exc",                 "Exclusion 'exc wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
+    t.is (tokens[1], "wednesday",           "Exclusion 'exc wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'wednesday'");
+    t.is (tokens[2], "<8:00:00",            "Exclusion 'exc wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
+    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exc wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
+    t.is (tokens[4], ">17:30:00",           "Exclusion 'exc wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
 
-    e.initialize ("exc thursday 8:00:00-12:00:00 12:45:00-17:30:00");
+    e.initialize ("exc thursday <8:00:00 12:00:00-12:45:00 >17:30:00");
     tokens = e.tokens ();
-    t.ok (tokens.size () == 4,              "Exclusion 'exc thursday 8:00:00-12:00:00 12:45:00-17:30:00' --> 4");
-    t.is (tokens[0], "exc",                 "Exclusion 'exc thursday 8:00:00-12:00:00 12:45:00-17:30:00' [0] --> 'exc'");
-    t.is (tokens[1], "thursday",            "Exclusion 'exc thursday 8:00:00-12:00:00 12:45:00-17:30:00' [1] --> 'thursday'");
-    t.is (tokens[2], "8:00:00-12:00:00",    "Exclusion 'exc thursday 8:00:00-12:00:00 12:45:00-17:30:00' [2] --> '8:00:00-12:00:00'");
-    t.is (tokens[3], "12:45:00-17:30:00",   "Exclusion 'exc thursday 8:00:00-12:00:00 12:45:00-17:30:00' [3] --> '12:45:00-17:30:00'");
+    t.ok (tokens.size () == 5,              "Exclusion 'exc thursday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
+    t.is (tokens[0], "exc",                 "Exclusion 'exc thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
+    t.is (tokens[1], "thursday",            "Exclusion 'exc thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'thursday'");
+    t.is (tokens[2], "<8:00:00",            "Exclusion 'exc thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
+    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exc thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
+    t.is (tokens[4], ">17:30:00",           "Exclusion 'exc thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
 
-    e.initialize ("exc friday 8:00:00-12:00:00 12:45:00-17:30:00");
+    e.initialize ("exc friday <8:00:00 12:00:00-12:45:00 >17:30:00");
     tokens = e.tokens ();
-    t.ok (tokens.size () == 4,              "Exclusion 'exc friday 8:00:00-12:00:00 12:45:00-17:30:00' --> 4");
-    t.is (tokens[0], "exc",                 "Exclusion 'exc friday 8:00:00-12:00:00 12:45:00-17:30:00' [0] --> 'exc'");
-    t.is (tokens[1], "friday",              "Exclusion 'exc friday 8:00:00-12:00:00 12:45:00-17:30:00' [1] --> 'friday'");
-    t.is (tokens[2], "8:00:00-12:00:00",    "Exclusion 'exc friday 8:00:00-12:00:00 12:45:00-17:30:00' [2] --> '8:00:00-12:00:00'");
-    t.is (tokens[3], "12:45:00-17:30:00",   "Exclusion 'exc friday 8:00:00-12:00:00 12:45:00-17:30:00' [3] --> '12:45:00-17:30:00'");
+    t.ok (tokens.size () == 5,              "Exclusion 'exc friday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
+    t.is (tokens[0], "exc",                 "Exclusion 'exc friday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
+    t.is (tokens[1], "friday",              "Exclusion 'exc friday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'friday'");
+    t.is (tokens[2], "<8:00:00",            "Exclusion 'exc friday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
+    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exc friday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
+    t.is (tokens[4], ">17:30:00",           "Exclusion 'exc friday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
 
-    e.initialize ("exc saturday 8:00:00-12:00:00 12:45:00-17:30:00");
+    e.initialize ("exc saturday <8:00:00 12:00:00-12:45:00 >17:30:00");
     tokens = e.tokens ();
-    t.ok (tokens.size () == 4,              "Exclusion 'exc saturday 8:00:00-12:00:00 12:45:00-17:30:00' --> 4");
-    t.is (tokens[0], "exc",                 "Exclusion 'exc saturday 8:00:00-12:00:00 12:45:00-17:30:00' [0] --> 'exc'");
-    t.is (tokens[1], "saturday",            "Exclusion 'exc saturday 8:00:00-12:00:00 12:45:00-17:30:00' [1] --> 'saturday'");
-    t.is (tokens[2], "8:00:00-12:00:00",    "Exclusion 'exc saturday 8:00:00-12:00:00 12:45:00-17:30:00' [2] --> '8:00:00-12:00:00'");
-    t.is (tokens[3], "12:45:00-17:30:00",   "Exclusion 'exc saturday 8:00:00-12:00:00 12:45:00-17:30:00' [3] --> '12:45:00-17:30:00'");
+    t.ok (tokens.size () == 5,              "Exclusion 'exc saturday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
+    t.is (tokens[0], "exc",                 "Exclusion 'exc saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
+    t.is (tokens[1], "saturday",            "Exclusion 'exc saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'saturday'");
+    t.is (tokens[2], "<8:00:00",            "Exclusion 'exc saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
+    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exc saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
+    t.is (tokens[4], ">17:30:00",           "Exclusion 'exc saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
 
-    e.initialize ("exc sunday 8:00:00-12:00:00 12:45:00-17:30:00");
+    e.initialize ("exc sunday <8:00:00 12:00:00-12:45:00 >17:30:00");
     tokens = e.tokens ();
-    t.ok (tokens.size () == 4,              "Exclusion 'exc sunday 8:00:00-12:00:00 12:45:00-17:30:00' --> 4");
-    t.is (tokens[0], "exc",                 "Exclusion 'exc sunday 8:00:00-12:00:00 12:45:00-17:30:00' [0] --> 'exc'");
-    t.is (tokens[1], "sunday",              "Exclusion 'exc sunday 8:00:00-12:00:00 12:45:00-17:30:00' [1] --> 'sunday'");
-    t.is (tokens[2], "8:00:00-12:00:00",    "Exclusion 'exc sunday 8:00:00-12:00:00 12:45:00-17:30:00' [2] --> '8:00:00-12:00:00'");
-    t.is (tokens[3], "12:45:00-17:30:00",   "Exclusion 'exc sunday 8:00:00-12:00:00 12:45:00-17:30:00' [3] --> '12:45:00-17:30:00'");
+    t.ok (tokens.size () == 5,              "Exclusion 'exc sunday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
+    t.is (tokens[0], "exc",                 "Exclusion 'exc sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
+    t.is (tokens[1], "sunday",              "Exclusion 'exc sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'sunday'");
+    t.is (tokens[2], "<8:00:00",            "Exclusion 'exc sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
+    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exc sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
+    t.is (tokens[4], ">17:30:00",           "Exclusion 'exc sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
 
     // exc day on 2016-01-01
     e.initialize ("exc day on 2016-01-01");
