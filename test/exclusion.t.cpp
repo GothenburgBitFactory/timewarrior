@@ -115,8 +115,8 @@ int main (int, char**)
     Daterange r (Datetime ("2015-12-15"), Datetime ("2016-01-15"));
     auto ranges = e.ranges (r);
     t.ok (ranges.size () == 1,                                 "Exclusion ranges  --> [1]");
-    t.is (ranges[0].start ().toString ("Y-M-D"), "2016-01-01", "Exclusion range[0] --> 2016-01-01");
-    t.is (ranges[0].end ().toString ("Y-M-D"),   "2016-01-02", "Exclusion range[0] --> 2016-01-02");
+    t.is (ranges[0].start ().toString ("Y-M-D"), "2016-01-01", "Exclusion range[0].start() --> 2016-01-01");
+    t.is (ranges[0].end ().toString ("Y-M-D"),   "2016-01-02", "Exclusion range[0].end() --> 2016-01-02");
     t.ok (e.additive (),                                       "Exclusion 'day on ...' --> additive");
 
     // exc day off 2016-01-01
@@ -130,8 +130,8 @@ int main (int, char**)
 
     ranges = e.ranges (r);
     t.ok (ranges.size () == 1,                                 "Exclusion ranges  --> [1]");
-    t.is (ranges[0].start ().toString ("Y-M-D"), "2016-01-01", "Exclusion range[0] --> 2016-01-01");
-    t.is (ranges[0].end ().toString ("Y-M-D"),   "2016-01-02", "Exclusion range[0] --> 2016-01-02");
+    t.is (ranges[0].start ().toString ("Y-M-D"), "2016-01-01", "Exclusion range[0].start() --> 2016-01-01");
+    t.is (ranges[0].end ().toString ("Y-M-D"),   "2016-01-02", "Exclusion range[0].end() --> 2016-01-02");
     t.notok (e.additive (),                                    "Exclusion 'day off ...' --> !additive");
   }
 
