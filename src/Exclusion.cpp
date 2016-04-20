@@ -161,83 +161,29 @@ Daterange Exclusion::daterangeFromTimeBlock (
 
   if (pig.skip ('<'))
   {
-    int hh;
-    int mm;
-    if ((pig.getDigit2 (hh) ||
-         pig.getDigit (hh)) &&
-        pig.skip (':')      &&
-        pig.getDigit2 (mm))
-    {
-      int ss {0};
-      if (pig.skip (':') &&
-          pig.getDigit2 (ss))
-      {
-        // That's nice.
-      }
-
+    int hh, mm, ss;
+    if (pig.getHMS (hh, mm, ss))
       return Daterange (start, Datetime (start.month (), start.day (), start.year (), hh, mm, ss));
-    }
 
     throw format ("Malformed time block '{1}'.", block);
   }
   else if (pig.skip ('>'))
   {
-    int hh;
-    int mm;
-    if ((pig.getDigit2 (hh) ||
-         pig.getDigit (hh)) &&
-        pig.skip (':')      &&
-        pig.getDigit2 (mm))
-    {
-      int ss {0};
-      if (pig.skip (':') &&
-          pig.getDigit2 (ss))
-      {
-        // That's nice.
-      }
-
+    int hh, mm, ss;
+    if (pig.getHMS (hh, mm, ss))
       return Daterange (Datetime (start.month (), start.day (), start.year (), hh, mm, ss), end);
-    }
 
     throw format ("Malformed time block '{1}'.", block);
   }
 
-  int hh1;
-  int mm1;
-  if ((pig.getDigit2 (hh1) ||
-       pig.getDigit (hh1)) &&
-      pig.skip (':')      &&
-      pig.getDigit2 (mm1))
-  {
-    int ss1 {0};
-    if (pig.skip (':') &&
-        pig.getDigit2 (ss1))
-    {
-      // That's nice.
-    }
-
-    if (pig.skip ('-'))
-    {
-      int hh2;
-      int mm2;
-      if ((pig.getDigit2 (hh2) ||
-           pig.getDigit (hh2)) &&
-          pig.skip (':')       &&
-          pig.getDigit2 (mm2))
-      {
-        int ss2 {0};
-        if (pig.skip (':') &&
-            pig.getDigit2 (ss2))
-        {
-          // That's nice.
-        }
-
-        return Daterange (
-                 Datetime (start.month (), start.day (), start.year (), hh1, mm1, ss1),
-                 Datetime (start.month (), start.day (), start.year (), hh2, mm2, ss2));
-      }
-    }
-  }
+  int hh1, mm1, ss1;
+  int hh2, mm2, ss2;
+  if (pig.getHMS (hh1, mm1, ss1) &&
+      pig.skip ('-')             &&
+      pig.getHMS (hh2, mm2, ss2))
+    return Daterange (
+             Datetime (start.month (), start.day (), start.year (), hh1, mm1, ss1),
+             Datetime (start.month (), start.day (), start.year (), hh2, mm2, ss2));
 
   throw format ("Malformed time block '{1}'.", block);
 }
