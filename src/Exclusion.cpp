@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <Exclusion.h>
 #include <Datetime.h>
+#include <Pig.h>
 #include <shared.h>
 #include <format.h>
 
@@ -86,12 +87,16 @@ std::vector <std::string> Exclusion::tokens () const
 
 ////////////////////////////////////////////////////////////////////////////////
 // Within range, yield a collection of recurring ranges as defined by _tokens.
-//   exc monday <block> [<block> ...]
-//   exc day on <date>
-//   exc day off <date>
+//
+//   exc monday <block> [<block> ...]  --> yields a day range for every monday,
+//                                         and every block within
+//   exc day on <date>                 --> yields single day range
+//   exc day off <date>                --> yields single day range
+//
 std::vector <Daterange> Exclusion::ranges (const Daterange& range) const
 {
   std::vector <Daterange> results;
+  int dayOfWeek;
 
   if (_tokens[1] == "day" &&
       (_tokens[2] == "on" ||
@@ -103,6 +108,26 @@ std::vector <Daterange> Exclusion::ranges (const Daterange& range) const
     Daterange day (start, end);
     if (range.overlap (day))
       results.push_back (day);
+  }
+
+  else if ((dayOfWeek = Datetime::dayOfWeek (_tokens[1])) != -1)
+  {
+    Datetime start = range.start ();
+    while (start < range.end ())
+    {
+      if (start.dayOfWeek () == dayOfWeek)
+      {
+        Datetime end = start;
+        ++end;
+
+        // Now that 'start' and 'end' respresent the correct day, compose a set
+        // of Daterange objects for each time block.
+        for (unsigned int b = 2; b < _tokens.size (); ++b)
+          results.push_back (daterangeFromTimeBlock (_tokens[b], start, end));
+      }
+
+      ++start;
+    }
   }
 
   return results;
@@ -124,6 +149,97 @@ std::string Exclusion::serialize () const
 std::string Exclusion::dump () const
 {
   return std::string ("Exclusion ") + join (" ", _tokens) + "\n";
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Daterange Exclusion::daterangeFromTimeBlock (
+  const std::string& block,
+  const Datetime& start,
+  const Datetime& end) const
+{
+  Pig pig (block);
+
+  if (pig.skip ('<'))
+  {
+    int hh;
+    int mm;
+    if ((pig.getDigit2 (hh) ||
+         pig.getDigit (hh)) &&
+        pig.skip (':')      &&
+        pig.getDigit2 (mm))
+    {
+      int ss {0};
+      if (pig.skip (':') &&
+          pig.getDigit2 (ss))
+      {
+        // That's nice.
+      }
+
+      return Daterange (start, Datetime (start.month (), start.day (), start.year (), hh, mm, ss));
+    }
+
+    throw format ("Malformed time block '{1}'.", block);
+  }
+  else if (pig.skip ('>'))
+  {
+    int hh;
+    int mm;
+    if ((pig.getDigit2 (hh) ||
+         pig.getDigit (hh)) &&
+        pig.skip (':')      &&
+        pig.getDigit2 (mm))
+    {
+      int ss {0};
+      if (pig.skip (':') &&
+          pig.getDigit2 (ss))
+      {
+        // That's nice.
+      }
+
+      return Daterange (Datetime (start.month (), start.day (), start.year (), hh, mm, ss), end);
+    }
+
+    throw format ("Malformed time block '{1}'.", block);
+  }
+
+  int hh1;
+  int mm1;
+  if ((pig.getDigit2 (hh1) ||
+       pig.getDigit (hh1)) &&
+      pig.skip (':')      &&
+      pig.getDigit2 (mm1))
+  {
+    int ss1 {0};
+    if (pig.skip (':') &&
+        pig.getDigit2 (ss1))
+    {
+      // That's nice.
+    }
+
+    if (pig.skip ('-'))
+    {
+      int hh2;
+      int mm2;
+      if ((pig.getDigit2 (hh2) ||
+           pig.getDigit (hh2)) &&
+          pig.skip (':')       &&
+          pig.getDigit2 (mm2))
+      {
+        int ss2 {0};
+        if (pig.skip (':') &&
+            pig.getDigit2 (ss2))
+        {
+          // That's nice.
+        }
+
+        return Daterange (
+                 Datetime (start.month (), start.day (), start.year (), hh1, mm1, ss1),
+                 Datetime (start.month (), start.day (), start.year (), hh2, mm2, ss2));
+      }
+    }
+  }
+
+  throw format ("Malformed time block '{1}'.", block);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

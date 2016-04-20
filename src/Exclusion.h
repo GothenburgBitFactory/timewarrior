@@ -45,6 +45,9 @@ public:
   std::string dump () const;
 
 private:
+  Daterange daterangeFromTimeBlock (const std::string&, const Datetime&, const Datetime&) const;
+
+private:
   std::vector <std::string> _tokens   {};
   bool                      _additive {false};
 };
