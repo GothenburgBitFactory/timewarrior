@@ -442,3 +442,19 @@ std::vector <Daterange> addRanges (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::vector <Daterange> subtractRanges (
+  const Daterange& limits,
+  const std::vector <Daterange>& ranges,
+  const std::vector <Daterange>& subtractions)
+{
+  std::vector <Daterange> results;
+
+  for (auto& r1 : ranges)
+    for (auto& r2 : subtractions)
+      for (auto& r3 : r1.subtract (r2))
+        results.push_back (limits.intersect (r3));
+
+  return results;
+}
+
+////////////////////////////////////////////////////////////////////////////////
