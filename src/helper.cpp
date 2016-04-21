@@ -422,3 +422,23 @@ std::vector <Daterange> rangesFromHolidays (const Rules& rules)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Subset both ranges and additions by limits, and combine.
+std::vector <Daterange> addRanges (
+  const Daterange& limits,
+  const std::vector <Daterange>& ranges,
+  const std::vector <Daterange>& additions)
+{
+  std::vector <Daterange> results;
+
+  for (auto& range : ranges)
+    if (limits.overlap (range))
+      results.push_back (range);
+
+  for (auto& addition : additions)
+    if (limits.overlap (addition))
+      results.push_back (addition);
+
+  return results;
+}
+
+////////////////////////////////////////////////////////////////////////////////
