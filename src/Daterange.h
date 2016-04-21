@@ -49,6 +49,8 @@ public:
   Daterange intersect (const Daterange&) const;
   std::vector <Daterange> subtract (const Daterange&) const;
 
+  std::string dump () const;
+
 private:
   Datetime _start {0};
   Datetime _end   {0};

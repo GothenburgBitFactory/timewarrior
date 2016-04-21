@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Daterange.h>
+#include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
 // A Daterange consists of a start time and optional end time. A missing end
@@ -243,6 +244,18 @@ std::vector <Daterange> Daterange::subtract (const Daterange& other) const
   }
 
   return results;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string Daterange::dump () const
+{
+  std::stringstream out;
+  out << "Daterange _start "
+      << (_start.toEpoch () ? _start.toISOLocalExtended () : "n/a")
+      << " - "
+      << (_end.toEpoch () ? _end.toISOLocalExtended () : "n/a");
+
+  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
