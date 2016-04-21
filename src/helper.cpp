@@ -401,20 +401,20 @@ std::string jsonFromIntervals (const std::vector <Interval>& intervals)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> intervalsFromHolidays (const Rules& rules)
+std::vector <Daterange> rangesFromHolidays (const Rules& rules)
 {
-  std::vector <Interval> results;
+  std::vector <Daterange> results;
   for (auto& holiday : rules.all ("holidays."))
   {
     auto lastDot = holiday.rfind ('.');
     if (lastDot != std::string::npos)
     {
-      Interval h;
+      Daterange r;
       Datetime d (holiday.substr (lastDot + 1), "Y_M_D");
-      h.start (d);
+      r.start (d);
       ++d;
-      h.end (d);
-      results.push_back (h);
+      r.end (d);
+      results.push_back (r);
     }
   }
 
