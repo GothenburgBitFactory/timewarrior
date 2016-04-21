@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Timeline.h>
+#include <timew.h>
 #include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -69,26 +70,28 @@ void Timeline::exclude (const Exclusion& exclusion)
 ////////////////////////////////////////////////////////////////////////////////
 std::vector <Interval> Timeline::tracked (Rules& rules) const
 {
-  // TODO Create a range representing the whole timeline.
 
-  // TODO Intersect this range with the outer range of all inclusions.
+  // Create a range representing the whole timeline.
+  // If no range is defined, then assume the full range of all the inclusions.
+  Daterange timelineRange {_range};
+  if (timelineRange.start ().toEpoch () == 0 &&
+      timelineRange.end ().toEpoch () == 0)
+  {
+    for (auto& inclusion : _inclusions)
+    {
+      if (inclusion.start () < timelineRange.start () || timelineRange.start ().toEpoch () == 0)
+        timelineRange.start (inclusion.start ());
 
-  // TODO Obtain holidays.
-  // TODO for each exclusion:
-  // TODO   if "exc day off <date>":
-  // TODO     add <date> as a holiday.
-  // TODO   if "exc day on <date>":
-  // TODO     if <date> matches a holiday:
-  // TODO       remove <date> as a holiday
+      // Deliberately mixed start/end.
+      if (inclusion.start () > timelineRange.end ())
+        timelineRange.end (inclusion.start ());
 
-  // TODO for each inclusion:
-  // TODO   for each holiday:
-  // TODO     intersect intelligently.
+      if (inclusion.end () > timelineRange.end ())
+        timelineRange.end (inclusion.end ());
+    }
 
-  // TODO   for each exclusion:
-  // TODO     generate a set of ranges to exclude.
-  // TODO     for each excluded range:
-  // TODO       intersect intelligently.
+    std::cout << "# Timeline augmented range: " << timelineRange.start ().toISO () << " - " << timelineRange.end ().toISO () << "\n";
+  }
 
   // TODO Return results, which should be the stored inclusions, clipped by
   //      subtracting all the exclusions nad holidays.
@@ -99,7 +102,6 @@ std::vector <Interval> Timeline::tracked (Rules& rules) const
   return combined;
 */
 
-  return _inclusions;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
