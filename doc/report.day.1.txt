@@ -1,9 +1,9 @@
 Report Mockup
 =============
 
-$ timew report day last monday
+$ timew report day monday
 
-Day Report, 2016-03-13 15:14:03, week 32
+Day Report, 2016-03-13 16:30:03, week 32
 
       Monday
  8:00 [48;5;235m                                              [0m
@@ -15,10 +15,10 @@ Day Report, 2016-03-13 15:14:03, week 32
  2:00 [37;41m                                              [0m
  3:00 [37;41m                                              [0m
  4:00 [37;41m                                              [0m
- 5:00 [37;41m                                              [0m
+[38;5;204m 5:00[0m [37;41m                    ...[0m
  6:00 [48;5;235m                                              [0m
 
-Tracked:    8:00
-Untracked:  0:00
+Tracked     7:30
+Untracked   0:30
 Total       8:00
 
