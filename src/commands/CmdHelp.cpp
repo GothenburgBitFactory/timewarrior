@@ -43,7 +43,7 @@ int CmdHelpUsage ()
             << "       timew start [<tag> ...]\n"
             << "       timew stop [<tag> ...]\n"
             << "       timew tags\n"
-            << "       timew track [<interval>] [<tag> ...]\n"
+            << "       timew track <interval> [<tag> ...]\n"
             << "\n"
             << "Interval:\n"
             << "       [from] <date>\n"
