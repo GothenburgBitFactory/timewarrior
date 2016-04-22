@@ -28,7 +28,6 @@
 #include <Timeline.h>
 #include <timew.h>
 #include <sstream>
-#include <iostream> // TODO Remove
 
 ////////////////////////////////////////////////////////////////////////////////
 // The Timeline object represents a continuum with a defined start and end
@@ -71,38 +70,41 @@ void Timeline::exclude (const Exclusion& exclusion)
 ////////////////////////////////////////////////////////////////////////////////
 std::vector <Interval> Timeline::tracked (Rules& rules) const
 {
-
   // Create a range representing the whole timeline.
   // If no range is defined, then assume the full range of all the inclusions.
-  Daterange timelineRange {_range};
-  if (timelineRange.start ().toEpoch () == 0 &&
-      timelineRange.end ().toEpoch () == 0)
+  Daterange overallRange {_range};
+  if (! overallRange.isStarted () &&
+      ! overallRange.isEnded ())
+    overallRange = overallRangeFromIntervals (_inclusions);
+
+  // Cobmine all the non-trackable time.
+  auto nonTrackable = combineHolidaysAndExclusions (overallRange, rules, _exclusions);
+
+  std::vector <Interval> combined;
+  for (auto& interval : _inclusions)
   {
-    for (auto& inclusion : _inclusions)
+    std::vector <Daterange> intervalFragments {interval.range ()};
+
+    for (auto& exclusion : nonTrackable)
     {
-      if (inclusion.start () < timelineRange.start () || timelineRange.start ().toEpoch () == 0)
-        timelineRange.start (inclusion.start ());
+      std::vector <Daterange> brokenFragments;
+      for (auto& fragment : intervalFragments)
+        for (auto& broken : fragment.subtract (exclusion))
+          brokenFragments.push_back (broken);
 
-      // Deliberately mixed start/end.
-      if (inclusion.start () > timelineRange.end ())
-        timelineRange.end (inclusion.start ());
-
-      if (inclusion.end () > timelineRange.end ())
-        timelineRange.end (inclusion.end ());
+      intervalFragments = brokenFragments;
     }
 
-    std::cout << "# Timeline augmented range: " << timelineRange.start ().toISO () << " - " << timelineRange.end ().toISO () << "\n";
+    for (auto& fragment : intervalFragments)
+    {
+      // Clone the interval, set the new range.
+      Interval clipped {interval};
+      clipped.range (fragment);
+      combined.push_back (clipped);
+    }
   }
 
-  // TODO Return results, which should be the stored inclusions, clipped by
-  //      subtracting all the exclusions nad holidays.
-
-/*
-  std::vector <Interval> combined;
-
-  return combined;
-*/
-
+  return combined;;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
