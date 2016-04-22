@@ -6,3 +6,4 @@ Makefile
 cmake_install.cmake
 lr0
 sax
+debug
