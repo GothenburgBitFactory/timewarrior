@@ -225,21 +225,3 @@ std::string Interval::json () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string Interval::dump () const
-{
-  std::stringstream out;
-
-  out << "Interval _start '"
-      << _range.start ().toEpoch ()
-      << "' _end '"
-      << _range.end ().toEpoch ()
-      << "' _tags";
-
-  for (auto& tag : _tags)
-    out << " '" << tag << "'";
-
-  out << "\n";
-  return out.str ();
-}
-
-////////////////////////////////////////////////////////////////////////////////

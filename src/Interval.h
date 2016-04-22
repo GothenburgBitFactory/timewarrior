@@ -57,7 +57,6 @@ public:
 
   std::string serialize () const;
   std::string json () const;
-  std::string dump () const;
 
 private:
   Daterange              _range {};

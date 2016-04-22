@@ -121,9 +121,9 @@ std::string Timeline::dump () const
 {
   std::stringstream out;
 
-  out << "Timeline _range " << _range.start ().toISO () << " - " << _range.end ().toISO () << "\n";
+  out << "Timeline _range " << _range.dump () << "\n";
   for (auto& i : _inclusions)
-    out << "  " << i.dump ();
+    out << "  " << i.json ();
   for (auto& e : _exclusions)
     out << "  " << e.dump ();
 
