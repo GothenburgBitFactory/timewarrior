@@ -18,6 +18,7 @@
 - Added Taskwarrior hook script to integrate Timewarrior.
 - Added support for the ':debug' and :quiet hints.
 - Added support for the :day, :week, :month, :quarter and :year hints.
+- Added 'track' command.
 
 Design completed 2016-03-13
 Project started  2015-11-29
