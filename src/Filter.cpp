@@ -33,7 +33,7 @@ bool Filter::empty () const
 {
   return _range.start ().toEpoch () == 0 &&
          _range.end ().toEpoch ()   == 0 &&
-         _tags.size ()           == 0;
+         _tags.size ()              == 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -66,11 +66,9 @@ std::string Filter::dump () const
 {
   std::stringstream out;
 
-  out << "Filter _range.start '"
-      << _range.start ().toEpoch ()
-      << "' _range.end '"
-      << _range.end ().toEpoch ()
-      << "' _tags";
+  out << "Filter _range "
+      << _range.dump ()
+      << " _tags";
 
   for (auto& tag : _tags)
     out << " '" << tag << "'";
