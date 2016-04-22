@@ -1,0 +1,15 @@
+Report Mockup
+=============
+
+$ timew report day2
+
+Day Report, 2016-04-22 16:30:03, week 32
+
+  6    7    8    9    10   11   12   1    2    3    4    5    6
+  [48;5;235m    [0m [48;5;235m    [0m [37;44mStaff Meeting      [0m [48;5;235m    [0m [37;41mResearch for     [0m   [48;5;235m    [0m [48;5;235m    [0m
+  [48;5;235m    [0m [48;5;235m    [0m [37;44m                   [0m [48;5;235m    [0m [37;41mProduct X     ...[0m   [48;5;235m    [0m [48;5;235m    [0m
+
+  Tracked     7:30
+  Untracked   0:30
+  Total       8:00
+
