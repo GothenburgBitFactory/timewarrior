@@ -144,6 +144,11 @@ void CLI::add (const std::string& argument)
 ////////////////////////////////////////////////////////////////////////////////
 // Arg0 is the first argument, which is the name and potentially a relative or
 // absolute path to the invoked binary.
+//
+// The binary name is 'timew', but if the binary is reported as 'foo' then it
+// was invoked via symbolic link, in which case capture the first argument as
+// 'foo'. This should allow any command/extension to do this.
+//
 void CLI::handleArg0 ()
 {
   // Capture arg0 separately, because it is the command that was run, and could
@@ -151,6 +156,18 @@ void CLI::handleArg0 ()
   auto raw = _original_args[0].attribute ("raw");
   A2 a (raw, Lexer::Type::word);
   a.tag ("BINARY");
+
+  std::string basename = "timew";
+  auto slash = raw.rfind ('/');
+  if (slash != std::string::npos)
+    basename = raw.substr (slash + 1);
+
+  a.attribute ("basename", basename);
+  if (basename != "timew")
+  {
+    A2 cal (basename, Lexer::Type::word);
+    _args.push_back (cal);
+  }
 
   _args.push_back (a);
 }
