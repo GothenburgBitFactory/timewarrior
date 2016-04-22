@@ -17,6 +17,7 @@ set (commands_SRCS CmdClear.cpp
                    CmdImport.cpp
                    CmdReport.cpp
                    CmdReportDay.cpp
+                   CmdReportMonth.cpp
                    CmdReportWeek.cpp
                    CmdStart.cpp
                    CmdStop.cpp

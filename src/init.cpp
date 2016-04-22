@@ -76,6 +76,7 @@ void initializeEntities (CLI& cli)
   // Some command list themselves as extensions, to integrate with the real
   // extensions.
   cli.entity ("extension", "day");
+  cli.entity ("extension", "month");
   cli.entity ("extension", "week");
 
   // Hint entities.
@@ -245,6 +246,7 @@ int dispatchCommand (
     else if (command == "report")      status = CmdReport      (cli, rules, database, extensions);
     else if (command == "day")         status = CmdReportDay   (cli, rules, database            );
     else if (command == "week")        status = CmdReportWeek  (cli, rules, database            );
+    else if (command == "month")       status = CmdReportMonth (cli, rules, database            );
     else if (command == "start")       status = CmdStart       (cli, rules, database            );
     else if (command == "stop")        status = CmdStop        (cli, rules, database            );
     else if (command == "tags")        status = CmdTags        (     rules, database            );
