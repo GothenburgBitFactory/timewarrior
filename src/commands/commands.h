@@ -51,5 +51,6 @@ int CmdTrack       (const CLI&, Rules&, Database&                   );
 int CmdUndo        (                                                );
 
 int CmdReportDay   (const CLI&, Rules&, Database&                   );
+int CmdReportWeek  (const CLI&, Rules&, Database&                   );
 
 #endif
