@@ -39,7 +39,7 @@ int CmdHelpUsage ()
             << "       timew export [<interval>] [<tag> ...]\n"
             << "       timew extensions\n"
             << "       timew help [<command> | hints]\n"
-            << "       timew [report] <report> [<interval>] [<tag> ...]\n";
+            << "       timew [report] <report> [<interval>] [<tag> ...]\n"
             << "       timew start [<tag> ...]\n"
             << "       timew stop [<tag> ...]\n"
             << "       timew tags\n"
