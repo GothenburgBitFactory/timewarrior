@@ -34,15 +34,15 @@ More sophisticated use is possible if you have defined your work week with:
   define exclusions:
     monday    = <8:00:00 12:00:00-12:45:00 >17:30:00
     tuesday   = <8:00:00 12:00:00-12:45:00 >18:30:00
-    wednesday = <8:00:00 12:00:00-13:30:00 >17:30:00
-    thursday  = <8:00:00 12:00:00-12:45:00 >17:30:00
-    friday    = <8:00:00 12:00:00-12:45:00 >17:30:00
+    wednesday = <8:00 12:00-13:30 >17:30
+    thursday  = <8:00 12:00-12:45 >17:30
+    friday    = <8:00 12:00-12:45 >17:30
 
   $ timew track yesterday Home Painting
 
-Once the work week is recorded, vague terms like 'yesterday' can be resolved
-into actual start/stop timestamps. If you define holidays, then it knows not to
-track time on those days:
+Note that the second (':00') are optional. Once the work week is recorded,
+vague terms like 'yesterday' can be resolved into actual start/stop timestamps.
+If you define holidays, then it knows not to track time on those days:
 
   import /path/to/holidays/holidays.en-US
 

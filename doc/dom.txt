@@ -37,7 +37,7 @@ All DOM references have this form:
   dom.tracked.today               --> 2                   Quantity today
   dom.tracked.today.1             --> {...}               1st interval today JSON
   dom.tracked.today.1.start       --> YYYYMMDDTHHMMSSZ    1st interval today start
-  dom.tracked.today.1.end         --> YYYYMMDDTÞHMMSSZ    1st interval today end
+  dom.tracked.today.1.end         --> YYYYMMDDTHHMMSSZ    1st interval today end
   dom.tracked.today.1.tags        --> 1                   1st interval today tag count
   dom.tracked.today.1.tag.1       --> 'tag1'              1st interval today tag
   dom.tracked.today.1.duration    --> P1H25M8S            1st interval today duration
