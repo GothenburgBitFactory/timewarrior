@@ -58,6 +58,7 @@ std::vector <Daterange> rangesFromHolidays (const Rules&);
 std::vector <Daterange> addRanges (const Daterange&, const std::vector <Daterange>&, const std::vector <Daterange>&);
 std::vector <Daterange> subtractRanges (const Daterange&, const std::vector <Daterange>&, const std::vector <Daterange>&);
 Daterange overallRangeFromIntervals (const std::vector <Interval>&);
+std::vector <Daterange> combineHolidaysAndExclusions (const Daterange&, const Rules&, const std::vector <Exclusion>&);
 
 // utiŀ.cpp
 std::string osName ();
