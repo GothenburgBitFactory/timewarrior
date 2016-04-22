@@ -35,6 +35,7 @@
 #include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////
+// Consult rules to find any defined color for the given tah, and colorize it.
 Color tagColor (const Rules& rules, const std::string& tag)
 {
   Color c;
@@ -46,6 +47,7 @@ Color tagColor (const Rules& rules, const std::string& tag)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Summarize either an active or closed interval, for user feedback.
 std::string intervalSummarize (const Rules& rules, const Interval& interval)
 {
   std::stringstream out;
@@ -87,6 +89,7 @@ std::string intervalSummarize (const Rules& rules, const Interval& interval)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Convert a set of hints to equivalent date ranges.
 bool expandIntervalHint (
   const std::string& hint,
   std::string& start,
@@ -273,6 +276,8 @@ Filter createFilterFromCLI (const CLI& cli)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// An interval and a filter are almost identical.
+// TODO Why aren't they identical? Fix this.
 Interval createIntervalFromFilter (const Filter& filter)
 {
   Interval interval;
@@ -339,7 +344,7 @@ Interval getLatestInterval (Database& database)
   if (lastLine != "")
     i.initialize (lastLine);
 
-  // TODO Mask i against timeline.
+  // TODO Mask i against timeline. It's easy to say that.
 
   return i;
 }
@@ -401,6 +406,8 @@ std::string jsonFromIntervals (const std::vector <Interval>& intervals)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Read rules and extract all holiday definitions. Create a Daterange for each
+// one that spans from midnight to midnight.
 std::vector <Daterange> rangesFromHolidays (const Rules& rules)
 {
   std::vector <Daterange> results;
@@ -442,6 +449,8 @@ std::vector <Daterange> addRanges (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Subtract a set of Dateranges from another set of Dateranges, all within a
+// defined range.
 std::vector <Daterange> subtractRanges (
   const Daterange& limits,
   const std::vector <Daterange>& ranges,
@@ -483,6 +492,17 @@ Daterange overallRangeFromIntervals (const std::vector <Interval>& intervals)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// [1] Read holiday definitions from the rules, extract their dates and create
+//     a set of Dateranges from them.
+// [2] For 'exc day ...' exclusions, separate into daysOn and daysOff sets,
+//     based on whether the exclusion is additive.
+// [3] Treat daysOff as additional holidays.
+// [4] Subtract daysOn from the set of holidays.
+// [5] Take all the 'exc <dayOfWeek> ...' exclusions and expand them into
+//     concrete ranges within the overall range, adding them to the results.
+//
+// The result is the complete set of untrackable time that lies within the
+// input range. This will be a set of nights, weekends, holidays and lunchtimes.
 std::vector <Daterange> combineHolidaysAndExclusions (
   const Daterange& range,
   const Rules& rules,
@@ -523,8 +543,7 @@ std::vector <Daterange> combineHolidaysAndExclusions (
       for (auto& range : exclusion.ranges (range))
         exclusionRanges.push_back (range);
 
-  results = addRanges (range, results, exclusionRanges);
-  return results;
+  return addRanges (range, results, exclusionRanges);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
