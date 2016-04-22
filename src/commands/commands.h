@@ -50,4 +50,6 @@ int CmdTags        (            Rules&, Database&                   );
 int CmdTrack       (const CLI&, Rules&, Database&                   );
 int CmdUndo        (                                                );
 
+int CmdReportDay   (const CLI&, Rules&, Database&                   );
+
 #endif

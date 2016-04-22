@@ -16,6 +16,7 @@ set (commands_SRCS CmdClear.cpp
                    CmdHelp.cpp
                    CmdImport.cpp
                    CmdReport.cpp
+                   CmdReportDay.cpp
                    CmdStart.cpp
                    CmdStop.cpp
                    CmdTags.cpp

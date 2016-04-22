@@ -73,6 +73,10 @@ void initializeEntities (CLI& cli)
   cli.entity ("command", "track");
   cli.entity ("command", "undo");
 
+  // Some command list themselves as extensions, to integrate with the real
+  // extensions.
+  cli.entity ("extension", "day");
+
   // Hint entities.
   cli.entity ("hint", ":debug");
   cli.entity ("hint", ":quiet");
@@ -238,6 +242,7 @@ int dispatchCommand (
     else if (command == "help")        status = CmdHelp        (cli                             );
     else if (command == "import")      status = CmdImport      (                                );
     else if (command == "report")      status = CmdReport      (cli, rules, database, extensions);
+    else if (command == "day")         status = CmdReportDay   (cli, rules, database            );
     else if (command == "start")       status = CmdStart       (cli, rules, database            );
     else if (command == "stop")        status = CmdStop        (cli, rules, database            );
     else if (command == "tags")        status = CmdTags        (     rules, database            );
