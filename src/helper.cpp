@@ -447,8 +447,10 @@ std::vector <Daterange> subtractRanges (
   const std::vector <Daterange>& ranges,
   const std::vector <Daterange>& subtractions)
 {
-  std::vector <Daterange> results;
+  if (! subtractions.size ())
+    return ranges;
 
+  std::vector <Daterange> results;
   for (auto& r1 : ranges)
     for (auto& r2 : subtractions)
       for (auto& r3 : r1.subtract (r2))
