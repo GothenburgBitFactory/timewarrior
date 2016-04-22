@@ -540,8 +540,8 @@ std::vector <Daterange> combineHolidaysAndExclusions (
   std::vector <Daterange> exclusionRanges;
   for (auto& exclusion : exclusions)
     if (exclusion.tokens ()[1] != "day")
-      for (auto& range : exclusion.ranges (range))
-        exclusionRanges.push_back (range);
+      for (auto& r : exclusion.ranges (range))
+        exclusionRanges.push_back (r);
 
   return addRanges (range, results, exclusionRanges);
 }
