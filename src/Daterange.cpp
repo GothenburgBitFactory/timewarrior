@@ -250,7 +250,7 @@ std::vector <Daterange> Daterange::subtract (const Daterange& other) const
 std::string Daterange::dump () const
 {
   std::stringstream out;
-  out << "Daterange _start "
+  out << "Daterange "
       << (_start.toEpoch () ? _start.toISOLocalExtended () : "n/a")
       << " - "
       << (_end.toEpoch () ? _end.toISOLocalExtended () : "n/a");
