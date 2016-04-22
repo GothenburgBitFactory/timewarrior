@@ -39,7 +39,7 @@ The purpose of this command is to help diagnose configuration problems, and
 provide supplemental information when reporting a problem. See also 'extensions'.
 
 .TP
-.B timew export
+.B timew export [<interval>] [<tag> ...]
 Exports all the tracked time in JSON format. See also 'import'.
 
 .TP
@@ -57,9 +57,15 @@ supported hints. For example:
   $ timew help hints
 
 .TP
-.B timew log [<message>]
-Writes the info <message> to the Timewarrior log file. If <message> is ommitted,
-writes a cut marker ('-------- 8< --------') line to the log file.
+.B timew [report] <report> [<interval>] [<tag> ...]
+Runs an extension report, and supports filtering data.
+The 'report' command itself is optional, which means that these two commands
+are equivalent:
+
+  $ timew report summary :week
+  $ timew        summary :week
+
+This does however assume there is a 'summary' extension installed.
 
 .TP
 .B timew start [<tag> ...]
@@ -91,6 +97,11 @@ See also 'continue', 'start', 'track'.
 .TP
 .B timew tags
 Displays all the tags that have been used.
+
+.TP
+.B timew track <interval> [<tag> ...]
+The track command is used to add tracked time in the past. Perhaps you forgot
+to record time, or are just filling in old entries.
 
 .SH HINTS
 Timewarrior supports hints, which are single-word command line features that
