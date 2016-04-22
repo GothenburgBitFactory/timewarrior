@@ -460,6 +460,8 @@ std::vector <Daterange> subtractRanges (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// From a set of intervals, find the earliest start and the latest end, and
+// return these in a Daterange.
 Daterange overallRangeFromIntervals (const std::vector <Interval>& intervals)
 {
   Daterange overall;
