@@ -36,16 +36,14 @@ int CmdHelpUsage ()
             << "Usage: timew [--version]\n"
             << "       timew continue\n"
             << "       timew diagnostics\n"
-            << "       timew export [<filter>]\n"
+            << "       timew export [<interval>] [<tag> ...]\n"
             << "       timew extensions\n"
             << "       timew help [<command> | hints]\n"
+            << "       timew [report] <report> [<interval>] [<tag> ...]\n";
             << "       timew start [<tag> ...]\n"
             << "       timew stop [<tag> ...]\n"
             << "       timew tags\n"
-            << "       timew track <filter>\n"
-            << "\n"
-            << "Filter:\n"
-            << "       [<interval>] [<tag> ...]\n"
+            << "       timew track [<interval>] [<tag> ...]\n"
             << "\n"
             << "Interval:\n"
             << "       [from] <date>\n"
@@ -67,8 +65,6 @@ int CmdHelpUsage ()
   // TODO gaps
   // TODO import
   // TODO report
-  // TODO tags
-  // TODO track
   // TODO undo
 
   // TODO List all extensions.
@@ -130,7 +126,7 @@ int CmdHelp (const CLI& cli)
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "export")
       std::cout << "\n"
-                << "Syntax: timew export [<filter>]\n"
+                << "Syntax: timew export [<interval>] [<tag> ...]\n"
                 << "\n"
                 << "Exports all the tracked time in JSON format. Supports filtering. For example:\n"
                 << "\n"
