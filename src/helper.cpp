@@ -458,3 +458,24 @@ std::vector <Daterange> subtractRanges (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+Daterange overallRangeFromIntervals (const std::vector <Interval>& intervals)
+{
+  Daterange overall;
+
+  for (auto& interval : intervals)
+  {
+    if (interval.start () < overall.start () || overall.start ().toEpoch () == 0)
+      overall.start (interval.start ());
+
+    // Deliberately mixed start/end.
+    if (interval.start () > overall.end ())
+      overall.end (interval.start ());
+
+    if (interval.end () > overall.end ())
+      overall.end (interval.end ());
+  }
+
+  return overall;
+}
+
+////////////////////////////////////////////////////////////////////////////////

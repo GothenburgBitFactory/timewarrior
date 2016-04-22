@@ -57,6 +57,7 @@ std::string jsonFromIntervals (const std::vector <Interval>&);
 std::vector <Daterange> rangesFromHolidays (const Rules&);
 std::vector <Daterange> addRanges (const Daterange&, const std::vector <Daterange>&, const std::vector <Daterange>&);
 std::vector <Daterange> subtractRanges (const Daterange&, const std::vector <Daterange>&, const std::vector <Daterange>&);
+Daterange overallRangeFromIntervals (const std::vector <Interval>&);
 
 // utiŀ.cpp
 std::string osName ();
