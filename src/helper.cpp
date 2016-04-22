@@ -521,11 +521,11 @@ std::vector <Daterange> combineHolidaysAndExclusions (
     if (exclusion.tokens ()[1] == "day")
     {
       if (exclusion.additive ())
-        for (auto& range : exclusion.ranges (range))
-          daysOn.push_back (range);
+        for (auto& r : exclusion.ranges (range))
+          daysOn.push_back (r);
       else
-        for (auto& range : exclusion.ranges (range))
-          daysOff.push_back (range);
+        for (auto& r : exclusion.ranges (range))
+          daysOff.push_back (r);
     }
   }
 
