@@ -28,6 +28,7 @@
 #include <Timeline.h>
 #include <timew.h>
 #include <sstream>
+#include <iostream> // TODO Remove
 
 ////////////////////////////////////////////////////////////////////////////////
 // The Timeline object represents a continuum with a defined start and end
