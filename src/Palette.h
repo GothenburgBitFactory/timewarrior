@@ -35,7 +35,7 @@
 class Palette
 {
 public:
-  Palette () = default;
+  Palette ();
   void initialize (const Rules&);
   Color next ();
   int size () const;

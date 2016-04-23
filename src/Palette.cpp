@@ -26,40 +26,40 @@
 
 #include <cmake.h>
 #include <Palette.h>
-#include <iostream> // TODO Remove.
+
+////////////////////////////////////////////////////////////////////////////////
+// Use a default palette, which is overwritten in ::initialize.
+Palette::Palette ()
+{
+  _colors = {
+    Color ("white on red"),
+    Color ("white on blue"),
+    Color ("white on green"),
+    Color ("black on magenta"),
+    Color ("black on cyan"),
+    Color ("black on yellow"),
+    Color ("black on white"),
+    Color ("white on bright red"),
+    Color ("white on bright blue"),
+    Color ("white on bright green"),
+    Color ("black on bright magenta"),
+    Color ("black on bright cyan"),
+    Color ("black on bright yellow"),
+  };
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 void Palette::initialize (const Rules& rules)
 {
+  _colors.clear ();
   for (auto& entry : rules.all ("theme.palette.color"))
-  {
-    std::cout << "# Palette " << entry << " = " << rules.get (entry) << "\n";
-  }
+    _colors.push_back (Color (rules.get (entry)));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Return the next color in the list.  Cycle to the beginning if necessary.
 Color Palette::next ()
 {
-  // If there are no colors, then ::initialize was not provided with any, so use
-  // a default set.
-  if (! _colors.size ())
-    _colors = {
-      Color ("white on red"),
-      Color ("white on blue"),
-      Color ("white on green"),
-      Color ("black on magenta"),
-      Color ("black on cyan"),
-      Color ("black on yellow"),
-      Color ("black on white"),
-      Color ("white on bright red"),
-      Color ("white on bright blue"),
-      Color ("white on bright green"),
-      Color ("black on bright magenta"),
-      Color ("black on bright cyan"),
-      Color ("black on bright yellow"),
-    };
-
-  // Return the next color in the list.  Cycle to the beginning if necessary.
   return _colors[_current++ % _colors.size ()];
 }
 
