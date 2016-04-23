@@ -34,6 +34,8 @@ int main (int, char**)
   UnitTest t (1);
 
   Palette p;
+  t.ok (p.size () >= 8, "Palette.size at least 8");
+
   t.diag (p.next ().colorize ("palette entry 0"));
   t.diag (p.next ().colorize ("palette entry 1"));
   t.diag (p.next ().colorize ("palette entry 2"));
@@ -50,8 +52,6 @@ int main (int, char**)
   t.diag ("Repeating...");
   t.diag (p.next ().colorize ("palette entry 1"));
   t.diag (p.next ().colorize ("palette entry 2"));
-
-  t.ok (p.size () >= 8, "Palette.size at least 8");
 
   return 0;
 }
