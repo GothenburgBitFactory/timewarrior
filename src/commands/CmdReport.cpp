@@ -79,7 +79,7 @@ int CmdReport (
     throw std::string ("Specify which report to run.");
 
   // Filter the data.
-  auto filter = createFilterFromCLI (cli);
+  auto filter = createFilterIntervalFromCLI (cli);
   auto timeline = createTimelineFromData (rules, database, filter);
   auto intervals = timeline.tracked (rules);
 

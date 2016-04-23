@@ -32,7 +32,6 @@
 #include <Rules.h>
 #include <Extensions.h>
 #include <Interval.h>
-#include <Filter.h>
 #include <Timeline.h>
 #include <Color.h>
 
@@ -48,11 +47,10 @@ int dispatchCommand (const CLI&, Database&, Rules&, const Extensions&);
 Color tagColor (const Rules&, const std::string&);
 std::string intervalSummarize (const Rules&, const Interval&);
 bool expandIntervalHint (const std::string&, std::string&, std::string&);
-Filter createFilterFromCLI (const CLI&);
-Interval createIntervalFromFilter (const Filter&);
-Timeline createTimelineFromData (const Rules&, Database&, const Filter&);
+Interval createFilterIntervalFromCLI (const CLI&);
+Timeline createTimelineFromData (const Rules&, Database&, const Interval&);
 Interval getLatestInterval (Database&);
-bool intervalMatchesFilter (const Interval&, const Filter&);
+bool intervalMatchesFilterInterval (const Interval&, const Interval&);
 std::string jsonFromIntervals (const std::vector <Interval>&);
 std::vector <Daterange> rangesFromHolidays (const Rules&);
 std::vector <Daterange> addRanges (const Daterange&, const std::vector <Daterange>&, const std::vector <Daterange>&);

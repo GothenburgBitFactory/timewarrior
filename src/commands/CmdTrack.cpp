@@ -35,13 +35,12 @@ int CmdTrack (
   Rules& rules,
   Database& database)
 {
-  auto filter = createFilterFromCLI (cli);
-  auto tracked = createIntervalFromFilter (filter);
-  database.addInterval (tracked);
+  auto filter = createFilterIntervalFromCLI (cli);
+  database.addInterval (filter);
 
   // User feedback.
   if (rules.getBoolean ("verbose"))
-    std::cout << intervalSummarize (rules, tracked);
+    std::cout << intervalSummarize (rules, filter);
 
   return 0;
 }

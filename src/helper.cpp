@@ -115,17 +115,16 @@ bool expandIntervalHint (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// A filter is a placeholder for a start datetime, end datetime and a set of
-// tags, which makes it essentially an interval.
+// A filter is just another interval, containing start, end and tags.
 //
 // Supported interval forms:
 //   ["from"] <date> ["to"|"-" <date>]
 //   ["from"] <date> "for" <duration>
 //   <duration> ["before"|"after" <date>]
 //
-Filter createFilterFromCLI (const CLI& cli)
+Interval createFilterIntervalFromCLI (const CLI& cli)
 {
-  Filter filter;
+  Interval filter;
   std::string start;
   std::string end;
   std::string duration;
@@ -276,20 +275,6 @@ Filter createFilterFromCLI (const CLI& cli)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// An interval and a filter are almost identical.
-// TODO Why aren't they identical? Fix this.
-Interval createIntervalFromFilter (const Filter& filter)
-{
-  Interval interval;
-  interval.range (filter.range ());
-
-  for (auto& tag : filter.tags ())
-    interval.tag (tag);
-
-  return interval;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 // The five different overlap possibilities:
 //
 //               timeline.start      timeline.end
@@ -307,7 +292,7 @@ Interval createIntervalFromFilter (const Filter& filter)
 Timeline createTimelineFromData (
   const Rules& rules,
   Database& database,
-  const Filter& filter)
+  const Interval& filter)
 {
   Timeline t;
   t.range (filter.range ());
@@ -320,7 +305,7 @@ Timeline createTimelineFromData (
       Interval i;
       i.initialize (line);
 
-      if (intervalMatchesFilter (i, filter))
+      if (intervalMatchesFilterInterval (i, filter))
         t.include (i);
     }
     else if (line[0] == 'e')
@@ -350,17 +335,17 @@ Interval getLatestInterval (Database& database)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// An interval matches a filter if the start/end overlaps, and all filter tags
-// are found in the interval.
-bool intervalMatchesFilter (const Interval& interval, const Filter& filter)
+// An interval matches a filter interval if the start/end overlaps, and all
+// filter interval tags are found in the interval.
+bool intervalMatchesFilterInterval (const Interval& interval, const Interval& filter)
 {
-  if ((filter.range ().start ().toEpoch () == 0 &&
-       filter.range ().end ().toEpoch () == 0)
+  if ((filter.start ().toEpoch () == 0 &&
+       filter.end ().toEpoch () == 0)
 
       ||
 
-      (interval.end () > filter.range ().start () &&
-       interval.start () < filter.range ().end ()))
+      (interval.end () > filter.start () &&
+       interval.start () < filter.end ()))
   {
     for (auto& tag : filter.tags ())
       if (! interval.hasTag (tag))
