@@ -185,10 +185,11 @@ unsigned int Database::getDatafile (int year, int month)
        << std::setw (2) << std::setfill ('0') << month
        << ".data";
   auto name = file.str ();
+  auto basename = File (name).name ();
 
   // If the datafile is already initialized, return.
   for (unsigned int i = 0; i < _files.size (); ++i)
-    if (_files[i].name () == name)
+    if (_files[i].name () == basename)
       return i;
 
   // Create the Datafile. New files need the set of current exclusions.
