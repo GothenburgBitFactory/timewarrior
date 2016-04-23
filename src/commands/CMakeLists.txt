@@ -21,6 +21,7 @@ set (commands_SRCS CmdClear.cpp
                    CmdReportWeek.cpp
                    CmdStart.cpp
                    CmdStop.cpp
+                   CmdReportSummary.cpp
                    CmdTags.cpp
                    CmdTrack.cpp
                    CmdUndo.cpp)
