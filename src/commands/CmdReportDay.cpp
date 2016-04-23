@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Palette.h>
+#include <Range.h>
 #include <commands.h>
 #include <timew.h>
 #include <iostream>
@@ -37,7 +38,10 @@ int CmdReportDay (
   Database& database)
 {
   auto filter = createFilterIntervalFromCLI (cli);
-  // TODO If filter is empty, choose 'today'.
+
+  // If filter is empty, choose 'today'.
+  if (! filter.range.started ())
+    filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
 
   auto timeline = createTimelineFromData (rules, database, filter);
   auto tracked = timeline.tracked (rules);
