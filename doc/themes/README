@@ -1,8 +1,46 @@
 Timewarrior Color Themes
 ========================
 
-The theme files define colors that Timewarrior uses in various situations. You
-can find more themes online at ...
+The theme files define colors that Timewarrior uses in various situations.
+There are several themes provided with Timewarrior, and you use a theme by
+importing it into your configuration file. Edit this file:
 
-TODO URL needed
+  ~/.timewarrior/timewarrior.cfg
 
+And add the import line, which looks like this:
+
+  import /path/to/theme/dark.theme
+
+You can find more themes online at ...
+
+  TODO URL needed
+
+
+Create Your Own
+---------------
+
+It is easy to create your own Timewarrior color theme. The simplest approach is
+to copy an existing theme and then modify the colors.
+
+The individual color settings are all used by Taskwarrior, and providing a
+color for each of these is best. If not color is provided for a setting, then
+no color is used, a default does not apply.
+
+The color palette is used to automatically color tagged time in reports. When
+creating a color theme, the palette should be larger rather than smaller. It is
+recommended that you provide at least 16 colors, otherwise Timewarrior cycles
+through them and you'll see repetitions.
+
+
+Share Your Theme
+----------------
+
+Having created a color theme, share it in the spirit of Open Source. Make it
+available for download, or alternatively send it to us at:
+
+  support@taskwarrior.org
+
+We will list (and attribute) your theme on the Timewarrior support pages, where
+you will find other themes and extensions.
+
+---
