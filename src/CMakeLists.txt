@@ -14,6 +14,7 @@ set (timew_SRCS CLI.cpp        CLI.h
                 Extensions.cpp Extensions.h
                 Interval.cpp   Interval.h
                 Lexer.cpp      Lexer.h
+                Palette.cpp    Palette.h
                 Rules.cpp      Rules.h
                 Timeline.cpp   Timeline.h
                 init.cpp
