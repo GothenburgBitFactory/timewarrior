@@ -3,7 +3,8 @@ CLI Syntax
 The CLI shall have a well-defined and unambiguous grammar.
 
     timew
-    timew start|stop [<tagset>]
+    timew start [<date>] [<tagset>]
+    timew stop [<tagset>]
     timew track <filter>
     timew clear <filter>
     timew continue
