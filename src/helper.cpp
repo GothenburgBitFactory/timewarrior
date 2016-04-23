@@ -133,6 +133,11 @@ Interval createFilterIntervalFromCLI (const CLI& cli)
   std::vector <std::string> args;
   for (auto& arg : cli._args)
   {
+    if (arg.hasTag ("BINARY") ||
+        arg.hasTag ("CMD")    ||
+        arg.hasTag ("EXT"))
+      continue;
+
     if (arg.hasTag ("FILTER"))
     {
       auto canonical = arg.attribute ("canonical");
