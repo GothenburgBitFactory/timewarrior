@@ -38,6 +38,7 @@
 #include <vector>
 #include <string>
 #include <cstring>
+#include <unistd.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -100,7 +101,7 @@ void initializeDataAndRules (
   Rules& rules)
 {
   // Rose tint my world, make me safe from my trouble and pain.
-  rules.set ("color", "on");
+  rules.set ("color", isatty (STDOUT_FILENO) ? "on" : "off");
 
   // Make common hints available via rules:
   //   :debug   --> debug=on
