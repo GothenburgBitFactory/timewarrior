@@ -28,7 +28,7 @@
 #define INCLUDED_DATAFILE
 
 #include <Interval.h>
-#include <Daterange.h>
+#include <Range.h>
 #include <FS.h>
 #include <vector>
 #include <string>
@@ -59,7 +59,7 @@ private:
   std::vector <std::string> _lines            {};
   bool                      _lines_loaded     {false};
   std::vector <std::string> _exclusions       {};
-  Daterange                 _range            {};
+  Range                     _range            {};
 };
 
 #endif

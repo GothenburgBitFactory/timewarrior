@@ -25,60 +25,60 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
-#include <Daterange.h>
+#include <Range.h>
 #include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
-// A Daterange consists of a start time and optional end time. A missing end
-// time makes the Daterange 'started' but not 'ended'.
+// A Range consists of a start time and optional end time. A missing end
+// time makes the Range 'started' but not 'ended'.
 //
 //   [start, end)
 //
-Daterange::Daterange (const Datetime& start, const Datetime& end)
+Range::Range (const Datetime& start, const Datetime& end)
 {
   _start = start;
   _end = end;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Daterange::operator== (const Daterange& other) const
+bool Range::operator== (const Range& other) const
 {
   return _start == other._start &&
          _end   == other._end;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Datetime Daterange::start () const
+Datetime Range::start () const
 {
   return _start;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Daterange::start (const Datetime& value)
+void Range::start (const Datetime& value)
 {
   _start = value;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Datetime Daterange::end () const
+Datetime Range::end () const
 {
   return _end;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Daterange::end (const Datetime& value)
+void Range::end (const Datetime& value)
 {
   _end = value;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Daterange::isStarted () const
+bool Range::isStarted () const
 {
   return _start.toEpoch () > 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Daterange::isEnded () const
+bool Range::isEnded () const
 {
   return _end.toEpoch   () > 0;
 }
@@ -108,7 +108,7 @@ bool Daterange::isEnded () const
 //   H                         |...
 //   I                                 |...
 //
-bool Daterange::overlap (const Daterange& other) const
+bool Range::overlap (const Range& other) const
 {
   if (! isStarted () ||
       ! other.isStarted ())
@@ -152,9 +152,9 @@ bool Daterange::overlap (const Daterange& other) const
 //   H                         |...
 //   I                                 |...
 //
-Daterange Daterange::intersect (const Daterange& other) const
+Range Range::intersect (const Range& other) const
 {
-  Daterange result;
+  Range result;
 
   if (overlap (other))
   {
@@ -204,20 +204,20 @@ Daterange Daterange::intersect (const Daterange& other) const
 //   H                         |...
 //   I                                 |...
 //
-std::vector <Daterange> Daterange::subtract (const Daterange& other) const
+std::vector <Range> Range::subtract (const Range& other) const
 {
-  std::vector <Daterange> results;
+  std::vector <Range> results;
 
   if (overlap (other))
   {
     if (start () < other.start ())
     {
-      results.push_back (Daterange (start (), other.start ()));
+      results.push_back (Range (start (), other.start ()));
 
       if (other.isEnded () &&
           (! isEnded () || end () > other.end ()))
       {
-        results.push_back (Daterange (other.end (), end ()));
+        results.push_back (Range (other.end (), end ()));
       }
     }
     else
@@ -227,11 +227,11 @@ std::vector <Daterange> Daterange::subtract (const Daterange& other) const
         if (isEnded ())
         {
           if (end () > other.end ())
-            results.push_back (Daterange (other.end (), end ()));
+            results.push_back (Range (other.end (), end ()));
         }
         else
         {
-          results.push_back (Daterange (other.end (), end ()));
+          results.push_back (Range (other.end (), end ()));
         }
       }
     }
@@ -247,10 +247,10 @@ std::vector <Daterange> Daterange::subtract (const Daterange& other) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string Daterange::dump () const
+std::string Range::dump () const
 {
   std::stringstream out;
-  out << "Daterange "
+  out << "Range "
       << (_start.toEpoch () ? _start.toISOLocalExtended () : "n/a")
       << " - "
       << (_end.toEpoch () ? _end.toISOLocalExtended () : "n/a");

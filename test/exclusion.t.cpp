@@ -26,7 +26,7 @@
 
 #include <cmake.h>
 #include <Exclusion.h>
-#include <Daterange.h>
+#include <Range.h>
 #include <vector>
 #include <iostream>
 #include <test.h>
@@ -48,7 +48,7 @@ int main (int, char**)
     // 20 21 22 23 24 25 26    17 18 19 20 21 22 23
     // 27 28 29 30 31          24 25 26 27 28 29 30
     //                         31
-    Daterange r (Datetime ("2015-12-15"), Datetime ("2016-01-15"));
+    Range r (Datetime ("2015-12-15"), Datetime ("2016-01-15"));
 
     // exc monday <8:00:00 12:00:00-12:45:00 >17:30:00
     Exclusion e;

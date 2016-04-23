@@ -52,11 +52,11 @@ Timeline createTimelineFromData (const Rules&, Database&, const Interval&);
 Interval getLatestInterval (Database&);
 bool intervalMatchesFilterInterval (const Interval&, const Interval&);
 std::string jsonFromIntervals (const std::vector <Interval>&);
-std::vector <Daterange> rangesFromHolidays (const Rules&);
-std::vector <Daterange> addRanges (const Daterange&, const std::vector <Daterange>&, const std::vector <Daterange>&);
-std::vector <Daterange> subtractRanges (const Daterange&, const std::vector <Daterange>&, const std::vector <Daterange>&);
-Daterange overallRangeFromIntervals (const std::vector <Interval>&);
-std::vector <Daterange> combineHolidaysAndExclusions (const Daterange&, const Rules&, const std::vector <Exclusion>&);
+std::vector <Range> rangesFromHolidays (const Rules&);
+std::vector <Range> addRanges (const Range&, const std::vector <Range>&, const std::vector <Range>&);
+std::vector <Range> subtractRanges (const Range&, const std::vector <Range>&, const std::vector <Range>&);
+Range overallRangeFromIntervals (const std::vector <Interval>&);
+std::vector <Range> combineHolidaysAndExclusions (const Range&, const Rules&, const std::vector <Exclusion>&);
 
 // utiŀ.cpp
 std::string osName ();

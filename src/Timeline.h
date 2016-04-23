@@ -29,7 +29,7 @@
 
 #include <Interval.h>
 #include <Exclusion.h>
-#include <Daterange.h>
+#include <Range.h>
 #include <Rules.h>
 #include <vector>
 
@@ -37,7 +37,7 @@ class Timeline
 {
 public:
   Timeline () = default;
-  void range (const Daterange&);
+  void range (const Range&);
   void include (const Interval&);
   void exclude (const Exclusion&);
 
@@ -47,7 +47,7 @@ public:
   std::string dump () const;
 
 private:
-  Daterange               _range      {};
+  Range                   _range      {};
   std::vector <Interval>  _inclusions {};
   std::vector <Exclusion> _exclusions {};
 };

@@ -24,18 +24,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef INCLUDED_DATERANGE
-#define INCLUDED_DATERANGE
+#ifndef INCLUDED_RANGE
+#define INCLUDED_RANGE
 
 #include <Datetime.h>
 #include <vector>
 
-class Daterange
+class Range
 {
 public:
-  Daterange () = default;
-  Daterange (const Datetime&, const Datetime&);
-  bool operator== (const Daterange&) const;
+  Range () = default;
+  Range (const Datetime&, const Datetime&);
+  bool operator== (const Range&) const;
 
   Datetime start () const;
   void start (const Datetime&);
@@ -45,9 +45,9 @@ public:
 
   bool isStarted () const;
   bool isEnded () const;
-  bool overlap (const Daterange&) const;
-  Daterange intersect (const Daterange&) const;
-  std::vector <Daterange> subtract (const Daterange&) const;
+  bool overlap (const Range&) const;
+  Range intersect (const Range&) const;
+  std::vector <Range> subtract (const Range&) const;
 
   std::string dump () const;
 

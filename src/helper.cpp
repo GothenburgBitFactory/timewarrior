@@ -176,7 +176,7 @@ Interval createFilterIntervalFromCLI (const CLI& cli)
     }
   }
 
-  Daterange range;
+  Range range;
 
   // <date>
   if (args.size () == 1 &&
@@ -392,17 +392,17 @@ std::string jsonFromIntervals (const std::vector <Interval>& intervals)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Read rules and extract all holiday definitions. Create a Daterange for each
+// Read rules and extract all holiday definitions. Create a Range for each
 // one that spans from midnight to midnight.
-std::vector <Daterange> rangesFromHolidays (const Rules& rules)
+std::vector <Range> rangesFromHolidays (const Rules& rules)
 {
-  std::vector <Daterange> results;
+  std::vector <Range> results;
   for (auto& holiday : rules.all ("holidays."))
   {
     auto lastDot = holiday.rfind ('.');
     if (lastDot != std::string::npos)
     {
-      Daterange r;
+      Range r;
       Datetime d (holiday.substr (lastDot + 1), "Y_M_D");
       r.start (d);
       ++d;
@@ -416,12 +416,12 @@ std::vector <Daterange> rangesFromHolidays (const Rules& rules)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Subset both ranges and additions by limits, and combine.
-std::vector <Daterange> addRanges (
-  const Daterange& limits,
-  const std::vector <Daterange>& ranges,
-  const std::vector <Daterange>& additions)
+std::vector <Range> addRanges (
+  const Range& limits,
+  const std::vector <Range>& ranges,
+  const std::vector <Range>& additions)
 {
-  std::vector <Daterange> results;
+  std::vector <Range> results;
 
   for (auto& range : ranges)
     if (limits.overlap (range))
@@ -435,17 +435,17 @@ std::vector <Daterange> addRanges (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Subtract a set of Dateranges from another set of Dateranges, all within a
-// defined range.
-std::vector <Daterange> subtractRanges (
-  const Daterange& limits,
-  const std::vector <Daterange>& ranges,
-  const std::vector <Daterange>& subtractions)
+// Subtract a set of Range from another set of Range, all within a defined
+// range.
+std::vector <Range> subtractRanges (
+  const Range& limits,
+  const std::vector <Range>& ranges,
+  const std::vector <Range>& subtractions)
 {
   if (! subtractions.size ())
     return ranges;
 
-  std::vector <Daterange> results;
+  std::vector <Range> results;
   for (auto& r1 : ranges)
     for (auto& r2 : subtractions)
       for (auto& r3 : r1.subtract (r2))
@@ -456,10 +456,10 @@ std::vector <Daterange> subtractRanges (
 
 ////////////////////////////////////////////////////////////////////////////////
 // From a set of intervals, find the earliest start and the latest end, and
-// return these in a Daterange.
-Daterange overallRangeFromIntervals (const std::vector <Interval>& intervals)
+// return these in a Range.
+Range overallRangeFromIntervals (const std::vector <Interval>& intervals)
 {
-  Daterange overall;
+  Range overall;
 
   for (auto& interval : intervals)
   {
@@ -479,7 +479,7 @@ Daterange overallRangeFromIntervals (const std::vector <Interval>& intervals)
 
 ////////////////////////////////////////////////////////////////////////////////
 // [1] Read holiday definitions from the rules, extract their dates and create
-//     a set of Dateranges from them.
+//     a set of Range from them.
 // [2] For 'exc day ...' exclusions, separate into daysOn and daysOff sets,
 //     based on whether the exclusion is additive.
 // [3] Treat daysOff as additional holidays.
@@ -489,19 +489,19 @@ Daterange overallRangeFromIntervals (const std::vector <Interval>& intervals)
 //
 // The result is the complete set of untrackable time that lies within the
 // input range. This will be a set of nights, weekends, holidays and lunchtimes.
-std::vector <Daterange> combineHolidaysAndExclusions (
-  const Daterange& range,
+std::vector <Range> combineHolidaysAndExclusions (
+  const Range& range,
   const Rules& rules,
   const std::vector <Exclusion>& exclusions)
 {
   // Start with the set of all holidays, intersected with range.
-  std::vector <Daterange> results;
+  std::vector <Range> results;
   results = addRanges (range, results, rangesFromHolidays (rules));
 
   // Find exclusions 'exc day on <date>' and remove from holidays.
   // Find exlcusions 'exc day off <date>' and add to holidays.
-  std::vector <Daterange> daysOn;
-  std::vector <Daterange> daysOff;
+  std::vector <Range> daysOn;
+  std::vector <Range> daysOff;
   for (auto& exclusion : exclusions)
   {
     if (exclusion.tokens ()[1] == "day")
@@ -523,7 +523,7 @@ std::vector <Daterange> combineHolidaysAndExclusions (
 
   // Expand all exclusions that are not 'exc day ...' into excluded ranges that
   // overlage with range.
-  std::vector <Daterange> exclusionRanges;
+  std::vector <Range> exclusionRanges;
   for (auto& exclusion : exclusions)
     if (exclusion.tokens ()[1] != "day")
       for (auto& r : exclusion.ranges (range))

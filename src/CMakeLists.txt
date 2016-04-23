@@ -9,12 +9,12 @@ set (timew_SRCS CLI.cpp        CLI.h
                 Composite.cpp  Composite.h
                 Database.cpp   Database.h
                 Datafile.cpp   Datafile.h
-                Daterange.cpp  Daterange.h
                 Exclusion.cpp  Exclusion.h
                 Extensions.cpp Extensions.h
                 Interval.cpp   Interval.h
                 Lexer.cpp      Lexer.h
                 Palette.cpp    Palette.h
+                Range.cpp      Range.h
                 Rules.cpp      Rules.h
                 Timeline.cpp   Timeline.h
                 init.cpp

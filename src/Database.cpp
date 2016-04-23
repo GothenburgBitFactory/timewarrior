@@ -214,9 +214,9 @@ unsigned int Database::getDatafile (int year, int month)
 //   2016-03-01 to 2016-04-01
 //   2016-04-01 to 2016-05-15
 //
-std::vector <Daterange> Database::segmentRange (const Daterange& range)
+std::vector <Range> Database::segmentRange (const Range& range)
 {
-  std::vector <Daterange> segments;
+  std::vector <Range> segments;
 
   auto start_y = range.start ().year ();
   auto start_m = range.start ().month ();
@@ -244,7 +244,7 @@ std::vector <Daterange> Database::segmentRange (const Daterange& range)
 
     // Capture date after incrementing month.
     Datetime segmentEnd (start_m, 1, start_y);
-    segments.push_back (Daterange (segmentStart, segmentEnd));
+    segments.push_back (Range (segmentStart, segmentEnd));
   }
 
   return segments;

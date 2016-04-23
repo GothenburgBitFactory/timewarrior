@@ -50,7 +50,7 @@ void Datafile::initialize (const std::string& name)
     month = 1;
   }
   Datetime end (month, 1, year, 0, 0, 0);
-  _range = Daterange (start, end);
+  _range = Range (start, end);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

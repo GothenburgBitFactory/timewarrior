@@ -50,7 +50,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-void Timeline::range (const Daterange& range)
+void Timeline::range (const Range& range)
 {
   _range = range;
 }
@@ -72,7 +72,7 @@ std::vector <Interval> Timeline::tracked (Rules& rules) const
 {
   // Create a range representing the whole timeline.
   // If no range is defined, then assume the full range of all the inclusions.
-  Daterange overallRange {_range};
+  Range overallRange {_range};
   if (! overallRange.isStarted () &&
       ! overallRange.isEnded ())
     overallRange = overallRangeFromIntervals (_inclusions);
@@ -83,11 +83,11 @@ std::vector <Interval> Timeline::tracked (Rules& rules) const
   std::vector <Interval> combined;
   for (auto& interval : _inclusions)
   {
-    std::vector <Daterange> intervalFragments {interval.range ()};
+    std::vector <Range> intervalFragments {interval.range ()};
 
     for (auto& exclusion : nonTrackable)
     {
-      std::vector <Daterange> brokenFragments;
+      std::vector <Range> brokenFragments;
       for (auto& fragment : intervalFragments)
         for (auto& broken : fragment.subtract (exclusion))
           brokenFragments.push_back (broken);

@@ -29,7 +29,7 @@
 
 #include <Datafile.h>
 #include <Interval.h>
-#include <Daterange.h>
+#include <Range.h>
 #include <vector>
 #include <string>
 
@@ -54,7 +54,7 @@ public:
 
 private:
   unsigned int getDatafile (int, int);
-  std::vector <Daterange> segmentRange (const Daterange&);
+  std::vector <Range> segmentRange (const Range&);
   void initializeDatafiles ();
   void validateAddition (const Interval&) const;
 

@@ -93,9 +93,9 @@ std::vector <std::string> Exclusion::tokens () const
 //   exc day on <date>                 --> yields single day range
 //   exc day off <date>                --> yields single day range
 //
-std::vector <Daterange> Exclusion::ranges (const Daterange& range) const
+std::vector <Range> Exclusion::ranges (const Range& range) const
 {
-  std::vector <Daterange> results;
+  std::vector <Range> results;
   int dayOfWeek;
 
   if (_tokens[1] == "day" &&
@@ -105,7 +105,7 @@ std::vector <Daterange> Exclusion::ranges (const Daterange& range) const
     Datetime start (_tokens[3]);
     Datetime end (start);
     ++end;
-    Daterange day (start, end);
+    Range day (start, end);
     if (range.overlap (day))
       results.push_back (day);
   }
@@ -121,9 +121,9 @@ std::vector <Daterange> Exclusion::ranges (const Daterange& range) const
         ++end;
 
         // Now that 'start' and 'end' respresent the correct day, compose a set
-        // of Daterange objects for each time block.
+        // of Range objects for each time block.
         for (unsigned int b = 2; b < _tokens.size (); ++b)
-          results.push_back (daterangeFromTimeBlock (_tokens[b], start, end));
+          results.push_back (rangeFromTimeBlock (_tokens[b], start, end));
       }
 
       ++start;
@@ -152,7 +152,7 @@ std::string Exclusion::dump () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Daterange Exclusion::daterangeFromTimeBlock (
+Range Exclusion::rangeFromTimeBlock (
   const std::string& block,
   const Datetime& start,
   const Datetime& end) const
@@ -163,7 +163,7 @@ Daterange Exclusion::daterangeFromTimeBlock (
   {
     int hh, mm, ss;
     if (pig.getHMS (hh, mm, ss))
-      return Daterange (start, Datetime (start.month (), start.day (), start.year (), hh, mm, ss));
+      return Range (start, Datetime (start.month (), start.day (), start.year (), hh, mm, ss));
 
     throw format ("Malformed time block '{1}'.", block);
   }
@@ -171,7 +171,7 @@ Daterange Exclusion::daterangeFromTimeBlock (
   {
     int hh, mm, ss;
     if (pig.getHMS (hh, mm, ss))
-      return Daterange (Datetime (start.month (), start.day (), start.year (), hh, mm, ss), end);
+      return Range (Datetime (start.month (), start.day (), start.year (), hh, mm, ss), end);
 
     throw format ("Malformed time block '{1}'.", block);
   }
@@ -181,7 +181,7 @@ Daterange Exclusion::daterangeFromTimeBlock (
   if (pig.getHMS (hh1, mm1, ss1) &&
       pig.skip ('-')             &&
       pig.getHMS (hh2, mm2, ss2))
-    return Daterange (
+    return Range (
              Datetime (start.month (), start.day (), start.year (), hh1, mm1, ss1),
              Datetime (start.month (), start.day (), start.year (), hh2, mm2, ss2));
 

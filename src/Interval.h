@@ -27,7 +27,7 @@
 #ifndef INCLUDED_INTERVAL
 #define INCLUDED_INTERVAL
 
-#include <Daterange.h>
+#include <Range.h>
 #include <set>
 #include <string>
 
@@ -38,8 +38,8 @@ public:
   void initialize (const std::string&);
   bool empty () const;
 
-  Daterange range () const;
-  void range (const Daterange&);
+  Range range () const;
+  void range (const Range&);
 
   Datetime start () const;
   void start (const Datetime&);
@@ -59,7 +59,7 @@ public:
   std::string json () const;
 
 private:
-  Daterange              _range {};
+  Range                  _range {};
   std::set <std::string> _tags  {};
 };
 

@@ -90,13 +90,13 @@ bool Interval::empty () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Daterange Interval::range () const
+Range Interval::range () const
 {
   return _range;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Interval::range (const Daterange& range)
+void Interval::range (const Range& range)
 {
   _range = range;
 }
