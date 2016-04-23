@@ -68,7 +68,7 @@ are equivalent:
 This does however assume there is a 'summary' extension installed.
 
 .TP
-.B timew start [<tag> ...]
+.B timew start [<date>] [<tag> ...]
 Begins tracking using the current time, and the specified optional set of tags.
 If a tag contains multiple words, and therefore contains spaces, use quotes to
 surround the whole tag. For example, this command specifies two tags ('weekend'
@@ -76,7 +76,12 @@ and 'Home & Garden'), the second of which requires quotes.
 
   $ timew start weekend 'Home & Garden'
 
-Quotes are harmless if used every time. See also 'continue', 'stop', 'track'.
+An optional date may be specified to indicate the intended start of the tracked
+time:
+
+  $ timew start 8am weekend 'Home & Garden'
+
+Quotes are harmless if used unnecessarily. See also 'continue', 'stop', 'track'.
 
 .TP
 .B timew stop [<tag> ...]
