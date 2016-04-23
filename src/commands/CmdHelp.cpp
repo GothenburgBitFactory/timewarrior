@@ -62,10 +62,16 @@ int CmdHelpUsage ()
 
   // TODO clear
   // TODO config
+  // TODO day
   // TODO gaps
   // TODO import
+  // TODO month
+  // TODO quarter
   // TODO report
+  // TODO summary
   // TODO undo
+  // TODO week
+  // TODO year
 
   // TODO List all extensions.
 
@@ -106,6 +112,8 @@ int CmdHelp (const CLI& cli)
                 << "\n"
                 << "See also 'start', 'stop'.\n"
                 << "\n";
+
+    // TODO day
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
@@ -161,7 +169,43 @@ int CmdHelp (const CLI& cli)
                 << "  $ timew help hints\n"
                 << "\n";
 
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "hints")
+      std::cout << "\n"
+                << "Timewarrior supports hints, which are single-word command line features that\n"
+                << "start with a colon like this:\n"
+                << "\n"
+                << "  :week\n"
+                << "\n"
+                << "Hints serve several purposes. This example is a shortcut for the date range\n"
+                << "that defines the current week. Other hints, such as:\n"
+                << "\n"
+                << "  :quiet\n"
+                << "\n"
+                << "are ways to control the behavior of Timewarrior, in this case eliminating all\n"
+                << "forms of feedback, for purposes of automation. The supported hints are:\n"
+                << "\n"
+                << "  :quiet         Turns off all feedback. For automation\n"
+                << "  :debug         Runs in debug mode, shows many runtime details\n"
+                << "\n"
+                << "  :color         Force color on, even if not connected to a TTY\n"
+                << "  :nocolor       Force color off, even if connected to a TTY\n"
+                << "\n"
+                << "  :yesterday     The 24 hours of the previous day\n"
+                << "  :day           The 24 hours of the current day\n"
+                << "  :week          This week\n"
+                << "  :month         This month\n"
+                << "  :quarter       This quarter\n"
+                << "  :year          This year\n"
+                << "\n"
+                << "  :fill          Expand time to fill surrounding available gap\n"
+                << "                 Only functions when exclusions are provided\n"
+                << "\n";
+
     // TODO import
+    // TODO month
+    // TODO quarter
     // TODO report
 
     // Ruler                 1         2         3         4         5         6         7         8
@@ -203,6 +247,8 @@ int CmdHelp (const CLI& cli)
                 << "See also 'continue', 'start', 'track'.\n"
                 << "\n";
 
+    // TODO summary
+
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "tags")
@@ -212,42 +258,10 @@ int CmdHelp (const CLI& cli)
                 << "Displays all the tags that have been used.\n"
                 << "\n";
 
-    // Ruler                 1         2         3         4         5         6         7         8
-    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
-    else if (words[0] == "hints")
-      std::cout << "\n"
-                << "Timewarrior supports hints, which are single-word command line features that\n"
-                << "start with a colon like this:\n"
-                << "\n"
-                << "  :week\n"
-                << "\n"
-                << "Hints serve several purposes. This example is a shortcut for the date range\n"
-                << "that defines the current week. Other hints, such as:\n"
-                << "\n"
-                << "  :quiet\n"
-                << "\n"
-                << "are ways to control the behavior of Timewarrior, in this case eliminating all\n"
-                << "forms of feedback, for purposes of automation. The supported hints are:\n"
-                << "\n"
-                << "  :quiet         Turns off all feedback. For automation\n"
-                << "  :debug         Runs in debug mode, shows many runtime details\n"
-                << "\n"
-                << "  :color         Force color on, even if not connected to a TTY\n"
-                << "  :nocolor       Force color off, even if connected to a TTY\n"
-                << "\n"
-                << "  :yesterday     The 24 hours of the previous day\n"
-                << "  :day           The 24 hours of the current day\n"
-                << "  :week          This week\n"
-                << "  :month         This month\n"
-                << "  :quarter       This quarter\n"
-                << "  :year          This year\n"
-                << "\n"
-                << "  :fill          Expand time to fill surrounding available gap\n"
-                << "                 Only functions when exclusions are provided\n"
-                << "\n";
-
     // TODO track
     // TODO undo
+    // TODO week
+    // TODO year
 
     else
       std::cout << "No help available for '" << words[0] << "'\n";
