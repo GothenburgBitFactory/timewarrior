@@ -37,17 +37,16 @@ class Timeline
 {
 public:
   Timeline () = default;
-  void range (const Range&);
   void include (const Interval&);
   void exclude (const Exclusion&);
-
   std::vector <Interval> tracked (Rules&) const;
   std::vector <Interval> untracked (Rules&) const;
-
   std::string dump () const;
 
+public:
+  Range                   range {};
+
 private:
-  Range                   _range      {};
   std::vector <Interval>  _inclusions {};
   std::vector <Exclusion> _exclusions {};
 };

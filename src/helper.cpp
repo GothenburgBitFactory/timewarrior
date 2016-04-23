@@ -296,7 +296,7 @@ Timeline createTimelineFromData (
   const Interval& filter)
 {
   Timeline t;
-  t.range (filter.range);
+  t.range = filter.range;
 
   // Add filtered intervals.
   for (auto& line : database.allLines ())

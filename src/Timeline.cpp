@@ -50,12 +50,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////
-void Timeline::range (const Range& range)
-{
-  _range = range;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 void Timeline::include (const Interval& interval)
 {
   _inclusions.push_back (interval);
@@ -72,7 +66,7 @@ std::vector <Interval> Timeline::tracked (Rules& rules) const
 {
   // Create a range representing the whole timeline.
   // If no range is defined, then assume the full range of all the inclusions.
-  Range overallRange {_range};
+  Range overallRange {range};
   if (! overallRange.started () &&
       ! overallRange.ended ())
     overallRange = overallRangeFromIntervals (_inclusions);
@@ -123,7 +117,7 @@ std::string Timeline::dump () const
 {
   std::stringstream out;
 
-  out << "Timeline _range " << _range.dump () << "\n";
+  out << "Timeline range " << range.dump () << "\n";
   for (auto& i : _inclusions)
     out << "  " << i.json ();
   for (auto& e : _exclusions)
