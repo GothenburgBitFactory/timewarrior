@@ -60,6 +60,7 @@ std::string Datafile::name () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Identifies the last incluѕion (^i) lines
 std::string Datafile::lastLine ()
 {
   if (! _lines_loaded)
@@ -92,6 +93,7 @@ void Datafile::setExclusions (const std::vector <std::string>& exclusions)
   // TODO   add local copy
   // TODO   _dirty = true;
 
+  // TODO New exclusions should always be written.
   _exclusions = exclusions;
 }
 
