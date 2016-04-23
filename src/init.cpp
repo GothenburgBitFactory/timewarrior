@@ -82,6 +82,7 @@ void initializeEntities (CLI& cli)
   // Hint entities.
   cli.entity ("hint", ":debug");
   cli.entity ("hint", ":quiet");
+  cli.entity ("hint", ":yesterday");
   cli.entity ("hint", ":day");
   cli.entity ("hint", ":week");
   cli.entity ("hint", ":month");
