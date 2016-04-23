@@ -60,8 +60,10 @@ int CmdReportDay (
   // TODO Get the latest hour of the filtered data.
 
   // TODO Axis, hard-coded.
+  std::string indent = "  ";
   std::cout << "\n"
-            << "  0    1    2    3    4    5    6    7    8    9    10   11   12   1    2    3    4    5    6    7    8    9   10   11\n";
+            << indent
+            << "0    1    2    3    4    5    6    7    8    9    10   11   12   1    2    3    4    5    6    7    8    9   10   11\n";
 
   // TODO Data, missing.
   std::cout << "\n"
@@ -69,9 +71,9 @@ int CmdReportDay (
 
   // TODO Summary, missing.
   std::cout << "\n"
-            << "  Tracked\n"
-            << "  Untracked\n"
-            << "  Total\n"
+            << indent << "Tracked\n"
+            << indent << "Untracked\n"
+            << indent << "Total\n"
             << "\n";
 
   return 0;
