@@ -40,28 +40,33 @@ void Palette::initialize (const Rules& rules)
 ////////////////////////////////////////////////////////////////////////////////
 Color Palette::next ()
 {
+  // If there are no colors, then ::initialize was not provided with any, so use
+  // a default set.
+  if (! _colors.size ())
+    _colors = {
+      Color ("white on red"),
+      Color ("white on blue"),
+      Color ("white on green"),
+      Color ("black on magenta"),
+      Color ("black on cyan"),
+      Color ("black on yellow"),
+      Color ("black on white"),
+      Color ("white on bright red"),
+      Color ("white on bright blue"),
+      Color ("white on bright green"),
+      Color ("black on bright magenta"),
+      Color ("black on bright cyan"),
+      Color ("black on bright yellow"),
+    };
+
+  // Return the next color in the list.  Cycle to the beginning if necessary.
   return _colors[_current++ % _colors.size ()];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Palette::defaults ()
+int Palette::size () const
 {
-  _colors =
-  {
-    Color ("white on red"),
-    Color ("white on blue"),
-    Color ("black on green"),
-    Color ("black on magenta"),
-    Color ("black on cyan"),
-    Color ("black on yellow"),
-    Color ("black on white"),
-    Color ("white on bright red"),
-    Color ("white on bright blue"),
-    Color ("black on bright green"),
-    Color ("black on bright magenta"),
-    Color ("black on bright cyan"),
-    Color ("black on bright yellow"),
-  };
+  return static_cast <int> (_colors.size ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////

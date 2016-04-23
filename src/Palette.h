@@ -38,9 +38,7 @@ public:
   Palette () = default;
   void initialize (const Rules&);
   Color next ();
-
-private:
-  void defaults ();
+  int size () const;
 
 private:
   std::vector <Color> _colors  {};
