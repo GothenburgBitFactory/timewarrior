@@ -99,6 +99,9 @@ void initializeDataAndRules (
   Database& database,
   Rules& rules)
 {
+  // Rose tint my world, make me safe from my trouble and pain.
+  rules.set ("color", "on");
+
   // Make common hints available via rules:
   //   :debug   --> debug=on
   //   :quiet   --> verbose=off
