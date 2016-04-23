@@ -51,9 +51,13 @@ Palette::Palette ()
 ////////////////////////////////////////////////////////////////////////////////
 void Palette::initialize (const Rules& rules)
 {
-  _colors.clear ();
-  for (auto& entry : rules.all ("theme.palette.color"))
-    _colors.push_back (Color (rules.get (entry)));
+  auto themeColors = rules.all ("theme.palette.color");
+  if (themeColors.size ())
+  {
+    _colors.clear ();
+    for (auto& entry : themeColors)
+      _colors.push_back (Color (rules.get (entry)));
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
