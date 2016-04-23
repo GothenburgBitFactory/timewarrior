@@ -32,27 +32,27 @@
 #include <Database.h>
 #include <Extensions.h>
 
-int CmdClear       (                                                );
-int CmdConfig      (                                                );
-int CmdContinue    (            Rules&, Database&                   );
-int CmdDefault     (            Rules&, Database&                   );
-int CmdDiagnostics (            Rules&, Database&, const Extensions&);
-int CmdExport      (const CLI&, Rules&, Database&                   );
-int CmdExtensions  (            Rules&,            const Extensions&);
-int CmdGaps        (                                                );
-int CmdHelpUsage   (                                                );
-int CmdHelp        (const CLI&                                      );
-int CmdImport      (                                                );
-int CmdReport      (const CLI&, Rules&, Database&, const Extensions&);
-int CmdStart       (const CLI&, Rules&, Database&                   );
-int CmdStop        (const CLI&, Rules&, Database&                   );
-int CmdSummary     (const CLI&, Rules&, Database&                   );
-int CmdTags        (            Rules&, Database&                   );
-int CmdTrack       (const CLI&, Rules&, Database&                   );
-int CmdUndo        (                                                );
+int CmdClear         (                                                );
+int CmdConfig        (                                                );
+int CmdContinue      (            Rules&, Database&                   );
+int CmdDefault       (            Rules&, Database&                   );
+int CmdDiagnostics   (            Rules&, Database&, const Extensions&);
+int CmdExport        (const CLI&, Rules&, Database&                   );
+int CmdExtensions    (            Rules&,            const Extensions&);
+int CmdGaps          (                                                );
+int CmdHelpUsage     (                                                );
+int CmdHelp          (const CLI&                                      );
+int CmdImport        (                                                );
+int CmdReport        (const CLI&, Rules&, Database&, const Extensions&);
+int CmdStart         (const CLI&, Rules&, Database&                   );
+int CmdStop          (const CLI&, Rules&, Database&                   );
+int CmdTags          (            Rules&, Database&                   );
+int CmdTrack         (const CLI&, Rules&, Database&                   );
+int CmdUndo          (                                                );
 
-int CmdReportDay   (const CLI&, Rules&, Database&                   );
-int CmdReportWeek  (const CLI&, Rules&, Database&                   );
-int CmdReportMonth (const CLI&, Rules&, Database&                   );
+int CmdReportDay     (const CLI&, Rules&, Database&                   );
+int CmdReportWeek    (const CLI&, Rules&, Database&                   );
+int CmdReportMonth   (const CLI&, Rules&, Database&                   );
+int CmdReportSummary (const CLI&, Rules&, Database&                   );
 
 #endif
