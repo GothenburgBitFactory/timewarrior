@@ -9,6 +9,9 @@ The CLI shall have a well-defined and unambiguous grammar.
     timew continue
 
     timew [report] <report> [<filter>]
+    timew day [<filter>]
+    timew week [<filter>]
+    timew month [<filter>]
 
     timew config [<name> [<value>]]
     timew undo
