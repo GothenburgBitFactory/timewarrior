@@ -33,6 +33,7 @@
 #include <Extensions.h>
 #include <Interval.h>
 #include <Timeline.h>
+#include <Palette.h>
 #include <Color.h>
 
 // init.cpp
@@ -57,6 +58,7 @@ std::vector <Range> addRanges (const Range&, const std::vector <Range>&, const s
 std::vector <Range> subtractRanges (const Range&, const std::vector <Range>&, const std::vector <Range>&);
 Range overallRangeFromIntervals (const std::vector <Interval>&);
 std::vector <Range> combineHolidaysAndExclusions (const Range&, const Rules&, const std::vector <Exclusion>&);
+std::map <std::string, Color> createTagColorMap (const Rules&, Palette&, const std::vector <Interval>&);
 
 // utiŀ.cpp
 std::string osName ();
