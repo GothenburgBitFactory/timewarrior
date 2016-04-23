@@ -26,29 +26,25 @@
 
 #include <cmake.h>
 #include <Composite.h>
+#include <utf8.h>
+#include <sstream>
+#include <stack>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Initially assume no text, but infinite virtual space.
 //
 // Ållow overlay placement of arbitrary text at any offset, real or virtual, and
-// using a specific color. The color is blended with any underlying color.
-//
-// Collapse all the strings down to a single string, with the most efficient
-// color directives inline.
+// using a specific color.
 //
 // For example:
 //   Composite c;
-//   c.add ("first",  2, Color ("red"));
-//   c.add ("second", 5, Color ("underline"));
+//   c.add ("aaaaaaaaaa",  2, Color ("..."));    // Layer 1
+//   c.add ("bbbbb",       5, Color ("..."));    // Layer 2
+//   c.add ("c",          15, Color ("..."));    // Layer 3
 //
-// Result:
-//   "  firsecond"
-//      rrrrr
-//         uuuuuu
-//
-// The first part "fir" will be red.
-// The second part "se" will be red and underlined.
-// The third part "cond" will be underlined.
+//   _layers = { std::make_tuple ("aaaaaaaaaa",  2, Color ("...")),
+//               std::make_tuple ("bbbbb",       5, Color ("...")),
+//               std::make_tuple ("c",          15, Color ("..."))};
 //
 void Composite::add (
   const std::string& text,
@@ -59,30 +55,80 @@ void Composite::add (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// overlay == true    means there is no color blending.
-// overlay == false   means there is color blending.
-std::string Composite::str (bool overlay) const
+// Merge the layers of text and color into one string.
+//
+// For example:
+//   Composite c;
+//   c.add ("aaaaaaaaaa",  2, Color ("..."));    // Layer 1
+//   c.add ("bbbbb",       5, Color ("..."));    // Layer 2
+//   c.add ("c",          15, Color ("..."));    // Layer 3
+//
+//   _layers = { std::make_tuple ("aaaaaaaaaa",  2, Color ("...")),
+//               std::make_tuple ("bbbbb",       5, Color ("...")),
+//               std::make_tuple ("c",          15, Color ("..."))};
+//
+// Arrange strings conceptually:
+//              111111
+//    0123456789012345     // Position
+//
+//      aaaaaaaaaa         // Layer 1
+//         bbbbb           // Layer 2
+//                   c     // Layer 3
+//
+// Walk all strings left to right, selecting the character and color from the
+// highest numbered layer. Emit color codes only on edge detection.
+//
+std::string Composite::str (bool blend) const
 {
-  // TODO Find the longest string.
-  // TODO Create a vector of ints the same length, where each int is the index.
+  // The strings are broken into a vector of int, for UTF8 support.
+  std::vector <int> characters;
+  std::vector <int> colors;
+  for (unsigned int layer = 0; layer < _layers.size (); ++layer)
+  {
+    auto text   = std::get <0> (_layers[layer]);
+    auto offset = std::get <1> (_layers[layer]);
 
-/*
-  Start with an empty temp string.
-  Start with a vector of int.
+    auto len    = utf8_text_length (text);
 
-  for each layer:
-    place layer string into temp string
-    make sure the vector is the same length, extending if necessary
-    mark vector with the index of the layer, for every byte in temp, using -1
-      for unoccupied space
+    // Make sure the vectors are large enough to support a write operator[].
+    if (characters.size () < offset + len)
+    {
+      characters.resize (offset + len, 32);
+      colors.resize     (offset + len, 0);
+    }
 
-  for each byte in temp string
-    if vector != -1
-      emit color if different from previous
-    emit byte
-*/
+    // Copy in the layer characters and color indexes.
+    std::string::size_type cursor = 0;
+    int character;
+    int count = 0;
+    while ((character = utf8_next_char (text, cursor)))
+    {
+      characters[offset + count] = character;
+      colors    [offset + count] = layer + 1;
+      ++count;
+    }
+  }
 
-  return "";
+  // Now walk the character and color vector, emitting every character and
+  // every detected color change.
+  std::stringstream out;
+  int prev_color = 0;
+  for (unsigned int i = 0; i < characters.size (); ++i)
+  {
+    // A change in color triggers a code emit.
+    if (prev_color != colors[i])
+    {
+      out << std::get <2> (_layers[colors[i]]).code ();
+      prev_color = colors[i];
+    }
+
+    out << utf8_character (characters[i]);
+  }
+
+  // Terminate the color codes.
+  out << std::get <2> (_layers[0]).end ();
+
+  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
