@@ -103,7 +103,7 @@ void Datafile::addInterval (const Interval& interval)
 {
   // Return false if the interval does not belong in this file.
   // Note: end date might be zero.
-  if (_range.overlap (interval.range ()))
+  if (_range.overlap (interval.range))
   {
     if (! _lines_loaded)
       load_lines ();
@@ -125,7 +125,7 @@ void Datafile::deleteInterval (const Interval& interval)
 {
   // Return false if the interval does not belong in this file.
   // Note: end date might be zero.
-  if (_range.overlap (interval.range ()))
+  if (_range.overlap (interval.range))
   {
     if (! _lines_loaded)
       load_lines ();
@@ -174,8 +174,8 @@ std::string Datafile::dump () const
       << "  lines:       " << _lines.size () << "\n"
       << "    loaded     " << (_lines_loaded ? "true" : "false") << "\n"
       << "  exclusions:  " << _exclusions.size () << "\n"
-      << "  range:       " << _range.start ().toISO () << " - "
-                           << _range.end ().toISO () << "\n";
+      << "  range:       " << _range.start.toISO () << " - "
+                           << _range.end.toISO () << "\n";
 
   return out.str ();
 }

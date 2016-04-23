@@ -41,13 +41,12 @@ int CmdStop (
   auto latest = getLatestInterval (database);
 
   // Verify the interval is open.
-  if (  latest.isStarted () &&
-      ! latest.isEnded ())
+  if (  latest.range.started () &&
+      ! latest.range.ended ())
   {
     // Stop it.
     Interval modified {latest};
-    Datetime now;
-    modified.end (now);
+    modified.range.end = Datetime ();
     database.modifyInterval (latest, modified);
 
     // User feedback.
@@ -65,8 +64,8 @@ int CmdStop (
         latest.tags ().size ())
     {
       // Contiguous with previous interval.
-      latest.start (modified.end ());
-      latest.end ({0});
+      latest.range.start = modified.range.end;
+      latest.range.end   = Datetime (0);
 
       database.addInterval (latest);
 

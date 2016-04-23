@@ -73,8 +73,8 @@ std::vector <Interval> Timeline::tracked (Rules& rules) const
   // Create a range representing the whole timeline.
   // If no range is defined, then assume the full range of all the inclusions.
   Range overallRange {_range};
-  if (! overallRange.isStarted () &&
-      ! overallRange.isEnded ())
+  if (! overallRange.started () &&
+      ! overallRange.ended ())
     overallRange = overallRangeFromIntervals (_inclusions);
 
   // Cobmine all the non-trackable time.
@@ -83,7 +83,7 @@ std::vector <Interval> Timeline::tracked (Rules& rules) const
   std::vector <Interval> combined;
   for (auto& interval : _inclusions)
   {
-    std::vector <Range> intervalFragments {interval.range ()};
+    std::vector <Range> intervalFragments {interval.range};
 
     for (auto& exclusion : nonTrackable)
     {
@@ -99,7 +99,7 @@ std::vector <Interval> Timeline::tracked (Rules& rules) const
     {
       // Clone the interval, set the new range.
       Interval clipped {interval};
-      clipped.range (fragment);
+      clipped.range = fragment;
       combined.push_back (clipped);
     }
   }

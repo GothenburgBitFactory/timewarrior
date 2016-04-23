@@ -37,23 +37,17 @@ public:
   Range (const Datetime&, const Datetime&);
   bool operator== (const Range&) const;
 
-  Datetime start () const;
-  void start (const Datetime&);
-
-  Datetime end () const;
-  void end (const Datetime&);
-
-  bool isStarted () const;
-  bool isEnded () const;
+  bool started () const;
+  bool ended () const;
   bool overlap (const Range&) const;
   Range intersect (const Range&) const;
   std::vector <Range> subtract (const Range&) const;
 
   std::string dump () const;
 
-private:
-  Datetime _start {0};
-  Datetime _end   {0};
+public:
+  Datetime start {0};
+  Datetime end   {0};
 };
 
 #endif

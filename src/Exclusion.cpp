@@ -112,8 +112,8 @@ std::vector <Range> Exclusion::ranges (const Range& range) const
 
   else if ((dayOfWeek = Datetime::dayOfWeek (_tokens[1])) != -1)
   {
-    Datetime start = range.start ();
-    while (start < range.end ())
+    Datetime start = range.start;
+    while (start < range.end)
     {
       if (start.dayOfWeek () == dayOfWeek)
       {

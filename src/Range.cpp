@@ -34,53 +34,29 @@
 //
 //   [start, end)
 //
-Range::Range (const Datetime& start, const Datetime& end)
+Range::Range (const Datetime& start_value, const Datetime& end_value)
 {
-  _start = start;
-  _end = end;
+  start = start_value;
+  end = end_value;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 bool Range::operator== (const Range& other) const
 {
-  return _start == other._start &&
-         _end   == other._end;
+  return start == other.start &&
+         end   == other.end;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Datetime Range::start () const
+bool Range::started () const
 {
-  return _start;
+  return start.toEpoch () > 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Range::start (const Datetime& value)
+bool Range::ended () const
 {
-  _start = value;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-Datetime Range::end () const
-{
-  return _end;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void Range::end (const Datetime& value)
-{
-  _end = value;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-bool Range::isStarted () const
-{
-  return _start.toEpoch () > 0;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-bool Range::isEnded () const
-{
-  return _end.toEpoch   () > 0;
+  return end.toEpoch   () > 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -110,18 +86,15 @@ bool Range::isEnded () const
 //
 bool Range::overlap (const Range& other) const
 {
-  if (! isStarted () ||
-      ! other.isStarted ())
+  if (! started () || ! other.started ())
     return false;
 
   // Other range ends before this range starts.
-  if (other.isEnded () &&
-      other.end () < start ())
+  if (other.ended () && other.end < start)
     return false;
 
   // Other range starts after this range ends.
-  if (isEnded () &&
-      other.start () >= end ())
+  if (ended () && other.start >= end)
     return false;
 
   return true;
@@ -159,20 +132,20 @@ Range Range::intersect (const Range& other) const
   if (overlap (other))
   {
     // Intersection is choosing the later of the two starts, and the earlier of
-    // the two ends, of two overlapping ranges.
-    result.start (start () > other.start () ? start () : other.start ());
+    // the two ends, provided the two ranges overlap.
+    result.start = start > other.start ? start : other.start;
 
-    if (isEnded ())
+    if (ended ())
     {
-      if (other.isEnded ())
-        result.end (end () < other.end () ? end () : other.end ());
+      if (other.ended ())
+        result.end  = end < other.end ? end : other.end;
       else
-        result.end (end ());
+        result.end = end;
     }
     else
     {
-      if (other.isEnded ())
-        result.end (other.end ());
+      if (other.ended ())
+        result.end = other.end;
     }
   }
 
@@ -210,28 +183,28 @@ std::vector <Range> Range::subtract (const Range& other) const
 
   if (overlap (other))
   {
-    if (start () < other.start ())
+    if (start < other.start)
     {
-      results.push_back (Range (start (), other.start ()));
+      results.push_back (Range (start, other.start));
 
-      if (other.isEnded () &&
-          (! isEnded () || end () > other.end ()))
+      if (other.ended () &&
+          (! ended () || end > other.end))
       {
-        results.push_back (Range (other.end (), end ()));
+        results.push_back (Range (other.end, end));
       }
     }
     else
     {
-      if (other.isEnded ())
+      if (other.ended ())
       {
-        if (isEnded ())
+        if (ended ())
         {
-          if (end () > other.end ())
-            results.push_back (Range (other.end (), end ()));
+          if (end > other.end)
+            results.push_back (Range (other.end, end));
         }
         else
         {
-          results.push_back (Range (other.end (), end ()));
+          results.push_back (Range (other.end, end));
         }
       }
     }
@@ -251,9 +224,9 @@ std::string Range::dump () const
 {
   std::stringstream out;
   out << "Range "
-      << (_start.toEpoch () ? _start.toISOLocalExtended () : "n/a")
+      << (start.toEpoch () ? start.toISOLocalExtended () : "n/a")
       << " - "
-      << (_end.toEpoch () ? _end.toISOLocalExtended () : "n/a");
+      << (end.toEpoch () ? end.toISOLocalExtended () : "n/a");
 
   return out.str ();
 }

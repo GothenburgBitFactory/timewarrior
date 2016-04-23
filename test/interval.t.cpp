@@ -33,23 +33,23 @@ int main (int, char**)
 {
   UnitTest t (38);
 
-  // bool isStarted () const;
-  // bool isEnded () const;
+  // bool started () const;
+  // bool ended () const;
   Interval i1;
-  t.is (i1.empty (),     true,  "Interval().empty -> true");
-  t.is (i1.isStarted (), false, "Interval().isStarted -> false");
-  t.is (i1.isEnded (),   false, "Interval().isEnded -> false");
+  t.is (i1.empty (),         true,  "Interval().empty -> true");
+  t.is (i1.range.started (), false, "Interval().started -> false");
+  t.is (i1.range.ended (),   false, "Interval().ended -> false");
 
   // void start (Datetime);
-  i1.start (Datetime ());
-  t.is (i1.empty (),     false, "Interval().empty -> false");
-  t.is (i1.isStarted (), true,  "Interval(start=now).isStarted -> true");
-  t.is (i1.isEnded (),   false, "Interval(start=now).isEnded -> false");
+  i1.range.start = Datetime ();
+  t.is (i1.empty (),         false, "Interval().empty -> false");
+  t.is (i1.range.started (), true,  "Interval(start=now).started -> true");
+  t.is (i1.range.ended (),   false, "Interval(start=now).ended -> false");
 
   // void end (Datetime);
-  i1.end (Datetime ());
-  t.is (i1.isStarted (), true, "Interval(start=now,end=now).isStarted -> true");
-  t.is (i1.isEnded (),   true, "Interval(start=now,end=now).isEnded -> true");
+  i1.range.end = Datetime ();
+  t.is (i1.range.started (), true, "Interval(start=now,end=now).started -> true");
+  t.is (i1.range.ended (),   true, "Interval(start=now,end=now).ended -> true");
 
   // std::set <std::string> tags () const;
   // void tag (const std::string&);
@@ -73,9 +73,9 @@ int main (int, char**)
   t.is (i3.serialize (), "inc # foo", "Interval().serialize -> 'inc # foo'");
   i3.tag ("bar");
   t.is (i3.serialize (), "inc # bar foo", "Interval().serialize -> 'inc # bar foo'");
-  i3.start (Datetime(1));
+  i3.range.start = Datetime(1);
   t.is (i3.serialize (), "inc 19700101T000001Z # bar foo", "Interval(Datetime(1)).serialize -> 'inc 19700101T000001Z # bar foo'");
-  i3.end (Datetime(2));
+  i3.range.end = Datetime(2);
   t.is (i3.serialize (), "inc 19700101T000001Z - 19700101T000002Z # bar foo", "Interval(Datetime(1)).serialize -> 'inc 19700101T000001Z - 19700101T000002Z # bar foo'");
   i3.tag ("Trans-Europe Express");
   t.is (i3.serialize (), "inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo", "Interval(Datetime(1)).serialize -> 'inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo'");

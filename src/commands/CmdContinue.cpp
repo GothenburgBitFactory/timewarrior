@@ -37,12 +37,12 @@ int CmdContinue (
   auto latest = getLatestInterval (database);
   if (! latest.empty ())
   {
-    if (latest.isStarted () &&
-        latest.isEnded ())
+    if (latest.range.started () &&
+        latest.range.ended ())
     {
       // Open an identical interval.
-      latest.start ({});
-      latest.end ({0});
+      latest.range.start = Datetime ();
+      latest.range.end   = Datetime (0);
 
       // Update database.
       database.addInterval (latest);

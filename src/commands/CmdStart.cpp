@@ -40,13 +40,12 @@ int CmdStart (
   auto latest = getLatestInterval (database);
 
   // If the latest interval is open, close it.
-  if (  latest.isStarted () &&
-      ! latest.isEnded ())
+  if (  latest.range.started () &&
+      ! latest.range.ended ())
   {
     // Stop it.
     Interval modified {latest};
-    Datetime now;
-    modified.end (now);
+    modified.range.end = Datetime ();
 
     // Update database.
     database.modifyInterval (latest, modified);
@@ -58,7 +57,7 @@ int CmdStart (
 
   // Create a new interval.
   Interval now;
-  now.start (Datetime ());
+  now.range.start = Datetime ();
 
   // Apply tags.
   auto words = cli.getWords ();

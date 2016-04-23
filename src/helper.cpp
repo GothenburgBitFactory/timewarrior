@@ -51,7 +51,7 @@ Color tagColor (const Rules& rules, const std::string& tag)
 std::string intervalSummarize (const Rules& rules, const Interval& interval)
 {
   std::stringstream out;
-  if (interval.isStarted ())
+  if (interval.range.started ())
   {
     // Combine and colorize tags.
     std::string tags;
@@ -64,21 +64,21 @@ std::string intervalSummarize (const Rules& rules, const Interval& interval)
     }
 
     // Interval closed.
-    if (interval.isEnded ())
+    if (interval.range.ended ())
     {
-      Duration dur (Datetime (interval.end ()) - Datetime (interval.start ()));
+      Duration dur (Datetime (interval.range.end) - Datetime (interval.range.start));
       out << "Recorded " << tags << "\n"
-          << "  Started " << interval.start ().toISOLocalExtended () << "\n"
-          << "  Ended   " << interval.end ().toISOLocalExtended () << "\n"
+          << "  Started " << interval.range.start.toISOLocalExtended () << "\n"
+          << "  Ended   " << interval.range.end.toISOLocalExtended () << "\n"
           << "  Elapsed " << std::setw (19) << std::setfill (' ') << dur.format () << "\n";
     }
 
     // Interval open.
     else
     {
-      Duration dur (Datetime () - interval.start ());
+      Duration dur (Datetime () - interval.range.start);
       out << "Tracking " << tags << "\n"
-          << "  Started " << interval.start ().toISOLocalExtended () << "\n";
+          << "  Started " << interval.range.start.toISOLocalExtended () << "\n";
 
       if (dur.toTime_t () > 10)
         out << "  Elapsed " << std::setw (19) << std::setfill (' ') << dur.format () << "\n";
@@ -182,8 +182,8 @@ Interval createFilterIntervalFromCLI (const CLI& cli)
   if (args.size () == 1 &&
       args[0] == "<date>")
   {
-    range.start (Datetime (start));
-    range.end (Datetime ("now"));
+    range.start = Datetime (start);
+    range.end   = Datetime ("now");
   }
 
   // from <date>
@@ -191,8 +191,8 @@ Interval createFilterIntervalFromCLI (const CLI& cli)
            args[0] == "from" &&
            args[1] == "<date>")
   {
-    range.start (Datetime (start));
-    range.end (Datetime ("now"));
+    range.start = Datetime (start);
+    range.end   = Datetime ("now");
   }
 
   // <date> to/- <date>
@@ -201,8 +201,8 @@ Interval createFilterIntervalFromCLI (const CLI& cli)
            (args[1] == "to" || args[1] == "-") &&
            args[2] == "<date>")
   {
-    range.start (Datetime (start));
-    range.end (Datetime (end));
+    range.start = Datetime (start);
+    range.end   = Datetime (end);
   }
 
   // from/since <date> to/- <date>
@@ -212,8 +212,8 @@ Interval createFilterIntervalFromCLI (const CLI& cli)
            (args[2] == "to" || args[2] == "-") &&
            args[3] == "<date>")
   {
-    range.start (Datetime (start));
-    range.end (Datetime (end));
+    range.start = Datetime (start);
+    range.end   = Datetime (end);
   }
 
   // <date> for <duration>
@@ -222,8 +222,8 @@ Interval createFilterIntervalFromCLI (const CLI& cli)
            args[1] == "for"    &&
            args[2] == "<duration>")
   {
-    range.start (Datetime (start));
-    range.end (Datetime (start) + Duration (duration).toTime_t ());
+    range.start = Datetime (start);
+    range.end   = Datetime (start) + Duration (duration).toTime_t ();
   }
 
   // from/since <date> for <duration>
@@ -233,8 +233,8 @@ Interval createFilterIntervalFromCLI (const CLI& cli)
            args[2] == "for"                          &&
            args[3] == "<duration>")
   {
-    range.start (Datetime (start));
-    range.end (Datetime (start) + Duration (duration).toTime_t ());
+    range.start = Datetime (start);
+    range.end   = Datetime (start) + Duration (duration).toTime_t ();
   }
 
   // <duration> before <date>
@@ -243,8 +243,8 @@ Interval createFilterIntervalFromCLI (const CLI& cli)
            args[1] == "before"     &&
            args[2] == "<date>")
   {
-    range.start (Datetime (start) - Duration (duration).toTime_t ());
-    range.end (Datetime (start));
+    range.start = Datetime (start) - Duration (duration).toTime_t ();
+    range.end   = Datetime (start);
   }
 
   // <duration> after <date>
@@ -253,16 +253,16 @@ Interval createFilterIntervalFromCLI (const CLI& cli)
            args[1] == "after"      &&
            args[2] == "<date>")
   {
-    range.start (Datetime (start));
-    range.end (Datetime (start) + Duration (duration).toTime_t ());
+    range.start = Datetime (start);
+    range.end   = Datetime (start) + Duration (duration).toTime_t ();
   }
 
   // <duration>
   else if (args.size () == 1 &&
            args[0] == "<duration>")
   {
-    range.start (Datetime ("now") - Duration (duration).toTime_t ());
-    range.end (Datetime ("now"));
+    range.start = Datetime ("now") - Duration (duration).toTime_t ();
+    range.end   = Datetime ("now");
   }
 
   // Unrecognized date range construct.
@@ -271,7 +271,7 @@ Interval createFilterIntervalFromCLI (const CLI& cli)
     throw std::string ("Unrecognized date range: '") + join (" ", args) + "'.";
   }
 
-  filter.range (range);
+  filter.range = range;
   return filter;
 }
 
@@ -296,7 +296,7 @@ Timeline createTimelineFromData (
   const Interval& filter)
 {
   Timeline t;
-  t.range (filter.range ());
+  t.range (filter.range);
 
   // Add filtered intervals.
   for (auto& line : database.allLines ())
@@ -340,13 +340,13 @@ Interval getLatestInterval (Database& database)
 // filter interval tags are found in the interval.
 bool intervalMatchesFilterInterval (const Interval& interval, const Interval& filter)
 {
-  if ((filter.start ().toEpoch () == 0 &&
-       filter.end ().toEpoch () == 0)
+  if ((filter.range.start.toEpoch () == 0 &&
+       filter.range.end.toEpoch () == 0)
 
       ||
 
-      (interval.end () > filter.start () &&
-       interval.start () < filter.end ()))
+      (interval.range.end > filter.range.start &&
+       interval.range.start < filter.range.end))
   {
     for (auto& tag : filter.tags ())
       if (! interval.hasTag (tag))
@@ -404,9 +404,9 @@ std::vector <Range> rangesFromHolidays (const Rules& rules)
     {
       Range r;
       Datetime d (holiday.substr (lastDot + 1), "Y_M_D");
-      r.start (d);
+      r.start = d;
       ++d;
-      r.end (d);
+      r.end = d;
       results.push_back (r);
     }
   }
@@ -463,15 +463,15 @@ Range overallRangeFromIntervals (const std::vector <Interval>& intervals)
 
   for (auto& interval : intervals)
   {
-    if (interval.start () < overall.start () || overall.start ().toEpoch () == 0)
-      overall.start (interval.start ());
+    if (interval.range.start < overall.start || overall.start.toEpoch () == 0)
+      overall.start = interval.range.start;
 
     // Deliberately mixed start/end.
-    if (interval.start () > overall.end ())
-      overall.end (interval.start ());
+    if (interval.range.start > overall.end)
+      overall.end = interval.range.start;
 
-    if (interval.end () > overall.end ())
-      overall.end (interval.end ());
+    if (interval.range.end > overall.end)
+      overall.end = interval.range.end;
   }
 
   return overall;

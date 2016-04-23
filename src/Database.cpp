@@ -112,18 +112,18 @@ void Database::addInterval (const Interval& interval)
   //      Unless the tags that overlap are allowed to overlap.
   validateAddition (interval);
 
-  auto intervalRange = interval.range ();
+  auto intervalRange = interval.range;
   for (auto& segment : segmentRange (intervalRange))
   {
     // Get the index into _files for the appropriate Datafile, which may be
     // created on demand.
-    auto df = getDatafile (segment.start ().year (), segment.start ().month ());
+    auto df = getDatafile (segment.start.year (), segment.start.month ());
 
     // Intersect the original interval range, and the segment.
     Interval segmentedInterval (interval);
-    segmentedInterval.range (intervalRange.intersect (segment));
-    if (! interval.isEnded ())
-      segmentedInterval.end ({0});
+    segmentedInterval.range = intervalRange.intersect (segment);
+    if (! interval.range.ended ())
+      segmentedInterval.range.end = Datetime (0);
 
     _files[df].addInterval (segmentedInterval);
   }
@@ -132,18 +132,18 @@ void Database::addInterval (const Interval& interval)
 ////////////////////////////////////////////////////////////////////////////////
 void Database::deleteInterval (const Interval& interval)
 {
-  auto intervalRange = interval.range ();
+  auto intervalRange = interval.range;
   for (auto& segment : segmentRange (intervalRange))
   {
     // Get the index into _files for the appropriate Datafile, which may be
     // created on demand.
-    auto df = getDatafile (segment.start ().year (), segment.start ().month ());
+    auto df = getDatafile (segment.start.year (), segment.start.month ());
 
     // Intersect the original interval range, and the segment.
     Interval segmentedInterval (interval);
-    segmentedInterval.range (intervalRange.intersect (segment));
-    if (! interval.isEnded ())
-      segmentedInterval.end ({0});
+    segmentedInterval.range = intervalRange.intersect (segment);
+    if (! interval.range.ended ())
+      segmentedInterval.range.end = Datetime (0);
 
     _files[df].deleteInterval (segmentedInterval);
   }
@@ -218,10 +218,10 @@ std::vector <Range> Database::segmentRange (const Range& range)
 {
   std::vector <Range> segments;
 
-  auto start_y = range.start ().year ();
-  auto start_m = range.start ().month ();
+  auto start_y = range.start.year ();
+  auto start_m = range.start.month ();
 
-  auto end = range.end ();
+  auto end = range.end;
   if (end.toEpoch () == 0)
     end = Datetime ();
 

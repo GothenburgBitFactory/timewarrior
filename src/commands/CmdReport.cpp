@@ -84,8 +84,8 @@ int CmdReport (
   auto intervals = timeline.tracked (rules);
 
   // Compose Header info.
-  rules.set ("temp.report.start", filter.range ().start ().toEpoch () > 0 ? filter.range ().start ().toISO () : "");
-  rules.set ("temp.report.end",   filter.range ().end ().toEpoch ()   > 0 ? filter.range ().end ().toISO ()   : "");
+  rules.set ("temp.report.start", filter.range.start.toEpoch () > 0 ? filter.range.start.toISO () : "");
+  rules.set ("temp.report.end",   filter.range.end.toEpoch ()   > 0 ? filter.range.end.toISO ()   : "");
   std::string combinedTags;
   for (auto& tag : filter.tags ())
   {

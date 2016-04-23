@@ -38,18 +38,6 @@ public:
   void initialize (const std::string&);
   bool empty () const;
 
-  Range range () const;
-  void range (const Range&);
-
-  Datetime start () const;
-  void start (const Datetime&);
-
-  Datetime end () const;
-  void end (const Datetime&);
-
-  bool isStarted () const;
-  bool isEnded () const;
-
   bool hasTag (const std::string&) const;
   std::set <std::string> tags () const;
   void tag (const std::string&);
@@ -58,8 +46,10 @@ public:
   std::string serialize () const;
   std::string json () const;
 
+public:
+  Range                  range  {};
+
 private:
-  Range                  _range {};
   std::set <std::string> _tags  {};
 };
 
