@@ -29,9 +29,8 @@ define theme:
   description = "dark.theme: A default, 256-color theme"
   colors:
     # General UI color.
-    free  = "white on gray4"    # May not be needed
-    busy  = "white on gray8"    # May not be needed
-    today = "black on rgb521"   # May not be needed
+    exclusion = "white on gray4"
+    today     = "black on rgb521"
 
   # Rotating Color Palette for tags.
   palette:
