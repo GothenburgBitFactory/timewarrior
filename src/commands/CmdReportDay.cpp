@@ -25,7 +25,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <Palette.h>
 #include <commands.h>
+#include <timew.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -34,7 +36,40 @@ int CmdReportDay (
   Rules& rules,
   Database& database)
 {
-  std::cout << "# CmdReportDay\n";
+  auto filter = createFilterIntervalFromCLI (cli);
+  // TODO If filter is empty, choose 'today'.
+
+  auto timeline = createTimelineFromData (rules, database, filter);
+  auto tracked = timeline.tracked (rules);
+
+  // Create a color palette.
+  Palette palette;
+  palette.initialize (rules);
+  palette.enabled = rules.getBoolean ("color");
+
+  // Map tags to colors.
+  // TODO Note: tags may have their own defined color.
+  std::map <std::string, Color> tagMap;
+
+  // TODO Get the exclusion ranges, to render the exclused time.
+  // TODO Get the earliest hour of the filtered data.
+  // TODO Get the latest hour of the filtered data.
+
+  // TODO Axis, hard-coded.
+  std::cout << "\n"
+            << "  0    1    2    3    4    5    6    7    8    9    10   11   12   1    2    3    4    5    6    7    8    9   10   11\n";
+
+  // TODO Data, missing.
+  std::cout << "\n"
+            << "\n";
+
+  // TODO Summary, missing.
+  std::cout << "\n"
+            << "  Tracked\n"
+            << "  Untracked\n"
+            << "  Total\n"
+            << "\n";
+
   return 0;
 }
 
