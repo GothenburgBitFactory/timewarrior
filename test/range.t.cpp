@@ -118,13 +118,13 @@ int main (int, char**)
   // I                                   [...
   Range empty;
   t.ok (refClosed.intersect (testA) == empty,                                    "Range: refClosed.intersect(testA) == empty");
-  t.ok (refClosed.intersect (testB) == Range (refClosed.start (), testB.end ()), "Range: refClosed.intersect(testB) == Range(refClosed.start(), testB.end())");
+  t.ok (refClosed.intersect (testB) == Range (refClosed.start (), testB.end ()), "Range: refClosed.intersect(testB) == Range(refClosed.start(),testB.end())");
   t.ok (refClosed.intersect (testC) == testC,                                    "Range: refClosed.intersect(testB) == testC");
-  t.ok (refClosed.intersect (testD) == Range (testD.start (), refClosed.end ()), "Range: refClosed.intersect(testB) == Range(testD.start(), refClosed.end())");
+  t.ok (refClosed.intersect (testD) == Range (testD.start (), refClosed.end ()), "Range: refClosed.intersect(testB) == Range(testD.start(),refClosed.end())");
   t.ok (refClosed.intersect (testE) == empty,                                    "Range: refClosed.intersect(testE) == empty");
   t.ok (refClosed.intersect (testF) == refClosed,                                "Range: refClosed.intersect(testF) == refClosed");
   t.ok (refClosed.intersect (testG) == refClosed,                                "Range: refClosed.intersect(testG) == refClosed");
-  t.ok (refClosed.intersect (testH) == Range (testH.start (), refClosed.end ()), "Range: refClosed.intersect(testH) == Range(testH.start(), refClosed.end())");
+  t.ok (refClosed.intersect (testH) == Range (testH.start (), refClosed.end ()), "Range: refClosed.intersect(testH) == Range(testH.start(),refClosed.end())");
   t.ok (refClosed.intersect (testI) == empty,                                    "Range: refClosed.intersect(testI) == empty");
 
   // this                     [...
@@ -138,11 +138,11 @@ int main (int, char**)
   // H                           [...
   // I                                   [...
   t.ok (refOpen.intersect (testA) == empty,                                  "Range: refOpen.intersect(testA) == empty");
-  t.ok (refOpen.intersect (testB) == Range (refOpen.start (), testB.end ()), "Range: refOpen.intersect(testB) == Range(refOpen.start(), testB.end())");
+  t.ok (refOpen.intersect (testB) == Range (refOpen.start (), testB.end ()), "Range: refOpen.intersect(testB) == Range(refOpen.start(),testB.end())");
   t.ok (refOpen.intersect (testC) == testC,                                  "Range: refOpen.intersect(testC) == testC");
   t.ok (refOpen.intersect (testD) == testD,                                  "Range: refOpen.intersect(testD) == testD");
   t.ok (refOpen.intersect (testE) == testE,                                  "Range: refOpen.intersect(testE) == testE");
-  t.ok (refOpen.intersect (testF) == Range (refOpen.start (), testF.end ()), "Range: refOpen.intersect(testF) == Range(refOpen.start(), testF.end()");
+  t.ok (refOpen.intersect (testF) == Range (refOpen.start (), testF.end ()), "Range: refOpen.intersect(testF) == Range(refOpen.start(),testF.end()");
   t.ok (refOpen.intersect (testG) == refOpen,                                "Range: refOpen.intersect(testG) == refOpen");
   t.ok (refOpen.intersect (testH) == testH,                                  "Range: refOpen.intersect(testH) == testH");
   t.ok (refOpen.intersect (testI) == testI,                                  "Range: refOpen.intersect(testI) == testI");
@@ -168,14 +168,14 @@ int main (int, char**)
   std::vector <Range> closedSubtractI {refClosed};
 
   t.ok (refClosed.subtract (testA) == closedSubtractA, "Range: refClosed.subtract(testA) == {refClosed}");
-  t.ok (refClosed.subtract (testB) == closedSubtractB, "Range: refClosed.subtract(testB) == {Range(testB.end(), refClosed.end())}");
-  t.ok (refClosed.subtract (testC) == closedSubtractC, "Range: refClosed.subtract(testC) == {Range(refClosed.start(), testC.start()),"
-                                                                                            "Range(testC.end(), refClosed.end()}");
-  t.ok (refClosed.subtract (testD) == closedSubtractD, "Range: refClosed.subtract(testD) == {Range(refClosed.start(), testD.start())}");
+  t.ok (refClosed.subtract (testB) == closedSubtractB, "Range: refClosed.subtract(testB) == {Range(testB.end(),refClosed.end())}");
+  t.ok (refClosed.subtract (testC) == closedSubtractC, "Range: refClosed.subtract(testC) == {Range(refClosed.start(),testC.start()),"
+                                                                                            "Range(testC.end(),refClosed.end()}");
+  t.ok (refClosed.subtract (testD) == closedSubtractD, "Range: refClosed.subtract(testD) == {Range(refClosed.start(),testD.start())}");
   t.ok (refClosed.subtract (testE) == closedSubtractE, "Range: refClosed.subtract(testE) == {refClosed}");
   t.ok (refClosed.subtract (testF) == closedSubtractF, "Range: refClosed.subtract(testF) == {}");
   t.ok (refClosed.subtract (testG) == closedSubtractG, "Range: refClosed.subtract(testG) == {}");
-  t.ok (refClosed.subtract (testH) == closedSubtractH, "Range: refClosed.subtract(testH) == {refClosed.start(), testH.start()}");
+  t.ok (refClosed.subtract (testH) == closedSubtractH, "Range: refClosed.subtract(testH) == {refClosed.start(),testH.start()}");
   t.ok (refClosed.subtract (testI) == closedSubtractI, "Range: refClosed.subtract(testI) == {refClosed}");
 
   // this                     [...
@@ -199,17 +199,17 @@ int main (int, char**)
   std::vector <Range> openSubtractI {Range (refOpen.start (), testI.start ())};
 
   t.ok (refOpen.subtract (testA) == openSubtractA, "Range: refOpen.subtract(testA) == {refOpen}");
-  t.ok (refOpen.subtract (testB) == openSubtractB, "Range: refOpen.subtract(testB) == {Range(testB.end(), refOpen.end()}");
-  t.ok (refOpen.subtract (testC) == openSubtractC, "Range: refOpen.subtract(testC) == {Range(refOpen.start(), testC.start()),"
-                                                                                      "Range(testC.end(), refOpen.end()}");
-  t.ok (refOpen.subtract (testD) == openSubtractD, "Range: refOpen.subtract(testD) == {Range(refOpen.start(), testD.start()),"
-                                                                                      "Range(testD.end(), refOpen.end()}");
-  t.ok (refOpen.subtract (testE) == openSubtractE, "Range: refOpen.subtract(testE) == {Range(refOpen.start(), testE.start()),"
-                                                                                      "Range(testE.end(), refOpen.end()}");
-  t.ok (refOpen.subtract (testF) == openSubtractF, "Range: refOpen.subtract(testF) == {Range(testF.end(), refOpen.end()}");
+  t.ok (refOpen.subtract (testB) == openSubtractB, "Range: refOpen.subtract(testB) == {Range(testB.end(),refOpen.end()}");
+  t.ok (refOpen.subtract (testC) == openSubtractC, "Range: refOpen.subtract(testC) == {Range(refOpen.start(),testC.start()),"
+                                                                                      "Range(testC.end(),refOpen.end()}");
+  t.ok (refOpen.subtract (testD) == openSubtractD, "Range: refOpen.subtract(testD) == {Range(refOpen.start(),testD.start()),"
+                                                                                      "Range(testD.end(),refOpen.end()}");
+  t.ok (refOpen.subtract (testE) == openSubtractE, "Range: refOpen.subtract(testE) == {Range(refOpen.start(),testE.start()),"
+                                                                                      "Range(testE.end(),refOpen.end()}");
+  t.ok (refOpen.subtract (testF) == openSubtractF, "Range: refOpen.subtract(testF) == {Range(testF.end(),refOpen.end()}");
   t.ok (refOpen.subtract (testG) == openSubtractG, "Range: refOpen.subtract(testG) == {}");
-  t.ok (refOpen.subtract (testH) == openSubtractH, "Range: refOpen.subtract(testH) == {Range(refOpen.start(), testH.start()}");
-  t.ok (refOpen.subtract (testI) == openSubtractI, "Range: refOpen.subtract(testI) == {Range(refOpen.start(), testI.start()}");
+  t.ok (refOpen.subtract (testH) == openSubtractH, "Range: refOpen.subtract(testH) == {Range(refOpen.start(),testH.start()}");
+  t.ok (refOpen.subtract (testI) == openSubtractI, "Range: refOpen.subtract(testI) == {Range(refOpen.start(),testI.start()}");
 
   return 0;
 }
