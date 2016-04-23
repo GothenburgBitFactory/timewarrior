@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Palette.h>
+#include <Color.h>
 #include <Range.h>
 #include <commands.h>
 #include <timew.h>
@@ -51,9 +52,10 @@ int CmdReportDay (
   palette.initialize (rules);
   palette.enabled = rules.getBoolean ("color");
 
+  Color colorExc (palette.enabled ? rules.get ("theme.colors.exclusion") : "");
+
   // Map tags to colors.
-  // TODO Note: tags may have their own defined color.
-  std::map <std::string, Color> tagMap;
+  auto tag_colors = createTagColorMap (rules, palette, tracked);
 
   // TODO Get the exclusion ranges, to render the exclused time.
   // TODO Get the earliest hour of the filtered data.
