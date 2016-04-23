@@ -68,9 +68,9 @@ int CmdTags (Rules& rules, Database& database)
       t.set (row, 1, rules.has (name) ? rules.get (name) : "-");
     }
 
-    std::cout << "\n"
+    std::cout << '\n'
               << t.render ()
-              << "\n";
+              << '\n';
   }
   else
     std::cout << "No data found.\n";

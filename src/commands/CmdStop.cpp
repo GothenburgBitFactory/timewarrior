@@ -71,14 +71,14 @@ int CmdStop (
 
       // User feedback.
       if (rules.getBoolean ("verbose"))
-        std::cout << "\n" << intervalSummarize (rules, latest);
+        std::cout << '\n' << intervalSummarize (rules, latest);
     }
   }
   else
   {
     std::string message = "There is no active time tracking.";
     if (rules.getBoolean ("verbose"))
-      std::cout << message << "\n";
+      std::cout << message << '\n';
   }
 
   return 0;

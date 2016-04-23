@@ -68,9 +68,9 @@ int CmdDiagnostics (
   const Extensions& extensions)
 {
   std::stringstream out;
-  out << "\n"
+  out << '\n'
       << PACKAGE_STRING
-      << "\n";
+      << '\n';
 
   out << "       Platform: " << osName ()
       << "\n\n";
@@ -78,7 +78,7 @@ int CmdDiagnostics (
   // Compiler.
   out << "Compiler:\n"
 #ifdef __VERSION__
-      << "        Version: " << __VERSION__ << "\n"
+      << "        Version: " << __VERSION__ << '\n'
 #endif
       << "           Caps:"
 #ifdef __STDC__
@@ -107,7 +107,7 @@ int CmdDiagnostics (
       << " +l"      << 8 * sizeof (long)
       << " +vp"     << 8 * sizeof (void*)
       << " +time_t" << 8 * sizeof (time_t)
-      << "\n";
+      << '\n';
 
   // Compiler compliance level.
   std::string compliance = "non-compliant";
@@ -127,11 +127,11 @@ int CmdDiagnostics (
   out << "Build Features\n"
 
   // Build date.
-      << "          Built: " << __DATE__ << " " << __TIME__ << "\n"
+      << "          Built: " << __DATE__ << " " << __TIME__ << '\n'
 #ifdef HAVE_COMMIT
-      << "         Commit: " << COMMIT << "\n"
+      << "         Commit: " << COMMIT << '\n'
 #endif
-      << "          CMake: " << CMAKE_VERSION << "\n";
+      << "          CMake: " << CMAKE_VERSION << '\n';
 
   out << "     Build type: "
 #ifdef CMAKE_BUILD_TYPE
@@ -152,37 +152,37 @@ int CmdDiagnostics (
       << ", mode "
       << std::setbase (8)
       << context.config._original_file.mode ()
-      << "\n";
+      << '\n';
 */
 
   char* env = getenv ("TIMEWARRIORDB");
   out << "  TIMEWARRIORDB: "
       << (env ? env : "-")
-      << "\n";
+      << '\n';
 
   File cfg (rules.get ("temp.db") + "/timewarrior.cfg");
-  out << "            Cfg: " << describeFile (cfg) << "\n";
+  out << "            Cfg: " << describeFile (cfg) << '\n';
 
   Directory db (rules.get ("temp.db"));
-  out << "       Database: " << describeFile (db) << "\n";
+  out << "       Database: " << describeFile (db) << '\n';
 
   for (auto& file : database.files ())
   {
     File df (rules.get ("temp.db") + "/data");
     df += file;
-    out << "                 " << describeFile (df) << "\n";
+    out << "                 " << describeFile (df) << '\n';
   }
 
   // Determine rc.editor/$EDITOR/$VISUAL.
   char* peditor;
   if ((peditor = getenv ("VISUAL")) != NULL)
-    out << "        $VISUAL: " << peditor << "\n";
+    out << "        $VISUAL: " << peditor << '\n';
   else if ((peditor = getenv ("EDITOR")) != NULL)
-    out << "        $EDITOR: " << peditor << "\n";
+    out << "        $EDITOR: " << peditor << '\n';
 
   // Theme description, if present.
   if (rules.has ("theme.description"))
-    out << "    Color theme: " << rules.get ("theme.description") << "\n";
+    out << "    Color theme: " << rules.get ("theme.description") << '\n';
   else
     out << "    Color theme: Default theme\n";
 
@@ -196,17 +196,17 @@ int CmdDiagnostics (
         out << "\n                ";
       out << ' ' << palette.next ().colorize (rightJustifyZero (color, 2));
     }
-    out << "\n";
+    out << '\n';
   }
 
-  out << "\n";
+  out << '\n';
 
   // Display extensions.
   Directory extDir (rules.get ("temp.db"));
   extDir += "extensions";
 
   out << "Extensions\n"
-      << "       Location: " << describeFile (extDir) << "\n";
+      << "       Location: " << describeFile (extDir) << '\n';
 
   auto exts = extensions.all ();
   if (exts.size ())
@@ -224,13 +224,13 @@ int CmdDiagnostics (
 
       out << "                 ";
       out.width (longest);
-      out << describeFile (file) << "\n";
+      out << describeFile (file) << '\n';
     }
   }
   else
     out << "               (None)\n";
 
-  out << "\n";
+  out << '\n';
   std::cout << out.str ();
 
   return 0;

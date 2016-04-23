@@ -166,7 +166,7 @@ std::string Database::dump () const
   std::stringstream out;
   out << "Database\n";
   for (auto& exclusion : _exclusions)
-    out << "  Exclusion: " << exclusion << "\n";
+    out << "  Exclusion: " << exclusion << '\n';
 
   for (auto& df : _files)
     out << df.dump ();

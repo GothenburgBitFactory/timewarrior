@@ -46,7 +46,7 @@ bool lightweightVersionCheck (int argc, const char** argv)
 {
   if (argc == 2 && std::string (argv[1]) == "--version")
   {
-    std::cout << VERSION << "\n";
+    std::cout << VERSION << '\n';
     return true;
   }
 
@@ -232,7 +232,7 @@ int dispatchCommand (
 
   // Debug output.
   if (rules.getBoolean ("debug"))
-    std::cout << cli.dump () << "\n";
+    std::cout << cli.dump () << '\n';
 
   // Dispatch to the right command function.
   std::string command = cli.getCommand ();

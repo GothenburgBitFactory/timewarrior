@@ -97,10 +97,10 @@ int CmdReport (
 
   std::stringstream header;
   for (auto& name : rules.all ())
-    header << name << ": " << rules.get (name) << "\n";
+    header << name << ": " << rules.get (name) << '\n';
 
   auto input = header.str ()
-             + "\n"
+             + '\n'
              + jsonFromIntervals (intervals);
 
   // Run the extensions.
@@ -109,7 +109,7 @@ int CmdReport (
 
   // Display the output.
   for (auto& line : output)
-    std::cout << line << "\n";
+    std::cout << line << '\n';
 
   return 0;
 }

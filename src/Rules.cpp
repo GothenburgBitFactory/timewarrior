@@ -170,11 +170,11 @@ std::string Rules::dump () const
   std::stringstream out;
   out << "Rules\n"
       << "  _original_file " << _original_file
-      << "\n";
+      << '\n';
 
   out << "  Settings\n";
   for (auto& item : _settings)
-    out << "    " << item.first << "=" << item.second << "\n";
+    out << "    " << item.first << "=" << item.second << '\n';
 
   return out.str ();
 }
@@ -212,7 +212,7 @@ void Rules::parse (const std::string& input, int nest /* = 1 */)
         }
         else
         {
-          ruleDef += line + "\n";
+          ruleDef += line + '\n';
         }
       }
 
@@ -235,7 +235,7 @@ void Rules::parse (const std::string& input, int nest /* = 1 */)
           }
 
           inRule = true;
-          ruleDef = line + "\n";
+          ruleDef = line + '\n';
         }
 
         // Top-level import:

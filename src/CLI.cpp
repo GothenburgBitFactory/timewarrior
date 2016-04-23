@@ -335,13 +335,13 @@ std::string CLI::dump (const std::string& title) const
     out << colorArgs.colorize (i->attribute ("raw"));
   }
 
-  out << "\n";
+  out << '\n';
 
   if (_args.size ())
   {
     out << "  _args\n";
     for (auto& a : _args)
-      out << "    " << a.dump () << "\n";
+      out << "    " << a.dump () << '\n';
   }
 
   return out.str ();

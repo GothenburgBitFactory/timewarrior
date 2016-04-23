@@ -63,20 +63,20 @@ int CmdReportDay (
 
   // TODO Axis, hard-coded.
   std::string indent = "  ";
-  std::cout << "\n"
+  std::cout << '\n'
             << indent
             << "0    1    2    3    4    5    6    7    8    9    10   11   12   1    2    3    4    5    6    7    8    9   10   11\n";
 
   // TODO Data, missing.
-  std::cout << "\n"
-            << "\n";
+  std::cout << '\n'
+            << '\n';
 
   // TODO Summary, missing.
-  std::cout << "\n"
+  std::cout << '\n'
             << indent << "Tracked\n"
             << indent << "Untracked\n"
             << indent << "Total\n"
-            << "\n";
+            << '\n';
 
   return 0;
 }

@@ -85,21 +85,21 @@ int main (int argc, const char** argv)
 
   catch (const std::string& error)
   {
-    std::cerr << error << "\n";
+    std::cerr << error << '\n';
     status = -1;
   }
 
   catch (std::bad_alloc& error)
   {
     auto message = std::string ("Memory allocation failed: ") + error.what ();
-    std::cerr << "Error: " << message << "\n";
+    std::cerr << "Error: " << message << '\n';
     status = -3;
   }
 
   catch (...)
   {
     auto message = "Unknown problem, please report.";
-    std::cerr << "Error: " << message << "\n";
+    std::cerr << "Error: " << message << '\n';
     status = -2;
   }
 

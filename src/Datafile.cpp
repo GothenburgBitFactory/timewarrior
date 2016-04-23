@@ -154,7 +154,7 @@ void Datafile::commit ()
 
       // Write out all the lines.
       for (auto& line : _lines)
-        _file.write_raw (line + "\n");
+        _file.write_raw (line + '\n');
 
       _file.close ();
       _dirty = false;
@@ -169,13 +169,13 @@ std::string Datafile::dump () const
 {
   std::stringstream out;
   out << "Datafile\n"
-      << "  Name:        " << _file.name () << (_file.exists () ? "" : " (does not exist)") << "\n"
-      << "  dirty:       " << (_dirty ? "true" : "false") << "\n"
-      << "  lines:       " << _lines.size () << "\n"
-      << "    loaded     " << (_lines_loaded ? "true" : "false") << "\n"
-      << "  exclusions:  " << _exclusions.size () << "\n"
+      << "  Name:        " << _file.name () << (_file.exists () ? "" : " (does not exist)") << '\n'
+      << "  dirty:       " << (_dirty ? "true" : "false") << '\n'
+      << "  lines:       " << _lines.size () << '\n'
+      << "    loaded     " << (_lines_loaded ? "true" : "false") << '\n'
+      << "  exclusions:  " << _exclusions.size () << '\n'
       << "  range:       " << _range.start.toISO () << " - "
-                           << _range.end.toISO () << "\n";
+                           << _range.end.toISO () << '\n';
 
   return out.str ();
 }

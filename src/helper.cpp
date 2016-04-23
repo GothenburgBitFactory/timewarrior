@@ -67,21 +67,21 @@ std::string intervalSummarize (const Rules& rules, const Interval& interval)
     if (interval.range.ended ())
     {
       Duration dur (Datetime (interval.range.end) - Datetime (interval.range.start));
-      out << "Recorded " << tags << "\n"
-          << "  Started " << interval.range.start.toISOLocalExtended () << "\n"
-          << "  Ended   " << interval.range.end.toISOLocalExtended () << "\n"
-          << "  Elapsed " << std::setw (19) << std::setfill (' ') << dur.format () << "\n";
+      out << "Recorded " << tags << '\n'
+          << "  Started " << interval.range.start.toISOLocalExtended () << '\n'
+          << "  Ended   " << interval.range.end.toISOLocalExtended () << '\n'
+          << "  Elapsed " << std::setw (19) << std::setfill (' ') << dur.format () << '\n';
     }
 
     // Interval open.
     else
     {
       Duration dur (Datetime () - interval.range.start);
-      out << "Tracking " << tags << "\n"
-          << "  Started " << interval.range.start.toISOLocalExtended () << "\n";
+      out << "Tracking " << tags << '\n'
+          << "  Started " << interval.range.start.toISOLocalExtended () << '\n';
 
       if (dur.toTime_t () > 10)
-        out << "  Elapsed " << std::setw (19) << std::setfill (' ') << dur.format () << "\n";
+        out << "  Elapsed " << std::setw (19) << std::setfill (' ') << dur.format () << '\n';
     }
   }
 
@@ -390,7 +390,7 @@ std::string jsonFromIntervals (const std::vector <Interval>& intervals)
   }
 
   if (counter)
-    out << "\n";
+    out << '\n';
 
   out << "]\n";
   return out.str ();

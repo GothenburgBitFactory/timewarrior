@@ -32,7 +32,7 @@
 int CmdHelpUsage ()
 {
   // TODO This is going to need formatting.
-  std::cout << "\n"
+  std::cout << '\n'
             << "Usage: timew [--version]\n"
             << "       timew continue\n"
             << "       timew diagnostics\n"
@@ -44,7 +44,7 @@ int CmdHelpUsage ()
             << "       timew stop [<tag> ...]\n"
             << "       timew tags\n"
             << "       timew track <interval> [<tag> ...]\n"
-            << "\n"
+            << '\n'
             << "Interval:\n"
             << "       [from] <date>\n"
             << "       [from] <date> to/- <date>\n"
@@ -52,13 +52,13 @@ int CmdHelpUsage ()
             << "       <duration> before <date>\n"
             << "       <duration> after <date>\n"
             << "       <duration>\n"
-            << "\n"
+            << '\n'
             << "Tag:\n"
             << "       Word\n"
             << "       'Single Quoted Words'\n"
             << "       \"Double Quoted Words\"\n"
             << "       Escaped\\ Spaces\n"
-            << "\n";
+            << '\n';
 
   // TODO clear
   // TODO config
@@ -99,109 +99,109 @@ int CmdHelp (const CLI& cli)
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     if (words[0] == "continue")
-      std::cout << "\n"
+      std::cout << '\n'
                 << "Syntax: timew continue\n"
-                << "\n"
+                << '\n'
                 << "Resumes tracking the most recently closed interval. For exqample:\n"
-                << "\n"
+                << '\n'
                 << "  $ timew track 9am - 5pm tag1 tag2\n"
                 << "  $ timew continue\n"
-                << "\n"
+                << '\n'
                 << "The 'continue' command creates a new interval, starting now, and using the tags\n"
                 << "'tag1' and 'tag2'.\n"
-                << "\n"
+                << '\n'
                 << "See also 'start', 'stop'.\n"
-                << "\n";
+                << '\n';
 
     // TODO day
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "diagnostics")
-      std::cout << "\n"
+      std::cout << '\n'
                 << "Syntax: timew diagnostics\n"
-                << "\n"
+                << '\n'
                 << "This command shows details about your version of Timewarrior, platform, how it\n"
                 << "was built, compiler features, configuration, file access, extensions and more.\n"
-                << "\n"
+                << '\n'
                 << "The purpose of this command is to help diagnose configuration problems, and\n"
                 << "provide supplemental information when reporting a problem.\n"
-                << "\n"
+                << '\n'
                 << "See also 'extensions'.\n"
-                << "\n";
+                << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "export")
-      std::cout << "\n"
+      std::cout << '\n'
                 << "Syntax: timew export [<interval>] [<tag> ...]\n"
-                << "\n"
+                << '\n'
                 << "Exports all the tracked time in JSON format. Supports filtering. For example:\n"
-                << "\n"
+                << '\n'
                 << "  $ timew export from 2016-01-01 for 3wks tag1\n"
-                << "\n"
+                << '\n'
                 << "See also 'import'.\n"
-                << "\n";
+                << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "extensions")
-      std::cout << "\n"
+      std::cout << '\n'
                 << "Syntax: timew extensions\n"
-                << "\n"
+                << '\n'
                 << "Displays the directory containing the extension programs, and a table showing\n"
                 << "each extensions and its status.\n"
-                << "\n"
+                << '\n'
                 << "See also 'diagnostics'.\n"
-                << "\n";
+                << '\n';
 
     // TODO gaps
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "help")
-      std::cout << "\n"
+      std::cout << '\n'
                 << "The help command shows detailed descriptions and examples of commands and the\n"
                 << "supported hints. For example:\n"
-                << "\n"
+                << '\n'
                 << "  $ timew help\n"
                 << "  $ timew help start\n"
                 << "  $ timew help hints\n"
-                << "\n";
+                << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "hints")
-      std::cout << "\n"
+      std::cout << '\n'
                 << "Timewarrior supports hints, which are single-word command line features that\n"
                 << "start with a colon like this:\n"
-                << "\n"
+                << '\n'
                 << "  :week\n"
-                << "\n"
+                << '\n'
                 << "Hints serve several purposes. This example is a shortcut for the date range\n"
                 << "that defines the current week. Other hints, such as:\n"
-                << "\n"
+                << '\n'
                 << "  :quiet\n"
-                << "\n"
+                << '\n'
                 << "are ways to control the behavior of Timewarrior, in this case eliminating all\n"
                 << "forms of feedback, for purposes of automation. The supported hints are:\n"
-                << "\n"
+                << '\n'
                 << "  :quiet         Turns off all feedback. For automation\n"
                 << "  :debug         Runs in debug mode, shows many runtime details\n"
-                << "\n"
+                << '\n'
                 << "  :color         Force color on, even if not connected to a TTY\n"
                 << "  :nocolor       Force color off, even if connected to a TTY\n"
-                << "\n"
+                << '\n'
                 << "  :yesterday     The 24 hours of the previous day\n"
                 << "  :day           The 24 hours of the current day\n"
                 << "  :week          This week\n"
                 << "  :month         This month\n"
                 << "  :quarter       This quarter\n"
                 << "  :year          This year\n"
-                << "\n"
+                << '\n'
                 << "  :fill          Expand time to fill surrounding available gap\n"
                 << "                 Only functions when exclusions are provided\n"
-                << "\n";
+                << '\n';
 
     // TODO import
     // TODO month
@@ -211,57 +211,57 @@ int CmdHelp (const CLI& cli)
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "start")
-      std::cout << "\n"
+      std::cout << '\n'
                 << "Syntax: timew start [<date>] [<tag> ...]\n"
-                << "\n"
+                << '\n'
                 << "Begins tracking using the current time, and the specified optional set of tags.\n"
                 << "If a tag contains multiple words, and therefore contains spaces, use quotes to\n"
                 << "surround the whole tag. For example, this command specifies two tags ('weekend'\n"
                 << "and 'Home & Garden'), the second of which requires quotes.\n"
-                << "\n"
+                << '\n'
                 << "  $ timew start weekend 'Home & Garden'\n"
-                << "\n"
+                << '\n'
                 << "An optional date may be specified to indicate the intended start to the tracked\n"
                 << "time:\n"
-                << "\n"
+                << '\n'
                 << "  $ time start 8am weekend 'Home & Garden'\n"
-                << "\n"
+                << '\n'
                 << "Quotes are harmless if used unecessarily.\n"
-                << "\n"
+                << '\n'
                 << "See also 'continue', 'stop', 'track'.\n"
-                << "\n";
+                << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "stop")
-      std::cout << "\n"
+      std::cout << '\n'
                 << "Syntax: timew stop [<tag> ...]\n"
-                << "\n"
+                << '\n'
                 << "Stops tracking time.  If tags are specified, then they are no longer tracked.\n"
                 << "If no tags are specified, all tracking stops. For example:\n"
-                << "\n"
+                << '\n'
                 << "  $ timew start tag1 tag2\n"
                 << "  ...\n"
                 << "  $ timew stop tag1\n"
-                << "\n"
+                << '\n'
                 << "Initially time is tracked for both 'tag1' and 'tag2', then 'tag1' tracking is\n"
                 << "stopped, leaving tag2 active. To stop all tracking:\n"
-                << "\n"
+                << '\n'
                 << "  $ timew stop\n"
-                << "\n"
+                << '\n'
                 << "See also 'continue', 'start', 'track'.\n"
-                << "\n";
+                << '\n';
 
     // TODO summary
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "tags")
-      std::cout << "\n"
+      std::cout << '\n'
                 << "Syntax: timew tags\n"
-                << "\n"
+                << '\n'
                 << "Displays all the tags that have been used.\n"
-                << "\n";
+                << '\n';
 
     // TODO track
     // TODO undo

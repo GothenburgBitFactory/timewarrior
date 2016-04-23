@@ -13,7 +13,7 @@ int main (int argc, char** argv)
     std::string token;
     Lexer::Type type;
     while (l.token (token, type))
-      std::cout << "  token '" << token << "' " << Lexer::typeToString (type) << "\n";
+      std::cout << "  token '" << token << "' " << Lexer::typeToString (type) << '\n';
   }
 }
 

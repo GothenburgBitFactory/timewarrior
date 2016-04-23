@@ -59,7 +59,7 @@ int main (int, char**)
   tokens.clear ();
   while (l3.token (token, type))
   {
-    std::cout << "# «" << token << "» " << Lexer::typeName (type) << "\n";
+    std::cout << "# «" << token << "» " << Lexer::typeName (type) << '\n';
     tokens.push_back (std::pair <std::string, Lexer::Type> (token, type));
   }
 

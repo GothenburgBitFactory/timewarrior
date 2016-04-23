@@ -65,12 +65,12 @@ int CmdExtensions (
   Directory extDir (rules.get ("temp.db"));
   extDir += "extensions";
 
-  std::cout << "\n"
+  std::cout << '\n'
             << "Extensions located in:\n"
-            << "  " << extDir._data << "\n"
-            << "\n"
+            << "  " << extDir._data << '\n'
+            << '\n'
             << t.render ()
-            << "\n";
+            << '\n';
   return 0;
 }
 

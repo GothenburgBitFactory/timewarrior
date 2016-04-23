@@ -68,11 +68,11 @@ int Extensions::callExtension (
 {
   if (_debug)
   {
-    std::cout << "Extension: Calling " << script << "\n"
+    std::cout << "Extension: Calling " << script << '\n'
               << "Extension: input";
 
     for (auto& i : input)
-      std::cout << "  " << i << "\n";
+      std::cout << "  " << i << '\n';
   }
 
   auto inputStr = join ("\n", input);
@@ -94,7 +94,7 @@ int Extensions::callExtension (
   output = split (outputStr, '\n');
 
   if (_debug)
-    std::cout << "Extension: Completed with status " << status << "\n";
+    std::cout << "Extension: Completed with status " << status << '\n';
 
   return status;
 }
@@ -106,7 +106,7 @@ std::string Extensions::dump () const
 
   out << "Extensions\n";
   for (auto& script : _scripts)
-    out << "  " << script << "\n";
+    out << "  " << script << '\n';
 
   return out.str ();
 }

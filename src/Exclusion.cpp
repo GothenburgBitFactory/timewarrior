@@ -148,7 +148,7 @@ std::string Exclusion::serialize () const
 ////////////////////////////////////////////////////////////////////////////////
 std::string Exclusion::dump () const
 {
-  return std::string ("Exclusion ") + join (" ", _tokens) + "\n";
+  return std::string ("Exclusion ") + join (" ", _tokens) + '\n';
 }
 
 ////////////////////////////////////////////////////////////////////////////////

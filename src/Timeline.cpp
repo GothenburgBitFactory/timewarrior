@@ -117,7 +117,7 @@ std::string Timeline::dump () const
 {
   std::stringstream out;
 
-  out << "Timeline range " << range.dump () << "\n";
+  out << "Timeline range " << range.dump () << '\n';
   for (auto& i : _inclusions)
     out << "  " << i.json ();
   for (auto& e : _exclusions)
