@@ -100,9 +100,9 @@ bool expandIntervalHint (
     {":yesterday", {"yesterday", "today"}},
     {":day",       {"today",     "tomorrow"}},
     {":week",      {"socw",      "eocw"}},
-    {":month",     {"socw",      "eocw"}},
-    {":quarter",   {"socw",      "eocw"}},
-    {":year",      {"socw",      "eocw"}},
+    {":month",     {"socm",      "eocm"}},
+    {":quarter",   {"socq",      "eocq"}},
+    {":year",      {"socy",      "eocy"}},
   };
 
   if (hints.find (hint) != hints.end ())
