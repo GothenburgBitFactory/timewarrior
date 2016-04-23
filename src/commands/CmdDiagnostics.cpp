@@ -25,6 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <Palette.h>
 #include <format.h>
 #include <timew.h>
 #include <algorithm>
@@ -182,6 +183,21 @@ int CmdDiagnostics (
   // Theme description, if present.
   if (rules.has ("theme.description"))
     out << "    Color theme: " << rules.get ("theme.description") << "\n";
+  else
+    out << "    Color theme: Default theme\n";
+
+  if (rules.getBoolean ("color"))
+  {
+    out << "                ";
+    Palette palette;
+    for (int color = 0; color < palette.size (); ++color)
+    {
+      if (color && color % 16 == 0)
+        out << "\n                ";
+      out << ' ' << palette.next ().colorize (rightJustifyZero (color, 2));
+    }
+    out << "\n";
+  }
 
   out << "\n";
 
