@@ -40,7 +40,7 @@ int CmdHelpUsage ()
             << "       timew extensions\n"
             << "       timew help [<command> | hints]\n"
             << "       timew [report] <report> [<interval>] [<tag> ...]\n"
-            << "       timew start [<tag> ...]\n"
+            << "       timew start [<date>] [<tag> ...]\n"
             << "       timew stop [<tag> ...]\n"
             << "       timew tags\n"
             << "       timew track <interval> [<tag> ...]\n"
@@ -212,7 +212,7 @@ int CmdHelp (const CLI& cli)
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "start")
       std::cout << "\n"
-                << "Syntax: timew start [<tag> ...]\n"
+                << "Syntax: timew start [<date>] [<tag> ...]\n"
                 << "\n"
                 << "Begins tracking using the current time, and the specified optional set of tags.\n"
                 << "If a tag contains multiple words, and therefore contains spaces, use quotes to\n"
@@ -221,7 +221,12 @@ int CmdHelp (const CLI& cli)
                 << "\n"
                 << "  $ timew start weekend 'Home & Garden'\n"
                 << "\n"
-                << "Quotes are harmless if used every time.\n"
+                << "An optional date may be specified to indicate the intended start to the tracked\n"
+                << "time:\n"
+                << "\n"
+                << "  $ time start 8am weekend 'Home & Garden'\n"
+                << "\n"
+                << "Quotes are harmless if used unecessarily.\n"
                 << "\n"
                 << "See also 'continue', 'stop', 'track'.\n"
                 << "\n";
