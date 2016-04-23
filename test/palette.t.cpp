@@ -31,10 +31,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (1);
+  UnitTest t (3);
 
   Palette p;
   t.ok (p.size () >= 8, "Palette.size at least 8");
+
+  p.enabled = true;
+  t.ok (p.next () == Color ("white on red"), "Palette provides color when enabled");
+  p.enabled = false;
+  t.ok (p.next () == Color (),               "Palette suppresses color when disabled");
+  p.enabled = true;
 
   t.diag (p.next ().colorize ("palette entry 0"));
   t.diag (p.next ().colorize ("palette entry 1"));
@@ -52,6 +58,12 @@ int main (int, char**)
   t.diag ("Repeating...");
   t.diag (p.next ().colorize ("palette entry 1"));
   t.diag (p.next ().colorize ("palette entry 2"));
+
+  t.diag ("Disabled...");
+  p.enabled = false;
+  t.diag (p.next ().colorize ("palette entry 1"));
+  t.diag (p.next ().colorize ("palette entry 2"));
+  p.enabled = true;
 
   return 0;
 }
