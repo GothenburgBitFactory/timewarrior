@@ -60,7 +60,10 @@ void Palette::initialize (const Rules& rules)
 // Return the next color in the list.  Cycle to the beginning if necessary.
 Color Palette::next ()
 {
-  return _colors[_current++ % _colors.size ()];
+  if (enabled)
+    return _colors[_current++ % _colors.size ()];
+
+  return Color ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

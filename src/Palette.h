@@ -40,6 +40,9 @@ public:
   Color next ();
   int size () const;
 
+public:
+  bool enabled {true};
+
 private:
   std::vector <Color> _colors  {};
   int                 _current {0};
