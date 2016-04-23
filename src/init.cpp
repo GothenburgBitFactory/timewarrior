@@ -239,25 +239,26 @@ int dispatchCommand (
   {
     // These signatures are æxpected to be all different, therefore no
     // command to fn mapping.
-         if (command == "clear")       status = CmdClear       (                                );
-    else if (command == "config")      status = CmdConfig      (                                );
-    else if (command == "continue")    status = CmdContinue    (     rules, database            );
-    else if (command == "diagnostics") status = CmdDiagnostics (     rules, database, extensions);
-    else if (command == "export")      status = CmdExport      (cli, rules, database            );
-    else if (command == "extensions")  status = CmdExtensions  (     rules,           extensions);
-    else if (command == "gaps")        status = CmdGaps        (                                );
-    else if (command == "help")        status = CmdHelp        (cli                             );
-    else if (command == "import")      status = CmdImport      (                                );
-    else if (command == "report")      status = CmdReport      (cli, rules, database, extensions);
-    else if (command == "day")         status = CmdReportDay   (cli, rules, database            );
-    else if (command == "week")        status = CmdReportWeek  (cli, rules, database            );
-    else if (command == "month")       status = CmdReportMonth (cli, rules, database            );
-    else if (command == "start")       status = CmdStart       (cli, rules, database            );
-    else if (command == "stop")        status = CmdStop        (cli, rules, database            );
-    else if (command == "tags")        status = CmdTags        (     rules, database            );
-    else if (command == "track")       status = CmdTrack       (cli, rules, database            );
-    else if (command == "undo")        status = CmdUndo        (                                );
-    else                               status = CmdReport      (cli, rules, database, extensions);
+         if (command == "clear")       status = CmdClear         (                                );
+    else if (command == "config")      status = CmdConfig        (                                );
+    else if (command == "continue")    status = CmdContinue      (     rules, database            );
+    else if (command == "diagnostics") status = CmdDiagnostics   (     rules, database, extensions);
+    else if (command == "export")      status = CmdExport        (cli, rules, database            );
+    else if (command == "extensions")  status = CmdExtensions    (     rules,           extensions);
+    else if (command == "gaps")        status = CmdGaps          (                                );
+    else if (command == "help")        status = CmdHelp          (cli                             );
+    else if (command == "import")      status = CmdImport        (                                );
+    else if (command == "report")      status = CmdReport        (cli, rules, database, extensions);
+    else if (command == "day")         status = CmdReportDay     (cli, rules, database            );
+    else if (command == "week")        status = CmdReportWeek    (cli, rules, database            );
+    else if (command == "month")       status = CmdReportMonth   (cli, rules, database            );
+    else if (command == "start")       status = CmdStart         (cli, rules, database            );
+    else if (command == "stop")        status = CmdStop          (cli, rules, database            );
+    else if (command == "summary")     status = CmdReportSummary (cli, rules, database            );
+    else if (command == "tags")        status = CmdTags          (     rules, database            );
+    else if (command == "track")       status = CmdTrack         (cli, rules, database            );
+    else if (command == "undo")        status = CmdUndo          (                                );
+    else                               status = CmdReport        (cli, rules, database, extensions);
   }
   else
   {
