@@ -78,6 +78,7 @@ void initializeEntities (CLI& cli)
   // extensions.
   cli.entity ("extension", "day");
   cli.entity ("extension", "month");
+  cli.entity ("extension", "summary");
   cli.entity ("extension", "week");
 
   // Hint entities.
