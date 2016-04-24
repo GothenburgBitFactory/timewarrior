@@ -62,10 +62,10 @@ Runs an extension report, and supports filtering data.
 The 'report' command itself is optional, which means that these two commands
 are equivalent:
 
-  $ timew report summary :week
-  $ timew        summary :week
+  $ timew report foo :week
+  $ timew        foo :week
 
-This does however assume there is a 'summary' extension installed.
+This does however assume there is a 'foo' extension installed.
 
 .TP
 .B timew start [<date>] [<tag> ...]
@@ -140,6 +140,14 @@ forms of feedback, for purposes of automation. The supported hints are:
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS
 Timewarrior stores its configuration in a file in the user's home directory:
 ~/.timewarrior/timewarrior.cfg.
+
+This file contains a mix of rules and configuration settings.
+
+.TP
+.B report.day.24hours = off
+.br
+Determines whether the day report shows all 24 hours in a day, or is limited
+to only hours where data is tracked.  Default value is 'off'.
 
 .SH MORE EXAMPLES
 
