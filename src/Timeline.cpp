@@ -102,6 +102,7 @@ std::vector <Interval> Timeline::tracked (Rules& rules) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Untracked time is that which is not excluded, and not filled. Gaps.
 std::vector <Interval> Timeline::untracked (Rules& rules) const
 {
   std::vector <Interval> combined;
@@ -110,6 +111,21 @@ std::vector <Interval> Timeline::untracked (Rules& rules) const
   //      unracked intervals.
 
   return combined;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Excluded time is that which is not available for work.
+std::vector <Range> Timeline::excluded (Rules& rules) const
+{
+  // Create a range representing the whole timeline.
+  // If no range is defined, then assume the full range of all the inclusions.
+  Range overallRange {range};
+  if (! overallRange.started () &&
+      ! overallRange.ended ())
+    overallRange = overallRangeFromIntervals (_inclusions);
+
+  // Cobmine all the non-trackable time.
+  return combineHolidaysAndExclusions (overallRange, rules, _exclusions);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
