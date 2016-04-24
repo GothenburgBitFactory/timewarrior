@@ -31,6 +31,7 @@
 #include <Range.h>
 #include <commands.h>
 #include <timew.h>
+#include <shared.h>
 #include <format.h>
 #include <algorithm>
 #include <iostream>
@@ -120,6 +121,51 @@ int CmdReportDay (
           line2.add (block, offset, colorExc);
         }
       }
+    }
+
+    for (auto& track : tracked)
+    {
+      auto start_hour = track.range.start.hour ();
+      auto start_min  = track.range.start.minute ();
+      auto end_hour   = track.range.end.hour ();
+      auto end_min    = track.range.end.minute ();
+
+      auto start_block = quantizeTo15Minutes (start_min) / 15;
+      auto end_block   = quantizeTo15Minutes (end_min == 0 ? 60 : end_min) / 15;
+
+      int start_offset = (start_hour - first_hour) * 5 + start_block;
+      int end_offset   = (end_hour   - first_hour) * 5 + end_block;
+
+      // TODO Determine color of interval.
+      auto colorTrack = palette.next ();
+
+      // TODO Properly format the tags in the space, if possible.
+      std::string label;
+      for (auto& tag : track.tags ())
+      {
+        if (label != "")
+          label += ' ';
+
+        label += tag;
+      }
+
+      auto width = end_offset - start_offset;
+
+      std::vector <std::string> lines;
+      wrapText (lines, label, width, false);
+
+      std::string label1 (width, ' ');
+      std::string label2 = label1;
+      if (lines.size () > 0)
+      {
+        label1 = leftJustify (lines[0], width);
+
+        if (lines.size () > 1)
+          label2 = leftJustify (lines[1], width);
+      }
+
+      line1.add (label1, start_offset, colorTrack);
+      line2.add (label2, start_offset, colorTrack);
     }
 
     std::cout << indent << line1.str () << '\n'
