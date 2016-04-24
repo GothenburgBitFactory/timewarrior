@@ -118,15 +118,20 @@ std::string Composite::str (bool blend) const
     // A change in color triggers a code emit.
     if (prev_color != colors[i])
     {
-      out << std::get <2> (_layers[colors[i]]).code ();
+      if (colors[i])
+        out << std::get <2> (_layers[colors[i] - 1]).code ();
+      else
+        out << std::get <2> (_layers[0]).end ();
+
       prev_color = colors[i];
     }
 
     out << utf8_character (characters[i]);
   }
 
-  // Terminate the color codes.
-  out << std::get <2> (_layers[0]).end ();
+  // Terminate the color codes, if necessary.
+  if (prev_color)
+    out << std::get <2> (_layers[0]).end ();
 
   return out.str ();
 }
