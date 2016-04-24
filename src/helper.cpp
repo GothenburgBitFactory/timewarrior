@@ -81,7 +81,8 @@ std::string intervalSummarize (const Rules& rules, const Interval& interval)
           << "  Started " << interval.range.start.toISOLocalExtended () << '\n';
 
       if (dur.toTime_t () > 10)
-        out << "  Elapsed " << std::setw (19) << std::setfill (' ') << dur.format () << '\n';
+        out << "  Current " << Datetime ().toISOLocalExtended () << '\n'
+            << "  Elapsed " << std::setw (19) << std::setfill (' ') << dur.format () << '\n';
     }
   }
 
