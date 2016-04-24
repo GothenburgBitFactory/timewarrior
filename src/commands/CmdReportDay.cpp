@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Palette.h>
+#include <Composite.h>
 #include <Color.h>
 #include <Range.h>
 #include <commands.h>
@@ -90,6 +91,44 @@ int CmdReportDay (
     std::cout << colorLabel.colorize (leftJustify (hour, 5));
 
   std::cout << '\n';
+
+  // Each day is rendered separately.
+  for (Datetime day = filter.range.start; day < filter.range.end; day++)
+  {
+    // Render the exclusion blocks.
+    Composite line1;
+    Composite line2;
+    for (int hour = first_hour; hour <= last_hour; hour++)
+    {
+      // Construct a range representing a single 'hour', of 'day'.
+      Range r (Datetime (day.year (), day.month (), day.day (), hour, 0, 0),
+               Datetime (day.year (), day.month (), day.day (), hour + 1, 0, 0));
+
+      for (auto& exc : excluded)
+      {
+        if (exc.overlap (r))
+        {
+          // Determine which of the four 15-min quarters are included.
+          auto sub_hour = exc.intersect (r);
+          auto start_block = quantizeTo15Minutes (sub_hour.start.minute ()) / 15;
+          auto end_block   = quantizeTo15Minutes (sub_hour.end.minute () == 0 ? 60 : sub_hour.end.minute ()) / 15;
+
+          int offset = (hour - first_hour) * 5 + start_block;
+          std::string block (end_block - start_block, ' ');
+
+          line1.add (block, offset, colorExc);
+          line2.add (block, offset, colorExc);
+        }
+      }
+    }
+
+    std::cout << indent << line1.str () << '\n'
+              << indent << line2.str () << '\n'
+              << '\n';
+
+    line1.clear ();
+    line2.clear ();
+  }
 
   // TODO Summary, missing.
   std::cout << '\n'
