@@ -151,22 +151,37 @@ int CmdReportDay (
       }
 
       auto width = end_offset - start_offset;
-
-      std::vector <std::string> lines;
-      wrapText (lines, label, width, false);
-
-      std::string label1 (width, ' ');
-      std::string label2 = label1;
-      if (lines.size () > 0)
+      if (width)
       {
-        label1 = leftJustify (lines[0], width);
+        std::vector <std::string> lines;
+        wrapText (lines, label, width, false);
 
-        if (lines.size () > 1)
-          label2 = leftJustify (lines[1], width);
+        std::string label1 (width, ' ');
+        std::string label2 = label1;
+        if (lines.size () > 0)
+        {
+          label1 = leftJustify (lines[0], width);
+
+          if (lines.size () > 1)
+            label2 = leftJustify (lines[1], width);
+        }
+
+        line1.add (label1, start_offset, colorTrack);
+        line2.add (label2, start_offset, colorTrack);
+
+        // An open interval gets a "..." in the bottom right corner, or
+        // whatever fits.
+        if (! track.range.ended ())
+        {
+          int space = 3;
+          if (width < 3)
+            space = width;
+
+          line2.add (std::string (space, '.'),
+                     width - space,
+                     colorTrack);
+        }
       }
-
-      line1.add (label1, start_offset, colorTrack);
-      line2.add (label2, start_offset, colorTrack);
     }
 
     std::cout << indent << line1.str () << '\n'
