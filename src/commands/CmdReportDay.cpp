@@ -30,6 +30,7 @@
 #include <Range.h>
 #include <commands.h>
 #include <timew.h>
+#include <format.h>
 #include <algorithm>
 #include <iostream>
 
@@ -55,7 +56,8 @@ int CmdReportDay (
   palette.initialize (rules);
   palette.enabled = rules.getBoolean ("color");
 
-  Color colorExc (palette.enabled ? rules.get ("theme.colors.exclusion") : "");
+  Color colorExc   (palette.enabled ? rules.get ("theme.colors.exclusion") : "");
+  Color colorLabel (palette.enabled ? rules.get ("theme.colors.label")     : "");
 
   // Map tags to colors.
   auto tag_colors = createTagColorMap (rules, palette, tracked);
@@ -83,13 +85,11 @@ int CmdReportDay (
 
   // Render the axis.
   std::string indent = "  ";
-  std::cout << '\n'
-            << indent
-            << "0    1    2    3    4    5    6    7    8    9    10   11   12   1    2    3    4    5    6    7    8    9   10   11\n";
+  std::cout << indent;
+  for (int hour = first_hour; hour <= last_hour; hour++)
+    std::cout << colorLabel.colorize (leftJustify (hour, 5));
 
-  // TODO Data, missing.
-  std::cout << '\n'
-            << '\n';
+  std::cout << '\n';
 
   // TODO Summary, missing.
   std::cout << '\n'
