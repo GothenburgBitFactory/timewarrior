@@ -30,6 +30,7 @@
 #include <Range.h>
 #include <commands.h>
 #include <timew.h>
+#include <algorithm>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -59,11 +60,28 @@ int CmdReportDay (
   // Map tags to colors.
   auto tag_colors = createTagColorMap (rules, palette, tracked);
 
-  // TODO Get the exclusion ranges, to render the exclused time.
-  // TODO Get the earliest hour of the filtered data.
-  // TODO Get the latest hour of the filtered data.
+  // Determine hours shown.
+  int first_hour = 0;
+  int last_hour  = 23;
+  if (! rules.getBoolean ("report.day.24hours"))
+  {
+    // Get the extreme time range for the filtered data.
+    first_hour = 23;
+    last_hour  = 0;
+    for (auto& track : tracked)
+    {
+      if (track.range.start.hour () < first_hour)
+        first_hour = track.range.start.hour ();
 
-  // TODO Axis, hard-coded.
+      if (track.range.end.hour () > last_hour)
+        last_hour = track.range.end.hour ();
+    }
+
+    first_hour = std::max (first_hour - 1, 0);
+    last_hour  = std::min (last_hour + 1, 23);
+  }
+
+  // Render the axis.
   std::string indent = "  ";
   std::cout << '\n'
             << indent
