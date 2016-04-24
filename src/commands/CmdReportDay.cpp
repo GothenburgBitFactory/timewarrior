@@ -87,7 +87,8 @@ int CmdReportDay (
 
   // Render the axis.
   std::string indent = "  ";
-  std::cout << indent;
+  std::cout << '\n'
+            << indent;
   for (int hour = first_hour; hour <= last_hour; hour++)
     std::cout << colorLabel.colorize (leftJustify (hour, 5));
 
@@ -134,7 +135,7 @@ int CmdReportDay (
       auto end_block   = quantizeTo15Minutes (end_min == 0 ? 60 : end_min) / 15;
 
       int start_offset = (start_hour - first_hour) * 5 + start_block;
-      int end_offset   = (end_hour   - first_hour) * 5 + end_block;
+      int end_offset   = (end_hour - 1 - first_hour) * 5 + end_block;
 
       // TODO Determine color of interval.
       auto colorTrack = palette.next ();
@@ -177,8 +178,7 @@ int CmdReportDay (
   }
 
   // TODO Summary, missing.
-  std::cout << '\n'
-            << indent << "Tracked\n"
+  std::cout << indent << "Tracked\n"
             << indent << "Untracked\n"
             << indent << "Total\n"
             << '\n';
