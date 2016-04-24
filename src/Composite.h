@@ -38,6 +38,7 @@ public:
   Composite () = default;
   void add (const std::string&, std::string::size_type, const Color&);
   std::string str (bool blend = false) const;
+  void clear ();
 
 private:
   std::vector <std::tuple <std::string, std::string::size_type, Color>> _layers;
