@@ -42,14 +42,14 @@ void Datafile::initialize (const std::string& name)
   auto month = strtol (basename.substr (5, 2).c_str (), NULL, 10);
 
   // The range is a month: [start, end).
-  Datetime start (month, 1, year, 0, 0, 0);
+  Datetime start (year, month, 1, 0, 0, 0);
   month++;
   if (month > 12)
   {
     year++;
     month = 1;
   }
-  Datetime end (month, 1, year, 0, 0, 0);
+  Datetime end (year, month, 1, 0, 0, 0);
   _range = Range (start, end);
 }
 

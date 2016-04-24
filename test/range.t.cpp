@@ -60,18 +60,18 @@ int main (int, char**)
   // H                           [...
   // I                                   [...
   Range refClosed;
-  refClosed.start = Datetime (6,  1, 2016);
-  refClosed.end   = Datetime (6, 30, 2016);
+  refClosed.start = Datetime (2016, 6,  1);
+  refClosed.end   = Datetime (2016, 6, 30);
 
-  Range testA; testA.start = Datetime (4,  1, 2016); testA.end = Datetime (4, 30, 2016);
-  Range testB; testB.start = Datetime (5, 15, 2016); testB.end = Datetime (6, 15, 2016);
-  Range testC; testC.start = Datetime (6, 10, 2016); testC.end = Datetime (6, 20, 2016);
-  Range testD; testD.start = Datetime (6, 15, 2016); testD.end = Datetime (7, 15, 2016);
-  Range testE; testE.start = Datetime (8,  1, 2016); testE.end = Datetime (8, 31, 2016);
-  Range testF; testF.start = Datetime (5, 15, 2016); testF.end = Datetime (7, 15, 2016);
-  Range testG; testG.start = Datetime (5, 15, 2016);
-  Range testH; testH.start = Datetime (6, 15, 2016);
-  Range testI; testI.start = Datetime (7, 15, 2016);
+  Range testA; testA.start = Datetime (2016, 4,  1); testA.end = Datetime (2016, 4, 30);
+  Range testB; testB.start = Datetime (2016, 5, 15); testB.end = Datetime (2016, 6, 15);
+  Range testC; testC.start = Datetime (2016, 6, 10); testC.end = Datetime (2016, 6, 20);
+  Range testD; testD.start = Datetime (2016, 6, 15); testD.end = Datetime (2016, 7, 15);
+  Range testE; testE.start = Datetime (2016, 8,  1); testE.end = Datetime (2016, 8, 31);
+  Range testF; testF.start = Datetime (2016, 5, 15); testF.end = Datetime (2016, 7, 15);
+  Range testG; testG.start = Datetime (2016, 5, 15);
+  Range testH; testH.start = Datetime (2016, 6, 15);
+  Range testI; testI.start = Datetime (2016, 7, 15);
 
   t.notok (refClosed.overlap (testA), "Range: ! refClosed.overlap(testA)");
   t.ok    (refClosed.overlap (testB), "Range:   refClosed.overlap(testB)");
@@ -94,7 +94,7 @@ int main (int, char**)
   // H                           [...
   // I                                   [...
   Range refOpen;
-  refOpen.start = Datetime (6, 1, 2016);
+  refOpen.start = Datetime (2016, 6, 1);
 
   t.notok (refOpen.overlap (testA), "Range: ! refOpen.overlap(testA)");
   t.ok    (refOpen.overlap (testB), "Range:   refOpen.overlap(testB)");

@@ -232,7 +232,7 @@ std::vector <Range> Database::segmentRange (const Range& range)
          (start_y == end_y && start_m <= end_m))
   {
     // Capture date before incrementing month.
-    Datetime segmentStart (start_m, 1, start_y);
+    Datetime segmentStart (start_y, start_m, 1);
 
     // Next month.
     start_m += 1;
@@ -243,7 +243,7 @@ std::vector <Range> Database::segmentRange (const Range& range)
     }
 
     // Capture date after incrementing month.
-    Datetime segmentEnd (start_m, 1, start_y);
+    Datetime segmentEnd (start_y, start_m, 1);
     segments.push_back (Range (segmentStart, segmentEnd));
   }
 

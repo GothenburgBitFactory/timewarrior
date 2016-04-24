@@ -163,7 +163,7 @@ Range Exclusion::rangeFromTimeBlock (
   {
     int hh, mm, ss;
     if (pig.getHMS (hh, mm, ss))
-      return Range (start, Datetime (start.month (), start.day (), start.year (), hh, mm, ss));
+      return Range (start, Datetime (start.year (), start.month (), start.day (), hh, mm, ss));
 
     throw format ("Malformed time block '{1}'.", block);
   }
@@ -171,7 +171,7 @@ Range Exclusion::rangeFromTimeBlock (
   {
     int hh, mm, ss;
     if (pig.getHMS (hh, mm, ss))
-      return Range (Datetime (start.month (), start.day (), start.year (), hh, mm, ss), end);
+      return Range (Datetime (start.year (), start.month (), start.day (), hh, mm, ss), end);
 
     throw format ("Malformed time block '{1}'.", block);
   }
@@ -182,8 +182,8 @@ Range Exclusion::rangeFromTimeBlock (
       pig.skip ('-')             &&
       pig.getHMS (hh2, mm2, ss2))
     return Range (
-             Datetime (start.month (), start.day (), start.year (), hh1, mm1, ss1),
-             Datetime (start.month (), start.day (), start.year (), hh2, mm2, ss2));
+             Datetime (start.year (), start.month (), start.day (), hh1, mm1, ss1),
+             Datetime (start.year (), start.month (), start.day (), hh2, mm2, ss2));
 
   throw format ("Malformed time block '{1}'.", block);
 }
