@@ -80,7 +80,7 @@ int CmdReport (
 
   // Filter the data.
   auto filter = createFilterIntervalFromCLI (cli);
-  auto timeline = createTimelineFromData (rules, database, filter);
+  auto timeline = createTimelineFromData (database, filter);
   auto intervals = timeline.tracked (rules);
 
   // Compose Header info.

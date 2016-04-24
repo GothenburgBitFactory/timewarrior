@@ -36,7 +36,7 @@ int CmdExport (
   Database& database)
 {
   auto filter = createFilterIntervalFromCLI (cli);
-  auto timeline = createTimelineFromData (rules, database, filter);
+  auto timeline = createTimelineFromData (database, filter);
   std::cout << jsonFromIntervals (timeline.tracked (rules));
   return 0;
 }

@@ -296,7 +296,6 @@ Interval createFilterIntervalFromCLI (const CLI& cli)
 // We really only need to eliminate A and F.
 //
 Timeline createTimelineFromData (
-  const Rules& rules,
   Database& database,
   const Interval& filter)
 {

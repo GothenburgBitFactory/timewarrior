@@ -44,8 +44,8 @@ int CmdReportDay (
   if (! filter.range.started ())
     filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
 
-  auto timeline = createTimelineFromData (rules, database, filter);
-  auto tracked = timeline.tracked (rules);
+  auto timeline = createTimelineFromData (database, filter);
+  auto tracked  = timeline.tracked (rules);
 
   // Create a color palette.
   Palette palette;
