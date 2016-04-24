@@ -31,14 +31,30 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (1);
+  UnitTest t (2);
 
-  Composite c;
-  c.add ("left",  2, Color ("red"));
-  c.add ("right", 4, Color ("on blue"));
-  t.diag (c.str ());
+  Composite c1;
+  c1.add ("left",  2, Color ());
+  c1.add ("right", 4, Color ());
+  t.is (c1.str (), "  leright", "Composite left/2 + right/4 --> '  leright'");
 
-  t.skip ("No implemented tests");
+  Composite c2;
+  c2.add ("left",  2, Color ("white on red"));
+  c2.add ("right", 4, Color ("white on blue"));
+  t.diag (c2.str ());
+
+  Composite c3;
+  c3.add ("aaaaaaaaaa",  2, Color ());
+  c3.add ("bbbbb",       5, Color ());
+  c3.add ("c",          15, Color ());
+  t.is (c3.str (), "  aaabbbbbaa   c", "Composite aaaaaaaaaa/2 + bbbbb/5 + c/15 --> '  aaabbbbbaa   c'");
+
+  Composite c4;
+  c4.add ("aaaaaaaaaa",  2, Color ("white on red"));
+  c4.add ("bbbbb",       5, Color ("white on blue"));
+  c4.add ("c",          15, Color ("white on green"));
+  t.diag (c4.str ());
+
   return 0;
 }
 
