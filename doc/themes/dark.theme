@@ -34,6 +34,7 @@ define theme:
     # General UI color.
     exclusion = "white on gray4"
     today     = "black on rgb521"
+    label     = "gray4"
 
   # Rotating Color Palette for tags.
   palette:
