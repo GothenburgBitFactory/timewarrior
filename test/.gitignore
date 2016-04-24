@@ -2,6 +2,7 @@ all.log
 *.pyc
 composite.t
 exclusion.t
+helper.t
 interval.t
 lexer.t
 palette.t
