@@ -37,7 +37,7 @@ class Composite
 public:
   Composite () = default;
   void add (const std::string&, std::string::size_type, const Color&);
-  std::string str (bool blend = false) const;
+  std::string str () const;
   void clear ();
 
 private:

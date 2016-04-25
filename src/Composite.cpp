@@ -78,7 +78,7 @@ void Composite::add (
 // Walk all strings left to right, selecting the character and color from the
 // highest numbered layer. Emit color codes only on edge detection.
 //
-std::string Composite::str (bool blend) const
+std::string Composite::str () const
 {
   // The strings are broken into a vector of int, for UTF8 support.
   std::vector <int> characters;
