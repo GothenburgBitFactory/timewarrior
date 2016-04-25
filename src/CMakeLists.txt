@@ -22,6 +22,7 @@ set (timew_SRCS CLI.cpp        CLI.h
 
 set (libshared_SRCS libshared/src/Args.cpp          libshared/src/Args.h
                     libshared/src/Color.cpp         libshared/src/Color.h
+                    libshared/src/Composite.cpp     libshared/src/Composite.h
                     libshared/src/Configuration.cpp libshared/src/Configuration.h
                     libshared/src/Datetime.cpp      libshared/src/Datetime.h
                     libshared/src/Duration.cpp      libshared/src/Duration.h
