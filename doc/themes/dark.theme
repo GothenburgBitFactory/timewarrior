@@ -36,17 +36,18 @@ define theme:
     today     = "black on rgb521"
     label     = "gray4"
 
-  # Rotating Color Palette for tags.
+  # Rotating Color Palette for tags. The leading zeroes allow the order to be
+  # preserved.
   palette:
-    color1  = "white on red"
-    color2  = "white on blue"
-    color3  = "black on green"
-    color4  = "black on magenta"
-    color5  = "black on cyan"
-    color6  = "black on yellow"
-    color7  = "black on white"
-    color8  = "white on bright red"
-    color9  = "white on bright blue"
+    color01 = "white on red"
+    color02 = "white on blue"
+    color03 = "black on green"
+    color04 = "black on magenta"
+    color05 = "black on cyan"
+    color06 = "black on yellow"
+    color07 = "black on white"
+    color08 = "white on bright red"
+    color09 = "white on bright blue"
     color10 = "black on bright green"
     color11 = "black on bright magenta"
     color12 = "black on bright cyan"
