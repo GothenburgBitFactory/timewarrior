@@ -56,7 +56,7 @@ bool Range::started () const
 ////////////////////////////////////////////////////////////////////////////////
 bool Range::ended () const
 {
-  return end.toEpoch   () > 0;
+  return end.toEpoch () > 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ bool Range::overlap (const Range& other) const
     return false;
 
   // Other range ends before this range starts.
-  if (other.ended () && other.end < start)
+  if (other.ended () && other.end <= start)
     return false;
 
   // Other range starts after this range ends.
@@ -127,12 +127,11 @@ bool Range::overlap (const Range& other) const
 //
 Range Range::intersect (const Range& other) const
 {
-  Range result;
-
   if (overlap (other))
   {
     // Intersection is choosing the later of the two starts, and the earlier of
     // the two ends, provided the two ranges overlap.
+    Range result;
     result.start = start > other.start ? start : other.start;
 
     if (ended ())
@@ -147,9 +146,11 @@ Range Range::intersect (const Range& other) const
       if (other.ended ())
         result.end = other.end;
     }
+
+    return result;
   }
 
-  return result;
+  return Range (Datetime (0), Datetime (0));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
