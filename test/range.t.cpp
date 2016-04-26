@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (60);
+  UnitTest t (63);
 
   // bool started () const;
   // bool ended () const;
@@ -119,8 +119,8 @@ int main (int, char**)
   Range empty;
   t.ok (refClosed.intersect (testA) == empty,                              "Range: refClosed.intersect(testA) == empty");
   t.ok (refClosed.intersect (testB) == Range (refClosed.start, testB.end), "Range: refClosed.intersect(testB) == Range(refClosed.start,testB.end)");
-  t.ok (refClosed.intersect (testC) == testC,                              "Range: refClosed.intersect(testB) == testC");
-  t.ok (refClosed.intersect (testD) == Range (testD.start, refClosed.end), "Range: refClosed.intersect(testB) == Range(testD.start,refClosed.end)");
+  t.ok (refClosed.intersect (testC) == testC,                              "Range: refClosed.intersect(testC) == testC");
+  t.ok (refClosed.intersect (testD) == Range (testD.start, refClosed.end), "Range: refClosed.intersect(testD) == Range(testD.start,refClosed.end)");
   t.ok (refClosed.intersect (testE) == empty,                              "Range: refClosed.intersect(testE) == empty");
   t.ok (refClosed.intersect (testF) == refClosed,                          "Range: refClosed.intersect(testF) == refClosed");
   t.ok (refClosed.intersect (testG) == refClosed,                          "Range: refClosed.intersect(testG) == refClosed");
@@ -210,6 +210,15 @@ int main (int, char**)
   t.ok (refOpen.subtract (testG) == openSubtractG, "Range: refOpen.subtract(testG) == {}");
   t.ok (refOpen.subtract (testH) == openSubtractH, "Range: refOpen.subtract(testH) == {Range(refOpen.start,testH.start}");
   t.ok (refOpen.subtract (testI) == openSubtractI, "Range: refOpen.subtract(testI) == {Range(refOpen.start,testI.start}");
+
+  // Adjacent ranges.
+  Range left  (Datetime ("2016-04-25T11:00:00"), Datetime ("2016-04-25T12:00:00"));
+  Range right (Datetime ("2016-04-25T12:00:00"), Datetime ("2016-04-25T13:00:00"));
+  t.notok (left.overlap (right), "Range: left (11am - 12pm) does not overlap with right (12pm - 1pm)");
+
+  auto intersection = left.intersect (right);
+  t.ok (intersection.start.toEpoch () == 0, "Range: adjacent ranges do not intersect");
+  t.ok (intersection.end.toEpoch ()   == 0, "Range: adjacent ranges do not intersect");
 
   return 0;
 }
