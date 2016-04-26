@@ -133,10 +133,16 @@ int CmdReportDay (
       int start_offset = (start_hour - first_hour) * 5 + start_block;
       int end_offset   = (end_hour - 1 - first_hour) * 5 + end_block;
 
-      // TODO Determine color of interval.
-      auto colorTrack = palette.next ();
+      // Determine color of interval.
+      Color colorTrack;
+      if (track.tags ().size ())
+        // TODO Instead of using the first tag, look at them all, and choose one
+        //      that has a color defined over any other.
+        colorTrack = tag_colors [*(track.tags ().begin ())];
+      else
+        colorTrack = palette.next ();
 
-      // TODO Properly format the tags in the space, if possible.
+      // Properly format the tags within the space.
       std::string label;
       for (auto& tag : track.tags ())
       {
