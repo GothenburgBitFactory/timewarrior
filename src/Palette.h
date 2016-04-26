@@ -36,9 +36,10 @@ class Palette
 {
 public:
   Palette ();
-  void initialize (const Rules&);
+  void add (Color);
   Color next ();
   int size () const;
+  void clear ();
 
 public:
   bool enabled {true};

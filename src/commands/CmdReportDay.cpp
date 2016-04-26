@@ -25,7 +25,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
-#include <Palette.h>
 #include <Composite.h>
 #include <Color.h>
 #include <Range.h>
@@ -54,10 +53,7 @@ int CmdReportDay (
   auto excluded = timeline.excluded (rules);
 
   // Create a color palette.
-  Palette palette;
-  palette.initialize (rules);
-  palette.enabled = rules.getBoolean ("color");
-
+  auto palette = createPalette (rules);
   Color colorExc   (palette.enabled ? rules.get ("theme.colors.exclusion") : "");
   Color colorLabel (palette.enabled ? rules.get ("theme.colors.label")     : "");
 

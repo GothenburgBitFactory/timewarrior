@@ -25,7 +25,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
-#include <Palette.h>
 #include <format.h>
 #include <timew.h>
 #include <algorithm>
@@ -189,7 +188,7 @@ int CmdDiagnostics (
   if (rules.getBoolean ("color"))
   {
     out << "                ";
-    Palette palette;
+    auto palette = createPalette (rules);
     for (int color = 0; color < palette.size (); ++color)
     {
       if (color && color % 16 == 0)

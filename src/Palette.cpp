@@ -46,18 +46,14 @@ Palette::Palette ()
     Color ("black on bright cyan"),
     Color ("black on bright yellow"),
   };
+
+  _current = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Palette::initialize (const Rules& rules)
+void Palette::add (Color c)
 {
-  auto themeColors = rules.all ("theme.palette.color");
-  if (themeColors.size ())
-  {
-    _colors.clear ();
-    for (auto& entry : themeColors)
-      _colors.push_back (Color (rules.get (entry)));
-  }
+  _colors.push_back (c);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -74,6 +70,13 @@ Color Palette::next ()
 int Palette::size () const
 {
   return static_cast <int> (_colors.size ());
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Palette::clear ()
+{
+  _colors.clear ();
+  _current = 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

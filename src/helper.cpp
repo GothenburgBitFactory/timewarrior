@@ -538,6 +538,22 @@ std::vector <Range> combineHolidaysAndExclusions (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+Palette createPalette (const Rules& rules)
+{
+  Palette p;
+  auto colors = rules.all ("theme.palette.color");
+  if (colors.size ())
+  {
+    p.clear ();
+    for (auto& c : colors)
+      p.add (Color (rules.get (c)));
+  }
+
+  p.enabled = rules.getBoolean ("color");
+  return p;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Extract the tags from a set of intervals, and using a rotating color palette,
 // map unique tags to color.
 std::map <std::string, Color> createTagColorMap (

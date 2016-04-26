@@ -58,6 +58,7 @@ std::vector <Range> addRanges (const Range&, const std::vector <Range>&, const s
 std::vector <Range> subtractRanges (const Range&, const std::vector <Range>&, const std::vector <Range>&);
 Range overallRangeFromIntervals (const std::vector <Interval>&);
 std::vector <Range> combineHolidaysAndExclusions (const Range&, const Rules&, const std::vector <Exclusion>&);
+Palette createPalette (const Rules&);
 std::map <std::string, Color> createTagColorMap (const Rules&, Palette&, const std::vector <Interval>&);
 int quantizeTo15Minutes (const int);
 
