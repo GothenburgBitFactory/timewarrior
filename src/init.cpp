@@ -174,31 +174,12 @@ void initializeDataAndRules (
   if (shinyNewDatabase)
     rules.set ("temp.shiny", 1);
 
-  // Provide the exclusions from configuration to the database. These are used
-  // to seed new Diatafile objects.
-  initializeDatabaseExclusions (database, rules);
-
   // Initialize the database (no data read), but files are enumerated.
   database.initialize (data._data);
 
   // Set date names like "monday" to represent the past, not the future.
   // TODO Make this configurable?
   Datetime::lookForwards = false;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// The exclusions are read from configuration as strings, and passed to the
-// database object as strings.
-void initializeDatabaseExclusions (Database& database, const Rules& rules)
-{
-  for (auto& name : rules.all ("exclusions."))
-  {
-    name = lowerCase (name);
-    if (name.substr (0, 16) == "exclusions.days.")
-      database.addExclusion ("exc day " + rules.get (name) + " " + name.substr (16));
-    else
-      database.addExclusion ("exc " + name.substr (11) + " " + rules.get (name));
-  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
