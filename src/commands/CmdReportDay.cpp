@@ -226,13 +226,10 @@ static void renderInterval (
       // whatever fits.
       if (! track.range.ended ())
       {
-        int space = 3;
-        if (width < 3)
-          space = width;
-
-        line2.add (std::string (space, '.'),
-                   width - space,
-                   colorTrack);
+/*
+        line2.add ("+", width - 1, colorTrack);
+*/
+        line2.add ("→", width - 1, colorTrack);
       }
     }
   }
