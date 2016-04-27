@@ -58,7 +58,6 @@ std::vector <std::string> Database::files () const
 
 ////////////////////////////////////////////////////////////////////////////////
 // Walk backwards through the files until an interval is found.
-// Note: Not an exclusion.
 std::string Database::lastLine ()
 {
   if (! _files.size ())
@@ -91,18 +90,6 @@ std::vector <std::string> Database::allLines ()
   }
 
   return all;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void Database::clearExclusions ()
-{
-  _exclusions.clear ();
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void Database::addExclusion (const std::string& exclusion)
-{
-  _exclusions.push_back (exclusion);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -165,9 +152,6 @@ std::string Database::dump () const
 {
   std::stringstream out;
   out << "Database\n";
-  for (auto& exclusion : _exclusions)
-    out << "  Exclusion: " << exclusion << '\n';
-
   for (auto& df : _files)
     out << df.dump ();
 
@@ -192,10 +176,9 @@ unsigned int Database::getDatafile (int year, int month)
     if (_files[i].name () == basename)
       return i;
 
-  // Create the Datafile. New files need the set of current exclusions.
+  // Create the Datafile.
   Datafile df;
   df.initialize (name);
-  df.setExclusions (_exclusions);
 
   // Insert Datafile into _files. The position is not important.
   _files.push_back (df);

@@ -44,8 +44,6 @@ public:
   std::string lastLine ();
   std::vector <std::string> allLines ();
 
-  void clearExclusions ();
-  void addExclusion (const std::string&);
   void addInterval (const Interval&);
   void deleteInterval (const Interval&);
   void modifyInterval (const Interval&, const Interval&);
@@ -59,9 +57,8 @@ private:
   void validateAddition (const Interval&) const;
 
 private:
-  std::string               _location   {"~/.timewarrior/data"};
-  std::vector <Datafile>    _files      {};
-  std::vector <std::string> _exclusions {};
+  std::string            _location   {"~/.timewarrior/data"};
+  std::vector <Datafile> _files      {};
 };
 
 #endif
