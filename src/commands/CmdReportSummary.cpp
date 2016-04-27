@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <commands.h>
+#include <timew.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -34,7 +35,35 @@ int CmdReportSummary (
   Rules& rules,
   Database& database)
 {
-  std::cout << "# CmdReportSummary\n";
+  auto filter = createFilterIntervalFromCLI (cli);
+
+  // If filter is empty, choose 'today'.
+  if (! filter.range.started ())
+    filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
+
+  // Load the data.
+  auto timeline = createTimelineFromData (database, filter);
+  auto tracked  = timeline.tracked (rules);
+  auto excluded = timeline.excluded (rules);
+
+  // Create a color palette.
+  auto palette = createPalette (rules);
+
+  // Map tags to colors.
+  auto tag_colors = createTagColorMap (rules, palette, tracked);
+
+  std::cout << '\n';
+  std::string indent = "  ";
+
+  // Each day is rendered separately.
+  for (Datetime day = filter.range.start; day < filter.range.end; day++)
+  {
+    for (auto& track : tracked)
+    {
+      // TODO Intersect track with day.
+    }
+  }
+
   return 0;
 }
 
