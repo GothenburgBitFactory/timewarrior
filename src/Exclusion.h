@@ -35,13 +35,10 @@
 class Exclusion
 {
 public:
-  Exclusion () = default;
-  void initialize (const std::string&);
+  Exclusion (const std::string&, const std::string&);
   std::vector <std::string> tokens () const;
   std::vector <Range> ranges (const Range&) const;
   bool additive () const;
-
-  std::string serialize () const;
   std::string dump () const;
 
 private:
