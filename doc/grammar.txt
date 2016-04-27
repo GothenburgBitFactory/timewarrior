@@ -86,6 +86,8 @@ supported hints are:
   :x          User defined
   :color      Force use of color on
   :nocolor    Force use of color off
+  :yes        Override confirmation
+  :ids        Show ephemeral IDs for manipulation
 
 It is not an error to specify extra hints, because they will be simply ignored.
 Unrecognized hints yiled warnings.
@@ -97,4 +99,11 @@ Unrecognized hints yiled warnings.
 
 - A command for a daily and weekly view of exclusions is needed. To verify that
   they are correctly defined. A text-based list should accompany it.
+
+- Use :ids to show the ephemeral IDs, then use 'merge' and 'split' commands to
+  combine intervals.  Then:
+
+  $ timew @1 modify ...
+  $ timew @1 @2 merge
+  $ timew @1 clear
 
