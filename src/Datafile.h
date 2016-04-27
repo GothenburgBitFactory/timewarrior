@@ -43,7 +43,6 @@ public:
   std::string lastLine ();
   std::vector <std::string> allLines ();
 
-  void setExclusions (const std::vector <std::string>&);
   void addInterval (const Interval&);
   void deleteInterval (const Interval&);
   void commit ();
@@ -54,12 +53,11 @@ private:
   void load_lines ();
 
 private:
-  File                      _file             {};
-  bool                      _dirty            {false};
-  std::vector <std::string> _lines            {};
-  bool                      _lines_loaded     {false};
-  std::vector <std::string> _exclusions       {};
-  Range                     _range            {};
+  File                      _file         {};
+  bool                      _dirty        {false};
+  std::vector <std::string> _lines        {};
+  bool                      _lines_loaded {false};
+  Range                     _range        {};
 };
 
 #endif

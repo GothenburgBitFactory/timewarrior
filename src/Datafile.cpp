@@ -84,20 +84,6 @@ std::vector <std::string> Datafile::allLines ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Datafile::setExclusions (const std::vector <std::string>& exclusions)
-{
-  // TODO Overwrite local copy
-  // TODO load current exclusion set
-  // TODO if local copy != exclusion set
-  // TODO   remove old exclusion set from _lines
-  // TODO   add local copy
-  // TODO   _dirty = true;
-
-  // TODO New exclusions should always be written.
-  _exclusions = exclusions;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 // Accepted intervals;   day1 <= interval.start < dayN
 void Datafile::addInterval (const Interval& interval)
 {
@@ -107,9 +93,6 @@ void Datafile::addInterval (const Interval& interval)
   {
     if (! _lines_loaded)
       load_lines ();
-
-    // TODO if _lines contains no exclusions
-    // TODO   add _exclusions
 
     // TODO if interval is not a duplicate
     // TODO   insert interval.serialize into _lines
@@ -173,7 +156,6 @@ std::string Datafile::dump () const
       << "  dirty:       " << (_dirty ? "true" : "false") << '\n'
       << "  lines:       " << _lines.size () << '\n'
       << "    loaded     " << (_lines_loaded ? "true" : "false") << '\n'
-      << "  exclusions:  " << _exclusions.size () << '\n'
       << "  range:       " << _range.start.toISO () << " - "
                            << _range.end.toISO () << '\n';
 
@@ -187,26 +169,10 @@ void Datafile::load_lines ()
   {
     _file.lock ();
 
-    // File::read calls read_lines.clear (), so this prevents the exclsions from
-    // being discarded.
+    // Load the data.
     std::vector <std::string> read_lines;
     _file.read (read_lines);
     _file.close ();
-
-    bool hasExclusions = false;
-    for (auto& line : read_lines)
-    {
-      if (line[0] == 'e')
-      {
-        hasExclusions = true;
-        break;
-      }
-    }
-
-    // Add the exclusions to new files.
-    if (! hasExclusions)
-      for (auto& e : _exclusions)
-        _lines.push_back (e);
 
     // Append the lines that were read.
     for (auto& line : read_lines)
