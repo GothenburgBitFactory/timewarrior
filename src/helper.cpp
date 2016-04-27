@@ -297,6 +297,7 @@ Interval createFilterIntervalFromCLI (const CLI& cli)
 // We really only need to eliminate A and F.
 //
 Timeline createTimelineFromData (
+  const Rules& rules,
   Database& database,
   const Interval& filter)
 {
@@ -306,22 +307,27 @@ Timeline createTimelineFromData (
   // Add filtered intervals.
   for (auto& line : database.allLines ())
   {
-    if (line[0] == 'i')
-    {
-      Interval i;
-      i.initialize (line);
+    Interval i;
+    i.initialize (line);
+    if (intervalMatchesFilterInterval (i, filter))
+      t.include (i);
+  }
 
-      if (intervalMatchesFilterInterval (i, filter))
-        t.include (i);
-    }
-    else if (line[0] == 'e')
-    {
-      // Exclusions are not filtered, so they all match.  This makes sure that
-      // the correct exclusions are lined up ahead of the intervals.
-      Exclusion e;
-      e.initialize (line);
-      t.exclude (e);
-    }
+  // Add exclusions from configuration.
+  for (auto& name : rules.all ("exclusions."))
+  {
+    name = lowerCase (name);
+/*
+    std::string line = "exc ";
+    if (name.substr (0, 16) == "exclusions.days.")
+      line += "day " + rules.get (name) + " " + name.substr (16);
+    else
+      line += name.substr (11) + " " + rules.get (name);
+
+    // TODO Convert Exclusion::initialize to parse the line directly out of the
+    //      rules.
+*/
+    t.exclude (Exclusion (name, rules.get (name)));
   }
 
   return t;

@@ -42,7 +42,7 @@ int CmdReportSummary (
     filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
 
   // Load the data.
-  auto timeline = createTimelineFromData (database, filter);
+  auto timeline = createTimelineFromData (rules, database, filter);
   auto tracked  = timeline.tracked (rules);
   auto excluded = timeline.excluded (rules);
 

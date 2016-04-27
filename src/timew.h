@@ -49,7 +49,7 @@ Color tagColor (const Rules&, const std::string&);
 std::string intervalSummarize (const Rules&, const Interval&);
 bool expandIntervalHint (const std::string&, std::string&, std::string&);
 Interval createFilterIntervalFromCLI (const CLI&);
-Timeline createTimelineFromData (Database&, const Interval&);
+Timeline createTimelineFromData (const Rules&, Database&, const Interval&);
 Interval getLatestInterval (Database&);
 bool intervalMatchesFilterInterval (const Interval&, const Interval&);
 std::string jsonFromIntervals (const std::vector <Interval>&);
