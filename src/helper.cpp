@@ -583,3 +583,34 @@ int quantizeTo15Minutes (const int minutes)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::vector <Interval> splitInterval (
+  const Interval& interval,
+  const std::vector <Range>& exclusions)
+{
+  std::vector <Interval> all;
+
+  // Start with a single range from the interval, from which to subtract.
+  std::vector <Range> intervalFragments {interval.range};
+  for (auto& exclusion : exclusions)
+  {
+    std::vector <Range> brokenFragments;
+    for (auto& fragment : intervalFragments)
+      for (auto& broken : fragment.subtract (exclusion))
+        brokenFragments.push_back (broken);
+
+    intervalFragments = brokenFragments;
+  }
+
+  // Return all the fragments as intervals.
+  for (auto& fragment : intervalFragments)
+  {
+    // Clone the interval, set the new range.
+    Interval clipped {interval};
+    clipped.range = fragment;
+    all.push_back (clipped);
+  }
+
+  return all;
+}
+
+////////////////////////////////////////////////////////////////////////////////

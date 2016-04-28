@@ -60,6 +60,7 @@ std::vector <Range> combineHolidaysAndExclusions (const Range&, const Rules&, co
 Palette createPalette (const Rules&);
 std::map <std::string, Color> createTagColorMap (const Rules&, Palette&, const std::vector <Interval>&);
 int quantizeTo15Minutes (const int);
+std::vector <Interval> splitInterval (const Interval&, const std::vector <Range>&);
 
 // utiŀ.cpp
 std::string osName ();
