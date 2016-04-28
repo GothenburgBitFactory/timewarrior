@@ -64,41 +64,47 @@ void Timeline::exclude (const Exclusion& exclusion)
 ////////////////////////////////////////////////////////////////////////////////
 std::vector <Interval> Timeline::tracked (Rules& rules) const
 {
-  // Create a range representing the whole timeline.
-  // If no range is defined, then assume the full range of all the inclusions.
-  Range overallRange {range};
-  if (! overallRange.started () &&
-      ! overallRange.ended ())
-    overallRange = overallRangeFromIntervals (_inclusions);
+  // Get the set of expanded exclusions that overlap the range defined by the
+  // timeline. If no range is defined, derive it from the set of all data.
+  auto exclusions = excluded (rules);
 
-  // Cobmine all the non-trackable time.
-  auto nonTrackable = combineHolidaysAndExclusions (overallRange, rules, _exclusions);
-
-  std::vector <Interval> combined;
+  std::vector <Interval> all;
   for (auto& interval : _inclusions)
   {
-    std::vector <Range> intervalFragments {interval.range};
-
-    for (auto& exclusion : nonTrackable)
+    // Closed intervals are returned as-is.
+    if (interval.range.ended ())
     {
-      std::vector <Range> brokenFragments;
-      for (auto& fragment : intervalFragments)
-        for (auto& broken : fragment.subtract (exclusion))
-          brokenFragments.push_back (broken);
-
-      intervalFragments = brokenFragments;
+      all.push_back (interval);
     }
 
-    for (auto& fragment : intervalFragments)
+    // Open intervals need to be split according to the exclusions.
+    else
     {
-      // Clone the interval, set the new range.
-      Interval clipped {interval};
-      clipped.range = fragment;
-      combined.push_back (clipped);
+
+      // Start with a single range from the interval, from which to subtract.
+      std::vector <Range> intervalFragments {interval.range};
+      for (auto& exclusion : exclusions)
+      {
+        std::vector <Range> brokenFragments;
+        for (auto& fragment : intervalFragments)
+          for (auto& broken : fragment.subtract (exclusion))
+            brokenFragments.push_back (broken);
+
+        intervalFragments = brokenFragments;
+      }
+
+      // Return all the fragments as intervals.
+      for (auto& fragment : intervalFragments)
+      {
+        // Clone the interval, set the new range.
+        Interval clipped {interval};
+        clipped.range = fragment;
+        all.push_back (clipped);
+      }
     }
   }
 
-  return combined;;
+  return all;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
