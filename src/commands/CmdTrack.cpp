@@ -36,8 +36,11 @@ int CmdTrack (
   Database& database)
 {
   auto filter = createFilterIntervalFromCLI (cli);
-  database.addInterval (filter);
+  auto timeline = createTimelineFromData (rules, database, filter);
+  for (auto& interval : splitInterval (filter, timeline.excluded (rules)))
+    database.addInterval (interval);
 
+    // TODO intervalSummarїze needs to operate on a vector of similar intervals.
   // User feedback.
   if (rules.getBoolean ("verbose"))
     std::cout << intervalSummarize (rules, filter);
