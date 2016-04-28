@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (71);
+  UnitTest t (76);
 
   // int quantizeTo15Minutes (const int);
   t.is (quantizeTo15Minutes (0),   0, "quantizeTo15Minutes 0 --> 0");
@@ -123,6 +123,16 @@ int main (int, char**)
   t.is (results[1].range.start.toISO (), "20160427T130000Z", "splitInterval --> results[1].range.start 20160427T130000Z");
   t.is (results[1].range.end.toISO (),   "20160427T130500Z", "splitInterval --> results[1].range.end   20160427T130500Z");
 
+  Interval i3;
+  i3.range = Range (Datetime ("20160427T160000Z"), Datetime (0));
+  i3.tag ("foo");
+  t.ok    (i3.range.started (), "i3 range started");
+  t.notok (i3.range.ended (),   "i3 range not ended");
+
+  results = splitInterval (i3, exclusions);
+  t.ok (results.size () == 2,                                "splitInterval --> 2 fragments");
+  t.is (results[0].range.start.toISO (), "20160427T160000Z", "splitInterval --> results[0].range.start 20160427T160000Z");
+  t.is (results[0].range.end.toISO (),   "20160427T173000Z", "splitInterval --> results[0].range.end   20160427T173000Z");
 
   return 0;
 }
