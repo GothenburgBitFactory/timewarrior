@@ -40,7 +40,7 @@ public:
   void include (const Interval&);
   void exclude (const Exclusion&);
   std::vector <Interval> tracked (Rules&) const;
-  std::vector <Interval> untracked (Rules&) const;
+  std::vector <Range> untracked (Rules&) const;
   std::vector <Range> excluded (Rules&) const;
   std::string dump () const;
 

@@ -25,21 +25,22 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <commands.h>
+#include <timew.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdGaps ()
+int CmdGaps (
+  const CLI& cli,
+  Rules& rules,
+  Database& database)
 {
-  std::cout << "[gaps: shows untracked gaps in the current day/week/month]\n";
-
-  // TODO If there are no exclusions defineѕ.
-  //   TODO Error
-
-  // TODO Load all data.
-  // TODO Apply filter.
-  // TODO Invert the union exclusions and incluѕions
-  // TODO For each interval
-  // TODO   Display
+  auto filter = createFilterIntervalFromCLI (cli);
+  auto timeline = createTimelineFromData (rules, database, filter);
+  for (auto& gap : timeline.untracked (rules))
+  {
+    std::cout << "# gap " << gap.dump () << "\n";
+  }
 
   return 0;
 }

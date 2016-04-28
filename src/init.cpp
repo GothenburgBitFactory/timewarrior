@@ -227,7 +227,7 @@ int dispatchCommand (
     else if (command == "diagnostics") status = CmdDiagnostics   (     rules, database, extensions);
     else if (command == "export")      status = CmdExport        (cli, rules, database            );
     else if (command == "extensions")  status = CmdExtensions    (     rules,           extensions);
-    else if (command == "gaps")        status = CmdGaps          (                                );
+    else if (command == "gaps")        status = CmdGaps          (cli, rules, database            );
     else if (command == "help")        status = CmdHelp          (cli                             );
     else if (command == "import")      status = CmdImport        (                                );
     else if (command == "report")      status = CmdReport        (cli, rules, database, extensions);
