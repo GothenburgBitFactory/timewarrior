@@ -35,7 +35,7 @@ int CmdTrack (
   Rules& rules,
   Database& database)
 {
-  auto filter = createFilterIntervalFromCLI (cli);
+  auto filter = getFilter (cli);
   auto timeline = createTimelineFromData (rules, database, filter);
   for (auto& interval : splitInterval (filter, timeline.excluded (rules)))
     database.addInterval (interval);

@@ -35,7 +35,7 @@ int CmdReportSummary (
   Rules& rules,
   Database& database)
 {
-  auto filter = createFilterIntervalFromCLI (cli);
+  auto filter = getFilter (cli);
 
   // If filter is empty, choose 'today'.
   if (! filter.range.started ())

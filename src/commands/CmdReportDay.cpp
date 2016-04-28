@@ -47,7 +47,7 @@ int CmdReportDay (
   Database& database)
 {
   // Create a filter, and if empty, choose 'today'.
-  auto filter = createFilterIntervalFromCLI (cli);
+  auto filter = getFilter (cli);
   if (! filter.range.started ())
     filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
 

@@ -124,7 +124,7 @@ bool expandIntervalHint (
 //   ["from"] <date> "for" <duration>
 //   <duration> ["before"|"after" <date>]
 //
-Interval createFilterIntervalFromCLI (const CLI& cli)
+Interval getFilter (const CLI& cli)
 {
   Interval filter;
   std::string start;

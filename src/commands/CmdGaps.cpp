@@ -35,7 +35,7 @@ int CmdGaps (
   Rules& rules,
   Database& database)
 {
-  auto filter = createFilterIntervalFromCLI (cli);
+  auto filter = getFilter (cli);
   auto timeline = createTimelineFromData (rules, database, filter);
   for (auto& gap : timeline.untracked (rules))
   {
