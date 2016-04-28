@@ -31,7 +31,6 @@
 #include <Duration.h>
 #include <sstream>
 #include <iomanip>
-#include <iostream> // TODO Remove.
 #include <map>
 #include <vector>
 
@@ -344,7 +343,8 @@ bool intervalMatchesFilterInterval (const Interval& interval, const Interval& fi
 
       ||
 
-      (interval.range.end > filter.range.start &&
+      ((interval.range.end.toEpoch () == 0       ||
+        interval.range.end > filter.range.start) &&
        interval.range.start < filter.range.end))
   {
     for (auto& tag : filter.tags ())
