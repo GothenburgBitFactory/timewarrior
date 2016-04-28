@@ -326,9 +326,13 @@ Interval getLatestInterval (Database& database)
   Interval i;
   auto lastLine = database.lastLine ();
   if (lastLine != "")
+  {
     i.initialize (lastLine);
-
-  // TODO Mask i against timeline. It's easy to say that.
+    if (! i.range.ended ())
+    {
+      // TODO An open interval needs to be split against all exclusions.
+    }
+  }
 
   return i;
 }
