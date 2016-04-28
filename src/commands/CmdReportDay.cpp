@@ -37,7 +37,7 @@
 
 static void renderAxis (const std::string&, int, int, Color&);
 static void renderExclusionBlocks (Composite&, Composite&, const Datetime&, int, int, const std::vector <Range>&, Color&);
-static void renderInterval (Composite&, Composite&, const Interval&, int, Palette&, std::map <std::string, Color>&);
+static void renderInterval (Composite&, Composite&, const Datetime&, const Interval&, int, Palette&, std::map <std::string, Color>&);
 static void renderSummary (const std::string&);
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -99,7 +99,7 @@ int CmdReportDay (
     renderExclusionBlocks (line1, line2, day, first_hour, last_hour, excluded, colorExc);
 
     for (auto& track : tracked)
-      renderInterval (line1, line2, track, first_hour, palette, tag_colors);
+      renderInterval (line1, line2, day, track, first_hour, palette, tag_colors);
 
     std::cout << indent << line1.str () << '\n'
               << indent << line2.str () << '\n'
@@ -164,16 +164,24 @@ static void renderExclusionBlocks (
 static void renderInterval (
   Composite& line1,
   Composite& line2,
+  const Datetime& day,
   const Interval& track,
   int first_hour,
   Palette& palette,
   std::map <std::string, Color>& tag_colors)
 {
+  // Make sure the track only represents one day.
+  Datetime eod {day};
+  eod++;
+  Range day_range (day, eod);
+  Interval clipped {track};
+  clipped.range = clipped.range.intersect (day_range);
+
   // TODO track may have started days ago.
-  auto start_hour = track.range.start.hour ();
-  auto start_min  = track.range.start.minute ();
-  auto end_hour   = track.range.end.hour ();
-  auto end_min    = track.range.end.minute ();
+  auto start_hour = clipped.range.start.hour ();
+  auto start_min  = clipped.range.start.minute ();
+  auto end_hour   = clipped.range.end.hour ();
+  auto end_min    = clipped.range.end.minute ();
 
   auto start_block = quantizeTo15Minutes (start_min) / 15;
   auto end_block   = quantizeTo15Minutes (end_min == 0 ? 60 : end_min) / 15;
@@ -224,12 +232,7 @@ static void renderInterval (
       // An open interval gets a "..." in the bottom right corner, or
       // whatever fits.
       if (! track.range.ended ())
-      {
-/*
         line2.add ("+", width - 1, colorTrack);
-*/
-        line2.add ("→", width - 1, colorTrack);
-      }
     }
   }
 }
