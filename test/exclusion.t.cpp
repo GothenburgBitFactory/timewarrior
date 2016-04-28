@@ -50,18 +50,17 @@ int main (int, char**)
     //                         31
     Range r (Datetime ("2015-12-15"), Datetime ("2016-01-15"));
 
-    // exc monday <8:00:00 12:00:00-12:45:00 >17:30:00
-    Exclusion e;
-    e.initialize ("exc monday <8:00:00 12:00:00-12:45:00 >17:30:00");
-    auto tokens = e.tokens ();
-    t.ok (tokens.size () == 5,              "Exclusion 'exc monday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
-    t.is (tokens[0], "exc",                 "Exclusion 'exc monday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
-    t.is (tokens[1], "monday",              "Exclusion 'exc monday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'monday'");
-    t.is (tokens[2], "<8:00:00",            "Exclusion 'exc monday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
-    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exc monday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
-    t.is (tokens[4], ">17:30:00",           "Exclusion 'exc monday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
+    // exclusions.monday <8:00:00 12:00:00-12:45:00 >17:30:00
+    Exclusion e1 ("exclusions.monday", "<8:00:00 12:00:00-12:45:00 >17:30:00");
+    auto tokens = e1.tokens ();
+    t.ok (tokens.size () == 5,              "Exclusion 'exclusions.monday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
+    t.is (tokens[0], "exclusions",          "Exclusion 'eclusions. monday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
+    t.is (tokens[1], "monday",              "Exclusion 'exclusions.monday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'monday'");
+    t.is (tokens[2], "<8:00:00",            "Exclusion 'exclusions.monday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
+    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exclusions.monday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
+    t.is (tokens[4], ">17:30:00",           "Exclusion 'exclusions.monday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
 
-    auto ranges = e.ranges (r);
+    auto ranges = e1.ranges (r);
     t.ok (ranges.size () == 12,                                         "Exclusion ranges  --> [12]");
     t.is (ranges[0].start.toISOLocalExtended (), "2015-12-21T00:00:00", "Exclusion range[0].start() --> 2015-12-21T00:00:00");
     t.is (ranges[0].end.toISOLocalExtended (),   "2015-12-21T08:00:00", "Exclusion range[0].end()   --> 2015-12-21T08:00:00");
@@ -91,16 +90,16 @@ int main (int, char**)
     t.is (ranges[11].start.toISOLocalExtended (), "2016-01-11T17:30:00", "Exclusion range[11].start() --> 2016-01-11T17:30:00");
     t.is (ranges[11].end.toISOLocalExtended (),   "2016-01-12T00:00:00", "Exclusion range[11].end()   --> 2016-01-12T00:00:00");
 
-    e.initialize ("exc tuesday <8:00:00 12:00:00-12:45:00 >17:30:00");
-    tokens = e.tokens ();
-    t.ok (tokens.size () == 5,              "Exclusion 'exc tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
-    t.is (tokens[0], "exc",                 "Exclusion 'exc tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
-    t.is (tokens[1], "tuesday",             "Exclusion 'exc tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'tuesday'");
-    t.is (tokens[2], "<8:00:00",            "Exclusion 'exc tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
-    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exc tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
-    t.is (tokens[4], ">17:30:00",           "Exclusion 'exc tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
+    Exclusion e2 ("exclusions.tuesday", "<8:00:00 12:00:00-12:45:00 >17:30:00");
+    tokens = e2.tokens ();
+    t.ok (tokens.size () == 5,              "Exclusion 'exclusions.tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
+    t.is (tokens[0], "exclusions",          "Exclusion 'exclusions.tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
+    t.is (tokens[1], "tuesday",             "Exclusion 'exclusions.tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'tuesday'");
+    t.is (tokens[2], "<8:00:00",            "Exclusion 'exclusions.tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
+    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exclusions.tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
+    t.is (tokens[4], ">17:30:00",           "Exclusion 'exclusions.tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
 
-    ranges = e.ranges (r);
+    ranges = e2.ranges (r);
     t.ok (ranges.size () == 15,                                         "Exclusion ranges  --> [15]");
     t.is (ranges[0].start.toISOLocalExtended (), "2015-12-15T00:00:00", "Exclusion range[0].start() --> 2015-12-15T00:00:00");
     t.is (ranges[0].end.toISOLocalExtended (),   "2015-12-15T08:00:00", "Exclusion range[0].end()   --> 2015-12-15T08:00:00");
@@ -137,16 +136,16 @@ int main (int, char**)
     t.is (ranges[14].start.toISOLocalExtended (), "2016-01-12T17:30:00", "Exclusion range[14].start() --> 2016-01-12T17:30:00");
     t.is (ranges[14].end.toISOLocalExtended (),   "2016-01-13T00:00:00", "Exclusion range[14].end()   --> 2016-01-13T00:00:00");
 
-    e.initialize ("exc wednesday <8:00:00 12:00:00-12:45:00 >17:30:00");
-    tokens = e.tokens ();
-    t.ok (tokens.size () == 5,              "Exclusion 'exc wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
-    t.is (tokens[0], "exc",                 "Exclusion 'exc wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
-    t.is (tokens[1], "wednesday",           "Exclusion 'exc wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'wednesday'");
-    t.is (tokens[2], "<8:00:00",            "Exclusion 'exc wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
-    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exc wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
-    t.is (tokens[4], ">17:30:00",           "Exclusion 'exc wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
+    Exclusion e3 ("exclusions.wednesday", "<8:00:00 12:00:00-12:45:00 >17:30:00");
+    tokens = e3.tokens ();
+    t.ok (tokens.size () == 5,              "Exclusion 'exclusions.wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
+    t.is (tokens[0], "exclusions",          "Exclusion 'exclusions.wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
+    t.is (tokens[1], "wednesday",           "Exclusion 'exclusions.wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'wednesday'");
+    t.is (tokens[2], "<8:00:00",            "Exclusion 'exclusions.wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
+    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exclusions.wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
+    t.is (tokens[4], ">17:30:00",           "Exclusion 'exclusions.wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
 
-    ranges = e.ranges (r);
+    ranges = e3.ranges (r);
     t.ok (ranges.size () == 15,                                         "Exclusion ranges  --> [15]");
     t.is (ranges[0].start.toISOLocalExtended (), "2015-12-16T00:00:00", "Exclusion range[0].start() --> 2015-12-16T00:00:00");
     t.is (ranges[0].end.toISOLocalExtended (),   "2015-12-16T08:00:00", "Exclusion range[0].end()   --> 2015-12-16T08:00:00");
@@ -183,16 +182,16 @@ int main (int, char**)
     t.is (ranges[14].start.toISOLocalExtended (), "2016-01-13T17:30:00", "Exclusion range[14].start() --> 2016-01-13T17:30:00");
     t.is (ranges[14].end.toISOLocalExtended (),   "2016-01-14T00:00:00", "Exclusion range[14].end()   --> 2016-01-14T00:00:00");
 
-    e.initialize ("exc thursday <8:00:00 12:00:00-12:45:00 >17:30:00");
-    tokens = e.tokens ();
-    t.ok (tokens.size () == 5,              "Exclusion 'exc thursday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
-    t.is (tokens[0], "exc",                 "Exclusion 'exc thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
-    t.is (tokens[1], "thursday",            "Exclusion 'exc thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'thursday'");
-    t.is (tokens[2], "<8:00:00",            "Exclusion 'exc thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
-    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exc thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
-    t.is (tokens[4], ">17:30:00",           "Exclusion 'exc thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
+    Exclusion e4 ("exclusions.thursday", "<8:00:00 12:00:00-12:45:00 >17:30:00");
+    tokens = e4.tokens ();
+    t.ok (tokens.size () == 5,              "Exclusion 'exclusions.thursday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
+    t.is (tokens[0], "exclusions",          "Exclusion 'exclusions.thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
+    t.is (tokens[1], "thursday",            "Exclusion 'exclusions.thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'thursday'");
+    t.is (tokens[2], "<8:00:00",            "Exclusion 'exclusions.thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
+    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exclusions.thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
+    t.is (tokens[4], ">17:30:00",           "Exclusion 'exclusions.thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
 
-    ranges = e.ranges (r);
+    ranges = e4.ranges (r);
     t.ok (ranges.size () == 15,                                         "Exclusion ranges  --> [15]");
     t.is (ranges[0].start.toISOLocalExtended (), "2015-12-17T00:00:00", "Exclusion range[0].start() --> 2015-12-17T00:00:00");
     t.is (ranges[0].end.toISOLocalExtended (),   "2015-12-17T08:00:00", "Exclusion range[0].end()   --> 2015-12-17T08:00:00");
@@ -229,16 +228,16 @@ int main (int, char**)
     t.is (ranges[14].start.toISOLocalExtended (), "2016-01-14T17:30:00", "Exclusion range[14].start() --> 2016-01-14T17:30:00");
     t.is (ranges[14].end.toISOLocalExtended (),   "2016-01-15T00:00:00", "Exclusion range[14].end()   --> 2016-01-15T00:00:00");
 
-    e.initialize ("exc friday <8:00:00 12:00:00-12:45:00 >17:30:00");
-    tokens = e.tokens ();
-    t.ok (tokens.size () == 5,              "Exclusion 'exc friday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
-    t.is (tokens[0], "exc",                 "Exclusion 'exc friday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
-    t.is (tokens[1], "friday",              "Exclusion 'exc friday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'friday'");
-    t.is (tokens[2], "<8:00:00",            "Exclusion 'exc friday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
-    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exc friday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
-    t.is (tokens[4], ">17:30:00",           "Exclusion 'exc friday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
+    Exclusion e5 ("exclusions.friday", "<8:00:00 12:00:00-12:45:00 >17:30:00");
+    tokens = e5.tokens ();
+    t.ok (tokens.size () == 5,              "Exclusion 'exclusions.friday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
+    t.is (tokens[0], "exclusions",          "Exclusion 'exclusions.friday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
+    t.is (tokens[1], "friday",              "Exclusion 'exclusions.friday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'friday'");
+    t.is (tokens[2], "<8:00:00",            "Exclusion 'exclusions.friday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
+    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exclusions.friday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
+    t.is (tokens[4], ">17:30:00",           "Exclusion 'exclusions.friday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
 
-    ranges = e.ranges (r);
+    ranges = e5.ranges (r);
     t.ok (ranges.size () == 12,                                            "Exclusion ranges  --> [12]");
     t.is (ranges[0].start.toISOLocalExtended (), "2015-12-18T00:00:00", "Exclusion range[0].start() --> 2015-12-18T00:00:00");
     t.is (ranges[0].end.toISOLocalExtended (),   "2015-12-18T08:00:00", "Exclusion range[0].end()   --> 2015-12-18T08:00:00");
@@ -268,16 +267,16 @@ int main (int, char**)
     t.is (ranges[11].start.toISOLocalExtended (), "2016-01-08T17:30:00", "Exclusion range[11].start() --> 2016-01-08T17:30:00");
     t.is (ranges[11].end.toISOLocalExtended (),   "2016-01-09T00:00:00", "Exclusion range[11].end()   --> 2016-01-09T00:00:00");
 
-    e.initialize ("exc saturday <8:00:00 12:00:00-12:45:00 >17:30:00");
-    tokens = e.tokens ();
-    t.ok (tokens.size () == 5,              "Exclusion 'exc saturday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
-    t.is (tokens[0], "exc",                 "Exclusion 'exc saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
-    t.is (tokens[1], "saturday",            "Exclusion 'exc saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'saturday'");
-    t.is (tokens[2], "<8:00:00",            "Exclusion 'exc saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
-    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exc saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
-    t.is (tokens[4], ">17:30:00",           "Exclusion 'exc saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
+    Exclusion e6 ("exclusions.saturday", "<8:00:00 12:00:00-12:45:00 >17:30:00");
+    tokens = e6.tokens ();
+    t.ok (tokens.size () == 5,              "Exclusion 'exclusions.saturday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
+    t.is (tokens[0], "exclusions",          "Exclusion 'exclusions.saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
+    t.is (tokens[1], "saturday",            "Exclusion 'exclusions.saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'saturday'");
+    t.is (tokens[2], "<8:00:00",            "Exclusion 'exclusions.saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
+    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exclusions.saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
+    t.is (tokens[4], ">17:30:00",           "Exclusion 'exclusions.saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
 
-    ranges = e.ranges (r);
+    ranges = e6.ranges (r);
     t.ok (ranges.size () == 12,                                            "Exclusion ranges  --> [12]");
     t.is (ranges[0].start.toISOLocalExtended (), "2015-12-19T00:00:00", "Exclusion range[0].start() --> 2015-12-19T00:00:00");
     t.is (ranges[0].end.toISOLocalExtended (),   "2015-12-19T08:00:00", "Exclusion range[0].end()   --> 2015-12-19T08:00:00");
@@ -307,16 +306,16 @@ int main (int, char**)
     t.is (ranges[11].start.toISOLocalExtended (), "2016-01-09T17:30:00", "Exclusion range[11].start() --> 2016-01-09T17:30:00");
     t.is (ranges[11].end.toISOLocalExtended (),   "2016-01-10T00:00:00", "Exclusion range[11].end()   --> 2016-01-10T00:00:00");
 
-    e.initialize ("exc sunday <8:00:00 12:00:00-12:45:00 >17:30:00");
-    tokens = e.tokens ();
-    t.ok (tokens.size () == 5,              "Exclusion 'exc sunday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
-    t.is (tokens[0], "exc",                 "Exclusion 'exc sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
-    t.is (tokens[1], "sunday",              "Exclusion 'exc sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'sunday'");
-    t.is (tokens[2], "<8:00:00",            "Exclusion 'exc sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
-    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exc sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
-    t.is (tokens[4], ">17:30:00",           "Exclusion 'exc sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
+    Exclusion e7 ("exclusions.sunday", "<8:00:00 12:00:00-12:45:00 >17:30:00");
+    tokens = e7.tokens ();
+    t.ok (tokens.size () == 5,              "Exclusion 'exclusions.sunday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
+    t.is (tokens[0], "exclusions",          "Exclusion 'exclusions.sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
+    t.is (tokens[1], "sunday",              "Exclusion 'exclusions.sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'sunday'");
+    t.is (tokens[2], "<8:00:00",            "Exclusion 'exclusions.sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
+    t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exclusions.sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
+    t.is (tokens[4], ">17:30:00",           "Exclusion 'exclusions.sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'");
 
-    ranges = e.ranges (r);
+    ranges = e7.ranges (r);
     t.ok (ranges.size () == 12,                                         "Exclusion ranges  --> [12]");
     t.is (ranges[0].start.toISOLocalExtended (), "2015-12-20T00:00:00", "Exclusion range[0].start() --> 2015-12-20T00:00:00");
     t.is (ranges[0].end.toISOLocalExtended (),   "2015-12-20T08:00:00", "Exclusion range[0].end()   --> 2015-12-20T08:00:00");
@@ -346,35 +345,35 @@ int main (int, char**)
     t.is (ranges[11].start.toISOLocalExtended (), "2016-01-10T17:30:00", "Exclusion range[11].start() --> 2016-01-10T17:30:00");
     t.is (ranges[11].end.toISOLocalExtended (),   "2016-01-11T00:00:00", "Exclusion range[11].end()   --> 2016-01-11T00:00:00");
 
-    // exc day on 2016-01-01
-    e.initialize ("exc day on 2016-01-01");
-    tokens = e.tokens ();
-    t.ok (tokens.size () == 4,              "Exclusion 'exc day on 2016-01-01' --> 4");
-    t.is (tokens[0], "exc",                 "Exclusion 'exc day on 2016-01-01' [0] --> 'exc'");
-    t.is (tokens[1], "day",                 "Exclusion 'exc day on 2016-01-01' [1] --> 'day'");
-    t.is (tokens[2], "on",                  "Exclusion 'exc day on 2016-01-01' [2] --> 'on'");
-    t.is (tokens[3], "2016-01-01",          "Exclusion 'exc day on 2016-01-01' [3] --> '2016-01-01'");
+    // exclusions.days.2016-01-01 on
+    Exclusion e8 ("exclusions.days.2016_01_01", "on");
+    tokens = e8.tokens ();
+    t.ok (tokens.size () == 4,              "Exclusion 'exclusions.days on 2016_01_01' --> 4");
+    t.is (tokens[0], "exclusions",          "Exclusion 'exclusions.days on 2016_01_01' [0] --> 'exclusions'");
+    t.is (tokens[1], "days",                "Exclusion 'exclusions.days on 2016_01_01' [1] --> 'days'");
+    t.is (tokens[2], "2016_01_01",          "Exclusion 'exclusions.days on 2016_01_01' [2] --> '2016_01_01'");
+    t.is (tokens[3], "on",                  "Exclusion 'exclusions.days on 2016_01_01' [3] --> 'on'");
 
-    ranges = e.ranges (r);
+    ranges = e8.ranges (r);
     t.ok (ranges.size () == 1,                              "Exclusion ranges  --> [1]");
     t.is (ranges[0].start.toString ("Y-M-D"), "2016-01-01", "Exclusion range[0].start() --> 2016-01-01");
     t.is (ranges[0].end.toString ("Y-M-D"),   "2016-01-02", "Exclusion range[0].end() --> 2016-01-02");
-    t.ok (e.additive (),                                    "Exclusion 'day on ...' --> additive");
+    t.ok (e8.additive (),                                   "Exclusion 'day on ...' --> additive");
 
-    // exc day off 2016-01-01
-    e.initialize ("exc day off 2016-01-01");
-    tokens = e.tokens ();
-    t.ok (tokens.size () == 4,              "Exclusion 'exc day off 2016-01-01' --> 4");
-    t.is (tokens[0], "exc",                 "Exclusion 'exc day off 2016-01-01' [0] --> 'exc'");
-    t.is (tokens[1], "day",                 "Exclusion 'exc day off 2016-01-01' [1] --> 'day'");
-    t.is (tokens[2], "off",                 "Exclusion 'exc day off 2016-01-01' [2] --> 'off'");
-    t.is (tokens[3], "2016-01-01",          "Exclusion 'exc day off 2016-01-01' [3] --> '2016-01-01'");
+    // exclusions.days off 2016-01-01
+    Exclusion e9 ("exclusions.days.2016_01_01", "off");
+    tokens = e9.tokens ();
+    t.ok (tokens.size () == 4,              "Exclusion 'exclusions.days off 2016_01_01' --> 4");
+    t.is (tokens[0], "exclusions",          "Exclusion 'exclusions.days off 2016_01_01' [0] --> 'exclusions'");
+    t.is (tokens[1], "days",                "Exclusion 'exclusions.days off 2016_01_01' [1] --> 'days'");
+    t.is (tokens[2], "2016_01_01",          "Exclusion 'exclusions.days off 2016_01_01' [2] --> '2016_01_01'");
+    t.is (tokens[3], "off",                 "Exclusion 'exclusions.days off 2016_01_01' [3] --> 'off'");
 
-    ranges = e.ranges (r);
+    ranges = e9.ranges (r);
     t.ok (ranges.size () == 1,                              "Exclusion ranges  --> [1]");
     t.is (ranges[0].start.toString ("Y-M-D"), "2016-01-01", "Exclusion range[0].start() --> 2016-01-01");
     t.is (ranges[0].end.toString ("Y-M-D"),   "2016-01-02", "Exclusion range[0].end() --> 2016-01-02");
-    t.notok (e.additive (),                                 "Exclusion 'day off ...' --> !additive");
+    t.notok (e9.additive (),                                "Exclusion 'day off ...' --> !additive");
   }
 
   catch (const std::string& e)
