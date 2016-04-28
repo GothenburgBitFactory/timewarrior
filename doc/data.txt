@@ -9,7 +9,7 @@ provided by the user representing ongoing work.
 An exclusion is also a block of time but represents untrackable time, and acts
 as a mask for the inclusions. Here is a visual example:
 
-  Inclusion:           [-----------------------------------) tag1
+  Inclusion:           [---------------     ---------------) tag1
   Exclusion:                           [---) lunch
   Exclusion                                                    [---) dinner
 
@@ -29,16 +29,10 @@ example, if these commands were run at 8am and 5pm respectively:
   [at 8am] $ timew start tag1
   [at 5pm] $ timew stop
 
-It can be seen that some combination of all the incluѕions and exclusions will
-yield a record of tracked time.
-
 
 Exclusions
 ----------
-Exclusions are stored as configuration. Whenever an exclusion changes, the set
-of all exclusions are written to the data file. This is because all subsequent
-inclusions are to be resolved against the most recent set of exclusions. So if
-you change from a 9-hour day to an 8-hour day, the tracking remains correct.
+Exclusions are stored only as configuration.
 
 
 Inclusions
@@ -47,34 +41,24 @@ Inclusions are captured from the command line in many different ways, but all
 results in an incluѕion record being written to the data file.
 
 If there is an open-ended inclusion at the time an exclusion is changed, then
-the open-ended inclusion is closed, the exclusions written, and a new open-ended
-inclusion is added. Starting a new inclusion closes existing inclusions.
+the open-ended inclusion is closed, and a new open-ended inclusion is added.
+Starting a new inclusion closes existing inclusions.
 
 
 Data Files
 ==========
-The data file is a text file, which grows in length. It begins with a set of
-exclusions, followed by a set of inclusion records that utilize the prior set of
-exclusions.
+The data file is a text file, which grows in length. It contains a set of
+inclusion records.
 
 An example file looks like this:
-
-  exc monday    <8:00 12:00-12:45 >17:30
-  exc tuesday   <8:00 12:00-12:45 >18:30
-  exc wednesday <8:00 12:00-13:30 >17:30
-  exc thursday  <8:00 12:00-12:45 >17:30
-  exc friday    <8:00 12:00-12:45 >17:30
-  exc day on  2016-01-01
-  exc day off 2016-01-02
 
   inc 20160228T080000Z - 20160228T120000Z # Upgrade Planning
   inc 20160228T130000Z                    # Upgrade Presentation "ABCD Inc"
 
-Blank lines are ignored. Here we see a set of exclusions that define a work week
-and two inclusions, the first of which represents a four hour block of time with
-two tags 'Upgrade' and 'Planning'. The second inclusion is open ended, having
-only a start time (1pm UTC), but three tags 'Upgrade', 'Presentation' and 'ABCD
-Inc'. The third tag is a quoted string because of the embedded space.
+Blank lines are ignored. The first inclusion represents a four hour block of
+time with two tags 'Upgrade' and 'Planning'. The second inclusion is open ended,
+having only a start time (1pm UTC), but three tags 'Upgrade', 'Presentation'
+and 'ABCD Inc'. The third tag is a quoted string because of the embedded space.
 
 An open-ended inclusion like this means that the tracking continues, but the
 exclusions prevent an excess time buildup of the 62½ hours that comprise the
@@ -107,8 +91,8 @@ Will be broken into separate inclusions, each in a separate file:
   2016-03.data: inc 20160301T000000Z - 20160331T000000Z # tag1
   2016-04.data: inc 20160401T000000Z - 20160415T000000Z # tag1
 
-If the database is not empty, then checks for overlapping tags will likely
-prevent the above records being written.
+If the database is not empty, then checks for overlapping tags may prevent the
+above records being written.
 
 
 Undo Data

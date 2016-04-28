@@ -135,8 +135,6 @@ DOM Access
 Timewarrior will support a DOM, allowing rules and extensions to access internal
 data.
 
-[TBD]
-
 
 --- Raw Notes ---
 
