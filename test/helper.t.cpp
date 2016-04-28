@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (61);
+  UnitTest t (71);
 
   // int quantizeTo15Minutes (const int);
   t.is (quantizeTo15Minutes (0),   0, "quantizeTo15Minutes 0 --> 0");
@@ -95,6 +95,34 @@ int main (int, char**)
   t.is (quantizeTo15Minutes (58), 60, "quantizeTo15Minutes 58 --> 60");
   t.is (quantizeTo15Minutes (59), 60, "quantizeTo15Minutes 59 --> 60");
   t.is (quantizeTo15Minutes (60), 60, "quantizeTo15Minutes 60 --> 60");
+
+  // std::vector <Interval> splitInterval (const Interval&, std::vector <Range>&);
+  Interval i1;
+  i1.range = Range (Datetime ("20160427T000000Z"), Datetime ("20160428T000000Z"));
+  i1.tag ("foo");
+
+  std::vector <Range> exclusions = {Range (Datetime ("20160427T000000Z"), Datetime ("20160427T080000Z")),
+                                    Range (Datetime ("20160427T120000Z"), Datetime ("20160427T130000Z")),
+                                    Range (Datetime ("20160427T173000Z"), Datetime ("20160428T000000Z"))};
+
+  auto results = splitInterval (i1, exclusions);
+  t.ok (results.size () == 2,                                "splitInterval --> 2 fragments");
+  t.is (results[0].range.start.toISO (), "20160427T080000Z", "splitInterval --> results[0].range.start 20160427T080000Z");
+  t.is (results[0].range.end.toISO (),   "20160427T120000Z", "splitInterval --> results[0].range.end   20160427T120000Z");
+  t.is (results[1].range.start.toISO (), "20160427T130000Z", "splitInterval --> results[1].range.start 20160427T130000Z");
+  t.is (results[1].range.end.toISO (),   "20160427T173000Z", "splitInterval --> results[1].range.end   20160427T173000Z");
+
+  Interval i2;
+  i2.range = Range (Datetime ("20160427T115500Z"), Datetime ("20160427T130500Z"));
+  i2.tag ("foo");
+
+  results = splitInterval (i2, exclusions);
+  t.ok (results.size () == 2,                                "splitInterval --> 2 fragments");
+  t.is (results[0].range.start.toISO (), "20160427T115500Z", "splitInterval --> results[0].range.start 20160427T115500Z");
+  t.is (results[0].range.end.toISO (),   "20160427T120000Z", "splitInterval --> results[0].range.end   20160427T120000Z");
+  t.is (results[1].range.start.toISO (), "20160427T130000Z", "splitInterval --> results[1].range.start 20160427T130000Z");
+  t.is (results[1].range.end.toISO (),   "20160427T130500Z", "splitInterval --> results[1].range.end   20160427T130500Z");
+
 
   return 0;
 }
