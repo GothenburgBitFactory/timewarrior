@@ -111,12 +111,16 @@ std::vector <Interval> Timeline::tracked (Rules& rules) const
 // Untracked time is that which is not excluded, and not filled. Gaps.
 std::vector <Interval> Timeline::untracked (Rules& rules) const
 {
-  std::vector <Interval> combined;
+  std::vector <Interval> gaps;
 
-  // TODO Combine _inclusions and _exclusions to yield a set of collapsed
-  //      unracked intervals.
+  // Get the set of expanded exclusions that overlap the range defined by the
+  // timeline. If no range is defined, derive it from the set of all data.
+  auto exclusions = excluded (rules);
 
-  return combined;
+  // TODO subtract all exclusions
+  // TODO subtract all inclusions
+
+  return gaps;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
