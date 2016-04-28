@@ -48,7 +48,16 @@ int CmdStop (
     Interval modified {latest};
     modified.range.end = Datetime ();
     database.modifyInterval (latest, modified);
+/*
+    // TODO There is no 1:N modifyInterval.
+    datebase.deleteInterval (latest);
 
+    // TODO Create and populate a Timeline.
+    for (auto& fragment : splitInterval (modified, ?))
+      database.addInterval (fragment);
+*/
+
+    // TODO intervalSummarїze needs to operate on a vector of similar intervals.
     // User feedback.
     if (rules.getBoolean ("verbose"))
       std::cout << intervalSummarize (rules, modified);
