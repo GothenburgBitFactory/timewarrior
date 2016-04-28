@@ -31,6 +31,7 @@
 #include <Duration.h>
 #include <sstream>
 #include <iomanip>
+#include <iostream> // TODO Remove.
 #include <map>
 #include <vector>
 
@@ -315,20 +316,7 @@ Timeline createTimelineFromData (
 
   // Add exclusions from configuration.
   for (auto& name : rules.all ("exclusions."))
-  {
-    name = lowerCase (name);
-/*
-    std::string line = "exc ";
-    if (name.substr (0, 16) == "exclusions.days.")
-      line += "day " + rules.get (name) + " " + name.substr (16);
-    else
-      line += name.substr (11) + " " + rules.get (name);
-
-    // TODO Convert Exclusion::initialize to parse the line directly out of the
-    //      rules.
-*/
-    t.exclude (Exclusion (name, rules.get (name)));
-  }
+    t.exclude (Exclusion (lowerCase (name), rules.get (name)));
 
   return t;
 }
