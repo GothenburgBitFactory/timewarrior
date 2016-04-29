@@ -35,10 +35,10 @@
 #include <algorithm>
 #include <iostream>
 
-static void renderAxis (const std::string&, int, int, Color&);
 static void renderExclusionBlocks (Composite&, Composite&, const Datetime&, int, int, const std::vector <Range>&, Color&);
 static void renderInterval (Composite&, Composite&, const Datetime&, const Interval&, int, Palette&, std::map <std::string, Color>&);
 static void renderSummary (const std::string&);
+static void renderAxis            (const Rules&, Palette&, const std::string&, int, int);
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdReportDay (
@@ -88,7 +88,8 @@ int CmdReportDay (
   // Render the axis.
   std::cout << '\n';
   std::string indent = "  ";
-  renderAxis (indent, first_hour, last_hour, colorLabel);
+  if (rules.get ("report.day.style") != "compact")
+    renderAxis (rules, palette, indent, first_hour, last_hour);
 
   // Each day is rendered separately.
   for (Datetime day = filter.range.start; day < filter.range.end; day++)
@@ -114,14 +115,18 @@ int CmdReportDay (
 
 ////////////////////////////////////////////////////////////////////////////////
 static void renderAxis (
+  const Rules& rules,
+  Palette& palette,
   const std::string& indent,
   int first_hour,
-  int last_hour,
-  Color& colorLabel)
+  int last_hour)
 {
+  auto spacing = rules.getInteger ("report.day.spacing");
+  Color colorLabel (palette.enabled ? rules.get ("theme.colors.label")     : "");
+
   std::cout << indent;
   for (int hour = first_hour; hour <= last_hour; hour++)
-    std::cout << colorLabel.colorize (leftJustify (hour, 5));
+    std::cout << colorLabel.colorize (leftJustify (hour, 4 + spacing));
 
   std::cout << '\n';
 }
