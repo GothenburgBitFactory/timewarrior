@@ -52,9 +52,8 @@ int CmdReportDay (
     filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
 
   // Load the data.
-  auto timeline = createTimelineFromData (rules, database, filter);
-  auto tracked  = timeline.tracked (rules);
-  auto excluded = timeline.excluded (rules);
+  auto exclusions = getAllExclusions (rules, filter.range);
+  auto tracked    = getTrackedIntervals (database, rules, filter);
 
   // Create a color palette.
   auto palette = createPalette (rules);
@@ -84,6 +83,7 @@ int CmdReportDay (
     first_hour = std::max (first_hour - 1, 0);
     last_hour  = std::min (last_hour + 1, 23);
   }
+//  std::cout << "# hours: " << first_hour << " - " << last_hour << "\n";
 
   // Render the axis.
   std::cout << '\n';
@@ -93,10 +93,12 @@ int CmdReportDay (
   // Each day is rendered separately.
   for (Datetime day = filter.range.start; day < filter.range.end; day++)
   {
+//    std::cout << "# day " << day.toISOLocalExtended () << "\n";
+
     // Render the exclusion blocks.
     Composite line1;
     Composite line2;
-    renderExclusionBlocks (line1, line2, day, first_hour, last_hour, excluded, colorExc);
+    renderExclusionBlocks (line1, line2, day, first_hour, last_hour, exclusions, colorExc);
 
     for (auto& track : tracked)
       renderInterval (line1, line2, day, track, first_hour, palette, tag_colors);
@@ -174,20 +176,23 @@ static void renderInterval (
   Datetime eod {day};
   eod++;
   Range day_range (day, eod);
-  Interval clipped {track};
-  clipped.range = clipped.range.intersect (day_range);
+  Interval clipped = clip (track, day_range);
 
   // TODO track may have started days ago.
+//  std::cout << "#   track " << track.dump () << "\n";
   auto start_hour = clipped.range.start.hour ();
   auto start_min  = clipped.range.start.minute ();
   auto end_hour   = clipped.range.end.hour ();
   auto end_min    = clipped.range.end.minute ();
+//  std::cout << "#     " << start_hour << "/" << start_min << " - " << end_hour << "/" << end_min << "\n";
 
   auto start_block = quantizeTo15Minutes (start_min) / 15;
   auto end_block   = quantizeTo15Minutes (end_min == 0 ? 60 : end_min) / 15;
+//  std::cout << "#     blocks " << start_block << " - " << end_block << "\n";
 
   int start_offset = (start_hour - first_hour) * 5 + start_block;
   int end_offset   = (end_hour - 1 - first_hour) * 5 + end_block;
+//  std::cout << "#     offset " << start_offset << " - " << end_offset << "\n";
 
   if (end_offset > start_offset)
   {
