@@ -35,9 +35,11 @@ int CmdTrack (
   Rules& rules,
   Database& database)
 {
-  auto filter = getFilter (cli);
-  auto timeline = createTimelineFromData (rules, database, filter);
-  for (auto& interval : splitInterval (filter, timeline.excluded (rules)))
+  auto filter     = getFilter (cli);
+  auto holidays   = subset (filter.range, getHolidays (rules));
+  auto exclusions = getAllExclusions (rules, filter.range);
+
+  for (auto& interval : collapse (filter, exclusions))
     database.addInterval (interval);
 
     // TODO intervalSummarїze needs to operate on a vector of similar intervals.
