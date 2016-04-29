@@ -521,6 +521,11 @@ std::vector <Interval> getTrackedIntervals (
 {
   auto inclusions = getAllInclusions (database);
 
+  // Exclusions are only usable within a range, so if no filter range exists,
+  // determine the outermost range of the inclusions, ie:
+  //
+  //   [earliest start, latest end)
+  //
   if (! filter.range.started ())
     filter.range = outerRange (inclusions);
 
