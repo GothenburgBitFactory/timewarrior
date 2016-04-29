@@ -32,7 +32,7 @@ define theme:
   description = "dark.theme: A default, 256-color theme"
   colors:
     # General UI color.
-    exclusion = "white on gray4"
+    exclusion = "gray8 on gray4"
     today     = "black on rgb521"
     label     = "gray4"
 
