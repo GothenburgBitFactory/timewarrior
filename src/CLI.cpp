@@ -178,7 +178,7 @@ void CLI::handleArg0 ()
 void CLI::lexArguments ()
 {
   // Note: Starts iterating at index 1, because ::handleArg0 has already
-  //       processed it.
+  //       processed 0.
   for (unsigned int i = 1; i < _original_args.size (); ++i)
   {
     bool quoted = Lexer::wasQuoted (_original_args[i].attribute ("raw"));
@@ -189,7 +189,7 @@ void CLI::lexArguments ()
     if (lex.token (lexeme, type) &&
         lex.isEOS ())
     {
-      A2 a (_original_args[i].attribute ("raw"), type);
+      A2 a (Lexer::dequote (_original_args[i].attribute ("raw")), type);
       if (quoted)
         a.tag ("QUOTED");
 
@@ -207,8 +207,7 @@ void CLI::lexArguments ()
       std::string word;
       if (Lexer::readWord (quote + escaped + quote, quote, cursor, word))
       {
-        Lexer::dequote (word);
-        A2 unknown (word, Lexer::Type::word);
+        A2 unknown (Lexer::dequote (word), Lexer::Type::word);
         if (Lexer::wasQuoted (_original_args[i].attribute ("raw")))
           unknown.tag ("QUOTED");
 
@@ -221,7 +220,7 @@ void CLI::lexArguments ()
       // This branch may have no use-case.
       else
       {
-        A2 unknown (_original_args[i].attribute ("raw"), Lexer::Type::word);
+        A2 unknown (Lexer::dequote (_original_args[i].attribute ("raw")), Lexer::Type::word);
         unknown.tag ("UNKNOWN");
 
         if (Lexer::wasQuoted (_original_args[i].attribute ("raw")))
