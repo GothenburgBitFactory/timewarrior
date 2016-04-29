@@ -1,5 +1,6 @@
 all.log
 *.pyc
+data.t
 exclusion.t
 helper.t
 interval.t
