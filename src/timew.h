@@ -52,6 +52,7 @@ Range                   outerRange          (const std::vector <Interval>&);
 bool                    matchesFilter       (const Interval&, const Interval&);
 Interval                clip                (const Interval&, const Range&);
 std::vector <Interval>  getTrackedIntervals (Database&, const Rules&, Interval&);
+std::vector <Range>     getUntrackedRanges  (const Rules&);
 Interval                getLatestInterval   (Database&);
 
 // init.cpp
@@ -66,7 +67,6 @@ Color tagColor (const Rules&, const std::string&);
 std::string intervalSummarize (const Rules&, const Interval&);
 bool expandIntervalHint (const std::string&, std::string&, std::string&);
 std::vector <Range> getExcludedRanges (Rules&, Range&);
-std::vector <Range> getUntrackedRanges (Rules&);
 std::string jsonFromIntervals (const std::vector <Interval>&);
 Palette createPalette (const Rules&);
 std::map <std::string, Color> createTagColorMap (const Rules&, Palette&, const std::vector <Interval>&);

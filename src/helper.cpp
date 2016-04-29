@@ -134,24 +134,6 @@ std::vector <Range> getExcludedRanges (Rules& rules, Range& range)
 }
 */
 ////////////////////////////////////////////////////////////////////////////////
-// Untracked time is that which is not excluded, and not filled. Gaps.
-std::vector <Range> getUntrackedRanges (Rules& rules)
-{
-  std::vector <Range> gaps;
-
-  // Get the set of expanded exclusions that overlap the range defined by the
-  // timeline. If no range is defined, derive it from the set of all data.
-/*
-  auto exclusions = getExcludedRanges (rules);
-*/
-
-  // TODO subtract all exclusions
-  // TODO subtract all inclusions
-
-  return gaps;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 // Compose a JSON document of intervals. In the trivial case:
 //   [
 //   ]
