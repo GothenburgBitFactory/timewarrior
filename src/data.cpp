@@ -377,8 +377,23 @@ std::vector <Interval> collapse (
   {
     std::vector <Range> split_pieces;
     for (auto& piece : pieces)
-      for (auto& smaller_piece : piece.subtract (exclusion))
-        split_pieces.push_back (smaller_piece);
+    {
+      // If the exclusion is entirely within the piece, then collapse.
+      if (exclusion.start > piece.start &&
+          (exclusion.end  < piece.end ||
+           piece.end.toEpoch () == 0))
+      {
+        for (auto& smaller_piece : piece.subtract (exclusion))
+          split_pieces.push_back (smaller_piece);
+      }
+
+      // If the exclusion merely overlap the piece, do nothing. This is because
+      // tracked time start and end is not clipped, but recorded faithfully.
+      else
+      {
+        split_pieces.push_back (piece);
+      }
+    }
 
     pieces = split_pieces;
   }
@@ -387,9 +402,9 @@ std::vector <Interval> collapse (
   for (auto& piece : pieces)
     all.push_back (clip (interval, piece));
 
-  std::cout << "# collapse:\n";
+  std::cout << "#   results:\n";
   for (auto& i : all)
-    std::cout << "#   " << i.dump () << "\n";
+    std::cout << "#     " << i.dump () << "\n";
   return all;
 }
 
