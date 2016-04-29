@@ -313,6 +313,10 @@ void Rules::parseRule (const std::string& input)
     else if (tokens.size () >= 3 && tokens[1] == "tag")
       parseRuleSettings (lines, "tag");
 
+    // define report xxx:
+    else if (tokens.size () >= 3 && tokens[1] == "report")
+      parseRuleSettings (lines, "report");
+
     // define theme:
     // define holidays:
     // define exclusions:
