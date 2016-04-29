@@ -105,20 +105,18 @@ void Datafile::addInterval (const Interval& interval)
 ////////////////////////////////////////////////////////////////////////////////
 void Datafile::deleteInterval (const Interval& interval)
 {
-  // Return false if the interval does not belong in this file.
   // Note: end date might be zero.
-  if (_range.overlap (interval.range))
-  {
-    if (! _lines_loaded)
-      load_lines ();
+  assert (_range.overlap (interval.range));
 
-    auto serialized = interval.serialize ();
-    auto i = std::find (_lines.begin (), _lines.end (), serialized);
-    if (i != _lines.end ())
-    {
-      _lines.erase (i);
-      _dirty = true;
-    }
+  if (! _lines_loaded)
+    load_lines ();
+
+  auto serialized = interval.serialize ();
+  auto i = std::find (_lines.begin (), _lines.end (), serialized);
+  if (i != _lines.end ())
+  {
+    _lines.erase (i);
+    _dirty = true;
   }
 }
 
