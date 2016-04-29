@@ -15,7 +15,7 @@ set (timew_SRCS CLI.cpp        CLI.h
                 Palette.cpp    Palette.h
                 Range.cpp      Range.h
                 Rules.cpp      Rules.h
-                Timeline.cpp   Timeline.h
+                data.cpp
                 init.cpp
                 helper.cpp
                 util.cpp)

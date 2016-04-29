@@ -1,0 +1,435 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// Copyright 2015 - 2016, Paul Beckingham, Federico Hernandez.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
+// http://www.opensource.org/licenses/mit-license.php
+//
+////////////////////////////////////////////////////////////////////////////////
+
+#include <cmake.h>
+#include <shared.h>
+#include <Datetime.h>
+#include <Duration.h>
+#include <timew.h>
+
+////////////////////////////////////////////////////////////////////////////////
+// A filter is just another interval, containing start, end and tags.
+//
+// Supported interval forms:
+//   ["from"] <date> ["to"|"-" <date>]
+//   ["from"] <date> "for" <duration>
+//   <duration> ["before"|"after" <date>]
+//
+Interval getFilter (const CLI& cli)
+{
+  Interval filter;
+  std::string start;
+  std::string end;
+  std::string duration;
+
+  std::vector <std::string> args;
+  for (auto& arg : cli._args)
+  {
+    if (arg.hasTag ("BINARY") ||
+        arg.hasTag ("CMD")    ||
+        arg.hasTag ("EXT"))
+      continue;
+
+    if (arg.hasTag ("FILTER"))
+    {
+      auto canonical = arg.attribute ("canonical");
+      auto raw       = arg.attribute ("raw");
+
+      if (arg.hasTag ("HINT"))
+      {
+        if (expandIntervalHint (canonical, start, end))
+        {
+          args.push_back ("<date>");
+          args.push_back ("-");
+          args.push_back ("<date>");
+        }
+
+        // Hints that are not expandable to a date range are ignored.
+      }
+      else if (arg._lextype == Lexer::Type::date)
+      {
+        if (start == "")
+          start = raw;
+        else if (end == "")
+          end = raw;
+
+        args.push_back ("<date>");
+      }
+      else if (arg._lextype == Lexer::Type::duration)
+      {
+        if (duration == "")
+          duration = raw;
+
+        args.push_back ("<duration>");
+      }
+      else if (arg.hasTag ("KEYWORD"))
+      {
+        args.push_back (raw);
+      }
+      else
+      {
+        filter.tag (raw);
+      }
+    }
+  }
+
+  Range range;
+
+  // <date>
+  if (args.size () == 1 &&
+      args[0] == "<date>")
+  {
+    range.start = Datetime (start);
+    range.end   = Datetime ("now");
+  }
+
+  // from <date>
+  else if (args.size () == 2 &&
+           args[0] == "from" &&
+           args[1] == "<date>")
+  {
+    range.start = Datetime (start);
+    range.end   = Datetime ("now");
+  }
+
+  // <date> to/- <date>
+  else if (args.size () == 3                   &&
+           args[0] == "<date>"                 &&
+           (args[1] == "to" || args[1] == "-") &&
+           args[2] == "<date>")
+  {
+    range.start = Datetime (start);
+    range.end   = Datetime (end);
+  }
+
+  // from/since <date> to/- <date>
+  else if (args.size () == 4                   &&
+           args[0] == "from"                   &&
+           args[1] == "<date>"                 &&
+           (args[2] == "to" || args[2] == "-") &&
+           args[3] == "<date>")
+  {
+    range.start = Datetime (start);
+    range.end   = Datetime (end);
+  }
+
+  // <date> for <duration>
+  else if (args.size () == 3   &&
+           args[0] == "<date>" &&
+           args[1] == "for"    &&
+           args[2] == "<duration>")
+  {
+    range.start = Datetime (start);
+    range.end   = Datetime (start) + Duration (duration).toTime_t ();
+  }
+
+  // from/since <date> for <duration>
+  else if (args.size () == 4                         &&
+           (args[0] == "from" || args[0] == "since") &&
+           args[1] == "<date>"                       &&
+           args[2] == "for"                          &&
+           args[3] == "<duration>")
+  {
+    range.start = Datetime (start);
+    range.end   = Datetime (start) + Duration (duration).toTime_t ();
+  }
+
+  // <duration> before <date>
+  else if (args.size () == 3 &&
+           args[0] == "<duration>" &&
+           args[1] == "before"     &&
+           args[2] == "<date>")
+  {
+    range.start = Datetime (start) - Duration (duration).toTime_t ();
+    range.end   = Datetime (start);
+  }
+
+  // <duration> after <date>
+  else if (args.size () == 3 &&
+           args[0] == "<duration>" &&
+           args[1] == "after"      &&
+           args[2] == "<date>")
+  {
+    range.start = Datetime (start);
+    range.end   = Datetime (start) + Duration (duration).toTime_t ();
+  }
+
+  // <duration>
+  else if (args.size () == 1 &&
+           args[0] == "<duration>")
+  {
+    range.start = Datetime ("now") - Duration (duration).toTime_t ();
+    range.end   = Datetime ("now");
+  }
+
+  // Unrecognized date range construct.
+  else if (args.size ())
+  {
+    throw std::string ("Unrecognized date range: '") + join (" ", args) + "'.";
+  }
+
+  filter.range = range;
+  return filter;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Read rules and extract all holiday definitions. Create a Range for each
+// one that spans from midnight to midnight.
+std::vector <Range> getHolidays (const Rules& rules)
+{
+  std::vector <Range> results;
+  for (auto& holiday : rules.all ("holidays."))
+  {
+    auto lastDot = holiday.rfind ('.');
+    if (lastDot != std::string::npos)
+    {
+      Range r;
+      Datetime d (holiday.substr (lastDot + 1), "Y_M_D");
+      r.start = d;
+      ++d;
+      r.end = d;
+      results.push_back (r);
+    }
+  }
+
+  return results;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// [1] Read holiday definitions from the rules, extract their dates and create
+//     a set of Range from them.
+// [2] For 'exc day ...' exclusions, separate into daysOn and daysOff sets,
+//     based on whether the exclusion is additive.
+// [3] Treat daysOff as additional holidays.
+// [4] Subtract daysOn from the set of holidays.
+// [5] Take all the 'exc <dayOfWeek> ...' exclusions and expand them into
+//     concrete ranges within the overall range, adding them to the results.
+//
+// The result is the complete set of untrackable time that lies within the
+// input range. This will be a set of nights, weekends, holidays and lunchtimes.
+std::vector <Range> getAllExclusions (
+  const Range& range,
+  const Rules& rules)
+{
+  // Start with the set of all holidays, intersected with range.
+  std::vector <Range> results;
+  results = addRanges (range, results, getHolidays (rules));
+
+  auto exclusions = getExclusions (rules);
+
+  // Find exclusions 'exc day on <date>' and remove from holidays.
+  // Find exlcusions 'exc day off <date>' and add to holidays.
+  std::vector <Range> daysOn;
+  std::vector <Range> daysOff;
+  for (auto& exclusion : exclusions)
+  {
+    if (exclusion.tokens ()[1] == "day")
+    {
+      if (exclusion.additive ())
+        for (auto& r : exclusion.ranges (range))
+          daysOn.push_back (r);
+      else
+        for (auto& r : exclusion.ranges (range))
+          daysOff.push_back (r);
+    }
+  }
+
+  // daysOff are combined with existing holidays.
+  results = addRanges (range, results, daysOff);
+
+  // daysOn are subtracted from the existing holidays.
+  results = subtractRanges (range, results, daysOn);
+
+  // Expand all exclusions that are not 'exc day ...' into excluded ranges that
+  // overlage with range.
+  std::vector <Range> exclusionRanges;
+  for (auto& exclusion : exclusions)
+    if (exclusion.tokens ()[1] != "day")
+      for (auto& r : exclusion.ranges (range))
+        exclusionRanges.push_back (r);
+
+  return addRanges (range, results, exclusionRanges);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector <Exclusion> getExclusions (const Rules& rules)
+{
+  // Add exclusions from configuration.
+  std::vector <Exclusion> all;
+  for (auto& name : rules.all ("exclusions."))
+    all.push_back (Exclusion (lowerCase (name), rules.get (name)));
+
+  return all;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector <Interval> getInclusions (Database& database)
+{
+  std::vector <Interval> all;
+  for (auto& line : database.allLines ())
+  {
+    Interval i;
+    i.initialize (line);
+    all.push_back (i);
+  }
+
+  return all;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector <Interval> subset (
+  const Interval& filter,
+  const std::vector <Interval>& intervals)
+{
+  std::vector <Interval> all;
+  for (auto& interval : intervals)
+    if (intervalMatchesFilter (interval, filter))
+      all.push_back (interval);
+
+  return all;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector <Range> subset (
+  const Range& range,
+  const std::vector <Range>& ranges)
+{
+  std::vector <Range> all;
+  for (auto& r : ranges)
+    if (range.overlap (r))
+      all.push_back (r);
+
+  return all;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector <Interval> subset (
+  const Range& range,
+  const std::vector <Interval>& intervals)
+{
+  std::vector <Interval> all;
+  for (auto& interval : intervals)
+    if (range.overlap (interval.range))
+      all.push_back (interval);
+
+  return all;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector <Interval> realize (
+  const Interval& interval,
+  const std::vector <Range>& exclusions)
+{
+  std::vector <Interval> all;
+
+  // Start with a single range from the interval, from which to subtract.
+  std::vector <Range> pieces {interval.range};
+  for (auto& exclusion : exclusions)
+  {
+    std::vector <Range> split_pieces;
+    for (auto& piece : pieces)
+      for (auto& smaller_piece : piece.subtract (exclusion))
+        split_pieces.push_back (smaller_piece);
+
+    pieces = split_pieces;
+  }
+
+  // Return all the fragments as intervals.
+  for (auto& piece : pieces)
+  {
+    // Clone the interval, override the range.
+    Interval clipped {interval};
+    clipped.range = piece;
+    all.push_back (clipped);
+  }
+
+  return all;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Subset both ranges and additions by limits, and combine.
+std::vector <Range> addRanges (
+  const Range& limits,
+  const std::vector <Range>& ranges,
+  const std::vector <Range>& additions)
+{
+  std::vector <Range> results;
+
+  for (auto& range : ranges)
+    if (limits.overlap (range))
+      results.push_back (range);
+
+  for (auto& addition : additions)
+    if (limits.overlap (addition))
+      results.push_back (addition);
+
+  return results;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Subtract a set of Range from another set of Range, all within a defined
+// range.
+std::vector <Range> subtractRanges (
+  const Range& limits,
+  const std::vector <Range>& ranges,
+  const std::vector <Range>& subtractions)
+{
+  if (! subtractions.size ())
+    return ranges;
+
+  std::vector <Range> results;
+  for (auto& r1 : ranges)
+    for (auto& r2 : subtractions)
+      for (auto& r3 : r1.subtract (r2))
+        results.push_back (limits.intersect (r3));
+
+  return results;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// From a set of intervals, find the earliest start and the latest end, and
+// return these in a Range.
+Range outerRange (const std::vector <Interval>& intervals)
+{
+  Range overall;
+
+  for (auto& interval : intervals)
+  {
+    if (interval.range.start < overall.start || overall.start.toEpoch () == 0)
+      overall.start = interval.range.start;
+
+    // Deliberately mixed start/end.
+    if (interval.range.start > overall.end)
+      overall.end = interval.range.start;
+
+    if (interval.range.end > overall.end)
+      overall.end = interval.range.end;
+  }
+
+  return overall;
+}
+
+////////////////////////////////////////////////////////////////////////////////
