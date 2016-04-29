@@ -36,10 +36,13 @@ int CmdStart (
   Rules& rules,
   Database& database)
 {
-  // Load the most recent interval.
-  auto latest = getLatestInterval (database);
+  // Add a new open interval, which may have a defined start time.
+  auto filter     = getFilter (cli);
+  auto holidays   = subset (filter.range, getHolidays (rules));
+  auto exclusions = getAllExclusions (rules, filter.range);
 
   // If the latest interval is open, close it.
+  auto latest = getLatestInterval (database);
   if (  latest.range.started () &&
       ! latest.range.ended ())
   {
@@ -48,15 +51,9 @@ int CmdStart (
     modified.range.end = Datetime ();
 
     // Update database.
-    database.modifyInterval (latest, modified);
-/*
-    // TODO There is no 1:N modifyInterval.
-    datebase.deleteInterval (latest);
-
-    // TODO Create and populate a Timeline.
-    for (auto& fragment : splitInterval (modified, ?))
-      database.addInterval (fragment);
-*/
+    database.deleteInterval (latest);
+    for (auto& interval : collapse (modified, exclusions))
+      database.addInterval (interval);
 
     // TODO intervalSummarїze needs to operate on a vector of similar intervals.
     // User feedback.
@@ -64,18 +61,20 @@ int CmdStart (
       std::cout << intervalSummarize (rules, modified);
   }
 
-  // Create a new interval.
+  // Now add the new open interval.
   Interval now;
-  now.range.start = Datetime ();
+  if (filter.range.start.toEpoch () != 0)
+    now.range.start = filter.range.start;
+  else
+    now.range.start = Datetime ();
 
-  // Apply tags.
-  auto words = cli.getWords ();
-  for (auto& word : words)
-    now.tag (word);
+  for (auto& tag : filter.tags ())
+    now.tag (tag);
 
   // Update database.
   database.addInterval (now);
 
+  // TODO intervalSummarїze needs to operate on a vector of similar intervals.
   // User feedback.
   if (rules.getBoolean ("verbose"))
     std::cout << intervalSummarize (rules, now);
