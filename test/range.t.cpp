@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (63);
+  UnitTest t (64);
 
   // bool started () const;
   // bool ended () const;
@@ -219,6 +219,10 @@ int main (int, char**)
   auto intersection = left.intersect (right);
   t.ok (intersection.start.toEpoch () == 0, "Range: adjacent ranges do not intersect");
   t.ok (intersection.end.toEpoch ()   == 0, "Range: adjacent ranges do not intersect");
+
+  // Range length.
+  t.ok (Range (Datetime (2016, 1, 1), Datetime (2016, 1, 3)).total () == (2 * 86400),
+       "Range (Datetime (2016, 1, 1), Datetime (2016, 1, 3)).total () == (2 * 86400)");
 
   return 0;
 }
