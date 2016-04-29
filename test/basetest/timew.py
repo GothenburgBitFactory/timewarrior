@@ -50,12 +50,6 @@ class Timew(object):
         "aka t = Timew() ; t() which is now an alias to t.runSuccess()"
         return self.runSuccess(*args, **kwargs)
 
-    def activate_hooks(self):
-        """Enable self.hooks functionality and activate hooks on config
-        """
-        self.config("hooks", "on")
-        self.hooks = Hooks(self.datadir)
-
     def reset_env(self):
         """Set a new environment derived from the one used to launch the test
         """
