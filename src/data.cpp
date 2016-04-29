@@ -29,6 +29,7 @@
 #include <Datetime.h>
 #include <Duration.h>
 #include <timew.h>
+#include <iostream> // TODO Remove.
 
 ////////////////////////////////////////////////////////////////////////////////
 // A filter is just another interval, containing start, end and tags.
@@ -192,6 +193,8 @@ Interval getFilter (const CLI& cli)
   }
 
   filter.range = range;
+  std::cout << "# getFilter:\n";
+  std::cout << "#   " << filter.dump () << "\n";
   return filter;
 }
 
@@ -215,6 +218,9 @@ std::vector <Range> getHolidays (const Rules& rules)
     }
   }
 
+  std::cout << "# getHolidays:\n";
+  for (auto& h : results)
+    std::cout << "#   " << h.dump () << "\n";
   return results;
 }
 
@@ -231,8 +237,8 @@ std::vector <Range> getHolidays (const Rules& rules)
 // The result is the complete set of untrackable time that lies within the
 // input range. This will be a set of nights, weekends, holidays and lunchtimes.
 std::vector <Range> getAllExclusions (
-  const Range& range,
-  const Rules& rules)
+  const Rules& rules,
+  const Range& range)
 {
   // Start with the set of all holidays, intersected with range.
   std::vector <Range> results;
@@ -271,7 +277,12 @@ std::vector <Range> getAllExclusions (
       for (auto& r : exclusion.ranges (range))
         exclusionRanges.push_back (r);
 
-  return addRanges (range, results, exclusionRanges);
+  auto all = addRanges (range, results, exclusionRanges);
+  std::cout << "# getAllExclusions:\n";
+  for (auto& r : all)
+    std::cout << "#   " << r.dump () << "\n";
+  return all;
+//  return addRanges (range, results, exclusionRanges);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -282,11 +293,14 @@ std::vector <Exclusion> getExclusions (const Rules& rules)
   for (auto& name : rules.all ("exclusions."))
     all.push_back (Exclusion (lowerCase (name), rules.get (name)));
 
+  std::cout << "# getExclusions:\n";
+  for (auto& e : all)
+    std::cout << "#   " << e.dump () << "\n";
   return all;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> getInclusions (Database& database)
+std::vector <Interval> getAllInclusions (Database& database)
 {
   std::vector <Interval> all;
   for (auto& line : database.allLines ())
@@ -296,6 +310,9 @@ std::vector <Interval> getInclusions (Database& database)
     all.push_back (i);
   }
 
+  std::cout << "# getAllInclusions:\n";
+  for (auto& i : all)
+    std::cout << "#   " << i.dump () << "\n";
   return all;
 }
 
@@ -306,9 +323,12 @@ std::vector <Interval> subset (
 {
   std::vector <Interval> all;
   for (auto& interval : intervals)
-    if (intervalMatchesFilter (interval, filter))
+    if (matchesFilter (interval, filter))
       all.push_back (interval);
 
+  std::cout << "# subset (filter intervals):\n";
+  for (auto& i : all)
+    std::cout << "#   " << i.dump () << "\n";
   return all;
 }
 
@@ -322,6 +342,9 @@ std::vector <Range> subset (
     if (range.overlap (r))
       all.push_back (r);
 
+  std::cout << "# subset (ranges):\n";
+  for (auto& r : all)
+    std::cout << "#   " << r.dump () << "\n";
   return all;
 }
 
@@ -335,11 +358,14 @@ std::vector <Interval> subset (
     if (range.overlap (interval.range))
       all.push_back (interval);
 
+  std::cout << "# subset (intervals):\n";
+  for (auto& i : all)
+    std::cout << "#   " << i.dump () << "\n";
   return all;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> realize (
+std::vector <Interval> collapse (
   const Interval& interval,
   const std::vector <Range>& exclusions)
 {
@@ -357,15 +383,13 @@ std::vector <Interval> realize (
     pieces = split_pieces;
   }
 
-  // Return all the fragments as intervals.
+  // Return all the fragments as clipped intervals.
   for (auto& piece : pieces)
-  {
-    // Clone the interval, override the range.
-    Interval clipped {interval};
-    clipped.range = piece;
-    all.push_back (clipped);
-  }
+    all.push_back (clip (interval, piece));
 
+  std::cout << "# collapse:\n";
+  for (auto& i : all)
+    std::cout << "#   " << i.dump () << "\n";
   return all;
 }
 
@@ -386,6 +410,9 @@ std::vector <Range> addRanges (
     if (limits.overlap (addition))
       results.push_back (addition);
 
+  std::cout << "# addRange:\n";
+  for (auto& result : results)
+    std::cout << "#   " << result.dump () << "\n";
   return results;
 }
 
@@ -406,6 +433,9 @@ std::vector <Range> subtractRanges (
       for (auto& r3 : r1.subtract (r2))
         results.push_back (limits.intersect (r3));
 
+  std::cout << "# addRange:\n";
+  for (auto& result : results)
+    std::cout << "#   " << result.dump () << "\n";
   return results;
 }
 
@@ -414,22 +444,92 @@ std::vector <Range> subtractRanges (
 // return these in a Range.
 Range outerRange (const std::vector <Interval>& intervals)
 {
-  Range overall;
-
+  Range outer;
   for (auto& interval : intervals)
   {
-    if (interval.range.start < overall.start || overall.start.toEpoch () == 0)
-      overall.start = interval.range.start;
+    if (interval.range.start < outer.start || outer.start.toEpoch () == 0)
+      outer.start = interval.range.start;
 
     // Deliberately mixed start/end.
-    if (interval.range.start > overall.end)
-      overall.end = interval.range.start;
+    if (interval.range.start > outer.end)
+      outer.end = interval.range.start;
 
-    if (interval.range.end > overall.end)
-      overall.end = interval.range.end;
+    if (interval.range.end > outer.end)
+      outer.end = interval.range.end;
+
+    if (! interval.range.ended ())
+      outer.end = Datetime ();
   }
 
-  return overall;
+  std::cout << "# outerRange " << outer.dump () << "\n";
+  return outer;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// An interval matches a filter interval if the start/end overlaps, and all
+// filter interval tags are found in the interval.
+bool matchesFilter (const Interval& interval, const Interval& filter)
+{
+  if ((filter.range.start.toEpoch () == 0 &&
+       filter.range.end.toEpoch () == 0)
+
+      ||
+
+      ((interval.range.end.toEpoch () == 0       ||
+        interval.range.end > filter.range.start) &&
+       interval.range.start < filter.range.end))
+  {
+    for (auto& tag : filter.tags ())
+      if (! interval.hasTag (tag))
+        return false;
+
+    return true;
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Take an interval and clip it to the range.
+Interval clip (const Interval& interval, const Range& range)
+{
+  Interval clipped {interval};
+  clipped.range = clipped.range.intersect (range);
+  return clipped;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector <Interval> getTrackedIntervals (
+  Database& database,
+  const Rules& rules,
+  Interval& filter)
+{
+  auto inclusions = getAllInclusions (database);
+
+  if (! filter.range.started ())
+    filter.range = outerRange (inclusions);
+
+  // Get the set of expanded exclusions that overlap the range defined by the
+  // timeline. If no range is defined, derive it from the set of all data.
+  auto exclusions = getAllExclusions (rules, filter.range);
+
+  std::vector <Interval> intervals;
+  for (auto& inclusion : subset (filter, inclusions))
+    for (auto& interval : collapse (clip (inclusion, filter.range), exclusions))
+      intervals.push_back (interval);
+
+  return intervals;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Interval getLatestInterval (Database& database)
+{
+  Interval i;
+  auto lastLine = database.lastLine ();
+  if (lastLine != "")
+    i.initialize (lastLine);
+
+  return i;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

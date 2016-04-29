@@ -32,9 +32,27 @@
 #include <Rules.h>
 #include <Extensions.h>
 #include <Interval.h>
-#include <Timeline.h>
+#include <Exclusion.h>
 #include <Palette.h>
 #include <Color.h>
+
+// data.cpp
+Interval                getFilter           (const CLI&);
+std::vector <Range>     getHolidays         (const Rules&);
+std::vector <Exclusion> getExclusions       (const Rules&);
+std::vector <Range>     getAllExclusions    (const Rules&, const Range&);
+std::vector <Interval>  getAllInclusions    (Database&);
+std::vector <Interval>  subset              (const Interval&, const std::vector <Interval>&);
+std::vector <Range>     subset              (const Range&, const std::vector <Range>&);
+std::vector <Interval>  subset              (const Range&, const std::vector <Interval>&);
+std::vector <Interval>  collapse            (const Interval&, const std::vector <Range>&);
+std::vector <Range>     addRanges           (const Range&, const std::vector <Range>&, const std::vector <Range>&);
+std::vector <Range>     subtractRanges      (const Range&, const std::vector <Range>&, const std::vector <Range>&);
+Range                   outerRange          (const std::vector <Interval>&);
+bool                    matchesFilter       (const Interval&, const Interval&);
+Interval                clip                (const Interval&, const Range&);
+std::vector <Interval>  getTrackedIntervals (Database&, const Rules&, Interval&);
+Interval                getLatestInterval   (Database&);
 
 // init.cpp
 bool lightweightVersionCheck (int, const char**);
@@ -47,20 +65,12 @@ int dispatchCommand (const CLI&, Database&, Rules&, const Extensions&);
 Color tagColor (const Rules&, const std::string&);
 std::string intervalSummarize (const Rules&, const Interval&);
 bool expandIntervalHint (const std::string&, std::string&, std::string&);
-Timeline createTimelineFromData (const Rules&, Database&, const Interval&);
-Interval getFilter (const CLI&);
-Interval getLatestInterval (Database&);
-bool intervalMatchesFilterInterval (const Interval&, const Interval&);
+std::vector <Range> getExcludedRanges (Rules&, Range&);
+std::vector <Range> getUntrackedRanges (Rules&);
 std::string jsonFromIntervals (const std::vector <Interval>&);
-std::vector <Range> rangesFromHolidays (const Rules&);
-std::vector <Range> addRanges (const Range&, const std::vector <Range>&, const std::vector <Range>&);
-std::vector <Range> subtractRanges (const Range&, const std::vector <Range>&, const std::vector <Range>&);
-Range overallRangeFromIntervals (const std::vector <Interval>&);
-std::vector <Range> combineHolidaysAndExclusions (const Range&, const Rules&, const std::vector <Exclusion>&);
 Palette createPalette (const Rules&);
 std::map <std::string, Color> createTagColorMap (const Rules&, Palette&, const std::vector <Interval>&);
 int quantizeTo15Minutes (const int);
-std::vector <Interval> splitInterval (const Interval&, const std::vector <Range>&);
 
 // utiŀ.cpp
 std::string osName ();
