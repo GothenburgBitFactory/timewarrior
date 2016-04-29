@@ -42,14 +42,10 @@ int CmdReportSummary (
     filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
 
   // Load the data.
-  auto timeline = createTimelineFromData (rules, database, filter);
-  auto tracked  = timeline.tracked (rules);
-  auto excluded = timeline.excluded (rules);
-
-  // Create a color palette.
-  auto palette = createPalette (rules);
+  auto tracked = getTrackedIntervals (database, rules, filter);
 
   // Map tags to colors.
+  auto palette = createPalette (rules);
   auto tag_colors = createTagColorMap (rules, palette, tracked);
 
   std::cout << '\n';
@@ -58,9 +54,12 @@ int CmdReportSummary (
   // Each day is rendered separately.
   for (Datetime day = filter.range.start; day < filter.range.end; day++)
   {
+    std::cout << "# Summary day " << day.toISOLocalExtended () << "\n";
+
     for (auto& track : tracked)
     {
       // TODO Intersect track with day.
+      std::cout << "#   track " << track.dump () << "\n";
     }
   }
 
