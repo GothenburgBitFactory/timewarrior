@@ -221,6 +221,17 @@ std::vector <Range> Range::subtract (const Range& other) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Returns the number of seconds between start and end.
+// If the range is open, use 'now' as the end.
+time_t Range::total () const
+{
+  if (ended ())
+    return Datetime (end) - Datetime (start);
+
+  return Datetime () - Datetime (start);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 std::string Range::dump () const
 {
   std::stringstream out;

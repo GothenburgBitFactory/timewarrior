@@ -42,6 +42,7 @@ public:
   bool overlap (const Range&) const;
   Range intersect (const Range&) const;
   std::vector <Range> subtract (const Range&) const;
+  time_t total () const;
 
   std::string dump () const;
 
