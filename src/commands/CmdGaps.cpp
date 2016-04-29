@@ -35,13 +35,11 @@ int CmdGaps (
   Rules& rules,
   Database& database)
 {
-  auto filter = getFilter (cli);
-  auto timeline = createTimelineFromData (rules, database, filter);
-  for (auto& gap : timeline.untracked (rules))
-  {
-    std::cout << "# gap " << gap.dump () << "\n";
-  }
+  auto filter     = getFilter (cli);
+  auto holidays   = subset (filter.range, getHolidays (rules));
+  auto exclusions = getAllExclusions (rules, filter.range);
 
+  // TODO Get untracked, trackable time.
   return 0;
 }
 
