@@ -40,6 +40,7 @@
 //   ["from"] <date> ["to"|"-" <date>]
 //   ["from"] <date> "for" <duration>
 //   <duration> ["before"|"after" <date>]
+//   <duration> "ago"
 //
 Interval getFilter (const CLI& cli)
 {
@@ -106,7 +107,7 @@ Interval getFilter (const CLI& cli)
       args[0] == "<date>")
   {
     range.start = Datetime (start);
-    range.end   = Datetime ("now");
+    range.end   = Datetime ();
   }
 
   // from <date>
@@ -115,7 +116,7 @@ Interval getFilter (const CLI& cli)
            args[1] == "<date>")
   {
     range.start = Datetime (start);
-    range.end   = Datetime ("now");
+    range.end   = Datetime ();
   }
 
   // <date> to/- <date>
@@ -161,7 +162,7 @@ Interval getFilter (const CLI& cli)
   }
 
   // <duration> before <date>
-  else if (args.size () == 3 &&
+  else if (args.size () == 3       &&
            args[0] == "<duration>" &&
            args[1] == "before"     &&
            args[2] == "<date>")
@@ -171,7 +172,7 @@ Interval getFilter (const CLI& cli)
   }
 
   // <duration> after <date>
-  else if (args.size () == 3 &&
+  else if (args.size () == 3       &&
            args[0] == "<duration>" &&
            args[1] == "after"      &&
            args[2] == "<date>")
@@ -180,12 +181,21 @@ Interval getFilter (const CLI& cli)
     range.end   = Datetime (start) + Duration (duration).toTime_t ();
   }
 
+  // <duration> ago
+  else if (args.size () == 2       &&
+           args[0] == "<duration>" &&
+           args[1] == "ago")
+  {
+    range.start = Datetime () - Duration (duration).toTime_t ();
+    range.end   = Datetime ();
+  }
+
   // <duration>
   else if (args.size () == 1 &&
            args[0] == "<duration>")
   {
-    range.start = Datetime ("now") - Duration (duration).toTime_t ();
-    range.end   = Datetime ("now");
+    range.start = Datetime () - Duration (duration).toTime_t ();
+    range.end   = Datetime ();
   }
 
   // Unrecognized date range construct.
