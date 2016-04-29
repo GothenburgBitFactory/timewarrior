@@ -29,6 +29,7 @@
 #include <format.h>
 #include <algorithm>
 #include <sstream>
+#include <cassert>
 #include <stdlib.h>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -87,20 +88,18 @@ std::vector <std::string> Datafile::allLines ()
 // Accepted intervals;   day1 <= interval.start < dayN
 void Datafile::addInterval (const Interval& interval)
 {
-  // Return false if the interval does not belong in this file.
   // Note: end date might be zero.
-  if (_range.overlap (interval.range))
-  {
-    if (! _lines_loaded)
-      load_lines ();
+  assert (_range.overlap (interval.range));
 
-    // TODO if interval is not a duplicate
-    // TODO   insert interval.serialize into _lines
-    // TODO   _dirty = true;
+  if (! _lines_loaded)
+    load_lines ();
 
-    _lines.push_back (interval.serialize ());
-    _dirty = true;
-  }
+  // TODO if interval is not a duplicate
+  // TODO   insert interval.serialize into _lines
+  // TODO   _dirty = true;
+
+  _lines.push_back (interval.serialize ());
+  _dirty = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
