@@ -29,7 +29,9 @@
 #include <Datetime.h>
 #include <Duration.h>
 #include <timew.h>
+/*
 #include <iostream> // TODO Remove.
+*/
 
 ////////////////////////////////////////////////////////////////////////////////
 // A filter is just another interval, containing start, end and tags.
@@ -193,8 +195,10 @@ Interval getFilter (const CLI& cli)
   }
 
   filter.range = range;
+/*
   std::cout << "# getFilter:\n";
   std::cout << "#   " << filter.dump () << "\n";
+*/
   return filter;
 }
 
@@ -218,9 +222,11 @@ std::vector <Range> getHolidays (const Rules& rules)
     }
   }
 
+/*
   std::cout << "# getHolidays:\n";
   for (auto& h : results)
     std::cout << "#   " << h.dump () << "\n";
+*/
   return results;
 }
 
@@ -277,12 +283,14 @@ std::vector <Range> getAllExclusions (
       for (auto& r : exclusion.ranges (range))
         exclusionRanges.push_back (r);
 
+/*
   auto all = addRanges (range, results, exclusionRanges);
   std::cout << "# getAllExclusions:\n";
   for (auto& r : all)
     std::cout << "#   " << r.dump () << "\n";
   return all;
-//  return addRanges (range, results, exclusionRanges);
+*/
+  return addRanges (range, results, exclusionRanges);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -293,9 +301,11 @@ std::vector <Exclusion> getExclusions (const Rules& rules)
   for (auto& name : rules.all ("exclusions."))
     all.push_back (Exclusion (lowerCase (name), rules.get (name)));
 
+/*
   std::cout << "# getExclusions:\n";
   for (auto& e : all)
     std::cout << "#   " << e.dump () << "\n";
+*/
   return all;
 }
 
@@ -310,9 +320,11 @@ std::vector <Interval> getAllInclusions (Database& database)
     all.push_back (i);
   }
 
+/*
   std::cout << "# getAllInclusions:\n";
   for (auto& i : all)
     std::cout << "#   " << i.dump () << "\n";
+*/
   return all;
 }
 
@@ -326,9 +338,11 @@ std::vector <Interval> subset (
     if (matchesFilter (interval, filter))
       all.push_back (interval);
 
+/*
   std::cout << "# subset (filter intervals):\n";
   for (auto& i : all)
     std::cout << "#   " << i.dump () << "\n";
+*/
   return all;
 }
 
@@ -342,9 +356,11 @@ std::vector <Range> subset (
     if (range.overlap (r))
       all.push_back (r);
 
+/*
   std::cout << "# subset (ranges):\n";
   for (auto& r : all)
     std::cout << "#   " << r.dump () << "\n";
+*/
   return all;
 }
 
@@ -358,9 +374,11 @@ std::vector <Interval> subset (
     if (range.overlap (interval.range))
       all.push_back (interval);
 
+/*
   std::cout << "# subset (intervals):\n";
   for (auto& i : all)
     std::cout << "#   " << i.dump () << "\n";
+*/
   return all;
 }
 
@@ -402,9 +420,11 @@ std::vector <Interval> collapse (
   for (auto& piece : pieces)
     all.push_back (clip (interval, piece));
 
+/*
   std::cout << "#   results:\n";
   for (auto& i : all)
     std::cout << "#     " << i.dump () << "\n";
+*/
   return all;
 }
 
@@ -425,9 +445,11 @@ std::vector <Range> addRanges (
     if (limits.overlap (addition))
       results.push_back (addition);
 
+/*
   std::cout << "# addRange:\n";
   for (auto& result : results)
     std::cout << "#   " << result.dump () << "\n";
+*/
   return results;
 }
 
@@ -448,9 +470,11 @@ std::vector <Range> subtractRanges (
       for (auto& r3 : r1.subtract (r2))
         results.push_back (limits.intersect (r3));
 
+/*
   std::cout << "# addRange:\n";
   for (auto& result : results)
     std::cout << "#   " << result.dump () << "\n";
+*/
   return results;
 }
 
@@ -476,7 +500,9 @@ Range outerRange (const std::vector <Interval>& intervals)
       outer.end = Datetime ();
   }
 
+/*
   std::cout << "# outerRange " << outer.dump () << "\n";
+*/
   return outer;
 }
 
