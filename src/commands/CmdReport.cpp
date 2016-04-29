@@ -78,12 +78,10 @@ int CmdReport (
   if (script == "")
     throw std::string ("Specify which report to run.");
 
-  // Filter the data.
-  auto filter = getFilter (cli);
-  auto timeline = createTimelineFromData (rules, database, filter);
-  auto intervals = timeline.tracked (rules);
-
   // Compose Header info.
+  auto filter = getFilter (cli);
+  auto tracked = getTrackedIntervals (database, rules, filter);
+
   rules.set ("temp.report.start", filter.range.start.toEpoch () > 0 ? filter.range.start.toISO () : "");
   rules.set ("temp.report.end",   filter.range.end.toEpoch ()   > 0 ? filter.range.end.toISO ()   : "");
   std::string combinedTags;
@@ -99,9 +97,10 @@ int CmdReport (
   for (auto& name : rules.all ())
     header << name << ": " << rules.get (name) << '\n';
 
+  // Get the data.
   auto input = header.str ()
              + '\n'
-             + jsonFromIntervals (intervals);
+             + jsonFromIntervals (tracked);
 
   // Run the extensions.
   std::vector <std::string> output;
