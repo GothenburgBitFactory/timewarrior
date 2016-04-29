@@ -45,6 +45,7 @@ public:
 
   std::string serialize () const;
   std::string json () const;
+  std::string dump () const;
 
 public:
   Range                  range  {};

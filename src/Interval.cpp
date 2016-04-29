@@ -177,3 +177,26 @@ std::string Interval::json () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::string Interval::dump () const
+{
+  std::stringstream out;
+
+  out << "interval";
+
+  if (range.start.toEpoch ())
+    out << " " << range.start.toISOLocalExtended ();
+
+  if (range.end.toEpoch ())
+    out << " - " << range.end.toISOLocalExtended ();
+
+  if (_tags.size ())
+  {
+    out << " #";
+    for (auto& tag : _tags)
+      out << ' ' << quoteIfNeeded (tag);
+  }
+
+  return out.str ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
