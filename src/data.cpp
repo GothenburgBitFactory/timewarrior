@@ -48,7 +48,6 @@ Interval getFilter (const CLI& cli)
   std::string start;
   std::string end;
   std::string duration;
-
   std::vector <std::string> args;
   for (auto& arg : cli._args)
   {
@@ -206,8 +205,8 @@ Interval getFilter (const CLI& cli)
 
   filter.range = range;
 /*
-  std::cout << "# getFilter:\n";
-  std::cout << "#   " << filter.dump () << "\n";
+  std::cout << "# getFilter:\n"
+            << "#   " << filter.dump () << "\n";
 */
   return filter;
 }
@@ -562,7 +561,6 @@ bool matchesFilter (const Interval& interval, const Interval& filter)
 
       ((interval.range.end.toEpoch () == 0 || interval.range.end   > filter.range.start) &&
        (filter.range.end.toEpoch ()   == 0 || interval.range.start < filter.range.end)))
-
   {
     for (auto& tag : filter.tags ())
       if (! interval.hasTag (tag))
@@ -578,11 +576,19 @@ bool matchesFilter (const Interval& interval, const Interval& filter)
 // Take an interval and clip it to the range.
 Interval clip (const Interval& interval, const Range& range)
 {
-  if (! range.started ())
+  if (! range.started () ||
+      range.total () == 0)
     return interval;
 
   Interval clipped {interval};
   clipped.range = clipped.range.intersect (range);
+
+/*
+  std::cout << "# clip:\n"
+            << "#   input   " << interval.dump () << "\n"
+            << "#   range   " << range.dump () << "\n"
+            << "#   clipped " << clipped.dump () << "\n";
+*/
   return clipped;
 }
 
