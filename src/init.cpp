@@ -244,9 +244,14 @@ int dispatchCommand (
     else if (command == "undo")        status = CmdUndo          (                                );
     else                               status = CmdReport        (cli, rules, database, extensions);
   }
-  else
+  else if (cli._args.size () == 1)
   {
     status = CmdDefault (rules, database);
+  }
+  else
+  {
+    std::cout << "No command specified.\n";
+    status = 1;
   }
 
   return status;
