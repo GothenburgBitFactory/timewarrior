@@ -25,6 +25,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <Table.h>
+#include <Duration.h>
+#include <shared.h>
+#include <format.h>
 #include <commands.h>
 #include <timew.h>
 #include <iostream>
@@ -48,20 +52,74 @@ int CmdReportSummary (
   auto palette = createPalette (rules);
   auto tag_colors = createTagColorMap (rules, palette, tracked);
 
-  std::cout << '\n';
-  std::string indent = "  ";
+  Table table;
+  table.width (1024);
+  table.colorHeader (Color ("underline"));
+  table.add ("Wk");
+  table.add ("Date");
+  table.add ("Day");
+  table.add ("Tags");
+  table.add ("Start", false);
+  table.add ("End", false);
+  table.add ("Time", false);
+  table.add ("Total", false);
 
   // Each day is rendered separately.
+  time_t grand_total = 0;
+  Datetime previous;
   for (Datetime day = filter.range.start; day < filter.range.end; day++)
   {
-    std::cout << "# Summary day " << day.toISOLocalExtended () << "\n";
+    Datetime eod {day};
+    eod++;
+    Range day_range (day, eod);
 
-    for (auto& track : tracked)
+    time_t daily_total = 0;
+
+    int row = -1;
+    for (auto& track : subset (day_range, tracked))
     {
-      // TODO Intersect track with day.
-      std::cout << "#   track " << track.dump () << "\n";
+      row = table.addRow ();
+
+      if (day != previous)
+      {
+        table.set (row, 0, format ("W{1}", day.week ()));
+        table.set (row, 1, day.toString ("Y-M-D"));
+        table.set (row, 2, day.dayNameShort (day.dayOfWeek ()));
+        previous = day;
+      }
+
+      // Intersect track with day.
+      auto today = day_range.intersect (track.range);
+
+      std::string tags = "";
+      for (auto& tag : track.tags ())
+      {
+        if (tags != "")
+          tags += ", ";
+        tags += tag;
+      }
+
+      table.set (row, 3, tags);
+      table.set (row, 4, today.start.toString ("h:N:S"));
+      table.set (row, 5, today.end.toString ("h:N:S"));
+      table.set (row, 6, Duration (today.total ()).format ());
+
+      daily_total += today.total ();
     }
+
+    if (row != -1)
+      table.set (row, 7, Duration (daily_total).format ());
+
+    grand_total += daily_total;
   }
+
+  // Add the total.
+  table.set (table.addRow (), 7, " ", Color ("underline"));
+  table.set (table.addRow (), 7, Duration (grand_total).format ());
+
+  std::cout << '\n'
+            << table.render ()
+            << '\n';
 
   return 0;
 }
