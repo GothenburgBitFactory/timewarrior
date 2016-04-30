@@ -5,7 +5,8 @@ include_directories (${CMAKE_SOURCE_DIR}
                      ${CMAKE_SOURCE_DIR}/src/libshared/src
                      ${TIMEW_INCLUDE_DIRS})
 
-set (commands_SRCS CmdClear.cpp
+set (commands_SRCS CmdCancel.cpp
+                   CmdClear.cpp
                    CmdConfig.cpp
                    CmdContinue.cpp
                    CmdDefault.cpp

@@ -32,6 +32,7 @@
 #include <Database.h>
 #include <Extensions.h>
 
+int CmdCancel        (            Rules&, Database&                   );
 int CmdClear         (                                                );
 int CmdConfig        (                                                );
 int CmdContinue      (            Rules&, Database&                   );
