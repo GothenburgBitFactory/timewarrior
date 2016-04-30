@@ -57,6 +57,7 @@ bool lightweightVersionCheck (int argc, const char** argv)
 void initializeEntities (CLI& cli)
 {
   // Command entities.
+  cli.entity ("command", "cancel");
   cli.entity ("command", "clear");
   cli.entity ("command", "config");
   cli.entity ("command", "continue");
