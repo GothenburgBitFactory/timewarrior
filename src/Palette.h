@@ -28,7 +28,6 @@
 #define INCLUDED_PALETTE
 
 #include <Color.h>
-#include <Rules.h>
 #include <vector>
 #include <string>
 
