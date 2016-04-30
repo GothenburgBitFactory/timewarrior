@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <Composite.h>
 #include <Color.h>
+#include <Duration.h>
 #include <Range.h>
 #include <commands.h>
 #include <timew.h>
@@ -34,11 +35,12 @@
 #include <format.h>
 #include <algorithm>
 #include <iostream>
+#include <iomanip>
 
-static void renderSummary (const std::string&);
 static void renderAxis            (const Rules&, Palette&, const std::string&, int, int);
 static void renderExclusionBlocks (const Rules&, Composite&, Composite&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
 static void renderInterval        (const Rules&, Composite&, Composite&, const Datetime&, const Interval&, int, Palette&, std::map <std::string, Color>&);
+static void renderSummary         (const std::string&, const std::vector <Range>&, const std::vector <Interval>&);
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdReportDay (
@@ -109,7 +111,9 @@ int CmdReportDay (
               << '\n';
   }
 
-  renderSummary (indent);
+  if (rules.getBoolean ("report.day.summary"))
+    renderSummary (indent, exclusions, tracked);
+
   return 0;
 }
 
@@ -261,12 +265,28 @@ static void renderInterval (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-static void renderSummary (const std::string& indent)
+static void renderSummary (
+  const std::string& indent,
+  const std::vector <Range>& exclusions,
+  const std::vector <Interval>& tracked)
 {
-  // TODO Summary, missing.
-  std::cout << indent << "Tracked\n"
-            << indent << "Untracked\n"
-            << indent << "Total\n"
+  time_t unavailable = 0;
+  for (auto& exclusion : exclusions)
+    unavailable += exclusion.total ();
+
+  time_t worked = 0;
+  for (auto& interval : tracked)
+    worked += interval.range.total ();
+
+  auto all_day = 86400 - unavailable;
+  auto remaining = all_day - worked;
+
+  std::cout << indent << "Tracked   "
+            << std::setw (13) << std::setfill (' ') << Duration (worked).format ()    << '\n'
+            << indent << "Remaining "
+            << std::setw (13) << std::setfill (' ') << Duration (remaining).format () << '\n'
+            << indent << "Total     "
+            << std::setw (13) << std::setfill (' ') << Duration (all_day).format ()   << '\n'
             << '\n';
 }
 
