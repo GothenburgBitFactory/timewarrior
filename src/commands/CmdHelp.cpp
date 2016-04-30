@@ -34,6 +34,7 @@ int CmdHelpUsage ()
   // TODO This is going to need formatting.
   std::cout << '\n'
             << "Usage: timew [--version]\n"
+            << "       timew cancel\n"
             << "       timew continue\n"
             << "       timew diagnostics\n"
             << "       timew export [<interval>] [<tag> ...]\n"
@@ -93,12 +94,23 @@ int CmdHelp (const CLI& cli)
   auto words = cli.getWords ();
   if (words.size ())
   {
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    if (words[0] == "cancel")
+      std::cout << '\n'
+                << "Syntax: timew cancel\n"
+                << '\n'
+                << "If there is an open interval, close and abandon it.\n"
+                << '\n'
+                << "See also 'start', 'stop'.\n"
+                << '\n';
+
     // TODO clear
     // TODO config
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
-    if (words[0] == "continue")
+    else if (words[0] == "continue")
       std::cout << '\n'
                 << "Syntax: timew continue\n"
                 << '\n'
@@ -249,7 +261,7 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "  $ timew stop\n"
                 << '\n'
-                << "See also 'continue', 'start', 'track'.\n"
+                << "See also 'cancel', 'continue', 'start', 'track'.\n"
                 << '\n';
 
     // TODO summary
