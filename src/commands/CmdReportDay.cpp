@@ -86,9 +86,8 @@ int CmdReportDay (
 
   // Render the axis.
   std::cout << '\n';
-  std::string indent = "  ";
   if (rules.get ("report.day.style") != "compact")
-    renderAxis (rules, palette, indent, first_hour, last_hour);
+    renderAxis (rules, palette, "    ", first_hour, last_hour);
 
   // Each day is rendered separately.
   for (Datetime day = filter.range.start; day < filter.range.end; day++)
@@ -101,13 +100,13 @@ int CmdReportDay (
     for (auto& track : tracked)
       renderInterval (rules, line1, line2, day, track, palette, tag_colors);
 
-    std::cout << indent << line1.str () << '\n'
-              << indent << line2.str () << '\n'
+    std::cout << day.dayNameShort (day.dayOfWeek ()) << ' ' << line1.str () << '\n'
+              << rightJustify (day.day (), 3)        << ' ' << line2.str () << '\n'
               << '\n';
   }
 
   if (rules.getBoolean ("report.day.summary"))
-    renderSummary (indent, exclusions, tracked);
+    renderSummary ("    ", exclusions, tracked);
 
   return 0;
 }
