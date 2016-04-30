@@ -22,6 +22,11 @@ there is any active tracking, and if so, shows a summary, and exits with a code
 0. If there is no active time tracking, exit code is 1.
 
 .TP
+.B timew cancel
+If there is an open interval, closes and abandons it.
+See also 'stop'.
+
+.TP
 .B timew continue
 Resumes tracking the most recently closed interval. For example:
 
@@ -97,7 +102,7 @@ stopped, leaving tag2 active. To stop all tracking:
 
   $ timew stop
 
-See also 'continue', 'start', 'track'.
+See also 'cancel', 'continue', 'start', 'track'.
 
 .TP
 .B timew tags
