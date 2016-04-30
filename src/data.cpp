@@ -578,6 +578,9 @@ bool matchesFilter (const Interval& interval, const Interval& filter)
 // Take an interval and clip it to the range.
 Interval clip (const Interval& interval, const Range& range)
 {
+  if (! range.started ())
+    return interval;
+
   Interval clipped {interval};
   clipped.range = clipped.range.intersect (range);
   return clipped;
