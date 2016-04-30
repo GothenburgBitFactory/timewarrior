@@ -26,10 +26,10 @@
 
 #include <cmake.h>
 #include <CLI.h>
-#include <sstream>
-#include <algorithm>
 #include <Color.h>
 #include <shared.h>
+#include <sstream>
+#include <algorithm>
 
 ////////////////////////////////////////////////////////////////////////////////
 A2::A2 (const std::string& raw, Lexer::Type lextype)
