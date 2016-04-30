@@ -519,6 +519,40 @@ Range outerRange (const std::vector <Interval>& intervals)
 ////////////////////////////////////////////////////////////////////////////////
 // An interval matches a filter interval if the start/end overlaps, and all
 // filter interval tags are found in the interval.
+//
+// [1] interval.range.end.toEpoch () == 0
+// [2] interval.range.end > filter.range.start
+// [3] filter.range.end.toEpoch () == 0
+// [4] interval.range.start < filter.range.end
+//
+// Match:   (1 || 2) && (3 || 4)
+
+// filter closed         [--------)                  1  2  3  4  5  6  result
+// --------------------------------------------------------------------------
+// A       [--------)    .        .                  0  0  0  1  0  0       0
+// B                [--------)    .                  0  1  0  1  1  1       1
+// C                     . [----) .                  0  1  0  1  1  1       1
+// D                     .    [--------)             0  1  0  1  1  1       1
+// E                     .        .    [--------)    0  1  0  0  1  0       0
+// F                   [-------------)               0  1  0  1  1  1       1
+// G                   [...       .                  1  0  0  1  1  1       1
+// H                     .  [...  .                  1  0  0  1  1  1       1
+// I                     .        . [...             1  0  0  0  1  0       0
+//
+//
+//
+// filter open           [...                        1  2  3  4  5  6  result
+// --------------------------------------------------------------------------
+// A       [--------)    .                           0  0  1  0  0  1       0
+// B                [--------)                       0  1  1  0  1  1       1
+// C                     . [----)                    0  1  1  0  1  1       1
+// D                     .    [--------)             0  1  1  0  1  1       1
+// E                     .             [--------)    0  1  1  0  1  1       1
+// F                   [-------------)               0  1  1  0  1  1       1
+// G                   [...                          1  0  1  0  1  1       1
+// H                     .  [...                     1  0  1  0  1  1       1
+// I                     .          [...             1  0  1  0  1  1       1
+//
 bool matchesFilter (const Interval& interval, const Interval& filter)
 {
   if ((filter.range.start.toEpoch () == 0 &&
@@ -526,9 +560,9 @@ bool matchesFilter (const Interval& interval, const Interval& filter)
 
       ||
 
-      ((interval.range.end.toEpoch () == 0       ||
-        interval.range.end > filter.range.start) &&
-       interval.range.start < filter.range.end))
+      ((interval.range.end.toEpoch () == 0 || interval.range.end   > filter.range.start) &&
+       (filter.range.end.toEpoch ()   == 0 || interval.range.start < filter.range.end)))
+
   {
     for (auto& tag : filter.tags ())
       if (! interval.hasTag (tag))
