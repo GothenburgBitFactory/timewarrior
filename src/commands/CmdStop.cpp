@@ -58,7 +58,6 @@ int CmdStop (
 */
 
     // TODO intervalSummarїze needs to operate on a vector of similar intervals.
-    // User feedback.
     if (rules.getBoolean ("verbose"))
       std::cout << intervalSummarize (rules, modified);
 
@@ -75,19 +74,15 @@ int CmdStop (
       // Contiguous with previous interval.
       latest.range.start = modified.range.end;
       latest.range.end   = Datetime (0);
-
       database.addInterval (latest);
-
-      // User feedback.
       if (rules.getBoolean ("verbose"))
         std::cout << '\n' << intervalSummarize (rules, latest);
     }
   }
   else
   {
-    std::string message = "There is no active time tracking.";
     if (rules.getBoolean ("verbose"))
-      std::cout << message << '\n';
+      std::cout << "There is no active time tracking.\n";
   }
 
   return 0;
