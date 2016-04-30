@@ -59,8 +59,6 @@ int CmdReportDay (
 
   // Create a color palette.
   auto palette = createPalette (rules);
-  Color colorExc   (palette.enabled ? rules.get ("theme.colors.exclusion") : "");
-  Color colorLabel (palette.enabled ? rules.get ("theme.colors.label")     : "");
 
   // Map tags to colors.
   auto tag_colors = createTagColorMap (rules, palette, tracked);
@@ -85,7 +83,6 @@ int CmdReportDay (
     first_hour = std::max (first_hour - 1, 0);
     last_hour  = std::min (last_hour + 1, 23);
   }
-//  std::cout << "# hours: " << first_hour << " - " << last_hour << "\n";
 
   // Render the axis.
   std::cout << '\n';
@@ -96,8 +93,6 @@ int CmdReportDay (
   // Each day is rendered separately.
   for (Datetime day = filter.range.start; day < filter.range.end; day++)
   {
-//    std::cout << "# day " << day.toISOLocalExtended () << "\n";
-
     // Render the exclusion blocks.
     Composite line1;
     Composite line2;
