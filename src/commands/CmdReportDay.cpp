@@ -36,9 +36,9 @@
 #include <iostream>
 
 static void renderExclusionBlocks (Composite&, Composite&, const Datetime&, int, int, const std::vector <Range>&, Color&);
-static void renderInterval (Composite&, Composite&, const Datetime&, const Interval&, int, Palette&, std::map <std::string, Color>&);
 static void renderSummary (const std::string&);
 static void renderAxis            (const Rules&, Palette&, const std::string&, int, int);
+static void renderInterval        (const Rules&, Composite&, Composite&, const Datetime&, const Interval&, int, Palette&, std::map <std::string, Color>&);
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdReportDay (
@@ -102,7 +102,7 @@ int CmdReportDay (
     renderExclusionBlocks (line1, line2, day, first_hour, last_hour, exclusions, colorExc);
 
     for (auto& track : tracked)
-      renderInterval (line1, line2, day, track, first_hour, palette, tag_colors);
+      renderInterval (rules, line1, line2, day, track, first_hour, palette, tag_colors);
 
     std::cout << indent << line1.str () << '\n'
               << indent << line2.str () << '\n'
@@ -169,6 +169,7 @@ static void renderExclusionBlocks (
 
 ////////////////////////////////////////////////////////////////////////////////
 static void renderInterval (
+  const Rules& rules,
   Composite& line1,
   Composite& line2,
   const Datetime& day,
@@ -177,6 +178,8 @@ static void renderInterval (
   Palette& palette,
   std::map <std::string, Color>& tag_colors)
 {
+  auto spacing = rules.getInteger ("report.day.spacing");
+
   // Make sure the track only represents one day.
   Datetime eod {day};
   eod++;
@@ -184,20 +187,16 @@ static void renderInterval (
   Interval clipped = clip (track, day_range);
 
   // TODO track may have started days ago.
-//  std::cout << "#   track " << track.dump () << "\n";
   auto start_hour = clipped.range.start.hour ();
   auto start_min  = clipped.range.start.minute ();
   auto end_hour   = clipped.range.end.hour ();
   auto end_min    = clipped.range.end.minute ();
-//  std::cout << "#     " << start_hour << "/" << start_min << " - " << end_hour << "/" << end_min << "\n";
 
   auto start_block = quantizeTo15Minutes (start_min) / 15;
   auto end_block   = quantizeTo15Minutes (end_min == 0 ? 60 : end_min) / 15;
-//  std::cout << "#     blocks " << start_block << " - " << end_block << "\n";
 
-  int start_offset = (start_hour - first_hour) * 5 + start_block;
-  int end_offset   = (end_hour - 1 - first_hour) * 5 + end_block;
-//  std::cout << "#     offset " << start_offset << " - " << end_offset << "\n";
+  int start_offset = (start_hour - first_hour) * (4 + spacing) + start_block;
+  int end_offset   = (end_hour - 1 - first_hour) * (4 + spacing) + end_block;
 
   if (end_offset > start_offset)
   {
