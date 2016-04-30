@@ -35,9 +35,9 @@
 #include <algorithm>
 #include <iostream>
 
-static void renderExclusionBlocks (Composite&, Composite&, const Datetime&, int, int, const std::vector <Range>&, Color&);
 static void renderSummary (const std::string&);
 static void renderAxis            (const Rules&, Palette&, const std::string&, int, int);
+static void renderExclusionBlocks (const Rules&, Composite&, Composite&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
 static void renderInterval        (const Rules&, Composite&, Composite&, const Datetime&, const Interval&, int, Palette&, std::map <std::string, Color>&);
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -99,7 +99,7 @@ int CmdReportDay (
     // Render the exclusion blocks.
     Composite line1;
     Composite line2;
-    renderExclusionBlocks (line1, line2, day, first_hour, last_hour, exclusions, colorExc);
+    renderExclusionBlocks (rules, line1, line2, palette, day, first_hour, last_hour, exclusions);
 
     for (auto& track : tracked)
       renderInterval (rules, line1, line2, day, track, first_hour, palette, tag_colors);
@@ -133,14 +133,19 @@ static void renderAxis (
 
 ////////////////////////////////////////////////////////////////////////////////
 static void renderExclusionBlocks (
+  const Rules& rules,
   Composite& line1,
   Composite& line2,
+  Palette& palette,
   const Datetime& day,
   int first_hour,
   int last_hour,
-  const std::vector <Range>& excluded,
-  Color& colorExc)
+  const std::vector <Range>& excluded)
 {
+  auto spacing = rules.getInteger ("report.day.spacing");
+  auto style = rules.get ("report.day.style");
+  Color colorExc (palette.enabled ? rules.get ("theme.colors.exclusion") : "");
+
   // Render the exclusion blocks.
   for (int hour = first_hour; hour <= last_hour; hour++)
   {
@@ -157,11 +162,20 @@ static void renderExclusionBlocks (
         auto start_block = quantizeTo15Minutes (sub_hour.start.minute ()) / 15;
         auto end_block   = quantizeTo15Minutes (sub_hour.end.minute () == 0 ? 60 : sub_hour.end.minute ()) / 15;
 
-        int offset = (hour - first_hour) * 5 + start_block;
-        std::string block (end_block - start_block, ' ');
+        int offset = (hour - first_hour) * (4 + spacing) + start_block;
+        int width = end_block - start_block;
+        std::string block (width, ' ');
 
         line1.add (block, offset, colorExc);
         line2.add (block, offset, colorExc);
+
+        if (style == "compact")
+        {
+          auto label = format ("{1}", hour);
+          if (start_block == 0 &&
+              width >= static_cast <int> (label.length ()))
+            line1.add (label, offset, colorExc);
+        }
       }
     }
   }
