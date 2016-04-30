@@ -599,8 +599,13 @@ std::vector <Interval> getTrackedIntervals (
   //
   //   [earliest start, latest end)
   //
+  // Avoid assigning a zero-width range - leave it unstarted instead.
   if (! filter.range.started ())
-    filter.range = outerRange (inclusions);
+  {
+    auto outer = outerRange (inclusions);
+    if (outer.total ())
+      filter.range = outer;
+  }
 
   // Get the set of expanded exclusions that overlap the range defined by the
   // timeline. If no range is defined, derive it from the set of all data.
