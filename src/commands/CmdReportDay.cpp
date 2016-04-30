@@ -39,7 +39,7 @@
 
 static void renderAxis            (const Rules&, Palette&, const std::string&, int, int);
 static void renderExclusionBlocks (const Rules&, Composite&, Composite&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
-static void renderInterval        (const Rules&, Composite&, Composite&, const Datetime&, const Interval&, int, Palette&, std::map <std::string, Color>&);
+static void renderInterval        (const Rules&, Composite&, Composite&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&);
 static void renderSummary         (const std::string&, const std::vector <Range>&, const std::vector <Interval>&);
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -99,7 +99,7 @@ int CmdReportDay (
     renderExclusionBlocks (rules, line1, line2, palette, day, first_hour, last_hour, exclusions);
 
     for (auto& track : tracked)
-      renderInterval (rules, line1, line2, day, track, first_hour, palette, tag_colors);
+      renderInterval (rules, line1, line2, day, track, palette, tag_colors);
 
     std::cout << indent << line1.str () << '\n'
               << indent << line2.str () << '\n'
@@ -187,7 +187,6 @@ static void renderInterval (
   Composite& line2,
   const Datetime& day,
   const Interval& track,
-  int first_hour,
   Palette& palette,
   std::map <std::string, Color>& tag_colors)
 {
