@@ -59,9 +59,7 @@ int main (int, char**)
   // G                      [...
   // H                           [...
   // I                                   [...
-  Range refClosed;
-  refClosed.start = Datetime (2016, 6,  1);
-  refClosed.end   = Datetime (2016, 6, 30);
+  Range refClosed (Datetime (2016, 6, 1), Datetime (2016, 6, 30));
 
   Range testA; testA.start = Datetime (2016, 4,  1); testA.end = Datetime (2016, 4, 30);
   Range testB; testB.start = Datetime (2016, 5, 15); testB.end = Datetime (2016, 6, 15);
@@ -93,8 +91,7 @@ int main (int, char**)
   // G                      [...
   // H                           [...
   // I                                   [...
-  Range refOpen;
-  refOpen.start = Datetime (2016, 6, 1);
+  Range refOpen (Datetime (2016, 6, 1), Datetime (0));
 
   t.notok (refOpen.overlap (testA), "Range: ! refOpen.overlap(testA)");
   t.ok    (refOpen.overlap (testB), "Range:   refOpen.overlap(testB)");
