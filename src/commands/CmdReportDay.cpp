@@ -199,17 +199,13 @@ static void renderInterval (
   Range day_range (day, eod);
   Interval clipped = clip (track, day_range);
 
-  // TODO track may have started days ago.
-  auto start_hour = clipped.range.start.hour ();
-  auto start_min  = clipped.range.start.minute ();
-  auto end_hour   = clipped.range.end.hour ();
-  auto end_min    = clipped.range.end.minute ();
+  auto start_mins = clipped.range.start.hour () * 60 + clipped.range.start.minute ();
+  auto end_mins   = clipped.range.end.hour () * 60 + clipped.range.end.minute ();
+  if (end_mins == 0)
+    end_mins = 23 * 60 + 59;
 
-  auto start_block = quantizeTo15Minutes (start_min) / 15;
-  auto end_block   = quantizeTo15Minutes (end_min == 0 ? 60 : end_min) / 15;
-
-  int start_offset = (start_hour - first_hour) * (4 + spacing) + start_block;
-  int end_offset   = (end_hour - 1 - first_hour) * (4 + spacing) + end_block;
+  int start_offset = (start_mins / 15) + (spacing * (start_mins / 60));
+  int end_offset   = (end_mins   / 15) + (spacing * (end_mins   / 60));
 
   if (end_offset > start_offset)
   {
