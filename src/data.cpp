@@ -480,7 +480,7 @@ std::vector <Range> subtractRanges (
         results.push_back (limits.intersect (r3));
 
 /*
-  std::cout << "# addRange:\n";
+  std::cout << "# subtractRange:\n";
   for (auto& result : results)
     std::cout << "#   " << result.dump () << "\n";
 */
