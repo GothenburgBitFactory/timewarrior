@@ -12,7 +12,6 @@ set (timew_SRCS CLI.cpp        CLI.h
                 Extensions.cpp Extensions.h
                 Interval.cpp   Interval.h
                 Lexer.cpp      Lexer.h
-                Palette.cpp    Palette.h
                 Range.cpp      Range.h
                 Rules.cpp      Rules.h
                 data.cpp
@@ -29,6 +28,7 @@ set (libshared_SRCS libshared/src/Args.cpp          libshared/src/Args.h
                     libshared/src/FS.cpp            libshared/src/FS.h
                     libshared/src/JSON.cpp          libshared/src/JSON.h
                     libshared/src/Msg.cpp           libshared/src/Msg.h
+                    libshared/src/Palette.cpp       libshared/src/Palette.h
                     libshared/src/Pig.cpp           libshared/src/Pig.h
                     libshared/src/RX.cpp            libshared/src/RX.h
                     libshared/src/Table.cpp         libshared/src/Table.h
