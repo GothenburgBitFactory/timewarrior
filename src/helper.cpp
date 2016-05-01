@@ -31,7 +31,6 @@
 #include <Duration.h>
 #include <sstream>
 #include <iomanip>
-#include <iostream> // TODO Remove.
 #include <map>
 #include <vector>
 
@@ -99,19 +98,31 @@ bool expandIntervalHint (
 {
   static std::map <std::string, std::vector <std::string>> hints
   {
-    {":yesterday", {"yesterday", "today"}},
-    {":day",       {"today",     "tomorrow"}},
-    {":week",      {"socw",      "eocw"}},
-    {":month",     {"socm",      "eocm"}},
-    {":quarter",   {"socq",      "eocq"}},
-    {":year",      {"socy",      "eocy"}},
+    {":yesterday",   {"yesterday", "today"}},
+    {":day",         {"today",     "tomorrow"}},
+    {":week",        {"socw",      "eocw"}},
+    {":month",       {"socm",      "eocm"}},
+    {":quarter",     {"socq",      "eocq"}},
+    {":year",        {"socy",      "eocy"}},
   };
 
+  // Some hints are just synonyms.
   if (hints.find (hint) != hints.end ())
   {
     start = hints[hint][0];
     end   = hints[hint][1];
     return true;
+  }
+
+  // Some require math.
+  if (hint == ":lastweek")
+  {
+    Datetime socw ("socw");
+    Datetime eocw ("eocw");
+    socw -= 7 * 86400;
+    eocw -= 7 * 86400;
+    start = socw.toString ("Y-M-D");
+    end = eocw.toString ("Y-M-D");
   }
 
   return false;

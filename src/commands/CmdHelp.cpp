@@ -210,6 +210,7 @@ int CmdHelp (const CLI& cli)
                 << "  :month         This month\n"
                 << "  :quarter       This quarter\n"
                 << "  :year          This year\n"
+                << "  :lastweek      Last week\n"
                 << '\n'
                 << "  :fill          Expand time to fill surrounding available gap\n"
                 << "                 Only functions when exclusions are provided\n"

@@ -91,6 +91,7 @@ void initializeEntities (CLI& cli)
   cli.entity ("hint", ":month");
   cli.entity ("hint", ":quarter");
   cli.entity ("hint", ":year");
+  cli.entity ("hint", ":lastweek");
   cli.entity ("hint", ":fill");
   cli.entity ("hint", ":color");
   cli.entity ("hint", ":nocolor");
