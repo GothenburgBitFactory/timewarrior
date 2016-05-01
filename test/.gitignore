@@ -5,7 +5,6 @@ exclusion.t
 helper.t
 interval.t
 lexer.t
-palette.t
 range.t
 rules.t
 util.t
