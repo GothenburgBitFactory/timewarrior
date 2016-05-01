@@ -117,9 +117,12 @@ int CmdReportSummary (
   table.set (table.addRow (), 7, " ", Color ("underline"));
   table.set (table.addRow (), 7, Duration (grand_total).format ());
 
-  std::cout << '\n'
-            << table.render ()
-            << '\n';
+  if (table.rows () > 2)
+    std::cout << '\n'
+              << table.render ()
+              << '\n';
+  else
+    std::cout << "No filtered data found.\n";
 
   return 0;
 }
