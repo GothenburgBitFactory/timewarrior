@@ -69,10 +69,7 @@ int CmdReportSummary (
   Datetime previous;
   for (Datetime day = filter.range.start; day < filter.range.end; day++)
   {
-    Datetime eod {day};
-    eod++;
-    Range day_range (day, eod);
-
+    auto day_range = getFullDay (day);
     time_t daily_total = 0;
 
     int row = -1;
@@ -90,6 +87,8 @@ int CmdReportSummary (
 
       // Intersect track with day.
       auto today = day_range.intersect (track.range);
+      if (! track.range.ended ())
+        today.end = Datetime ();
 
       std::string tags = "";
       for (auto& tag : track.tags ())
@@ -101,7 +100,7 @@ int CmdReportSummary (
 
       table.set (row, 3, tags);
       table.set (row, 4, today.start.toString ("h:N:S"));
-      table.set (row, 5, today.end.toString ("h:N:S"));
+      table.set (row, 5, (track.range.ended () ? today.end.toString ("h:N:S") : "-"));
       table.set (row, 6, Duration (today.total ()).format ());
 
       daily_total += today.total ();
