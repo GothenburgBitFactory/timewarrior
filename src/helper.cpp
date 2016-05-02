@@ -99,7 +99,7 @@ bool expandIntervalHint (
   static std::map <std::string, std::vector <std::string>> hints
   {
     {":yesterday",   {"yesterday", "today"}},
-    {":day",         {"today",     "tomorrow"}},
+    {":day",         {"today",     "eod"}},
     {":week",        {"socw",      "eocw"}},
     {":month",       {"socm",      "eocm"}},
     {":quarter",     {"socq",      "eocq"}},
