@@ -54,6 +54,7 @@ Interval                clip                (const Interval&, const Range&);
 std::vector <Interval>  getTrackedIntervals (Database&, const Rules&, Interval&);
 std::vector <Range>     getUntrackedRanges  (const Rules&);
 Interval                getLatestInterval   (Database&);
+Range                   getFullDay          (const Datetime&);
 
 // init.cpp
 bool lightweightVersionCheck (int, const char**);

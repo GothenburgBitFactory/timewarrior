@@ -656,3 +656,14 @@ Interval getLatestInterval (Database& database)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+Range getFullDay (const Datetime& day)
+{
+  int y;
+  int m;
+  int d;
+  day.toYMD (y, m, d);
+  return Range (Datetime (y, m, d, 0, 0, 0),
+                Datetime (y, m, d, 23, 59, 59));
+}
+
+////////////////////////////////////////////////////////////////////////////////
