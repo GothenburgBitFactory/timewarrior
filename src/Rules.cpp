@@ -40,7 +40,6 @@ Rules::Rules ()
   _settings =
   {
     {"confirmation", "yes"},
-    {"version",      VERSION},
     {"debug",        "off"},
     {"verbose",      "on"},
   };

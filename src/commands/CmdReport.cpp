@@ -92,6 +92,7 @@ int CmdReport (
     combinedTags += quoteIfNeeded (tag);
   }
   rules.set ("temp.report.tags", combinedTags);
+  rules.set ("temp.version", VERSION);
 
   std::stringstream header;
   for (auto& name : rules.all ())
