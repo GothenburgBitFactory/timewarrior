@@ -192,10 +192,13 @@ static void renderInterval (
   auto spacing = rules.getInteger ("report.day.spacing");
 
   // Make sure the track only represents one day.
-  Datetime eod {day};
-  eod++;
-  Range day_range (day, eod);
+  auto day_range = getFullDay (day);
+  if (! day_range.overlap (track.range))
+    return;
+
   Interval clipped = clip (track, day_range);
+  if (! track.range.ended ())
+    clipped.range.end = Datetime ();
 
   auto start_mins = clipped.range.start.hour () * 60 + clipped.range.start.minute ();
   auto end_mins   = clipped.range.end.hour () * 60 + clipped.range.end.minute ();
