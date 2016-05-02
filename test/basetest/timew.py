@@ -81,6 +81,16 @@ class Timew(object):
         with open(self.timewrc, "r") as f:
             return f.readlines()
 
+    def export(self, export_filter=None):
+        """Run "task export", return JSON array of exported intervals."""
+        if export_filter is None:
+            export_filter = ""
+
+        code, out, err = self.runSuccess("{0} export"
+                                         "".format(export_filter))
+
+        return json.loads(out)
+
     @staticmethod
     def _split_string_args_if_string(args):
         """Helper function to parse and split into arguments a single string
