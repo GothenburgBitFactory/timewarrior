@@ -581,7 +581,13 @@ Interval clip (const Interval& interval, const Range& range)
     return interval;
 
   Interval clipped {interval};
-  clipped.range = clipped.range.intersect (range);
+  if (clipped.range.start.toEpoch () &&
+      clipped.range.start < range.start)
+    clipped.range.start = range.start;
+
+  if (clipped.range.end.toEpoch () &&
+      clipped.range.end > range.end)
+    clipped.range.end = range.end;
 
 /*
   std::cout << "# clip:\n"
