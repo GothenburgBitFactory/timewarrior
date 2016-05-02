@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (34);
+  UnitTest t (36);
 
   // std::vector <Interval> collapse (const Interval&, std::vector <Range>&);
   Interval i1;
@@ -137,7 +137,10 @@ int main (int, char**)
   i.range = testH; t.ok    (matchesFilter (i, refOpen), "matchesFilter H <=> refOpen");
   i.range = testI; t.ok    (matchesFilter (i, refOpen), "matchesFilter I <=> refOpen");
 
-  // TODO Now repeat with missing tags.
+  // Range getFullDay (const Datetime&);
+  auto r1 = getFullDay (Datetime (2016, 5, 1, 20, 31, 12));
+  t.ok (r1.start == Datetime (2016, 5, 1,  0,  0,  0), "getFullDay 2016-05-01T20:31:23 -> start 2016-05-01T00:00:00");
+  t.ok (r1.end   == Datetime (2016, 5, 1, 23, 59, 59), "getFullDay 2016-05-01T20:31:23 -> end   2016-05-01T23:59:59");
 
   return 0;
 }
