@@ -43,22 +43,22 @@ int main (int, char**)
                                     Range (Datetime ("20160427T173000Z"), Datetime ("20160428T000000Z"))};
 
   auto results = collapse (i1, exclusions);
-  t.ok (results.size () == 2,                                "splitInterval i1 --> 2 fragments");
-  t.is (results[0].range.start.toISO (), "20160427T000000Z", "splitInterval i1 --> results[0].range.start 20160427T000000Z");
-  t.is (results[0].range.end.toISO (),   "20160427T120000Z", "splitInterval i1 --> results[0].range.end   20160427T120000Z");
-  t.is (results[1].range.start.toISO (), "20160427T130000Z", "splitInterval i1 --> results[1].range.start 20160427T130000Z");
-  t.is (results[1].range.end.toISO (),   "20160428T000000Z", "splitInterval i1 --> results[1].range.end   20160428T000000Z");
+  t.ok (results.size () == 2,                                "collapse i1 --> 2 fragments");
+  t.is (results[0].range.start.toISO (), "20160427T000000Z", "collapse i1 --> results[0].range.start 20160427T000000Z");
+  t.is (results[0].range.end.toISO (),   "20160427T120000Z", "collapse i1 --> results[0].range.end   20160427T120000Z");
+  t.is (results[1].range.start.toISO (), "20160427T130000Z", "collapse i1 --> results[1].range.start 20160427T130000Z");
+  t.is (results[1].range.end.toISO (),   "20160428T000000Z", "collapse i1 --> results[1].range.end   20160428T000000Z");
 
   Interval i2;
   i2.range = Range (Datetime ("20160427T115500Z"), Datetime ("20160427T130500Z"));
   i2.tag ("foo");
 
   results = collapse (i2, exclusions);
-  t.ok (results.size () == 2,                                "splitInterval i2 --> 2 fragments");
-  t.is (results[0].range.start.toISO (), "20160427T115500Z", "splitInterval i2 --> results[0].range.start 20160427T115500Z");
-  t.is (results[0].range.end.toISO (),   "20160427T120000Z", "splitInterval i2 --> results[0].range.end   20160427T120000Z");
-  t.is (results[1].range.start.toISO (), "20160427T130000Z", "splitInterval i2 --> results[1].range.start 20160427T130000Z");
-  t.is (results[1].range.end.toISO (),   "20160427T130500Z", "splitInterval i2 --> results[1].range.end   20160427T130500Z");
+  t.ok (results.size () == 2,                                "collapse i2 --> 2 fragments");
+  t.is (results[0].range.start.toISO (), "20160427T115500Z", "collapse i2 --> results[0].range.start 20160427T115500Z");
+  t.is (results[0].range.end.toISO (),   "20160427T120000Z", "collapse i2 --> results[0].range.end   20160427T120000Z");
+  t.is (results[1].range.start.toISO (), "20160427T130000Z", "collapse i2 --> results[1].range.start 20160427T130000Z");
+  t.is (results[1].range.end.toISO (),   "20160427T130500Z", "collapse i2 --> results[1].range.end   20160427T130500Z");
 
   Interval i3;
   i3.range = Range (Datetime ("20160427T160000Z"), Datetime (0));
@@ -67,9 +67,9 @@ int main (int, char**)
   t.notok (i3.range.ended (),   "i3 range not ended");
 
   results = collapse (i3, exclusions);
-  t.ok (results.size () == 2,                                "splitInterval i3 --> 2 fragments");
-  t.is (results[0].range.start.toISO (), "20160427T160000Z", "splitInterval i3 --> results[0].range.start 20160427T160000Z");
-  t.is (results[0].range.end.toISO (),   "20160427T173000Z", "splitInterval i3 --> results[0].range.end   20160427T173000Z");
+  t.ok (results.size () == 2,                                "collapse i3 --> 2 fragments");
+  t.is (results[0].range.start.toISO (), "20160427T160000Z", "collapse i3 --> results[0].range.start 20160427T160000Z");
+  t.is (results[0].range.end.toISO (),   "20160427T173000Z", "collapse i3 --> results[0].range.end   20160427T173000Z");
 
   // bool matchesFilter (const Interval& interval, const Interval& filter);
   Interval refOpen;
