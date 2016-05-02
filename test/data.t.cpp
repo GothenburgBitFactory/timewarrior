@@ -67,9 +67,9 @@ int main (int, char**)
   t.notok (i3.range.ended (),   "i3 range not ended");
 
   results = collapse (i3, exclusions);
-  t.ok (results.size () == 2,                                "collapse i3 --> 2 fragments");
-  t.is (results[0].range.start.toISO (), "20160427T160000Z", "collapse i3 --> results[0].range.start 20160427T160000Z");
-  t.is (results[0].range.end.toISO (),   "20160427T173000Z", "collapse i3 --> results[0].range.end   20160427T173000Z");
+  t.ok (results.size () == 2,                                  "collapse i3 --> 2 fragments");
+  t.ok (results[0].range.start.toISO () == "20160427T160000Z", "collapse i3 --> results[0].range.start 20160427T160000Z");
+  t.ok (results[0].range.end.toEpoch () == 0,                  "collapse i3 --> results[0].range.end   -");
 
   // bool matchesFilter (const Interval& interval, const Interval& filter);
   Interval refOpen;
