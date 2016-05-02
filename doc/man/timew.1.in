@@ -138,6 +138,7 @@ forms of feedback, for purposes of automation. The supported hints are:
   :month         This month
   :quarter       This quarter
   :year          This year
+  :lastweek      Last week
 
   :fill          Expand time to fill surrounding available gap
                  Only functions when exclusions are provided
