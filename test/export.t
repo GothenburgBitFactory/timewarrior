@@ -61,6 +61,17 @@ class TestExport(TestCase):
         code, out, err = self.t("export")
         self.assertIn("[\n]\n", out)
 
+    def test_single_unobstructed_interval(self):
+        """Add one interval and export it as-is"""
+        self.t("track 8am - 9am foo")
+
+        j = self.t.export()
+        self.assertEqual(len(j), 1)
+        self.assertTrue('start' in j[0])
+        self.assertTrue('end' in j[0])
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'][0], 'foo')
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())
