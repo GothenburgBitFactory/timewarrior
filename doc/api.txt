@@ -43,7 +43,6 @@ The input format looks like this:
 
   name1: value1
   name2: value2
-  version: 0.1.0
   ...
 
   [
@@ -66,6 +65,7 @@ data, but may be of use to the extension.  For example:
   temp.report.end: 20160401T000000Z
   temp.report.start: 20160430T235959Z
   temp.report.tags: "This is a multi-word tag",ProjectA,tag123
+  temp.version: 0.1.0
 
 After the configuration block, there is a single blank line to separate it from
 the JSON data.
