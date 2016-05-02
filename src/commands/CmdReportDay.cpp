@@ -251,7 +251,7 @@ static void renderInterval (
       // An open interval gets a "..." in the bottom right corner, or
       // whatever fits.
       if (! track.range.ended ())
-        line2.add ("+", width - 1, colorTrack);
+        line2.add ("+", start_offset + width - 1, colorTrack);
     }
   }
 }
