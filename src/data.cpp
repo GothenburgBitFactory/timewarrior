@@ -656,7 +656,11 @@ Interval getLatestInterval (Database& database)
   Interval i;
   for (auto& line : database.allLines ())
   {
-    if (line.find (" - ") == std::string::npos)
+    // inc YYYYMMDDTHHMMSSZ - YYYYMMDDTHHMMSSZ # ...
+    //                     ^ 20
+    auto separator = line.find (" - ");
+    if (separator != std::string::npos &&
+        separator != 20)
     {
       i.initialize (line);
       return i;
