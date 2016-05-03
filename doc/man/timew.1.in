@@ -53,13 +53,14 @@ Displays the directory containing the extension programs, and a table showing
 each extention and its status. See also 'diagnostics'.
 
 .TP
-.B timew help [<command> | hints]
-The help command shows detailed descriptions and examples of commands and the
-supported hints. For example:
+.B timew help [<command> | hints | interval]
+The help command shows detailed descriptions and examples of commands,
+supported hints and interval syntax. For example:
 
   $ timew help
   $ timew help start
   $ timew help hints
+  $ timew help interval
 
 .TP
 .B timew [report] <report> [<interval>] [<tag> ...]
