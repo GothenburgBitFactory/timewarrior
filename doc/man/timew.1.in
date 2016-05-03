@@ -113,6 +113,28 @@ Displays all the tags that have been used.
 The track command is used to add tracked time in the past. Perhaps you forgot
 to record time, or are just filling in old entries.
 
+.SH INTERVAL
+An interval defines a block of time that is tracked. The syntax for specifying
+an interval is flexible, and may be one of:
+
+  [from] <date>
+  [from] <date> to/- <date>
+  [from] <date> for <duration>
+  <duration> before/after <date>
+  <duration> ago
+  [for] <duration>
+
+Examples are:
+
+  from 9:00
+  from 9am - 11am
+  from 9:00:00 to 11:00
+  from 9:00 for 2h
+  2h after 9am
+  2h before 11:00
+  2h ago
+  for 2h
+
 .SH HINTS
 Timewarrior supports hints, which are single-word command line features that
 start with a colon like this:
