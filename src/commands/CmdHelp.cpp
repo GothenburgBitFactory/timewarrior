@@ -277,7 +277,24 @@ int CmdHelp (const CLI& cli)
                 << "Displays all the tags that have been used.\n"
                 << '\n';
 
-    // TODO track
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "track")
+      std::cout << '\n'
+                << "Syntax: timew track <interval> [<tag> ...]\n"
+                << '\n'
+                << "The track command is used to add tracked time in the past. Perhaps you forgot\n"
+                << "to record time, or are just filling in old entries. For example:\n"
+                << '\n'
+                << "  $ timew track :yesterday 'Training Course'\n"
+                << "  $ timew track 9am - 11am 'Staff Meeting'\n"
+                << '\n'
+                << "Note that the track command expects a closed interval (start and end time), when\n"
+                << "recording. If a closed interval is not provided, the 'track' command behaves the\n"
+                << "same as the 'start' command.\n"
+                << '\n';
+
+
     // TODO undo
     // TODO week
     // TODO year
