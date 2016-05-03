@@ -111,7 +111,14 @@ Displays all the tags that have been used.
 .TP
 .B timew track <interval> [<tag> ...]
 The track command is used to add tracked time in the past. Perhaps you forgot
-to record time, or are just filling in old entries.
+to record time, or are just filling in old entries. For example:
+
+  $ timew track :yesterday 'Training Course'
+  $ timew track 9am - 11am 'Staff Meeting'
+
+Note that the track command expects a closed interval (start and end time), when
+recording. If a closed interval is not provided, the 'track' command behaves the
+same as the 'start' command.
 
 .SH INTERVAL
 An interval defines a block of time that is tracked. The syntax for specifying
@@ -134,6 +141,9 @@ Examples are:
   2h before 11:00
   2h ago
   for 2h
+
+An interval is said to be 'closed' if there is both a start and end, and 'open'
+if there is no end date.
 
 .SH HINTS
 Timewarrior supports hints, which are single-word command line features that
