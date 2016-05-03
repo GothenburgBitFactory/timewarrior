@@ -129,6 +129,8 @@ forms of feedback, for purposes of automation. The supported hints are:
 
   :quiet         Turns off all feedback. For automation
   :debug         Runs in debug mode, shows many runtime details
+  :yes           Overrides confirmation by answering 'yes' to the questions
+
   :color         Force color on, even if not connected to a TTY
   :nocolor       Force color off, even if connected to a TTY
 

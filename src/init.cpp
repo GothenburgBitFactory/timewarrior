@@ -95,6 +95,7 @@ void initializeEntities (CLI& cli)
   cli.entity ("hint", ":fill");
   cli.entity ("hint", ":color");
   cli.entity ("hint", ":nocolor");
+  cli.entity ("hint", ":yes");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -111,14 +112,16 @@ void initializeDataAndRules (
   //   :quiet   --> verbose=off
   //   :color   --> color=on
   //   :nocolor --> color=off
+  //   :yes     --> confirmation=off
   for (auto& arg : cli._args)
   {
     if (arg.hasTag ("HINT"))
     {
-      if (arg.attribute ("canonical") == ":debug")   rules.set ("debug",   "on");
-      if (arg.attribute ("canonical") == ":quiet")   rules.set ("verbose", "off");
-      if (arg.attribute ("canonical") == ":color")   rules.set ("color",   "on");
-      if (arg.attribute ("canonical") == ":nocolor") rules.set ("color",   "off");
+      if (arg.attribute ("canonical") == ":debug")   rules.set ("debug",        "on");
+      if (arg.attribute ("canonical") == ":quiet")   rules.set ("verbose",      "off");
+      if (arg.attribute ("canonical") == ":color")   rules.set ("color",        "on");
+      if (arg.attribute ("canonical") == ":nocolor") rules.set ("color",        "off");
+      if (arg.attribute ("canonical") == ":yes")     rules.set ("confirmation", "off");
     }
   }
 

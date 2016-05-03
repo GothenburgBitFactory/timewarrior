@@ -200,6 +200,7 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "  :quiet         Turns off all feedback. For automation\n"
                 << "  :debug         Runs in debug mode, shows many runtime details\n"
+                << "  :yes           Overrides confirmation by answering 'yes' to the questions\n"
                 << '\n'
                 << "  :color         Force color on, even if not connected to a TTY\n"
                 << "  :nocolor       Force color off, even if connected to a TTY\n"
