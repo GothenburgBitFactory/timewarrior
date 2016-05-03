@@ -34,7 +34,7 @@
 
 int CmdCancel        (            Rules&, Database&                   );
 int CmdClear         (                                                );
-int CmdConfig        (                                                );
+int CmdConfig        (const CLI&, Rules&                              );
 int CmdContinue      (            Rules&, Database&                   );
 int CmdDefault       (            Rules&, Database&                   );
 int CmdDiagnostics   (            Rules&, Database&, const Extensions&);

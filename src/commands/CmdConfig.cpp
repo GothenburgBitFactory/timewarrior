@@ -25,20 +25,24 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <timew.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdConfig ()
+int CmdConfig (
+  const CLI& cli,
+  Rules& rules)
 {
-  std::cout << "[config: allows set/reset/removal and enumeration of configuration settings]\n";
-
-  // TODO Determine form:
+  // Determine form:
   //      timew config name value       Set name=value
   //      timew config name ''          Set name=''
   //      timew config name             Remove name
-  //      timew config                  Show all config
+  // TODO timew config                  Show all config
 
-  return 0;
+  int rc = 0;
+
+
+  return rc;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

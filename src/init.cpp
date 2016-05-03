@@ -228,7 +228,7 @@ int dispatchCommand (
     // command to fn mapping.
          if (command == "cancel")      status = CmdCancel        (     rules, database            );
     else if (command == "clear")       status = CmdClear         (                                );
-    else if (command == "config")      status = CmdConfig        (                                );
+    else if (command == "config")      status = CmdConfig        (cli, rules                      );
     else if (command == "continue")    status = CmdContinue      (     rules, database            );
     else if (command == "diagnostics") status = CmdDiagnostics   (     rules, database, extensions);
     else if (command == "export")      status = CmdExport        (cli, rules, database            );
