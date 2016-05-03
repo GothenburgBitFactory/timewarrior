@@ -50,9 +50,9 @@ int CmdHelpUsage ()
             << "       [from] <date>\n"
             << "       [from] <date> to/- <date>\n"
             << "       [from] <date> for <duration>\n"
-            << "       <duration> before <date>\n"
-            << "       <duration> after <date>\n"
-            << "       <duration>\n"
+            << "       <duration> before/after <date>\n"
+            << "       <duration> ago\n"
+            << "       [for] <duration>\n"
             << '\n'
             << "Tag:\n"
             << "       Word\n"
