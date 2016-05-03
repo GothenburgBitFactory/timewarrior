@@ -179,6 +179,7 @@ int CmdHelp (const CLI& cli)
                 << "  $ timew help\n"
                 << "  $ timew help start\n"
                 << "  $ timew help hints\n"
+                << "  $ timew help interval\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
@@ -215,6 +216,35 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "  :fill          Expand time to fill surrounding available gap\n"
                 << "                 Only functions when exclusions are provided\n"
+                << '\n';
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "interval")
+      std::cout << '\n'
+                << "An interval defines a block of time that is tracked. The syntax for specifying\n"
+                << "an interval is flexible, and may be one of:\n"
+                << '\n'
+                << "  [from] <date>\n"
+                << "  [from] <date> to/- <date>\n"
+                << "  [from] <date> for <duration>\n"
+                << "  <duration> before/after <date>\n"
+                << "  <duration> ago\n"
+                << "  [for] <duration>\n"
+                << '\n'
+                << "Examples are:\n"
+                << '\n'
+                << "  from 9:00\n"
+                << "  from 9am - 11am\n"
+                << "  from 9:00:00 to 11:00\n"
+                << "  from 9:00 for 2h\n"
+                << "  2h after 9am\n"
+                << "  2h before 11:00\n"
+                << "  2h ago\n"
+                << "  for 2h\n"
+                << '\n'
+                << "An interval is said to be 'closed' if there is both a start and end, and 'open'\n"
+                << "if there is no end date.\n"
                 << '\n';
 
     // TODO import
