@@ -153,10 +153,10 @@ Interval getFilter (const CLI& cli)
   }
 
   // from/since <date> for <duration>
-  else if (args.size () == 4                         &&
-           (args[0] == "from" || args[0] == "since") &&
-           args[1] == "<date>"                       &&
-           args[2] == "for"                          &&
+  else if (args.size () == 4       &&
+           args[0] == "from"       &&
+           args[1] == "<date>"     &&
+           args[2] == "for"        &&
            args[3] == "<duration>")
   {
     range.start = Datetime (start);
@@ -187,6 +187,15 @@ Interval getFilter (const CLI& cli)
   else if (args.size () == 2       &&
            args[0] == "<duration>" &&
            args[1] == "ago")
+  {
+    range.start = Datetime () - Duration (duration).toTime_t ();
+    range.end   = Datetime ();
+  }
+
+  // for <duration>
+  else if (args.size () == 2       &&
+           args[0] == "for"        &&
+           args[1] == "<duration>")
   {
     range.start = Datetime () - Duration (duration).toTime_t ();
     range.end   = Datetime ();
