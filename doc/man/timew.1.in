@@ -183,6 +183,11 @@ exclusions.  A value of '0' give a move compact report. Default value is '1'.
 .br
 The 'compact' style puts the hour markers inside the exclusion blocks.
 
+.TP
+.B verbose = yes
+Determines whether Timewarrior generates feedbac.
+May be overridden by the ':quiet' hint.
+Default value is 'yes'.
 
 .SH MORE EXAMPLES
 
