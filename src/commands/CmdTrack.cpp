@@ -35,15 +35,19 @@ int CmdTrack (
   Rules& rules,
   Database& database)
 {
-  auto filter     = getFilter (cli);
+  // If this is not a proper closed interval, then the user is trying to make
+  // the 'track' command behave like 'start', so delegage to CmdStart.
+  auto filter = getFilter (cli);
+  if (! filter.range.started () ||
+      ! filter.range.ended ())
+    return CmdStart (cli, rules, database);
+
   auto holidays   = subset (filter.range, getHolidays (rules));
   auto exclusions = getAllExclusions (rules, filter.range);
 
   for (auto& interval : collapse (filter, exclusions))
     database.addInterval (interval);
 
-    // TODO intervalSummarїze needs to operate on a vector of similar intervals.
-  // User feedback.
   if (rules.getBoolean ("verbose"))
     std::cout << intervalSummarize (rules, filter);
 
