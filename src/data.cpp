@@ -654,6 +654,15 @@ std::vector <Range> getUntrackedRanges (
 Interval getLatestInterval (Database& database)
 {
   Interval i;
+  for (auto& line : database.allLines ())
+  {
+    if (line.find (" - ") == std::string::npos)
+    {
+      i.initialize (line);
+      return i;
+    }
+  }
+
   auto lastLine = database.lastLine ();
   if (lastLine != "")
     i.initialize (lastLine);
