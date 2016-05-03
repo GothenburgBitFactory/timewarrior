@@ -90,6 +90,9 @@ Interval getFilter (const CLI& cli)
       }
       else if (arg.hasTag ("KEYWORD"))
       {
+        // Note: that KEYWORDS are not entities (why not?) and there is a list
+        //       in CLI.cpp of them that must be maintained and synced with this
+        //       function.
         args.push_back (raw);
       }
       else

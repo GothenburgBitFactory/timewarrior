@@ -404,12 +404,15 @@ void CLI::identifyFilter ()
       a.tag ("FILTER");
     }
 
-    else if (raw == "from"  ||
-             raw == "since" ||
-             raw == "to"    ||
-             raw == "until" ||
-             raw == "-"     ||
-             raw == "for")
+    else if (raw == "from"   ||
+             raw == "since"  ||
+             raw == "to"     ||
+             raw == "for"    ||
+             raw == "until"  ||
+             raw == "-"      ||
+             raw == "before" ||
+             raw == "after"  ||
+             raw == "ago")
     {
       a.tag ("FILTER");
       a.tag ("KEYWORD");
