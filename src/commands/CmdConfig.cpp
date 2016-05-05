@@ -138,7 +138,73 @@ static bool setConfigVariable (const Rules& rules, std::string name, std::string
 //   2 - not found
 static int unsetConfigVariable (const Rules& rules, std::string name, bool confirmation /* = false */)
 {
+  // Setting not found.
+  if (! rules.has (name))
+    return 2;
+
+  // Read config file as lines of text.
+  std::vector <std::string> lines;
+  File::read (rules.file (), lines);
+
+  // If there is a non-comment line containing the entry in flattened form:
+  //   a.b.c = value
+  bool found = false;
+  bool change = false;
+  for (auto& line : lines)
+  {
+    auto comment = line.find ('#');
+    auto pos     = line.find (name);
+    if (pos != std::string::npos &&
+        (comment == std::string::npos || comment > pos))
+    {
+      found = true;
+
+      // Remove name
+      if (! confirmation ||
+          confirm (format ("Are you sure you want to remove '{1}'?", name)))
+      {
+        line = "";
+        change = true;
+      }
+    }
+  }
+
+  // If it was not found, then retry in hierarchical form∴
+  //   a:
+  //     b:
+  //       c = value
+  if (! found)
+  {
+    auto leaf = split (name, '.').back () + ":";
+    for (auto& line : lines)
+    {
+      auto comment = line.find ('#');
+      auto pos     = line.find (leaf);
+      if (pos != std::string::npos &&
+          (comment == std::string::npos || comment > pos))
+      {
+        found = true;
+
+        // Remove name
+        if (! confirmation ||
+            confirm (format ("Are you sure you want to remove '{1}'?", name)))
+        {
+          line = "";
+          change = true;
+        }
+      }
+    }
+  }
+
+  if (change)
+    File::write (rules.file (), lines);
+
+  if (change && found)
     return 0;
+  else if (found)
+    return 1;
+
+  return 2;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
