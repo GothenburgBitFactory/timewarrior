@@ -36,7 +36,7 @@ int CmdGaps (
   Database& database)
 {
   auto filter     = getFilter (cli);
-  auto holidays   = subset (filter.range, getHolidays (rules));
+  auto tracked    = getTrackedIntervals (database, rules, filter);
   auto exclusions = getAllExclusions (rules, filter.range);
 
   // TODO Get untracked, trackable time.
