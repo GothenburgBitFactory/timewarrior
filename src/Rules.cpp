@@ -313,25 +313,8 @@ void Rules::parseRule (const std::string& input)
   if (tokens.size () >= 2 &&
       tokens[0] == "define")
   {
-    // define rule xxx:
-    if (tokens.size () >= 3 && tokens[1] == "rule")
-      parseRuleGeneral (lines);
-
-    // define tag xxx:
-    else if (tokens.size () >= 3 && tokens[1] == "tag")
-      parseRuleSettings (lines, "tag");
-
-    // define report xxx:
-    else if (tokens.size () >= 3 && tokens[1] == "report")
-      parseRuleSettings (lines, "report");
-
-    // define theme:
-    // define holidays:
-    // define exclusions:
-    else if (tokens.size () == 2       &&
-             (tokens[1] == "theme:"    ||
-              tokens[1] == "holidays:" ||
-              tokens[1] == "exclusions:"))
+    if (tokens.size () >= 2 &&
+        isRuleType (tokens[1].substr (0, tokens[1].length () - 1)))
       parseRuleSettings (lines);
 
     // Error.
@@ -347,15 +330,11 @@ void Rules::parseRuleGeneral (const std::vector <std::string>& lines)
 
 ////////////////////////////////////////////////////////////////////////////////
 void Rules::parseRuleSettings (
-  const std::vector <std::string>& lines,
-  const std::string& prefix)
+  const std::vector <std::string>& lines)
 {
+  std::vector <std::string> hierarchy;
   std::vector <unsigned int> indents;
   indents.push_back (0);
-
-  std::vector <std::string> hierarchy;
-  if (prefix != "")
-    hierarchy.push_back (prefix);
 
   for (auto& line : lines)
   {
