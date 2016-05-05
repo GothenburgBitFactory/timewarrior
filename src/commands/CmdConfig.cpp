@@ -25,10 +25,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <FS.h>
+#include <JSON2.h>
 #include <shared.h>
 #include <format.h>
+#include <unicode.h>
 #include <timew.h>
-#include <stack>
 #include <algorithm>
 #include <iostream>
 
@@ -38,9 +40,93 @@
 // an override any setting which resides in an imported file.
 static bool setConfigVariable (const Rules& rules, std::string name, std::string value, bool confirmation /* = false */)
 {
+  // Read config file as lines of text.
+  std::vector <std::string> lines;
+  File::read (rules.file (), lines);
+
   bool change = false;
 
-  return change;
+  if (rules.has (name))
+  {
+    // No change.
+    if (rules.get (name) == value)
+      return false;
+
+    // If there is a non-comment line containing the entry in flattened form:
+    //   a.b.c = value
+    bool found = false;
+    for (auto& line : lines)
+    {
+      auto comment = line.find ('#');
+      auto pos     = line.find (name);
+      if (pos != std::string::npos &&
+          (comment == std::string::npos || comment > pos))
+      {
+        found = true;
+
+        // Modify value
+        if (! confirmation ||
+            confirm (format ("Are you sure you want to change the value of '{1}' from '{2}' to '{3}'?",
+                             name,
+                             rules.get (name),
+                             value)))
+        {
+          line = line.substr (0, pos) + name + " = " + value;
+          change = true;
+        }
+      }
+    }
+
+    // If it was not found, then retry in hierarchical form∴
+    //   a:
+    //     b:
+    //       c = value
+    if (! found)
+    {
+      auto leaf = split (name, '.').back () + ":";
+      for (auto& line : lines)
+      {
+        auto comment = line.find ('#');
+        auto pos     = line.find (leaf);
+        if (pos != std::string::npos &&
+            (comment == std::string::npos || comment > pos))
+        {
+          found = true;
+
+          // Remove name
+          if (! confirmation ||
+              confirm (format ("Are you sure you want to change the value of '{1}' from '{2}' to '{3}'?",
+                               name,
+                               rules.get (name),
+                               value)))
+          {
+            line = line.substr (0, pos) + leaf + " " + value;
+            change = true;
+          }
+        }
+      }
+    }
+  }
+  else
+  {
+    if (! confirmation ||
+        confirm (format ("Are you sure you want to add '{1}' with a value of '{2}'?", name, value)))
+    {
+      // TODO Ideally, this would locate an existing hierarchy and insert the
+      //      new leaf/value properly. But that's non-trivial.
+
+      // Add blank line required by rules.
+      if (lines.back () != "")
+        lines.push_back ("");
+
+      // Add new line.
+      lines.push_back (name + " = " + JSON2::encode (value));
+      change = true;
+    }
+  }
+
+  if (change)
+    File::write (rules.file (), lines);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
