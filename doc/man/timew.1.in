@@ -200,19 +200,19 @@ Useful for troubleshooting, but not for general use.
 Default value is 'off'.
 
 .TP
-.B report.day.24hours = off
+.B reports.day.24hours = off
 .br
 Determines whether the day report shows all 24 hours in a day, or is limited
 to only hours where data is tracked.  Default value is 'off'.
 
 .TP
-.B report.day.spacing = 1
+.B reports.day.spacing = 1
 .br
 Specifies how many spaces are inserted between the hours in the day report
 exclusions.  A value of '0' give a move compact report. Default value is '1'.
 
 .TP
-.B report.day.style = compact
+.B reports.day.style = compact
 .br
 The 'compact' style puts the hour markers inside the exclusion blocks.
 
