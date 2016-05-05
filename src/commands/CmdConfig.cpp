@@ -32,7 +32,10 @@
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
-static bool setConfigVariable (std::string name, std::string value, bool confirmation /* = false */)
+// Note that because this function does not recurse with includes, it therefore
+// only sees the top-level settings. This has the desirable effect of adding as
+// an override any setting which resides in an imported file.
+static bool setConfigVariable (const Rules& rules, std::string name, std::string value, bool confirmation /* = false */)
 {
   bool change = false;
 
@@ -40,30 +43,20 @@ static bool setConfigVariable (std::string name, std::string value, bool confirm
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-static int unsetConfigVariable (std::string name, bool confirmation /* = false */)
+// Removes lines from configuration but leaves comments intact.
+//
+// Return codes:
+//   0 - found and removed
+//   1 - found and not removed
+//   2 - not found
+static int unsetConfigVariable (const Rules& rules, std::string name, bool confirmation /* = false */)
 {
     return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// a.b.c.d = 1
-// a.b.d = 2
-// a.b.e = 3
-// b.d.e = 4
-// f = 5
-//
-// define a:
-//   b:
-//     c:
-//       d = 1
-//     d = 2
-//     e = 3
-//
-// define b:
-//   d:
-//     e = 4
-//
-// f = 5
+// Shows all settings except "temp.*" in a hierarchical form that is ingestible
+// by the Rules object. This allows copy/paste.
 static void showAllSettings (const Rules& rules)
 {
   for (auto& name : rules.all ())
@@ -71,16 +64,14 @@ static void showAllSettings (const Rules& rules)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// timew config name value       Set name=value
+// timew config name ''          Set name=''
+// timew config name             Remove name
+// timew config                  Show all config
 int CmdConfig (
   const CLI& cli,
   Rules& rules)
 {
-  // Determine form:
-  //      timew config name value       Set name=value
-  //      timew config name ''          Set name=''
-  //      timew config name             Remove name
-  // TODO timew config                  Show all config
-
   int rc = 0;
 
   // Get the command line args that are not binary, ext or command.
@@ -115,13 +106,13 @@ int CmdConfig (
       // task config name value
       // task config name ""
       if (words.size () > 1)
-        change = setConfigVariable(name, value, confirmation);
+        change = setConfigVariable (rules, name, value, confirmation);
 
       // task config name
       else
       {
         bool found = false;
-        rc = unsetConfigVariable(name, confirmation);
+        rc = unsetConfigVariable (rules, name, confirmation);
         if (rc == 0)
         {
           change = true;
