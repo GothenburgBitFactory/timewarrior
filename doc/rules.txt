@@ -62,13 +62,15 @@ There are general rules triggered by changes to the data:
 
 There are rules that define tags and their metadata:
 
-  define tag "tag1":
-    ...
+  define tags:
+    "tag1":
+      ...
 
 There are rules that will serve as hooks:
 
-  define rule hook on_stop:
-    ...
+  define rules:
+    on_stop:
+      ...
 
 
 Rule Type: Exclusions
@@ -99,10 +101,11 @@ is a constraint that prevents the value 'foo' from exceeding three. It is
 triggered by a change to 'foo', which is a DOM reference, and can prevent the
 update by failing:
 
-  define rule one:
-    tagset tag1
-    if foo > 3:
-      error "The value of 'foo' may not exceed 3."
+  define rules:
+    one:
+      tagset = tag1
+      if foo > 3:
+        error "The value of 'foo' may not exceed 3."
 
 Note that this rule is defined as applying to the tagset 'tag1'.
 
@@ -112,35 +115,14 @@ Rule Type: Tag
 A defined tag is a way to associate metadata with a tag, such as a description
 and start/end dates for use:
 
-  define tag "tag1":
-    description = "Description of tag1"
-    start       = 2016-01-01
-    end         = 2016-06-30
-    budget      = 20 hours per week
-    budget      = 400 hours total
-    overlap     = yes
-
-
-Rule Type: Configuration
-------------------------
-Configuration settings are stored in the 'configuration' rule, which uses a
-hierarchy for grouping:
-
-  define configuration:
-    name1 = value1
-    group1:
-      group2:
-        name2 = value2
-
-In the example, value2 can be referred to by it's normalized name
-'group1.group2.name2'.
-
-Initially, all settings are stored as simple name/value pairs at the top level
-of the configuration files:
-
-  name = value
-
-The hierarchy rule will supercede these.
+  define tags:
+    "tag1":
+      description = "Description of tag1"
+      start       = 2016-01-01
+      end         = 2016-06-30
+      budget      = 20 hours per week
+      budget      = 400 hours total
+      overlap     = yes
 
 
 Rule Type: Theme
@@ -161,6 +143,10 @@ various report and feedback elements:
 The palette group is a list (more is better) of themed colors for use when auto-
 coloring tags.
 
+There is only one theme namespace, so if multiple themes are imported, the last
+one can override all the prior theme settings. This means themes can be layered,
+but they would need to be designed for this.
+
 
 Rule Type: Hook
 ---------------
@@ -171,19 +157,23 @@ set of arguments.
 
 [Mechanism TBD]
 
-    define rule hook on_start:
-      ...
+    define rules:
+      on_start:
+        ...
 
-    define rule hook on_stop:
-      ...
+    define rules:
+      on_stop:
+        ...
 
-    define rule hook on_modify:
-      ...
+    define rules:
+      on_modify:
+        ...
 
 These rules can run an external script and provide arguments, based on rules
 DOM access:
 
-    define rule hook on_modify:
+    define rules:
+      on_modify:
         run /path/to/my/script <dom1> <dom2>
 
 
@@ -192,9 +182,10 @@ Rules Type: Hint
 Hints may be defined using the rules system, to augment the built-in hints that
 are used by almost every command.
 
-    define hint staff:
-      tag 'Staff Meeting'
-      tag 'Admin'
+    define hints:
+      staff:
+        tag 'Staff Meeting'
+        tag 'Admin'
 
 [More TBD]
 
