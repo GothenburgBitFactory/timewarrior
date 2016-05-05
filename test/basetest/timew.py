@@ -63,7 +63,9 @@ class Timew(object):
         """Run setup `var` as `value` in timew config
         """
         # Add -- to avoid misinterpretation of - in things like UUIDs
-        cmd = (self.timew, "config", "--", var, value)
+        # TODO Revisit this decision as timew matures.
+        #cmd = (self.timew, "config", "--", var, value)
+        cmd = (self.timew, "config", var, value)
         return run_cmd_wait(cmd, env=self.env, input="y\n")
 
     def del_config(self, var):
