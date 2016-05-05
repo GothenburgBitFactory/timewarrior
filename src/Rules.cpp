@@ -164,6 +164,15 @@ std::vector <std::string> Rules::all (const std::string& stem) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+bool Rules::isRuleType (const std::string& type) const
+{
+  if (std::find (_rule_types.begin (), _rule_types.end (), type) != _rule_types.end ())
+    return true;
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 std::string Rules::dump () const
 {
   std::stringstream out;

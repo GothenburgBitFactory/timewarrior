@@ -50,6 +50,7 @@ public:
   void set (const std::string&, const std::string&);
 
   std::vector <std::string> all (const std::string& stem = "") const;
+  bool isRuleType (const std::string&) const;
 
   std::string dump () const;
 
@@ -66,6 +67,7 @@ private:
 private:
   std::string                         _original_file {};
   std::map <std::string, std::string> _settings      {};
+  std::vector <std::string>           _rule_types    {"tags", "reports", "theme", "holidays", "exclusions"};
 };
 
 #endif
