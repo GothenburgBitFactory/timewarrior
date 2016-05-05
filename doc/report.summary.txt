@@ -1,0 +1,68 @@
+Report Mockup
+=============
+
+$ timew summary :week
+
+(full details by day)
+
+Wk  Date       Day Tags               Start End   Time  Sub
+--- ---------- --- ------------------ ----- ----- ----- -----
+W17 2016-04-25 Mon Holiday
+W17 2016-04-26 Tue Research, B23       9:00 12:30  3:30
+                   Research, B23      13:30 18:00  4:30  8:00
+W17 2016-04-27 Wed Training Security   9:00 12:00  3:00
+                   Training Privacy   13:00 17:00  4:00  7:00
+W17 2016-04-28 Thu Staff Meeting       8:45 10:30  1:45
+                   Research, A44      10:40 12:00  1:20
+                   Research, A44      12:45 17:52  5:07  8:12
+W17 2016-04-29 Fri Research, C17       8:41 12:00  3:19
+                   Dept Meeting       13:00 14:30  1:30
+                   Planning           14:30 15:30  1:00
+                   Research, C17      15:30 17:40  2:10  7:59
+--- ---------- --- ------------------ ----- ----- ----- -----
+                   Total                                31:11
+
+
+(one line by day)
+
+Wk  Date       Day Tags                                  Sub
+--- ---------- --- ------------------------------------- -----
+W17 2016-04-25 Mon Holiday
+W17 2016-04-26 Tue Research, B23                          8:00
+W17 2016-04-27 Wed Training Security, Training Privacy    7:00
+W17 2016-04-28 Thu Staff Meeting, Research, A44           8:12
+W17 2016-04-29 Fri Research, C17, Dept Meeting, Planning  7:59
+
+                   Total                                 31:11
+
+
+(total by tag: Reasearch)
+
+Tags            Wk  Date       Day Start End   Time  Sub
+--------------- --- ---------- --- ----- ----- ----- -----
+Research        W17 2016-04-26 Tue  9:00 12:30  3:30
+(A44, B23, C17)                    13:30 18:00  4:30  8:00
+                W17 2016-04-28 Thu 10:40 12:00  1:20
+                                   12:45 17:52  5:07  6:27
+                W17 2016-04-29 Fri  8:41 12:00  3:19
+                                   15:30 17:40  2:10  5:29
+--------------- --- ---------- --- ----- ----- ----- -----
+                                                     19:56
+
+
+(total by tag)
+
+Wk  Tag               Time
+--- ----------------- -----
+W17 Research          19:56
+W17 B23                8:00
+W17 A44                6:27
+W17 C17                5:29
+W17 Training Privacy   4:00
+W17 Training Security  3:00
+W17 Staff Meeting      1:45
+W17 Dept Meeting       1:30
+W17 Planning           1:00
+                      -----
+    Total             31:11
+
