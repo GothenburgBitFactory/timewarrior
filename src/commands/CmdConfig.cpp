@@ -31,6 +31,7 @@
 #include <format.h>
 #include <unicode.h>
 #include <timew.h>
+#include <commands.h>
 #include <algorithm>
 #include <iostream>
 
@@ -211,60 +212,6 @@ static int unsetConfigVariable (const Rules& rules, std::string name, bool confi
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Shows all settings except "temp.*" in a hierarchical form that is ingestible
-// by the Rules object. This allows copy/paste.
-static void showAllSettings (const Rules& rules)
-{
-  // Obtain and sort the names. Sorting is critical.
-  auto names = rules.all ();
-  std::sort (names.begin (), names.end ());
-
-  std::vector <std::string> previous {};
-  for (auto& name : rules.all ())
-  {
-    if (name.substr (0, 5) == "temp.")
-      continue;
-
-    auto parts = split (name, '.');
-    for (unsigned int i = 0; i < parts.size (); ++i)
-    {
-      // The last part is special.
-      if (i == parts.size () - 1)
-      {
-        if (previous.size () > 1 &&
-            parts.size () == 1)
-          std::cout << '\n';
-
-        std::cout << std::string (2 * (parts.size () - 1), ' ')
-                  << parts[i]
-                  << " = "
-                  << rules.get (name)
-                  << "\n";
-      }
-      else
-      {
-        if (previous.size () <= i ||
-            previous[i] != parts[i])
-        {
-          if (i == 0)
-          {
-            std::cout << '\n';
-            if (rules.isRuleType (parts[0]))
-              std::cout << "define ";
-          }
-
-          std::cout << std::string (2 * i, ' ')
-                    << parts[i]
-                    << ":\n";
-        }
-      }
-    }
-
-    previous = parts;
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////
 // timew config name value       Set name=value
 // timew config name ''          Set name=''
 // timew config name             Remove name
@@ -336,10 +283,10 @@ int CmdConfig (
         std::cout << "No changes made.\n";
     }
     else
-      showAllSettings (rules);
+      CmdShow (rules);
   }
   else
-    showAllSettings (rules);
+    CmdShow (rules);
 
   return rc;
 }
