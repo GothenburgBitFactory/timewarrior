@@ -65,13 +65,13 @@ class Timew(object):
         # Add -- to avoid misinterpretation of - in things like UUIDs
         # TODO Revisit this decision as timew matures.
         #cmd = (self.timew, "config", "--", var, value)
-        cmd = (self.timew, "config", var, value)
+        cmd = (self.timew, ":yes", "config", var, value)
         return run_cmd_wait(cmd, env=self.env, input="y\n")
 
     def del_config(self, var):
         """Remove `var` from timew config
         """
-        cmd = (self.timew, "config", var)
+        cmd = (self.timew, ":yes", "config", var)
         return run_cmd_wait(cmd, env=self.env, input="y\n")
 
     @property
