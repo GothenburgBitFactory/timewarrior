@@ -66,7 +66,7 @@ int CmdReportDay (
   // Determine hours shown.
   int first_hour = 0;
   int last_hour  = 23;
-  if (! rules.getBoolean ("report.day.24hours"))
+  if (! rules.getBoolean ("reports.day.24hours"))
   {
     // Get the extreme time range for the filtered data.
     first_hour = 23;
@@ -86,7 +86,7 @@ int CmdReportDay (
 
   // Render the axis.
   std::cout << '\n';
-  if (rules.get ("report.day.style") != "compact")
+  if (rules.get ("reports.day.style") != "compact")
     renderAxis (rules, palette, "    ", first_hour, last_hour);
 
   // Each day is rendered separately.
@@ -105,7 +105,7 @@ int CmdReportDay (
               << '\n';
   }
 
-  if (rules.getBoolean ("report.day.summary"))
+  if (rules.getBoolean ("reports.day.summary"))
     renderSummary ("    ", exclusions, tracked);
 
   return 0;
@@ -119,7 +119,7 @@ static void renderAxis (
   int first_hour,
   int last_hour)
 {
-  auto spacing = rules.getInteger ("report.day.spacing");
+  auto spacing = rules.getInteger ("reports.day.spacing");
   Color colorLabel (palette.enabled ? rules.get ("theme.colors.label")     : "");
 
   std::cout << indent;
@@ -140,8 +140,8 @@ static void renderExclusionBlocks (
   int last_hour,
   const std::vector <Range>& excluded)
 {
-  auto spacing = rules.getInteger ("report.day.spacing");
-  auto style = rules.get ("report.day.style");
+  auto spacing = rules.getInteger ("reports.day.spacing");
+  auto style = rules.get ("reports.day.style");
   Color colorExc (palette.enabled ? rules.get ("theme.colors.exclusion") : "");
 
   // Render the exclusion blocks.
@@ -189,7 +189,7 @@ static void renderInterval (
   Palette& palette,
   std::map <std::string, Color>& tag_colors)
 {
-  auto spacing = rules.getInteger ("report.day.spacing");
+  auto spacing = rules.getInteger ("reports.day.spacing");
 
   // Make sure the track only represents one day.
   auto day_range = getFullDay (day);
