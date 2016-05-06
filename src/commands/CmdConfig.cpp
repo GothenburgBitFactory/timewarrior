@@ -307,7 +307,11 @@ int CmdConfig (
       // task config name value
       // task config name ""
       if (words.size () > 1)
+      {
         change = setConfigVariable (rules, name, value, confirmation);
+        if (! change)
+          rc = 1;
+      }
 
       // task config name
       else
