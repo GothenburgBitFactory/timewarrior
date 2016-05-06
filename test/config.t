@@ -64,6 +64,14 @@ class TestConfig(TestCase):
         self.assertIn("debug = off", out)
         self.assertIn("verbose = on", out)
 
+    def test_set_new_name_new_value(self):
+        """Test setting a new name, new value"""
+        code, out, err = self.t("config name value :yes")
+        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+
+        code, out, err = self.t("config")
+        self.assertIn("name = value", out)
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())
