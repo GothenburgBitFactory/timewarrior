@@ -52,7 +52,7 @@ If no arguments are provided, all configuration settings are shown:
   verbose = yes
   ...
 
-See also 'hints'.
+See also 'hints', 'show'.
 
 .TP
 .B timew continue
@@ -100,6 +100,11 @@ are equivalent:
   $ timew        foo :week
 
 This does however assume there is a 'foo' extension installed.
+
+.TP
+.B timew show
+Displays the effective configuration, in hierarchical form.
+See also 'config'.
 
 .TP
 .B timew start [<date>] [<tag> ...]
