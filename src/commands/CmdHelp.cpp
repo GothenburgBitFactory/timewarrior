@@ -37,13 +37,16 @@ int CmdHelpUsage ()
             << "       timew cancel\n"
             << "       timew config [<name> [<value | '']]\n"
             << "       timew continue\n"
+            << "       timew day [<interval>]\n"
             << "       timew diagnostics\n"
             << "       timew export [<interval>] [<tag> ...]\n"
             << "       timew extensions\n"
             << "       timew help [<command> | hints]\n"
             << "       timew [report] <report> [<interval>] [<tag> ...]\n"
+            << "       timew show\n"
             << "       timew start [<date>] [<tag> ...]\n"
             << "       timew stop [<tag> ...]\n"
+            << "       timew summary [<interval>]\n"
             << "       timew tags\n"
             << "       timew track <interval> [<tag> ...]\n"
             << '\n'
@@ -63,14 +66,10 @@ int CmdHelpUsage ()
             << '\n';
 
   // TODO clear
-  // TODO config
-  // TODO day
   // TODO gaps
   // TODO import
   // TODO month
   // TODO quarter
-  // TODO report
-  // TODO summary
   // TODO undo
   // TODO week
   // TODO year
@@ -138,7 +137,7 @@ int CmdHelp (const CLI& cli)
                 << "  verbose = yes\n"
                 << "  ...\n"
                 << '\n'
-                << "See also 'hints'.\n"
+                << "See also 'hints', 'show'.\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
@@ -284,6 +283,17 @@ int CmdHelp (const CLI& cli)
     // TODO month
     // TODO quarter
     // TODO report
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "show")
+      std::cout << '\n'
+                << "Syntax: timew show\n"
+                << '\n'
+                << "Displays the effective configuration, in hierarchical form.\n"
+                << '\n'
+                << "See also 'config'.\n"
+                << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
