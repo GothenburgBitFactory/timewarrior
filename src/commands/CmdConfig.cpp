@@ -127,6 +127,8 @@ static bool setConfigVariable (const Rules& rules, std::string name, std::string
 
   if (change)
     File::write (rules.file (), lines);
+
+  return change;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
