@@ -23,6 +23,7 @@ set (commands_SRCS CmdCancel.cpp
                    CmdStart.cpp
                    CmdStop.cpp
                    CmdReportSummary.cpp
+                   CmdShow.cpp
                    CmdTags.cpp
                    CmdTrack.cpp
                    CmdUndo.cpp)
