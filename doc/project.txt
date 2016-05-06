@@ -23,7 +23,7 @@ Goals
 - Provide an extension-friendly tool.
 - Support policies, events via the rules system.
 - Integrate with Taskwarrior, Tasksh.
-- Store data in plain UTF-8 text.
+- Store data in plain UTF-8 text files.
 
 
 Non-Goals
@@ -34,7 +34,6 @@ Non-Goals
   sensitive personal data and will not be transmitted.
 - No explicit multi-user support, although using tags to track individuals is
   possible.
-- There is no hook system.
 - No features without a compelling use case.
 
 

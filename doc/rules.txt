@@ -1,38 +1,26 @@
 Rules System
 ============
-A rule system should be able to evaluate conditions and perform actions, which
-include continuing to process rules, or stopping. The conditions will need to
-access configuration, exclusions, and tracking data.
+The Timewarrior rule system reads your ~/.timewarrior/timewarrior.cfg file and
+uses the combination of configuration settings and logic within to:
 
-- A constraint on total tracking time, "do not spend more than 4 hours on x".
-- A constraint that only allows certain tags to be used together, to prevent
-  client 1 from being billed for project 2.
-- A constraint that only allows multiples of 15-minute intervals.
-
-Ref: http://martinfowler.com/bliki/RulesEngine.html
-
-In addition to configuration, a rules system stores various settings and
-configuration data as rules. There are several different types of rules, which
-are loaded at launch time, and applied at various times during execution.
-
-Some rules can be manipulated at the command line ('exclusions'), but most will
-require editing the rules file. It is not intended that new users edit the
-rules file, therefore some rules are automatically maintained from the command
-line.
+- Provide configuration and customization details
+- Define tags, exclusions, constraints
+- Enact various policies
 
 The rules are a mechanism to apply late-bound logic and data to various
 functions. Whenever data changes, the rule system is run, which will run each
 rule in turn, if it applies, going from top to bottom in the rules file. There
-are no chained rules, but errors will terminate rule processing and program
-execution.
+are no chained rules, but errors will be able to terminate rule processing and
+program execution.
 
-As much functionality as possible is to be deferred to the rules.
+As much functionality as possible is to be deferred to the rules system, which
+will initially be minimal, but grow to be come more capable.
 
 
 Format
 ------
-The rules are written in a UTF8 text file, in a known location. Other rules
-files may be included:
+The rules are written as UTF8 text in the ~/.timewarrior/timewarrior.cfg text
+file. Other rules files may be included:
 
   import /path/to/other/rule/file
 
@@ -46,14 +34,6 @@ defines all exclusions:
 
   define exclusions:
     ...
-
-There is a rule that contains all the general configuration data:
-
-| define configuration:
-|   name1 = value1
-|   group1:
-|     group2:
-|       name2 = value2
 
 There are general rules triggered by changes to the data:
 
