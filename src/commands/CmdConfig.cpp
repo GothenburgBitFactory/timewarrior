@@ -116,7 +116,8 @@ static bool setConfigVariable (const Rules& rules, std::string name, std::string
       //      new leaf/value properly. But that's non-trivial.
 
       // Add blank line required by rules.
-      if (lines.back () != "")
+      if (lines.size () &&
+          lines.back () != "")
         lines.push_back ("");
 
       // Add new line.
