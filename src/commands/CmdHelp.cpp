@@ -35,6 +35,7 @@ int CmdHelpUsage ()
   std::cout << '\n'
             << "Usage: timew [--version]\n"
             << "       timew cancel\n"
+            << "       timew config [<name> [<value | '']]\n"
             << "       timew continue\n"
             << "       timew diagnostics\n"
             << "       timew export [<interval>] [<tag> ...]\n"
@@ -106,7 +107,39 @@ int CmdHelp (const CLI& cli)
                 << '\n';
 
     // TODO clear
-    // TODO config
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "config")
+      std::cout << '\n'
+                << "Syntax: timew config [<name> [<value> | '']]\n"
+                << '\n'
+                << "Allows setting and removing configuration values, as an alternative to directly\n"
+                << "editing your ~/.timewarrior/timewarrior.cfg file. For example:\n"
+                << '\n'
+                << "  $ timew config verbose yes\n"
+                << "  $ timew config verbose ''\n"
+                << "  $ timew config verbose\n"
+                << '\n'
+                << "The first command sets 'verbose' to 'yes'. The second sets it to a blank value\n"
+                << "which overrides the default value. The third example deletes the 'verbose'\n"
+                << "setting.\n"
+                << '\n'
+                << "When modifying configuration in this way, interactive confirmation will be\n"
+                << "sought. To override this confirmation, use the ':yes' hint:\n"
+                << '\n'
+                << "  $ timew config verbose yes\n"
+                << "  $ timew config verbose ''\n"
+                << "  $ timew config verbose :yes\n"
+                << '\n'
+                << "If no arguments are provided, all configuration settings are shown:\n"
+                << '\n'
+                << "  $ timew config\n"
+                << "  verbose = yes\n"
+                << "  ...\n"
+                << '\n'
+                << "See also 'hints'.\n"
+                << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
