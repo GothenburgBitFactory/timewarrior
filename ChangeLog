@@ -20,6 +20,7 @@
 - Added support for the :day, :week, :month, :quarter and :year hints.
 - Added 'track' command.
 - Added 'cancel' command.
+- Added 'config' command.
 
 Design completed 2016-03-13
 Project started  2015-11-29
