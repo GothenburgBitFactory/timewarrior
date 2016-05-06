@@ -72,6 +72,12 @@ class TestConfig(TestCase):
         code, out, err = self.t("config")
         self.assertIn("name = value", out)
 
+    def test_set_new_name_new_value_internal(self):
+        """Test setting a new name, new value internal"""
+        self.t.config("name", "value")
+        code, out, err = self.t("config")
+        self.assertIn("name = value", out)
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())
