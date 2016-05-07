@@ -52,7 +52,7 @@ Range                   outerRange          (const std::vector <Interval>&);
 bool                    matchesFilter       (const Interval&, const Interval&);
 Interval                clip                (const Interval&, const Range&);
 std::vector <Interval>  getTrackedIntervals (Database&, const Rules&, Interval&);
-std::vector <Range>     getUntrackedRanges  (const Rules&);
+std::vector <Range>     getUntrackedRanges  (Database&, const Rules&, Interval&);
 Interval                getLatestInterval   (Database&);
 Range                   getFullDay          (const Datetime&);
 

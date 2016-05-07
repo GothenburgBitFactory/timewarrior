@@ -646,20 +646,26 @@ std::vector <Interval> getTrackedIntervals (
 ////////////////////////////////////////////////////////////////////////////////
 // Untracked time is that which is not excluded, and not filled. Gaps.
 std::vector <Range> getUntrackedRanges (
-  const Rules& rules)
+  Database& database,
+  const Rules& rules,
+  Interval& filter)
 {
-  std::vector <Range> gaps;
+  std::vector <Range> available {filter.range};
+  available = subtractRanges (filter.range, available, getAllExclusions (rules, filter.range));
 
-  // Get the set of expanded exclusions that overlap the range defined by the
-  // timeline. If no range is defined, derive it from the set of all data.
+  std::vector <Range> inclusion_ranges;
+  for (auto& i : getAllInclusions (database))
+    inclusion_ranges.push_back (i.range);
+
+  available = subtractRanges (filter.range, available, inclusion_ranges);
+
 /*
-  auto exclusions = getExcludedRanges (rules);
+  std::cout << "# After subtracting exclusions, inclusions:\n";
+  for (auto& a : available)
+    std::cout << "#   " << a.dump () << "\n";
 */
 
-  // TODO subtract all exclusions
-  // TODO subtract all inclusions
-
-  return gaps;
+  return available;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
