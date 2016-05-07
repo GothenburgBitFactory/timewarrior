@@ -482,14 +482,16 @@ std::vector <Range> subtractRanges (
   const std::vector <Range>& ranges,
   const std::vector <Range>& subtractions)
 {
-  if (! subtractions.size ())
-    return ranges;
+  std::vector <Range> results = ranges;
+  for (auto& s : subtractions)
+  {
+    std::vector <Range> split_results;
+    for (auto& range : results)
+      for (auto& split_range : range.subtract (s))
+        split_results.push_back (split_range);
 
-  std::vector <Range> results;
-  for (auto& r1 : ranges)
-    for (auto& r2 : subtractions)
-      for (auto& r3 : r1.subtract (r2))
-        results.push_back (limits.intersect (r3));
+    results = split_results;
+  }
 
 /*
   std::cout << "# subtractRange:\n";
