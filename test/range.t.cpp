@@ -27,11 +27,12 @@
 #include <cmake.h>
 #include <Range.h>
 #include <test.h>
+#include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (64);
+  UnitTest t (66);
 
   // bool started () const;
   // bool ended () const;
@@ -220,6 +221,13 @@ int main (int, char**)
   // Range length.
   t.ok (Range (Datetime (2016, 1, 1), Datetime (2016, 1, 3)).total () == (2 * 86400),
        "Range (Datetime (2016, 1, 1), Datetime (2016, 1, 3)).total () == (2 * 86400)");
+
+  Range oldClosed    (Datetime (2016, 1, 1), Datetime (2016, 1, 3));
+  Range oldOpen      (Datetime (2016, 1, 1), Datetime (0));
+  Range oldClosedNow (Datetime (2016, 1, 1), Datetime ());
+
+  t.ok (oldClosed.total () < oldOpen.total (),     "Range: total for closed range < open range with same start time");
+  t.ok (oldOpen.total () <= oldClosedNow.total (), "Range: total for open range predictable");
 
   return 0;
 }
