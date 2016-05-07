@@ -35,11 +35,12 @@ int CmdGaps (
   Rules& rules,
   Database& database)
 {
-  auto filter     = getFilter (cli);
-  auto tracked    = getTrackedIntervals (database, rules, filter);
-  auto exclusions = getAllExclusions (rules, filter.range);
+  auto filter    = getFilter (cli);
+  auto untracked = getUntrackedRanges (database, rules, filter);
 
-  // TODO Get untracked, trackable time.
+  for (auto & u : untracked)
+    std::cout << "# untracked " << u.dump () << "\n";
+
   return 0;
 }
 
