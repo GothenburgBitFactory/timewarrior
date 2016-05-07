@@ -25,19 +25,25 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <timew.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdClear ()
+int CmdClear (
+  const CLI& cli,
+  Rules& rules,
+  Database& database)
 {
-  std::cout << "[clear: allows removal of tags form intervals]\n";
+  auto filter = getFilter (cli);
+  if (! filter.range.started () &&
+      filter.tags ().size () == 0)
+    throw std::string ("The 'clear' command refuses to delete all your data.");
 
-  // TODO Parse interval.
-  // TODO Parser tags.
-  // TODO Load all data.
-  // TODO Apply filter.
-  // TODO For each interval.
-  //   TODO Remove tags.
+  auto tracked = getTrackedIntervals (database, rules, filter);
+  auto extent = outerRange (tracked);
+
+  for (auto& interval : subset (extent, tracked))
+    std::cout << "# clear impacts " << interval.dump () << "\n";
 
   return 0;
 }

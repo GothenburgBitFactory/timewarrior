@@ -227,7 +227,7 @@ int dispatchCommand (
     // These signatures are æxpected to be all different, therefore no
     // command to fn mapping.
          if (command == "cancel")      status = CmdCancel        (     rules, database            );
-    else if (command == "clear")       status = CmdClear         (                                );
+    else if (command == "clear")       status = CmdClear         (cli, rules, database            );
     else if (command == "config")      status = CmdConfig        (cli, rules                      );
     else if (command == "continue")    status = CmdContinue      (     rules, database            );
     else if (command == "day")         status = CmdReportDay     (cli, rules, database            );

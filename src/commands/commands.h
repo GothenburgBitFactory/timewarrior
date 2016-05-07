@@ -33,7 +33,7 @@
 #include <Extensions.h>
 
 int CmdCancel        (            Rules&, Database&                   );
-int CmdClear         (                                                );
+int CmdClear         (const CLI&, Rules&, Database&                   );
 int CmdConfig        (const CLI&, Rules&                              );
 int CmdContinue      (            Rules&, Database&                   );
 int CmdDefault       (            Rules&, Database&                   );
