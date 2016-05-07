@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (41);
+  UnitTest t (42);
 
   // std::vector <Interval> collapse (const Interval&, std::vector <Range>&);
   Interval i1;
@@ -154,6 +154,10 @@ int main (int, char**)
   t.ok (subtracted[0].end   == Datetime (2016, 1, 1, 12,  0, 0), "subtractRanges: results[0].end   = 20160101T120000");
   t.ok (subtracted[1].start == Datetime (2016, 1, 1, 13,  0, 0), "subtractRanges: results[1].start = 20160101T130000");
   t.ok (subtracted[1].end   == Datetime (2016, 1, 1, 17, 30, 0), "subtractRanges: results[1].end   = 20160101T173000");
+
+  exclusions = {Range (Datetime ("20151201T000000"), Datetime ("20160201T000000"))};
+  subtracted = subtractRanges (limit, {limit}, exclusions);
+  t.ok (subtracted.size () == 0, "subtractRanges: all_day - 2 overlapping months = 0 ranges");
 
   return 0;
 }
