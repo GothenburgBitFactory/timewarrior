@@ -101,6 +101,39 @@ bool Range::overlap (const Range& other) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Detect the following enclosure cases:
+//
+// this                     [--------)
+//   C                        [----)
+//
+// this                     [...
+//   C                        [----)
+//   D                           [--------)
+//   E                                    [--------)
+//   H                         [...
+//   I                                 [...
+//
+bool Range::encloses (const Range& other) const
+{
+  if (started ())
+  {
+    if (ended ())
+    {
+      if (other.started () && other.start >= start &&
+          other.ended ()   && other.end   <= end)
+        return true;
+    }
+    else
+    {
+      if (other.started () && other.start >= start)
+        return true;
+    }
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Calculate the following intersection cases:
 //
 // this                     [--------)
