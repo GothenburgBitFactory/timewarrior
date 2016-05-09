@@ -32,7 +32,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (66);
+  UnitTest t (84);
 
   // bool started () const;
   // bool ended () const;
@@ -208,6 +208,36 @@ int main (int, char**)
   t.ok (refOpen.subtract (testG) == openSubtractG, "Range: refOpen.subtract(testG) == {}");
   t.ok (refOpen.subtract (testH) == openSubtractH, "Range: refOpen.subtract(testH) == {Range(refOpen.start,testH.start}");
   t.ok (refOpen.subtract (testI) == openSubtractI, "Range: refOpen.subtract(testI) == {Range(refOpen.start,testI.start}");
+
+  // bool encloses (const Range&) const;
+
+  // this                     [--------)
+  //   C                        [----)
+  t.notok (refClosed.encloses (testA), "Range: ! refClosed.encloses(testA)");
+  t.notok (refClosed.encloses (testB), "Range: ! refClosed.encloses(testB)");
+  t.ok    (refClosed.encloses (testC), "Range:   refClosed.encloses(testC)");
+  t.notok (refClosed.encloses (testD), "Range: ! refClosed.encloses(testD)");
+  t.notok (refClosed.encloses (testE), "Range: ! refClosed.encloses(testE)");
+  t.notok (refClosed.encloses (testF), "Range: ! refClosed.encloses(testF)");
+  t.notok (refClosed.encloses (testG), "Range: ! refClosed.encloses(testG)");
+  t.notok (refClosed.encloses (testH), "Range: ! refClosed.encloses(testH)");
+  t.notok (refClosed.encloses (testI), "Range: ! refClosed.encloses(testI)");
+
+  // this                     [...
+  //   C                        [----)
+  //   D                           [--------)
+  //   E                                    [--------)
+  //   H                         [...
+  //   I                                 [...
+  t.notok (refOpen.encloses (testA), "Range: ! refOpen.encloses(testA)");
+  t.notok (refOpen.encloses (testB), "Range: ! refOpen.encloses(testB)");
+  t.ok    (refOpen.encloses (testC), "Range:   refOpen.encloses(testC)");
+  t.ok    (refOpen.encloses (testD), "Range:   refOpen.encloses(testD)");
+  t.ok    (refOpen.encloses (testE), "Range:   refOpen.encloses(testE)");
+  t.notok (refOpen.encloses (testF), "Range: ! refOpen.encloses(testF)");
+  t.notok (refOpen.encloses (testG), "Range: ! refOpen.encloses(testG)");
+  t.ok    (refOpen.encloses (testH), "Range:   refOpen.encloses(testH)");
+  t.ok    (refOpen.encloses (testI), "Range:   refOpen.encloses(testI)");
 
   // Adjacent ranges.
   Range left  (Datetime ("2016-04-25T11:00:00"), Datetime ("2016-04-25T12:00:00"));
