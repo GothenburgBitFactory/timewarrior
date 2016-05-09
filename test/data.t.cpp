@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (42);
+  UnitTest t (45);
 
   // std::vector <Interval> collapse (const Interval&, std::vector <Range>&);
   Interval i1;
@@ -138,9 +138,9 @@ int main (int, char**)
   i.range = testI; t.ok    (matchesFilter (i, refOpen), "matchesFilter I <=> refOpen");
 
   // Range getFullDay (const Datetime&);
-  auto r1 = getFullDay (Datetime (2016, 5, 1, 20, 31, 12));
-  t.ok (r1.start == Datetime (2016, 5, 1,  0,  0,  0), "getFullDay 2016-05-01T20:31:23 -> start 2016-05-01T00:00:00");
-  t.ok (r1.end   == Datetime (2016, 5, 1, 23, 59, 59), "getFullDay 2016-05-01T20:31:23 -> end   2016-05-01T23:59:59");
+  auto r1 = getFullDay (Datetime ("20160501T203112"));
+  t.ok (r1.start == Datetime ("20160501T000000"), "getFullDay 2016-05-01T20:31:23 -> start 2016-05-01T00:00:00");
+  t.ok (r1.end   == Datetime ("20160501T235959"), "getFullDay 2016-05-01T20:31:23 -> end   2016-05-01T23:59:59");
 
   // std::vector <Range> subtractRanges (const Range&, const std::vector <Range>&, const std::vector <Range>&);
   // Subtract three non-overlapping ranges from a full day, yielding two resultant rangeṡ.
@@ -150,11 +150,22 @@ int main (int, char**)
                 Range (Datetime ("20160101T173000"), Datetime ("20160101T235959"))};
   auto subtracted = subtractRanges (limit, {limit}, exclusions);
   t.ok (subtracted.size () == 2, "subtractRanges: all_day - 3 non-adjacent ranges = 2 ranges");
-  t.ok (subtracted[0].start == Datetime (2016, 1, 1,  8,  0, 0), "subtractRanges: results[0].start = 20160101T080000");
-  t.ok (subtracted[0].end   == Datetime (2016, 1, 1, 12,  0, 0), "subtractRanges: results[0].end   = 20160101T120000");
-  t.ok (subtracted[1].start == Datetime (2016, 1, 1, 13,  0, 0), "subtractRanges: results[1].start = 20160101T130000");
-  t.ok (subtracted[1].end   == Datetime (2016, 1, 1, 17, 30, 0), "subtractRanges: results[1].end   = 20160101T173000");
+  t.ok (subtracted[0].start == Datetime ("20160101T080000"), "subtractRanges: results[0].start = 20160101T080000");
+  t.ok (subtracted[0].end   == Datetime ("20160101T120000"), "subtractRanges: results[0].end   = 20160101T120000");
+  t.ok (subtracted[1].start == Datetime ("20160101T130000"), "subtractRanges: results[1].start = 20160101T130000");
+  t.ok (subtracted[1].end   == Datetime ("20160101T173000"), "subtractRanges: results[1].end   = 20160101T173000");
 
+  // Subtract a set of overlapping ranges.
+  exclusions = {Range (Datetime ("20160101T120000"), Datetime ("20160102T120000")),
+                Range (Datetime ("20160101T130000"), Datetime ("20160102T120000")),
+                Range (Datetime ("20160101T140000"), Datetime ("20160102T120000"))};
+  subtracted = subtractRanges (limit, {limit}, exclusions);
+  t.ok (subtracted.size () == 1, "subtractRanges: all_day - 3 overlapping ranges = 1 range");
+  t.ok (subtracted[0].start == Datetime ("20160101T000000"), "subtractRanges: results[0].start = 20160101T080000");
+  t.ok (subtracted[0].end   == Datetime ("20160101T120000"), "subtractRanges: results[0].end   = 20160101T120000");
+
+  // Subtract a single range that extends before and after the limit, yielding
+  // no results.
   exclusions = {Range (Datetime ("20151201T000000"), Datetime ("20160201T000000"))};
   subtracted = subtractRanges (limit, {limit}, exclusions);
   t.ok (subtracted.size () == 0, "subtractRanges: all_day - 2 overlapping months = 0 ranges");
