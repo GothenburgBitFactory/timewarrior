@@ -129,22 +129,6 @@ bool expandIntervalHint (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Excluded time is that which is not available for work.
-/*
-std::vector <Range> getExcludedRanges (Rules& rules, Range& range)
-{
-  // Create a range representing the whole timeline.
-  // If no range is defined, then assume the full range of all the inclusions.
-  Range overallRange {range};
-  if (! overallRange.started () &&
-      ! overallRange.ended ())
-    overallRange = outerRange (getInclusions (database));
-
-  // Cobmine all the non-trackable time.
-  return getAllExclusions (rules, overallRange);
-}
-*/
-////////////////////////////////////////////////////////////////////////////////
 // Compose a JSON document of intervals. In the trivial case:
 //   [
 //   ]
