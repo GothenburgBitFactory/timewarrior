@@ -36,13 +36,12 @@ int CmdTrack (
   Database& database)
 {
   // If this is not a proper closed interval, then the user is trying to make
-  // the 'track' command behave like 'start', so delegage to CmdStart.
+  // the 'track' command behave like 'start', so delegate to CmdStart.
   auto filter = getFilter (cli);
   if (! filter.range.started () ||
       ! filter.range.ended ())
     return CmdStart (cli, rules, database);
 
-  auto holidays   = subset (filter.range, getHolidays (rules));
   auto exclusions = getAllExclusions (rules, filter.range);
 
   for (auto& interval : flatten (filter, exclusions))
