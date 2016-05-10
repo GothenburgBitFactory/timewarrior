@@ -31,9 +31,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (45);
+  UnitTest t (50);
 
-  // std::vector <Interval> collapse (const Interval&, std::vector <Range>&);
+  // std::vector <Interval> flatten (const Interval&, std::vector <Range>&);
   Interval i1;
   i1.range = Range (Datetime ("20160427T000000Z"), Datetime ("20160428T000000Z"));
   i1.tag ("foo");
@@ -42,23 +42,27 @@ int main (int, char**)
                                     Range (Datetime ("20160427T120000Z"), Datetime ("20160427T130000Z")),
                                     Range (Datetime ("20160427T173000Z"), Datetime ("20160428T000000Z"))};
 
-  auto results = collapse (i1, exclusions);
-  t.ok (results.size () == 2,                                "collapse i1 --> 2 fragments");
-  t.is (results[0].range.start.toISO (), "20160427T000000Z", "collapse i1 --> results[0].range.start 20160427T000000Z");
-  t.is (results[0].range.end.toISO (),   "20160427T120000Z", "collapse i1 --> results[0].range.end   20160427T120000Z");
-  t.is (results[1].range.start.toISO (), "20160427T130000Z", "collapse i1 --> results[1].range.start 20160427T130000Z");
-  t.is (results[1].range.end.toISO (),   "20160428T000000Z", "collapse i1 --> results[1].range.end   20160428T000000Z");
+  auto results = flatten (i1, exclusions);
+  t.ok (results.size () == 2,                                "flatten i1 --> 2 fragments");
+  t.is (results[0].range.start.toISO (), "20160427T080000Z", "flatten i1 --> results[0].range.start 20160427T080000Z");
+  t.is (results[0].range.end.toISO (),   "20160427T120000Z", "flatten i1 --> results[0].range.end   20160427T120000Z");
+  t.ok (results[0].hasTag ("foo"),                           "flatten i1 --> results[0].hasTag foo");
+  t.is (results[1].range.start.toISO (), "20160427T130000Z", "flatten i1 --> results[1].range.start 20160427T130000Z");
+  t.is (results[1].range.end.toISO (),   "20160427T173000Z", "flatten i1 --> results[1].range.end   20160428T173000Z");
+  t.ok (results[1].hasTag ("foo"),                           "flatten i1 --> results[1].hasTag foo");
 
   Interval i2;
   i2.range = Range (Datetime ("20160427T115500Z"), Datetime ("20160427T130500Z"));
   i2.tag ("foo");
 
-  results = collapse (i2, exclusions);
-  t.ok (results.size () == 2,                                "collapse i2 --> 2 fragments");
-  t.is (results[0].range.start.toISO (), "20160427T115500Z", "collapse i2 --> results[0].range.start 20160427T115500Z");
-  t.is (results[0].range.end.toISO (),   "20160427T120000Z", "collapse i2 --> results[0].range.end   20160427T120000Z");
-  t.is (results[1].range.start.toISO (), "20160427T130000Z", "collapse i2 --> results[1].range.start 20160427T130000Z");
-  t.is (results[1].range.end.toISO (),   "20160427T130500Z", "collapse i2 --> results[1].range.end   20160427T130500Z");
+  results = flatten (i2, exclusions);
+  t.ok (results.size () == 2,                                "flatten i2 --> 2 fragments");
+  t.is (results[0].range.start.toISO (), "20160427T115500Z", "flatten i2 --> results[0].range.start 20160427T115500Z");
+  t.is (results[0].range.end.toISO (),   "20160427T120000Z", "flatten i2 --> results[0].range.end   20160427T120000Z");
+  t.ok (results[0].hasTag ("foo"),                           "flatten i2 --> results[0].hasTag foo");
+  t.is (results[1].range.start.toISO (), "20160427T130000Z", "flatten i2 --> results[1].range.start 20160427T130000Z");
+  t.is (results[1].range.end.toISO (),   "20160427T130500Z", "flatten i2 --> results[1].range.end   20160427T130500Z");
+  t.ok (results[1].hasTag ("foo"),                           "flatten i2 --> results[1].hasTag foo");
 
   Interval i3;
   i3.range = Range (Datetime ("20160427T160000Z"), Datetime (0));
@@ -66,10 +70,11 @@ int main (int, char**)
   t.ok    (i3.range.started (), "i3 range started");
   t.notok (i3.range.ended (),   "i3 range not ended");
 
-  results = collapse (i3, exclusions);
-  t.ok (results.size () == 2,                                  "collapse i3 --> 2 fragments");
-  t.ok (results[0].range.start.toISO () == "20160427T160000Z", "collapse i3 --> results[0].range.start 20160427T160000Z");
-  t.ok (results[0].range.end.toEpoch () == 0,                  "collapse i3 --> results[0].range.end   -");
+  results = flatten (i3, exclusions);
+  t.ok (results.size () == 1,                                  "flatten i3 --> 1 fragment");
+  t.ok (results[0].range.start.toISO () == "20160427T160000Z", "flatten i3 --> results[0].range.start 20160427T160000Z");
+  t.ok (results[0].range.end.toEpoch () == 0,                  "flatten i3 --> results[0].range.end   -");
+  t.ok (results[0].hasTag ("foo"),                             "flatten i3 --> results[0].hasTag foo");
 
   // bool matchesFilter (const Interval& interval, const Interval& filter);
   Interval refOpen;

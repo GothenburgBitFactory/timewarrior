@@ -45,7 +45,7 @@ std::vector <Interval>  getAllInclusions    (Database&);
 std::vector <Interval>  subset              (const Interval&, const std::vector <Interval>&);
 std::vector <Range>     subset              (const Range&, const std::vector <Range>&);
 std::vector <Interval>  subset              (const Range&, const std::vector <Interval>&);
-std::vector <Interval>  collapse            (const Interval&, const std::vector <Range>&);
+std::vector <Interval>  flatten             (const Interval&, const std::vector <Range>&);
 std::vector <Range>     addRanges           (const Range&, const std::vector <Range>&, const std::vector <Range>&);
 std::vector <Range>     subtractRanges      (const Range&, const std::vector <Range>&, const std::vector <Range>&);
 Range                   outerRange          (const std::vector <Interval>&);

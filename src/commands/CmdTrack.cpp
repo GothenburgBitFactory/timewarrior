@@ -45,7 +45,7 @@ int CmdTrack (
   auto holidays   = subset (filter.range, getHolidays (rules));
   auto exclusions = getAllExclusions (rules, filter.range);
 
-  for (auto& interval : collapse (filter, exclusions))
+  for (auto& interval : flatten (filter, exclusions))
     database.addInterval (interval);
 
   if (rules.getBoolean ("verbose"))

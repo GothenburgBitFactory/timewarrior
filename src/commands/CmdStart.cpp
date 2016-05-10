@@ -52,7 +52,7 @@ int CmdStart (
 
     // Update database.
     database.deleteInterval (latest);
-    for (auto& interval : collapse (modified, exclusions))
+    for (auto& interval : flatten (modified, exclusions))
       database.addInterval (interval);
 
     // TODO intervalSummarїze needs to operate on a vector of similar intervals.

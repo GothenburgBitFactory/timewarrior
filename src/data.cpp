@@ -404,7 +404,7 @@ std::vector <Interval> subset (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> collapse (
+std::vector <Interval> flatten (
   const Interval& interval,
   const std::vector <Range>& exclusions)
 {
@@ -639,7 +639,7 @@ std::vector <Interval> getTrackedIntervals (
 
   std::vector <Interval> intervals;
   for (auto& inclusion : subset (filter, inclusions))
-    for (auto& interval : collapse (clip (inclusion, filter.range), exclusions))
+    for (auto& interval : flatten (clip (inclusion, filter.range), exclusions))
       intervals.push_back (interval);
 
   return intervals;
