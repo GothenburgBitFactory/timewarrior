@@ -57,7 +57,6 @@ public:
 private:
   void parse               (const std::string&, int next = 1);
   void parseRule           (const std::string&);
-  void parseRuleGeneral    (const std::vector <std::string>&);
   void parseRuleSettings   (const std::vector <std::string>&);
 
   unsigned int getIndentation (const std::string&);
