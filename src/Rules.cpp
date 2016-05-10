@@ -31,6 +31,7 @@
 #include <format.h>
 #include <sstream>
 #include <tuple>
+#include <cassert>
 #include <inttypes.h>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -267,12 +268,13 @@ void Rules::parse (const std::string& input, int nest /* = 1 */)
         else if (tokens.size () >= 3 &&
                  std::get <0> (tokens[1]) == "=")
         {
-          // Extract the words from the 3rd - Nth tuple.
-          std::vector <std::string> words;
-          for (auto& token : std::vector <std::tuple <std::string, Lexer::Type>> (tokens.begin () + 2, tokens.end ()))
-            words.push_back (std::get <0> (token));
+          // If this line is an assignment, then tokenizing it is a mistake, so
+          // use the raw data from 'line'.
+          auto equals = line.find ('=');
+          assert (equals != std::string::npos);
 
-          set (firstWord, join (" ", words));
+          set (trim (line.substr (indent, equals - indent)),
+               trim (line.substr (equals + 1)));
         }
 
         // Top-level settings, with no value:
