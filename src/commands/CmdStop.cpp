@@ -41,8 +41,7 @@ int CmdStop (
   auto latest = getLatestInterval (database);
 
   // Verify the interval is open.
-  if (  latest.range.started () &&
-      ! latest.range.ended ())
+  if (latest.range.open ())
   {
     // Stop it.
     Interval modified {latest};
