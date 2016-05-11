@@ -87,7 +87,7 @@ int CmdReportSummary (
 
       // Intersect track with day.
       auto today = day_range.intersect (track.range);
-      if (! track.range.ended ())
+      if (track.range.open ())
         today.end = Datetime ();
 
       std::string tags = "";
@@ -100,7 +100,7 @@ int CmdReportSummary (
 
       table.set (row, 3, tags);
       table.set (row, 4, today.start.toString ("h:N:S"));
-      table.set (row, 5, (track.range.ended () ? today.end.toString ("h:N:S") : "-"));
+      table.set (row, 5, (track.range.open () ? "-" : today.end.toString ("h:N:S")));
       table.set (row, 6, Duration (today.total ()).format ());
 
       daily_total += today.total ();
