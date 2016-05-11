@@ -624,11 +624,28 @@ std::vector <Interval> getTrackedIntervals (
   // Get the set of expanded exclusions that overlap the range defined by the
   // timeline. If no range is defined, derive it from the set of all data.
   auto exclusions = getAllExclusions (rules, filter.range);
+  Datetime now;
 
   std::vector <Interval> intervals;
   for (auto& inclusion : subset (filter, inclusions))
-    for (auto& interval : flatten (clip (inclusion, filter.range), exclusions))
-      intervals.push_back (interval);
+    for (auto& e : exclusions)
+      if (e.start < now)
+      {
+        if (inclusion.range.encloses (e))
+        {
+          // Subtract any enclosed exclusion.
+          for (auto& result : subtractRanges (filter.range, {inclusion.range}, {e}))
+          {
+            Interval chunk {inclusion};
+            chunk.range = result;
+            intervals.push_back (chunk);
+          }
+        }
+        else
+        {
+          intervals.push_back (inclusion);
+        }
+      }
 
   return intervals;
 }
