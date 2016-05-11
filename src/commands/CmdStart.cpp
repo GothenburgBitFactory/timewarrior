@@ -43,8 +43,7 @@ int CmdStart (
 
   // If the latest interval is open, close it.
   auto latest = getLatestInterval (database);
-  if (  latest.range.started () &&
-      ! latest.range.ended ())
+  if (latest.open ())
   {
     // Stop it.
     Interval modified {latest};
@@ -71,7 +70,7 @@ int CmdStart (
   for (auto& tag : filter.tags ())
     now.tag (tag);
 
-  // Update database.
+  // Update database. An open interval does not need to be flattened.
   database.addInterval (now);
 
   // TODO intervalSummarїze needs to operate on a vector of similar intervals.
