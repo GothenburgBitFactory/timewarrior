@@ -197,7 +197,7 @@ static void renderInterval (
     return;
 
   Interval clipped = clip (track, day_range);
-  if (! track.range.ended ())
+  if (track.range.open ())
     clipped.range.end = Datetime ();
 
   auto start_mins = clipped.range.start.hour () * 60 + clipped.range.start.minute ();
@@ -250,7 +250,7 @@ static void renderInterval (
 
       // An open interval gets a "..." in the bottom right corner, or
       // whatever fits.
-      if (! track.range.ended ())
+      if (track.range.open ())
         line2.add ("+", start_offset + width - 1, colorTrack);
     }
   }
