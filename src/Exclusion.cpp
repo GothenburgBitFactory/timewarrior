@@ -164,13 +164,15 @@ Range Exclusion::rangeFromTimeBlock (
   {
     int hh, mm, ss;
     if (pig.getHMS (hh, mm, ss))
-      return Range (start, Datetime (start.year (), start.month (), start.day (), hh, mm, ss));
+      return Range (Datetime (start.year (), start.month (), start.day (),  0,  0,  0),
+                    Datetime (start.year (), start.month (), start.day (), hh, mm, ss));
   }
   else if (pig.skip ('>'))
   {
     int hh, mm, ss;
     if (pig.getHMS (hh, mm, ss))
-      return Range (Datetime (start.year (), start.month (), start.day (), hh, mm, ss), end);
+      return Range (Datetime (start.year (), start.month (), start.day (), hh, mm, ss),
+                    Datetime (end.year (),   end.month (),   end.day (),    0,  0,  0));
   }
   else
   {
