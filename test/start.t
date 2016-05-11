@@ -64,6 +64,14 @@ class TestStart(TestCase):
         self.assertTrue('start' in j[0])
         self.assertFalse('end' in j[0])
 
+    def test_timed_start(self):
+        """Test timed start"""
+        self.t("start 10:30am")
+        j = self.t.export()
+        self.assertEqual(len(j), 1)
+        self.assertTrue('start' in j[0])
+        self.assertFalse('end' in j[0])
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
