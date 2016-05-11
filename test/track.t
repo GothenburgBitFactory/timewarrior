@@ -72,6 +72,30 @@ class TestTrack(TestCase):
         self.assertTrue('tags' in j[0])
         self.assertEqual(j[0]['tags'][0], 'foo')
 
+    def test_single_interval_enclosing_exclusion(self):
+        """Add one interval that encloseѕ an exclusion, and is therefore flattened"""
+        self.t.config("exclusions.monday",    "<9:00 12:00-13:00 >18:00")
+        self.t.config("exclusions.tuesday",   "<9:00 12:00-13:00 >18:00")
+        self.t.config("exclusions.wednesday", "<9:00 12:00-13:00 >18:00")
+        self.t.config("exclusions.thursday",  "<9:00 12:00-13:00 >18:00")
+        self.t.config("exclusions.friday",    "<9:00 12:00-13:00 >18:00")
+        self.t.config("exclusions.saturday",  "<9:00 12:00-13:00 >18:00")
+        self.t.config("exclusions.sunday",    "<9:00 12:00-13:00 >18:00")
+
+        self.t("track 20160101T100000 - 20160101T150000 foo")
+        j = self.t.export()
+        self.assertEqual(len(j), 2)
+
+        self.assertTrue('start' in j[0])
+        self.assertTrue('end' in j[0])
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'][0], 'foo')
+
+        self.assertTrue('start' in j[1])
+        self.assertTrue('end' in j[1])
+        self.assertTrue('tags' in j[1])
+        self.assertEqual(j[1]['tags'][0], 'foo')
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())
