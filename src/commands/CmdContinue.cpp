@@ -37,8 +37,7 @@ int CmdContinue (
   auto latest = getLatestInterval (database);
   if (! latest.empty ())
   {
-    if (latest.range.started () &&
-        latest.range.ended ())
+    if (! latest.range.open ())
     {
       // Open an identical interval.
       latest.range.start = Datetime ();
@@ -51,14 +50,10 @@ int CmdContinue (
       std::cout << intervalSummarize (rules, latest);
     }
     else
-    {
       std::cout << "There is already active tracking.\n";
-    }
   }
   else
-  {
     std::cout << "There is no previous tracking to continue.\n";
-  }
 
   return 0;
 }
