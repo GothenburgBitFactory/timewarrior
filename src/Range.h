@@ -37,6 +37,7 @@ public:
   Range (const Datetime&, const Datetime&);
   bool operator== (const Range&) const;
 
+  bool open () const;
   bool started () const;
   bool ended () const;
   bool overlap (const Range&) const;

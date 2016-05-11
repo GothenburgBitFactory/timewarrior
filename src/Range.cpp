@@ -48,6 +48,13 @@ bool Range::operator== (const Range& other) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+bool Range::open () const
+{
+  return start.toEpoch () > 0 &&
+         end.toEpoch () == 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 bool Range::started () const
 {
   return start.toEpoch () > 0;
