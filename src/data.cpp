@@ -410,36 +410,19 @@ std::vector <Interval> flatten (
 {
   std::vector <Interval> all;
 
-  // Start with a single range from the interval, from which to subtract.
-  std::vector <Range> pieces {interval.range};
-  for (auto& exclusion : exclusions)
+  if (! interval.range.ended ())
   {
-    std::vector <Range> split_pieces;
-    for (auto& piece : pieces)
-    {
-      // If the exclusion is entirely within the piece, then collapse.
-      if (exclusion.start > piece.start &&
-          (exclusion.end  < piece.end ||
-           piece.end.toEpoch () == 0))
-      {
-        for (auto& smaller_piece : piece.subtract (exclusion))
-          split_pieces.push_back (smaller_piece);
-      }
-
-      // If the exclusion merely overlap the piece, do nothing. This is because
-      // tracked time start and end is not clipped, but recorded faithfully.
-      else
-      {
-        split_pieces.push_back (piece);
-      }
-    }
-
-    pieces = split_pieces;
+    all.push_back (interval);
   }
-
-  // Return all the fragments as clipped intervals.
-  for (auto& piece : pieces)
-    all.push_back (clip (interval, piece));
+  else
+  {
+    for (auto& result : subtractRanges (interval.range, {interval.range}, exclusions))
+    {
+      Interval chunk {interval};
+      chunk.range = result;
+      all.push_back (chunk);
+    }
+  }
 
 /*
   std::cout << "#   results:\n";
