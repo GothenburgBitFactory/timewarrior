@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (50);
+  UnitTest t (54);
 
   // std::vector <Interval> flatten (const Interval&, std::vector <Range>&);
   Interval i1;
@@ -75,6 +75,17 @@ int main (int, char**)
   t.ok (results[0].range.start.toISO () == "20160427T160000Z", "flatten i3 --> results[0].range.start 20160427T160000Z");
   t.ok (results[0].range.end.toEpoch () == 0,                  "flatten i3 --> results[0].range.end   -");
   t.ok (results[0].hasTag ("foo"),                             "flatten i3 --> results[0].hasTag foo");
+
+  // Exclusion encloses interval. Should have no effect.
+  Interval i4;
+  i4.range = Range (Datetime ("20160427T031500Z"), Datetime ("20160427T041500Z"));
+  i4.tag ("foo");
+
+  results = flatten (i4, exclusions);
+  t.ok (results.size () == 1,                                  "flatten i4 --> 1 fragment");
+  t.ok (results[0].range.start.toISO () == "20160427T031500Z", "flatten i4 --> results[0].range.start 20160427T031500Z");
+  t.ok (results[0].range.end.toISO ()   == "20160427T041500Z", "flatten i4 --> results[0].range.end   20160427T041500Z");
+  t.ok (results[0].hasTag ("foo"),                             "flatten i4 --> results[0].hasTag foo");
 
   // bool matchesFilter (const Interval& interval, const Interval& filter);
   Interval refOpen;
