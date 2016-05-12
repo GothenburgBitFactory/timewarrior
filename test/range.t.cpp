@@ -34,24 +34,24 @@ int main (int, char**)
 {
   UnitTest t (87);
 
-  // bool started () const;
-  // bool ended () const;
+  // bool is_started () const;
+  // bool is_ended () const;
   Range i1;
-  t.is (i1.started (), false, "Range().started -> false");
-  t.is (i1.ended (),   false, "Range().ended -> false");
-  t.is (i1.open (),    false, "Range().open -> false");
+  t.is (i1.is_started (), false, "Range().is_started -> false");
+  t.is (i1.is_ended (),   false, "Range().is_ended -> false");
+  t.is (i1.is_open (),    false, "Range().is_open -> false");
 
   // void start (Datetime);
   i1.start = Datetime ();
-  t.is (i1.started (), true,  "Range(start=now).started -> true");
-  t.is (i1.ended (),   false, "Range(start=now).ended -> false");
-  t.is (i1.open (),    true,  "Range(start=now).open -> true");
+  t.is (i1.is_started (), true,  "Range(start=now).is_started -> true");
+  t.is (i1.is_ended (),   false, "Range(start=now).is_ended -> false");
+  t.is (i1.is_open (),    true,  "Range(start=now).is_open -> true");
 
   // void end (Datetime);
   i1.end = Datetime ();
-  t.is (i1.started (), true,  "Range(start=now,end=now).started -> true");
-  t.is (i1.ended (),   true,  "Range(start=now,end=now).ended -> true");
-  t.is (i1.open (),    false, "Range(start=now,end=now).open -> false");
+  t.is (i1.is_started (), true,  "Range(start=now,end=now).is_started -> true");
+  t.is (i1.is_ended (),   true,  "Range(start=now,end=now).is_ended -> true");
+  t.is (i1.is_open (),    false, "Range(start=now,end=now).is_open -> false");
 
   // this                     [--------)
   // A          [--------)

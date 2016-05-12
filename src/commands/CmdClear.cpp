@@ -35,7 +35,7 @@ int CmdClear (
   Database& database)
 {
   auto filter = getFilter (cli);
-  if (! filter.range.started () &&
+  if (! filter.range.is_started () &&
       filter.tags ().size () == 0)
     throw std::string ("The 'clear' command refuses to delete all your data.");
 

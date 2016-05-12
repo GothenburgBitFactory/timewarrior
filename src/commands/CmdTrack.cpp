@@ -38,12 +38,11 @@ int CmdTrack (
   // If this is not a proper closed interval, then the user is trying to make
   // the 'track' command behave like 'start', so delegate to CmdStart.
   auto filter = getFilter (cli);
-  if (! filter.range.started () ||
-      ! filter.range.ended ())
+  if (! filter.range.is_started () ||
+      ! filter.range.is_ended ())
     return CmdStart (cli, rules, database);
 
   auto exclusions = getAllExclusions (rules, filter.range);
-
   for (auto& interval : flatten (filter, exclusions))
     database.addInterval (interval);
 

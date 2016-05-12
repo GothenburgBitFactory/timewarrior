@@ -109,7 +109,7 @@ void Database::addInterval (const Interval& interval)
     // Intersect the original interval range, and the segment.
     Interval segmentedInterval (interval);
     segmentedInterval.range = intervalRange.intersect (segment);
-    if (! interval.range.ended ())
+    if (interval.range.is_open ())
       segmentedInterval.range.end = Datetime (0);
 
     _files[df].addInterval (segmentedInterval);
@@ -129,7 +129,7 @@ void Database::deleteInterval (const Interval& interval)
     // Intersect the original interval range, and the segment.
     Interval segmentedInterval (interval);
     segmentedInterval.range = intervalRange.intersect (segment);
-    if (! interval.range.ended ())
+    if (! interval.range.is_ended ())
       segmentedInterval.range.end = Datetime (0);
 
     _files[df].deleteInterval (segmentedInterval);

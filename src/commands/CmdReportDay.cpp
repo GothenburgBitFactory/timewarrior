@@ -50,7 +50,7 @@ int CmdReportDay (
 {
   // Create a filter, and if empty, choose 'today'.
   auto filter = getFilter (cli);
-  if (! filter.range.started ())
+  if (! filter.range.is_started ())
     filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
 
   // Load the data.
@@ -197,7 +197,7 @@ static void renderInterval (
     return;
 
   Interval clipped = clip (track, day_range);
-  if (track.range.open ())
+  if (track.range.is_open ())
     clipped.range.end = Datetime ();
 
   auto start_mins = clipped.range.start.hour () * 60 + clipped.range.start.minute ();
@@ -250,7 +250,7 @@ static void renderInterval (
 
       // An open interval gets a "..." in the bottom right corner, or
       // whatever fits.
-      if (track.range.open ())
+      if (track.range.is_open ())
         line2.add ("+", start_offset + width - 1, colorTrack);
     }
   }

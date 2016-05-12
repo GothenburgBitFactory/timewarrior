@@ -410,7 +410,7 @@ std::vector <Interval> flatten (
 {
   std::vector <Interval> all;
 
-  if (interval.range.open ())
+  if (interval.range.is_open ())
   {
     all.push_back (interval);
   }
@@ -507,7 +507,7 @@ Range outerRange (const std::vector <Interval>& intervals)
     if (interval.range.end > outer.end)
       outer.end = interval.range.end;
 
-    if (! interval.range.ended ())
+    if (! interval.range.is_ended ())
       outer.end = Datetime ();
   }
 
@@ -578,7 +578,7 @@ bool matchesFilter (const Interval& interval, const Interval& filter)
 // Take an interval and clip it to the range.
 Interval clip (const Interval& interval, const Range& range)
 {
-  if (! range.started () ||
+  if (! range.is_started () ||
       range.total () == 0)
     return interval;
 
@@ -614,7 +614,7 @@ std::vector <Interval> getTrackedIntervals (
   //   [earliest start, latest end)
   //
   // Avoid assigning a zero-width range - leave it unstarted instead.
-  if (! filter.range.started ())
+  if (! filter.range.is_started ())
   {
     auto outer = outerRange (inclusions);
     if (outer.total ())

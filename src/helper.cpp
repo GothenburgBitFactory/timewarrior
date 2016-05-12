@@ -51,7 +51,7 @@ Color tagColor (const Rules& rules, const std::string& tag)
 std::string intervalSummarize (const Rules& rules, const Interval& interval)
 {
   std::stringstream out;
-  if (interval.range.started ())
+  if (interval.range.is_started ())
   {
     // Combine and colorize tags.
     std::string tags;
@@ -64,7 +64,7 @@ std::string intervalSummarize (const Rules& rules, const Interval& interval)
     }
 
     // Interval closed.
-    if (interval.range.ended ())
+    if (interval.range.is_ended ())
     {
       Duration dur (Datetime (interval.range.end) - Datetime (interval.range.start));
       out << "Recorded " << tags << '\n'

@@ -48,20 +48,20 @@ bool Range::operator== (const Range& other) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Range::open () const
+bool Range::is_open () const
 {
   return start.toEpoch () > 0 &&
          end.toEpoch () == 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Range::started () const
+bool Range::is_started () const
 {
   return start.toEpoch () > 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Range::ended () const
+bool Range::is_ended () const
 {
   return end.toEpoch () > 0;
 }
@@ -93,15 +93,15 @@ bool Range::ended () const
 //
 bool Range::overlap (const Range& other) const
 {
-  if (! started () || ! other.started ())
+  if (! is_started () || ! other.is_started ())
     return false;
 
   // Other range ends before this range starts.
-  if (other.ended () && other.end <= start)
+  if (other.is_ended () && other.end <= start)
     return false;
 
   // Other range starts after this range ends.
-  if (ended () && other.start >= end)
+  if (is_ended () && other.start >= end)
     return false;
 
   return true;
@@ -122,17 +122,17 @@ bool Range::overlap (const Range& other) const
 //
 bool Range::encloses (const Range& other) const
 {
-  if (started ())
+  if (is_started ())
   {
-    if (ended ())
+    if (is_ended ())
     {
-      if (other.started () && other.start >= start &&
-          other.ended ()   && other.end   <= end)
+      if (other.is_started () && other.start >= start &&
+          other.is_ended ()   && other.end   <= end)
         return true;
     }
     else
     {
-      if (other.started () && other.start >= start)
+      if (other.is_started () && other.start >= start)
         return true;
     }
   }
@@ -174,16 +174,16 @@ Range Range::intersect (const Range& other) const
     Range result;
     result.start = start > other.start ? start : other.start;
 
-    if (ended ())
+    if (is_ended ())
     {
-      if (other.ended ())
+      if (other.is_ended ())
         result.end  = end < other.end ? end : other.end;
       else
         result.end = end;
     }
     else
     {
-      if (other.ended ())
+      if (other.is_ended ())
         result.end = other.end;
     }
 
@@ -228,17 +228,17 @@ std::vector <Range> Range::subtract (const Range& other) const
     {
       results.push_back (Range (start, other.start));
 
-      if (other.ended () &&
-          (! ended () || end > other.end))
+      if (other.is_ended () &&
+          (! is_ended () || end > other.end))
       {
         results.push_back (Range (other.end, end));
       }
     }
     else
     {
-      if (other.ended ())
+      if (other.is_ended ())
       {
-        if (ended ())
+        if (is_ended ())
         {
           if (end > other.end)
             results.push_back (Range (other.end, end));
@@ -265,7 +265,7 @@ std::vector <Range> Range::subtract (const Range& other) const
 // If the range is open, use 'now' as the end.
 time_t Range::total () const
 {
-  if (ended ())
+  if (is_ended ())
     return Datetime (end) - Datetime (start);
 
   return Datetime () - Datetime (start);

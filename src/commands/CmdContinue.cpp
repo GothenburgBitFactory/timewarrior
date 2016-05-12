@@ -37,7 +37,7 @@ int CmdContinue (
   auto latest = getLatestInterval (database);
   if (! latest.empty ())
   {
-    if (! latest.range.open ())
+    if (! latest.range.is_open ())
     {
       // Open an identical interval.
       latest.range.start = Datetime ();

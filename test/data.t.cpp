@@ -67,8 +67,8 @@ int main (int, char**)
   Interval i3;
   i3.range = Range (Datetime ("20160427T160000Z"), Datetime (0));
   i3.tag ("foo");
-  t.ok    (i3.range.started (), "i3 range started");
-  t.notok (i3.range.ended (),   "i3 range not ended");
+  t.ok    (i3.range.is_started (), "i3 range started");
+  t.notok (i3.range.is_ended (),   "i3 range not ended");
 
   results = flatten (i3, exclusions);
   t.ok (results.size () == 1,                                  "flatten i3 --> 1 fragment");

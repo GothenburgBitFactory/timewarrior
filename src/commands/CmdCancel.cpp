@@ -37,7 +37,7 @@ int CmdCancel (
 {
   // If there is an open interval, cancel it by deleting it..
   auto latest = getLatestInterval (database);
-  if (latest.range.open ())
+  if (latest.range.is_open ())
   {
     database.deleteInterval (latest);
     if (rules.getBoolean ("verbose"))

@@ -33,23 +33,23 @@ int main (int, char**)
 {
   UnitTest t (38);
 
-  // bool started () const;
-  // bool ended () const;
+  // bool is_started () const;
+  // bool is_ended () const;
   Interval i1;
-  t.is (i1.empty (),         true,  "Interval().empty -> true");
-  t.is (i1.range.started (), false, "Interval().started -> false");
-  t.is (i1.range.ended (),   false, "Interval().ended -> false");
+  t.is (i1.empty (),            true,  "Interval().empty -> true");
+  t.is (i1.range.is_started (), false, "Interval().is_started -> false");
+  t.is (i1.range.is_ended (),   false, "Interval().is_ended -> false");
 
   // void start (Datetime);
   i1.range.start = Datetime ();
-  t.is (i1.empty (),         false, "Interval().empty -> false");
-  t.is (i1.range.started (), true,  "Interval(start=now).started -> true");
-  t.is (i1.range.ended (),   false, "Interval(start=now).ended -> false");
+  t.is (i1.empty (),            false, "Interval().empty -> false");
+  t.is (i1.range.is_started (), true,  "Interval(start=now).is_started -> true");
+  t.is (i1.range.is_ended (),   false, "Interval(start=now).is_ended -> false");
 
   // void end (Datetime);
   i1.range.end = Datetime ();
-  t.is (i1.range.started (), true, "Interval(start=now,end=now).started -> true");
-  t.is (i1.range.ended (),   true, "Interval(start=now,end=now).ended -> true");
+  t.is (i1.range.is_started (), true, "Interval(start=now,end=now).is_started -> true");
+  t.is (i1.range.is_ended (),   true, "Interval(start=now,end=now).is_ended -> true");
 
   // std::set <std::string> tags () const;
   // void tag (const std::string&);

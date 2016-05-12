@@ -37,7 +37,7 @@ int CmdDefault (Rules& rules, Database& database)
 
   // Load the most recent interval, summarize and display.
   auto interval = getLatestInterval (database);
-  if (interval.range.open ())
+  if (interval.range.is_open ())
   {
     if (rules.getBoolean ("verbose"))
       std::cout << intervalSummarize (rules, interval);
