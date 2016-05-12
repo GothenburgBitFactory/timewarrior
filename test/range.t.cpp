@@ -243,8 +243,8 @@ int main (int, char**)
   t.ok    (refOpen.encloses (testI), "Range:   refOpen.encloses(testI)");
 
   // Adjacent ranges.
-  Range left  (Datetime ("2016-04-25T11:00:00"), Datetime ("2016-04-25T12:00:00"));
-  Range right (Datetime ("2016-04-25T12:00:00"), Datetime ("2016-04-25T13:00:00"));
+  Range left  (Datetime ("20160425T110000"), Datetime ("20160425T120000"));
+  Range right (Datetime ("20160425T120000"), Datetime ("20160425T130000"));
   t.notok (left.overlap (right), "Range: left (11am - 12pm) does not overlap with right (12pm - 1pm)");
 
   auto intersection = left.intersect (right);
