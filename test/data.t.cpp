@@ -29,63 +29,94 @@
 #include <test.h>
 
 ////////////////////////////////////////////////////////////////////////////////
+void test_flatten (
+  UnitTest& t,
+  const std::string& label,
+  const std::string& input,
+  const std::vector <Range>& exclusions,
+  const std::vector <std::string>& output)
+{
+  Interval i;
+  i.initialize (input);
+
+  auto results = flatten (i, exclusions);
+
+  t.ok (results.size () == output.size (),   "flatten: " + label + " expected number of results");
+  for (unsigned int i = 0; i < std::min (output.size (), results.size ()); ++i)
+  {
+    Interval tmp;
+    tmp.initialize (output[i]);
+
+    t.is (tmp.range.start.toISO (), results[i].range.start.toISO (), "flatten: " + label + " start matches");
+    t.is (tmp.range.end.toISO (),   results[i].range.end.toISO (),   "flatten: " + label + " end matches");
+    t.ok (tmp.tags () == results[i].tags (),                         "flatten: " + label + " tags match");
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (54);
+  UnitTest t (21 + (7 * 5));
 
   // std::vector <Interval> flatten (const Interval&, std::vector <Range>&);
-  Interval i1;
-  i1.range = Range (Datetime ("20160427T000000Z"), Datetime ("20160428T000000Z"));
-  i1.tag ("foo");
+  // input    [---------------------------------------------------)
+  // exc      [----------)          [---)         [---------------)
+  // output              [----------)   [---------)
+  test_flatten (t,
+                "[1] (full day) - (3 non-overlapping exc) = (2 inc)",
+                "inc 20160427T000000Z - 20160428T000000Z # foo",
+                {{Datetime ("20160427T000000Z"), Datetime ("20160427T080000Z")},
+                 {Datetime ("20160427T120000Z"), Datetime ("20160427T130000Z")},
+                 {Datetime ("20160427T173000Z"), Datetime ("20160428T000000Z")}},
+                {"inc 20160427T080000Z - 20160427T120000Z # foo",
+                 "inc 20160427T130000Z - 20160427T173000Z # foo"});
 
-  std::vector <Range> exclusions = {Range (Datetime ("20160427T000000Z"), Datetime ("20160427T080000Z")),
-                                    Range (Datetime ("20160427T120000Z"), Datetime ("20160427T130000Z")),
-                                    Range (Datetime ("20160427T173000Z"), Datetime ("20160428T000000Z"))};
+  // input                        [-------)
+  // exc      [----------)          [---)         [---------------)
+  // output                       [-)   [-)
+  test_flatten (t,
+                "[2] (inc) - (1 enclosed exc) = (2 inc)",
+                "inc 20160427T115500Z - 20160427T130500Z # foo",
+                {{Datetime ("20160427T000000Z"), Datetime ("20160427T080000Z")},
+                 {Datetime ("20160427T120000Z"), Datetime ("20160427T130000Z")},
+                 {Datetime ("20160427T173000Z"), Datetime ("20160428T000000Z")}},
+                {"inc 20160427T115500Z - 20160427T120000Z # foo",
+                 "inc 20160427T130000Z - 20160427T130500Z # foo"});
 
-  auto results = flatten (i1, exclusions);
-  t.ok (results.size () == 2,                                "flatten i1 --> 2 fragments");
-  t.is (results[0].range.start.toISO (), "20160427T080000Z", "flatten i1 --> results[0].range.start 20160427T080000Z");
-  t.is (results[0].range.end.toISO (),   "20160427T120000Z", "flatten i1 --> results[0].range.end   20160427T120000Z");
-  t.ok (results[0].hasTag ("foo"),                           "flatten i1 --> results[0].hasTag foo");
-  t.is (results[1].range.start.toISO (), "20160427T130000Z", "flatten i1 --> results[1].range.start 20160427T130000Z");
-  t.is (results[1].range.end.toISO (),   "20160427T173000Z", "flatten i1 --> results[1].range.end   20160428T173000Z");
-  t.ok (results[1].hasTag ("foo"),                           "flatten i1 --> results[1].hasTag foo");
-
-  Interval i2;
-  i2.range = Range (Datetime ("20160427T115500Z"), Datetime ("20160427T130500Z"));
-  i2.tag ("foo");
-
-  results = flatten (i2, exclusions);
-  t.ok (results.size () == 2,                                "flatten i2 --> 2 fragments");
-  t.is (results[0].range.start.toISO (), "20160427T115500Z", "flatten i2 --> results[0].range.start 20160427T115500Z");
-  t.is (results[0].range.end.toISO (),   "20160427T120000Z", "flatten i2 --> results[0].range.end   20160427T120000Z");
-  t.ok (results[0].hasTag ("foo"),                           "flatten i2 --> results[0].hasTag foo");
-  t.is (results[1].range.start.toISO (), "20160427T130000Z", "flatten i2 --> results[1].range.start 20160427T130000Z");
-  t.is (results[1].range.end.toISO (),   "20160427T130500Z", "flatten i2 --> results[1].range.end   20160427T130500Z");
-  t.ok (results[1].hasTag ("foo"),                           "flatten i2 --> results[1].hasTag foo");
-
-  Interval i3;
-  i3.range = Range (Datetime ("20160427T160000Z"), Datetime (0));
-  i3.tag ("foo");
-  t.ok    (i3.range.is_started (), "i3 range started");
-  t.notok (i3.range.is_ended (),   "i3 range not ended");
-
-  results = flatten (i3, exclusions);
-  t.ok (results.size () == 1,                                  "flatten i3 --> 1 fragment");
-  t.ok (results[0].range.start.toISO () == "20160427T160000Z", "flatten i3 --> results[0].range.start 20160427T160000Z");
-  t.ok (results[0].range.end.toEpoch () == 0,                  "flatten i3 --> results[0].range.end   -");
-  t.ok (results[0].hasTag ("foo"),                             "flatten i3 --> results[0].hasTag foo");
+  // input                                      [...
+  // exc      [----------)          [---)         [---------------)
+  // output                                     [...
+  test_flatten (t,
+                "[3] (open inc) - (1 overlapping exc) = (2 inc)",
+                "inc 20160427T160000Z # foo",
+                {{Datetime ("20160427T000000Z"), Datetime ("20160427T080000Z")},
+                 {Datetime ("20160427T120000Z"), Datetime ("20160427T130000Z")},
+                 {Datetime ("20160427T173000Z"), Datetime ("20160428T000000Z")}},
+                {"inc 20160427T160000Z # foo"});
 
   // Exclusion encloses interval. Should have no effect.
-  Interval i4;
-  i4.range = Range (Datetime ("20160427T031500Z"), Datetime ("20160427T041500Z"));
-  i4.tag ("foo");
+  // input       [--)
+  // exc      [----------)          [---)         [---------------)
+  // output      [--)
+  test_flatten (t,
+                "[4] (inc) - (1 enclosing exc) = (unmodified inc)",
+                "inc 20160427T031500Z - 20160427T041500Z # foo",
+                {{Datetime ("20160427T000000Z"), Datetime ("20160427T080000Z")},
+                 {Datetime ("20160427T120000Z"), Datetime ("20160427T130000Z")},
+                 {Datetime ("20160427T173000Z"), Datetime ("20160428T000000Z")}},
+                {"inc 20160427T031500Z - 20160427T041500Z # foo"});
 
-  results = flatten (i4, exclusions);
-  t.ok (results.size () == 1,                                  "flatten i4 --> 1 fragment");
-  t.ok (results[0].range.start.toISO () == "20160427T031500Z", "flatten i4 --> results[0].range.start 20160427T031500Z");
-  t.ok (results[0].range.end.toISO ()   == "20160427T041500Z", "flatten i4 --> results[0].range.end   20160427T041500Z");
-  t.ok (results[0].hasTag ("foo"),                             "flatten i4 --> results[0].hasTag foo");
+  // Multiple overlapping exclusions, no effect.
+  // input               [----)
+  // exc      [---------------------------------------------------)
+  // exc              [----)
+  // output              [----)
+  test_flatten (t,
+                "[5] (inc) - (2 overlapping exc) = (unmodified inc)",
+                "inc 20160512T083000Z - 20160512T093000Z # foo",
+                {{Datetime ("20160512T080000Z"), Datetime ("20160512T090000Z")},    // One hour.
+                 {Datetime ("20160512T000000Z"), Datetime ("20160513T000000Z")}},   // All day.
+                {"inc 20160512T083000Z - 20160512T093000Z # foo"});
 
   // bool matchesFilter (const Interval& interval, const Interval& filter);
   Interval refOpen;
@@ -161,9 +192,9 @@ int main (int, char**)
   // std::vector <Range> subtractRanges (const Range&, const std::vector <Range>&, const std::vector <Range>&);
   // Subtract three non-overlapping ranges from a full day, yielding two resultant rangeṡ.
   Range limit (Datetime ("20160101T000000"), Datetime ("20160101T235959"));
-  exclusions = {Range (Datetime ("20160101T000000"), Datetime ("20160101T080000")),
-                Range (Datetime ("20160101T120000"), Datetime ("20160101T130000")),
-                Range (Datetime ("20160101T173000"), Datetime ("20160101T235959"))};
+  std::vector <Range> exclusions = {{Datetime ("20160101T000000"), Datetime ("20160101T080000")},
+                                    {Datetime ("20160101T120000"), Datetime ("20160101T130000")},
+                                    {Datetime ("20160101T173000"), Datetime ("20160101T235959")}};
   auto subtracted = subtractRanges (limit, {limit}, exclusions);
   t.ok (subtracted.size () == 2, "subtractRanges: all_day - 3 non-adjacent ranges = 2 ranges");
   t.ok (subtracted[0].start == Datetime ("20160101T080000"), "subtractRanges: results[0].start = 20160101T080000");
@@ -172,9 +203,9 @@ int main (int, char**)
   t.ok (subtracted[1].end   == Datetime ("20160101T173000"), "subtractRanges: results[1].end   = 20160101T173000");
 
   // Subtract a set of overlapping ranges.
-  exclusions = {Range (Datetime ("20160101T120000"), Datetime ("20160102T120000")),
-                Range (Datetime ("20160101T130000"), Datetime ("20160102T120000")),
-                Range (Datetime ("20160101T140000"), Datetime ("20160102T120000"))};
+  exclusions = {{Datetime ("20160101T120000"), Datetime ("20160102T120000")},
+                {Datetime ("20160101T130000"), Datetime ("20160102T120000")},
+                {Datetime ("20160101T140000"), Datetime ("20160102T120000")}};
   subtracted = subtractRanges (limit, {limit}, exclusions);
   t.ok (subtracted.size () == 1, "subtractRanges: all_day - 3 overlapping ranges = 1 range");
   t.ok (subtracted[0].start == Datetime ("20160101T000000"), "subtractRanges: results[0].start = 20160101T080000");
@@ -182,7 +213,7 @@ int main (int, char**)
 
   // Subtract a single range that extends before and after the limit, yielding
   // no results.
-  exclusions = {Range (Datetime ("20151201T000000"), Datetime ("20160201T000000"))};
+  exclusions = {{Datetime ("20151201T000000"), Datetime ("20160201T000000")}};
   subtracted = subtractRanges (limit, {limit}, exclusions);
   t.ok (subtracted.size () == 0, "subtractRanges: all_day - 2 overlapping months = 0 ranges");
 
