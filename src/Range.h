@@ -37,6 +37,10 @@ public:
   Range (const Datetime&, const Datetime&);
   bool operator== (const Range&) const;
 
+  void open ();
+  void open (const Datetime&);
+  void close ();
+
   bool is_open () const;
   bool is_started () const;
   bool is_ended () const;
