@@ -55,7 +55,6 @@ int CmdStart (
       database.addInterval (interval);
 
     // TODO intervalSummarїze needs to operate on a vector of similar intervals.
-    // User feedback.
     if (rules.getBoolean ("verbose"))
       std::cout << intervalSummarize (rules, modified);
   }
