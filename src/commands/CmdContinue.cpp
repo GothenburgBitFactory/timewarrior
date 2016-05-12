@@ -39,15 +39,12 @@ int CmdContinue (
   {
     if (! latest.range.is_open ())
     {
-      // Open an identical interval.
-      latest.range.start = Datetime ();
-      latest.range.end   = Datetime (0);
-
-      // Update database.
+      // Open an identical interval and update hte DB.
+      latest.range.open ();
       database.addInterval (latest);
 
-      // User feedback.
-      std::cout << intervalSummarize (rules, latest);
+      if (rules.getBoolean ("verbose"))
+        std::cout << intervalSummarize (rules, latest);
     }
     else
       std::cout << "There is already active tracking.\n";
