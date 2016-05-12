@@ -315,22 +315,6 @@ std::vector <Range> getAllExclusions (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <Exclusion> getExclusions (const Rules& rules)
-{
-  // Add exclusions from configuration.
-  std::vector <Exclusion> all;
-  for (auto& name : rules.all ("exclusions."))
-    all.push_back (Exclusion (lowerCase (name), rules.get (name)));
-
-/*
-  std::cout << "# getExclusions:\n";
-  for (auto& e : all)
-    std::cout << "#   " << e.dump () << "\n";
-*/
-  return all;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 std::vector <Interval> getAllInclusions (Database& database)
 {
   std::vector <Interval> all;

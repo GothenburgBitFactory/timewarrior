@@ -39,7 +39,6 @@
 // data.cpp
 Interval                getFilter           (const CLI&);
 std::vector <Range>     getHolidays         (const Rules&);
-std::vector <Exclusion> getExclusions       (const Rules&);
 std::vector <Range>     getAllExclusions    (const Rules&, const Range&);
 std::vector <Interval>  getAllInclusions    (Database&);
 std::vector <Interval>  subset              (const Interval&, const std::vector <Interval>&);
