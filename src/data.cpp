@@ -271,7 +271,10 @@ std::vector <Range> getAllExclusions (
   std::vector <Range> results;
   results = addRanges (range, results, getHolidays (rules));
 
-  auto exclusions = getExclusions (rules);
+  // Load all exclusions from configuration.
+  std::vector <Exclusion> exclusions;
+  for (auto& name : rules.all ("exclusions."))
+    exclusions.push_back (Exclusion (lowerCase (name), rules.get (name)));
 
   // Find exclusions 'exc day on <date>' and remove from holidays.
   // Find exlcusions 'exc day off <date>' and add to holidays.
