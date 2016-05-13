@@ -63,7 +63,7 @@ class TestTrack(TestCase):
 
     def test_single_unobstructed_interval(self):
         """Add one interval and export it as-is"""
-        self.t("track 8am - 9am foo")
+        self.t("track 20160101T080000 - 20160101T090000 foo")
 
         j = self.t.export()
         self.assertEqual(len(j), 1)
