@@ -96,6 +96,22 @@ class TestTrack(TestCase):
         self.assertTrue('tags' in j[1])
         self.assertEqual(j[1]['tags'][0], 'foo')
 
+    def test_single_interval_extending_into_exclusions(self):
+        """Add one interval that extends at either end into exclusions"""
+        self.t.config("exclusions.monday",    "<9:00 >18:00")
+        self.t.config("exclusions.tuesday",   "<9:00 >18:00")
+        self.t.config("exclusions.wednesday", "<9:00 >18:00")
+        self.t.config("exclusions.thursday",  "<9:00 >18:00")
+        self.t.config("exclusions.friday",    "<9:00 >18:00")
+        self.t.config("exclusions.saturday",  "<9:00 >18:00")
+        self.t.config("exclusions.sunday",    "<9:00 >18:00")
+
+        self.t("track 8:59:59 - 18:01:01 foo")
+        j = self.t.export()
+        self.assertEqual(len(j), 1)
+        self.assertIn('5959', j[0]['start'])
+        self.assertIn('0101', j[0]['end'])
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())
