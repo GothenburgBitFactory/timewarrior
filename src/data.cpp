@@ -436,7 +436,7 @@ std::vector <Range> addRanges (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Subtract a set of Range from another set of Range, all within a defined
+// Subtract a set of Ranges from another set of Ranges, all within a defined
 // range.
 std::vector <Range> subtractRanges (
   const Range& limits,
