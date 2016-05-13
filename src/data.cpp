@@ -574,11 +574,12 @@ Interval clip (const Interval& interval, const Range& range)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> getTrackedIntervals (
+std::vector <Interval> getTracked (
   Database& database,
   const Rules& rules,
   Interval& filter)
 {
+//  std::cout << "# getTracked\n";
   auto inclusions = getAllInclusions (database);
 
   // Exclusions are only usable within a range, so if no filter range exists,
@@ -595,30 +596,21 @@ std::vector <Interval> getTrackedIntervals (
   }
 
   // Get the set of expanded exclusions that overlap the range defined by the
-  // timeline. If no range is defined, derive it from the set of all data.
+  // timeline.
   auto exclusions = getAllExclusions (rules, filter.range);
-  Datetime now;
+  if (! exclusions.size ())
+    return inclusions;
 
   std::vector <Interval> intervals;
-  for (auto& inclusion : subset (filter, inclusions))
-    for (auto& e : exclusions)
-      if (e.start < now)
-      {
-        if (inclusion.range.encloses (e))
-        {
-          // Subtract any enclosed exclusion.
-          for (auto& result : subtractRanges (filter.range, {inclusion.range}, {e}))
-          {
-            Interval chunk {inclusion};
-            chunk.range = result;
-            intervals.push_back (chunk);
-          }
-        }
-        else
-        {
-          intervals.push_back (inclusion);
-        }
-      }
+  for (auto& inclusion : inclusions)
+  {
+    for (auto& piece : subtractRanges (filter.range, {inclusion.range}, exclusions))
+    {
+      Interval chunk {inclusion};
+      chunk.range = piece;
+      intervals.push_back (chunk);
+    }
+  }
 
   return intervals;
 }
