@@ -55,7 +55,7 @@ int CmdReportDay (
 
   // Load the data.
   auto exclusions = getAllExclusions (rules, filter.range);
-  auto tracked    = getTrackedIntervals (database, rules, filter);
+  auto tracked    = getTracked (database, rules, filter);
 
   // Create a color palette.
   auto palette = createPalette (rules);
