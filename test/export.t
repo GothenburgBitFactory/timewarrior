@@ -62,7 +62,7 @@ class TestExport(TestCase):
         self.assertIn("[\n]\n", out)
 
     def test_single_unobstructed_interval(self):
-        """Add one interval and export it as-is"""
+        """Single unobstructed interval"""
         self.t("track 8am - 9am foo")
 
         j = self.t.export()
