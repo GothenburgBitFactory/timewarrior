@@ -34,7 +34,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (253);
+  UnitTest t (261);
 
   try
   {
@@ -355,7 +355,7 @@ int main (int, char**)
     t.is (tokens[3], "on",                  "Exclusion 'exclusions.days on 2016_01_01' [3] --> 'on'");
 
     ranges = e8.ranges (r);
-    t.ok (ranges.size () == 1,                              "Exclusion ranges  --> [1]");
+    t.ok (ranges.size () == 1,                              "Exclusion ranges --> [1]");
     t.is (ranges[0].start.toString ("Y-M-D"), "2016-01-01", "Exclusion range[0].start() --> 2016-01-01");
     t.is (ranges[0].end.toString ("Y-M-D"),   "2016-01-02", "Exclusion range[0].end() --> 2016-01-02");
     t.ok (e8.additive (),                                   "Exclusion 'day on ...' --> additive");
@@ -370,10 +370,29 @@ int main (int, char**)
     t.is (tokens[3], "off",                 "Exclusion 'exclusions.days off 2016_01_01' [3] --> 'off'");
 
     ranges = e9.ranges (r);
-    t.ok (ranges.size () == 1,                              "Exclusion ranges  --> [1]");
+    t.ok (ranges.size () == 1,                              "Exclusion ranges --> [1]");
     t.is (ranges[0].start.toString ("Y-M-D"), "2016-01-01", "Exclusion range[0].start() --> 2016-01-01");
     t.is (ranges[0].end.toString ("Y-M-D"),   "2016-01-02", "Exclusion range[0].end() --> 2016-01-02");
     t.notok (e9.additive (),                                "Exclusion 'day off ...' --> !additive");
+
+    // Test day iteration for Exclusion::ranges.
+    // The key part of this test is that the end is < 24 hours from the start,
+    // which revealed a bug where Exclusion::ranges iterated one day at a time
+    // from 'start' to 'end', and never yielded results for the second day.
+    Exclusion e10 ("exclusions.thursday", "<8:00:00 12:00:00-12:45:00 >17:30:00");
+    Range r1d {{"20160512T160000"}, {"20160513T125000"}};
+    ranges = e10.ranges (r1d);
+    t.ok (ranges.size () == 1,                                          "Exclusion ranges --> [1]");
+    t.is (ranges[0].start.toISOLocalExtended (), "2016-05-12T17:30:00", "Exclusion range[2].start() --> 2016-05-12T17:30:00");
+    t.is (ranges[0].end.toISOLocalExtended (),   "2016-05-13T00:00:00", "Exclusion range[2].end()   --> 2016-05-13T00:00:00");
+
+    Exclusion e11 ("exclusions.friday",   "<8:00:00 12:00:00-12:45:00 >17:30:00");
+    ranges = e11.ranges (r1d);
+    t.ok (ranges.size () == 2,                                          "Exclusion ranges --> [2]");
+    t.is (ranges[0].start.toISOLocalExtended (), "2016-05-13T00:00:00", "Exclusion range[0].start() --> 2016-05-13T00:00:00");
+    t.is (ranges[0].end.toISOLocalExtended (),   "2016-05-13T08:00:00", "Exclusion range[0].end()   --> 2016-05-13T08:00:00");
+    t.is (ranges[1].start.toISOLocalExtended (), "2016-05-13T12:00:00", "Exclusion range[1].start() --> 2016-05-13T12:00:00");
+    t.is (ranges[1].end.toISOLocalExtended (),   "2016-05-13T12:45:00", "Exclusion range[1].end()   --> 2016-05-13T12:45:00");
   }
 
   catch (const std::string& e)
