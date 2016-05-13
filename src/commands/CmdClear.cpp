@@ -39,7 +39,7 @@ int CmdClear (
       filter.tags ().size () == 0)
     throw std::string ("The 'clear' command refuses to delete all your data.");
 
-  auto tracked = getTrackedIntervals (database, rules, filter);
+  auto tracked = getTracked (database, rules, filter);
   auto extent = outerRange (tracked);
 
   for (auto& interval : subset (extent, tracked))
