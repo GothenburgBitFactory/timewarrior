@@ -46,7 +46,7 @@ int CmdReportSummary (
     filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
 
   // Load the data.
-  auto tracked = getTrackedIntervals (database, rules, filter);
+  auto tracked = getTracked (database, rules, filter);
 
   // Map tags to colors.
   auto palette = createPalette (rules);
