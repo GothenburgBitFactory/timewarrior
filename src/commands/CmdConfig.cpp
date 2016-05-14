@@ -72,7 +72,13 @@ static bool setConfigVariable (Database& database, const Rules& rules, std::stri
                              rules.get (name),
                              value)))
         {
+          auto before = line;
           line = line.substr (0, pos) + name + " = " + value;
+
+          database.undoTxnStart ();
+          database.undoTxn ("config", before, line);
+          database.undoTxnEnd ();
+
           change = true;
         }
       }
@@ -101,7 +107,13 @@ static bool setConfigVariable (Database& database, const Rules& rules, std::stri
                                rules.get (name),
                                value)))
           {
+            auto before = line;
             line = line.substr (0, pos) + leaf + " " + value;
+
+            database.undoTxnStart ();
+            database.undoTxn ("config", before, line);
+            database.undoTxnEnd ();
+
             change = true;
           }
         }
@@ -123,6 +135,11 @@ static bool setConfigVariable (Database& database, const Rules& rules, std::stri
 
       // Add new line.
       lines.push_back (name + " = " + JSON2::encode (value));
+
+      database.undoTxnStart ();
+      database.undoTxn ("config", "", lines.back ());
+      database.undoTxnEnd ();
+
       change = true;
     }
   }
@@ -167,6 +184,10 @@ static int unsetConfigVariable (Database& database, const Rules& rules, std::str
       if (! confirmation ||
           confirm (format ("Are you sure you want to remove '{1}'?", name)))
       {
+        database.undoTxnStart ();
+        database.undoTxn ("config", line, "");
+        database.undoTxnEnd ();
+
         line = "";
         change = true;
       }
