@@ -81,6 +81,11 @@ Displays the directory containing the extension programs, and a table showing
 each extention and its status. See also 'diagnostics'.
 
 .TP
+.B timew gaps [<interval>] [<tag> ...]
+Displays a summary of time that is neither tracked, nor excluded from tracking.
+See also 'summary'.
+
+.TP
 .B timew help [<command> | hints | interval]
 The help command shows detailed descriptions and examples of commands,
 supported hints and interval syntax. For example:
