@@ -393,6 +393,11 @@ void CLI::identifyFilter ()
 {
   for (auto& a : _args)
   {
+    if (a.hasTag ("CMD") ||
+        a.hasTag ("EXT") ||
+        a.hasTag ("BINARY"))
+      continue;
+
     auto raw = a.attribute ("raw");
 
     if (a.hasTag ("HINT"))
@@ -418,9 +423,7 @@ void CLI::identifyFilter ()
       a.tag ("KEYWORD");
     }
 
-    else if (! a.hasTag ("CMD") &&
-             ! a.hasTag ("EXT") &&
-             ! a.hasTag ("BINARY"))
+    else
     {
       a.tag ("FILTER");
       a.tag ("TAG");
