@@ -579,7 +579,6 @@ std::vector <Interval> getTracked (
   const Rules& rules,
   Interval& filter)
 {
-//  std::cout << "# getTracked\n";
   auto inclusions = getAllInclusions (database);
 
   // Exclusions are only usable within a range, so if no filter range exists,
@@ -603,14 +602,8 @@ std::vector <Interval> getTracked (
 
   std::vector <Interval> intervals;
   for (auto& inclusion : inclusions)
-  {
-    for (auto& piece : subtractRanges (filter.range, {inclusion.range}, exclusions))
-    {
-      Interval chunk {inclusion};
-      chunk.range = piece;
-      intervals.push_back (chunk);
-    }
-  }
+    for (auto& interval : flatten (inclusion, exclusions))
+      intervals.push_back (interval);
 
   return intervals;
 }
