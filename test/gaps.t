@@ -68,6 +68,20 @@ class TestGaps(TestCase):
         code, out, err = self.t("gaps")
         self.assertRegexpMatches(out, r'\s{30}11:59:59')
 
+    def test_single_unobstructed_interval_with_exclusions(self):
+        """Add one interval, with exclusions"""
+        self.t.config("exclusions.monday",    "<9:00 >18:00")
+        self.t.config("exclusions.tuesday",   "<9:00 >18:00")
+        self.t.config("exclusions.wednesday", "<9:00 >18:00")
+        self.t.config("exclusions.thursday",  "<9:00 >18:00")
+        self.t.config("exclusions.friday",    "<9:00 >18:00")
+        self.t.config("exclusions.saturday",  "<9:00 >18:00")
+        self.t.config("exclusions.sunday",    "<9:00 >18:00")
+        self.t("track 10am - 2pm foo")
+
+        code, out, err = self.t("gaps")
+        self.assertRegexpMatches(out, r'\s{30}5:00:00')
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())
