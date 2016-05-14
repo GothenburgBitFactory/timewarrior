@@ -64,7 +64,7 @@ int CmdTags (Rules& rules, Database& database)
       auto row = t.addRow ();
       t.set (row, 0, tag, tagColor (rules, tag));
 
-      auto name = std::string ("tag.") + tag + ".description";
+      auto name = std::string ("tags.") + tag + ".description";
       t.set (row, 1, rules.has (name) ? rules.get (name) : "-");
     }
 
