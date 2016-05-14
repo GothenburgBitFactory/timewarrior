@@ -195,7 +195,7 @@ int main (int, char**)
   std::vector <Range> exclusions = {{Datetime ("20160101T000000"), Datetime ("20160101T080000")},
                                     {Datetime ("20160101T120000"), Datetime ("20160101T130000")},
                                     {Datetime ("20160101T173000"), Datetime ("20160101T235959")}};
-  auto subtracted = subtractRanges (limit, {limit}, exclusions);
+  auto subtracted = subtractRanges ({limit}, exclusions);
   t.ok (subtracted.size () == 2, "subtractRanges: all_day - 3 non-adjacent ranges = 2 ranges");
   t.ok (subtracted[0].start == Datetime ("20160101T080000"), "subtractRanges: results[0].start = 20160101T080000");
   t.ok (subtracted[0].end   == Datetime ("20160101T120000"), "subtractRanges: results[0].end   = 20160101T120000");
@@ -206,7 +206,7 @@ int main (int, char**)
   exclusions = {{Datetime ("20160101T120000"), Datetime ("20160102T120000")},
                 {Datetime ("20160101T130000"), Datetime ("20160102T120000")},
                 {Datetime ("20160101T140000"), Datetime ("20160102T120000")}};
-  subtracted = subtractRanges (limit, {limit}, exclusions);
+  subtracted = subtractRanges ({limit}, exclusions);
   t.ok (subtracted.size () == 1, "subtractRanges: all_day - 3 overlapping ranges = 1 range");
   t.ok (subtracted[0].start == Datetime ("20160101T000000"), "subtractRanges: results[0].start = 20160101T080000");
   t.ok (subtracted[0].end   == Datetime ("20160101T120000"), "subtractRanges: results[0].end   = 20160101T120000");
@@ -214,7 +214,7 @@ int main (int, char**)
   // Subtract a single range that extends before and after the limit, yielding
   // no results.
   exclusions = {{Datetime ("20151201T000000"), Datetime ("20160201T000000")}};
-  subtracted = subtractRanges (limit, {limit}, exclusions);
+  subtracted = subtractRanges ({limit}, exclusions);
   t.ok (subtracted.size () == 0, "subtractRanges: all_day - 2 overlapping months = 0 ranges");
 
   return 0;
