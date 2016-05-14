@@ -48,6 +48,10 @@ public:
   void deleteInterval (const Interval&);
   void modifyInterval (const Interval&, const Interval&);
 
+  void undoTxnStart ();
+  void undoTxnEnd ();
+  void undoTxn (const std::string&, const std::string&, const std::string&);
+
   std::string dump () const;
 
 private:
@@ -57,8 +61,10 @@ private:
   void validateAddition (const Interval&) const;
 
 private:
-  std::string            _location   {"~/.timewarrior/data"};
-  std::vector <Datafile> _files      {};
+  std::string               _location {"~/.timewarrior/data"};
+  std::vector <Datafile>    _files    {};
+  std::vector <std::string> _undo     {};
+  int                       _txn      {0};
 };
 
 #endif

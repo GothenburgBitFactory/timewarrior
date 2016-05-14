@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <Database.h>
 #include <FS.h>
+#include <format.h>
 #include <algorithm>
 #include <sstream>
 #include <iterator>
@@ -98,6 +99,7 @@ void Database::addInterval (const Interval& interval)
   // TODO Need to verify that interval.tags do not overlap with stored data.
   //      Unless the tags that overlap are allowed to overlap.
   validateAddition (interval);
+  undoTxnStart ();
 
   auto intervalRange = interval.range;
   for (auto& segment : segmentRange (intervalRange))
@@ -113,12 +115,18 @@ void Database::addInterval (const Interval& interval)
       segmentedInterval.range.end = Datetime (0);
 
     _files[df].addInterval (segmentedInterval);
+
+    undoTxn ("interval", "", segmentedInterval.json ());
   }
+
+  undoTxnEnd ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Database::deleteInterval (const Interval& interval)
 {
+  undoTxnStart ();
+
   auto intervalRange = interval.range;
   for (auto& segment : segmentRange (intervalRange))
   {
@@ -133,7 +141,11 @@ void Database::deleteInterval (const Interval& interval)
       segmentedInterval.range.end = Datetime (0);
 
     _files[df].deleteInterval (segmentedInterval);
+
+    undoTxn ("interval", segmentedInterval.json (), "");
   }
+
+  undoTxnEnd ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -143,8 +155,59 @@ void Database::deleteInterval (const Interval& interval)
 // Interval belongs in a different file.
 void Database::modifyInterval (const Interval& from, const Interval& to)
 {
+  undoTxnStart ();
   deleteInterval (from);
   addInterval (to);
+  undoTxnEnd ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// The _txn member is a reference count, allowing multiple nested transactions.
+// This accomodates the Database::modifyInterval call, that in turn calls
+// ::addInterval and ::deleteInterval.
+void Database::undoTxnStart ()
+{
+  if (_txn == 0)
+    _undo.push_back ("txn:");
+
+  ++_txn;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// The _txn member is a reference count. The undo data is only written when
+// ::undoTxnEnd decrements the counter to zero, therefore the undo command can
+// perform multiple atomic steps.
+void Database::undoTxnEnd ()
+{
+  --_txn;
+  if (_txn == 0)
+  {
+    File undo (_location + "/undo.data");
+    if (undo.open ())
+    {
+      for (auto& line : _undo)
+        undo.append (line + "\n");
+
+      undo.close ();
+      _undo.clear ();
+    }
+    else
+      throw format ("Unable to write the undo transaction to {1}", undo._data);
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Record undoable transactions. There are several types:
+//   interval    changes to stored intervals
+//   config      changes to configuration
+void Database::undoTxn (
+  const std::string& type,
+  const std::string& before,
+  const std::string& after)
+{
+  _undo.push_back ("  type: " + type);
+  _undo.push_back ("  before: " + before);
+  _undo.push_back ("  after: " + after);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
