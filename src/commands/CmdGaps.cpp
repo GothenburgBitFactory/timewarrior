@@ -25,6 +25,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <Table.h>
+#include <Duration.h>
+#include <format.h>
 #include <commands.h>
 #include <timew.h>
 #include <iostream>
@@ -35,11 +38,73 @@ int CmdGaps (
   Rules& rules,
   Database& database)
 {
-  auto filter    = getFilter (cli);
+  // If filter is empty, choose 'today'.
+  auto filter = getFilter (cli);
+  if (! filter.range.is_started ())
+    filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
+
   auto untracked = getUntracked (database, rules, filter);
 
-  for (auto & u : untracked)
-    std::cout << "# untracked " << u.dump () << "\n";
+  Table table;
+  table.width (1024);
+  table.colorHeader (Color ("underline"));
+  table.add ("Wk");
+  table.add ("Date");
+  table.add ("Day");
+  table.add ("Start", false);
+  table.add ("End", false);
+  table.add ("Time", false);
+  table.add ("Total", false);
+
+  // Each day is rendered separately.
+  time_t grand_total = 0;
+  Datetime previous;
+  for (Datetime day = filter.range.start; day < filter.range.end; day++)
+  {
+    auto day_range = getFullDay (day);
+    time_t daily_total = 0;
+
+    int row = -1;
+    for (auto& gap : subset (day_range, untracked))
+    {
+      row = table.addRow ();
+
+      if (day != previous)
+      {
+        table.set (row, 0, format ("W{1}", day.week ()));
+        table.set (row, 1, day.toString ("Y-M-D"));
+        table.set (row, 2, day.dayNameShort (day.dayOfWeek ()));
+        previous = day;
+      }
+
+      // Intersect track with day.
+      auto today = day_range.intersect (gap);
+      if (gap.is_open ())
+        today.end = Datetime ();
+
+      table.set (row, 3, today.start.toString ("h:N:S"));
+      table.set (row, 4, (gap.is_open () ? "-" : today.end.toString ("h:N:S")));
+      table.set (row, 5, Duration (today.total ()).format ());
+
+      daily_total += today.total ();
+    }
+
+    if (row != -1)
+      table.set (row, 6, Duration (daily_total).format ());
+
+    grand_total += daily_total;
+  }
+
+  // Add the total.
+  table.set (table.addRow (), 6, " ", Color ("underline"));
+  table.set (table.addRow (), 6, Duration (grand_total).format ());
+
+  if (table.rows () > 2)
+    std::cout << '\n'
+              << table.render ()
+              << '\n';
+  else
+    std::cout << "No filtered data found.\n";
 
   return 0;
 }
