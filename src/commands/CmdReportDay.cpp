@@ -261,11 +261,12 @@ static void renderSummary (
   const std::vector <Range>& exclusions,
   const std::vector <Interval>& tracked)
 {
-  time_t unavailable = 0;
+  time_t total_unavailable = 0;
   for (auto& exclusion : exclusions)
-    unavailable += exclusion.total ();
+    if (filter.range.overlap (exclusion))
+      total_unavailable += filter.range.intersect (exclusion).total ();
 
-  time_t worked = 0;
+  time_t total_worked = 0;
   for (auto& interval : tracked)
   {
     if (filter.range.overlap (interval.range))
@@ -274,19 +275,19 @@ static void renderSummary (
       if (interval.range.is_open ())
         clipped.range.end = Datetime ();
 
-      worked += clipped.range.total ();
+      total_worked += clipped.range.total ();
     }
   }
 
-  auto all_day = 86400 - unavailable;
-  auto remaining = all_day - worked;
+  auto total_available = filter.range.total () - total_unavailable;
+  auto total_remaining = total_available - total_worked;
 
   std::cout << indent << "Tracked   "
-            << std::setw (13) << std::setfill (' ') << Duration (worked).format ()    << '\n'
+            << std::setw (13) << std::setfill (' ') << Duration (total_worked).format ()    << '\n'
             << indent << "Remaining "
-            << std::setw (13) << std::setfill (' ') << Duration (remaining).format () << '\n'
+            << std::setw (13) << std::setfill (' ') << Duration (total_remaining).format () << '\n'
             << indent << "Total     "
-            << std::setw (13) << std::setfill (' ') << Duration (all_day).format ()   << '\n'
+            << std::setw (13) << std::setfill (' ') << Duration (total_available).format ()   << '\n'
             << '\n';
 }
 
