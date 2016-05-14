@@ -180,18 +180,25 @@ Palette createPalette (const Rules& rules)
 ////////////////////////////////////////////////////////////////////////////////
 // Extract the tags from a set of intervals, and using a rotating color palette,
 // map unique tags to color.
+//
+// If there is a tags.<tag>.color setting, use it.
 std::map <std::string, Color> createTagColorMap (
   const Rules& rules,
   Palette& palette,
   const std::vector <Interval>& intervals)
 {
-  // TODO Note: tags may have their own defined color.
-
   std::map <std::string, Color> mapping;
   for (auto& interval : intervals)
+  {
     for (auto& tag : interval.tags ())
-      if (mapping.find (tag) == mapping.end ())
+    {
+      std::string custom = "tags." + tag + ".color";
+      if (rules.has (custom))
+        mapping[tag] = Color (rules.get (custom));
+      else if (mapping.find (tag) == mapping.end ())
         mapping[tag] = palette.next ();
+    }
+  }
 
   return mapping;
 }
