@@ -32,8 +32,8 @@ Non-Goals
 - Time tracking is about recording the past, not planning the future.
 - No cloud support, no sync support, all data is local. Tracked time is
   sensitive personal data and will not be transmitted.
-- No explicit multi-user support, although using tags to track individuals is
-  possible.
+- No explicit multi-user support, although using overlapping tags to track
+  individuals will be possible.
 - No features without a compelling use case.
 
 
@@ -50,9 +50,12 @@ for users to modify and improve, perhaps contribute back to the project.
 
 Purely as an example of what might be implemented, here are some report mockups:
 
-  ./report.week.txt
+  ./report.week.1.txt
+  ./report.week.2.txt
   ./report.day.1.txt
+  ./report.day.2.txt
   ./report.exc.week.txt
+  ./report.summary.txt
 
 
 Tags
@@ -154,3 +157,4 @@ data.
 
 - If an interval has more than one tag with a defined color, and is being
   rendered, then use the first tag color. It doesn't really matter which.
+
