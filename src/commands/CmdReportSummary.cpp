@@ -100,20 +100,20 @@ int CmdReportSummary (
       table.set (row, 3, tags);
       table.set (row, 4, today.start.toString ("h:N:S"));
       table.set (row, 5, (track.range.is_open () ? "-" : today.end.toString ("h:N:S")));
-      table.set (row, 6, Duration (today.total ()).format ());
+      table.set (row, 6, Duration (today.total ()).formatHours ());
 
       daily_total += today.total ();
     }
 
     if (row != -1)
-      table.set (row, 7, Duration (daily_total).format ());
+      table.set (row, 7, Duration (daily_total).formatHours ());
 
     grand_total += daily_total;
   }
 
   // Add the total.
   table.set (table.addRow (), 7, " ", Color ("underline"));
-  table.set (table.addRow (), 7, Duration (grand_total).format ());
+  table.set (table.addRow (), 7, Duration (grand_total).formatHours ());
 
   if (table.rows () > 2)
     std::cout << '\n'
