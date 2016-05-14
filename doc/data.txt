@@ -97,10 +97,14 @@ above records being written.
 
 Undo Data
 ---------
-The undo stack will be stored as:
+The undo stack will be stored in:
 
   ~/.timewarrior/undo.data
 
+The level of granularity for undo operations is the command. One undo command
+will reverse the effects of one command. This may involved multiple changes,
+for example with an open interval, 'timew start' will close one interval and
+open another, and those two changes are considered one transaction.
 
 --- Raw Notes ---
 
