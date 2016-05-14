@@ -40,7 +40,7 @@
 static void renderAxis            (const Rules&, Palette&, const std::string&, int, int);
 static void renderExclusionBlocks (const Rules&, Composite&, Composite&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
 static void renderInterval        (const Rules&, Composite&, Composite&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&);
-static void renderSummary         (const std::string&, const std::vector <Range>&, const std::vector <Interval>&);
+static void renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&);
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdReportDay (
@@ -104,7 +104,7 @@ int CmdReportDay (
   }
 
   if (rules.getBoolean ("reports.day.summary"))
-    renderSummary ("    ", exclusions, tracked);
+    renderSummary ("    ", filter, exclusions, tracked);
 
   return 0;
 }
@@ -257,6 +257,7 @@ static void renderInterval (
 ////////////////////////////////////////////////////////////////////////////////
 static void renderSummary (
   const std::string& indent,
+  const Interval& filter,
   const std::vector <Range>& exclusions,
   const std::vector <Interval>& tracked)
 {
@@ -266,7 +267,16 @@ static void renderSummary (
 
   time_t worked = 0;
   for (auto& interval : tracked)
-    worked += interval.range.total ();
+  {
+    if (filter.range.overlap (interval.range))
+    {
+      Interval clipped = clip (interval, filter.range);
+      if (interval.range.is_open ())
+        clipped.range.end = Datetime ();
+
+      worked += clipped.range.total ();
+    }
+  }
 
   auto all_day = 86400 - unavailable;
   auto remaining = all_day - worked;
