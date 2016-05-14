@@ -61,6 +61,13 @@ class TestGaps(TestCase):
         code, out, err = self.t("gaps")
         self.assertRegexpMatches(out, r'\s{30}23:59:59')
 
+    def test_single_unobstructed_interval(self):
+        """Add one interval and export it as-is"""
+        self.t("track 8am - 8pm foo")
+
+        code, out, err = self.t("gaps")
+        self.assertRegexpMatches(out, r'\s{30}11:59:59')
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())
