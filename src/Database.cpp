@@ -244,8 +244,9 @@ void Database::initializeDatafiles ()
 
   for (auto& file : files)
   {
-    // If it looks like a data file.
-    if (file.find (".data") == file.length () - 5)
+    // If it looks like a data file: *-??.data
+    if (file[file.length () - 8] == '-' &&
+        file.find (".data") == file.length () - 5)
     {
       auto basename = File (file).name ();
       auto year  = strtol (basename.substr (0, 4).c_str (), NULL, 10);
