@@ -283,11 +283,11 @@ static void renderSummary (
   auto total_remaining = total_available - total_worked;
 
   std::cout << indent << "Tracked   "
-            << std::setw (13) << std::setfill (' ') << Duration (total_worked).format ()    << '\n'
+            << std::setw (13) << std::setfill (' ') << Duration (total_worked).formatHours ()    << '\n'
             << indent << "Remaining "
-            << std::setw (13) << std::setfill (' ') << Duration (total_remaining).format () << '\n'
+            << std::setw (13) << std::setfill (' ') << Duration (total_remaining).formatHours () << '\n'
             << indent << "Total     "
-            << std::setw (13) << std::setfill (' ') << Duration (total_available).format ()   << '\n'
+            << std::setw (13) << std::setfill (' ') << Duration (total_available).formatHours ()   << '\n'
             << '\n';
 }
 
