@@ -54,8 +54,24 @@ std::string intervalSummarize (
   const Interval& interval)
 {
   std::stringstream out;
+
   if (interval.range.is_started ())
   {
+    // Walk backwards through the inclusions, and stop as soon as the tags
+    // no longer match interval. This means the 'total' is the sum of all time
+    // in the most recent set of intervals for the same tags. This is the
+    // acceptable definition of "the current task".
+    time_t total_recorded = 0;
+    auto inclusions = getAllInclusions (database);
+    std::vector <Interval>::reverse_iterator i;
+    for (i = inclusions.rbegin (); i != inclusions.rend (); i++)
+      if (interval.tags () == i->tags ())
+        total_recorded += i->range.total ();
+      else
+        break;
+
+    Duration total (total_recorded);
+
     // Combine and colorize tags.
     std::string tags;
     for (auto& tag : interval.tags ())
@@ -66,26 +82,22 @@ std::string intervalSummarize (
       tags += tagColor (rules, tag).colorize (quoteIfNeeded (tag));
     }
 
-    // Interval closed.
-    if (interval.range.is_ended ())
+    // Interval open.
+    if (interval.range.is_open ())
     {
-      Duration dur (Datetime (interval.range.end) - Datetime (interval.range.start));
+      out << "Tracking " << tags << '\n'
+          << "  Started " << interval.range.start.toISOLocalExtended () << '\n'
+          << "  Current " << Datetime ().toISOLocalExtended () << '\n'
+          << "  Total   " << std::setw (19) << std::setfill (' ') << total.formatHours () << '\n';
+    }
+
+    // Interval closed.
+    else
+    {
       out << "Recorded " << tags << '\n'
           << "  Started " << interval.range.start.toISOLocalExtended () << '\n'
           << "  Ended   " << interval.range.end.toISOLocalExtended () << '\n'
-          << "  Elapsed " << std::setw (19) << std::setfill (' ') << dur.formatHours () << '\n';
-    }
-
-    // Interval open.
-    else
-    {
-      Duration dur (Datetime () - interval.range.start);
-      out << "Tracking " << tags << '\n'
-          << "  Started " << interval.range.start.toISOLocalExtended () << '\n';
-
-      if (dur.toTime_t () > 10)
-        out << "  Current " << Datetime ().toISOLocalExtended () << '\n'
-            << "  Elapsed " << std::setw (19) << std::setfill (' ') << dur.formatHours () << '\n';
+          << "  Total   " << std::setw (19) << std::setfill (' ') << total.formatHours () << '\n';
     }
   }
 
