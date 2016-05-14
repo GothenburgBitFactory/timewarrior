@@ -39,7 +39,7 @@
 Color tagColor (const Rules& rules, const std::string& tag)
 {
   Color c;
-  std::string name = std::string ("tag.") + tag + ".color";
+  std::string name = std::string ("tags.") + tag + ".color";
   if (rules.has (name))
     c = Color (rules.get (name));
 
