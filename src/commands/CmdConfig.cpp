@@ -39,7 +39,7 @@
 // Note that because this function does not recurse with includes, it therefore
 // only sees the top-level settings. This has the desirable effect of adding as
 // an override any setting which resides in an imported file.
-static bool setConfigVariable (const Rules& rules, std::string name, std::string value, bool confirmation /* = false */)
+static bool setConfigVariable (Database& database, const Rules& rules, std::string name, std::string value, bool confirmation /* = false */)
 {
   // Read config file as lines of text.
   std::vector <std::string> lines;
@@ -140,7 +140,7 @@ static bool setConfigVariable (const Rules& rules, std::string name, std::string
 //   0 - found and removed
 //   1 - found and not removed
 //   2 - not found
-static int unsetConfigVariable (const Rules& rules, std::string name, bool confirmation /* = false */)
+static int unsetConfigVariable (Database& database, const Rules& rules, std::string name, bool confirmation /* = false */)
 {
   // Setting not found.
   if (! rules.has (name))
@@ -218,7 +218,8 @@ static int unsetConfigVariable (const Rules& rules, std::string name, bool confi
 // timew config                  Show all config
 int CmdConfig (
   const CLI& cli,
-  Rules& rules)
+  Rules& rules,
+  Database& database)
 {
   int rc = 0;
 
@@ -255,7 +256,7 @@ int CmdConfig (
       // task config name ""
       if (words.size () > 1)
       {
-        change = setConfigVariable (rules, name, value, confirmation);
+        change = setConfigVariable (database, rules, name, value, confirmation);
         if (! change)
           rc = 1;
       }
@@ -264,7 +265,7 @@ int CmdConfig (
       else
       {
         bool found = false;
-        rc = unsetConfigVariable (rules, name, confirmation);
+        rc = unsetConfigVariable (database, rules, name, confirmation);
         if (rc == 0)
         {
           change = true;
