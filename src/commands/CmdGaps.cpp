@@ -36,7 +36,7 @@ int CmdGaps (
   Database& database)
 {
   auto filter    = getFilter (cli);
-  auto untracked = getUntrackedRanges (database, rules, filter);
+  auto untracked = getUntracked (database, rules, filter);
 
   for (auto & u : untracked)
     std::cout << "# untracked " << u.dump () << "\n";

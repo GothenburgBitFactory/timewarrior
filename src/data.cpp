@@ -610,7 +610,7 @@ std::vector <Interval> getTracked (
 
 ////////////////////////////////////////////////////////////////////////////////
 // Untracked time is that which is not excluded, and not filled. Gaps.
-std::vector <Range> getUntrackedRanges (
+std::vector <Range> getUntracked (
   Database& database,
   const Rules& rules,
   Interval& filter)
