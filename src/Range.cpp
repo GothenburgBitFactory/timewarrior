@@ -286,7 +286,7 @@ std::vector <Range> Range::subtract (const Range& other) const
 // If the range is open, use 'now' as the end.
 time_t Range::total () const
 {
-  assert (end >= start);
+  assert (! is_ended () || end >= start);
 
   if (is_ended ())
     return Datetime (end) - Datetime (start);
