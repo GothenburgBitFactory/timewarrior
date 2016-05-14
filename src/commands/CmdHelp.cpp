@@ -41,6 +41,7 @@ int CmdHelpUsage ()
             << "       timew diagnostics\n"
             << "       timew export [<interval>] [<tag> ...]\n"
             << "       timew extensions\n"
+            << "       timew gaps [<interval>] [<tag> ...]\n"
             << "       timew help [<command> | hints]\n"
             << "       timew [report] <report> [<interval>] [<tag> ...]\n"
             << "       timew show\n"
@@ -66,7 +67,6 @@ int CmdHelpUsage ()
             << '\n';
 
   // TODO clear
-  // TODO gaps
   // TODO import
   // TODO month
   // TODO quarter
@@ -199,7 +199,16 @@ int CmdHelp (const CLI& cli)
                 << "See also 'diagnostics'.\n"
                 << '\n';
 
-    // TODO gaps
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "gaps")
+      std::cout << '\n'
+                << "Syntax: timew gaps [<interval>] [<tag> ...]\n"
+                << '\n'
+                << "Displays a summary of time that is neither tracked, nor excluded from tracking.\n"
+                << '\n'
+                << "See also 'summary'.\n"
+                << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
