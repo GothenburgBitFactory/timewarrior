@@ -614,22 +614,12 @@ std::vector <Range> getUntracked (
   const Rules& rules,
   Interval& filter)
 {
-  std::vector <Range> available {filter.range};
-
-  available = subtractRanges (available, getAllExclusions (rules, filter.range));
   std::vector <Range> inclusion_ranges;
   for (auto& i : getAllInclusions (database))
     inclusion_ranges.push_back (i.range);
 
-  available = subtractRanges (available, inclusion_ranges);
-
-/*
-  std::cout << "# After subtracting exclusions, inclusions:\n";
-  for (auto& a : available)
-    std::cout << "#   " << a.dump () << "\n";
-*/
-
-  return available;
+  auto available = subtractRanges ({filter.range}, getAllExclusions (rules, filter.range));
+  return subtractRanges (available, inclusion_ranges);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
