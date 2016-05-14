@@ -48,7 +48,10 @@ Color tagColor (const Rules& rules, const std::string& tag)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Summarize either an active or closed interval, for user feedback.
-std::string intervalSummarize (const Rules& rules, const Interval& interval)
+std::string intervalSummarize (
+  Database& database,
+  const Rules& rules,
+  const Interval& interval)
 {
   std::stringstream out;
   if (interval.range.is_started ())

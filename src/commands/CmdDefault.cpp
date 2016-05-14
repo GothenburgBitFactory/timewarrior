@@ -40,7 +40,7 @@ int CmdDefault (Rules& rules, Database& database)
   if (interval.range.is_open ())
   {
     if (rules.getBoolean ("verbose"))
-      std::cout << intervalSummarize (rules, interval);
+      std::cout << intervalSummarize (database, rules, interval);
   }
   else
   {

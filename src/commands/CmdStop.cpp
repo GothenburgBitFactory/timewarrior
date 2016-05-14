@@ -58,7 +58,7 @@ int CmdStop (
 
     // TODO intervalSummarїze needs to operate on a vector of similar intervals.
     if (rules.getBoolean ("verbose"))
-      std::cout << intervalSummarize (rules, modified);
+      std::cout << intervalSummarize (database, rules, modified);
 
     // If tags were specified, and after removing those tags, there are still
     // tags remaining, then add a contiguous interval.
@@ -75,7 +75,7 @@ int CmdStop (
       latest.range.end   = Datetime (0);
       database.addInterval (latest);
       if (rules.getBoolean ("verbose"))
-        std::cout << '\n' << intervalSummarize (rules, latest);
+        std::cout << '\n' << intervalSummarize (database, rules, latest);
     }
   }
   else

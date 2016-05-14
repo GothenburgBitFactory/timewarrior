@@ -47,7 +47,7 @@ int CmdTrack (
     database.addInterval (interval);
 
   if (rules.getBoolean ("verbose"))
-    std::cout << intervalSummarize (rules, filter);
+    std::cout << intervalSummarize (database, rules, filter);
 
   return 0;
 }

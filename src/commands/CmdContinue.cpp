@@ -44,7 +44,7 @@ int CmdContinue (
       database.addInterval (latest);
 
       if (rules.getBoolean ("verbose"))
-        std::cout << intervalSummarize (rules, latest);
+        std::cout << intervalSummarize (database, rules, latest);
     }
     else
       std::cout << "There is already active tracking.\n";

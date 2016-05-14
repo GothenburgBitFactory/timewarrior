@@ -56,7 +56,7 @@ int CmdStart (
 
     // TODO intervalSummarїze needs to operate on a vector of similar intervals.
     if (rules.getBoolean ("verbose"))
-      std::cout << intervalSummarize (rules, modified);
+      std::cout << intervalSummarize (database, rules, modified);
   }
 
   // Now add the new open interval.
@@ -75,7 +75,7 @@ int CmdStart (
   // TODO intervalSummarїze needs to operate on a vector of similar intervals.
   // User feedback.
   if (rules.getBoolean ("verbose"))
-    std::cout << intervalSummarize (rules, now);
+    std::cout << intervalSummarize (database, rules, now);
 
   return 0;
 }
