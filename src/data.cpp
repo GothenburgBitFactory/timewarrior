@@ -283,7 +283,7 @@ std::vector <Range> getAllExclusions (
   results = addRanges (range, results, daysOff);
 
   // daysOn are subtracted from the existing holidays.
-  results = subtractRanges (range, results, daysOn);
+  results = subtractRanges (results, daysOn);
 
   // Expand all exclusions that are not 'exc day ...' into excluded ranges that
   // overlage with range.
@@ -394,7 +394,7 @@ std::vector <Interval> flatten (
       if (interval.range.encloses (e))
         enclosed.push_back (e);
 
-    for (auto& result : subtractRanges (interval.range, {interval.range}, enclosed))
+    for (auto& result : subtractRanges ({interval.range}, enclosed))
     {
       Interval chunk {interval};
       chunk.range = result;
@@ -439,7 +439,6 @@ std::vector <Range> addRanges (
 // Subtract a set of Ranges from another set of Ranges, all within a defined
 // range.
 std::vector <Range> subtractRanges (
-  const Range& limits,
   const std::vector <Range>& ranges,
   const std::vector <Range>& subtractions)
 {
@@ -616,13 +615,13 @@ std::vector <Range> getUntracked (
   Interval& filter)
 {
   std::vector <Range> available {filter.range};
-  available = subtractRanges (filter.range, available, getAllExclusions (rules, filter.range));
 
+  available = subtractRanges (available, getAllExclusions (rules, filter.range));
   std::vector <Range> inclusion_ranges;
   for (auto& i : getAllInclusions (database))
     inclusion_ranges.push_back (i.range);
 
-  available = subtractRanges (filter.range, available, inclusion_ranges);
+  available = subtractRanges (available, inclusion_ranges);
 
 /*
   std::cout << "# After subtracting exclusions, inclusions:\n";
