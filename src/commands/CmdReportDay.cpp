@@ -57,10 +57,8 @@ int CmdReportDay (
   auto exclusions = getAllExclusions (rules, filter.range);
   auto tracked    = getTracked (database, rules, filter);
 
-  // Create a color palette.
-  auto palette = createPalette (rules);
-
   // Map tags to colors.
+  auto palette = createPalette (rules);
   auto tag_colors = createTagColorMap (rules, palette, tracked);
 
   // Determine hours shown.

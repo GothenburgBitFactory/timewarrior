@@ -39,9 +39,8 @@ int CmdReportSummary (
   Rules& rules,
   Database& database)
 {
+  // Create a filter, and if empty, choose 'today'.
   auto filter = getFilter (cli);
-
-  // If filter is empty, choose 'today'.
   if (! filter.range.is_started ())
     filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
 
