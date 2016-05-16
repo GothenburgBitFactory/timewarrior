@@ -38,6 +38,7 @@ int CmdStop (
   Database& database)
 {
   // Load the most recent interval.
+  auto filter = getFilter (cli);
   auto latest = getLatestInterval (database);
 
   // Verify the interval is open.
@@ -45,7 +46,14 @@ int CmdStop (
   {
     // Stop it.
     Interval modified {latest};
-    modified.range.end = Datetime ();
+
+    // If a stop date is specified (and occupies filter.range.start) then use
+    // that instead of the current time.
+    if (filter.range.start.toEpoch () != 0)
+      modified.range.end = filter.range.start;
+    else
+      modified.range.end = Datetime ();
+
     database.modifyInterval (latest, modified);
 /*
     // TODO There is no 1:N modifyInterval.
