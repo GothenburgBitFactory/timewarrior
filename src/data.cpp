@@ -578,7 +578,7 @@ std::vector <Interval> getTracked (
   const Rules& rules,
   Interval& filter)
 {
-  auto inclusions = getAllInclusions (database);
+  auto inclusions = subset (filter, getAllInclusions (database));
 
   // Exclusions are only usable within a range, so if no filter range exists,
   // determine the outermost range of the inclusions, ie:
