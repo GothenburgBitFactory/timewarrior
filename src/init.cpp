@@ -249,14 +249,9 @@ int dispatchCommand (
     else if (command == "week")        status = CmdReportWeek    (cli, rules, database            );
     else                               status = CmdReport        (cli, rules, database, extensions);
   }
-  else if (cli._args.size () == 1)
-  {
-    status = CmdDefault (rules, database);
-  }
   else
   {
-    std::cout << "No command specified.\n";
-    status = 1;
+    status = CmdDefault (rules, database);
   }
 
   return status;
