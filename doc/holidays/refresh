@@ -1,12 +1,107 @@
-#! usr/bin/env python
+#!/usr/bin/env python
+################################################################################
+##
+## Copyright 2006 - 2016, Paul Beckingham, Federico Hernandez.
+##
+## Permission is hereby granted, free of charge, to any person obtaining a copy
+## of this software and associated documentation files (the "Software"), to deal
+## in the Software without restriction, including without limitation the rights
+## to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+## copies of the Software, and to permit persons to whom the Software is
+## furnished to do so, subject to the following conditions:
+##
+## The above copyright notice and this permission notice shall be included
+## in all copies or substantial portions of the Software.
+##
+## THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+## OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+## FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+## THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+## LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+## OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+## SOFTWARE.
+##
+## http://www.opensource.org/licenses/mit-license.php
+##
+################################################################################
 
-import sys
+import os, sys, re, time, datetime, json, argparse, urllib2
 
-# for each holidays.??-?? file:
-#   extract locale from file name
-#   compose holidata.net URL
-#   download file
-#   for each line in downloaded file
-#     convert to timewarrior format
-#     write to holiday file
+
+def enumerate(path):
+  if not os.path.exists(path):
+    raise Exception("Directory '%s' does not exist" % path)
+
+  found = []
+  for path, dirs, files in os.walk(path, topdown=True, onerror=None, followlinks=False):
+    found.extend(map(lambda x: os.path.join(path, x), files))
+  return found
+
+
+def holidata(locale, year):
+  return "http://holidata.net/%s/%d.json" % (locale, year)
+
+
+def update_locales(locales, regions):
+  update_single_year(locales, regions, datetime.datetime.now().year)
+  update_single_year(locales, regions, datetime.datetime.now().year + 1)
+
+
+def update_single_year(locales, regions, year):
+  for locale in locales:
+    print holidata(locale, year)
+    try:
+      url = holidata(locale, year)
+      lines = urllib2.urlopen(url).read()
+
+      with open("holidays.%s" % locale, "w") as fh:
+        fh.write('# Holiday data provided by Holidata.net\n')
+        fh.write('#   ' + url + '\n')
+        fh.write('#   Generated ' + time.strftime('%Y-%m-%dT%H:%M:%S') + '\n\n')
+        fh.write('define holidays:\n')
+        fh.write('  ' + locale + ':\n')
+
+        for line in lines.split('\n'):
+          if line:
+            j = json.loads(line)
+            if j['region'] == '' or regions is None or len(regions) == 0 or j['region'] in regions:
+              day = j['date'].replace("-", "_")
+              desc = j['description']
+              fh.write('    %s = %s\n' % (day, desc))
+
+
+    except urllib2.HTTPError as e:
+      if e.code == 404:
+        print "Holidata.net does not have data for %s, for %d." % (locale, year)
+      else:
+        print e.code, e.read()
+
+
+def main(args):
+  if args.locale:
+    update_locales(args.locale, args.region)
+  else:
+    # Enumerate all holiday files in the current directory.
+    locales = []
+    re_holiday_file = re.compile("\/holidays.([a-z]{2}-[A-Z]{2}$)")
+    for file in enumerate('.'):
+      result = re_holiday_file.search(file)
+      if result:
+        # Extract the locale name.
+        locales.append(result.group(1))
+
+    update_locales(locales, args.region)
+
+
+if __name__ == "__main__":
+  usage = """See http://holidata.net for details of supported locales and regions."""
+  parser = argparse.ArgumentParser(description="Update holiday data files. Simply run 'refresh' to update all of them.")
+  parser.add_argument('--locale', nargs='+', help='Specific locale to update.')
+  parser.add_argument('--region', nargs='+', help='Specific locale region to update.')
+  args = parser.parse_args()
+
+  try:
+    main(args)
+  except Exception as msg:
+    print 'Error:', msg
 
