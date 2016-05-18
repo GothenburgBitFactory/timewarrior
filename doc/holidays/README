@@ -6,10 +6,14 @@ script. This data can be updated using these commands:
 
   $ ./refresh
 
-If you need another locale (for example xx-XX), do this:
+If you need another locale (for example sv-SE), do this:
 
-  $ touch holidays.xx-XX
-  $ ./refresh
+  $ ./refresh --locale sv-SE
 
-If the locale is not supported by holidata.net, you will see an error.
+If you need a specific locale region, do this:
+
+  $ ./refresh --locale de-CH --region Bern
+
+If the locale is not supported by holidata.net, or the there is no data (yet)
+for the locale for this year and next year, you will see an error.
 
