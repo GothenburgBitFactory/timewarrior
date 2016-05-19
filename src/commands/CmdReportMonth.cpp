@@ -38,8 +38,8 @@
 #include <iomanip>
 
 static void renderAxis            (const Rules&, Palette&, const std::string&, int, int);
-static void renderExclusionBlocks (const Rules&, Composite&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
-static void renderInterval        (const Rules&, Composite&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, time_t&);
+static void renderExclusionBlocks (const Rules&, std::vector <Composite>&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
+static void renderInterval        (const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, time_t&);
 static void renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&);
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -95,14 +95,14 @@ int CmdReportMonth (
   for (Datetime day = filter.range.start; day < filter.range.end; day++)
   {
     // Render the exclusion blocks.
-    Composite line;
-    renderExclusionBlocks (rules, line, palette, day, first_hour, last_hour, exclusions);
+    std::vector <Composite> lines (rules.has ("reports.month.lines") ? rules.getInteger ("reports.month.lines") : 1);
+    renderExclusionBlocks (rules, lines, palette, day, first_hour, last_hour, exclusions);
 
     time_t work = 0;
     for (auto& track : tracked)
     {
       time_t interval_work = 0;
-      renderInterval (rules, line, day, track, palette, tag_colors, interval_work);
+      renderInterval (rules, lines, day, track, palette, tag_colors, interval_work);
       work += interval_work;
     }
 
@@ -117,8 +117,17 @@ int CmdReportMonth (
               << ' '
               << rightJustify (day.day (), 2)
               << ' '
-              << line.str ()
-              << "  ";
+              << lines[0].str ();
+
+    if (lines.size () > 1)
+    {
+      for (unsigned int i = 1; i < lines.size (); ++i)
+        std::cout << "\n"
+                  << "               "
+                  << lines[i].str ();
+    }
+
+    std::cout << "  ";
 
     if (work)
       std::cout << std::setw (3) << std::setfill (' ') << hours
@@ -166,7 +175,7 @@ static void renderAxis (
 ////////////////////////////////////////////////////////////////////////////////
 static void renderExclusionBlocks (
   const Rules& rules,
-  Composite& line,
+  std::vector <Composite>& lines,
   Palette& palette,
   const Datetime& day,
   int first_hour,
@@ -197,7 +206,8 @@ static void renderExclusionBlocks (
         int width = end_block - start_block;
         std::string block (width, ' ');
 
-        line.add (block, offset, colorExc);
+        for (auto& line : lines)
+          line.add (block, offset, colorExc);
       }
     }
   }
@@ -206,7 +216,7 @@ static void renderExclusionBlocks (
 ////////////////////////////////////////////////////////////////////////////////
 static void renderInterval (
   const Rules& rules,
-  Composite& line,
+  std::vector <Composite>& lines,
   const Datetime& day,
   const Interval& track,
   Palette& palette,
@@ -258,25 +268,21 @@ static void renderInterval (
     auto width = end_offset - start_offset;
     if (width)
     {
-      std::vector <std::string> lines;
-      wrapText (lines, label, width, false);
+      std::vector <std::string> text_lines;
+      wrapText (text_lines, label, width, false);
 
-      std::string label1 (width, ' ');
-      std::string label2 = label1;
-      if (lines.size () > 0)
+      for (unsigned int i = 0; i < lines.size (); ++i)
       {
-        label1 = leftJustify (lines[0], width);
-
-        if (lines.size () > 1)
-          label2 = leftJustify (lines[1], width);
+        if (i < text_lines.size ())
+          lines[i].add (leftJustify (text_lines[i], width), start_offset, colorTrack);
+        else
+          lines[i].add (std::string (width, ' '), start_offset, colorTrack);
       }
-
-      line.add (label1, start_offset, colorTrack);
 
       // An open interval gets a "..." in the bottom right corner, or
       // whatever fits.
       if (track.range.is_open ())
-        line.add ("+", start_offset + width - 1, colorTrack);
+        lines.back ().add ("+", start_offset + width - 1, colorTrack);
     }
   }
 }
