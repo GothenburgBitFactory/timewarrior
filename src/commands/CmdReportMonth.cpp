@@ -37,9 +37,10 @@
 #include <iostream>
 #include <iomanip>
 
-static void renderAxis            (const Rules&, Palette&, const std::string&, int, int);
-static void renderExclusionBlocks (const Rules&, std::vector <Composite>&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
-static void renderInterval        (const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, time_t&);
+int renderReport                  (const std::string&, Interval&, Rules&, Database&);
+static void renderAxis            (const std::string&, const Rules&, Palette&, const std::string&, int, int);
+static void renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
+static void renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, time_t&);
 static void renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&);
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -48,11 +49,21 @@ int CmdReportMonth (
   Rules& rules,
   Database& database)
 {
-  // Create a filter, and if empty, choose 'today'.
+  // Create a filter, and if empty, choose the current month.
   auto filter = getFilter (cli);
   if (! filter.range.is_started ())
     filter.range = Range (Datetime ("socm"), Datetime ("eocm"));
 
+  return renderReport ("month", filter, rules, database);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+int renderReport (
+  const std::string& type,
+  Interval& filter,
+  Rules& rules,
+  Database& database)
+{
   // Load the data.
   auto exclusions = getAllExclusions (rules, filter.range);
   auto tracked    = getTracked (database, rules, filter);
@@ -60,11 +71,12 @@ int CmdReportMonth (
   // Map tags to colors.
   auto palette = createPalette (rules);
   auto tag_colors = createTagColorMap (rules, palette, tracked);
+  Color colorToday (palette.enabled ? rules.get ("theme.colors.today") : "");
 
   // Determine hours shown.
   int first_hour = 0;
   int last_hour  = 23;
-  if (! rules.getBoolean ("reports.month.24hours"))
+  if (! rules.getBoolean ("reports." + type + ".24hours"))
   {
     // Get the extreme time range for the filtered data.
     first_hour = 23;
@@ -84,7 +96,7 @@ int CmdReportMonth (
 
   // Render the axis.
   std::cout << '\n';
-  renderAxis (rules, palette, "               ", first_hour, last_hour);
+  renderAxis (type, rules, palette, "               ", first_hour, last_hour);
 
   // For breaks.
   Datetime previous (filter.range.start);
@@ -95,14 +107,14 @@ int CmdReportMonth (
   for (Datetime day = filter.range.start; day < filter.range.end; day++)
   {
     // Render the exclusion blocks.
-    std::vector <Composite> lines (rules.has ("reports.month.lines") ? rules.getInteger ("reports.month.lines") : 1);
-    renderExclusionBlocks (rules, lines, palette, day, first_hour, last_hour, exclusions);
+    std::vector <Composite> lines (rules.has ("reports." + type + ".lines") ? rules.getInteger ("reports." + type + ".lines") : 1);
+    renderExclusionBlocks (type, rules, lines, palette, day, first_hour, last_hour, exclusions);
 
     time_t work = 0;
     for (auto& track : tracked)
     {
       time_t interval_work = 0;
-      renderInterval (rules, lines, day, track, palette, tag_colors, interval_work);
+      renderInterval (type, rules, lines, day, track, palette, tag_colors, interval_work);
       work += interval_work;
     }
 
@@ -146,7 +158,7 @@ int CmdReportMonth (
     total_work += work;
   }
 
-  std::string pad (15 + ((last_hour - first_hour + 1) * (4 + rules.getInteger ("reports.month.spacing"))) + 1, ' ');
+  std::string pad (15 + ((last_hour - first_hour + 1) * (4 + rules.getInteger ("reports." + type + ".spacing"))) + 1, ' ');
   std::cout << pad << "[4m      [0m\n";
 
   std::cout << pad
@@ -155,7 +167,7 @@ int CmdReportMonth (
             << std::setw (2) << std::setfill ('0') << 45
             << '\n';
 
-  if (rules.getBoolean ("reports.month.summary"))
+  if (rules.getBoolean ("reports." + type + ".summary"))
     renderSummary ("    ", filter, exclusions, tracked);
 
   return 0;
@@ -163,13 +175,14 @@ int CmdReportMonth (
 
 ////////////////////////////////////////////////////////////////////////////////
 static void renderAxis (
+  const std::string& type,
   const Rules& rules,
   Palette& palette,
   const std::string& indent,
   int first_hour,
   int last_hour)
 {
-  auto spacing = rules.getInteger ("reports.month.spacing");
+  auto spacing = rules.getInteger ("reports." + type + ".spacing");
   Color colorLabel (palette.enabled ? rules.get ("theme.colors.label")     : "");
 
   std::cout << indent;
@@ -181,6 +194,7 @@ static void renderAxis (
 
 ////////////////////////////////////////////////////////////////////////////////
 static void renderExclusionBlocks (
+  const std::string& type,
   const Rules& rules,
   std::vector <Composite>& lines,
   Palette& palette,
@@ -189,8 +203,8 @@ static void renderExclusionBlocks (
   int last_hour,
   const std::vector <Range>& excluded)
 {
-  auto spacing = rules.getInteger ("reports.month.spacing");
-  auto style = rules.get ("reports.month.style");
+  auto spacing = rules.getInteger ("reports." + type + ".spacing");
+  auto style = rules.get ("reports." + type + ".style");
   Color colorExc (palette.enabled ? rules.get ("theme.colors.exclusion") : "");
 
   // Render the exclusion blocks.
@@ -222,6 +236,7 @@ static void renderExclusionBlocks (
 
 ////////////////////////////////////////////////////////////////////////////////
 static void renderInterval (
+  const std::string& type,
   const Rules& rules,
   std::vector <Composite>& lines,
   const Datetime& day,
@@ -230,11 +245,12 @@ static void renderInterval (
   std::map <std::string, Color>& tag_colors,
   time_t& work)
 {
-  auto spacing = rules.getInteger ("reports.month.spacing");
+  auto spacing = rules.getInteger ("reports." + type + ".spacing");
 
   // Make sure the track only represents one day.
   auto day_range = getFullDay (day);
-  if (! day_range.overlap (track.range))
+  if (! day_range.overlap (track.range) ||
+      (track.range.is_open () && day > Datetime ()))
     return;
 
   Interval clipped = clip (track, day_range);
