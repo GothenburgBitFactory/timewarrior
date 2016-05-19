@@ -243,6 +243,14 @@ static void renderExclusionBlocks (
 
         for (auto& line : lines)
           line.add (block, offset, colorExc);
+
+        if (style == "compact")
+        {
+          auto label = format ("{1}", hour);
+          if (start_block == 0 &&
+              width >= static_cast <int> (label.length ()))
+            lines[0].add (label, offset, colorExc);
+        }
       }
     }
   }
