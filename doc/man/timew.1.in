@@ -267,6 +267,11 @@ Specifies how many spaces are inserted between the hours in the day report
 exclusions. A value of '0' give a move compact report. Default value is '1'.
 
 .TP
+.B reports.month.summary = on
+.br
+Determines whether the hours summary is shown. Default value is 'on'.
+
+.TP
 .B reports.month.lines = 1
 .br
 Determines how many lines are used to render each day on the month report.
