@@ -109,15 +109,22 @@ int CmdReportMonth (
     int hours = work / 3600;
     int minutes = (work % 3600) / 60;
 
-    std::cout << (previous.month () != day.month () ? day.monthNameShort (day.month ()) : "   ")
-              << ' '
-              << (previous.week () != day.week () ? leftJustify (format ("W{1}", day.week ()), 3) : "   ")
-              << ' '
-              << day.dayNameShort (day.dayOfWeek ())
-              << ' '
-              << rightJustify (day.day (), 2)
-              << ' '
-              << lines[0].str ();
+    std::cout << (previous.month () != day.month () ? day.monthNameShort (day.month ()) : "   ") << ' '
+              << (previous.week () != day.week () ? leftJustify (format ("W{1} ", day.week ()), 4) : "    ");
+
+    // Today should be highlighted.
+    if (day.sameDay (Datetime ()))
+      std::cout << colorToday.colorize (day.dayNameShort (day.month ()))
+                << ' '
+                << colorToday.colorize (rightJustify (day.day (), 2))
+                << ' ';
+    else
+      std::cout << day.monthNameShort (day.month ())
+                << ' '
+                << rightJustify (day.day (), 2)
+                << ' ';
+
+    std::cout << lines[0].str ();
 
     if (lines.size () > 1)
     {
