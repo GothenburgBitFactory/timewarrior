@@ -140,7 +140,7 @@ int renderReport (
 
     // Today should be highlighted.
     if (day.sameDay (Datetime ()))
-      std::cout << colorToday.colorize (day.dayNameShort (day.month ()))
+      std::cout << colorToday.colorize (day.dayNameShort (day.dayOfWeek ()))
                 << ' '
                 << colorToday.colorize (rightJustify (day.day (), 2))
                 << ' ';
