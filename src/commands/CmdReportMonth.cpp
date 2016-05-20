@@ -44,6 +44,20 @@ static void renderInterval        (const std::string&, const Rules&, std::vector
 static void renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&);
 
 ////////////////////////////////////////////////////////////////////////////////
+int CmdReportDay (
+  const CLI& cli,
+  Rules& rules,
+  Database& database)
+{
+  // Create a filter, and if empty, choose the current month.
+  auto filter = getFilter (cli);
+  if (! filter.range.is_started ())
+    filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
+
+  return renderReport ("day", filter, rules, database);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 int CmdReportWeek (
   const CLI& cli,
   Rules& rules,
