@@ -45,7 +45,7 @@ int main (int, char**)
   r.set ("one.two",       12);
   r.set ("one.two.three", 123);
   r.set ("one.two.four",  124);
-  t.is ((int) r.all ().size (), 14,      "Rules all (\"\") --> 14");
+  t.is ((int) r.all ().size (), 23,      "Rules all (\"\") --> 23");
   t.ok (r.all ("one.two").size () == 3,  "Rules all (\"one.two\") --> 3");
 
   return 0;
