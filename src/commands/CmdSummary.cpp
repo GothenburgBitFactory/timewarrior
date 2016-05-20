@@ -34,7 +34,7 @@
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdReportSummary (
+int CmdSummary (
   const CLI& cli,
   Rules& rules,
   Database& database)

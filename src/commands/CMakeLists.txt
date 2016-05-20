@@ -20,7 +20,7 @@ set (commands_SRCS CmdCancel.cpp
                    CmdReportMonth.cpp
                    CmdStart.cpp
                    CmdStop.cpp
-                   CmdReportSummary.cpp
+                   CmdSummary.cpp
                    CmdShow.cpp
                    CmdTags.cpp
                    CmdTrack.cpp

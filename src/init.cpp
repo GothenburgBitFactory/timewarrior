@@ -242,7 +242,7 @@ int dispatchCommand (
     else if (command == "show")        status = CmdShow          (     rules                      );
     else if (command == "start")       status = CmdStart         (cli, rules, database            );
     else if (command == "stop")        status = CmdStop          (cli, rules, database            );
-    else if (command == "summary")     status = CmdReportSummary (cli, rules, database            );
+    else if (command == "summary")     status = CmdSummary       (cli, rules, database            );
     else if (command == "tags")        status = CmdTags          (     rules, database            );
     else if (command == "track")       status = CmdTrack         (cli, rules, database            );
     else if (command == "undo")        status = CmdUndo          (                                );
