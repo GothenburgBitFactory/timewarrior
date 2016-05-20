@@ -74,6 +74,10 @@ int CmdSummary (
     int row = -1;
     for (auto& track : subset (day_range, tracked))
     {
+      // Make sure the track only represents one day.
+      if ((track.range.is_open () && day > Datetime ()))
+        continue;
+
       row = table.addRow ();
 
       if (day != previous)
@@ -86,7 +90,7 @@ int CmdSummary (
 
       // Intersect track with day.
       auto today = day_range.intersect (track.range);
-      if (track.range.is_open ())
+      if (track.range.is_open () && day <= Datetime ())
         today.end = Datetime ();
 
       std::string tags = "";
