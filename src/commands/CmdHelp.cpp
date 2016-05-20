@@ -43,6 +43,7 @@ int CmdHelpUsage ()
             << "       timew extensions\n"
             << "       timew gaps [<interval>] [<tag> ...]\n"
             << "       timew help [<command> | hints]\n"
+            << "       timew month [<interval>] [<tag> ...]\n"
             << "       timew [report] <report> [<interval>] [<tag> ...]\n"
             << "       timew show\n"
             << "       timew start [<date>] [<tag> ...]\n"
@@ -69,7 +70,6 @@ int CmdHelpUsage ()
 
   // TODO clear
   // TODO import
-  // TODO month
   // TODO quarter
   // TODO undo
   // TODO year
@@ -301,8 +301,22 @@ int CmdHelp (const CLI& cli)
                 << "if there is no end date.\n"
                 << '\n';
 
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "month")
+      std::cout << '\n'
+                << "Syntax: timew month [<interval>] [<tag> ...]\n"
+                << '\n'
+                << "The month command shows a chart depicting a single month (current month by\n"
+                << "default), with colored blocks drawn on a timeline. The chart summarizes the\n"
+                << "tracked and untracked time.\n"
+                << '\n'
+                << "For more details, and precise times, use the 'summary' report.\n"
+                << '\n'
+                << "See also 'day', 'week', 'summary'.\n"
+                << '\n';
+
     // TODO import
-    // TODO month
     // TODO quarter
     // TODO report
 
