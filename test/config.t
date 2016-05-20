@@ -59,8 +59,9 @@ class TestConfig(TestCase):
     def test_trivial_config(self):
         """Test trivial config - should only show defaults"""
         code, out, err = self.t("config")
+        # Note that this is not a complete set, just a representative set.
         self.assertIn("color = off", out)
-        self.assertIn("confirmation = yes", out)
+        self.assertIn("confirmation = on", out)
         self.assertIn("debug = off", out)
         self.assertIn("verbose = on", out)
 
