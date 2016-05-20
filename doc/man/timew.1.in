@@ -65,6 +65,16 @@ The 'continue' command creates a new interval, starting now, and using the
 tags 'tag1' and 'tag2'. See also 'start', 'stop'.
 
 .TP
+.B timew day [<interval>] [<tag> ...]
+The day command shows a chart depicting a single day (today by default), with
+colored blocks drawn on a timeline. The chart summarizes the tracked and
+untracked time.
+
+For more details, and precise times, use the 'summary' report.
+
+See also 'week', 'month', 'summary'.
+
+.TP
 .B timew diagnostics
 This command shows details about your version of Timewarrior, platform, how it
 was built, compiler features, configuration, file access, extensions and more.
