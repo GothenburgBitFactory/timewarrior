@@ -40,9 +40,21 @@ Rules::Rules ()
   // Load the default values.
   _settings =
   {
-    {"confirmation", "yes"},
-    {"debug",        "off"},
-    {"verbose",      "on"},
+    {"confirmation",          "yes"},
+    {"debug",                 "off"},
+    {"verbose",               "on"},
+
+    // 'day' report.
+    {"reports.day.lines",     "2"},
+    {"reports.day.spacing",   "1"},
+
+    // 'week' report.
+    {"reports.week.lines",    "1"},
+    {"reports.week.spacing",  "1"},
+
+    // 'month' report.
+    {"reports.month.lines",   "1"},
+    {"reports.month.spacing", "1"},
   };
 }
 
