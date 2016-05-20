@@ -106,6 +106,16 @@ supported hints and interval syntax. For example:
   $ timew help interval
 
 .TP
+.B timew month [<interval>] [<tag> ...]
+The month command shows a chart depicting a single month (current month by
+default), with colored blocks drawn on a timeline. The chart summarizes the
+tracked and untracked time.
+
+For more details, and precise times, use the 'summary' report.
+
+See also 'day', 'week', 'summary'.
+
+.TP
 .B timew [report] <report> [<interval>] [<tag> ...]
 Runs an extension report, and supports filtering data.
 The 'report' command itself is optional, which means that these two commands
