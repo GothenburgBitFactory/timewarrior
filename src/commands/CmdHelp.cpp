@@ -50,6 +50,7 @@ int CmdHelpUsage ()
             << "       timew summary [<interval>]\n"
             << "       timew tags\n"
             << "       timew track <interval> [<tag> ...]\n"
+            << "       timew week [<interval>] [<tag> ...]\n"
             << '\n'
             << "Interval:\n"
             << "       [from] <date>\n"
@@ -71,7 +72,6 @@ int CmdHelpUsage ()
   // TODO month
   // TODO quarter
   // TODO undo
-  // TODO week
   // TODO year
 
   // TODO List all extensions.
@@ -389,9 +389,22 @@ int CmdHelp (const CLI& cli)
                 << "same as the 'start' command.\n"
                 << '\n';
 
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "week")
+      std::cout << '\n'
+                << "Syntax: timew week [<interval>] [<tag> ...]\n"
+                << '\n'
+                << "The week command shows a chart depicting a single week (current week by\n"
+                << "default), with colored blocks drawn on a timeline. The chart summarizes the\n"
+                << "tracked and untracked time.\n"
+                << '\n'
+                << "For more details, and precise times, use the 'summary' report.\n"
+                << '\n'
+                << "See also 'day', 'month', 'summary'.\n"
+                << '\n';
 
     // TODO undo
-    // TODO week
     // TODO year
 
     else
