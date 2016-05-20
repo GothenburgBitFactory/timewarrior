@@ -104,7 +104,7 @@ int renderReport (
   // Determine hours shown.
   int first_hour = 0;
   int last_hour  = 23;
-  if (! rules.getBoolean ("reports." + type + ".24hours"))
+  if (! rules.getBoolean ("reports." + type + ".24h"))
   {
     // Get the extreme time range for the filtered data.
     first_hour = 23;
