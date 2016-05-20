@@ -6,6 +6,7 @@ include_directories (${CMAKE_SOURCE_DIR}
                      ${TIMEW_INCLUDE_DIRS})
 
 set (commands_SRCS CmdCancel.cpp
+                   CmdChart.cpp
                    CmdClear.cpp
                    CmdConfig.cpp
                    CmdContinue.cpp
@@ -17,7 +18,6 @@ set (commands_SRCS CmdCancel.cpp
                    CmdHelp.cpp
                    CmdImport.cpp
                    CmdReport.cpp
-                   CmdReportMonth.cpp
                    CmdStart.cpp
                    CmdStop.cpp
                    CmdSummary.cpp
