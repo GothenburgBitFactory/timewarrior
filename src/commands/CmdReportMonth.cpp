@@ -110,7 +110,8 @@ int renderReport (
 
   // Render the axis.
   std::cout << '\n';
-  renderAxis (type, rules, palette, "               ", first_hour, last_hour);
+  if (rules.get ("reports." + type + ".style") != "compact")
+    renderAxis (type, rules, palette, "               ", first_hour, last_hour);
 
   // For breaks.
   Datetime previous (filter.range.start);
