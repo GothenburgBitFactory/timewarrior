@@ -31,13 +31,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdHelpUsage ()
 {
-  // TODO This is going to need formatting.
+  // TODO This is going to need more formatting.
   std::cout << '\n'
             << "Usage: timew [--version]\n"
             << "       timew cancel\n"
             << "       timew config [<name> [<value | '']]\n"
             << "       timew continue\n"
-            << "       timew day [<interval>]\n"
+            << "       timew day [<interval>] [<tag> ...]\n"
             << "       timew diagnostics\n"
             << "       timew export [<interval>] [<tag> ...]\n"
             << "       timew extensions\n"
@@ -157,7 +157,20 @@ int CmdHelp (const CLI& cli)
                 << "See also 'start', 'stop'.\n"
                 << '\n';
 
-    // TODO day
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "day")
+      std::cout << '\n'
+                << "Syntax: timew day [<interval>] [<tag> ...]\n"
+                << '\n'
+                << "The day command shows a chart depicting a single day (today by default), with\n"
+                << "colored blocks drawn on a timeline. The chart summarizes the tracked and\n"
+                << "untracked time.\n"
+                << '\n'
+                << "For more details, and precise times, use the 'summary' report.\n"
+                << '\n'
+                << "See also 'week', 'month', 'summary'.\n"
+                << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
