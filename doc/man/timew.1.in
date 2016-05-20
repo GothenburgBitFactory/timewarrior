@@ -179,6 +179,16 @@ Note that the track command expects a closed interval (start and end time), when
 recording. If a closed interval is not provided, the 'track' command behaves the
 same as the 'start' command.
 
+.TP
+.B timew week [<interval>] [<tag> ...]
+The week command shows a chart depicting a single week (current week by
+default), with colored blocks drawn on a timeline. The chart summarizes the
+tracked and untracked time.
+
+For more details, and precise times, use the 'summary' report.
+
+See also 'day', 'month', 'summary'.
+
 .SH INTERVAL
 An interval defines a block of time that is tracked. The syntax for specifying
 an interval is flexible, and may be one of:
