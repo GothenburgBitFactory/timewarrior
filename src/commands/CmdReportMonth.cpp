@@ -37,14 +37,14 @@
 #include <iostream>
 #include <iomanip>
 
-int renderReport                  (const std::string&, Interval&, Rules&, Database&);
+int renderChart                   (const std::string&, Interval&, Rules&, Database&);
 static void renderAxis            (const std::string&, const Rules&, Palette&, const std::string&, int, int);
 static void renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
 static void renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, time_t&);
 static void renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&);
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdReportDay (
+int CmdChartDay (
   const CLI& cli,
   Rules& rules,
   Database& database)
@@ -54,11 +54,11 @@ int CmdReportDay (
   if (! filter.range.is_started ())
     filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
 
-  return renderReport ("day", filter, rules, database);
+  return renderChart ("day", filter, rules, database);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdReportWeek (
+int CmdChartWeek (
   const CLI& cli,
   Rules& rules,
   Database& database)
@@ -68,11 +68,11 @@ int CmdReportWeek (
   if (! filter.range.is_started ())
     filter.range = Range (Datetime ("socw"), Datetime ("eocw"));
 
-  return renderReport ("week", filter, rules, database);
+  return renderChart ("week", filter, rules, database);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdReportMonth (
+int CmdChartMonth (
   const CLI& cli,
   Rules& rules,
   Database& database)
@@ -82,11 +82,11 @@ int CmdReportMonth (
   if (! filter.range.is_started ())
     filter.range = Range (Datetime ("socm"), Datetime ("eocm"));
 
-  return renderReport ("month", filter, rules, database);
+  return renderChart ("month", filter, rules, database);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-int renderReport (
+int renderChart (
   const std::string& type,
   Interval& filter,
   Rules& rules,

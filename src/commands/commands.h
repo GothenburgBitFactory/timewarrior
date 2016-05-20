@@ -52,9 +52,9 @@ int CmdTags          (            Rules&, Database&                   );
 int CmdTrack         (const CLI&, Rules&, Database&                   );
 int CmdUndo          (                                                );
 
-int CmdReportDay     (const CLI&, Rules&, Database&                   );
-int CmdReportWeek    (const CLI&, Rules&, Database&                   );
-int CmdReportMonth   (const CLI&, Rules&, Database&                   );
+int CmdChartDay      (const CLI&, Rules&, Database&                   );
+int CmdChartWeek     (const CLI&, Rules&, Database&                   );
+int CmdChartMonth    (const CLI&, Rules&, Database&                   );
 int CmdSummary       (const CLI&, Rules&, Database&                   );
 
 #endif
