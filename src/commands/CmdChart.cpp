@@ -508,7 +508,8 @@ static std::string renderSummary (
     auto total_available = filter.range.total () - total_unavailable;
     auto total_remaining = total_available - total_worked;
 
-    out << indent << "Tracked   "
+    out << '\n'
+        << indent << "Tracked   "
         << std::setw (13) << std::setfill (' ') << Duration (total_worked).formatHours ()    << '\n';
 
     if (total_remaining >= 0)
