@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (38);
+  UnitTest t (39);
 
   // bool is_started () const;
   // bool is_ended () const;
@@ -166,6 +166,12 @@ int main (int, char**)
   i20.tag ("foo");
   t.ok    (i20.hasTag ("foo"), "hasTag positive");
   t.notok (i20.hasTag ("bar"), "hasTag negative");
+
+  Interval i21;
+  i21.tag ("one-two");
+  i21.tag ("three");
+  t.is (i21.json (), "{\"tags\":[\"one-two\",\"three\"]}",
+               "JSON '{\"tags\":[\"one-two\",\"three\"]}'");
 
   return 0;
 }
