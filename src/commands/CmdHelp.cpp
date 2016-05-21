@@ -48,7 +48,7 @@ int CmdHelpUsage ()
             << "       timew show\n"
             << "       timew start [<date>] [<tag> ...]\n"
             << "       timew stop [<tag> ...]\n"
-            << "       timew summary [<interval>]\n"
+            << "       timew summary [<interval>] [<tag> ...]\n"
             << "       timew tags\n"
             << "       timew track <interval> [<tag> ...]\n"
             << "       timew week [<interval>] [<tag> ...]\n"
@@ -166,6 +166,12 @@ int CmdHelp (const CLI& cli)
                 << "The day command shows a chart depicting a single day (today by default), with\n"
                 << "colored blocks drawn on a timeline. The chart summarizes the tracked and\n"
                 << "untracked time.\n"
+                << '\n'
+                << "Accepts date ranges and tags for filtering, or shortcut hints:\n"
+                << '\n'
+                << "  $ timew day monday - today\n"
+                << "  $ timew day :week\n"
+                << "  $ timew day :month\n"
                 << '\n'
                 << "For more details, and precise times, use the 'summary' report.\n"
                 << '\n'
@@ -311,6 +317,11 @@ int CmdHelp (const CLI& cli)
                 << "default), with colored blocks drawn on a timeline. The chart summarizes the\n"
                 << "tracked and untracked time.\n"
                 << '\n'
+                << "Accepts date ranges and tags for filtering, or shortcut hints:\n"
+                << '\n'
+                << "  $ timew month 1st - today\n"
+                << "  $ timew month :week\n"
+                << '\n'
                 << "For more details, and precise times, use the 'summary' report.\n"
                 << '\n'
                 << "See also 'day', 'week', 'summary'.\n"
@@ -375,7 +386,22 @@ int CmdHelp (const CLI& cli)
                 << "See also 'cancel', 'continue', 'start', 'track'.\n"
                 << '\n';
 
-    // TODO summary
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "summary")
+      std::cout << '\n'
+                << "Syntax: timew summary [<interval>] [<tag> ...]\n"
+                << '\n'
+                << "Displays a report summarizing tracked and untracked time for\n"
+                << "the current day by default. Accepts date ranges and tags for\n"
+                << "filtering, or shortcut hints:\n"
+                << '\n'
+                << "  $ timew summary monday - today\n"
+                << "  $ timew summary :week\n"
+                << "  $ timew summary :month\n"
+                << '\n'
+                << "See also 'day', 'week', 'month'.\n"
+                << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
@@ -412,6 +438,11 @@ int CmdHelp (const CLI& cli)
                 << "The week command shows a chart depicting a single week (current week by\n"
                 << "default), with colored blocks drawn on a timeline. The chart summarizes the\n"
                 << "tracked and untracked time.\n"
+                << '\n'
+                << "Accepts date ranges and tags for filtering, or shortcut hints:\n"
+                << '\n'
+                << "  $ timew week\n"
+                << "  $ timew week monday - today\n"
                 << '\n'
                 << "For more details, and precise times, use the 'summary' report.\n"
                 << '\n'
