@@ -39,6 +39,7 @@
 
 int                renderChart           (const std::string&, Interval&, Rules&, Database&);
 static void        renderAxis            (const std::string&, const Rules&, Palette&, const std::string&, int, int);
+static std::string renderMonth           (const Datetime&, const Datetime&);
 static std::string renderDayName         (Datetime&, Color&);
 static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
 static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, time_t&);
@@ -148,14 +149,8 @@ int renderChart (
       work += interval_work;
     }
 
-    int hours = work / 3600;
-    int minutes = (work % 3600) / 60;
-
-    std::cout << (previous.month () != day.month () ? day.monthNameShort (day.month ()) : "   ") << ' '
-              << (previous.week () != day.week () ? leftJustify (format ("W{1} ", day.week ()), 4) : "    ");
-
-    // Today should be highlighted.
-    std::cout << renderDayName (day, colorToday)
+    std::cout << renderMonth (previous, day)
+              << renderDayName (day, colorToday)
               << ' '
               << lines[0].str ();
 
@@ -218,6 +213,16 @@ static void renderAxis (
       std::cout << colorLabel.colorize (leftJustify (hour, 4 + spacing));
 
   std::cout << "  " << colorLabel.colorize ("Total") << "\n";
+}
+
+////////////////////////////////////////////////////////////////////////////////
+static std::string renderMonth (const Datetime& previous, const Datetime& day)
+{
+  std::stringstream out;
+  out << (previous.month () != day.month () ? day.monthNameShort (day.month ()) : "   ") << ' '
+      << (previous.week ()  != day.week ()  ? leftJustify (format ("W{1} ", day.week ()), 4) : "    ");
+
+  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
