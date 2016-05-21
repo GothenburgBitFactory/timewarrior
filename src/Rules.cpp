@@ -52,7 +52,7 @@ Rules::Rules ()
     {"reports.day.week",      "no"},
     {"reports.day.day",       "yes"},
     {"reports.day.weekday",   "yes"},
-    {"reports.day.totals",    "yes"},
+    {"reports.day.totals",    "no"},
     {"reports.day.summary",   "yes"},
 
     // 'week' report.
