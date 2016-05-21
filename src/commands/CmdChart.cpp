@@ -41,6 +41,7 @@ int                renderChart           (const std::string&, Interval&, Rules&,
 static void        renderAxis            (const std::string&, const Rules&, Palette&, const std::string&, int, int);
 static std::string renderMonth           (const Datetime&, const Datetime&);
 static std::string renderDayName         (Datetime&, Color&);
+static std::string renderTotal           (time_t);
 static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
 static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, time_t&);
 static void        renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&);
@@ -163,11 +164,7 @@ int renderChart (
     }
 
     std::cout << "  ";
-
-    if (work)
-      std::cout << std::setw (3) << std::setfill (' ') << hours
-                << ':'
-                << std::setw (2) << std::setfill ('0') << minutes;
+    std::cout << renderTotal (work);
 
     std::cout << '\n';
     previous = day;
@@ -238,6 +235,22 @@ static std::string renderDayName (Datetime& day, Color& color)
     out << day.dayNameShort (day.dayOfWeek ())
         << ' '
         << rightJustify (day.day (), 2);
+
+  return out.str ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+static std::string renderTotal (time_t work)
+{
+  std::stringstream out;
+  if (work)
+  {
+    int hours = work / 3600;
+    int minutes = (work % 3600) / 60;
+    std::cout << std::setw (3) << std::setfill (' ') << hours
+              << ':'
+              << std::setw (2) << std::setfill ('0') << minutes;
+  }
 
   return out.str ();
 }
