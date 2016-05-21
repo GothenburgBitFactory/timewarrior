@@ -125,7 +125,7 @@ int renderChart (
                 first_hour,
                 last_hour);
 
-  // For breaks.
+  // For rendering labels on edge detection.
   Datetime previous (filter.range.start);
   --previous;
 
@@ -134,7 +134,11 @@ int renderChart (
   for (Datetime day = filter.range.start; day < filter.range.end; day++)
   {
     // Render the exclusion blocks.
-    std::vector <Composite> lines (rules.has ("reports." + type + ".lines") ? rules.getInteger ("reports." + type + ".lines") : 1);
+    int num_lines = 1;
+    if (rules.has ("reports." + type + ".lines"))
+      num_lines = rules.getInteger ("reports." + type + ".lines");
+
+    std::vector <Composite> lines (num_lines);
     renderExclusionBlocks (type, rules, lines, palette, day, first_hour, last_hour, exclusions);
 
     time_t work = 0;
