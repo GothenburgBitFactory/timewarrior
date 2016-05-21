@@ -29,9 +29,6 @@
 #include <Datetime.h>
 #include <Duration.h>
 #include <timew.h>
-/*
-#include <iostream> // TODO Remove.
-*/
 
 ////////////////////////////////////////////////////////////////////////////////
 // A filter is just another interval, containing start, end and tags.
