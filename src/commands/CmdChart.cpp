@@ -37,11 +37,12 @@
 #include <iostream>
 #include <iomanip>
 
-int renderChart                   (const std::string&, Interval&, Rules&, Database&);
-static void renderAxis            (const std::string&, const Rules&, Palette&, const std::string&, int, int);
-static void renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
-static void renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, time_t&);
-static void renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&);
+int                renderChart           (const std::string&, Interval&, Rules&, Database&);
+static void        renderAxis            (const std::string&, const Rules&, Palette&, const std::string&, int, int);
+static std::string renderDayName         (Datetime&, Color&);
+static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
+static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, time_t&);
+static void        renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&);
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdChartDay (
@@ -154,18 +155,9 @@ int renderChart (
               << (previous.week () != day.week () ? leftJustify (format ("W{1} ", day.week ()), 4) : "    ");
 
     // Today should be highlighted.
-    if (day.sameDay (Datetime ()))
-      std::cout << colorToday.colorize (day.dayNameShort (day.dayOfWeek ()))
-                << ' '
-                << colorToday.colorize (rightJustify (day.day (), 2))
-                << ' ';
-    else
-      std::cout << day.dayNameShort (day.dayOfWeek ())
-                << ' '
-                << rightJustify (day.day (), 2)
-                << ' ';
-
-    std::cout << lines[0].str ();
+    std::cout << renderDayName (day, colorToday)
+              << ' '
+              << lines[0].str ();
 
     if (lines.size () > 1)
     {
@@ -226,6 +218,23 @@ static void renderAxis (
       std::cout << colorLabel.colorize (leftJustify (hour, 4 + spacing));
 
   std::cout << "  " << colorLabel.colorize ("Total") << "\n";
+}
+
+////////////////////////////////////////////////////////////////////////////////
+static std::string renderDayName (Datetime& day, Color& color)
+{
+  std::stringstream out;
+  if (day.sameDay (Datetime ()))
+    out << color.colorize (day.dayNameShort (day.dayOfWeek ()))
+        << ' '
+        << color.colorize (rightJustify (day.day (), 2));
+
+  else
+    out << day.dayNameShort (day.dayOfWeek ())
+        << ' '
+        << rightJustify (day.day (), 2);
+
+  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
