@@ -38,6 +38,7 @@
 #include <iomanip>
 
 int                renderChart           (const std::string&, Interval&, Rules&, Database&);
+static void        determineHourRange    (const std::string&, const Rules&, const std::vector <Interval>&, int&, int&);
 static void        renderAxis            (const std::string&, const Rules&, Palette&, const std::string&, int, int);
 static std::string renderMonth           (const std::string&, const Rules&, const Datetime&, const Datetime&);
 static std::string renderDayName         (const std::string&, const Rules&, Datetime&, Color&);
@@ -108,23 +109,7 @@ int renderChart (
   // Determine hours shown.
   int first_hour = 0;
   int last_hour  = 23;
-  if (! rules.getBoolean ("reports." + type + ".24h"))
-  {
-    // Get the extreme time range for the filtered data.
-    first_hour = 23;
-    last_hour  = 0;
-    for (auto& track : tracked)
-    {
-      if (track.range.start.hour () < first_hour)
-        first_hour = track.range.start.hour ();
-
-      if (track.range.end.hour () > last_hour)
-        last_hour = track.range.end.hour ();
-    }
-
-    first_hour = std::max (first_hour - 1, 0);
-    last_hour  = std::min (last_hour + 1, 23);
-  }
+  determineHourRange (type, rules, tracked, first_hour, last_hour);
 
   // Render the axis.
   std::cout << '\n';
@@ -187,6 +172,33 @@ int renderChart (
     renderSummary ("    ", filter, exclusions, tracked);
 
   return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+static void determineHourRange (
+  const std::string& type,
+  const Rules& rules,
+  const std::vector <Interval>& tracked,
+  int& first_hour,
+  int& last_hour)
+{
+  if (! rules.getBoolean ("reports." + type + ".24h"))
+  {
+    // Get the extreme time range for the filtered data.
+    first_hour = 23;
+    last_hour  = 0;
+    for (auto& track : tracked)
+    {
+      if (track.range.start.hour () < first_hour)
+        first_hour = track.range.start.hour ();
+
+      if (track.range.end.hour () > last_hour)
+        last_hour = track.range.end.hour ();
+    }
+
+    first_hour = std::max (first_hour - 1, 0);
+    last_hour  = std::min (last_hour + 1, 23);
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
