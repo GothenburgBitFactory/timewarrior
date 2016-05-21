@@ -70,6 +70,12 @@ The day command shows a chart depicting a single day (today by default), with
 colored blocks drawn on a timeline. The chart summarizes the tracked and
 untracked time.
 
+Accepts date ranges and tags for filtering, or shortcut hints:
+
+  $ timew day monday - today
+  $ timew day :week
+  $ timew day :month
+
 For more details, and precise times, use the 'summary' report.
 
 See also 'week', 'month', 'summary'.
@@ -110,6 +116,11 @@ supported hints and interval syntax. For example:
 The month command shows a chart depicting a single month (current month by
 default), with colored blocks drawn on a timeline. The chart summarizes the
 tracked and untracked time.
+
+Accepts date ranges and tags for filtering, or shortcut hints:
+
+  $ timew month 1st - today
+  $ timew month :week
 
 For more details, and precise times, use the 'summary' report.
 
@@ -164,6 +175,18 @@ stopped, leaving tag2 active. To stop all tracking:
 See also 'cancel', 'continue', 'start', 'track'.
 
 .TP
+.B timew summary [<interval>] [<tag> ...]
+Displays a report summarizing tracked and untracked time for
+the current day by default. Accepts date ranges and tags for
+filtering, or shortcut hints:
+
+  $ timew summary monday - today
+  $ timew summary :week
+  $ timew summary :month
+
+See also 'day', 'week', 'month'.
+
+.TP
 .B timew tags
 Displays all the tags that have been used.
 
@@ -184,6 +207,11 @@ same as the 'start' command.
 The week command shows a chart depicting a single week (current week by
 default), with colored blocks drawn on a timeline. The chart summarizes the
 tracked and untracked time.
+
+Accepts date ranges and tags for filtering, or shortcut hints:
+
+  $ timew week
+  $ timew week monday - today
 
 For more details, and precise times, use the 'summary' report.
 
