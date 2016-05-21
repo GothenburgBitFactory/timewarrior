@@ -48,6 +48,10 @@ Rules::Rules ()
     {"reports.day.24h",       "yes"},
     {"reports.day.lines",     "2"},
     {"reports.day.spacing",   "1"},
+    {"reports.day.month",     "no"},
+    {"reports.day.week",      "no"},
+    {"reports.day.day",       "yes"},
+    {"reports.day.weekday",   "yes"},
     {"reports.day.totals",    "yes"},
     {"reports.day.summary",   "yes"},
 
@@ -55,6 +59,10 @@ Rules::Rules ()
     {"reports.week.24h",      "yes"},
     {"reports.week.lines",    "1"},
     {"reports.week.spacing",  "1"},
+    {"reports.week.month",    "no"},
+    {"reports.week.week",     "yes"},
+    {"reports.week.day",      "yes"},
+    {"reports.week.weekday",  "yes"},
     {"reports.week.totals",   "yes"},
     {"reports.week.summary",  "yes"},
 
@@ -62,6 +70,10 @@ Rules::Rules ()
     {"reports.month.24h",     "yes"},
     {"reports.month.lines",   "1"},
     {"reports.month.spacing", "1"},
+    {"reports.month.month",   "yes"},
+    {"reports.month.week",    "yes"},
+    {"reports.month.day",     "yes"},
+    {"reports.month.weekday", "yes"},
     {"reports.month.totals",  "yes"},
     {"reports.month.summary", "yes"},
   };
