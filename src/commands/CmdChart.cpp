@@ -42,6 +42,7 @@ static void        renderAxis            (const std::string&, const Rules&, Pale
 static std::string renderMonth           (const Datetime&, const Datetime&);
 static std::string renderDayName         (Datetime&, Color&);
 static std::string renderTotal           (time_t);
+static std::string renderSubTotal        (const std::string&, const Rules&, int, int, time_t);
 static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
 static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, time_t&);
 static void        renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&);
@@ -171,14 +172,7 @@ int renderChart (
     total_work += work;
   }
 
-  std::string pad (15 + ((last_hour - first_hour + 1) * (4 + rules.getInteger ("reports." + type + ".spacing"))) + 1, ' ');
-  std::cout << pad << "[4m      [0m\n";
-
-  std::cout << pad
-            << std::setw (3) << std::setfill (' ') << 123
-            << ':'
-            << std::setw (2) << std::setfill ('0') << 45
-            << '\n';
+  std::cout << renderSubTotal (type, rules, first_hour, last_hour, total_work);
 
   if (rules.getBoolean ("reports." + type + ".summary"))
     renderSummary ("    ", filter, exclusions, tracked);
@@ -251,6 +245,39 @@ static std::string renderTotal (time_t work)
               << ':'
               << std::setw (2) << std::setfill ('0') << minutes;
   }
+
+  return out.str ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+static std::string renderSubTotal (
+  const std::string& type,
+  const Rules& rules,
+  int first_hour,
+  int last_hour,
+  time_t total_work)
+{
+  std::stringstream out;
+
+  int indent = (rules.getBoolean ("reports." + type + ".month")   ? 4 : 0) +
+               (rules.getBoolean ("reports." + type + ".week")    ? 4 : 0) +
+               (rules.getBoolean ("reports." + type + ".day")     ? 3 : 0) +
+               (rules.getBoolean ("reports." + type + ".weekday") ? 4 : 0);
+  int spacing = rules.getInteger ("reports." + type + ".spacing");
+
+  std::string pad (indent + ((last_hour - first_hour + 1) * (4 + spacing)) + 1, ' ');
+
+  int hours = total_work / 3600;
+  int minutes = (total_work % 3600) / 60;
+
+  out << pad
+      << Color ("underline").colorize ("      ")
+      << '\n'
+      << pad
+      << std::setw (3) << std::setfill (' ') << hours
+      << ':'
+      << std::setw (2) << std::setfill ('0') << minutes
+      << '\n';
 
   return out.str ();
 }
