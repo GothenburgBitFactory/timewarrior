@@ -168,18 +168,15 @@ int renderChart (
               << lines[0].str ();
 
     if (lines.size () > 1)
-    {
       for (unsigned int i = 1; i < lines.size (); ++i)
         std::cout << "\n"
-                  << "               "
+                  << std::string (labelMonth.length () + labelDay.length (), ' ')
                   << lines[i].str ();
-    }
 
     std::cout << "  "
               << renderTotal (type, rules, work)
               << '\n';
 
-    std::cout << '\n';
     previous = day;
     total_work += work;
   }
