@@ -39,9 +39,9 @@
 
 int                renderChart           (const std::string&, Interval&, Rules&, Database&);
 static void        renderAxis            (const std::string&, const Rules&, Palette&, const std::string&, int, int);
-static std::string renderTotal           (time_t);
 static std::string renderMonth           (const std::string&, const Rules&, const Datetime&, const Datetime&);
 static std::string renderDayName         (const std::string&, const Rules&, Datetime&, Color&);
+static std::string renderTotal           (const std::string&, const Rules&, time_t);
 static std::string renderSubTotal        (const std::string&, const Rules&, int, int, time_t);
 static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
 static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, time_t&);
@@ -175,8 +175,9 @@ int renderChart (
                   << lines[i].str ();
     }
 
-    std::cout << "  ";
-    std::cout << renderTotal (work);
+    std::cout << "  "
+              << renderTotal (type, rules, work)
+              << '\n';
 
     std::cout << '\n';
     previous = day;
@@ -278,10 +279,15 @@ static std::string renderDayName (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-static std::string renderTotal (time_t work)
+static std::string renderTotal (
+  const std::string& type,
+  const Rules& rules,
+  time_t work)
 {
+  auto showTotal = rules.getBoolean ("reports." + type + ".total");
+
   std::stringstream out;
-  if (work)
+  if (showTotal && work)
   {
     int hours = work / 3600;
     int minutes = (work % 3600) / 60;
