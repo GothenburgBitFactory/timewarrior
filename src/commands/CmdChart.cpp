@@ -203,7 +203,6 @@ static void renderAxis (
   Color colorToday (palette.enabled ? rules.get ("theme.colors.today") : "");
 
   auto current_hour = Datetime ().hour ();
-  std::cout << "# current_hour " << current_hour << "\n";
 
   std::cout << indent;
   for (int hour = first_hour; hour <= last_hour; hour++)
