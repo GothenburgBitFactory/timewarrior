@@ -212,11 +212,18 @@ static void renderAxis (
   int last_hour)
 {
   auto spacing = rules.getInteger ("reports." + type + ".spacing");
-  Color colorLabel (palette.enabled ? rules.get ("theme.colors.label")     : "");
+  Color colorLabel (palette.enabled ? rules.get ("theme.colors.label") : "");
+  Color colorToday (palette.enabled ? rules.get ("theme.colors.today") : "");
+
+  auto current_hour = Datetime ().hour ();
+  std::cout << "# current_hour " << current_hour << "\n";
 
   std::cout << indent;
   for (int hour = first_hour; hour <= last_hour; hour++)
-    std::cout << colorLabel.colorize (leftJustify (hour, 4 + spacing));
+    if (hour == current_hour)
+      std::cout << colorToday.colorize (leftJustify (hour, 4 + spacing));
+    else
+      std::cout << colorLabel.colorize (leftJustify (hour, 4 + spacing));
 
   std::cout << "  " << colorLabel.colorize ("Total") << "\n";
 }
