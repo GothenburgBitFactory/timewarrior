@@ -160,7 +160,7 @@ int renderChart (
                 << colorToday.colorize (rightJustify (day.day (), 2))
                 << ' ';
     else
-      std::cout << day.monthNameShort (day.month ())
+      std::cout << day.dayNameShort (day.dayOfWeek ())
                 << ' '
                 << rightJustify (day.day (), 2)
                 << ' ';
