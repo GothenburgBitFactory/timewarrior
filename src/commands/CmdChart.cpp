@@ -46,7 +46,7 @@ static std::string renderTotal           (const std::string&, const Rules&, time
 static std::string renderSubTotal        (const std::string&, const Rules&, int, int, time_t);
 static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
 static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, time_t&);
-static void        renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&);
+static std::string renderSummary         (const std::string&, const Rules&, const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&);
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdChartDay (
@@ -166,10 +166,8 @@ int renderChart (
     total_work += work;
   }
 
-  std::cout << renderSubTotal (type, rules, first_hour, last_hour, total_work);
-
-  if (rules.getBoolean ("reports." + type + ".summary"))
-    renderSummary ("    ", filter, exclusions, tracked);
+  std::cout << renderSubTotal (type, rules, first_hour, last_hour, total_work)
+            << renderSummary (type, rules, "    ", filter, exclusions, tracked);
 
   return 0;
 }
@@ -467,43 +465,51 @@ static void renderInterval (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-static void renderSummary (
+static std::string renderSummary (
+  const std::string& type,
+  const Rules& rules,
   const std::string& indent,
   const Interval& filter,
   const std::vector <Range>& exclusions,
   const std::vector <Interval>& tracked)
 {
-  time_t total_unavailable = 0;
-  for (auto& exclusion : exclusions)
-    if (filter.range.overlap (exclusion))
-      total_unavailable += filter.range.intersect (exclusion).total ();
-
-  time_t total_worked = 0;
-  for (auto& interval : tracked)
+  std::stringstream out;
+  if (rules.getBoolean ("reports." + type + ".summary"))
   {
-    if (filter.range.overlap (interval.range))
-    {
-      Interval clipped = clip (interval, filter.range);
-      if (interval.range.is_open ())
-        clipped.range.end = Datetime ();
+    time_t total_unavailable = 0;
+    for (auto& exclusion : exclusions)
+      if (filter.range.overlap (exclusion))
+        total_unavailable += filter.range.intersect (exclusion).total ();
 
-      total_worked += clipped.range.total ();
+    time_t total_worked = 0;
+    for (auto& interval : tracked)
+    {
+      if (filter.range.overlap (interval.range))
+      {
+        Interval clipped = clip (interval, filter.range);
+        if (interval.range.is_open ())
+          clipped.range.end = Datetime ();
+
+        total_worked += clipped.range.total ();
+      }
     }
+
+    auto total_available = filter.range.total () - total_unavailable;
+    auto total_remaining = total_available - total_worked;
+
+    out << indent << "Tracked   "
+        << std::setw (13) << std::setfill (' ') << Duration (total_worked).formatHours ()    << '\n';
+
+    if (total_remaining >= 0)
+      out << indent << "Remaining "
+          << std::setw (13) << std::setfill (' ') << Duration (total_remaining).formatHours () << '\n';
+
+    out << indent << "Total     "
+        << std::setw (13) << std::setfill (' ') << Duration (total_available).formatHours ()   << '\n'
+        << '\n';
   }
 
-  auto total_available = filter.range.total () - total_unavailable;
-  auto total_remaining = total_available - total_worked;
-
-  std::cout << indent << "Tracked   "
-            << std::setw (13) << std::setfill (' ') << Duration (total_worked).formatHours ()    << '\n';
-
-  if (total_remaining >= 0)
-    std::cout << indent << "Remaining "
-              << std::setw (13) << std::setfill (' ') << Duration (total_remaining).formatHours () << '\n';
-
-  std::cout << indent << "Total     "
-            << std::setw (13) << std::setfill (' ') << Duration (total_available).formatHours ()   << '\n'
-            << '\n';
+  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
