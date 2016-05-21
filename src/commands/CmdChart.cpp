@@ -323,26 +323,28 @@ static std::string renderSubTotal (
   time_t total_work)
 {
   std::stringstream out;
+  if (rules.getBoolean ("reports." + type + ".total"))
+  {
+    int indent = (rules.getBoolean ("reports." + type + ".month")   ? 4 : 0) +
+                 (rules.getBoolean ("reports." + type + ".week")    ? 4 : 0) +
+                 (rules.getBoolean ("reports." + type + ".day")     ? 3 : 0) +
+                 (rules.getBoolean ("reports." + type + ".weekday") ? 4 : 0);
+    int spacing = rules.getInteger ("reports." + type + ".spacing");
 
-  int indent = (rules.getBoolean ("reports." + type + ".month")   ? 4 : 0) +
-               (rules.getBoolean ("reports." + type + ".week")    ? 4 : 0) +
-               (rules.getBoolean ("reports." + type + ".day")     ? 3 : 0) +
-               (rules.getBoolean ("reports." + type + ".weekday") ? 4 : 0);
-  int spacing = rules.getInteger ("reports." + type + ".spacing");
+    std::string pad (indent + ((last_hour - first_hour + 1) * (4 + spacing)) + 1, ' ');
 
-  std::string pad (indent + ((last_hour - first_hour + 1) * (4 + spacing)) + 1, ' ');
+    int hours = total_work / 3600;
+    int minutes = (total_work % 3600) / 60;
 
-  int hours = total_work / 3600;
-  int minutes = (total_work % 3600) / 60;
-
-  out << pad
-      << Color ("underline").colorize ("      ")
-      << '\n'
-      << pad
-      << std::setw (3) << std::setfill (' ') << hours
-      << ':'
-      << std::setw (2) << std::setfill ('0') << minutes
-      << '\n';
+    out << pad
+        << Color ("underline").colorize ("      ")
+        << '\n'
+        << pad
+        << std::setw (3) << std::setfill (' ') << hours
+        << ':'
+        << std::setw (2) << std::setfill ('0') << minutes
+        << '\n';
+  }
 
   return out.str ();
 }
