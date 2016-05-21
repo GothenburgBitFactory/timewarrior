@@ -100,10 +100,7 @@ std::string quoteIfNeeded (const std::string& input)
   else
     output = input;
 
-  if (space != std::string::npos)
-    output = std::string ("\"") + output + "\"";
-
-  return output;
+  return std::string ("\"") + output + "\"";
 }
 
 ////////////////////////////////////////////////////////////////////////////////
