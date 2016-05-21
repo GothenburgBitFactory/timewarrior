@@ -156,10 +156,15 @@ int renderChart (
               << labelDay
               << lines[0].str ();
 
+    int indent = (rules.getBoolean ("reports." + type + ".month")   ? 4 : 0) +
+                 (rules.getBoolean ("reports." + type + ".week")    ? 4 : 0) +
+                 (rules.getBoolean ("reports." + type + ".day")     ? 3 : 0) +
+                 (rules.getBoolean ("reports." + type + ".weekday") ? 4 : 0);
+
     if (lines.size () > 1)
       for (unsigned int i = 1; i < lines.size (); ++i)
         std::cout << "\n"
-                  << std::string (labelMonth.length () + labelDay.length (), ' ')
+                  << std::string (indent, ' ')
                   << lines[i].str ();
 
     std::cout << "  "
