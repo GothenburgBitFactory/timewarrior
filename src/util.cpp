@@ -87,9 +87,11 @@ std::string quoteIfNeeded (const std::string& input)
 
   auto quote = input.find ('"');
   auto space = input.find (' ');
+  auto op    = input.find_first_of ("+-/()<^!=~");
 
   if (quote == std::string::npos &&
-      space == std::string::npos)
+      space == std::string::npos &&
+      op    == std::string::npos)
     return input;
 
   std::string output;
