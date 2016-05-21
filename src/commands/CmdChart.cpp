@@ -39,9 +39,9 @@
 
 int                renderChart           (const std::string&, Interval&, Rules&, Database&);
 static void        renderAxis            (const std::string&, const Rules&, Palette&, const std::string&, int, int);
-static std::string renderMonth           (const Datetime&, const Datetime&);
-static std::string renderDayName         (Datetime&, Color&);
 static std::string renderTotal           (time_t);
+static std::string renderMonth           (const std::string&, const Rules&, const Datetime&, const Datetime&);
+static std::string renderDayName         (const std::string&, const Rules&, Datetime&, Color&);
 static std::string renderSubTotal        (const std::string&, const Rules&, int, int, time_t);
 static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
 static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, time_t&);
@@ -129,7 +129,16 @@ int renderChart (
   // Render the axis.
   std::cout << '\n';
   if (rules.get ("reports." + type + ".style") != "compact")
-    renderAxis (type, rules, palette, "               ", first_hour, last_hour);
+    renderAxis (type,
+                rules,
+                palette,
+                std::string ((rules.getBoolean ("reports." + type + ".month")   ? 4 : 0) +
+                             (rules.getBoolean ("reports." + type + ".week")    ? 4 : 0) +
+                             (rules.getBoolean ("reports." + type + ".day")     ? 3 : 0) +
+                             (rules.getBoolean ("reports." + type + ".weekday") ? 4 : 0),
+                             ' '),
+                first_hour,
+                last_hour);
 
   // For breaks.
   Datetime previous (filter.range.start);
@@ -151,9 +160,11 @@ int renderChart (
       work += interval_work;
     }
 
-    std::cout << renderMonth (previous, day)
-              << renderDayName (day, colorToday)
-              << ' '
+    auto labelMonth = renderMonth (type, rules, previous, day);
+    auto labelDay   = renderDayName (type, rules, day, colorToday);
+
+    std::cout << labelMonth
+              << labelDay
               << lines[0].str ();
 
     if (lines.size () > 1)
@@ -207,28 +218,61 @@ static void renderAxis (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-static std::string renderMonth (const Datetime& previous, const Datetime& day)
+// Includes trailing separator space.
+static std::string renderMonth (
+  const std::string& type,
+  const Rules& rules,
+  const Datetime& previous,
+  const Datetime& day)
 {
+  auto showMonth = rules.getBoolean ("reports." + type + ".month");
+  auto showWeek  = rules.getBoolean ("reports." + type + ".week");
+
   std::stringstream out;
-  out << (previous.month () != day.month () ? day.monthNameShort (day.month ()) : "   ") << ' '
-      << (previous.week ()  != day.week ()  ? leftJustify (format ("W{1} ", day.week ()), 4) : "    ");
+  if (showMonth)
+    out << (previous.month () != day.month () ? day.monthNameShort (day.month ()) : "   ")
+        << ' ';
+
+  if (showWeek)
+    out << (previous.week ()  != day.week ()  ? leftJustify (format ("W{1}", day.week ()), 3) : "   ")
+        << ' ';
 
   return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-static std::string renderDayName (Datetime& day, Color& color)
+// Today should be highlighted.
+// Includes trailing separator space.
+static std::string renderDayName (
+  const std::string& type,
+  const Rules& rules,
+  Datetime& day,
+  Color& color)
 {
+  auto showDay     = rules.getBoolean ("reports." + type + ".day");
+  auto showWeekday = rules.getBoolean ("reports." + type + ".weekday");
+
   std::stringstream out;
   if (day.sameDay (Datetime ()))
-    out << color.colorize (day.dayNameShort (day.dayOfWeek ()))
-        << ' '
-        << color.colorize (rightJustify (day.day (), 2));
+  {
+    if (showWeekday)
+      out << color.colorize (day.dayNameShort (day.dayOfWeek ()))
+          << ' ';
 
+    if (showDay)
+      out << color.colorize (rightJustify (day.day (), 2))
+          << ' ';
+  }
   else
-    out << day.dayNameShort (day.dayOfWeek ())
-        << ' '
-        << rightJustify (day.day (), 2);
+  {
+    if (showWeekday)
+      out << day.dayNameShort (day.dayOfWeek ())
+          << ' ';
+
+    if (showDay)
+      out << rightJustify (day.day (), 2)
+          << ' ';
+  }
 
   return out.str ();
 }
