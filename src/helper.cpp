@@ -235,10 +235,12 @@ int quantizeTo15Minutes (const int minutes)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Check rules to see if day is a holiday.
 bool dayIsHoliday (const Rules& rules, const Datetime& day)
 {
-  // TODO Look up exclusions.
-
+  for (auto& holiday : rules.all ("holidays."))
+    if (day.sameDay (Datetime (holiday.substr (holiday.length () - 10), "Y_M_D")))
+      return true;
 
   return false;
 }
