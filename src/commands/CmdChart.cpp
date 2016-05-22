@@ -375,6 +375,7 @@ static void renderExclusionBlocks (
   auto spacing = rules.getInteger ("reports." + type + ".spacing");
   auto style = rules.get ("reports." + type + ".style");
   Color colorExc (palette.enabled ? rules.get ("theme.colors.exclusion") : "");
+  Color colorLabel (palette.enabled ? rules.get ("theme.colors.label") : "");
 
   // Render the exclusion blocks.
   for (int hour = first_hour; hour <= last_hour; hour++)
@@ -382,6 +383,13 @@ static void renderExclusionBlocks (
     // Construct a range representing a single 'hour', of 'day'.
     Range r (Datetime (day.year (), day.month (), day.day (), hour, 0, 0),
              Datetime (day.year (), day.month (), day.day (), hour + 1, 0, 0));
+
+    if (style == "compact")
+    {
+      auto label = format ("{1}", hour);
+      int offset = (hour - first_hour) * (4 + spacing);
+      lines[0].add (label, offset, colorLabel);
+    }
 
     for (auto& exc : excluded)
     {
