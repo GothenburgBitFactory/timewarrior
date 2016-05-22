@@ -173,11 +173,6 @@ int renderChart (
               << labelDay
               << lines[0].str ();
 
-    int indent = (rules.getBoolean ("reports." + type + ".month")   ? 4 : 0) +
-                 (rules.getBoolean ("reports." + type + ".week")    ? 4 : 0) +
-                 (rules.getBoolean ("reports." + type + ".day")     ? 3 : 0) +
-                 (rules.getBoolean ("reports." + type + ".weekday") ? 4 : 0);
-
     if (lines.size () > 1)
       for (unsigned int i = 1; i < lines.size (); ++i)
         std::cout << "\n"
@@ -193,7 +188,7 @@ int renderChart (
   }
 
   std::cout << renderSubTotal (type, rules, first_hour, last_hour, total_work)
-            << renderSummary (type, rules, "    ", filter, exclusions, tracked);
+            << renderSummary (type, rules, std::string (indent, ' '), filter, exclusions, tracked, blank);
 
   return 0;
 }
