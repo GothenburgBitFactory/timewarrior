@@ -529,7 +529,7 @@ static std::string renderSummary (
         << std::setw (13) << std::setfill (' ') << Duration (total_worked).formatHours ()    << '\n';
 
     if (total_remaining >= 0)
-      out << indent << "Remaining "
+      out << indent << "Available "
           << std::setw (13) << std::setfill (' ') << Duration (total_remaining).formatHours () << '\n';
 
     out << indent << "Total     "
