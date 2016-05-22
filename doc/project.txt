@@ -40,22 +40,18 @@ Non-Goals
 Reports
 -------
 Anticipating all reporting needs is impossible, therefore custom reports are
-required. Rather than copy the Taskwarrior design where flexibility is provided
-via configurable options for fixed-format reports, Timewarrior will use a more
-flexible approach of providing configuration and data via an extension API.
-This will not limit the kind of reports or supported formats that can be added.
+required. Rather than only provide the Taskwarrior design where flexibility is
+provided via configurable options for fixed-format reports, Timewarrior will
+use a more flexible approach of providing configuration and data via an
+extension API. This will not limit the kind of reports or supported formats
+that can be added.
 
-Timewarrior will ship with several reports, which serve as example extensions
-for users to modify and improve, perhaps contribute back to the project.
+Timewarrior will ship with several extension reports, which serve as example
+extensions for users to modify and improve, perhaps contribute back to the
+project.
 
-Purely as an example of what might be implemented, here are some report mockups:
-
-  ./report.week.1.txt
-  ./report.week.2.txt
-  ./report.day.1.txt
-  ./report.day.2.txt
-  ./report.exc.week.txt
-  ./report.summary.txt
+Timewarrior will also have a limited set of built-in reports, a minimally
+functional tabular and chart report of tracked time.
 
 
 Tags
@@ -113,7 +109,8 @@ The command set will include:
   x              Run extension 'x'
 
 There will be built-in commands, and an extensions mechanism that allows reports
-to be added as extensions, while being handled as though they were built-ins.
+to be added as extensions, although presented and handled as though they were
+built-ins.
 
 
 Undo
