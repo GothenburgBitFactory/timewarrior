@@ -34,6 +34,7 @@ define theme:
     # General UI color.
     exclusion = "gray8 on gray4"
     today     = "rgb521"
+    holiday   = "rgb015"
     label     = "gray4"
 
   # Rotating Color Palette for tags. The leading zeroes allow the order to be
