@@ -265,6 +265,7 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "  :color         Force color on, even if not connected to a TTY\n"
                 << "  :nocolor       Force color off, even if connected to a TTY\n"
+                << "  :blank         Leaves tracked time out of a report\n"
                 << '\n'
                 << "  :yesterday     The 24 hours of the previous day\n"
                 << "  :day           The 24 hours of the current day\n"
