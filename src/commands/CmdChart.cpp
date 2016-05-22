@@ -41,7 +41,7 @@ int                renderChart           (const CLI&, const std::string&, Interv
 static void        determineHourRange    (const std::string&, const Rules&, const std::vector <Interval>&, int&, int&);
 static void        renderAxis            (const std::string&, const Rules&, Palette&, const std::string&, int, int);
 static std::string renderMonth           (const std::string&, const Rules&, const Datetime&, const Datetime&);
-static std::string renderDayName         (const std::string&, const Rules&, Datetime&, Color&);
+static std::string renderDayName         (const std::string&, const Rules&, Datetime&, Color&, Color&);
 static std::string renderTotal           (const std::string&, const Rules&, time_t);
 static std::string renderSubTotal        (const std::string&, const Rules&, int, int, time_t);
 static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
@@ -106,6 +106,7 @@ int renderChart (
   auto palette = createPalette (rules);
   auto tag_colors = createTagColorMap (rules, palette, tracked);
   Color colorToday (palette.enabled ? rules.get ("theme.colors.today") : "");
+  Color colorHoliday (palette.enabled ? rules.get ("theme.colors.holiday") : "");
 
   // Determine hours shown.
   int first_hour = 0;
@@ -167,7 +168,7 @@ int renderChart (
     }
 
     auto labelMonth = renderMonth (type, rules, previous, day);
-    auto labelDay   = renderDayName (type, rules, day, colorToday);
+    auto labelDay   = renderDayName (type, rules, day, colorToday, colorHoliday);
 
     std::cout << labelMonth
               << labelDay
@@ -275,32 +276,26 @@ static std::string renderDayName (
   const std::string& type,
   const Rules& rules,
   Datetime& day,
-  Color& color)
+  Color& colorToday,
+  Color& colorHoliday)
 {
   auto showDay     = rules.getBoolean ("reports." + type + ".day");
   auto showWeekday = rules.getBoolean ("reports." + type + ".weekday");
 
-  std::stringstream out;
+  Color color;
   if (day.sameDay (Datetime ()))
-  {
-    if (showWeekday)
-      out << color.colorize (day.dayNameShort (day.dayOfWeek ()))
-          << ' ';
+    color = colorToday;
+  else if (dayIsHoliday (rules, day))
+    color = colorHoliday;
 
-    if (showDay)
-      out << color.colorize (rightJustify (day.day (), 2))
-          << ' ';
-  }
-  else
-  {
-    if (showWeekday)
-      out << day.dayNameShort (day.dayOfWeek ())
-          << ' ';
+  std::stringstream out;
+  if (showWeekday)
+    out << color.colorize (day.dayNameShort (day.dayOfWeek ()))
+        << ' ';
 
-    if (showDay)
-      out << rightJustify (day.day (), 2)
-          << ' ';
-  }
+  if (showDay)
+    out << color.colorize (rightJustify (day.day (), 2))
+        << ' ';
 
   return out.str ();
 }
