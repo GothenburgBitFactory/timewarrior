@@ -37,7 +37,7 @@
 #include <iostream>
 #include <iomanip>
 
-int                renderChart           (const std::string&, Interval&, Rules&, Database&);
+int                renderChart           (const CLI&, const std::string&, Interval&, Rules&, Database&);
 static void        determineHourRange    (const std::string&, const Rules&, const std::vector <Interval>&, int&, int&);
 static void        renderAxis            (const std::string&, const Rules&, Palette&, const std::string&, int, int);
 static std::string renderMonth           (const std::string&, const Rules&, const Datetime&, const Datetime&);
@@ -46,7 +46,7 @@ static std::string renderTotal           (const std::string&, const Rules&, time
 static std::string renderSubTotal        (const std::string&, const Rules&, int, int, time_t);
 static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
 static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, time_t&);
-static std::string renderSummary         (const std::string&, const Rules&, const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&);
+static std::string renderSummary         (const std::string&, const Rules&, const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdChartDay (
@@ -59,7 +59,7 @@ int CmdChartDay (
   if (! filter.range.is_started ())
     filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
 
-  return renderChart ("day", filter, rules, database);
+  return renderChart (cli, "day", filter, rules, database);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -73,7 +73,7 @@ int CmdChartWeek (
   if (! filter.range.is_started ())
     filter.range = Range (Datetime ("socw"), Datetime ("eocw"));
 
-  return renderChart ("week", filter, rules, database);
+  return renderChart (cli, "week", filter, rules, database);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -87,11 +87,12 @@ int CmdChartMonth (
   if (! filter.range.is_started ())
     filter.range = Range (Datetime ("socm"), Datetime ("eocm"));
 
-  return renderChart ("month", filter, rules, database);
+  return renderChart (cli, "month", filter, rules, database);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 int renderChart (
+  const CLI& cli,
   const std::string& type,
   Interval& filter,
   Rules& rules,
@@ -129,6 +130,19 @@ int renderChart (
   Datetime previous (filter.range.start);
   --previous;
 
+  // Is the :blank hint being used?
+  bool blank = false;
+  for (auto& arg : cli._args)
+    if (arg.hasTag ("HINT") &&
+        arg.getToken () == ":blank")
+      blank = true;
+
+  // Determine how much space is occupied by the left-margin labels.
+  int indent = (rules.getBoolean ("reports." + type + ".month")   ? 4 : 0) +
+               (rules.getBoolean ("reports." + type + ".week")    ? 4 : 0) +
+               (rules.getBoolean ("reports." + type + ".day")     ? 3 : 0) +
+               (rules.getBoolean ("reports." + type + ".weekday") ? 4 : 0);
+
   // Each day is rendered separately.
   time_t total_work = 0;
   for (Datetime day = filter.range.start; day < filter.range.end; day++)
@@ -142,11 +156,14 @@ int renderChart (
     renderExclusionBlocks (type, rules, lines, palette, day, first_hour, last_hour, exclusions);
 
     time_t work = 0;
-    for (auto& track : tracked)
+    if (! blank)
     {
-      time_t interval_work = 0;
-      renderInterval (type, rules, lines, day, track, palette, tag_colors, interval_work);
-      work += interval_work;
+      for (auto& track : tracked)
+      {
+        time_t interval_work = 0;
+        renderInterval (type, rules, lines, day, track, palette, tag_colors, interval_work);
+        work += interval_work;
+      }
     }
 
     auto labelMonth = renderMonth (type, rules, previous, day);
@@ -482,7 +499,8 @@ static std::string renderSummary (
   const std::string& indent,
   const Interval& filter,
   const std::vector <Range>& exclusions,
-  const std::vector <Interval>& tracked)
+  const std::vector <Interval>& tracked,
+  bool blank)
 {
   std::stringstream out;
   if (rules.getBoolean ("reports." + type + ".summary"))
@@ -493,15 +511,18 @@ static std::string renderSummary (
         total_unavailable += filter.range.intersect (exclusion).total ();
 
     time_t total_worked = 0;
-    for (auto& interval : tracked)
+    if (! blank)
     {
-      if (filter.range.overlap (interval.range))
+      for (auto& interval : tracked)
       {
-        Interval clipped = clip (interval, filter.range);
-        if (interval.range.is_open ())
-          clipped.range.end = Datetime ();
+        if (filter.range.overlap (interval.range))
+        {
+          Interval clipped = clip (interval, filter.range);
+          if (interval.range.is_open ())
+            clipped.range.end = Datetime ();
 
-        total_worked += clipped.range.total ();
+          total_worked += clipped.range.total ();
+        }
       }
     }
 
