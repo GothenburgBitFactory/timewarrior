@@ -9,3 +9,7 @@ debug.py
 on-modify.timewarrior
   This is a Taskwarrior hook script that will integrate Timewarrior.
 
+csv.py
+  This extension exports the data in CSV format, with a variable number of tag
+  fields.
+
