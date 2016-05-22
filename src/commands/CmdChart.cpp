@@ -299,7 +299,7 @@ static std::string renderTotal (
   const Rules& rules,
   time_t work)
 {
-  auto showTotal = rules.getBoolean ("reports." + type + ".total");
+  auto showTotal = rules.getBoolean ("reports." + type + ".totals");
 
   std::stringstream out;
   if (showTotal && work)
@@ -323,7 +323,7 @@ static std::string renderSubTotal (
   time_t total_work)
 {
   std::stringstream out;
-  if (rules.getBoolean ("reports." + type + ".total"))
+  if (rules.getBoolean ("reports." + type + ".totals"))
   {
     int indent = (rules.getBoolean ("reports." + type + ".month")   ? 4 : 0) +
                  (rules.getBoolean ("reports." + type + ".week")    ? 4 : 0) +
