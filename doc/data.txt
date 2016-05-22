@@ -9,12 +9,12 @@ provided by the user representing ongoing work.
 An exclusion is also a block of time but represents untrackable time, and acts
 as a mask for the inclusions. Here is a visual example:
 
-  Inclusion:           [---------------     ---------------) tag1
+  Inclusion:           [---------------    ----------------) tag1
   Exclusion:                           [---) lunch
   Exclusion                                                    [---) dinner
 
   Timeline:      ..:...:...:...:...:...:...:...:...:...:...:...:...:...
-                   7   8   9   10  11  12  1   2   3   4   5   6   7 
+                   7   8   9   10  11  12  1   2   3   4   5   6   7
                    am                  pm
 
 In the example, there is one incluѕion, a block of time from 8am - 5pm, tagged
@@ -29,10 +29,74 @@ example, if these commands were run at 8am and 5pm respectively:
   [at 8am] $ timew start tag1
   [at 5pm] $ timew stop
 
+While an interval is open, it is simply recorded as a start time, with optional
+tags. Once that interval is closed, it is flattened against the set of
+exclusions, using these rules:
+
+  * If an open interval spans and encloses an exclusion, then flattening will
+    subtract that exclusion, effectively breaking the interval into two separate
+    intervals. As an example, support there is a lunch exclusion defined from
+    12:30pm - 1:30pm, and an interval was opened at 9:00am. If the interval is
+    closed at 5:30pm, the lunch exclusion is enclosed (entirely within the
+    interval), and subtracted. This yields two interval parts with the same
+    tags, the first 9:00am - 12:30pm, the second from 1:30pm - 5:30pm.
+
+    Inclusion:           [---------------------------------) tag
+    Exclusion:                         [---) lunch
+
+    Recorded as:         [-------------)   [---------------) tag
+
+    Timeline:      ..:...:...:...:...:...:...:...:...:...:...:...:...
+                     8   9   10  11  12  1   2   3   4   5   6   7
+                     am              pm
+
+  * If an interval is opened during an exclusion period, it is recorded as-is.
+    Any start/stop/track time that comes from the command line is taken as more
+    accurate than configured exclusions.
+
+    Inclusion:                            [----------------) tag
+    Exclusion:                         [---) lunch
+
+    Recorded as:                          [----------------) tag
+
+    Timeline:      ..:...:...:...:...:...:...:...:...:...:...:...:...
+                     8   9   10  11  12  1   2   3   4   5   6   7
+                     am              pm
+
+  * If an interval is closed during an exclusion period, it is recorded as-is.
+    Any start/stop/track time that comes from the command line is taken as more
+    accurate than configured exclusions.
+    
+    Inclusion:       [-------------------) tag
+    Exclusion:                         [---) lunch
+
+    Recorded as:     [-------------------) tag
+
+    Timeline:      ..:...:...:...:...:...:...:...:...:...:...:...:...
+                     8   9   10  11  12  1   2   3   4   5   6   7
+                     am              pm
+
+  * Any interval that is enclosed by an exclusion is recorded as-is.
+
+    Inclusion:           [--) tag
+    Exclusion:       [-------------------------------------) Day off
+
+    Recorded as:         [--) tag
+
+    Timeline:      ..:...:...:...:...:...:...:...:...:...:...:...:...
+                     8   9   10  11  12  1   2   3   4   5   6   7
+                     am              pm
+
+  * Any interval that spans a month boundary, and therefore a data file boundary
+    will be split and written to both files.
+
+If an open interval is shown in a report or exported, it is also flattened.
+Flattening open intervals saves a lot of effort for the reports.
+
 
 Exclusions
 ----------
-Exclusions are stored only as configuration.
+Exclusions are stored only as configuration data.
 
 
 Inclusions
@@ -74,7 +138,7 @@ sophisticated archiving. For example:
   ~/.timewarrior/data/2016-02.data
   ~/.timewarrior/data/2016-03.data
 
-To archive old data, simply move any subset of files out of this directory.
+To archive old data, simply move files out of this directory.
 
 
 Long Inclusions
@@ -109,4 +173,5 @@ open another, and those two changes are considered one transaction.
 --- Raw Notes ---
 
 - Recurring inclusions: meetings
+- Define undo format
 
