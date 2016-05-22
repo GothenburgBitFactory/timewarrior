@@ -94,11 +94,11 @@ the general pattern of behavior exhibited by Timewarrior. The guidelines are:
   consider it 'off', and generate minimal output, which should tend toward no
   output at all.
 
-- Obey the 'debug' setting, and if the value is either one/1/yes/y/true, then
+- Obey the 'debug' setting, and if the value is either on/1/yes/y/true, then
   emit helpful feedback, but only that which can be useful for debugging a
   problem, which should tend toward no output at all.
 
-- Obey the 'confirmation' setting, and if the value is either one/1/yes/y/true,
+- Obey the 'confirmation' setting, and if the value is either on/1/yes/y/true,
   then obtain user permission interactively before proceeding with any data
   modification. Do not rely on, or implement a 'force'-like feature.
 
