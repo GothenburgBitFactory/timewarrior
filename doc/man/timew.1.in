@@ -262,6 +262,7 @@ forms of feedback, for purposes of automation. The supported hints are:
 
   :color         Force color on, even if not connected to a TTY
   :nocolor       Force color off, even if connected to a TTY
+  :blank         Leaves tracked time out of a report
 
   :yesterday     The 24 hours of the previous day
   :day           The 24 hours of the current day
