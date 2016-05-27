@@ -43,25 +43,25 @@ int main (int argc, const char** argv)
   if (lightweightVersionCheck (argc, argv))
     return status;
 
-  // Add entities so that command line tokens such as 'help' are recognized as
-  // commands.
-  CLI cli;
-  initializeEntities (cli);
-
-  // Capture the args.
-  std::string commandLine;
-  for (int i = 0; i < argc; i++)
-  {
-    cli.add (argv[i]);
-
-    if (i)
-      commandLine += " ";
-
-    commandLine += quoteIfNeeded (argv[i]);
-  }
-
   try
   {
+    // Add entities so that command line tokens such as 'help' are recognized as
+    // commands.
+    CLI cli;
+    initializeEntities (cli);
+
+    // Capture the args.
+    std::string commandLine;
+    for (int i = 0; i < argc; i++)
+    {
+      cli.add (argv[i]);
+
+      if (i)
+        commandLine += " ";
+
+      commandLine += quoteIfNeeded (argv[i]);
+    }
+
     // Scan command line.
     cli.analyze ();
 
