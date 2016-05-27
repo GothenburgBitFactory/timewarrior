@@ -72,6 +72,12 @@ std::map <std::string, Color> createTagColorMap (const Rules&, Palette&, const s
 int quantizeTo15Minutes (const int);
 bool dayIsHoliday (const Rules&, const Datetime&);
 
+// log.cpp
+void enableDebugMode (bool);
+void enableQuietMode (bool);
+void debug (const std::string&);
+void error (const std::string&);
+
 // utiŀ.cpp
 std::string osName ();
 std::string escape (const std::string&, int);

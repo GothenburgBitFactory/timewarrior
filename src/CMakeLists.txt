@@ -17,6 +17,7 @@ set (timew_SRCS CLI.cpp        CLI.h
                 data.cpp
                 init.cpp
                 helper.cpp
+                log.cpp
                 util.cpp)
 
 set (libshared_SRCS libshared/src/Args.cpp          libshared/src/Args.h
