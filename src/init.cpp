@@ -170,8 +170,6 @@ void initializeDataAndRules (
   configFile.create (0600);
   rules.load (configFile._data);
 
-  // TODO Provide the exclusions to the database, for use with new files.
-
   // This value is not written out to disk, as there would be no point. Having
   // located the config file, the 'db' location is already known. This is just
   // for subsequent internal use.
@@ -186,7 +184,6 @@ void initializeDataAndRules (
   database.initialize (data._data);
 
   // Set date names like "monday" to represent the past, not the future.
-  // TODO Make this configurable?
   Datetime::lookForwards = false;
 }
 
