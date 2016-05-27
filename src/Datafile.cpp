@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Datafile.h>
+#include <timew.h>
 #include <format.h>
 #include <algorithm>
 #include <sstream>
@@ -99,6 +100,7 @@ void Datafile::addInterval (const Interval& interval)
   // TODO   _dirty = true;
 
   _lines.push_back (interval.serialize ());
+  debug (format ("{1}: Added {2}", _file.name (), _lines.back ()));
   _dirty = true;
 }
 
@@ -117,6 +119,7 @@ void Datafile::deleteInterval (const Interval& interval)
   {
     _lines.erase (i);
     _dirty = true;
+    debug (format ("{1}: Deleted {2}", _file.name (), serialized));
   }
 }
 
@@ -176,6 +179,7 @@ void Datafile::load_lines ()
       _lines.push_back (line);
 
     _lines_loaded = true;
+    debug (format ("{1}: read {2} lines from storage", _file.name (), read_lines.size ()));
   }
 }
 
