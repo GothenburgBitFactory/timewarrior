@@ -126,6 +126,8 @@ void initializeDataAndRules (
     }
   }
 
+  enableDebugMode (rules.getBoolean ("debug"));
+
   // The $TIMEWARRIORDB environment variable overrides the default value of
   // ~/.timewarrior‥
   Directory dbLocation;
