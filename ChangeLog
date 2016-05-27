@@ -5,6 +5,8 @@
           (thanks to Ben Boeckel).
 - TD-115  Throw error when config file is missing or not readable
           (thanks to Jelle van der Waa).
+- TI-2    Two line tags causes false entry in database
+          (thanks to Sebastian Uharek).
 - Added 'continue' command.
 - Added 'diagnostics' command.
 - Added 'export' command.

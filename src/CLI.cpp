@@ -133,7 +133,13 @@ void CLI::entity (const std::string& category, const std::string& name)
 // Capture a single argument.
 void CLI::add (const std::string& argument)
 {
-  A2 arg (Lexer::trim (argument), Lexer::Type::word);
+  // Sanitize the input: Convert control charts to spaces. Then trim.
+  auto clean = argument;
+  for (auto& c : clean)
+    if (c <= 32)
+      c = ' ';
+
+  A2 arg (Lexer::trim (clean), Lexer::Type::word);
   arg.tag ("ORIGINAL");
   _original_args.push_back (arg);
 
