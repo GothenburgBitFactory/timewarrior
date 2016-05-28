@@ -63,9 +63,9 @@ class TestGaps(TestCase):
 
     def test_single_unobstructed_interval(self):
         """Add one interval and export it as-is"""
-        self.t("track 8am - 8pm foo")
+        self.t("track 20160527T080000 - 20160527T200000 foo")
 
-        code, out, err = self.t("gaps")
+        code, out, err = self.t("gaps 2016-05-27 - 2016-05-28")
         self.assertRegexpMatches(out, r'\s{30}11:59:59')
 
     def test_single_unobstructed_interval_with_exclusions(self):
@@ -77,9 +77,9 @@ class TestGaps(TestCase):
         self.t.config("exclusions.friday",    "<9:00 >18:00")
         self.t.config("exclusions.saturday",  "<9:00 >18:00")
         self.t.config("exclusions.sunday",    "<9:00 >18:00")
-        self.t("track 10am - 2pm foo")
+        self.t("track 20160527T100000 - 20160527T140000 foo")
 
-        code, out, err = self.t("gaps")
+        code, out, err = self.t("gaps 2016-05-27 - 2016-05-28")
         self.assertRegexpMatches(out, r'\s{30}5:00:00')
 
 if __name__ == "__main__":
