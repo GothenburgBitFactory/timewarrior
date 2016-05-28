@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <shared.h>
+#include <format.h>
 #include <Datetime.h>
 #include <Duration.h>
 #include <timew.h>
@@ -227,11 +228,7 @@ std::vector <Range> getHolidays (const Rules& rules)
     }
   }
 
-/*
-  std::cout << "# getHolidays:\n";
-  for (auto& h : results)
-    std::cout << "#   " << h.dump () << "\n";
-*/
+  debug (format ("Found {1} holidays", results.size ()));
   return results;
 }
 
