@@ -104,7 +104,7 @@ int CmdGaps (
               << table.render ()
               << '\n';
   else
-    std::cout << "No filtered data found.\n";
+    std::cout << "No gaps found.\n";
 
   return 0;
 }
