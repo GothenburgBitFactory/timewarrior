@@ -108,8 +108,7 @@ std::string intervalSummarize (
 // Convert a set of hints to equivalent date ranges.
 bool expandIntervalHint (
   const std::string& hint,
-  std::string& start,
-  std::string& end)
+  Range& range)
 {
   static std::map <std::string, std::vector <std::string>> hints
   {
@@ -124,8 +123,8 @@ bool expandIntervalHint (
   // Some hints are just synonyms.
   if (hints.find (hint) != hints.end ())
   {
-    start = hints[hint][0];
-    end   = hints[hint][1];
+    range.start = Datetime (hints[hint][0]);
+    range.end   = Datetime (hints[hint][1]);
     return true;
   }
 
@@ -136,8 +135,8 @@ bool expandIntervalHint (
     Datetime eocw ("eocw");
     socw -= 7 * 86400;
     eocw -= 7 * 86400;
-    start = socw.toString ("Y-M-D");
-    end = eocw.toString ("Y-M-D");
+    range.start = Datetime (socw.toString ("Y-M-D"));
+    range.end   = Datetime (eocw.toString ("Y-M-D"));
   }
 
   return false;

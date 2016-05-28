@@ -65,7 +65,7 @@ int dispatchCommand (const CLI&, Database&, Rules&, const Extensions&);
 // helper.cpp
 Color tagColor (const Rules&, const std::string&);
 std::string intervalSummarize (Database&, const Rules&, const Interval&);
-bool expandIntervalHint (const std::string&, std::string&, std::string&);
+bool expandIntervalHint (const std::string&, Range&);
 std::string jsonFromIntervals (const std::vector <Interval>&);
 Palette createPalette (const Rules&);
 std::map <std::string, Color> createTagColorMap (const Rules&, Palette&, const std::vector <Interval>&);
