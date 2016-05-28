@@ -29,6 +29,7 @@
 #include <Database.h>
 #include <Rules.h>
 #include <Extensions.h>
+#include <Timer.h>
 #include <shared.h>
 #include <commands.h>
 #include <timew.h>
@@ -38,6 +39,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int argc, const char** argv)
 {
+  Timer run_time ("timew");
+
   // Lightweight version checking that doesn't require initialization or I/O.
   int status = 0;
   if (lightweightVersionCheck (argc, argv))
@@ -102,6 +105,9 @@ int main (int argc, const char** argv)
     std::cerr << "Error: " << message << '\n';
     status = -2;
   }
+
+  run_time.stop ();
+  debug (run_time.str ());
 
   return status;
 }
