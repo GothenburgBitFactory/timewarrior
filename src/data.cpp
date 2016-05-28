@@ -29,6 +29,7 @@
 #include <Datetime.h>
 #include <Duration.h>
 #include <timew.h>
+#include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
 // A filter is just another interval, containing start, end and tags.
@@ -385,11 +386,22 @@ std::vector <Interval> flatten (
     if (interval.range.encloses (e))
       enclosed.push_back (e);
 
+  Datetime now;
   for (auto& result : subtractRanges ({interval.range}, enclosed))
   {
     Interval chunk {interval};
     chunk.range = result;
-    all.push_back (chunk);
+
+    // Only historical data is included.
+    if (chunk.range.start <= now)
+    {
+      // A future range.end should be truncated.
+      if (! chunk.range.is_open () &&
+          chunk.range.end >= now)
+        chunk.range.end = now;
+
+      all.push_back (chunk);
+    }
   }
 
 /*
