@@ -99,6 +99,10 @@ each extention and its status. See also 'diagnostics'.
 .TP
 .B timew gaps [<interval>] [<tag> ...]
 Displays a summary of time that is neither tracked, nor excluded from tracking.
+
+The 'reports.gaps.range' configuration setting overrides the default date range.
+The default date range shown is ':day'.
+
 See also 'summary'.
 
 .TP
@@ -263,6 +267,10 @@ forms of feedback, for purposes of automation. The supported hints are:
   :color         Force color on, even if not connected to a TTY
   :nocolor       Force color off, even if connected to a TTY
   :blank         Leaves tracked time out of a report
+  :fill          Expand time to fill surrounding available gap
+                 Only functions when exclusions are provided
+
+Range hints provide convenient shortcuts to date ranges:
 
   :yesterday     The 24 hours of the previous day
   :day           The 24 hours of the current day
@@ -272,8 +280,6 @@ forms of feedback, for purposes of automation. The supported hints are:
   :year          This year
   :lastweek      Last week
 
-  :fill          Expand time to fill surrounding available gap
-                 Only functions when exclusions are provided
 
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS
 Timewarrior stores its configuration in a file in the user's home directory:
@@ -302,6 +308,13 @@ Default value is 'off'.
 Determines whether the <type> report shows all 24 hours in a day, or is limited
 to only hours where data is tracked. Default value is 'off'.
 Type is one of 'month', 'week', 'day'.
+
+.TP
+.B reports.<type>.range = <range hint>
+.br
+For reports that show a range of data, this setting will override the default
+value. The value should be a range hint, see 'hints'
+Type is one of 'gaps', 'day', 'week', 'month'.
 
 .TP
 .B reports.<type>.spacing = 1
