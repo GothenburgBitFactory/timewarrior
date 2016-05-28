@@ -57,7 +57,12 @@ int CmdChartDay (
   // Create a filter, and if empty, choose the current month.
   auto filter = getFilter (cli);
   if (! filter.range.is_started ())
-    filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
+  {
+    if (rules.has ("reports.day.range"))
+      expandIntervalHint (rules.get ("reports.day.range"), filter.range);
+    else
+      filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
+  }
 
   return renderChart (cli, "day", filter, rules, database);
 }
@@ -71,7 +76,12 @@ int CmdChartWeek (
   // Create a filter, and if empty, choose the current month.
   auto filter = getFilter (cli);
   if (! filter.range.is_started ())
-    filter.range = Range (Datetime ("socw"), Datetime ("eocw"));
+  {
+    if (rules.has ("reports.week.range"))
+      expandIntervalHint (rules.get ("reports.week.range"), filter.range);
+    else
+      filter.range = Range (Datetime ("socw"), Datetime ("eocw"));
+  }
 
   return renderChart (cli, "week", filter, rules, database);
 }
@@ -85,7 +95,12 @@ int CmdChartMonth (
   // Create a filter, and if empty, choose the current month.
   auto filter = getFilter (cli);
   if (! filter.range.is_started ())
-    filter.range = Range (Datetime ("socm"), Datetime ("eocm"));
+  {
+    if (rules.has ("reports.month.range"))
+      expandIntervalHint (rules.get ("reports.month.range"), filter.range);
+    else
+      filter.range = Range (Datetime ("socm"), Datetime ("eocm"));
+  }
 
   return renderChart (cli, "month", filter, rules, database);
 }
