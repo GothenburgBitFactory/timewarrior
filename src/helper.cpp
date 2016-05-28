@@ -137,6 +137,7 @@ bool expandIntervalHint (
     eocw -= 7 * 86400;
     range.start = Datetime (socw.toString ("Y-M-D"));
     range.end   = Datetime (eocw.toString ("Y-M-D"));
+    return true;
   }
 
   return false;
