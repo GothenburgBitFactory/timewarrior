@@ -624,7 +624,9 @@ std::vector <Range> getUntracked (
     inclusion_ranges.push_back (i.range);
 
   auto available = subtractRanges ({filter.range}, getAllExclusions (rules, filter.range));
-  return subtractRanges (available, inclusion_ranges);
+  auto untracked = subtractRanges (available, inclusion_ranges);
+  debug (format ("Loaded {1} untracked ranges", untracked.size ()));
+  return untracked;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
