@@ -608,6 +608,7 @@ std::vector <Interval> getTracked (
     for (auto& interval : flatten (inclusion, exclusions))
       intervals.push_back (interval);
 
+  debug (format ("Loaded {1} tracked intervals", intervals.size ()));
   return intervals;
 }
 
