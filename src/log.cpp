@@ -41,7 +41,7 @@ void enableDebugMode (bool value)
 void debug (const std::string& msg)
 {
   if (debugMode)
-    std::cout << Color ("gray4").colorize (msg) << "\n";
+    std::cout << Color ("gray4").colorize (">> " + msg) << "\n";
 }
 
 ////////////////////////////////////////////////////////////////////////////////
