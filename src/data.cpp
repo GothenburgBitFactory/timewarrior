@@ -62,9 +62,12 @@ Interval getFilter (const CLI& cli)
 
       if (arg.hasTag ("HINT"))
       {
-        Range dummy;
-        if (expandIntervalHint (canonical, dummy))
+        Range range;
+        if (expandIntervalHint (canonical, range))
         {
+          start = range.start.toISO ();
+          end   = range.end.toISO ();
+
           args.push_back ("<date>");
           args.push_back ("-");
           args.push_back ("<date>");
