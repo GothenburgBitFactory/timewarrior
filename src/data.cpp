@@ -256,9 +256,10 @@ std::vector <Range> getAllExclusions (
   std::vector <Exclusion> exclusions;
   for (auto& name : rules.all ("exclusions."))
     exclusions.push_back (Exclusion (lowerCase (name), rules.get (name)));
+  debug (format ("Found {1} exclusions", exclusions.size ()));
 
   // Find exclusions 'exc day on <date>' and remove from holidays.
-  // Find exlcusions 'exc day off <date>' and add to holidays.
+  // Find exclusions 'exc day off <date>' and add to holidays.
   std::vector <Range> daysOn;
   std::vector <Range> daysOff;
   for (auto& exclusion : exclusions)
@@ -276,6 +277,10 @@ std::vector <Range> getAllExclusions (
 
   // daysOff are combined with existing holidays.
   results = addRanges (range, results, daysOff);
+  if (daysOn.size ())
+    debug (format ("Found {1} additional working days", daysOn.size ()));
+  if (daysOff.size ())
+    debug (format ("Found {1} additional non-working days", daysOff.size ()));
 
   // daysOn are subtracted from the existing holidays.
   results = subtractRanges (results, daysOn);
