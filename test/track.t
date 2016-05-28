@@ -106,7 +106,7 @@ class TestTrack(TestCase):
         self.t.config("exclusions.saturday",  "<9:00 >18:00")
         self.t.config("exclusions.sunday",    "<9:00 >18:00")
 
-        self.t("track 8:59:59 - 18:01:01 foo")
+        self.t("track 20160527T085959 - 20160527T180101 foo")
         j = self.t.export()
         self.assertEqual(len(j), 1)
         self.assertIn('5959', j[0]['start'])
