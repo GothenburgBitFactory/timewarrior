@@ -41,7 +41,12 @@ int CmdGaps (
   // If filter is empty, choose 'today'.
   auto filter = getFilter (cli);
   if (! filter.range.is_started ())
-    filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
+  {
+    if (rules.has ("reports.gaps.range"))
+      expandIntervalHint (rules.get ("reports.gaps.range"), filter.range);
+    else
+      filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
+  }
 
   auto untracked = getUntracked (database, rules, filter);
 

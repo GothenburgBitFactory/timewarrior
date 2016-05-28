@@ -76,6 +76,9 @@ Rules::Rules ()
     {"reports.month.weekday", "yes"},
     {"reports.month.totals",  "yes"},
     {"reports.month.summary", "yes"},
+
+    // 'gaps' report.
+    {"reports.gaps.range",    ":day"},
   };
 }
 
