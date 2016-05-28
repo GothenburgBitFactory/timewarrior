@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <timew.h>
 #include <shared.h>
+#include <format.h>
 #include <Datetime.h>
 #include <Duration.h>
 #include <sstream>
@@ -126,6 +127,10 @@ bool expandIntervalHint (
   {
     range.start = Datetime (hints[hint][0]);
     range.end   = Datetime (hints[hint][1]);
+    debug (format ("Hint {1} expanded to {2} - {3}",
+                   hint,
+                   range.start.toISOLocalExtended (),
+                   range.end.toISOLocalExtended ()));
     return true;
   }
 
@@ -138,6 +143,10 @@ bool expandIntervalHint (
     eocw -= 7 * 86400;
     range.start = Datetime (socw.toString ("Y-M-D"));
     range.end   = Datetime (eocw.toString ("Y-M-D"));
+    debug (format ("Hint {1} expanded to {2} - {3}",
+                   hint,
+                   range.start.toISOLocalExtended (),
+                   range.end.toISOLocalExtended ()));
     return true;
   }
 
