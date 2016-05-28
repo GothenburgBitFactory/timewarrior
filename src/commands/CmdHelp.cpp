@@ -173,6 +173,9 @@ int CmdHelp (const CLI& cli)
                 << "  $ timew day :week\n"
                 << "  $ timew day :month\n"
                 << '\n'
+                << "The 'reports.day.range' configuration setting overrides the default date range.\n"
+                << "The default date range shown is ':day'.\n"
+                << '\n'
                 << "For more details, and precise times, use the 'summary' report.\n"
                 << '\n'
                 << "See also 'week', 'month', 'summary'.\n"
@@ -328,6 +331,9 @@ int CmdHelp (const CLI& cli)
                 << "  $ timew month 1st - today\n"
                 << "  $ timew month :week\n"
                 << '\n'
+                << "The 'reports.month.range' configuration setting overrides the default date range.\n"
+                << "The default date range shown is ':month'.\n"
+                << '\n'
                 << "For more details, and precise times, use the 'summary' report.\n"
                 << '\n'
                 << "See also 'day', 'week', 'summary'.\n"
@@ -449,6 +455,9 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "  $ timew week\n"
                 << "  $ timew week monday - today\n"
+                << '\n'
+                << "The 'reports.week.range' configuration setting overrides the default date range.\n"
+                << "The default date range shown is ':week'.\n"
                 << '\n'
                 << "For more details, and precise times, use the 'summary' report.\n"
                 << '\n'
