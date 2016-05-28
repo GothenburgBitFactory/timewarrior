@@ -41,7 +41,7 @@ void test_flatten (
 
   auto results = flatten (i, exclusions);
 
-  t.ok (results.size () == output.size (),   "flatten: " + label + " expected number of results");
+  t.is (results.size (), output.size (),   "flatten: " + label + " expected number of results");
   for (unsigned int i = 0; i < std::min (output.size (), results.size ()); ++i)
   {
     Interval tmp;
@@ -56,7 +56,7 @@ void test_flatten (
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (21 + (7 * 5));
+  UnitTest t (7 + 7 + 7 + 4 + 4 + 10 + 30);
 
   // std::vector <Interval> flatten (const Interval&, std::vector <Range>&);
   // input    [---------------------------------------------------)
@@ -85,14 +85,15 @@ int main (int, char**)
 
   // input                                      [...
   // exc      [----------)          [---)         [---------------)
-  // output                                     [...
+  // output                                     [-)               [...
   test_flatten (t,
                 "[3] (open inc) - (1 overlapping exc) = (2 inc)",
                 "inc 20160427T160000Z # foo",
                 {{Datetime ("20160427T000000Z"), Datetime ("20160427T080000Z")},
                  {Datetime ("20160427T120000Z"), Datetime ("20160427T130000Z")},
                  {Datetime ("20160427T173000Z"), Datetime ("20160428T000000Z")}},
-                {"inc 20160427T160000Z # foo"});
+                {"inc 20160427T160000Z - 20160427T173000Z # foo",
+                 "inc 20160428T000000Z # foo"});
 
   // Exclusion encloses interval. Should have no effect.
   // input       [--)
@@ -117,6 +118,20 @@ int main (int, char**)
                 {{Datetime ("20160512T080000Z"), Datetime ("20160512T090000Z")},    // One hour.
                  {Datetime ("20160512T000000Z"), Datetime ("20160513T000000Z")}},   // All day.
                 {"inc 20160512T083000Z - 20160512T093000Z # foo"});
+
+  // Long-running open inclusion, multiple enclosed exclusions, split.
+  // input      [...
+  // exc      [---)   [---)   [---)
+  // output     [-----)   [---)   [...
+  test_flatten (t,
+                "[6] (inc) - (1 overlapping exc, 2 enclused exc) = (3 inc)",
+                "inc 20160523T100000Z # foo",
+                {{Datetime ("20160523T080000Z"), Datetime ("20160523T120000Z")},
+                 {Datetime ("20160523T160000Z"), Datetime ("20160523T170000Z")},
+                 {Datetime ("20160523T213000Z"), Datetime ("20160524T040000Z")}},
+                {"inc 20160523T100000Z - 20160523T160000Z # foo",
+                 "inc 20160523T170000Z - 20160523T213000Z # foo",
+                 "inc 20160524T040000Z # foo"});
 
   // bool matchesFilter (const Interval& interval, const Interval& filter);
   Interval refOpen;
