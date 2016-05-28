@@ -30,6 +30,7 @@
 #include <iostream>
 
 static bool debugMode = false;
+static std::string debugIndicator = ">>";
 
 ////////////////////////////////////////////////////////////////////////////////
 void enableDebugMode (bool value)
@@ -38,10 +39,16 @@ void enableDebugMode (bool value)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void setDebugIndicator (const std::string& indicator)
+{
+  debugIndicator = indicator;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void debug (const std::string& msg)
 {
   if (debugMode)
-    std::cout << Color ("gray4").colorize (">> " + msg) << "\n";
+    std::cout << Color ("gray4").colorize (debugIndicator + " " + msg) << "\n";
 }
 
 ////////////////////////////////////////////////////////////////////////////////

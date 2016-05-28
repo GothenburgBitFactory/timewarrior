@@ -74,9 +74,8 @@ bool dayIsHoliday (const Rules&, const Datetime&);
 
 // log.cpp
 void enableDebugMode (bool);
-void enableQuietMode (bool);
+void setDebugIndicator (const std::string&);
 void debug (const std::string&);
-void error (const std::string&);
 
 // utiŀ.cpp
 std::string osName ();

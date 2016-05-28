@@ -180,6 +180,9 @@ void initializeDataAndRules (
   if (shinyNewDatabase)
     rules.set ("temp.shiny", 1);
 
+  if (rules.has ("debug.indicator"))
+    setDebugIndicator (rules.get ("debug.indicator"));
+
   // Initialize the database (no data read), but files are enumerated.
   database.initialize (data._data);
 
