@@ -76,6 +76,9 @@ Accepts date ranges and tags for filtering, or shortcut hints:
   $ timew day :week
   $ timew day :month
 
+The 'reports.day.range' configuration setting overrides the default date range.
+The default date range shown is ':day'.
+
 For more details, and precise times, use the 'summary' report.
 
 See also 'week', 'month', 'summary'.
@@ -125,6 +128,9 @@ Accepts date ranges and tags for filtering, or shortcut hints:
 
   $ timew month 1st - today
   $ timew month :week
+
+The 'reports.month.range' configuration setting overrides the default date range.
+The default date range shown is ':month'.
 
 For more details, and precise times, use the 'summary' report.
 
@@ -216,6 +222,9 @@ Accepts date ranges and tags for filtering, or shortcut hints:
 
   $ timew week
   $ timew week monday - today
+
+The 'reports.week.range' configuration setting overrides the default date range.
+The default date range shown is ':week'.
 
 For more details, and precise times, use the 'summary' report.
 
