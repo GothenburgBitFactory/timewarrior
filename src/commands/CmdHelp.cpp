@@ -226,6 +226,9 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "Displays a summary of time that is neither tracked, nor excluded from tracking.\n"
                 << '\n'
+                << "The 'reports.gaps.range' configuration setting overrides the default date range.\n"
+                << "The default date range shown is ':day'.\n"
+                << '\n'
                 << "See also 'summary'.\n"
                 << '\n';
 
@@ -266,6 +269,10 @@ int CmdHelp (const CLI& cli)
                 << "  :color         Force color on, even if not connected to a TTY\n"
                 << "  :nocolor       Force color off, even if connected to a TTY\n"
                 << "  :blank         Leaves tracked time out of a report\n"
+                << "  :fill          Expand time to fill surrounding available gap\n"
+                << "                 Only functions when exclusions are provided\n"
+                << '\n'
+                << "Range hints provide convenient shortcuts to date ranges:\n"
                 << '\n'
                 << "  :yesterday     The 24 hours of the previous day\n"
                 << "  :day           The 24 hours of the current day\n"
@@ -275,8 +282,6 @@ int CmdHelp (const CLI& cli)
                 << "  :year          This year\n"
                 << "  :lastweek      Last week\n"
                 << '\n'
-                << "  :fill          Expand time to fill surrounding available gap\n"
-                << "                 Only functions when exclusions are provided\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
