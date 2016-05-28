@@ -380,23 +380,16 @@ std::vector <Interval> flatten (
 {
   std::vector <Interval> all;
 
-  if (interval.range.is_open ())
-  {
-    all.push_back (interval);
-  }
-  else
-  {
-    std::vector <Range> enclosed;
-    for (auto& e : exclusions)
-      if (interval.range.encloses (e))
-        enclosed.push_back (e);
+  std::vector <Range> enclosed;
+  for (auto& e : exclusions)
+    if (interval.range.encloses (e))
+      enclosed.push_back (e);
 
-    for (auto& result : subtractRanges ({interval.range}, enclosed))
-    {
-      Interval chunk {interval};
-      chunk.range = result;
-      all.push_back (chunk);
-    }
+  for (auto& result : subtractRanges ({interval.range}, enclosed))
+  {
+    Interval chunk {interval};
+    chunk.range = result;
+    all.push_back (chunk);
   }
 
 /*
