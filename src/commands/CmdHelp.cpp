@@ -66,6 +66,9 @@ int CmdHelpUsage ()
             << "       'Single Quoted Words'\n"
             << "       \"Double Quoted Words\"\n"
             << "       Escaped\\ Spaces\n"
+            << '\n'
+            << "Configuration overrides:\n"
+            << "       rc.<name>=<value>\n"
             << '\n';
 
   // TODO clear
