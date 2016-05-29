@@ -328,10 +328,10 @@ The debug output prefix string.
 Default value is '>>'.
 
 .TP
-.B reports.<type>.24h = off
+.B reports.<type>.hours = all
 .br
-Determines whether the <type> report shows all 24 hours in a day, or is limited
-to only hours where data is tracked. Default value is 'off'.
+Determines how the <type> report shows all the hours in a day ('all'), or is
+limited to only hours where data is tracked ('auto'). Default value is 'all'.
 Type is one of 'month', 'week', 'day'.
 
 .TP
