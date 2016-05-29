@@ -110,6 +110,7 @@ std::string A2::dump () const
     else if (tag == "EXT")           tags += "\033[1;37;42m"           + tag + "\033[0m ";
     else if (tag == "HINT")          tags += "\033[1;37;43m"           + tag + "\033[0m ";
     else if (tag == "FILTER")        tags += "\033[1;37;45m"           + tag + "\033[0m ";
+    else if (tag == "CONFIG")        tags += "\033[1;37;101m"          + tag + "\033[0m ";
     else                             tags += "\033[32m"                + tag + "\033[0m ";
   }
 
@@ -249,6 +250,7 @@ void CLI::analyze ()
   _args.clear ();
   handleArg0 ();
   lexArguments ();
+  identifyOverrides ();
   canonicalizeNames ();
   identifyFilter ();
 }
@@ -261,6 +263,7 @@ std::vector <std::string> CLI::getWords () const
   for (auto& a : _args)
     if (! a.hasTag ("BINARY") &&
         ! a.hasTag ("CMD")    &&
+        ! a.hasTag ("CONFIG") &&
         ! a.hasTag ("HINT"))
       words.push_back (a.attribute ("raw"));
 
@@ -353,6 +356,30 @@ std::string CLI::dump (const std::string& title) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Scan all arguments and identify instances of 'rc.<name>[:=]<value>'.
+void CLI::identifyOverrides ()
+{
+  for (auto& a : _args)
+  {
+    auto raw = a.attribute ("raw");
+
+    if (raw.length () > 3 &&
+        raw.substr (0, 3) == "rc.")
+    {
+      auto sep = raw.find ('=', 3);
+      if (sep == std::string::npos)
+        sep = raw.find (':', 3);
+      if (sep != std::string::npos)
+      {
+        a.tag ("CONFIG");
+        a.attribute ("name",  raw.substr (3, sep - 3));
+        a.attribute ("value", raw.substr (sep + 1));
+      }
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Scan all arguments and canonicalize names that need it.
 void CLI::canonicalizeNames ()
 {
@@ -399,8 +426,9 @@ void CLI::identifyFilter ()
 {
   for (auto& a : _args)
   {
-    if (a.hasTag ("CMD") ||
-        a.hasTag ("EXT") ||
+    if (a.hasTag ("CMD")    ||
+        a.hasTag ("EXT")    ||
+        a.hasTag ("CONFIG") ||
         a.hasTag ("BINARY"))
       continue;
 
