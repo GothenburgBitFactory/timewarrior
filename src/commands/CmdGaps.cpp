@@ -48,7 +48,18 @@ int CmdGaps (
       filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
   }
 
-  auto untracked = getUntracked (database, rules, filter);
+  // Is the :blank hint being used?
+  bool blank = false;
+  for (auto& arg : cli._args)
+    if (arg.hasTag ("HINT") &&
+        arg.getToken () == ":blank")
+      blank = true;
+
+  std::vector <Range> untracked;
+  if (blank)
+    untracked = subtractRanges ({filter.range}, getAllExclusions (rules, filter.range));
+  else
+    untracked = getUntracked (database, rules, filter);
 
   Table table;
   table.width (1024);
