@@ -183,6 +183,16 @@ void initializeDataAndRules (
   if (rules.has ("debug.indicator"))
     setDebugIndicator (rules.get ("debug.indicator"));
 
+  // Apply command line overrides.
+  for (auto& arg : cli._args)
+  {
+    if (arg.hasTag ("CONFIG"))
+    {
+      rules.set (arg.attribute ("name"), arg.attribute ("value"));
+      debug (format ("Configuration override {1} = {2}", arg.attribute ("name"), arg.attribute ("value")));
+    }
+  }
+
   // Initialize the database (no data read), but files are enumerated.
   database.initialize (data._data);
 
