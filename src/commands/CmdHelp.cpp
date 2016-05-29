@@ -179,6 +179,9 @@ int CmdHelp (const CLI& cli)
                 << "The 'reports.day.range' configuration setting overrides the default date range.\n"
                 << "The default date range shown is ':day'.\n"
                 << '\n'
+                << "The ':blank' hint causes only the excluded time to be shown, with no tracked\n"
+                << "time.\n"
+                << '\n'
                 << "For more details, and precise times, use the 'summary' report.\n"
                 << '\n'
                 << "See also 'week', 'month', 'summary'.\n"
@@ -234,6 +237,9 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "The 'reports.gaps.range' configuration setting overrides the default date range.\n"
                 << "The default date range shown is ':day'.\n"
+                << '\n'
+                << "The ':blank' hint causes only the excluded time to be shown, with no tracked\n"
+                << "time.\n"
                 << '\n'
                 << "See also 'summary'.\n"
                 << '\n';
@@ -336,6 +342,9 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "The 'reports.month.range' configuration setting overrides the default date range.\n"
                 << "The default date range shown is ':month'.\n"
+                << '\n'
+                << "The ':blank' hint causes only the excluded time to be shown, with no tracked\n"
+                << "time.\n"
                 << '\n'
                 << "For more details, and precise times, use the 'summary' report.\n"
                 << '\n'
@@ -461,6 +470,9 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "The 'reports.week.range' configuration setting overrides the default date range.\n"
                 << "The default date range shown is ':week'.\n"
+                << '\n'
+                << "The ':blank' hint causes only the excluded time to be shown, with no tracked\n"
+                << "time.\n"
                 << '\n'
                 << "For more details, and precise times, use the 'summary' report.\n"
                 << '\n'
