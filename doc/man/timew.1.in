@@ -299,6 +299,17 @@ This file contains a mix of rules and configuration settings.
 The values 'true', '1', 'y', 'yes' and 'on' are all equivalent and enable a
 setting. Any other value means disable the setting.
 
+Default values may be overridden by timewarrior.cfg values, which may in turn be
+overriden on the command line using:
+
+  rc.<name>=<value>
+
+For example, to turn off verbose mode:
+
+  rc.verbose=0
+
+Note that hints can also do this (:quiet).
+
 .TP
 .B confirmation = yes
 Determines whether harmful operations require interactive confirmation.
