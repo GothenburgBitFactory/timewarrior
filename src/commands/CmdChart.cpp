@@ -219,7 +219,7 @@ static void determineHourRange (
   int& first_hour,
   int& last_hour)
 {
-  if (! rules.getBoolean ("reports." + type + ".24h"))
+  if (rules.getBoolean ("reports." + type + ".hours") == "auto")
   {
     // Get the extreme time range for the filtered data.
     first_hour = 23;

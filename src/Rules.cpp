@@ -45,7 +45,7 @@ Rules::Rules ()
     {"verbose",                "on"},
 
     // 'day' report.
-    {"reports.day.24h",        "yes"},
+    {"reports.day.hours",      "all"},
     {"reports.day.lines",      "2"},
     {"reports.day.spacing",    "1"},
     {"reports.day.month",      "no"},
@@ -57,7 +57,7 @@ Rules::Rules ()
     {"reports.day.holidays",   "no"},
 
     // 'week' report.
-    {"reports.week.24h",       "yes"},
+    {"reports.week.hours",     "all"},
     {"reports.week.lines",     "1"},
     {"reports.week.spacing",   "1"},
     {"reports.week.month",     "no"},
@@ -69,7 +69,7 @@ Rules::Rules ()
     {"reports.week.holidays",  "yes"},
 
     // 'month' report.
-    {"reports.month.24h",      "yes"},
+    {"reports.month.hours",    "all"},
     {"reports.month.lines",    "1"},
     {"reports.month.spacing",  "1"},
     {"reports.month.month",    "yes"},
