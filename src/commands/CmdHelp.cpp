@@ -73,9 +73,7 @@ int CmdHelpUsage ()
 
   // TODO clear
   // TODO import
-  // TODO quarter
   // TODO undo
-  // TODO year
 
   // TODO List all extensions.
 
@@ -89,6 +87,7 @@ int CmdHelpUsage ()
 //
 // TODO Should the CmdXxx functions themselves be responsible for providing both
 //      the command syntax and the help text?
+//      A: Only if they are upgraded to objects.
 //
 // Strict 80-character limit.
 // Provide examples where appropriate - enough to cover all uses.
@@ -283,6 +282,7 @@ int CmdHelp (const CLI& cli)
                 << "  :blank         Leaves tracked time out of a report\n"
                 << "  :fill          Expand time to fill surrounding available gap\n"
                 << "                 Only functions when exclusions are provided\n"
+                << "  :ids           Displays interval ID numbers in the summary report\n"
                 << '\n'
                 << "Range hints provide convenient shortcuts to date ranges:\n"
                 << '\n'
@@ -423,6 +423,9 @@ int CmdHelp (const CLI& cli)
                 << "  $ timew summary monday - today\n"
                 << "  $ timew summary :week\n"
                 << "  $ timew summary :month\n"
+                << '\n'
+                << "The ':ids' hint adds an 'IDS' column to the summary report output, for interval\n"
+                << "modification.\n"
                 << '\n'
                 << "See also 'day', 'week', 'month'.\n"
                 << '\n';
