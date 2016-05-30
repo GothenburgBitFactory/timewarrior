@@ -148,11 +148,7 @@ int renderChart (
   --previous;
 
   // Is the :blank hint being used?
-  bool blank = false;
-  for (auto& arg : cli._args)
-    if (arg.hasTag ("HINT") &&
-        arg.getToken () == ":blank")
-      blank = true;
+  bool blank = findHint (cli, ":blank");
 
   // Determine how much space is occupied by the left-margin labels.
   int indent = (rules.getBoolean ("reports." + type + ".month")   ? 4 : 0) +
