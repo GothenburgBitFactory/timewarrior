@@ -46,7 +46,7 @@ static std::string renderTotal           (const std::string&, const Rules&, time
 static std::string renderSubTotal        (const std::string&, const Rules&, int, int, time_t);
 static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
 static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, time_t&);
-static std::string renderHolidays        (const std::string&, const Rules&, const Interval&);
+       std::string renderHolidays        (const std::string&, const Rules&, const Interval&);
 static std::string renderSummary         (const std::string&, const Rules&, const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -508,7 +508,7 @@ static void renderInterval (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-static std::string renderHolidays (
+std::string renderHolidays (
   const std::string& type,
   const Rules& rules,
   const Interval& filter)
