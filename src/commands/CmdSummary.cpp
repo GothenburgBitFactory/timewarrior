@@ -54,12 +54,18 @@ int CmdSummary (
   auto palette = createPalette (rules);
   auto tag_colors = createTagColorMap (rules, palette, tracked);
 
+  auto ids = findHint (cli, ":ids");
+
   Table table;
   table.width (1024);
   table.colorHeader (Color ("underline"));
   table.add ("Wk");
   table.add ("Date");
   table.add ("Day");
+
+  if (ids)
+    table.add ("ID");
+
   table.add ("Tags");
   table.add ("Start", false);
   table.add ("End", false);
@@ -104,23 +110,33 @@ int CmdSummary (
         tags += tag;
       }
 
-      table.set (row, 3, tags);
-      table.set (row, 4, today.start.toString ("h:N:S"));
-      table.set (row, 5, (track.range.is_open () ? "-" : today.end.toString ("h:N:S")));
-      table.set (row, 6, Duration (today.total ()).formatHours ());
+      table.set (row, (ids ? 4 : 3), tags);
+      table.set (row, (ids ? 5 : 4), today.start.toString ("h:N:S"));
+      table.set (row, (ids ? 6 : 5), (track.range.is_open () ? "-" : today.end.toString ("h:N:S")));
+      table.set (row, (ids ? 7 : 6), Duration (today.total ()).formatHours ());
 
       daily_total += today.total ();
     }
 
     if (row != -1)
-      table.set (row, 7, Duration (daily_total).formatHours ());
+      table.set (row, (ids ? 8 : 7), Duration (daily_total).formatHours ());
 
     grand_total += daily_total;
+
+    // Now the data is tabular, go back and fill in the IDs if necessary.
+    if (ids && row != -1)
+    {
+      Color colorID (rules.getBoolean ("color") ? rules.get ("theme.colors.ids") : "");
+
+      auto rows = table.rows ();
+      for (int i = 0; i < rows; ++i)
+        table.set (i, 3, format ("@{1}", rows - i), colorID);
+    }
   }
 
   // Add the total.
-  table.set (table.addRow (), 7, " ", Color ("underline"));
-  table.set (table.addRow (), 7, Duration (grand_total).formatHours ());
+  table.set (table.addRow (), (ids ? 8 : 7), " ", Color ("underline"));
+  table.set (table.addRow (), (ids ? 8 : 7), Duration (grand_total).formatHours ());
 
   if (table.rows () > 2)
     std::cout << '\n'
