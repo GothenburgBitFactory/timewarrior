@@ -202,6 +202,9 @@ filtering, or shortcut hints:
   $ timew summary :week
   $ timew summary :month
 
+The ':ids' hint adds an 'IDS' column to the summary report output, for interval
+modification.
+
 See also 'day', 'week', 'month'.
 
 .TP
@@ -289,6 +292,7 @@ forms of feedback, for purposes of automation. The supported hints are:
   :blank         Leaves tracked time out of a report
   :fill          Expand time to fill surrounding available gap
                  Only functions when exclusions are provided
+  :ids           Displays interval ID numbers in the summary report
 
 Range hints provide convenient shortcuts to date ranges:
 
