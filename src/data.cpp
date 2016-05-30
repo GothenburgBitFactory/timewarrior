@@ -401,10 +401,18 @@ std::vector <Interval> flatten (
     // Only historical data is included.
     if (chunk.range.start <= now)
     {
-      // A future range.end should be truncated.
-      if (! chunk.range.is_open () &&
-          chunk.range.end >= now)
-        chunk.range.end = now;
+      // Closed chunk ranges in the future need to be adjusted.
+      if (! chunk.range.is_open ()  &&
+          chunk.range.end > now)
+      {
+        // If the interval is open, so must be chunk.
+        if (interval.range.is_open ())
+          chunk.range.end = {0};
+
+        // Otherwise truncate to now.
+        else
+          chunk.range.end = now;
+      }
 
       all.push_back (chunk);
     }
