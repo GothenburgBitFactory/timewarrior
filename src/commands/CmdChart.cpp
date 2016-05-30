@@ -518,6 +518,7 @@ static std::string renderHolidays (
   {
     for (auto& entry : rules.all ("holidays."))
     {
+      auto first_dot = entry.find ('.');
       auto last_dot = entry.rfind ('.');
       if (last_dot != std::string::npos)
       {
@@ -526,7 +527,14 @@ static std::string renderHolidays (
         Datetime holiday (date);
         if (holiday >= filter.range.start &&
             holiday <= filter.range.end)
-          out << Datetime (date).toString ("Y-M-D") << ' ' << rules.get (entry) << '\n';
+        {
+          out << Datetime (date).toString ("Y-M-D")
+              << " ["
+              << entry.substr (first_dot + 1, last_dot - first_dot - 1)
+              << "] "
+              << rules.get (entry)
+              << '\n';
+        }
       }
     }
   }
