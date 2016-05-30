@@ -339,6 +339,13 @@ The debug output prefix string.
 Default value is '>>'.
 
 .TP
+.B reports.<type>.holidays = yes
+.br
+Determines whether relevant holidays are shown beneath the report.
+Default value is 'yes'.
+Type is one of 'month', 'week', 'day', 'summary'.
+
+.TP
 .B reports.<type>.hours = all
 .br
 Determines how the <type> report shows all the hours in a day ('all'), or is
