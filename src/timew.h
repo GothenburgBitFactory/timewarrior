@@ -71,6 +71,7 @@ Palette createPalette (const Rules&);
 std::map <std::string, Color> createTagColorMap (const Rules&, Palette&, const std::vector <Interval>&);
 int quantizeTo15Minutes (const int);
 bool dayIsHoliday (const Rules&, const Datetime&);
+bool findHint (const CLI&, const std::string&);
 
 // log.cpp
 void enableDebugMode (bool);
