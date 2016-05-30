@@ -33,6 +33,9 @@
 #include <timew.h>
 #include <iostream>
 
+// Implemented in CmdChart.cpp.
+std::string renderHolidays (const std::string&, const Rules&, const Interval&);
+
 ////////////////////////////////////////////////////////////////////////////////
 int CmdSummary (
   const CLI& cli,
@@ -122,6 +125,7 @@ int CmdSummary (
   if (table.rows () > 2)
     std::cout << '\n'
               << table.render ()
+              << renderHolidays ("summary", rules, filter)
               << '\n';
   else
     std::cout << "No filtered data found.\n";
