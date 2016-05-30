@@ -40,48 +40,51 @@ Rules::Rules ()
   // Load the default values.
   _settings =
   {
-    {"confirmation",           "on"},
-    {"debug",                  "off"},
-    {"verbose",                "on"},
+    {"confirmation",             "on"},
+    {"debug",                    "off"},
+    {"verbose",                  "on"},
 
     // 'day' report.
-    {"reports.day.hours",      "all"},
-    {"reports.day.lines",      "2"},
-    {"reports.day.spacing",    "1"},
-    {"reports.day.month",      "no"},
-    {"reports.day.week",       "no"},
-    {"reports.day.day",        "yes"},
-    {"reports.day.weekday",    "yes"},
-    {"reports.day.totals",     "no"},
-    {"reports.day.summary",    "yes"},
-    {"reports.day.holidays",   "no"},
+    {"reports.day.hours",        "all"},
+    {"reports.day.lines",        "2"},
+    {"reports.day.spacing",      "1"},
+    {"reports.day.month",        "no"},
+    {"reports.day.week",         "no"},
+    {"reports.day.day",          "yes"},
+    {"reports.day.weekday",      "yes"},
+    {"reports.day.totals",       "no"},
+    {"reports.day.summary",      "yes"},
+    {"reports.day.holidays",     "no"},
 
     // 'week' report.
-    {"reports.week.hours",     "all"},
-    {"reports.week.lines",     "1"},
-    {"reports.week.spacing",   "1"},
-    {"reports.week.month",     "no"},
-    {"reports.week.week",      "yes"},
-    {"reports.week.day",       "yes"},
-    {"reports.week.weekday",   "yes"},
-    {"reports.week.totals",    "yes"},
-    {"reports.week.summary",   "yes"},
-    {"reports.week.holidays",  "yes"},
+    {"reports.week.hours",       "all"},
+    {"reports.week.lines",       "1"},
+    {"reports.week.spacing",     "1"},
+    {"reports.week.month",       "no"},
+    {"reports.week.week",        "yes"},
+    {"reports.week.day",         "yes"},
+    {"reports.week.weekday",     "yes"},
+    {"reports.week.totals",      "yes"},
+    {"reports.week.summary",     "yes"},
+    {"reports.week.holidays",    "yes"},
 
     // 'month' report.
-    {"reports.month.hours",    "all"},
-    {"reports.month.lines",    "1"},
-    {"reports.month.spacing",  "1"},
-    {"reports.month.month",    "yes"},
-    {"reports.month.week",     "yes"},
-    {"reports.month.day",      "yes"},
-    {"reports.month.weekday",  "yes"},
-    {"reports.month.totals",   "yes"},
-    {"reports.month.summary",  "yes"},
-    {"reports.month.holidays", "yes"},
+    {"reports.month.hours",      "all"},
+    {"reports.month.lines",      "1"},
+    {"reports.month.spacing",    "1"},
+    {"reports.month.month",      "yes"},
+    {"reports.month.week",       "yes"},
+    {"reports.month.day",        "yes"},
+    {"reports.month.weekday",    "yes"},
+    {"reports.month.totals",     "yes"},
+    {"reports.month.summary",    "yes"},
+    {"reports.month.holidays",   "yes"},
+
+    // 'summary' report.
+    {"reports.summary.holidays", "yes"},
 
     // 'gaps' report.
-    {"reports.gaps.range",     ":day"},
+    {"reports.gaps.range",       ":day"},
   };
 }
 
