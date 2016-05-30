@@ -36,6 +36,7 @@ define theme:
     today     = "rgb521"
     holiday   = "gray4"
     label     = "gray4"
+    ids       = "color13"
 
   # Rotating Color Palette for tags. The leading zeroes allow the order to be
   # preserved.
