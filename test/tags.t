@@ -63,8 +63,8 @@ class TestTags(TestCase):
 
     def test_tags_listed(self):
         """Test the two tags used are both listed"""
-        self.t("track 9am - 10am foo")
-        self.t("track 10am - 11am bar")
+        self.t("track 20160101T0100 - 20160101T1000 foo")
+        self.t("track 20160101T1000 - 20160101T1100 bar")
         code, out, err = self.t("tags")
         self.assertIn('foo', out)
         self.assertIn('bar', out)
