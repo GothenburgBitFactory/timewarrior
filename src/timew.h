@@ -72,6 +72,7 @@ std::map <std::string, Color> createTagColorMap (const Rules&, Palette&, const s
 int quantizeTo15Minutes (const int);
 bool dayIsHoliday (const Rules&, const Datetime&);
 bool findHint (const CLI&, const std::string&);
+std::string minimalDelta (const Datetime&, const Datetime&);
 
 // log.cpp
 void enableDebugMode (bool);

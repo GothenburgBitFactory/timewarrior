@@ -267,3 +267,30 @@ bool findHint (const CLI& cli, const std::string& hint)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::string minimalDelta (const Datetime& left, const Datetime& right)
+{
+  std::string result = right.toISOLocalExtended ();
+
+  if (left.sameYear (right))
+  {
+    result.replace (0, 5, "     ");
+    if (left.sameMonth (right))
+    {
+      result.replace (5, 3, "   ");
+      if (left.sameDay (right))
+      {
+        result.replace (8, 3, "   ");
+        if (left.sameHour (right))
+        {
+          result.replace (11, 3, "   ");
+          if (left.minute () == right.minute ())
+            result.replace (14, 3, "   ");
+        }
+      }
+    }
+  }
+
+  return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
