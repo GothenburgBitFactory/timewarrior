@@ -49,11 +49,7 @@ int CmdGaps (
   }
 
   // Is the :blank hint being used?
-  bool blank = false;
-  for (auto& arg : cli._args)
-    if (arg.hasTag ("HINT") &&
-        arg.getToken () == ":blank")
-      blank = true;
+  bool blank = findHint (cli, ":blank");
 
   std::vector <Range> untracked;
   if (blank)
