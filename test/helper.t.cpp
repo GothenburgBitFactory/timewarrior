@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (61);
+  UnitTest t (68);
 
   // int quantizeTo15Minutes (const int);
   t.is (quantizeTo15Minutes (0),   0, "quantizeTo15Minutes 0 --> 0");
@@ -95,6 +95,15 @@ int main (int, char**)
   t.is (quantizeTo15Minutes (58), 60, "quantizeTo15Minutes 58 --> 60");
   t.is (quantizeTo15Minutes (59), 60, "quantizeTo15Minutes 59 --> 60");
   t.is (quantizeTo15Minutes (60), 60, "quantizeTo15Minutes 60 --> 60");
+
+  // std::string minimalDelta (const Datetime&, const Datetime&);
+  t.is (minimalDelta ({"2016-05-30T15:11:01"}, {"2017-01-01T00:00:00"}), "2017-01-01T00:00:00", "minimalDelta 2016-05-30T15:11:01/2017-01-01T00:00:00 --> 2017-01-01T00:00:00");
+  t.is (minimalDelta ({"2016-05-30T15:11:01"}, {"2016-01-01T00:00:00"}), "     01-01T00:00:00", "minimalDelta 2016-05-30T15:11:01/2016-01-01T00:00:00 -->      01-01T00:00:00");
+  t.is (minimalDelta ({"2016-05-30T15:11:01"}, {"2016-05-01T00:00:00"}), "        01T00:00:00", "minimalDelta 2016-05-30T15:11:01/2016-05-01T00:00:00 -->         01T00:00:00");
+  t.is (minimalDelta ({"2016-05-30T15:11:01"}, {"2016-05-30T00:00:00"}), "           00:00:00", "minimalDelta 2016-05-30T15:11:01/2016-05-30T00:00:00 -->            00:00:00");
+  t.is (minimalDelta ({"2016-05-30T15:11:01"}, {"2016-05-30T15:00:00"}), "              00:00", "minimalDelta 2016-05-30T15:11:01/2016-05-30T15:00:00 -->               00:00");
+  t.is (minimalDelta ({"2016-05-30T15:11:01"}, {"2016-05-30T15:11:00"}), "                 00", "minimalDelta 2016-05-30T15:11:01/2016-05-30T15:11:00 -->                  00");
+  t.is (minimalDelta ({"2016-05-30T15:11:01"}, {"2016-05-30T15:11:01"}), "                 01", "minimalDelta 2016-05-30T15:11:01/2016-05-30T15:11:01 -->                  01");
 
   return 0;
 }
