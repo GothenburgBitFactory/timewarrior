@@ -32,7 +32,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (87);
+  UnitTest t (101);
 
   // bool is_started () const;
   // bool is_ended () const;
@@ -261,6 +261,38 @@ int main (int, char**)
 
   t.ok (oldClosed.total () < oldOpen.total (),     "Range: total for closed range < open range with same start time");
   t.ok (oldOpen.total () <= oldClosedNow.total (), "Range: total for open range predictable");
+
+  // this                     [--------)
+  // B                   [--------)
+  // C                          [----)
+  // D                             [--------)
+  // F                      [-------------)
+  // G                      [...
+  // H                           [...
+  t.ok (refClosed.combine (testB) == Range (testB.start, refClosed.end), "Range: refClosed.combine(testB) == Range(testB.start,refClosed.end)");
+  t.ok (refClosed.combine (testC) == refClosed,                          "Range: refClosed.combine(testC) == refClosed");
+  t.ok (refClosed.combine (testD) == Range (refClosed.start, testD.end), "Range: refClosed.combine(testD) == Range(refClosed.start,testD.end)");
+  t.ok (refClosed.combine (testF) == testF,                              "Range: refClosed.combine(testF) == testF");
+  t.ok (refClosed.combine (testG) == testG,                              "Range: refClosed.combine(testG) == testG");
+  t.ok (refClosed.combine (testH) == Range (refClosed.start, {0}),       "Range: refClosed.combine(testH) == Range(refClosed.start,{0})");
+
+  // this                     [...
+  // B                   [--------)
+  // C                          [----)
+  // D                             [--------)
+  // E                                      [--------)
+  // F                      [-------------)
+  // G                      [...
+  // H                           [...
+  // I                                   [...
+  t.ok (refOpen.combine (testB) == Range (testB.start, {0}), "Range: refOpen.combine(testB) == Range(testB.start,{0})");
+  t.ok (refOpen.combine (testC) == refOpen,                  "Range: refOpen.combine(testC) == refOpen");
+  t.ok (refOpen.combine (testD) == refOpen,                  "Range: refOpen.combine(testD) == refOpen");
+  t.ok (refOpen.combine (testE) == refOpen,                  "Range: refOpen.combine(testE) == refOpen");
+  t.ok (refOpen.combine (testF) == Range (testF.start, {0}), "Range: refOpen.combine(testF) == Range(testF.start,{0})");
+  t.ok (refOpen.combine (testG) == testG,                    "Range: refOpen.combine(testG) == testG");
+  t.ok (refOpen.combine (testH) == refOpen,                  "Range: refOpen.combine(testH) == refOpen");
+  t.ok (refOpen.combine (testI) == refOpen,                  "Range: refOpen.combine(testI) == refOpen");
 
   return 0;
 }
