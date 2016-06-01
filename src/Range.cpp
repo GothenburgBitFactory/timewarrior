@@ -215,6 +215,43 @@ Range Range::intersect (const Range& other) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// If the ranges do not overlap, the result is *this.
+//
+// this   [----)
+// other     [----)
+// result [-------)
+//
+// this   [...
+// other     [----)
+// result [...
+//
+// this   [----)
+// other     [...
+// result [...
+//
+// this   [...
+// other     [...
+// result [...
+//
+Range Range::combine (const Range& other) const
+{
+  Range result {*this};
+
+  if (is_started () && other.is_started ())
+  {
+    // Start is hte earlier of the two.
+    result.start = std::min (result.start, other.start);
+
+    if (is_open () || other.is_open ())
+      result.end = {0};
+    else
+      result.end = std::max (result.end, other.end);
+  }
+
+  return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Consider the following overlap cases:
 //
 // this                     [--------)
