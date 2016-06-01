@@ -63,7 +63,7 @@ class TestExport(TestCase):
 
     def test_single_unobstructed_interval(self):
         """Single unobstructed interval"""
-        self.t("track 8am - 9am foo")
+        self.t("track 20160531T0800 - 20160531T0900 foo")
 
         j = self.t.export()
         self.assertEqual(len(j), 1)
