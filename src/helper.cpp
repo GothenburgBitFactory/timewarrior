@@ -89,7 +89,7 @@ std::string intervalSummarize (
     {
       out << "Tracking " << tags << '\n'
           << "  Started " << interval.range.start.toISOLocalExtended () << '\n'
-          << "  Current " << Datetime ().toISOLocalExtended () << '\n'
+          << "  Current " << minimalDelta (interval.range.start, Datetime ()) << '\n'
           << "  Total   " << std::setw (19) << std::setfill (' ') << total.formatHours () << '\n';
     }
 
@@ -98,7 +98,7 @@ std::string intervalSummarize (
     {
       out << "Recorded " << tags << '\n'
           << "  Started " << interval.range.start.toISOLocalExtended () << '\n'
-          << "  Ended   " << interval.range.end.toISOLocalExtended () << '\n'
+          << "  Ended   " << minimalDelta (interval.range.start, interval.range.end) << '\n'
           << "  Total   " << std::setw (19) << std::setfill (' ') << total.formatHours () << '\n';
     }
   }
