@@ -97,6 +97,7 @@ void initializeEntities (CLI& cli)
   cli.entity ("hint", ":year");
   cli.entity ("hint", ":yes");
   cli.entity ("hint", ":yesterday");
+  cli.entity ("hint", ":ids");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
