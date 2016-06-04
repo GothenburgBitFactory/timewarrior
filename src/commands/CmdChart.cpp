@@ -217,20 +217,27 @@ static void determineHourRange (
 {
   if (rules.get ("reports." + type + ".hours") == "auto")
   {
-    // Get the extreme time range for the filtered data.
-    first_hour = 23;
-    last_hour  = 0;
-    for (auto& track : tracked)
+    first_hour = 0;
+    last_hour = 23;
+
+    // If there is no data, show the whole day.
+    if (tracked.size ())
     {
-      if (track.range.start.hour () < first_hour)
-        first_hour = track.range.start.hour ();
+      // Get the extreme time range for the filtered data.
+      first_hour = 23;
+      last_hour  = 0;
+      for (auto& track : tracked)
+      {
+        if (track.range.start.hour () < first_hour)
+          first_hour = track.range.start.hour ();
 
-      if (track.range.end.hour () > last_hour)
-        last_hour = track.range.end.hour ();
+        if (track.range.end.hour () > last_hour)
+          last_hour = track.range.end.hour ();
+      }
+
+      first_hour = std::max (first_hour - 1, 0);
+      last_hour  = std::min (last_hour + 1, 23);
     }
-
-    first_hour = std::max (first_hour - 1, 0);
-    last_hour  = std::min (last_hour + 1, 23);
   }
 }
 
