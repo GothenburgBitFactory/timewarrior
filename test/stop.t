@@ -59,7 +59,7 @@ class TestStop(TestCase):
     def test_timed_stop(self):
         """Test timed start"""
         self.t("start 20160516T090100")
-        self.t("stop  20160516T100200")
+        self.t("stop 20160516T100200")
         j = self.t.export()
         self.assertEqual(len(j), 1)
         self.assertIn('0100Z', j[0]['start'])
