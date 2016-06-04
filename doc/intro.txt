@@ -121,9 +121,5 @@ multiple sources.
 
 --- Raw Notes ---
 
-- add more report mockups
-- demo 'config' command
-- demo 'tags' command
-- demo 'gaps' command
 - demo interval adjustment, corrections
 

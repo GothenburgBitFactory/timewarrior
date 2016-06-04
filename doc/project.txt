@@ -137,14 +137,9 @@ data.
 
 --- Raw Notes ---
 
-- Need syntax to adjust any recorded data.
-
 - It should be forgiving when you forgot to stop a task. Maybe a specific
   command, instead of "stop" use "forgot" or directly "edit".  Then I would
   like to express either "stopped 30min ago" or "it lasted only 1hour”.
-
-- Need a JSON --> CSV converter, for spreadsheet folks. Therefore csv.py could
-  be an extension that converts the format.
 
 - Use display granularity/resolution to see more or less details.  This would
   combine nicely with a tag hierarchy. (Tomas Babej)
