@@ -261,6 +261,7 @@ void CLI::analyze ()
   handleArg0 ();
   lexArguments ();
   identifyOverrides ();
+  identifyIds ();
   canonicalizeNames ();
   identifyFilter ();
 }
@@ -466,6 +467,9 @@ void CLI::identifyFilter ()
     auto raw = a.attribute ("raw");
 
     if (a.hasTag ("HINT"))
+      a.tag ("FILTER");
+
+    else if (a.hasTag ("ID"))
       a.tag ("FILTER");
 
     else if (a._lextype == Lexer::Type::date ||
