@@ -98,6 +98,10 @@ Interval getFilter (const CLI& cli)
         //       function.
         args.push_back (raw);
       }
+      else if (arg.hasTag ("ID"))
+      {
+        // Not part of a filter.
+      }
       else
       {
         filter.tag (raw);
