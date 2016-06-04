@@ -100,10 +100,13 @@ Unrecognized hints yiled warnings.
 - A command for a daily and weekly view of exclusions is needed. To verify that
   they are correctly defined. A text-based list should accompany it.
 
-- Use :ids to show the ephemeral IDs, then use 'merge' and 'split' commands to
-  combine intervals.  Then:
+- Use :ids with the summary report to show the ephemeral IDs, then use these
+  commands to make changes:
 
-  $ timew @1 modify ...
-  $ timew @1 @2 merge
+  $ timew @1 move <datetime> [:adjust]
+  $ timew @1 shorten <duration> [:adjust]
+  $ timew @1 lengthen <duration> [:adjust]
+  $ timew @1 split
+  $ timew @1 @2 join
   $ timew @1 clear
 
