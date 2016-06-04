@@ -28,6 +28,7 @@
 #include <CLI.h>
 #include <Color.h>
 #include <shared.h>
+#include <format.h>
 #include <sstream>
 #include <algorithm>
 
@@ -67,6 +68,13 @@ void A2::unTag (const std::string& tag)
 void A2::attribute (const std::string& name, const std::string& value)
 {
   _attributes[name] = value;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Accessor for attributes.
+void A2::attribute (const std::string& name, int value)
+{
+  _attributes[name] = format ("{1}", value);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

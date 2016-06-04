@@ -41,6 +41,7 @@ public:
   void tag (const std::string&);
   void unTag (const std::string&);
   void attribute (const std::string&, const std::string&);
+  void attribute (const std::string&, int);
   std::string attribute (const std::string&) const;
   std::string getToken () const;
   std::string dump () const;
