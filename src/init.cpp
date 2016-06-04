@@ -71,6 +71,7 @@ void initializeEntities (CLI& cli)
   cli.entity ("command", "show");
   cli.entity ("command", "start");
   cli.entity ("command", "stop");
+  cli.entity ("command", "tag");
   cli.entity ("command", "tags");
   cli.entity ("command", "track");
   cli.entity ("command", "undo");
@@ -257,6 +258,7 @@ int dispatchCommand (
     else if (command == "start")       status = CmdStart         (cli, rules, database            );
     else if (command == "stop")        status = CmdStop          (cli, rules, database            );
     else if (command == "summary")     status = CmdSummary       (cli, rules, database            );
+    else if (command == "tag")         status = CmdTag           (cli, rules, database            );
     else if (command == "tags")        status = CmdTags          (     rules, database            );
     else if (command == "track")       status = CmdTrack         (cli, rules, database            );
     else if (command == "undo")        status = CmdUndo          (                                );
