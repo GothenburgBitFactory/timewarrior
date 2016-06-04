@@ -91,12 +91,13 @@ A well-behaved extension is one that follows these guidelines, and conforms to
 the general pattern of behavior exhibited by Timewarrior. The guidelines are:
 
 - Obey the 'verbose' setting, and if the value is neither on/1/yes/y/true, then
-  consider it 'off', and generate minimal output, which should tend toward no
+  consider it 'off' and generate minimal output, which should tend toward no
   output at all.
 
 - Obey the 'debug' setting, and if the value is either on/1/yes/y/true, then
   emit helpful feedback, but only that which can be useful for debugging a
-  problem, which should tend toward no output at all.
+  problem, which should tend toward no output at all. Use the debug indicator
+  and color.
 
 - Obey the 'confirmation' setting, and if the value is either on/1/yes/y/true,
   then obtain user permission interactively before proceeding with any data
