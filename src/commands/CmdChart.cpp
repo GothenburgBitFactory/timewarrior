@@ -241,6 +241,8 @@ static void determineHourRange (
       first_hour = std::max (first_hour - 1, 0);
       last_hour  = std::min (last_hour + 1, 23);
     }
+
+    debug (format ("Day range is from {1}:00 - {2}:00", first_hour, last_hour));
   }
 }
 
