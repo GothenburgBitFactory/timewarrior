@@ -27,6 +27,15 @@ The CLI shall have a well-defined and unambiguous grammar.
     timew help [<command>|<keyword>|hints|examples]
     timew diagnostics
 
+    timew @<id> move <datetime> [:adjust]
+    timew @<id> shorten <duration> [:adjust]
+    timew @<id> lengthen <duration> [:adjust]
+    timew @<id> split
+    timew @<id> @<id> join
+    timew @<id> clear
+    timew @<id> tag <tag>
+    timew @<id> untag <tag>
+
 
 Filter
 ------
@@ -88,30 +97,13 @@ supported hints are:
   :nocolor    Force use of color off
   :yes        Override confirmation
   :ids        Show ephemeral IDs for manipulation
+  :adjust     When modifying intervals, adjust boundaries automatically
 
 It is not an error to specify extra hints, because they will be simply ignored.
-Unrecognized hints yiled warnings.
+Unrecognized hints yield warnings.
 
 
 --- Raw Notes ---
 
 - 'timew import <file>' will merge data.
-
-- A command for a daily and weekly view of exclusions is needed. To verify that
-  they are correctly defined. A text-based list should accompany it.
-
-- Use :ids with the summary report to show the ephemeral IDs, then use these
-  commands to make changes:
-
-  $ timew @1 move <datetime> [:adjust]
-  $ timew @1 shorten <duration> [:adjust]
-  $ timew @1 lengthen <duration> [:adjust]
-  $ timew @1 split
-  $ timew @1 @2 join
-  $ timew @1 clear
-
-- Need method for adding/removing tags.
-
-  $ timew @1 tag <tag>
-  $ timew @1 untag <tag>
 
