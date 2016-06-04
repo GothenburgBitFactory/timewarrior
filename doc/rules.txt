@@ -193,3 +193,12 @@ are used by almost every command.
 
   These are not good examples.
 
+- Need reports to help users doing fixed-rate work - finding the longest task
+  for example.
+
+- If an interval has more than one tag with a defined color, and is being
+  rendered, then use the first tag color. It doesn't really matter which.
+
+- Use display granularity/resolution to see more or less details.  This would
+  combine nicely with a tag hierarchy. (Tomas Babej)
+
