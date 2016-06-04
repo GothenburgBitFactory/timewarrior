@@ -110,3 +110,8 @@ Unrecognized hints yiled warnings.
   $ timew @1 @2 join
   $ timew @1 clear
 
+- Need method for adding/removing tags.
+
+  $ timew @1 tag <tag>
+  $ timew @1 untag <tag>
+
