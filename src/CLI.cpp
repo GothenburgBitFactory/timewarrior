@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <CLI.h>
 #include <Color.h>
+#include <Pig.h>
 #include <shared.h>
 #include <format.h>
 #include <sstream>
@@ -113,13 +114,14 @@ std::string A2::dump () const
   std::string tags;
   for (auto& tag : _tags)
   {
-         if (tag == "BINARY")        tags += "\033[1;37;44m"           + tag + "\033[0m ";
-    else if (tag == "CMD")           tags += "\033[1;37;46m"           + tag + "\033[0m ";
-    else if (tag == "EXT")           tags += "\033[1;37;42m"           + tag + "\033[0m ";
-    else if (tag == "HINT")          tags += "\033[1;37;43m"           + tag + "\033[0m ";
-    else if (tag == "FILTER")        tags += "\033[1;37;45m"           + tag + "\033[0m ";
-    else if (tag == "CONFIG")        tags += "\033[1;37;101m"          + tag + "\033[0m ";
-    else                             tags += "\033[32m"                + tag + "\033[0m ";
+         if (tag == "BINARY")        tags += "\033[1;37;44m"             + tag + "\033[0m ";
+    else if (tag == "CMD")           tags += "\033[1;37;46m"             + tag + "\033[0m ";
+    else if (tag == "EXT")           tags += "\033[1;37;42m"             + tag + "\033[0m ";
+    else if (tag == "HINT")          tags += "\033[1;37;43m"             + tag + "\033[0m ";
+    else if (tag == "FILTER")        tags += "\033[1;37;45m"             + tag + "\033[0m ";
+    else if (tag == "CONFIG")        tags += "\033[1;37;101m"            + tag + "\033[0m ";
+    else if (tag == "ID")            tags += "\033[38;5;7m\033[48;5;34m" + tag + "\033[0m ";
+    else                             tags += "\033[32m"                  + tag + "\033[0m ";
   }
 
   return output + " " + atts + tags;
@@ -382,6 +384,27 @@ void CLI::identifyOverrides ()
         a.tag ("CONFIG");
         a.attribute ("name",  raw.substr (3, sep - 3));
         a.attribute ("value", raw.substr (sep + 1));
+      }
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Scan all arguments and identify instances of '@<integer>'.
+void CLI::identifyIds ()
+{
+  for (auto& a : _args)
+  {
+    if (a._lextype == Lexer::Type::word)
+    {
+      Pig pig (a.attribute ("raw"));
+      int digits;
+      if (pig.skipLiteral ("@")  &&
+          pig.getDigits (digits) &&
+          pig.eos ())
+      {
+        a.tag ("ID");
+        a.attribute ("value", digits);
       }
     }
   }

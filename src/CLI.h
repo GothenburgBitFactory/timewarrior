@@ -70,6 +70,7 @@ private:
   void handleArg0 ();
   void lexArguments ();
   void identifyOverrides ();
+  void identifyIds ();
   void canonicalizeNames ();
   void identifyFilter ();
   bool exactMatch (const std::string&, const std::string&) const;
