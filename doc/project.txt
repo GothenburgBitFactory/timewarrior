@@ -57,29 +57,15 @@ functional tabular and chart report of tracked time.
 Tags
 ----
 Tags represent tracking categories. Tags are arbitrary UTF8 strings. A tag may
-be a single unquoted word, or a quoted string if it includes spaces.
+be a single unquoted word, or a quoted string if it includes spaces. An interval
+may have any number of tags.
 
 A tag may be used without being defined, but if a tag is defined, then it may
 have associated metadata, such as a start date representing the first date on
-which it may be used, and an end date, when it expires. A tag may have a budget,
-which is the maximum trackable time for a period.
+which it may be used, and an end date, when it expires, and so on.
 
-An interval may have multiple tags associated with it, but the tags apply to the
-whole interval only. In this example, there are overlapping tags:
-
-  $ timew start tag1
-  ...
-  $ timew start tag2
-  ...
-  $ timew stop tag1
-  ...
-  $ timew stop
-
-By default, when the interval for 'tag2' starts, the interval for 'tag1' is
-automatically stopped, because tags do not overlap. This then makes the next
-command ('timew stop tag1') yield an error, because 'tag1' was not active. If
-however, both 'tag1' and 'tag2' are defined with the 'overlap' metadata, then
-there will not be an automatic stop for 'tag1'.
+Tags may be deifned as overlapping, which allows the tracking of multiple
+simultaneous intervals. By default, tags do not overlap.
 
 
 Hints
@@ -95,22 +81,15 @@ There are user-defined hints, that can act as macros⁄aliases, for example the
 
 Commands
 --------
-The command set will include:
+There is a set of built-in commands that allow all the functionality to be
+used. An extension mechanism allows arbitrary read-only commands to be added.
+Extensions will be seamlessly integrated.
 
-  config         Modify configuration
-  track          Record tracked time
-  report         Run a report
-  undo           Undo a change
-  tags           Show all tags
-  gaps           Show untracked gaps in the schedule
-  import         Import JSON data
-  export         Export JSON data
-  help           Show help text
-  x              Run extension 'x'
 
-There will be built-in commands, and an extensions mechanism that allows reports
-to be added as extensions, although presented and handled as though they were
-built-ins.
+Extensions
+----------
+A simple extension mechanism allows custom reports to be written and shared.
+Most reports will be external scripts that use the extension API.
 
 
 Undo
@@ -123,10 +102,10 @@ one command results in three changes, a single 'undo' command will revert the
 three changes associated with the one command.
 
 
-Extensions
-----------
-A simple extension mechanism allows custom reports to be written and shared.
-Most reports will be external scripts that use the extension API.
+Rules
+-----
+Rules are configuration-based settings and logic. Rules will be able to define
+conditions and actions, thus implementing policies.
 
 
 DOM Access
@@ -135,18 +114,13 @@ Timewarrior will support a DOM, allowing rules and extensions to access internal
 data.
 
 
+Roadmap
+-------
+Timewarrior will not initially implement all the above features. A roadmap lays
+out the plan for getting to a full-featured release.
+
+ihttp://taskwarrior.org/docs/design/plans.html
+
+
 --- Raw Notes ---
-
-- It should be forgiving when you forgot to stop a task. Maybe a specific
-  command, instead of "stop" use "forgot" or directly "edit".  Then I would
-  like to express either "stopped 30min ago" or "it lasted only 1hour”.
-
-- Use display granularity/resolution to see more or less details.  This would
-  combine nicely with a tag hierarchy. (Tomas Babej)
-
-- Need reports to help users doing fixed-rate work - finding the longest task
-  for example.
-
-- If an interval has more than one tag with a defined color, and is being
-  rendered, then use the first tag color. It doesn't really matter which.
 
