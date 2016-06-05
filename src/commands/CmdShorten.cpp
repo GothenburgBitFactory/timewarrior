@@ -25,6 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <Duration.h>
 #include <commands.h>
 #include <timew.h>
 #include <iostream>
@@ -36,7 +37,44 @@ int CmdShorten (
   Rules& rules,
   Database& database)
 {
-  std::cout << "# CmdShorten\n";
+  // Gather IDs and TAGs.
+  std::vector <int> ids;
+  std::string delta;
+  for (auto& arg : cli._args)
+  {
+    if (arg.hasTag ("ID"))
+      ids.push_back (strtol (arg.attribute ("value").c_str (), NULL, 10));
+
+    if (arg.hasTag ("FILTER") &&
+        arg._lextype == Lexer::Type::duration)
+      delta = arg.attribute ("raw");
+  }
+
+  // TODO Support :adjust
+
+  // Load the data.
+  // Note: There is no filter.
+  Interval filter;
+  auto tracked = getTracked (database, rules, filter);
+
+  // Apply tags to ids.
+  for (auto& id : ids)
+  {
+    if (id <= static_cast <int> (tracked.size ()))
+    {
+      // Note: It's okay to subtract a one-based number from a zero-based index.
+      Interval i = tracked[tracked.size () - id];
+
+      Duration dur (delta);
+      i.range.end -= dur.toTime_t ();
+
+      database.modifyInterval (tracked[tracked.size () - id], i);
+
+      // Feedback.
+      std::cout << "Shortened @" << id << " by " << dur.formatHours () << '\n';
+    }
+  }
+
   return 0;
 }
 
