@@ -205,7 +205,7 @@ filtering, or shortcut hints:
 The ':ids' hint adds an 'IDS' column to the summary report output, for interval
 modification.
 
-See also 'day', 'week', 'month', 'tag'.
+See also 'day', 'week', 'month', 'tag', 'untag'.
 
 .TP
 .B timew tag @<id> <tag> [<tag> ...]
@@ -223,7 +223,7 @@ Note that you can tag multiple intervals, with multiple tags:
 
   $ timew tag @2 @10 @23 'Tag One' tag2 tag3
 
-See also 'summary'.
+See also 'summary', 'untag'.
 
 .TP
 .B timew tags
@@ -240,6 +240,24 @@ to record time, or are just filling in old entries. For example:
 Note that the track command expects a closed interval (start and end time), when
 recording. If a closed interval is not provided, the 'track' command behaves the
 same as the 'start' command.
+
+.TP
+.B timew untag @<id> <tag> [<tag> ...]
+The 'untag' command is used to remove a tag from an interval. Using the 'summary'
+command, and specifying the ':ids' hint shows interval IDs. Using the right ID,
+you can identify an interval to untag. For example, show the IDs:
+
+  $ timew summary :week :ids
+
+Then having selected '@2' as the interval you wish to untag:
+
+  $ timew untag @2 'Old Tag'
+
+Note that you can untag multiple intervals, with multiple tags:
+
+  $ timew untag @2 @10 @23 'Old Tag' tag2 tag3
+
+See also 'summary', 'tag'.
 
 .TP
 .B timew week [<interval>] [<tag> ...]
