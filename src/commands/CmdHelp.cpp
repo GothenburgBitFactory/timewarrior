@@ -32,6 +32,7 @@
 int CmdHelpUsage ()
 {
   // TODO This is going to need more formatting.
+  // TODO Align the arg types?
   std::cout << '\n'
             << "Usage: timew [--version]\n"
             << "       timew cancel\n"
@@ -76,6 +77,11 @@ int CmdHelpUsage ()
   // TODO clear
   // TODO import
   // TODO undo
+  // TODO join
+  // TODO split
+  // TODO lengthen
+  // TODO shorten
+  // TODO move
 
   // TODO List all extensions.
 
@@ -298,6 +304,8 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << '\n';
 
+    // TODO import
+
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "interval")
@@ -327,6 +335,9 @@ int CmdHelp (const CLI& cli)
                 << "if there is no end date.\n"
                 << '\n';
 
+    // TODO join
+    // TODO lengthen
+
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "month")
@@ -353,9 +364,9 @@ int CmdHelp (const CLI& cli)
                 << "See also 'day', 'week', 'summary'.\n"
                 << '\n';
 
-    // TODO import
-    // TODO quarter
+    // TODO move
     // TODO report
+    // TODO shorten
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
@@ -367,6 +378,8 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "See also 'config'.\n"
                 << '\n';
+
+    // TODO split
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
@@ -481,6 +494,8 @@ int CmdHelp (const CLI& cli)
                 << "same as the 'start' command.\n"
                 << '\n';
 
+    // TODO undo
+
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "untag")
@@ -529,9 +544,6 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "See also 'day', 'month', 'summary'.\n"
                 << '\n';
-
-    // TODO undo
-    // TODO year
 
     else
       std::cout << "No help available for '" << words[0] << "'\n";
