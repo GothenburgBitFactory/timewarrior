@@ -4,7 +4,7 @@
 timew \- A command line time tracker.
 
 .SH SYNOPSIS
-.B timew <command>
+.B timew <command> [<arg> ...]
 
 .SH DESCRIPTION
 Timewarrior is a command line time tracker. It allows you to very easily track
@@ -12,7 +12,7 @@ your time spent on projects, and generate summary reports.
 
 .SH SUBCOMMANDS
 
-Timewarrior supports many commands.
+Timewarrior supports many commands. Alphabetically:
 
 .TP
 .B timew
