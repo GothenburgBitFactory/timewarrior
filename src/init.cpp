@@ -75,6 +75,7 @@ void initializeEntities (CLI& cli)
   cli.entity ("command", "tags");
   cli.entity ("command", "track");
   cli.entity ("command", "undo");
+  cli.entity ("command", "untag");
 
   // Some command list themselves as extensions, to integrate with the real
   // extensions.
@@ -262,6 +263,7 @@ int dispatchCommand (
     else if (command == "tags")        status = CmdTags          (     rules, database            );
     else if (command == "track")       status = CmdTrack         (cli, rules, database            );
     else if (command == "undo")        status = CmdUndo          (                                );
+    else if (command == "untag")       status = CmdUntag         (cli, rules, database            );
     else if (command == "week")        status = CmdChartWeek     (cli, rules, database            );
     else                               status = CmdReport        (cli, rules, database, extensions);
   }
