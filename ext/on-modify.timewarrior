@@ -42,7 +42,7 @@ new = json.loads(sys.stdin.readline())
 print(json.dumps(new))
 
 # Extract attributes for use as tags.
-tags = [new['uuid'], new['description']]
+tags = [new['description']]
 
 if 'project' in new:
   tags.append(new['project'])
