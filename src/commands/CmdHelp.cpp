@@ -49,6 +49,7 @@ int CmdHelpUsage ()
             << "       timew start [<date>] [<tag> ...]\n"
             << "       timew stop [<tag> ...]\n"
             << "       timew summary [<interval>] [<tag> ...]\n"
+            << "       timew tag @<id> <tag> [<tag> ...]\n"
             << "       timew tags\n"
             << "       timew track <interval> [<tag> ...]\n"
             << "       timew week [<interval>] [<tag> ...]\n"
@@ -427,7 +428,30 @@ int CmdHelp (const CLI& cli)
                 << "The ':ids' hint adds an 'IDS' column to the summary report output, for interval\n"
                 << "modification.\n"
                 << '\n'
-                << "See also 'day', 'week', 'month'.\n"
+                << "See also 'day', 'week', 'month', 'tag'.\n"
+                << '\n';
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "tag")
+      std::cout << '\n'
+                << "Syntax: timew tag @<id> <tag> [<tag> ...]\n"
+                << '\n'
+                << "The 'tag' command is used to add a tag to an interval. Using the 'summary'\n"
+                << "command, and specifying the ':ids' hint shows interval IDs. Using the right ID,\n"
+                << "you can identify an interval to tag. For example, show the IDs:\n"
+                << '\n'
+                << "  $ timew summary :week :ids\n"
+                << '\n'
+                << "Then having selected '@2' as the interval you wish to tag:\n"
+                << '\n'
+                << "  $ timew tag @2 'New Tag'\n"
+                << '\n'
+                << "Note that you can tag multiple intervals, with multiple tags:\n"
+                << '\n'
+                << "  $ timew tag @2 @10 @23 'Tag One' tag2 tag3\n"
+                << '\n'
+                << "See also 'summary'.\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
