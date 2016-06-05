@@ -51,7 +51,7 @@ from basetest import Timew, TestCase
 #     self.assertNotRegexpMatches(text, pattern)
 #     self.tap("")
 
-class TestTags(TestCase):
+class TestTag(TestCase):
     def setUp(self):
         """Executed before each test in the class"""
         self.t = Timew()
@@ -93,6 +93,49 @@ class TestTags(TestCase):
         self.t("track 2016-01-01T01:00:00 - 2016-01-01T02:00:00")
         code, out, err = self.t("tag @1 @2 foo bar")
         self.assertRegexpMatches(out, 'Added: foo bar\nAdded: foo bar$')
+
+class TestUntag(TestCase):
+    def setUp(self):
+        """Executed before each test in the class"""
+        self.t = Timew()
+
+    def test_remove_tag_from_open_interval(self):
+        """Remove a tag from an open interval"""
+        self.t("start 30min ago foo bar baz")
+        code, out, err = self.t("untag @1 foo")
+        self.assertRegexpMatches(out, 'Removed: foo$')
+
+    def test_remove_tag_from_closed_interval(self):
+        """Remove a tag from an closed interval"""
+        self.t("track yesterday for 1hour foo bar baz")
+        code, out, err = self.t("untag @1 foo")
+        self.assertRegexpMatches(out, 'Removed: foo$')
+
+    def test_remove_tags_from_open_interval(self):
+        """Remove tags from an open interval"""
+        self.t("start 30min ago foo bar baz")
+        code, out, err = self.t("untag @1 foo bar")
+        self.assertRegexpMatches(out, 'Removed: foo bar$')
+
+    def test_remove_tags_from_closed_interval(self):
+        """Remove tags from an closed interval"""
+        self.t("track yesterday for 1hour foo bar baz")
+        code, out, err = self.t("untag @1 foo bar")
+        self.assertRegexpMatches(out, 'Removed: foo bar$')
+
+    def test_remove_tag_from_multiple_intervals(self):
+        """Remove a tag from multiple intervals"""
+        self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00 foo bar baz")
+        self.t("track 2016-01-01T01:00:00 - 2016-01-01T02:00:00 foo bar baz")
+        code, out, err = self.t("untag @1 @2 foo")
+        self.assertRegexpMatches(out, 'Removed: foo\nRemoved: foo$')
+
+    def test_remove_tags_from_multiple_intervals(self):
+        """Remove tags from multiple intervals"""
+        self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00 foo bar baz")
+        self.t("track 2016-01-01T01:00:00 - 2016-01-01T02:00:00 foo bar baz")
+        code, out, err = self.t("untag @1 @2 foo bar")
+        self.assertRegexpMatches(out, 'Removed: foo bar\nRemoved: foo bar$')
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
