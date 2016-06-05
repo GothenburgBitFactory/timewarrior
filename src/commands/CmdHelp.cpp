@@ -46,6 +46,7 @@ int CmdHelpUsage ()
             << "       timew help [<command> | hints]\n"
             << "       timew month [<interval>] [<tag> ...]\n"
             << "       timew [report] <report> [<interval>] [<tag> ...]\n"
+            << "       timew shorten @<id> [@<id> ...] <duration>\n"
             << "       timew show\n"
             << "       timew start [<date>] [<tag> ...]\n"
             << "       timew stop [<tag> ...]\n"
@@ -366,7 +367,29 @@ int CmdHelp (const CLI& cli)
 
     // TODO move
     // TODO report
-    // TODO shorten
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "shorten")
+      std::cout << '\n'
+                << "Syntax: timew shorten @<id> [@<id> ...] <duration>\n"
+                << '\n'
+                << "The 'shorten' command is used to advance the end date of a closed interval.\n"
+                << "Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.\n"
+                << "Using the right ID, you can identify an interval to shorten. For example, show\n"
+                << "the IDs:\n"
+                << '\n'
+                << "  $ timew summary :week :ids\n"
+                << '\n'
+                << "Then having selected '@2' as the interval you wish to shorten:\n"
+                << '\n'
+                << "  $ timew shorten @2 10mins\n"
+                << '\n'
+                << "Note that you can shorten multiple intervals,:\n"
+                << '\n'
+                << "  $ timew shorten @2 @10 @23 1hour\n"
+                << '\n'
+                << "See also 'summary', 'tag', 'untag'.\n";
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
@@ -442,7 +465,7 @@ int CmdHelp (const CLI& cli)
                 << "The ':ids' hint adds an 'IDS' column to the summary report output, for interval\n"
                 << "modification.\n"
                 << '\n'
-                << "See also 'day', 'week', 'month', 'tag', 'untag'.\n"
+                << "See also 'day', 'week', 'month', 'shorten', 'tag', 'untag'.\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
@@ -465,7 +488,7 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "  $ timew tag @2 @10 @23 'Tag One' tag2 tag3\n"
                 << '\n'
-                << "See also 'summary', 'untag'.\n"
+                << "See also 'summary', 'shorten', 'untag'.\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
@@ -516,7 +539,7 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "  $ timew untag @2 @10 @23 'Old Tag' tag2 tag3\n"
                 << '\n'
-                << "See also 'summary', 'tag'.\n"
+                << "See also 'summary', 'shorten', 'tag'.\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
