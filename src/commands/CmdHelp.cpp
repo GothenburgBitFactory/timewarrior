@@ -52,6 +52,7 @@ int CmdHelpUsage ()
             << "       timew tag @<id> <tag> [<tag> ...]\n"
             << "       timew tags\n"
             << "       timew track <interval> [<tag> ...]\n"
+            << "       timew untag @<id> <tag> [<tag> ...]\n"
             << "       timew week [<interval>] [<tag> ...]\n"
             << '\n'
             << "Interval:\n"
@@ -428,7 +429,7 @@ int CmdHelp (const CLI& cli)
                 << "The ':ids' hint adds an 'IDS' column to the summary report output, for interval\n"
                 << "modification.\n"
                 << '\n'
-                << "See also 'day', 'week', 'month', 'tag'.\n"
+                << "See also 'day', 'week', 'month', 'tag', 'untag'.\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
@@ -451,7 +452,7 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "  $ timew tag @2 @10 @23 'Tag One' tag2 tag3\n"
                 << '\n'
-                << "See also 'summary'.\n"
+                << "See also 'summary', 'untag'.\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
@@ -478,6 +479,29 @@ int CmdHelp (const CLI& cli)
                 << "Note that the track command expects a closed interval (start and end time), when\n"
                 << "recording. If a closed interval is not provided, the 'track' command behaves the\n"
                 << "same as the 'start' command.\n"
+                << '\n';
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "untag")
+      std::cout << '\n'
+                << "Syntax: timew untag @<id> <tag> [<tag> ...]\n"
+                << '\n'
+                << "The 'untag' command is used to removed a tag from an interval. Using the\n"
+                << "'summary' command, and specifying the ':ids' hint shows interval IDs. Using the\n"
+                << "right ID, you can identify an interval to untag. For example, show the IDs:\n"
+                << '\n'
+                << "  $ timew summary :week :ids\n"
+                << '\n'
+                << "Then having selected '@2' as the interval you wish to tag:\n"
+                << '\n'
+                << "  $ timew untag @2 'Old Tag'\n"
+                << '\n'
+                << "Note that you can untag multiple intervals, with multiple tags:\n"
+                << '\n'
+                << "  $ timew untag @2 @10 @23 'Old Tag' tag2 tag3\n"
+                << '\n'
+                << "See also 'summary', 'tag'.\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
