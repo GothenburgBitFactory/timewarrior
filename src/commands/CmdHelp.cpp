@@ -50,10 +50,10 @@ int CmdHelpUsage ()
             << "       timew start [<date>] [<tag> ...]\n"
             << "       timew stop [<tag> ...]\n"
             << "       timew summary [<interval>] [<tag> ...]\n"
-            << "       timew tag @<id> <tag> [<tag> ...]\n"
+            << "       timew tag @<id> [@<id> ...] <tag> [<tag> ...]\n"
             << "       timew tags\n"
             << "       timew track <interval> [<tag> ...]\n"
-            << "       timew untag @<id> <tag> [<tag> ...]\n"
+            << "       timew untag @<id> [@<id> ...] <tag> [<tag> ...]\n"
             << "       timew week [<interval>] [<tag> ...]\n"
             << '\n'
             << "Interval:\n"
@@ -449,7 +449,7 @@ int CmdHelp (const CLI& cli)
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "tag")
       std::cout << '\n'
-                << "Syntax: timew tag @<id> <tag> [<tag> ...]\n"
+                << "Syntax: timew tag @<id> [@<id> ...] <tag> [<tag> ...]\n"
                 << '\n'
                 << "The 'tag' command is used to add a tag to an interval. Using the 'summary'\n"
                 << "command, and specifying the ':ids' hint shows interval IDs. Using the right ID,\n"
@@ -500,7 +500,7 @@ int CmdHelp (const CLI& cli)
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "untag")
       std::cout << '\n'
-                << "Syntax: timew untag @<id> <tag> [<tag> ...]\n"
+                << "Syntax: timew untag @<id> [@<id> ...] <tag> [<tag> ...]\n"
                 << '\n'
                 << "The 'untag' command is used to removed a tag from an interval. Using the\n"
                 << "'summary' command, and specifying the ':ids' hint shows interval IDs. Using the\n"
