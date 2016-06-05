@@ -208,7 +208,7 @@ modification.
 See also 'day', 'week', 'month', 'tag', 'untag'.
 
 .TP
-.B timew tag @<id> <tag> [<tag> ...]
+.B timew tag @<id> [@<id> ...] <tag> [<tag> ...]
 The 'tag' command is used to add a tag to an interval. Using the 'summary'
 command, and specifying the ':ids' hint shows interval IDs. Using the right ID,
 you can identify an interval to tag. For example, show the IDs:
@@ -242,7 +242,7 @@ recording. If a closed interval is not provided, the 'track' command behaves the
 same as the 'start' command.
 
 .TP
-.B timew untag @<id> <tag> [<tag> ...]
+.B timew untag @<id> [@<id> ...] <tag> [<tag> ...]
 The 'untag' command is used to remove a tag from an interval. Using the 'summary'
 command, and specifying the ':ids' hint shows interval IDs. Using the right ID,
 you can identify an interval to untag. For example, show the IDs:
