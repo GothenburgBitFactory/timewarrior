@@ -86,11 +86,13 @@ void initializeEntities (CLI& cli)
   cli.entity ("extension", "week");
 
   // Hint entities.
+  cli.entity ("hint", ":adjust");
   cli.entity ("hint", ":blank");
   cli.entity ("hint", ":color");
   cli.entity ("hint", ":day");
   cli.entity ("hint", ":debug");
   cli.entity ("hint", ":fill");
+  cli.entity ("hint", ":ids");
   cli.entity ("hint", ":lastweek");
   cli.entity ("hint", ":month");
   cli.entity ("hint", ":nocolor");
@@ -100,7 +102,6 @@ void initializeEntities (CLI& cli)
   cli.entity ("hint", ":year");
   cli.entity ("hint", ":yes");
   cli.entity ("hint", ":yesterday");
-  cli.entity ("hint", ":ids");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
