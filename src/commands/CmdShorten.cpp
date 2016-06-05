@@ -64,14 +64,18 @@ int CmdShorten (
     {
       // Note: It's okay to subtract a one-based number from a zero-based index.
       Interval i = tracked[tracked.size () - id];
+      if (! i.range.is_open ())
+      {
+        Duration dur (delta);
+        i.range.end -= dur.toTime_t ();
 
-      Duration dur (delta);
-      i.range.end -= dur.toTime_t ();
+        database.modifyInterval (tracked[tracked.size () - id], i);
 
-      database.modifyInterval (tracked[tracked.size () - id], i);
-
-      // Feedback.
-      std::cout << "Shortened @" << id << " by " << dur.formatHours () << '\n';
+        // Feedback.
+        std::cout << "Shortened @" << id << " by " << dur.formatHours () << '\n';
+      }
+      else
+        std::cout << "Cannot shorten open interval @" << id << '\n';
     }
   }
 
