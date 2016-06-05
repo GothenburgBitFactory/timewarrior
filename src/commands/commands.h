@@ -45,6 +45,7 @@ int CmdHelpUsage     (                                                );
 int CmdHelp          (const CLI&                                      );
 int CmdImport        (                                                );
 int CmdReport        (const CLI&, Rules&, Database&, const Extensions&);
+int CmdShorten       (const CLI&, Rules&, Database&                   );
 int CmdShow          (            Rules&                              );
 int CmdStart         (const CLI&, Rules&, Database&                   );
 int CmdStop          (const CLI&, Rules&, Database&                   );

@@ -68,6 +68,7 @@ void initializeEntities (CLI& cli)
   cli.entity ("command", "help");
   cli.entity ("command", "import");
   cli.entity ("command", "report");
+  cli.entity ("command", "shorten");
   cli.entity ("command", "show");
   cli.entity ("command", "start");
   cli.entity ("command", "stop");
@@ -255,6 +256,7 @@ int dispatchCommand (
     else if (command == "import")      status = CmdImport        (                                );
     else if (command == "month")       status = CmdChartMonth    (cli, rules, database            );
     else if (command == "report")      status = CmdReport        (cli, rules, database, extensions);
+    else if (command == "shorten")     status = CmdShorten       (cli, rules, database            );
     else if (command == "show")        status = CmdShow          (     rules                      );
     else if (command == "start")       status = CmdStart         (cli, rules, database            );
     else if (command == "stop")        status = CmdStop          (cli, rules, database            );
