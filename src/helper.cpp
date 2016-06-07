@@ -168,6 +168,28 @@ bool expandIntervalHint (
                    range.end.toISOLocalExtended ()));
     return true;
   }
+  else if (hint == ":lastquarter")
+  {
+    Datetime now;
+    int y = now.year ();
+    int m = now.month ();
+    int q = ((m - 1) / 3) + 1;
+    m = ((q - 1) * 3) + 1;
+
+    if (q == 1)
+    {
+      m = 10;
+      --y;
+    }
+
+    range.start = Datetime (y, m, 1);
+    range.end   = Datetime (y, m + 2, Datetime::daysInMonth (y, m + 2));
+    debug (format ("Hint {1} expanded to {2} - {3}",
+                   hint,
+                   range.start.toISOLocalExtended (),
+                   range.end.toISOLocalExtended ()));
+    return true;
+  }
 
   return false;
 }
