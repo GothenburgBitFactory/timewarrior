@@ -30,6 +30,7 @@
 #include <Pig.h>
 #include <shared.h>
 #include <format.h>
+#include <utf8.h>
 #include <sstream>
 #include <algorithm>
 
@@ -145,10 +146,16 @@ void CLI::entity (const std::string& category, const std::string& name)
 void CLI::add (const std::string& argument)
 {
   // Sanitize the input: Convert control charts to spaces. Then trim.
-  auto clean = argument;
-  for (auto& c : clean)
-    if (c <= 32)
-      c = ' ';
+  std::string clean;
+  std::string::size_type i = 0;
+  int character;
+  while ((character = utf8_next_char (argument.c_str (), i)))
+  {
+    if (character <= 32)
+       clean += ' ';
+    else
+       clean += utf8_character (character);
+  }
 
   A2 arg (Lexer::trim (clean), Lexer::Type::word);
   arg.tag ("ORIGINAL");

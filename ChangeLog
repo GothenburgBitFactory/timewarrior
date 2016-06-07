@@ -7,6 +7,8 @@
           (thanks to Jelle van der Waa).
 - TI-2    Two line tags causes false entry in database
           (thanks to Sebastian Uharek).
+- TI-5    Unicode tags not working.
+          (thanks to Sergey Trofimov).
 - Added 'continue' command.
 - Added 'diagnostics' command.
 - Added 'export' command.
