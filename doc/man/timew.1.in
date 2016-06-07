@@ -124,6 +124,25 @@ supported hints and interval syntax. For example:
   $ timew help interval
 
 .TP
+.B timew lengthen @<id> [@<id> ...] <duration>
+The 'lengthen' command is used to defer the end date of a closed interval.
+Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
+Using the right ID, you can identify an interval to lengthen. For example, show
+the IDs:
+
+  $ timew summary :week :ids
+
+Then having selected '@2' as the interval you wish to lengthen:
+
+  $ timew lengthen @2 10mins
+
+Note that you can lengthen multiple intervals,:
+
+  $ timew lengthen @2 @10 @23 1hour
+
+See also 'summary', 'tag', 'untag', 'shorten'.
+
+.TP
 .B timew month [<interval>] [<tag> ...]
 The month command shows a chart depicting a single month (current month by
 default), with colored blocks drawn on a timeline. The chart summarizes the
@@ -172,7 +191,7 @@ Note that you can shorten multiple intervals,:
 
   $ timew shorten @2 @10 @23 1hour
 
-See also 'summary', 'tag', 'untag'.
+See also 'summary', 'tag', 'untag', 'lengthen'.
 
 .TP
 .B timew show
@@ -224,7 +243,7 @@ filtering, or shortcut hints:
 The ':ids' hint adds an 'IDS' column to the summary report output, for interval
 modification.
 
-See also 'day', 'week', 'month', 'tag', 'untag'.
+See also 'day', 'week', 'month', 'shorten', 'lengthen', 'tag', 'untag'.
 
 .TP
 .B timew tag @<id> [@<id> ...] <tag> [<tag> ...]
@@ -242,7 +261,7 @@ Note that you can tag multiple intervals, with multiple tags:
 
   $ timew tag @2 @10 @23 'Tag One' tag2 tag3
 
-See also 'summary', 'untag'.
+See also 'summary', 'shorten', 'lengthen', 'untag'.
 
 .TP
 .B timew tags
@@ -276,7 +295,7 @@ Note that you can untag multiple intervals, with multiple tags:
 
   $ timew untag @2 @10 @23 'Old Tag' tag2 tag3
 
-See also 'summary', 'tag'.
+See also 'summary', 'shorten', 'lengthen', 'tag'.
 
 .TP
 .B timew week [<interval>] [<tag> ...]
