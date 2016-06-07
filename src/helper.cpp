@@ -149,6 +149,25 @@ bool expandIntervalHint (
                    range.end.toISOLocalExtended ()));
     return true;
   }
+  else if (hint == ":lastmonth")
+  {
+    Datetime now;
+    int y = now.year ();
+    int m = now.month () - 1;
+    if (m == 0)
+    {
+      m = 12;
+      --y;
+    }
+
+    range.start = Datetime (y, m, 1);
+    range.end   = Datetime (y, m, Datetime::daysInMonth (y, m));
+    debug (format ("Hint {1} expanded to {2} - {3}",
+                   hint,
+                   range.start.toISOLocalExtended (),
+                   range.end.toISOLocalExtended ()));
+    return true;
+  }
 
   return false;
 }

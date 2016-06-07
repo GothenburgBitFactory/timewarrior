@@ -358,6 +358,7 @@ Range hints provide convenient shortcuts to date ranges:
   :quarter       This quarter
   :year          This year
   :lastweek      Last week
+  :lastmonth     Last month
 
 
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS

@@ -302,6 +302,7 @@ int CmdHelp (const CLI& cli)
                 << "  :quarter       This quarter\n"
                 << "  :year          This year\n"
                 << "  :lastweek      Last week\n"
+                << "  :lastmonth     Last month\n"
                 << '\n'
                 << '\n';
 
