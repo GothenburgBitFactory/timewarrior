@@ -44,6 +44,7 @@ int CmdHelpUsage ()
             << "       timew extensions\n"
             << "       timew gaps [<interval>] [<tag> ...]\n"
             << "       timew help [<command> | hints]\n"
+            << "       timew lengthen @<id> [@<id> ...] <duration>\n"
             << "       timew month [<interval>] [<tag> ...]\n"
             << "       timew [report] <report> [<interval>] [<tag> ...]\n"
             << "       timew shorten @<id> [@<id> ...] <duration>\n"
@@ -80,8 +81,6 @@ int CmdHelpUsage ()
   // TODO undo
   // TODO join
   // TODO split
-  // TODO lengthen
-  // TODO shorten
   // TODO move
 
   // TODO List all extensions.
@@ -340,7 +339,29 @@ int CmdHelp (const CLI& cli)
                 << '\n';
 
     // TODO join
-    // TODO lengthen
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "lengthen")
+      std::cout << '\n'
+                << "Syntax: timew lengthen @<id> [@<id> ...] <duration>\n"
+                << '\n'
+                << "The 'lengthen' command is used to defer the end date of a closed interval.\n"
+                << "Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.\n"
+                << "Using the right ID, you can identify an interval to lengthen. For example, show\n"
+                << "the IDs:\n"
+                << '\n'
+                << "  $ timew summary :week :ids\n"
+                << '\n'
+                << "Then having selected '@2' as the interval you wish to lengthen:\n"
+                << '\n'
+                << "  $ timew lengthen @2 10mins\n"
+                << '\n'
+                << "Note that you can lengthen multiple intervals,:\n"
+                << '\n'
+                << "  $ timew lengthen @2 @10 @23 1hour\n"
+                << '\n'
+                << "See also 'summary', 'tag', 'untag', 'shorten'.\n";
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
@@ -392,7 +413,7 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "  $ timew shorten @2 @10 @23 1hour\n"
                 << '\n'
-                << "See also 'summary', 'tag', 'untag'.\n";
+                << "See also 'summary', 'tag', 'untag', 'lengthen'.\n";
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
@@ -468,7 +489,7 @@ int CmdHelp (const CLI& cli)
                 << "The ':ids' hint adds an 'IDS' column to the summary report output, for interval\n"
                 << "modification.\n"
                 << '\n'
-                << "See also 'day', 'week', 'month', 'shorten', 'tag', 'untag'.\n"
+                << "See also 'day', 'week', 'month', 'shorten', 'lengthen', 'tag', 'untag'.\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
@@ -491,7 +512,7 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "  $ timew tag @2 @10 @23 'Tag One' tag2 tag3\n"
                 << '\n'
-                << "See also 'summary', 'shorten', 'untag'.\n"
+                << "See also 'summary', 'shorten', 'lengthen', 'untag'.\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
@@ -542,7 +563,7 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "  $ timew untag @2 @10 @23 'Old Tag' tag2 tag3\n"
                 << '\n'
-                << "See also 'summary', 'shorten', 'tag'.\n"
+                << "See also 'summary', 'shorten', 'lengthen', 'tag'.\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
