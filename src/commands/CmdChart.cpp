@@ -470,8 +470,11 @@ static void renderInterval (
 
   work = clipped.range.total ();
 
-  int start_offset = (start_mins / 15) + (spacing * (start_mins / 60));
-  int end_offset   = (end_mins   / 15) + (spacing * (end_mins   / 60));
+  auto start_block = quantizeTo15Minutes (start_mins) / 15;
+  auto end_block   = quantizeTo15Minutes (end_mins == 0 ? 60 : end_mins) / 15;
+
+  int start_offset = start_block + (spacing * (start_mins / 60));
+  int end_offset   = end_block   + (spacing * (end_mins   / 60));
 
   if (end_offset > start_offset)
   {
