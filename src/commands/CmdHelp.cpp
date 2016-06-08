@@ -46,6 +46,7 @@ int CmdHelpUsage ()
             << "       timew help [<command> | hints]\n"
             << "       timew lengthen @<id> [@<id> ...] <duration>\n"
             << "       timew month [<interval>] [<tag> ...]\n"
+            << "       timew move @<id> <date>\n"
             << "       timew [report] <report> [<interval>] [<tag> ...]\n"
             << "       timew shorten @<id> [@<id> ...] <duration>\n"
             << "       timew show\n"
@@ -81,7 +82,6 @@ int CmdHelpUsage ()
   // TODO undo
   // TODO join
   // TODO split
-  // TODO move
 
   // TODO List all extensions.
 
@@ -389,7 +389,25 @@ int CmdHelp (const CLI& cli)
                 << "See also 'day', 'week', 'summary'.\n"
                 << '\n';
 
-    // TODO move
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "move")
+      std::cout << '\n'
+                << "Syntax: timew move @<id> <date>\n"
+                << '\n'
+                << "The 'move' command is used to relocate an interval intact to a new start time.\n"
+                << "Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.\n"
+                << "Using the right ID, you can identify an interval to move. For example, show\n"
+                << "the IDs:\n"
+                << '\n'
+                << "  $ timew summary :week :ids\n"
+                << '\n'
+                << "Then having selected '@2' as the interval you wish to move:\n"
+                << '\n'
+                << "  $ timew move @2 9am\n"
+                << '\n'
+                << "See also 'summary', 'tag', 'untag', 'lengthen', 'shorten'.\n";
+
     // TODO report
 
     // Ruler                 1         2         3         4         5         6         7         8
