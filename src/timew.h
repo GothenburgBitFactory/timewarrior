@@ -77,6 +77,7 @@ std::string minimalDelta (const Datetime&, const Datetime&);
 // log.cpp
 void enableDebugMode (bool);
 void setDebugIndicator (const std::string&);
+void setDebugColor (const Color&);
 void debug (const std::string&);
 
 // utiŀ.cpp

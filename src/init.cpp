@@ -192,6 +192,9 @@ void initializeDataAndRules (
   if (rules.has ("debug.indicator"))
     setDebugIndicator (rules.get ("debug.indicator"));
 
+  if (rules.has ("theme.colors.debug"))
+    setDebugColor (Color (rules.get ("theme.colors.debug")));
+
   // Apply command line overrides.
   for (auto& arg : cli._args)
   {
