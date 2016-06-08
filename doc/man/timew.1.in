@@ -164,6 +164,21 @@ For more details, and precise times, use the 'summary' report.
 See also 'day', 'week', 'summary'.
 
 .TP
+.B timew move @<id> <date>
+The 'move' command is used to relocate an interval intact to a new start time.
+Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
+Using the right ID, you can identify an interval to move. For example, show
+the IDs:
+
+  $ timew summary :week :ids
+
+Then having selected '@2' as the interval you wish to move:
+
+  $ timew move @2 9am
+
+See also 'summary', 'tag', 'untag', 'lengthen', 'shorten'.
+
+.TP
 .B timew [report] <report> [<interval>] [<tag> ...]
 Runs an extension report, and supports filtering data.
 The 'report' command itself is optional, which means that these two commands
