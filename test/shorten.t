@@ -70,6 +70,21 @@ class TestShorten(TestCase):
 
 # TODO Add :adjust tests.
 
+class TestBug6(TestCase):
+    def setUp(self):
+        """Executed before each test in the class"""
+        self.t = Timew()
+
+    def test_over_shorten_closed_interval(self):
+        """TI-6: Exception after shortening task.
+
+           When an interval is shortened by an amount that exceeds it's length,
+           an assert is triggered, and should be an error instead.
+        """
+        self.t("track 2016-06-08T07:30:00 - 2016-06-08T07:35:00 foo")
+        code, out, err = self.t("shorten @1 10mins")
+        self.assertIn('Cannot shorten interval @1 by 0:10:00 because it is only 0:05:00 in length.', out)
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())

@@ -11,6 +11,8 @@
           (thanks to Tomas Babej).
 - TI-5    Unicode tags not working.
           (thanks to Sergey Trofimov).
+- TI-6    Exception after shortening task.
+          (thanks to Sergey Trofimov).
 - Added 'continue' command.
 - Added 'diagnostics' command.
 - Added 'export' command.

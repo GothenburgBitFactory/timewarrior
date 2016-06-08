@@ -67,12 +67,23 @@ int CmdShorten (
       if (! i.range.is_open ())
       {
         Duration dur (delta);
-        i.range.end -= dur.toTime_t ();
+        if (dur < (i.range.end - i.range.start))
+        {
+          i.range.end -= dur.toTime_t ();
 
-        database.modifyInterval (tracked[tracked.size () - id], i);
+          database.modifyInterval (tracked[tracked.size () - id], i);
 
-        // Feedback.
-        std::cout << "Shortened @" << id << " by " << dur.formatHours () << '\n';
+          // Feedback.
+          std::cout << "Shortened @" << id << " by " << dur.formatHours () << '\n';
+        }
+        else
+          std::cout << "Cannot shorten interval @"
+                    << id
+                    << " by "
+                    << dur.formatHours ()
+                    << " because it is only "
+                    << Duration (i.range.end - i.range.start).formatHours ()
+                    << " in length.\n";
       }
       else
         std::cout << "Cannot shorten open interval @" << id << '\n';
