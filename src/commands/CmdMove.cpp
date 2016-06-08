@@ -37,13 +37,18 @@ int CmdMove (
   Rules& rules,
   Database& database)
 {
-  // Gather IDs and TAGs.
-  std::vector <int> ids;
+  // Gather ID and TAGs.
+  int id = 0;
   std::string new_start;
   for (auto& arg : cli._args)
   {
     if (arg.hasTag ("ID"))
-      ids.push_back (strtol (arg.attribute ("value").c_str (), NULL, 10));
+    {
+      if (id)
+        throw std::string ("The 'move' command only supports a single ID.");
+      else
+        id = strtol (arg.attribute ("value").c_str (), NULL, 10);
+    }
 
     if (arg.hasTag ("FILTER") &&
         arg._lextype == Lexer::Type::date)
@@ -57,35 +62,32 @@ int CmdMove (
   Interval filter;
   auto tracked = getTracked (database, rules, filter);
 
-  // Move start times.
-  for (auto& id : ids)
+  // Move start time.
+  if (id <= static_cast <int> (tracked.size ()))
   {
-    if (id <= static_cast <int> (tracked.size ()))
+    // Note: It's okay to subtract a one-based number from a zero-based index.
+    Interval i = tracked[tracked.size () - id];
+    Datetime start (new_start);
+
+    // Changing the start date should also change the end date by the same
+    // amount.
+    if (i.range.start < start)
     {
-      // Note: It's okay to subtract a one-based number from a zero-based index.
-      Interval i = tracked[tracked.size () - id];
-      Datetime start (new_start);
-
-      // Changing the start date should also change the end date by the same
-      // amount.
-      if (i.range.start < start)
-      {
-        auto delta = start - i.range.start;
-        i.range.start = start;
-        i.range.end += delta;
-      }
-      else
-      {
-        auto delta = i.range.start - start;
-        i.range.start = start;
-        i.range.end -= delta;
-      }
-
-      database.modifyInterval (tracked[tracked.size () - id], i);
-
-      // Feedback.
-      std::cout << "Moved @" << id << " to " << i.range.start.toISOLocalExtended () << '\n';
+      auto delta = start - i.range.start;
+      i.range.start = start;
+      i.range.end += delta;
     }
+    else
+    {
+      auto delta = i.range.start - start;
+      i.range.start = start;
+      i.range.end -= delta;
+    }
+
+    database.modifyInterval (tracked[tracked.size () - id], i);
+
+    // Feedback.
+    std::cout << "Moved @" << id << " to " << i.range.start.toISOLocalExtended () << '\n';
   }
 
   return 0;
