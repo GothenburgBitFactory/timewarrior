@@ -253,6 +253,65 @@ int CmdHelp (const CLI& cli)
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "duration")
+      std::cout << '\n'
+                << "Timewarrior supports the following duration formats based on ISO-8601:\n"
+                << '\n'
+                << "  'P' [nn 'Y'] [nn 'M'] [nn 'D'] ['T' [nn 'H'] [nn 'M'] [nn 'S']]\n"
+                << "  PnnW\n"
+                << '\n'
+                << "Examples:\n"
+                << "  P1Y           1 year\n"
+                << "  P1.5M         1.5 months\n"
+                << "  PT1S          1 second\n"
+                << "  PT4.5H        4.5 hours\n"
+                << "  PT4H30M       4.5 hours\n"
+                << "  P600D         600 days\n"
+                << "  P3W           3 weeks\n"
+                << "  P1Y1DT1H1M1S  1 year and 25 hours, 61 seconds (imprecise term)\n"
+                << '\n'
+                << "  Note that the year and month terms are imprecise, being defined as 365d and\n"
+                << "  30d respectively. For precision use the other terms.\n"
+                << '\n'
+                << "In addition to the standard duration formats, the following are supported:\n"
+                << '\n'
+                << "  n[.n]<unit>\n"
+                << '\n'
+                << "Where the <unit> is one of:\n"
+                << '\n'
+                << "  annual\n"
+                << "  biannual\n"
+                << "  bimonthly\n"
+                << "  biweekly\n"
+                << "  biyearly\n"
+                << "  daily\n"
+                << "  days, day, d\n"
+                << "  fortnight\n"
+                << "  hours, hour, hrs, hr, h\n"
+                << "  minutes, minute, mins, min\n"
+                << "  monthly, months, month, mnths, mths, mth, mos, mo, m\n"
+                << "  quarterly, quarters, quarter, qrtrs, qtr, q\n"
+                << "  semiannual\n"
+                << "  sennight\n"
+                << "  seconds, second, secs, sec, s\n"
+                << "  weekdays\n"
+                << "  weekly, weeks, week, wks, wk, w\n"
+                << "  yearly, years, year, yrs, yr, y\n"
+                << '\n'
+                << "Examples:\n"
+                << "  1hour         60 minutes\n"
+                << "  1.5h          90 minutes\n"
+                << "  3mo           3 months\n"
+                << "  10d           10 days\n"
+                << '\n'
+                << "  Note that the year, quarter and month terms are imprecise, being defined as\n"
+                << "  365d, 91d and 30d respectively. For precision use the other terms.\n"
+                << '\n'
+                << "See also 'date', 'hints'.\n"
+                << '\n';
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "day")
       std::cout << '\n'
                 << "Syntax: timew day [<interval>] [<tag> ...]\n"
