@@ -169,6 +169,90 @@ int CmdHelp (const CLI& cli)
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "date")
+      std::cout << '\n'
+                << "Timewarrior supports the following date formats based on ISO-8601:\n"
+                << '\n'
+                << "  <extended-date> [T <extended-time>]   Extended date, optional extended time\n"
+                << "  <date> [T <time>]                     Date, optional time\n"
+                << "  <extended-time>                       Extended time\n"
+                << "  <time>                                Time\n"
+                << '\n'
+                << "  extended-date:\n"
+                << "    YYYY-MM-DD                          Year, month, day\n"
+                << "    YYYY-MM                             Year, month, 1st\n"
+                << "    YYYY-DDD                            Year, Julian day 001-366\n"
+                << "    YYYY-WwwD                           Year, week number, day number\n"
+                << "    YYYY-Www                            Year, week number, day 1\n"
+                << '\n'
+                << "  extended-time:\n"
+                << "    hh:mm[:ss]Z                         Hours, minutes, optional seconds, UTC\n"
+                << "    hh:mm[:ss][+/-hh:mm]                Hours, minutes, optional seconds, TZ\n"
+                << '\n'
+                << "  date:\n"
+                << "    YYYYMMDD                            Year, month, day\n"
+                << "    YYYYWww                             Year, week number, day number\n"
+                << "    YYYYDDD                             Year, Julian day 001-366\n"
+                << '\n'
+                << "  time:\n"
+                << "    hhmm[ss]Z                           Hour, minutes, optional seconds, UTC\n"
+                << "    hhmm[ss][+/-hh[mm]]                 Hour, minutes, optional seconds, TZ\n"
+                << '\n'
+                << "Examples:\n"
+                << "  2016-06-09T08:12:00Z\n"
+                << "  2016-06T08:12:00+01:00\n"
+                << "  2016-06T08:12Z\n"
+                << "  2016-161\n"
+                << "  2016-W244\n"
+                << "  2016-W24\n"
+                << "  20160609T081200Z\n"
+                << "  2016W24\n"
+                << "  8:12:00Z\n"
+                << "  0812-0500\n"
+                << '\n'
+                << "In addition to the standard date formats, the following are supported:\n"
+                << '\n'
+                << "  now                                   Current date and time\n"
+                << "  today                                 Current date at 0:00:00\n"
+                << "  sod, eod                              Current date at 0:00:00 and 23:59:59\n"
+                << "  yesterday                             Yesterday at 0:00:00\n"
+                << "  tomorrow                              Tomorrow at 0:00:00 (midnight tonight)\n"
+                << "  <day-of-week>                         Previous named day at 0:00:00\n"
+                << "  <month-of-year>                       Previous 1st of the  month at 0:00:00\n"
+                << "  Nst, Nnd, Nrd, Nth                    Previous 1st, 2nd, 3rd ...\n"
+                << "  later                                 2038-01-18T0:00:00 (Y2K38)\n"
+                << "  someday                               2038-01-18T0:00:00 (Y2K38)\n"
+                << "  soy, eoy                              Previous start/end of year\n"
+                << "  socy, eocy                            Start/end of current year\n"
+                << "  soq, eoq                              Previous start/end of quarter\n"
+                << "  socq, eocq                            Start/end of current quarter\n"
+                << "  som, eom                              Previous start/end of month\n"
+                << "  socm, eocm                            Start/end of current month\n"
+                << "  sow, eow                              Previous start/end of week\n"
+                << "  socw, eocw                            Start/end of current week\n"
+                << "  soww, eoww                            Start/end of current work week (mon - fri)\n"
+                << "  easter                                Easter Sunday\n"
+                << "  eastermonday                          Easter Monday\n"
+                << "  ascension                             Ascension\n"
+                << "  pentecost                             Pentecost\n"
+                << "  goodfriday                            Good Friday\n"
+                << "  midsommar                             midnight, 1st Saturday after 20th June\n"
+                << "  midsommarafton                        midnight, 1st Friday after 19th June\n"
+                << "  juhannus                              midnight, 1st Friday after 19th June\n"
+                << "  hh:mm[:ss][am|a|pm|p]                 Short time format\n"
+                << "  <epoch>                               POSIX time\n"
+                << '\n'
+                << "Examples:\n"
+                << "  8am\n"
+                << "  24th\n"
+                << "  monday\n"
+                << "  august\n"
+                << '\n'
+                << "See also 'duration', 'hints'.\n"
+                << '\n';
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "day")
       std::cout << '\n'
                 << "Syntax: timew day [<interval>] [<tag> ...]\n"
