@@ -43,7 +43,7 @@ int CmdHelpUsage ()
             << "       timew export [<interval>] [<tag> ...]\n"
             << "       timew extensions\n"
             << "       timew gaps [<interval>] [<tag> ...]\n"
-            << "       timew help [<command> | hints]\n"
+            << "       timew help [<command> | interval | hints | date | duration]\n"
             << "       timew lengthen @<id> [@<id> ...] <duration>\n"
             << "       timew month [<interval>] [<tag> ...]\n"
             << "       timew move @<id> <date>\n"
@@ -58,6 +58,12 @@ int CmdHelpUsage ()
             << "       timew track <interval> [<tag> ...]\n"
             << "       timew untag @<id> [@<id> ...] <tag> [<tag> ...]\n"
             << "       timew week [<interval>] [<tag> ...]\n"
+            << '\n'
+            << "Additional help:\n"
+            << "       timew help <command>\n"
+            << "       timew help hints\n"
+            << "       timew help date\n"
+            << "       timew help duration\n"
             << '\n'
             << "Interval:\n"
             << "       [from] <date>\n"
@@ -398,13 +404,16 @@ int CmdHelp (const CLI& cli)
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "help")
       std::cout << '\n'
-                << "The help command shows detailed descriptions and examples of commands and the\n"
-                << "supported hints. For example:\n"
+                << "Syntax: timew help [<command> | interval | hints | date | duration]\n"
+                << "The help command shows detailed descriptions and examples of commands,\n"
+                << "interval syntax, supported hints, date and duration formats. For example:\n"
                 << '\n'
                 << "  $ timew help\n"
                 << "  $ timew help start\n"
                 << "  $ timew help hints\n"
                 << "  $ timew help interval\n"
+                << "  $ timew help date\n"
+                << "  $ timew help duration\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
