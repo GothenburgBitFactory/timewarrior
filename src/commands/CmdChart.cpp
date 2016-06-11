@@ -234,7 +234,8 @@ static void determineHourRange (
         if (track.range.start.hour () < first_hour)
           first_hour = track.range.start.hour ();
 
-        if (track.range.end.hour () > last_hour)
+        if (! track.range.is_open () &&
+            track.range.end.hour () > last_hour)
           last_hour = track.range.end.hour ();
       }
 
