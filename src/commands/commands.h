@@ -49,6 +49,7 @@ int CmdMove          (const CLI&, Rules&, Database&                   );
 int CmdReport        (const CLI&, Rules&, Database&, const Extensions&);
 int CmdShorten       (const CLI&, Rules&, Database&                   );
 int CmdShow          (            Rules&                              );
+int CmdSplit         (const CLI&, Rules&, Database&                   );
 int CmdStart         (const CLI&, Rules&, Database&                   );
 int CmdStop          (const CLI&, Rules&, Database&                   );
 int CmdTag           (const CLI&, Rules&, Database&                   );

@@ -72,6 +72,7 @@ void initializeEntities (CLI& cli)
   cli.entity ("command", "report");
   cli.entity ("command", "shorten");
   cli.entity ("command", "show");
+  cli.entity ("command", "split");
   cli.entity ("command", "start");
   cli.entity ("command", "stop");
   cli.entity ("command", "tag");
@@ -269,6 +270,7 @@ int dispatchCommand (
     else if (command == "report")      status = CmdReport        (cli, rules, database, extensions);
     else if (command == "shorten")     status = CmdShorten       (cli, rules, database            );
     else if (command == "show")        status = CmdShow          (     rules                      );
+    else if (command == "split")       status = CmdSplit         (cli, rules, database            );
     else if (command == "start")       status = CmdStart         (cli, rules, database            );
     else if (command == "stop")        status = CmdStop          (cli, rules, database            );
     else if (command == "summary")     status = CmdSummary       (cli, rules, database            );
