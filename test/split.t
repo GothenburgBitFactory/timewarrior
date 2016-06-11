@@ -62,11 +62,39 @@ class TestSplit(TestCase):
         code, out, err = self.t("split @1")
         self.assertIn('Split @1', out)
 
+        j = self.t.export()
+        self.assertEqual(len(j), 2)
+        self.assertTrue('start' in j[0])
+        self.assertTrue('end' in j[0])
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'][0], 'foo')
+
+        self.assertTrue('start' in j[1])
+        self.assertTrue('end' in j[1])
+        self.assertTrue('tags' in j[1])
+        self.assertEqual(j[1]['tags'][0], 'foo')
+
+        self.assertEqual(j[0]['end'], j[1]['start'])
+
     def test_split_open_interval(self):
         """Split an open interval"""
         self.t("start 2016-06-10T00:00:00 foo")
         code, out, err = self.t("split @1")
         self.assertIn('Split @1', out)
+
+        j = self.t.export()
+        self.assertEqual(len(j), 2)
+        self.assertTrue('start' in j[0])
+        self.assertTrue('end' in j[0])
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'][0], 'foo')
+
+        self.assertTrue('start' in j[1])
+        self.assertTrue('end' not in j[1])
+        self.assertTrue('tags' in j[1])
+        self.assertEqual(j[1]['tags'][0], 'foo')
+
+        self.assertEqual(j[0]['end'], j[1]['start'])
 
 # TODO Add :adjust tests.
 
