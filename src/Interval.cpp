@@ -183,6 +183,9 @@ std::string Interval::dump () const
 
   out << "interval";
 
+  if (id)
+    out << " " << id;
+
   if (range.start.toEpoch ())
     out << " " << range.start.toISOLocalExtended ();
 

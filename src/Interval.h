@@ -49,6 +49,7 @@ public:
 
 public:
   Range                  range  {};
+  int                    id     {0};
 
 private:
   std::set <std::string> _tags  {};
