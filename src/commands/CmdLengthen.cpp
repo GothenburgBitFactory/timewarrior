@@ -72,7 +72,8 @@ int CmdLengthen (
         database.modifyInterval (tracked[tracked.size () - id], i);
 
         // Feedback.
-        std::cout << "Lengthened @" << id << " by " << dur.formatHours () << '\n';
+        if (rules.getBoolean ("verbose"))
+          std::cout << "Lengthened @" << id << " by " << dur.formatHours () << '\n';
       }
       else
         std::cout << "Cannot lengthen open interval @" << id << '\n';
