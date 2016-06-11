@@ -112,11 +112,16 @@ int CmdGaps (
   table.set (table.addRow (), 6, Duration (grand_total).formatHours ());
 
   if (table.rows () > 2)
+  {
     std::cout << '\n'
               << table.render ()
               << '\n';
+  }
   else
-    std::cout << "No gaps found.\n";
+  {
+    if (rules.getBoolean ("verbose"))
+      std::cout << "No gaps found.\n";
+  }
 
   return 0;
 }
