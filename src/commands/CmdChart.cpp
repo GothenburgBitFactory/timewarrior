@@ -38,7 +38,7 @@
 #include <iomanip>
 
 int                renderChart           (const CLI&, const std::string&, Interval&, Rules&, Database&);
-static void        determineHourRange    (const std::string&, const Rules&, const std::vector <Interval>&, int&, int&);
+static void        determineHourRange    (const std::string&, const Rules&, const Interval&, const std::vector <Interval>&, int&, int&);
 static void        renderAxis            (const std::string&, const Rules&, Palette&, const std::string&, int, int);
 static std::string renderMonth           (const std::string&, const Rules&, const Datetime&, const Datetime&);
 static std::string renderDayName         (const std::string&, const Rules&, Datetime&, Color&, Color&);
@@ -127,7 +127,7 @@ int renderChart (
   // Determine hours shown.
   int first_hour = 0;
   int last_hour  = 23;
-  determineHourRange (type, rules, tracked, first_hour, last_hour);
+  determineHourRange (type, rules, filter, tracked, first_hour, last_hour);
 
   // Render the axis.
   std::cout << '\n';
@@ -213,6 +213,7 @@ int renderChart (
 static void determineHourRange (
   const std::string& type,
   const Rules& rules,
+  const Interval& filter,
   const std::vector <Interval>& tracked,
   int& first_hour,
   int& last_hour)
@@ -229,14 +230,26 @@ static void determineHourRange (
       // Get the extreme time range for the filtered data.
       first_hour = 23;
       last_hour  = 0;
-      for (auto& track : tracked)
+      for (Datetime day = filter.range.start; day < filter.range.end; day++)
       {
-        if (track.range.start.hour () < first_hour)
-          first_hour = track.range.start.hour ();
+        auto day_range = getFullDay (day);
 
-        if (! track.range.is_open () &&
-            track.range.end.hour () > last_hour)
-          last_hour = track.range.end.hour ();
+        for (auto& track : tracked)
+        {
+          if (day_range.overlap (track.range))
+          {
+            Interval clipped = clip (track, day_range);
+            if (track.range.is_open ())
+              clipped.range.end = Datetime ();
+
+            if (clipped.range.start.hour () < first_hour)
+              first_hour = clipped.range.start.hour ();
+
+            if (! clipped.range.is_open () &&
+                clipped.range.end.hour () > last_hour)
+              last_hour = clipped.range.end.hour ();
+          }
+        }
       }
 
       first_hour = std::max (first_hour - 1, 0);
