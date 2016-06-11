@@ -62,13 +62,52 @@ class TestMove(TestCase):
         code, out, err = self.t("move @1 2016-01-01T02:00:00")
         self.assertIn('Moved @1 to 2016-01-01T02:00:00', out)
 
+        j = self.t.export()
+        self.assertEqual(len(j), 1)
+        self.assertTrue('start' in j[0])
+        self.assertTrue('end' in j[0])
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'][0], 'foo')
+
     def test_move_closed_backwards(self):
         """Move a closed interval backwards in time"""
         self.t("track 2016-01-01T04:00:00 - 2016-01-01T05:00:00 foo")
         code, out, err = self.t("move @1 2016-01-01T03:00:00")
         self.assertIn('Moved @1 to 2016-01-01T03:00:00', out)
 
-# TODO Add open interval tests.
+        j = self.t.export()
+        self.assertEqual(len(j), 1)
+        self.assertTrue('start' in j[0])
+        self.assertTrue('end' in j[0])
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'][0], 'foo')
+
+    def test_move_open_backwards(self):
+        """Move an open interval backwards in time"""
+        self.t("start 1h ago foo")
+        code, out, err = self.t("move @1 yesterday")
+        self.assertRegexpMatches(out, 'Moved @1 to \d\d\d\d-\d\d-\d\dT00:00:00')
+
+        j = self.t.export()
+        self.assertEqual(len(j), 1)
+        self.assertTrue('start' in j[0])
+        self.assertTrue('end' not in j[0])
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'][0], 'foo')
+
+    def test_move_open_forwards(self):
+        """Move an open interval forwards in time"""
+        self.t("start 2d ago foo")
+        code, out, err = self.t("move @1 yesterday")
+        self.assertRegexpMatches(out, 'Moved @1 to \d\d\d\d-\d\d-\d\dT00:00:00')
+
+        j = self.t.export()
+        self.assertEqual(len(j), 1)
+        self.assertTrue('start' in j[0])
+        self.assertTrue('end' not in j[0])
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'][0], 'foo')
+
 # TODO Add :adjust tests.
 
 if __name__ == "__main__":
