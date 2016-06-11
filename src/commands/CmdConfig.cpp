@@ -299,10 +299,13 @@ int CmdConfig (
           throw format ("No entry named '{1}' found.", name);
       }
 
-      if (change)
-        std::cout << "Config file " << rules.file () << " modified.\n";
-      else
-        std::cout << "No changes made.\n";
+      if (rules.getBoolean ("verbose"))
+      {
+        if (change)
+          std::cout << "Config file " << rules.file () << " modified.\n";
+        else
+          std::cout << "No changes made.\n";
+      }
     }
     else
       CmdShow (rules);
