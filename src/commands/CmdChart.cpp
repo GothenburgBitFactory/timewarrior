@@ -45,7 +45,7 @@ static std::string renderDayName         (const std::string&, const Rules&, Date
 static std::string renderTotal           (const std::string&, const Rules&, time_t);
 static std::string renderSubTotal        (const std::string&, const Rules&, int, int, time_t);
 static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
-static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, int, time_t&);
+static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, int, time_t&, bool);
        std::string renderHolidays        (const std::string&, const Rules&, const Interval&);
 static std::string renderSummary         (const std::string&, const Rules&, const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
 
@@ -149,6 +149,7 @@ int renderChart (
 
   // Is the :blank hint being used?
   bool blank = findHint (cli, ":blank");
+  bool ids   = findHint (cli, ":ids");
 
   // Determine how much space is occupied by the left-margin labels.
   int indent = (rules.getBoolean ("reports." + type + ".month")   ? 4 : 0) +
@@ -174,7 +175,7 @@ int renderChart (
       for (auto& track : tracked)
       {
         time_t interval_work = 0;
-        renderInterval (type, rules, lines, day, track, palette, tag_colors, first_hour, interval_work);
+        renderInterval (type, rules, lines, day, track, palette, tag_colors, first_hour, interval_work, ids);
         work += interval_work;
       }
     }
@@ -463,7 +464,8 @@ static void renderInterval (
   Palette& palette,
   std::map <std::string, Color>& tag_colors,
   int first_hour,
-  time_t& work)
+  time_t& work,
+  bool ids)
 {
   auto spacing = rules.getInteger ("reports." + type + ".spacing");
 
@@ -503,12 +505,19 @@ static void renderInterval (
 
     // Properly format the tags within the space.
     std::string label;
-    for (auto& tag : track.tags ())
+    if (ids)
     {
-      if (label != "")
-        label += ' ';
+      label = format ("@{1}", track.id);
+    }
+    else
+    {
+      for (auto& tag : track.tags ())
+      {
+        if (label != "")
+          label += ' ';
 
-      label += tag;
+        label += tag;
+      }
     }
 
     auto width = end_offset - start_offset;
