@@ -69,9 +69,6 @@ int CmdJoin (
       Interval first  = tracked[tracked.size () - first_id];
       Interval second = tracked[tracked.size () - second_id];
 
-      std::cout << "# @" << first_id << " first " << first.dump () << "\n";
-      std::cout << "# @" << second_id << " second " << second.dump () << "\n";
-
       // TODO Require confirmation if intervals are not consecutive.
       // TODO Require confirmation if tags don't match.
 
@@ -82,7 +79,8 @@ int CmdJoin (
       database.modifyInterval (first, combined);
 
       // Feedback.
-      std::cout << "Joined @" << ids[0] << " and @" << ids[1] << '\n';
+      if (rules.getBoolean ("verbose"))
+        std::cout << "Joined @" << ids[0] << " and @" << ids[1] << '\n';
     }
   }
   else
