@@ -62,6 +62,7 @@ int CmdHelpUsage ()
             << '\n'
             << "Additional help:\n"
             << "       timew help <command>\n"
+            << "       timew help interval\n"
             << "       timew help hints\n"
             << "       timew help date\n"
             << "       timew help duration\n"
