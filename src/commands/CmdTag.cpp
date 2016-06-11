@@ -67,10 +67,13 @@ int CmdTag (
       database.modifyInterval (tracked[tracked.size () - id], i);
 
       // Feedback.
-      std::cout << "Added";
-      for (auto& tag : tags)
-        std::cout << ' ' << quoteIfNeeded (tag);
-      std::cout << " to @" << id << '\n';
+      if (rules.getBoolean ("verbose"))
+      {
+        std::cout << "Added";
+        for (auto& tag : tags)
+          std::cout << ' ' << quoteIfNeeded (tag);
+        std::cout << " to @" << id << '\n';
+      }
     }
   }
 
