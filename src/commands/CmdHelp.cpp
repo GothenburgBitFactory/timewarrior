@@ -50,6 +50,7 @@ int CmdHelpUsage ()
             << "       timew [report] <report> [<interval>] [<tag> ...]\n"
             << "       timew shorten @<id> [@<id> ...] <duration>\n"
             << "       timew show\n"
+            << "       timew split @<id> [@<id> ...]\n"
             << "       timew start [<date>] [<tag> ...]\n"
             << "       timew stop [<tag> ...]\n"
             << "       timew summary [<interval>] [<tag> ...]\n"
@@ -596,7 +597,25 @@ int CmdHelp (const CLI& cli)
                 << "See also 'config'.\n"
                 << '\n';
 
-    // TODO split
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "split")
+      std::cout << '\n'
+                << "Syntax: timew split @<id> [@<id> ...]\n"
+                << '\n'
+                << "Ѕplits an interval into two equally sized, adjacent intervals, with the same\n"
+                << "tags. Using the 'summary' command, and specifying the ':ids' hint shows interval\n"
+                << " IDs. Using the right ID, you can identify an interval to split. For example,\n"
+                << "show the IDs:\n"
+                << '\n'
+                << "  $ timew summary :week :ids\n"
+                << '\n'
+                << "Then having selected '@2' as the interval you wish to split:\n"
+                << '\n'
+                << "  $ timew split @2\n"
+                << '\n'
+                << "See also 'lengthen', 'shorten'.\n"
+                << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
