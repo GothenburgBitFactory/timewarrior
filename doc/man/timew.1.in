@@ -462,7 +462,9 @@ In addition to the standard date formats, the following are supported:
   tomorrow                              Tomorrow at 0:00:00 (midnight tonight)
   <day-of-week>                         Previous named day at 0:00:00
   <month-of-year>                       Previous 1st of the  month at 0:00:00
+  hh:mm[:ss][am|a|pm|p]                 Short time format
   Nst, Nnd, Nrd, Nth                    Previous 1st, 2nd, 3rd ...
+  <epoch>                               POSIX time
   later                                 2038-01-18T0:00:00 (Y2K38)
   someday                               2038-01-18T0:00:00 (Y2K38)
   soy, eoy                              Previous start/end of year
@@ -482,8 +484,6 @@ In addition to the standard date formats, the following are supported:
   midsommar                             midnight, 1st Saturday after 20th June
   midsommarafton                        midnight, 1st Friday after 19th June
   juhannus                              midnight, 1st Friday after 19th June
-  hh:mm[:ss][am|a|pm|p]                 Short time format
-  <epoch>                               POSIX time
 
 Examples:
   8am
