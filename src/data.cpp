@@ -624,6 +624,10 @@ std::vector <Interval> getTracked (
     for (auto& interval : flatten (inclusion, exclusions))
       intervals.push_back (interval);
 
+  // Assign an ID to each interval.
+  for (unsigned int i = 0; i < intervals.size (); ++i)
+    intervals[i].id = intervals.size () - i;
+
   debug (format ("Loaded {1} tracked intervals", intervals.size ()));
   return intervals;
 }
