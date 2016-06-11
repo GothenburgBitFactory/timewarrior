@@ -227,7 +227,9 @@ int CmdHelp (const CLI& cli)
                 << "  tomorrow                              Tomorrow at 0:00:00 (midnight tonight)\n"
                 << "  <day-of-week>                         Previous named day at 0:00:00\n"
                 << "  <month-of-year>                       Previous 1st of the  month at 0:00:00\n"
+                << "  hh:mm[:ss][am|a|pm|p]                 Short time format\n"
                 << "  Nst, Nnd, Nrd, Nth                    Previous 1st, 2nd, 3rd ...\n"
+                << "  <epoch>                               POSIX time\n"
                 << "  later                                 2038-01-18T0:00:00 (Y2K38)\n"
                 << "  someday                               2038-01-18T0:00:00 (Y2K38)\n"
                 << "  soy, eoy                              Previous start/end of year\n"
@@ -247,8 +249,6 @@ int CmdHelp (const CLI& cli)
                 << "  midsommar                             midnight, 1st Saturday after 20th June\n"
                 << "  midsommarafton                        midnight, 1st Friday after 19th June\n"
                 << "  juhannus                              midnight, 1st Friday after 19th June\n"
-                << "  hh:mm[:ss][am|a|pm|p]                 Short time format\n"
-                << "  <epoch>                               POSIX time\n"
                 << '\n'
                 << "Examples:\n"
                 << "  8am\n"
