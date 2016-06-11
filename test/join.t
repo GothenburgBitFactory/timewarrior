@@ -63,12 +63,12 @@ class TestJoin(TestCase):
         code, out, err = self.t("join @1 @2")
         self.assertIn('Joined @1 and @2', out)
 
-    def test_join_open_intervals(self):
-        """Split an open interval"""
-        self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00 foo")
-        self.t("start 2016-06-10T01:00:00 foo")
-        code, out, err = self.t("join @1 @2")
-        self.assertIn('Joined @1 and @2', out)
+        j = self.t.export()
+        self.assertEqual(len(j), 1)
+        self.assertTrue('start' in j[0])
+        self.assertTrue('end' in j[0])
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'][0], 'foo')
 
 # TODO Add :adjust tests.
 
