@@ -139,12 +139,17 @@ int CmdSummary (
   table.set (table.addRow (), (ids ? 8 : 7), Duration (grand_total).formatHours ());
 
   if (table.rows () > 2)
+  {
     std::cout << '\n'
               << table.render ()
               << renderHolidays ("summary", rules, filter)
               << '\n';
+  }
   else
-    std::cout << "No filtered data found.\n";
+  {
+    if (rules.getBoolean ("verbose"))
+      std::cout << "No filtered data found.\n";
+  }
 
   return 0;
 }
