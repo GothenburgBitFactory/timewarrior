@@ -87,7 +87,8 @@ int CmdMove (
     database.modifyInterval (tracked[tracked.size () - id], i);
 
     // Feedback.
-    std::cout << "Moved @" << id << " to " << i.range.start.toISOLocalExtended () << '\n';
+    if (rules.getBoolean ("verbose"))
+      std::cout << "Moved @" << id << " to " << i.range.start.toISOLocalExtended () << '\n';
   }
 
   return 0;
