@@ -73,7 +73,10 @@ int CmdTags (Rules& rules, Database& database)
               << '\n';
   }
   else
-    std::cout << "No data found.\n";
+  {
+    if (rules.getBoolean ("verbose"))
+      std::cout << "No data found.\n";
+  }
 
   return 0;
 }
