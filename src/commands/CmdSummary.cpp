@@ -53,6 +53,7 @@ int CmdSummary (
   // Map tags to colors.
   auto palette = createPalette (rules);
   auto tag_colors = createTagColorMap (rules, palette, tracked);
+  Color colorID (rules.getBoolean ("color") ? rules.get ("theme.colors.ids") : "");
 
   auto ids = findHint (cli, ":ids");
 
@@ -110,6 +111,9 @@ int CmdSummary (
         tags += tag;
       }
 
+      if (ids)
+        table.set (row, 3, format ("@{1}", track.id), colorID);
+
       table.set (row, (ids ? 4 : 3), tags);
       table.set (row, (ids ? 5 : 4), today.start.toString ("h:N:S"));
       table.set (row, (ids ? 6 : 5), (track.range.is_open () ? "-" : today.end.toString ("h:N:S")));
@@ -122,16 +126,6 @@ int CmdSummary (
       table.set (row, (ids ? 8 : 7), Duration (daily_total).formatHours ());
 
     grand_total += daily_total;
-
-    // Now the data is tabular, go back and fill in the IDs if necessary.
-    if (ids && row != -1)
-    {
-      Color colorID (rules.getBoolean ("color") ? rules.get ("theme.colors.ids") : "");
-
-      auto rows = table.rows ();
-      for (int i = 0; i < rows; ++i)
-        table.set (i, 3, format ("@{1}", rows - i), colorID);
-    }
   }
 
   // Add the total.
