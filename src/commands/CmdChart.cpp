@@ -506,18 +506,14 @@ static void renderInterval (
     // Properly format the tags within the space.
     std::string label;
     if (ids)
-    {
       label = format ("@{1}", track.id);
-    }
-    else
-    {
-      for (auto& tag : track.tags ())
-      {
-        if (label != "")
-          label += ' ';
 
-        label += tag;
-      }
+    for (auto& tag : track.tags ())
+    {
+      if (label != "")
+        label += ' ';
+
+      label += tag;
     }
 
     auto width = end_offset - start_offset;
