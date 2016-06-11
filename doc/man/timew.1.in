@@ -216,6 +216,21 @@ Displays the effective configuration, in hierarchical form.
 See also 'config'.
 
 .TP
+.B timew split @<id> [@<id> ...]
+Ѕplits an interval into two equally sized, adjacent intervals, with the same
+tags. Using the 'summary' command, and specifying the ':ids' hint shows interval
+ IDs. Using the right ID, you can identify an interval to split. For example,
+show the IDs:
+
+  $ timew summary :week :ids
+
+Then having selected '@2' as the interval you wish to split:
+
+  $ timew split @2
+
+See also 'lengthen', 'shorten'.
+
+.TP
 .B timew start [<date>] [<tag> ...]
 Begins tracking using the current time, and the specified optional set of tags.
 If a tag contains multiple words, and therefore contains spaces, use quotes to
