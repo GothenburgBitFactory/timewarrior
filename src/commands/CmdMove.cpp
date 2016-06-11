@@ -63,7 +63,7 @@ int CmdMove (
   auto tracked = getTracked (database, rules, filter);
 
   // Move start time.
-  if (id <= static_cast <int> (tracked.size ()))
+  if (id && id <= static_cast <int> (tracked.size ()))
   {
     // Note: It's okay to subtract a one-based number from a zero-based index.
     Interval i = tracked[tracked.size () - id];
@@ -75,13 +75,15 @@ int CmdMove (
     {
       auto delta = start - i.range.start;
       i.range.start = start;
-      i.range.end += delta;
+      if (! i.range.is_open ())
+        i.range.end += delta;
     }
     else
     {
       auto delta = i.range.start - start;
       i.range.start = start;
-      i.range.end -= delta;
+      if (! i.range.is_open ())
+        i.range.end -= delta;
     }
 
     database.modifyInterval (tracked[tracked.size () - id], i);
@@ -90,6 +92,8 @@ int CmdMove (
     if (rules.getBoolean ("verbose"))
       std::cout << "Moved @" << id << " to " << i.range.start.toISOLocalExtended () << '\n';
   }
+  else
+    std::cout << "Provide an interval IDs to move.\n";
 
   return 0;
 }
