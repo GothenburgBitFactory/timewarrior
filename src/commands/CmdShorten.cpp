@@ -74,7 +74,8 @@ int CmdShorten (
           database.modifyInterval (tracked[tracked.size () - id], i);
 
           // Feedback.
-          std::cout << "Shortened @" << id << " by " << dur.formatHours () << '\n';
+          if (rules.getBoolean ("verbose"))
+            std::cout << "Shortened @" << id << " by " << dur.formatHours () << '\n';
         }
         else
           std::cout << "Cannot shorten interval @"
