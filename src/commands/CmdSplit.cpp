@@ -85,7 +85,8 @@ int CmdSplit (
       database.addInterval (second);
 
       // Feedback.
-      std::cout << "Split @" << id << '\n';
+      if (rules.getBoolean ("verbose"))
+        std::cout << "Split @" << id << '\n';
     }
   }
 
