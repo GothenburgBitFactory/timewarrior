@@ -17,6 +17,7 @@ set (commands_SRCS CmdCancel.cpp
                    CmdGaps.cpp
                    CmdHelp.cpp
                    CmdImport.cpp
+                   CmdJoin.cpp
                    CmdLengthen.cpp
                    CmdMove.cpp
                    CmdReport.cpp
