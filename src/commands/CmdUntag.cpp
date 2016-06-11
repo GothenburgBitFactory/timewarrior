@@ -67,10 +67,13 @@ int CmdUntag (
       database.modifyInterval (tracked[tracked.size () - id], i);
 
       // Feedback.
-      std::cout << "Removed";
-      for (auto& tag : tags)
-        std::cout << ' ' << quoteIfNeeded (tag);
-      std::cout << " from @" << id << '\n';
+      if (rules.getBoolean ("verbose"))
+      {
+        std::cout << "Removed";
+        for (auto& tag : tags)
+          std::cout << ' ' << quoteIfNeeded (tag);
+        std::cout << " from @" << id << '\n';
+      }
     }
   }
 
