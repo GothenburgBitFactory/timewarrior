@@ -179,7 +179,7 @@ void Datafile::load_lines ()
       _lines.push_back (line);
 
     _lines_loaded = true;
-    debug (format ("{1}: read {2} lines from storage", _file.name (), read_lines.size ()));
+    debug (format ("{1}: {2} intervals", _file.name (), read_lines.size ()));
   }
 }
 
