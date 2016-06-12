@@ -44,7 +44,6 @@ int CmdStop (
   // Verify the interval is open.
   if (latest.range.is_open ())
   {
-    // Stop it.
     Interval modified {latest};
 
     // If a stop date is specified (and occupies filter.range.start) then use
@@ -55,14 +54,6 @@ int CmdStop (
       modified.range.end = Datetime ();
 
     database.modifyInterval (latest, modified);
-/*
-    // TODO There is no 1:N modifyInterval.
-    datebase.deleteInterval (latest);
-
-    // TODO Create and populate a Timeline.
-    for (auto& fragment : splitInterval (modified, ?))
-      database.addInterval (fragment);
-*/
 
     // TODO intervalSummarїze needs to operate on a vector of similar intervals.
     if (rules.getBoolean ("verbose"))
