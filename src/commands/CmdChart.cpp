@@ -45,7 +45,7 @@ static std::string renderDayName         (const std::string&, const Rules&, Date
 static std::string renderTotal           (const std::string&, const Rules&, time_t);
 static std::string renderSubTotal        (const std::string&, const Rules&, int, int, time_t);
 static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
-static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, int, int, time_t&, bool);
+static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, int, time_t&, bool);
        std::string renderHolidays        (const std::string&, const Rules&, const Interval&);
 static std::string renderSummary         (const std::string&, const Rules&, const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
 
@@ -166,7 +166,17 @@ int renderChart (
     if (rules.has ("reports." + type + ".lines"))
       num_lines = rules.getInteger ("reports." + type + ".lines");
 
+    int spacing = 1;
+    if (rules.has ("reports." + type + ".spacing"))
+      spacing = rules.getInteger ("reports." + type + ".spacing");
+
+    // Add an empty string with no color, to reserve width, so this function
+    // can simply concatenate to lines[i].str ().
+    int total_width = (last_hour - first_hour + 1) * (4 + spacing) - 1;
     std::vector <Composite> lines (num_lines);
+    for (int i = 0; i < num_lines; ++i)
+      lines[i].add (std::string (total_width, ' '), 0, Color ());
+
     renderExclusionBlocks (type, rules, lines, palette, day, first_hour, last_hour, exclusions);
 
     time_t work = 0;
@@ -175,7 +185,7 @@ int renderChart (
       for (auto& track : tracked)
       {
         time_t interval_work = 0;
-        renderInterval (type, rules, lines, day, track, palette, tag_colors, first_hour, last_hour, interval_work, ids);
+        renderInterval (type, rules, lines, day, track, palette, tag_colors, first_hour, interval_work, ids);
         work += interval_work;
       }
     }
@@ -464,7 +474,6 @@ static void renderInterval (
   Palette& palette,
   std::map <std::string, Color>& tag_colors,
   int first_hour,
-  int last_hour,
   time_t& work,
   bool ids)
 {
@@ -501,8 +510,6 @@ static void renderInterval (
   int start_offset = start_block + (spacing * (start_mins / 60));
   int end_offset   = end_block   + (spacing * (end_mins   / 60));
 
-  int total_width = (last_hour - first_hour + 1) * (4 + spacing) - 1;
-
   if (end_offset > start_offset)
   {
     // Determine color of interval.
@@ -535,10 +542,6 @@ static void renderInterval (
 
       for (unsigned int i = 0; i < lines.size (); ++i)
       {
-        // Add an empty string with no color, to reserve width, so the caller
-        // can simply concatenate to lines[i].str ().
-        lines[i].add (std::string (total_width, ' '), 0, Color ("bold"));
-
         if (i < text_lines.size ())
           lines[i].add (leftJustify (text_lines[i], width), start_offset, colorTrack);
         else
