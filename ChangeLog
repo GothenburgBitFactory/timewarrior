@@ -7,6 +7,8 @@
           (thanks to Jelle van der Waa).
 - TI-2    Two line tags causes false entry in database
           (thanks to Sebastian Uharek).
+- TI-3    The month report shows multi-days current task truncated
+          (thanks to Tomas Babej).
 - TI-4    The 'timew' command considers only the last interval
           (thanks to Tomas Babej).
 - TI-5    Unicode tags not working.

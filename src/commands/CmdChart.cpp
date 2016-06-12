@@ -467,17 +467,25 @@ static void renderInterval (
   time_t& work,
   bool ids)
 {
+  Datetime now;
   auto spacing = rules.getInteger ("reports." + type + ".spacing");
 
-  // Make sure the track only represents one day.
+  // Ignore any track that doesn't overlap with day.
   auto day_range = getFullDay (day);
   if (! day_range.overlap (track.range) ||
-      (track.range.is_open () && day > Datetime ()))
+      (track.range.is_open () && day > now))
     return;
 
+  // If the track is open and day is today, then closed the track now, otherwise
+  // it will be rendered until midnight.
   Interval clipped = clip (track, day_range);
   if (track.range.is_open ())
-    clipped.range.end = Datetime ();
+  {
+    if (day_range.start.sameDay (now))
+      clipped.range.end = now;
+    else
+      clipped.range.end = day_range.end;
+  }
 
   auto start_mins = (clipped.range.start.hour () - first_hour) * 60 + clipped.range.start.minute ();
   auto end_mins   = (clipped.range.end.hour ()   - first_hour) * 60 + clipped.range.end.minute ();
