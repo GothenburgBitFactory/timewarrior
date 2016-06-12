@@ -15,6 +15,8 @@
           (thanks to Sergey Trofimov).
 - TI-6    Exception after shortening task.
           (thanks to Sergey Trofimov).
+- TI-8    Only the day's last interval is considered in the month report
+          (thanks to Tomas Babej).
 - Added 'continue' command.
 - Added 'diagnostics' command.
 - Added 'export' command.
