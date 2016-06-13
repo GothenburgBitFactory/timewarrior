@@ -25,6 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <format.h>
 #include <commands.h>
 #include <timew.h>
 #include <Interval.h>
@@ -53,28 +54,27 @@ int CmdStop (
     else
       modified.range.end = Datetime ();
 
+    // Remove the filter tags.
+    for (auto& tag : filter.tags ())
+      if (modified.hasTag (tag))
+        modified.untag (tag);
+      else
+        throw format ("The current interval does not have the '{1}' tag.", tag);
+
+    // Close the interval.
     database.modifyInterval (latest, modified);
-
-    // TODO intervalSummarїze needs to operate on a vector of similar intervals.
+    latest.range.end = modified.range.end;
     if (rules.getBoolean ("verbose"))
-      std::cout << intervalSummarize (database, rules, modified);
+      std::cout << intervalSummarize (database, rules, latest);
 
-    // If tags were specified, and after removing those tags, there are still
-    // tags remaining, then add a contiguous interval.
-    auto words = cli.getWords ();
-    if (words.size ())
-      for (auto& word : cli.getWords ())
-        latest.untag (Lexer::dequote (word));
-
-    if (words.size () &&
-        latest.tags ().size ())
+    // Open a new interval with remaining tags, if any.
+    if (filter.tags ().size () && modified.tags ().size ())
     {
-      // Contiguous with previous interval.
-      latest.range.start = modified.range.end;
-      latest.range.end   = Datetime (0);
-      database.addInterval (latest);
+      modified.range.start = modified.range.end;
+      modified.range.end = {0};
+      database.addInterval (modified);
       if (rules.getBoolean ("verbose"))
-        std::cout << '\n' << intervalSummarize (database, rules, latest);
+        std::cout << '\n' << intervalSummarize (database, rules, modified);
     }
   }
   else
