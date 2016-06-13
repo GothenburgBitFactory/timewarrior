@@ -57,7 +57,7 @@ class TestStop(TestCase):
         self.t = Timew()
 
     def test_timed_stop(self):
-        """Test timed start"""
+        """Test timed stop"""
         self.t("start 20160516T090100")
         self.t("stop 20160516T100200")
         j = self.t.export()
@@ -65,6 +65,30 @@ class TestStop(TestCase):
         self.assertIn('0100Z', j[0]['start'])
         self.assertIn('0200Z', j[0]['end'])
 
+    def test_stop_all(self):
+        """Start three tags, stop"""
+        self.t("start 20160613T084100 one two three")
+        code, out, err = self.t("stop")
+        self.assertIn("Recorded one three two", out)
+
+    def test_stop_three(self):
+        """Start three tags, stop three"""
+        self.t("start 20160613T084100 one two three")
+        code, out, err = self.t("stop one two three")
+        self.assertIn("Recorded one three two", out)
+
+    def test_stop_two(self):
+        """Start three tags, stop two"""
+        self.t("start 20160613T084100 one two three")
+        code, out, err = self.t("stop one     three")
+        self.assertIn("Recorded one three two", out)
+        self.assertIn("Tracking two", out)
+
+    def test_stop_fourth(self):
+        """Start three tags, stop fourth"""
+        self.t("start 20160613T084100 one two three")
+        code, out, err = self.t.runError("stop four")
+        self.assertIn("The current interval does not have the 'four' tag.", err)
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
