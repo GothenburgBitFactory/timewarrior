@@ -71,33 +71,36 @@ class TestStop(TestCase):
         code, out, err = self.t("stop")
         self.assertIn("Recorded one three two", out)
 
+        j = self.t.export()
+        self.assertEqual(len(j), 1)
+        self.assertItemsEqual(['one', 'two', 'three'], j[0]['tags'])
+
     def test_stop_three(self):
         """Start three tags, stop three"""
         self.t("start 20160613T084100 one two three")
         code, out, err = self.t("stop one two three")
         self.assertIn("Recorded one three two", out)
 
+        j = self.t.export()
+        self.assertEqual(len(j), 1)
+        self.assertItemsEqual(['one', 'two', 'three'], j[0]['tags'])
+
     def test_stop_two(self):
         """Start three tags, stop two"""
         self.t("start 20160613T084100 one two three")
         code, out, err = self.t("stop one     three")
-        self.assertIn("Recorded one three two", out)
         self.assertIn("Tracking two", out)
+
+        j = self.t.export()
+        self.assertEqual(len(j), 2)
+        self.assertItemsEqual(['one', 'two', 'three'], j[0]['tags'])
+        self.assertItemsEqual(['two'], j[1]['tags'])
 
     def test_stop_fourth(self):
         """Start three tags, stop fourth"""
         self.t("start 20160613T084100 one two three")
         code, out, err = self.t.runError("stop four")
         self.assertIn("The current interval does not have the 'four' tag.", err)
-
-    def test_tags_after_stop(self):
-        """Test that stop preserves tags"""
-        self.t("start tag1 tag2")
-        self.t("stop tag1 tag2")
-        j = self.t.export()
-        self.assertEqual(len(j), 1)
-        self.assertIn('tag1', j[0])
-        self.assertIn('tag2', j[0])
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
