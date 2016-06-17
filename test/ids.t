@@ -57,11 +57,11 @@ class TestIds(TestCase):
         self.t = Timew()
 
     def test_ids_in_output(self):
-        self.t("start a")
+        self.t("start a 10s ago")
         self.t("start b")
         code, out, err = self.t("summary :week :ids")
-        self.assertIn('@1', out)
-        self.assertIn('@2', out)
+        self.assertIn(' @1 ', out)
+        self.assertIn(' @2 ', out)
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
