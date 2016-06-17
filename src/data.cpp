@@ -616,13 +616,17 @@ std::vector <Interval> getTracked (
   // Get the set of expanded exclusions that overlap the range defined by the
   // timeline.
   auto exclusions = getAllExclusions (rules, filter.range);
-  if (! exclusions.size ())
-    return inclusions;
-
   std::vector <Interval> intervals;
-  for (auto& inclusion : inclusions)
-    for (auto& interval : flatten (inclusion, exclusions))
-      intervals.push_back (interval);
+  if (! exclusions.empty ())
+  {
+    for (auto& inclusion : inclusions)
+      for (auto& interval : flatten (inclusion, exclusions))
+        intervals.push_back (interval);
+  }
+  else
+  {
+    intervals = inclusions;
+  }
 
   // Assign an ID to each interval.
   for (unsigned int i = 0; i < intervals.size (); ++i)
