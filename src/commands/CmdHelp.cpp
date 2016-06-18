@@ -145,9 +145,7 @@ int CmdHelp (const CLI& cli)
                 << "When modifying configuration in this way, interactive confirmation will be\n"
                 << "sought. To override this confirmation, use the ':yes' hint:\n"
                 << '\n'
-                << "  $ timew config verbose yes\n"
-                << "  $ timew config verbose ''\n"
-                << "  $ timew config verbose :yes\n"
+                << "  $ timew config verbose '' :yes\n"
                 << '\n'
                 << "If no arguments are provided, all configuration settings are shown:\n"
                 << '\n'
