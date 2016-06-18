@@ -32,6 +32,17 @@
 #include <Lexer.h>
 #include <iostream>
 
+template <class T> T setIntersect (
+  const T& left, const T& right)
+{
+  T intersection;
+  for (auto& l : left)
+    if (std::find (right.begin (), right.end (), l) != right.end ())
+      intersection.insert (l);
+
+  return intersection;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 int CmdStop (
   const CLI& cli,
@@ -54,21 +65,28 @@ int CmdStop (
     else
       modified.range.end = Datetime ();
 
-    // Remove the filter tags.
-    for (auto& tag : filter.tags ())
-      if (modified.hasTag (tag))
-        modified.untag (tag);
-      else
-        throw format ("The current interval does not have the '{1}' tag.", tag);
-
     // Close the interval.
     database.modifyInterval (latest, modified);
+
+    // If tags are specified, but are not a full set of tags, remove them
+    // before closing the interval.
+    if (filter.tags ().size () &&
+        (setIntersect (filter.tags (), latest.tags ()).size () != latest.tags ().size ()))
+    {
+      for (auto& tag : filter.tags ())
+        if (modified.hasTag (tag))
+          modified.untag (tag);
+        else
+          throw format ("The current interval does not have the '{1}' tag.", tag);
+    }
+
     latest.range.end = modified.range.end;
     if (rules.getBoolean ("verbose"))
       std::cout << intervalSummarize (database, rules, latest);
 
     // Open a new interval with remaining tags, if any.
-    if (filter.tags ().size () && modified.tags ().size ())
+    if (filter.tags ().size () &&
+        modified.tags ().size () != latest.tags ().size ())
     {
       modified.range.start = modified.range.end;
       modified.range.end = {0};
