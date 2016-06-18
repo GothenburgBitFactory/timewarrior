@@ -42,9 +42,7 @@ setting.
 When modifying configuration in this way, interactive confirmation will be
 sought. To override this confirmation, use the ':yes' hint:
 
-  $ timew config verbose yes
-  $ timew config verbose ''
-  $ timew config verbose :yes
+  $ timew config verbose '' :yes
 
 If no arguments are provided, all configuration settings are shown:
 
