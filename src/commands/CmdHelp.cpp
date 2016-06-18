@@ -44,6 +44,7 @@ int CmdHelpUsage ()
             << "       timew extensions\n"
             << "       timew gaps [<interval>] [<tag> ...]\n"
             << "       timew help [<command> | interval | hints | date | duration]\n"
+            << "       timew join @<id> @<id>\n"
             << "       timew lengthen @<id> [@<id> ...] <duration>\n"
             << "       timew month [<interval>] [<tag> ...]\n"
             << "       timew move @<id> <date>\n"
@@ -88,7 +89,6 @@ int CmdHelpUsage ()
   // TODO clear
   // TODO import
   // TODO undo
-  // TODO join
   // TODO split
 
   // TODO List all extensions.
@@ -490,7 +490,25 @@ int CmdHelp (const CLI& cli)
                 << "if there is no end date.\n"
                 << '\n';
 
-    // TODO join
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "join")
+      std::cout << '\n'
+                << "Syntax: timew join @<id> @<id>\n"
+                << '\n'
+                << "Joins two intervals, by using the earlier of the two start times, and the later\n"
+                << "of the two end times, and the combined set of tags. Using the 'summary' command,\n"
+                << "and specifying the ':ids' hint shows interval IDs. Using the correct IDs, you\n"
+                << "can identify an intervals to join. For example, show the IDs:\n"
+                << '\n'
+                << "  $ timew summary :week :ids\n"
+                << '\n'
+                << "Then having selected '@1' and '@2' as the intervals you wish to join:\n"
+                << '\n'
+                << "  $ timew join @1 @2\n"
+                << '\n'
+                << "See also 'split', 'lengthen', 'shorten'.\n"
+                << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
@@ -613,7 +631,7 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "  $ timew split @2\n"
                 << '\n'
-                << "See also 'lengthen', 'shorten'.\n"
+                << "See also 'join', 'lengthen', 'shorten'.\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
