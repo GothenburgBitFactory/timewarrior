@@ -1,5 +1,5 @@
 
-New Features in 1.0.0
+New Features in 0.9.5.alpha
 
   - The 'start' and 'stop' commands record the duration.
   - The 'export' command emits all data in JSON format.
