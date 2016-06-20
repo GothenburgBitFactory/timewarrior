@@ -8,3 +8,6 @@ cmake_install.cmake
 install_manifest.txt
 libshared-prefix
 patches
+_CPack_Packages
+CPackConfig.cmake
+CPackSourceConfig.cmake
