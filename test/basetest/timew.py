@@ -8,7 +8,7 @@ import shutil
 import tempfile
 import unittest
 from .exceptions import CommandError
-from .utils import run_cmd_wait, run_cmd_wait_nofail, which, timew_binary_location
+from .utils import run_cmd_wait, run_cmd_wait_nofail, which, timew_binary_location, DEFAULT_EXTENSION_PATH
 from .compat import STRING_TYPE
 
 
@@ -36,11 +36,24 @@ class Timew(object):
         self._original_pwd = os.getcwd()
         self.datadir = tempfile.mkdtemp(prefix="timew_")
         self.timewrc = os.path.join (self.datadir, 'timewarrior.cfg')
+        self.extdir = os.path.join(self.datadir, 'extensions')
 
         # Ensure any instance is properly destroyed at session end
         atexit.register(lambda: self.destroy())
 
         self.reset_env()
+
+    def add_default_extension(self, filename):
+        """Add default extension to current instance
+        """
+        if not os.path.isdir(self.extdir):
+            os.mkdir(self.extdir)
+
+        extfile = os.path.join(self.extdir, filename)
+        if os.path.isfile(extfile):
+            raise "{} already exists".format(extfile)
+
+        shutil.copy(os.path.join(DEFAULT_EXTENSION_PATH, filename), extfile)
 
     def __repr__(self):
         txt = super(Timew, self).__repr__()

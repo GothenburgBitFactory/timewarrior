@@ -35,9 +35,9 @@ DEFAULT_CERT_PATH = os.path.abspath(
     os.path.join(CURRENT_DIR, "..", "test_certs")
 )
 
-# Default location of test hooks
-DEFAULT_HOOK_PATH = os.path.abspath(
-    os.path.join(CURRENT_DIR, "..", "test_hooks")
+# Default location of test extensions
+DEFAULT_EXTENSION_PATH = os.path.abspath(
+    os.path.join(CURRENT_DIR, "..", "test_extensions")
 )
 
 
