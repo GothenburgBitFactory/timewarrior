@@ -2,6 +2,8 @@
 
 - timew 0.9.5~alpha install bug
   (thanks to Gordon Ball).
+- Improved out-of-source build for themes, holidays
+  (thanks to Kent R. Spillner).
 
 ------ current release ---------------------------
 
