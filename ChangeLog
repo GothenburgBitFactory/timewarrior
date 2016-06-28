@@ -1,9 +1,11 @@
 1.0.0 -
 
+- TI-16   Should handle case where taskwarrior hook is used before timew
+          (thanks to Aaron Curtis).
 - timew 0.9.5~alpha install bug
-  (thanks to Gordon Ball).
+          (thanks to Gordon Ball).
 - Improved out-of-source build for themes, holidays
-  (thanks to Kent R. Spillner).
+          (thanks to Kent R. Spillner).
 
 ------ current release ---------------------------
 

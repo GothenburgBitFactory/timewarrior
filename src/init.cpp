@@ -158,7 +158,8 @@ void initializeDataAndRules (
   // If dbLocation does not exist, ask whether it should be created.
   bool shinyNewDatabase = false;
   if (! dbLocation.exists () &&
-      confirm ("Create new database in " + dbLocation._data + "?"))
+      (findHint (cli, ":yes") ||
+       confirm ("Create new database in " + dbLocation._data + "?")))
   {
     dbLocation.create (0700);
     shinyNewDatabase = true;
