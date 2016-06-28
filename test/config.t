@@ -60,7 +60,6 @@ class TestConfig(TestCase):
         """Test trivial config - should only show defaults"""
         code, out, err = self.t("config")
         # Note that this is not a complete set, just a representative set.
-        self.assertIn("color = off", out)
         self.assertIn("confirmation = on", out)
         self.assertIn("debug = off", out)
         self.assertIn("verbose = on", out)
@@ -83,8 +82,10 @@ class TestConfig(TestCase):
         """Test setting a new name, same value"""
         code, out, err = self.t("config name value :yes")
         self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        code, out, err = self.t("config")
+        self.assertIn("name = value", out)
 
-        # Should fail with exit 1
+        # Should fail with exit 1, because the value does not change.
         code, out, err = self.t.runError("config name value :yes")
         self.assertIs(code, 1)
 
