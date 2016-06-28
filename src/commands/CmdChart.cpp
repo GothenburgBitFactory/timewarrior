@@ -203,8 +203,7 @@ int renderChart (
                   << std::string (indent, ' ')
                   << lines[i].str ();
 
-    std::cout << "  "
-              << renderTotal (type, rules, work)
+    std::cout << renderTotal (type, rules, work)
               << '\n';
 
     previous = day;
@@ -281,6 +280,7 @@ static void renderAxis (
   int last_hour)
 {
   auto spacing = rules.getInteger ("reports." + type + ".spacing");
+  auto showTotal = rules.getBoolean ("reports." + type + ".totals");
   Color colorLabel (palette.enabled ? rules.get ("theme.colors.label") : "");
   Color colorToday (palette.enabled ? rules.get ("theme.colors.today") : "");
 
@@ -293,7 +293,10 @@ static void renderAxis (
     else
       std::cout << colorLabel.colorize (leftJustify (hour, 4 + spacing));
 
-  std::cout << "  " << colorLabel.colorize ("Total") << "\n";
+  if (showTotal)
+    std::cout << "  " << colorLabel.colorize ("Total");
+
+  std::cout << '\n';
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -363,7 +366,8 @@ static std::string renderTotal (
   {
     int hours = work / 3600;
     int minutes = (work % 3600) / 60;
-    std::cout << std::setw (3) << std::setfill (' ') << hours
+    std::cout << "  "
+              << std::setw (3) << std::setfill (' ') << hours
               << ':'
               << std::setw (2) << std::setfill ('0') << minutes;
   }

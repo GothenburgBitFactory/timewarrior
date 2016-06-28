@@ -6,6 +6,8 @@
           (thanks to Gordon Ball).
 - Improved out-of-source build for themes, holidays
           (thanks to Kent R. Spillner).
+- The rc.reports.<type>.totals setting should control 'Totals' label
+          (thanks to Matthew Lemon).
 
 ------ current release ---------------------------
 
