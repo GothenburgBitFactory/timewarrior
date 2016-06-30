@@ -297,6 +297,19 @@ int quantizeTo15Minutes (const int minutes)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+int quantizeToNMinutes (const int minutes, const int N)
+{
+  if (minutes % N == 0)
+    return minutes;
+
+  auto deviation = minutes % N;
+  if (deviation < N/2)
+    return minutes - deviation;
+
+  return minutes + N - deviation;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Check rules to see if day is a holiday.
 bool dayIsHoliday (const Rules& rules, const Datetime& day)
 {
