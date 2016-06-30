@@ -157,6 +157,9 @@ int renderChart (
                (rules.getBoolean ("reports." + type + ".day")     ? 3 : 0) +
                (rules.getBoolean ("reports." + type + ".weekday") ? 4 : 0);
 
+  auto cell = rules.getInteger ("reports." + type + ".cell");
+  auto chars_per_hour = 60 / cell;
+
   // Each day is rendered separately.
   time_t total_work = 0;
   for (Datetime day = filter.range.start; day < filter.range.end; day++)
@@ -172,7 +175,7 @@ int renderChart (
 
     // Add an empty string with no color, to reserve width, so this function
     // can simply concatenate to lines[i].str ().
-    int total_width = (last_hour - first_hour + 1) * (4 + spacing) - 1;
+    int total_width = (last_hour - first_hour + 1) * (chars_per_hour + spacing) - 1;
     std::vector <Composite> lines (num_lines);
     for (int i = 0; i < num_lines; ++i)
       lines[i].add (std::string (total_width, ' '), 0, Color ());
@@ -279,6 +282,9 @@ static void renderAxis (
   int first_hour,
   int last_hour)
 {
+  auto cell = rules.getInteger ("reports." + type + ".cell");
+  auto chars_per_hour = 60 / cell;
+
   auto spacing = rules.getInteger ("reports." + type + ".spacing");
   auto showTotal = rules.getBoolean ("reports." + type + ".totals");
   Color colorLabel (palette.enabled ? rules.get ("theme.colors.label") : "");
@@ -289,9 +295,9 @@ static void renderAxis (
   std::cout << indent;
   for (int hour = first_hour; hour <= last_hour; hour++)
     if (hour == current_hour)
-      std::cout << colorToday.colorize (leftJustify (hour, 4 + spacing));
+      std::cout << colorToday.colorize (leftJustify (hour, chars_per_hour + spacing));
     else
-      std::cout << colorLabel.colorize (leftJustify (hour, 4 + spacing));
+      std::cout << colorLabel.colorize (leftJustify (hour, chars_per_hour + spacing));
 
   if (showTotal)
     std::cout << "  " << colorLabel.colorize ("Total");
@@ -392,7 +398,10 @@ static std::string renderSubTotal (
                  (rules.getBoolean ("reports." + type + ".weekday") ? 4 : 0);
     int spacing = rules.getInteger ("reports." + type + ".spacing");
 
-    std::string pad (indent + ((last_hour - first_hour + 1) * (4 + spacing)) + 1, ' ');
+    auto cell = rules.getInteger ("reports." + type + ".cell");
+    auto chars_per_hour = 60 / cell;
+
+    std::string pad (indent + ((last_hour - first_hour + 1) * (chars_per_hour + spacing)) + 1, ' ');
 
     int hours = total_work / 3600;
     int minutes = (total_work % 3600) / 60;
@@ -421,6 +430,9 @@ static void renderExclusionBlocks (
   int last_hour,
   const std::vector <Range>& excluded)
 {
+  auto cell = rules.getInteger ("reports." + type + ".cell");
+  auto chars_per_hour = 60 / cell;
+
   auto spacing = rules.getInteger ("reports." + type + ".spacing");
   auto style = rules.get ("reports." + type + ".style");
   Color colorExc (palette.enabled ? rules.get ("theme.colors.exclusion") : "");
@@ -436,7 +448,7 @@ static void renderExclusionBlocks (
     if (style == "compact")
     {
       auto label = format ("{1}", hour);
-      int offset = (hour - first_hour) * (4 + spacing);
+      int offset = (hour - first_hour) * (chars_per_hour + spacing);
       lines[0].add (label, offset, colorLabel);
     }
 
@@ -444,12 +456,12 @@ static void renderExclusionBlocks (
     {
       if (exc.overlap (r))
       {
-        // Determine which of the four 15-min quarters are included.
+        // Determine which of the character blocks included.
         auto sub_hour = exc.intersect (r);
-        auto start_block = quantizeTo15Minutes (sub_hour.start.minute ()) / 15;
-        auto end_block   = quantizeTo15Minutes (sub_hour.end.minute () == 0 ? 60 : sub_hour.end.minute ()) / 15;
+        auto start_block = quantizeToNMinutes (sub_hour.start.minute (), cell) / cell;
+        auto end_block   = quantizeToNMinutes (sub_hour.end.minute () == 0 ? 60 : sub_hour.end.minute (), cell) / cell;
 
-        int offset = (hour - first_hour) * (4 + spacing) + start_block;
+        int offset = (hour - first_hour) * (chars_per_hour + spacing) + start_block;
         int width = end_block - start_block;
         std::string block (width, ' ');
 
@@ -482,6 +494,7 @@ static void renderInterval (
   bool ids)
 {
   Datetime now;
+  auto cell = rules.getInteger ("reports." + type + ".cell");
   auto spacing = rules.getInteger ("reports." + type + ".spacing");
 
   // Ignore any track that doesn't overlap with day.
@@ -508,8 +521,8 @@ static void renderInterval (
 
   work = clipped.range.total ();
 
-  auto start_block = quantizeTo15Minutes (start_mins) / 15;
-  auto end_block   = quantizeTo15Minutes (end_mins == 0 ? 60 : end_mins) / 15;
+  auto start_block = quantizeToNMinutes (start_mins, cell) / cell;
+  auto end_block   = quantizeToNMinutes (end_mins == 0 ? 60 : end_mins, cell) / cell;
 
   int start_offset = start_block + (spacing * (start_mins / 60));
   int end_offset   = end_block   + (spacing * (end_mins   / 60));
