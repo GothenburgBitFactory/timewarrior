@@ -597,6 +597,16 @@ The debug output prefix string.
 Default value is '>>'.
 
 .TP
+.B reports.<type>.cell = 15
+.br
+Determines how many minutes are represented by a single character cell, for the
+charts.
+A value of '15' means that an hour is represented by 60/15, or 4 character cells.
+Suitable values are the divisors of 60 (30, 20, 15, 12, ...).
+Default value is '15'.
+Type is one of 'month', 'week', 'day'.
+
+.TP
 .B reports.<type>.day = yes
 .br
 Determines whether the current day of the month is shown at left margin.
