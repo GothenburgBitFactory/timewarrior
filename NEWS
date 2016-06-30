@@ -1,12 +1,7 @@
 
-New Features in 0.9.5.alpha
+New Features in 1.0.0
 
-  - The 'start' and 'stop' commands record the duration.
-  - The 'export' command emits all data in JSON format.
-  - The 'on-modify.timewarrior' script is a Taskwarrior hook script to integrate
-    Timewarrior into the 'start' and 'stop' commands.
-  - Enables debug mode with the ':debug' command line hint.
-  - Enables quiet mode with the ':quiet' command line hint.
+  - All features are new.
 
 Known Issues
 
