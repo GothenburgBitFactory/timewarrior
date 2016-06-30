@@ -8,6 +8,9 @@
           (thanks to Kent R. Spillner).
 - The rc.reports.<type>.totals setting should control 'Totals' label
           (thanks to Matthew Lemon).
+- Supports rc.reports.<type>.cell to control the number of minutes that one
+  character cell represents on a chart.
+          (thanks to Matthew Lemon, Rene Vergara).
 
 ------ current release ---------------------------
 
