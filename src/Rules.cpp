@@ -55,6 +55,7 @@ Rules::Rules ()
     {"reports.day.totals",       "no"},
     {"reports.day.summary",      "yes"},
     {"reports.day.holidays",     "no"},
+    {"reports.day.cell",         "15"},
 
     // 'week' report.
     {"reports.week.hours",       "all"},
@@ -67,6 +68,7 @@ Rules::Rules ()
     {"reports.week.totals",      "yes"},
     {"reports.week.summary",     "yes"},
     {"reports.week.holidays",    "yes"},
+    {"reports.week.cell",        "15"},
 
     // 'month' report.
     {"reports.month.hours",      "all"},
@@ -79,6 +81,7 @@ Rules::Rules ()
     {"reports.month.totals",     "yes"},
     {"reports.month.summary",    "yes"},
     {"reports.month.holidays",   "yes"},
+    {"reports.month.cell",       "15"},
 
     // 'summary' report.
     {"reports.summary.holidays", "yes"},
