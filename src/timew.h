@@ -69,7 +69,6 @@ bool expandIntervalHint (const std::string&, Range&);
 std::string jsonFromIntervals (const std::vector <Interval>&);
 Palette createPalette (const Rules&);
 std::map <std::string, Color> createTagColorMap (const Rules&, Palette&, const std::vector <Interval>&);
-int quantizeTo15Minutes (const int);
 int quantizeToNMinutes (const int, const int);
 bool dayIsHoliday (const Rules&, const Datetime&);
 bool findHint (const CLI&, const std::string&);

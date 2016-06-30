@@ -281,22 +281,6 @@ std::map <std::string, Color> createTagColorMap (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-int quantizeTo15Minutes (const int minutes)
-{
-  if (minutes == 0  ||
-      minutes == 15 ||
-      minutes == 45 ||
-      minutes == 60)
-    return minutes;
-
-  auto deviation = minutes % 15;
-  if (deviation < 8)
-    return minutes - deviation;
-
-  return minutes + 15 - deviation;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 int quantizeToNMinutes (const int minutes, const int N)
 {
   if (minutes % N == 0)
