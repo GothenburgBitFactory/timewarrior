@@ -70,6 +70,7 @@ int CmdStart (
     now.tag (tag);
 
   // Update database. An open interval does not need to be flattened.
+  validateInterval (database, rules, now);
   database.addInterval (now);
 
   // TODO intervalSummarїze needs to operate on a vector of similar intervals.
