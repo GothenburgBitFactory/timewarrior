@@ -78,7 +78,7 @@ class TestSplit(TestCase):
 
     def test_split_open_interval(self):
         """Split an open interval"""
-        self.t("start 2016-06-10T00:00:00 foo")
+        self.t("start 5mins ago foo")
         code, out, err = self.t("split @1")
         self.assertIn('Split @1', out)
 
