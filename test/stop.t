@@ -67,7 +67,7 @@ class TestStop(TestCase):
 
     def test_stop_all(self):
         """Start three tags, stop"""
-        self.t("start 20160613T084100 one two three")
+        self.t("start 5mins ago one two three")
         code, out, err = self.t("stop")
         self.assertIn("Recorded one three two", out)
 
@@ -77,7 +77,7 @@ class TestStop(TestCase):
 
     def test_stop_three(self):
         """Start three tags, stop three"""
-        self.t("start 20160613T084100 one two three")
+        self.t("start 5mins ago one two three")
         code, out, err = self.t("stop one two three")
         self.assertIn("Recorded one three two", out)
 
@@ -87,7 +87,7 @@ class TestStop(TestCase):
 
     def test_stop_two(self):
         """Start three tags, stop two"""
-        self.t("start 20160613T084100 one two three")
+        self.t("start 5mins ago one two three")
         code, out, err = self.t("stop one     three")
         self.assertIn("Tracking two", out)
 
@@ -98,7 +98,7 @@ class TestStop(TestCase):
 
     def test_stop_fourth(self):
         """Start three tags, stop fourth"""
-        self.t("start 20160613T084100 one two three")
+        self.t("start 5mins ago one two three")
         code, out, err = self.t.runError("stop four")
         self.assertIn("The current interval does not have the 'four' tag.", err)
 
