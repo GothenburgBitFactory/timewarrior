@@ -96,9 +96,6 @@ std::vector <std::string> Database::allLines ()
 ////////////////////////////////////////////////////////////////////////////////
 void Database::addInterval (const Interval& interval)
 {
-  // TODO Need to verify that interval.tags do not overlap with stored data.
-  //      Unless the tags that overlap are allowed to overlap.
-  validateAddition (interval);
   undoTxnStart ();
 
   auto intervalRange = interval.range;
@@ -317,15 +314,6 @@ void Database::initializeDatafiles ()
       getDatafile (year, month);
     }
   }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// Responsible for checking that the proposed interval "fits" with existing data
-// and does not overlap tags unless configured to.
-//
-// The method either silently succeeds or throws an error.
-void Database::validateAddition (const Interval& interval) const
-{
 }
 
 ////////////////////////////////////////////////////////////////////////////////
