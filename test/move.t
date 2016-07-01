@@ -84,8 +84,8 @@ class TestMove(TestCase):
 
     def test_move_open_backwards(self):
         """Move an open interval backwards in time"""
-        self.t("start 1h ago foo")
-        code, out, err = self.t("move @1 yesterday")
+        self.t("start 5mins ago foo")
+        code, out, err = self.t("move @1 today")
         self.assertRegexpMatches(out, 'Moved @1 to \d\d\d\d-\d\d-\d\dT00:00:00')
 
         j = self.t.export()
@@ -97,8 +97,8 @@ class TestMove(TestCase):
 
     def test_move_open_forwards(self):
         """Move an open interval forwards in time"""
-        self.t("start 2d ago foo")
-        code, out, err = self.t("move @1 yesterday")
+        self.t("start yesterday foo")
+        code, out, err = self.t("move @1 today")
         self.assertRegexpMatches(out, 'Moved @1 to \d\d\d\d-\d\d-\d\dT00:00:00')
 
         j = self.t.export()
