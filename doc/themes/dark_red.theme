@@ -1,0 +1,71 @@
+###############################################################################
+#
+# Copyright 2015 - 2016, Paul Beckingham, Federico Hernandez.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included
+# in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# http://www.opensource.org/licenses/mit-license.php
+#
+###############################################################################
+
+define theme:
+  description = "dark_red.theme: A dark red theme."
+  colors:
+    # General UI color.
+    exclusion = "gray8 on gray4"
+    today     = "rgb521"
+    holiday   = "rgb100"
+    label     = "rgb100"
+    ids       = "rgb510"
+    debug     = "blue"
+
+  # Rotating Color Palette for tags. The leading zeroes allow the order to be
+  # preserved.
+  palette:
+    color01 = "white on rgb100"
+    color02 = "white on rgb104"
+    color03 = "white on rgb101"
+    color04 = "white on rgb105"
+    color05 = "white on rgb102"
+    color06 = "white on rgb200"
+    color07 = "white on rgb103"
+    color08 = "white on rgb201"
+    color09 = "white on rgb300"
+    color10 = "white on rgb202"
+    color11 = "white on rgb301"
+    color12 = "white on rgb203"
+    color13 = "white on rgb302"
+    color14 = "white on rgb204"
+    color15 = "white on rgb205"
+    color16 = "white on rgb303"
+    color17 = "white on rgb401"
+    color18 = "white on rgb304"
+    color19 = "white on rgb402"
+    color20 = "white on rgb305"
+    color21 = "white on rgb403"
+    color22 = "white on rgb400"
+    color23 = "white on rgb404"
+    color24 = "white on rgb502"
+    color25 = "white on rgb405"
+    color26 = "white on rgb503"
+    color27 = "white on rgb500"
+    color28 = "white on rgb504"
+    color29 = "white on rgb501"
+    color30 = "white on rgb505"
+
