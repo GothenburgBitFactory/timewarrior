@@ -64,6 +64,7 @@ int CmdUntag (
       for (auto& tag : tags)
         i.untag (tag);
 
+      validateInterval (database, rules, i);
       database.modifyInterval (tracked[tracked.size () - id], i);
 
       // Feedback.

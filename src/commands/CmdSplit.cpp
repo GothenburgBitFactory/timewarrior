@@ -81,7 +81,9 @@ int CmdSplit (
         second.range.start = midpoint;
       }
 
+      validateInterval (database, rules, first);
       database.modifyInterval (tracked[tracked.size () - id], first);
+      validateInterval (database, rules, second);
       database.addInterval (second);
 
       // Feedback.

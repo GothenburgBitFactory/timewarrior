@@ -86,6 +86,7 @@ int CmdMove (
         i.range.end -= delta;
     }
 
+    validateInterval (database, rules, i);
     database.modifyInterval (tracked[tracked.size () - id], i);
 
     // Feedback.

@@ -41,6 +41,7 @@ int CmdContinue (
     {
       // Open an identical interval and update hte DB.
       latest.range.open ();
+      validateInterval (database, rules, latest);
       database.addInterval (latest);
 
       if (rules.getBoolean ("verbose"))

@@ -44,7 +44,10 @@ int CmdTrack (
 
   auto exclusions = getAllExclusions (rules, filter.range);
   for (auto& interval : flatten (filter, exclusions))
+  {
+    validateInterval (database, rules, interval);
     database.addInterval (interval);
+  }
 
   if (rules.getBoolean ("verbose"))
     std::cout << intervalSummarize (database, rules, filter);

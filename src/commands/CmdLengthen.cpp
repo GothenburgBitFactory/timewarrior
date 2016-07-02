@@ -69,6 +69,7 @@ int CmdLengthen (
         Duration dur (delta);
         i.range.end += dur.toTime_t ();
 
+        validateInterval (database, rules, i);
         database.modifyInterval (tracked[tracked.size () - id], i);
 
         // Feedback.
