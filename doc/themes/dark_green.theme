@@ -1,0 +1,104 @@
+###############################################################################
+#
+# Copyright 2015 - 2016, Paul Beckingham, Federico Hernandez.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included
+# in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# http://www.opensource.org/licenses/mit-license.php
+#
+###############################################################################
+
+define theme:
+  description = "dark_green.theme: A dark green theme."
+  colors:
+    # General UI color.
+    exclusion = "gray8 on gray4"
+    today     = "rgb521"
+    holiday   = "rgb100"
+    label     = "rgb100"
+    ids       = "rgb510"
+    debug     = "blue"
+
+  # Rotating Color Palette for tags. The leading zeroes allow the order to be
+  # preserved.
+  palette:
+    color01 = "white on rgb010"
+    color02 = "white on rgb231"
+    color03 = "white on rgb011"
+    color04 = "white on rgb232"
+    color05 = "white on rgb020"
+    color06 = "black on rgb240"
+    color07 = "white on rgb021"
+    color08 = "black on rgb241"
+    color09 = "white on rgb022"
+    color10 = "black on rgb242"
+    color11 = "white on rgb030"
+    color12 = "black on rgb243"
+    color13 = "black on rgb040"
+    color14 = "black on rgb250"
+    color15 = "black on rgb041"
+    color16 = "black on rgb251"
+    color17 = "black on rgb042"
+    color18 = "black on rgb252"
+    color19 = "black on rgb043"
+    color20 = "black on rgb253"
+    color21 = "black on rgb050"
+    color22 = "black on rgb254"
+    color23 = "black on rgb051"
+    color24 = "white on rgb330"
+    color25 = "black on rgb052"
+    color26 = "white on rgb331"
+    color27 = "black on rgb053"
+    color28 = "white on rgb332"
+    color29 = "white on rgb120"
+    color30 = "black on rgb340"
+    color31 = "white on rgb121"
+    color32 = "black on rgb341"
+    color33 = "white on rgb122"
+    color34 = "black on rgb342"
+    color35 = "white on rgb130"
+    color36 = "black on rgb343"
+    color37 = "white on rgb131"
+    color38 = "black on rgb344"
+    color39 = "white on rgb132"
+    color40 = "black on rgb350"
+    color41 = "black on rgb140"
+    color42 = "black on rgb351"
+    color43 = "black on rgb141"
+    color44 = "black on rgb352"
+    color45 = "black on rgb142"
+    color46 = "black on rgb353"
+    color47 = "black on rgb143"
+    color48 = "black on rgb440"
+    color49 = "black on rgb144"
+    color50 = "black on rgb441"
+    color51 = "black on rgb150"
+    color52 = "black on rgb442"
+    color53 = "black on rgb151"
+    color54 = "black on rgb443"
+    color55 = "black on rgb152"
+    color56 = "black on rgb450"
+    color57 = "black on rgb153"
+    color58 = "black on rgb451"
+    color59 = "white on rgb220"
+    color60 = "black on rgb452"
+    color61 = "white on rgb221"
+    color62 = "black on rgb453"
+    color63 = "white on rgb230"
+
