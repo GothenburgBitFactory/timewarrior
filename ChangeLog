@@ -7,6 +7,8 @@
           (thanks to Matthias Rieber).
 - TI-16   Should handle case where taskwarrior hook is used before timew
           (thanks to Aaron Curtis).
+- TI-20   Week number does not agree with Taskwarrior
+          (thanks to Dirk Deimeke).
 - timew 0.9.5~alpha install bug
           (thanks to Gordon Ball).
 - Improved out-of-source build for themes, holidays
