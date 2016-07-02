@@ -348,7 +348,29 @@ void validateInterval (
   const Rules& rules,
   const Interval& interval)
 {
-  // TODO Warn on new tag
+  // TODO Need to verify that interval.tags do not overlap with stored data.
+  //      Unless the tags that overlap are allowed to overlap.
+
+  // Warn on new tag.
+  if (rules.getBoolean ("verbose"))
+  {
+    std::set <std::string> tags;
+    for (auto& line : database.allLines ())
+    {
+      if (line[0] == 'i')
+      {
+        Interval interval;
+        interval.initialize (line);
+
+        for (auto& tag : interval.tags ())
+          tags.insert (tag);
+      }
+    }
+
+    for (auto& tag : interval.tags ())
+      if (tags.find (tag) == tags.end ())
+        std::cout << "Note: '" << tag << "' is a new tag.\n";
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
