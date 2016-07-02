@@ -3,6 +3,8 @@
 - TI-10   The 'total' summands in the month report are not aligned with the
           column name
           (thanks to Tomas Babej).
+- TI-14   Warn when new tags are being created
+          (thanks to Matthias Rieber).
 - TI-16   Should handle case where taskwarrior hook is used before timew
           (thanks to Aaron Curtis).
 - timew 0.9.5~alpha install bug
