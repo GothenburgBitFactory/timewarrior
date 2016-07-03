@@ -202,7 +202,7 @@ int main (int, char**)
   // Range getFullDay (const Datetime&);
   auto r1 = getFullDay (Datetime ("20160501T203112"));
   t.ok (r1.start == Datetime ("20160501T000000"), "getFullDay 2016-05-01T20:31:23 -> start 2016-05-01T00:00:00");
-  t.ok (r1.end   == Datetime ("20160501T235959"), "getFullDay 2016-05-01T20:31:23 -> end   2016-05-01T23:59:59");
+  t.ok (r1.end   == Datetime ("20160502T000000"), "getFullDay 2016-05-01T20:31:23 -> end   2016-05-02T00:00:00");
 
   // std::vector <Range> subtractRanges (const Range&, const std::vector <Range>&, const std::vector <Range>&);
   // Subtract three non-overlapping ranges from a full day, yielding two resultant rangeṡ.
