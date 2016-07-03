@@ -690,7 +690,7 @@ Type is one of 'month', 'week', 'day'.
 
 .TP
 .B verbose = yes
-Determines whether Timewarrior generates feedbac.
+Determines whether Timewarrior generates feedback.
 May be overridden by the ':quiet' hint.
 Default value is 'yes'.
 
