@@ -18,6 +18,7 @@
 - Supports rc.reports.<type>.cell to control the number of minutes that one
   character cell represents on a chart.
           (thanks to Matthew Lemon, Rene Vergara).
+- Added basic color themes.
 
 ------ current release ---------------------------
 

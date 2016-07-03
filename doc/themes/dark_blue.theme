@@ -30,7 +30,7 @@ define theme:
     # General UI color.
     exclusion = "gray8 on gray4"
     today     = "rgb125"
-    holiday   = "rgb100"
+    holiday   = "rgb002"
     label     = "rgb002"
     ids       = "rgb015"
     debug     = "blue"

@@ -29,9 +29,9 @@ define theme:
   colors:
     # General UI color.
     exclusion = "gray8 on gray4"
-    today     = "rgb521"
-    holiday   = "rgb100"
-    label     = "rgb100"
+    today     = "rgb152"
+    holiday   = "rgb010"
+    label     = "rgb010"
     ids       = "rgb510"
     debug     = "blue"
 
