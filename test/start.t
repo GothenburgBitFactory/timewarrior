@@ -80,7 +80,7 @@ class TestStart(TestCase):
         self.assertIn("Tracking bar", out)
 
     def test_start_with_open_interval_timed(self):
-        """Test timed start with already open interval, which should be auto-stopped 
+        """Test timed start with already open interval, which should be auto-stopped
         at given datetime"""
         self.t("start 2016-01-01T00:00:00 foo")
         code, out, err = self.t("start 2016-01-01T01:00:00 bar")

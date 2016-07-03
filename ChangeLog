@@ -19,6 +19,9 @@
   character cell represents on a chart.
           (thanks to Matthew Lemon, Rene Vergara).
 - Added basic color themes.
+- Fixed problem where a specific start time closed the previous open interval
+  at the current time.
+          (thanks to Michael Meier).
 
 ------ current release ---------------------------
 
