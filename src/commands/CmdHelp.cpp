@@ -220,7 +220,7 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "  now                                   Current date and time\n"
                 << "  today                                 Current date at 0:00:00\n"
-                << "  sod, eod                              Current date at 0:00:00 and 23:59:59\n"
+                << "  sod, eod                              Current date at 0:00:00 and 24:00:00\n"
                 << "  yesterday                             Yesterday at 0:00:00\n"
                 << "  tomorrow                              Tomorrow at 0:00:00 (midnight tonight)\n"
                 << "  <day-of-week>                         Previous named day at 0:00:00\n"
