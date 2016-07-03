@@ -257,6 +257,9 @@ time:
 
   $ timew start 8am weekend 'Home & Garden'
 
+If there is a previous open interval, it will be closed at the given start 
+time.
+
 Quotes are harmless if used unnecessarily. See also 'continue', 'stop', 'track'.
 
 .TP
