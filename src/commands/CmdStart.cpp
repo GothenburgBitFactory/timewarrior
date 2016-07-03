@@ -45,9 +45,12 @@ int CmdStart (
   auto latest = getLatestInterval (database);
   if (latest.range.is_open ())
   {
-    // Stop it.
+    // Stop it, at the given start time, if applicable.
     Interval modified {latest};
-    modified.range.end = Datetime ();
+    if (filter.range.start.toEpoch () != 0)
+      modified.range.end = filter.range.start;
+    else
+      modified.range.end = Datetime ();
 
     // Update database.
     database.deleteInterval (latest);
