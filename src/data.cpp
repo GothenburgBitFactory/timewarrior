@@ -295,7 +295,7 @@ std::vector <Range> getAllExclusions (
   results = subtractRanges (results, daysOn);
 
   // Expand all exclusions that are not 'exc day ...' into excluded ranges that
-  // overlage with range.
+  // overlap with range.
   std::vector <Range> exclusionRanges;
   for (auto& exclusion : exclusions)
     if (exclusion.tokens ()[1] != "day")
@@ -459,6 +459,7 @@ std::vector <Range> merge (
     }
     else
     {
+      sorted[cursor] = sorted[i];
       ++cursor;
     }
   }
