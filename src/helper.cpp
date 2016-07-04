@@ -178,16 +178,18 @@ bool expandIntervalHint (
     int y = now.year ();
     int m = now.month ();
     int q = ((m - 1) / 3) + 1;
-    m = ((q - 1) * 3) + 1;
 
-    if (q == 1)
+    if (--q == 0)
     {
-      m = 10;
+      q = 4;
       --y;
     }
 
-    range.start = Datetime (y, m, 1);
-    range.end   = Datetime (y, m + 2, Datetime::daysInMonth (y, m + 2));
+    m = ((q - 1) * 3) + 1;
+
+    range.start = Datetime (y, m,     1);
+    range.end   = Datetime (y, m + 3, 1);
+
     debug (format ("Hint {1} expanded to {2} - {3}",
                    hint,
                    range.start.toISOLocalExtended (),
