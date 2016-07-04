@@ -54,9 +54,27 @@ void test_flatten (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void test_merge (
+  UnitTest& t,
+  const std::string& label,
+  const std::vector <Range>& input,
+  const std::vector <Range>& output)
+{
+  auto results = merge (input);
+  t.is (results.size (), output.size (), "merge: " + label + " expected number of results");
+  for (unsigned int i = 0; i < std::min (output.size (), results.size ()); ++i)
+  {
+    t.is (output[i].start.toISO (), results[i].start.toISO (), "merge: " + label + " start matches");
+    t.is (output[i].end.toISO (),   results[i].end.toISO (),   "merge: " + label + " end matches");
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (7 + 7 + 7 + 4 + 4 + 10 + 30);
+  UnitTest t ((7 + 7 + 7 + 4 + 4 + 10) +
+              (1 + 3 + 5 + 5 + 3 + 3)  +
+              30);
 
   // std::vector <Interval> flatten (const Interval&, std::vector <Range>&);
   // input    [---------------------------------------------------)
@@ -132,6 +150,44 @@ int main (int, char**)
                 {"inc 20160523T100000Z - 20160523T160000Z # foo",
                  "inc 20160523T170000Z - 20160523T213000Z # foo",
                  "inc 20160524T040000Z # foo"});
+
+  // Simple range merging.
+  test_merge (t,
+              "Empty range",
+              {},
+              {});
+
+  test_merge (t,
+              "Single range",
+              {{Datetime ("20160704T000000Z"), Datetime ("20160704T010000Z")}},
+              {{Datetime ("20160704T000000Z"), Datetime ("20160704T010000Z")}});
+
+  test_merge (t,
+              "Non-overlapping ranges",
+              {{Datetime ("20160704T000000Z"), Datetime ("20160704T010000Z")},
+               {Datetime ("20160704T020000Z"), Datetime ("20160704T030000Z")}},
+              {{Datetime ("20160704T000000Z"), Datetime ("20160704T010000Z")},
+               {Datetime ("20160704T020000Z"), Datetime ("20160704T030000Z")}});
+
+  test_merge (t,
+              "Non-overlapping unsorted ranges",
+              {{Datetime ("20160704T020000Z"), Datetime ("20160704T030000Z")},
+               {Datetime ("20160704T000000Z"), Datetime ("20160704T010000Z")}},
+              {{Datetime ("20160704T000000Z"), Datetime ("20160704T010000Z")},
+               {Datetime ("20160704T020000Z"), Datetime ("20160704T030000Z")}});
+
+  test_merge (t,
+              "Overlapping unsorted ranges",
+              {{Datetime ("20160704T010000Z"), Datetime ("20160704T030000Z")},
+               {Datetime ("20160704T000000Z"), Datetime ("20160704T020000Z")}},
+              {{Datetime ("20160704T000000Z"), Datetime ("20160704T030000Z")}});
+
+  test_merge (t,
+              "Multiple overlapping ranges",
+              {{Datetime ("20160704T010000Z"), Datetime ("20160704T040000Z")},
+               {Datetime ("20160704T020000Z"), Datetime ("20160704T050000Z")},
+               {Datetime ("20160704T030000Z"), Datetime ("20160704T060000Z")}},
+              {{Datetime ("20160704T010000Z"), Datetime ("20160704T060000Z")}});
 
   // bool matchesFilter (const Interval& interval, const Interval& filter);
   Interval refOpen;
