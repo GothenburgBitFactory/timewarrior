@@ -135,6 +135,9 @@ void Datafile::commit ()
       _file.truncate ();
       _file.append (std::string (""));   // Seek to EOF.
 
+      // Sort the intervals by ascending start time.
+      std::sort (_lines.begin (), _lines.end ());
+
       // Write out all the lines.
       for (auto& line : _lines)
         _file.write_raw (line + '\n');
