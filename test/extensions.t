@@ -64,11 +64,14 @@ class TestExtensions(TestCase):
         code, out, err = self.t('ext_echo')
         self.assertIn('test works', out)
 
+        code, out, err = self.t('ext_')
+        self.assertIn('test works', out)
+
         code, out, err = self.t('report ext_echo')
         self.assertIn('test works', out)
 
         code, out, err = self.t('report ext')
-        self.assertInt('test works', out)
+        self.assertIn('test works', out)
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
