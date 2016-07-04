@@ -448,9 +448,8 @@ void CLI::canonicalizeNames ()
     }
 
     // Extensions.
-    else if (! alreadyFoundCmd &&
-             (exactMatch ("extension", raw) ||
-              canonicalize (canonical, "extension", raw)))
+    else if (exactMatch ("extension", raw) ||
+             canonicalize (canonical, "extension", raw))
     {
       a.attribute ("canonical", canonical);
       a.tag ("EXT");
