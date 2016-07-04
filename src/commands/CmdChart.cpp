@@ -46,7 +46,7 @@ static std::string renderDayName         (const std::string&, const Rules&, Date
 static std::string renderTotal           (const std::string&, const Rules&, time_t);
 static std::string renderSubTotal        (const std::string&, const Rules&, int, int, time_t);
 static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
-static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, Palette&, std::map <std::string, Color>&, int, time_t&, bool);
+static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, std::map <std::string, Color>&, int, time_t&, bool);
        std::string renderHolidays        (const std::string&, const Rules&, const Interval&);
 static std::string renderSummary         (const std::string&, const Rules&, const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
 
@@ -189,7 +189,7 @@ int renderChart (
       for (auto& track : tracked)
       {
         time_t interval_work = 0;
-        renderInterval (type, rules, lines, day, track, palette, tag_colors, first_hour, interval_work, ids);
+        renderInterval (type, rules, lines, day, track, tag_colors, first_hour, interval_work, ids);
         work += interval_work;
       }
     }
@@ -497,7 +497,6 @@ static void renderInterval (
   std::vector <Composite>& lines,
   const Datetime& day,
   const Interval& track,
-  Palette& palette,
   std::map <std::string, Color>& tag_colors,
   int first_hour,
   time_t& work,
@@ -540,13 +539,7 @@ static void renderInterval (
   if (end_offset > start_offset)
   {
     // Determine color of interval.
-    Color colorTrack;
-    if (track.tags ().size ())
-      // TODO Instead of using the first tag, look at them all, and choose one
-      //      that has a color defined over any other.
-      colorTrack = tag_colors [*(track.tags ().begin ())];
-    else
-      colorTrack = palette.next ();
+    Color colorTrack = intervalColor (track, rules, tag_colors);
 
     // Properly format the tags within the space.
     std::string label;

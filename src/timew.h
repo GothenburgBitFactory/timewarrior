@@ -64,7 +64,7 @@ void initializeExtensions (CLI&, const Rules&, Extensions&);
 int dispatchCommand (const CLI&, Database&, Rules&, const Extensions&);
 
 // helper.cpp
-Color intervalColor (const Interval&, const Rules&, Palette&);
+Color intervalColor (const Interval&, const Rules&, std::map <std::string, Color>&);
 Color tagColor (const Rules&, const std::string&);
 std::string intervalSummarize (Database&, const Rules&, const Interval&);
 bool expandIntervalHint (const std::string&, Range&);

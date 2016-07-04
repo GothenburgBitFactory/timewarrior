@@ -41,11 +41,15 @@
 Color intervalColor (
   const Interval& interval,
   const Rules& rules,
-  Palette& palette)
+  std::map <std::string, Color>& tag_colors)
 {
   Color c;
+  std::string first_tag;
   for (auto& tag : interval.tags ())
   {
+    if (first_tag == "")
+      first_tag = tag;
+
     std::string name = std::string ("tags.") + tag + ".color";
     if (rules.has (name))
       c.blend (Color (rules.get (name)));
@@ -54,7 +58,10 @@ Color intervalColor (
   if (c.nontrivial ())
     return c;
 
-  return palette.next ();
+  if (interval.tags ().size ())
+    return tag_colors[first_tag];
+
+  return c;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
