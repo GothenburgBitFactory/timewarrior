@@ -37,7 +37,28 @@
 #include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////
-// Consult rules to find any defined color for the given tah, and colorize it.
+// Select a color to represent the interval.
+Color intervalColor (
+  const Interval& interval,
+  const Rules& rules,
+  Palette& palette)
+{
+  Color c;
+  for (auto& tag : interval.tags ())
+  {
+    std::string name = std::string ("tags.") + tag + ".color";
+    if (rules.has (name))
+      c.blend (Color (rules.get (name)));
+  }
+
+  if (c.nontrivial ())
+    return c;
+
+  return palette.next ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Consult rules to find any defined color for the given tag, and colorize it.
 Color tagColor (const Rules& rules, const std::string& tag)
 {
   Color c;
