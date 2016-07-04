@@ -36,6 +36,7 @@
 #include <algorithm>
 #include <iostream>
 #include <iomanip>
+#include <cassert>
 
 int                renderChart           (const CLI&, const std::string&, Interval&, Rules&, Database&);
 static void        determineHourRange    (const std::string&, const Rules&, const Interval&, const std::vector <Interval>&, int&, int&);
@@ -652,6 +653,7 @@ static std::string renderSummary (
     }
 
     auto total_available = filter.range.total () - total_unavailable;
+    assert (total_available >= 0);
     auto total_remaining = total_available - total_worked;
 
     out << '\n'
