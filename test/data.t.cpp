@@ -73,7 +73,7 @@ void test_merge (
 int main (int, char**)
 {
   UnitTest t ((7 + 7 + 7 + 4 + 4 + 10) +
-              (1 + 3 + 5 + 5 + 3 + 3)  +
+              (1 + 3 + 5 + 5 + 3 + 3 + 7)  +
               30);
 
   // std::vector <Interval> flatten (const Interval&, std::vector <Range>&);
@@ -188,6 +188,17 @@ int main (int, char**)
                {Datetime ("20160704T020000Z"), Datetime ("20160704T050000Z")},
                {Datetime ("20160704T030000Z"), Datetime ("20160704T060000Z")}},
               {{Datetime ("20160704T010000Z"), Datetime ("20160704T060000Z")}});
+
+  test_merge (t,
+              "Multiple overlapping, enveloping ranges",
+              {{Datetime ("20160703T000000Z"), Datetime ("20160703T010000Z")},
+               {Datetime ("20160704T000000Z"), Datetime ("20160705T000000Z")},
+               {Datetime ("20160704T010000Z"), Datetime ("20160704T040000Z")},
+               {Datetime ("20160704T020000Z"), Datetime ("20160704T050000Z")},
+               {Datetime ("20160706T000000Z"), Datetime ("20160706T010000Z")}},
+              {{Datetime ("20160703T000000Z"), Datetime ("20160703T010000Z")},
+               {Datetime ("20160704T000000Z"), Datetime ("20160705T000000Z")},
+               {Datetime ("20160706T000000Z"), Datetime ("20160706T010000Z")}});
 
   // bool matchesFilter (const Interval& interval, const Interval& filter);
   Interval refOpen;
