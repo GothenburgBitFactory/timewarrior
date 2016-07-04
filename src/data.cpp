@@ -30,6 +30,7 @@
 #include <Datetime.h>
 #include <Duration.h>
 #include <timew.h>
+#include <algorithm>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -428,6 +429,44 @@ std::vector <Interval> flatten (
     std::cout << "#     " << i.dump () << "\n";
 */
   return all;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Simply merges a vector of ranges, without data loss.
+static bool rangeCompare (Range left, Range right)
+{
+  return left.start < right.start;
+}
+
+std::vector <Range> merge (
+  const std::vector <Range>& ranges)
+{
+  // Short cut.
+  if (ranges.size () < 2)
+    return ranges;
+
+  std::vector <Range> sorted {ranges};
+  std::sort (sorted.begin (), sorted.end (), rangeCompare);
+
+  unsigned int cursor = 0;
+  int merges = 0;
+  for (unsigned int i = 0; i < sorted.size (); ++i)
+  {
+    if (cursor && sorted[cursor - 1].overlap (sorted[i]))
+    {
+      sorted[cursor - 1] = sorted[cursor - 1].combine (sorted[i]);
+      ++merges;
+    }
+    else
+    {
+      ++cursor;
+    }
+  }
+
+  if (merges)
+    sorted.resize (ranges.size () - merges);
+
+  return sorted;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
