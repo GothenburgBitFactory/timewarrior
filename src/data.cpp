@@ -309,7 +309,7 @@ std::vector <Range> getAllExclusions (
     std::cout << "#   " << r.dump () << "\n";
   return all;
 */
-  return addRanges (range, results, exclusionRanges);
+  return merge (addRanges (range, results, exclusionRanges));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
