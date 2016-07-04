@@ -194,7 +194,7 @@ bool expandIntervalHint (
   {
     Datetime now;
     range.start = Datetime (now.year () - 1,  1,  1);
-    range.end   = Datetime (now.year () - 1, 12, 31);
+    range.end   = Datetime (now.year (),      1,  1);
     debug (format ("Hint {1} expanded to {2} - {3}",
                    hint,
                    range.start.toISOLocalExtended (),
