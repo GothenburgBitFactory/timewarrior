@@ -137,12 +137,46 @@ bool expandIntervalHint (
   // Some require math.
   if (hint == ":lastweek")
   {
+    // Note: Simply subtracting (7 * 86400) from socw, eocw fails to consider
+    //       daylight savings.
     Datetime socw ("socw");
+    int sy = socw.year ();
+    int sm = socw.month ();
+    int sd = socw.day ();
+
     Datetime eocw ("eocw");
-    socw -= 7 * 86400;
-    eocw -= 7 * 86400;
-    range.start = Datetime (socw.toString ("Y-M-D"));
-    range.end   = Datetime (eocw.toString ("Y-M-D"));
+    int ey = eocw.year ();
+    int em = eocw.month ();
+    int ed = eocw.day ();
+
+    sd -= 7;
+    if (sd < 1)
+    {
+      --sm;
+      if (sm < 1)
+      {
+        --sy;
+        sm = 12;
+      }
+
+      sd += Datetime::daysInMonth (sy, sm);
+    }
+
+    ed -= 7;
+    if (ed < 1)
+    {
+      --em;
+      if (em < 1)
+      {
+        --ey;
+        em = 12;
+      }
+
+      ed += Datetime::daysInMonth (ey, em);
+    }
+
+    range.start = Datetime (sy, sm, sd);
+    range.end   = Datetime (ey, em, ed);
     debug (format ("Hint {1} expanded to {2} - {3}",
                    hint,
                    range.start.toISOLocalExtended (),
