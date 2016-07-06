@@ -145,8 +145,7 @@ int renderChart (
                 last_hour);
 
   // For rendering labels on edge detection.
-  Datetime previous (filter.range.start);
-  --previous;
+  Datetime previous {0};
 
   // Is the :blank hint being used?
   bool blank = findHint (cli, ":blank");
@@ -332,7 +331,7 @@ static std::string renderMonth (
         << ' ';
 
   if (showWeek)
-    out << (previous.week ()  != day.week ()  ? leftJustify (format ("W{1}", day.week ()), 3) : "   ")
+    out << (previous.week () != day.week () ? leftJustify (format ("W{1}", day.week ()), 3) : "   ")
         << ' ';
 
   return out.str ();
