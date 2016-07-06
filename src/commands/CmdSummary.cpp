@@ -31,6 +31,7 @@
 #include <format.h>
 #include <commands.h>
 #include <timew.h>
+#include <algorithm>
 #include <iostream>
 
 // Implemented in CmdChart.cpp.
@@ -142,7 +143,27 @@ int CmdSummary (
   else
   {
     if (rules.getBoolean ("verbose"))
-      std::cout << "No filtered data found.\n";
+    {
+      std::cout << "No filtered data found";
+
+      if (filter.range.is_started ())
+      {
+        std::cout << " in the range " << filter.range.start.toISOLocalExtended ();
+        if (filter.range.is_ended ())
+          std::cout << " - " << filter.range.end.toISOLocalExtended ();
+      }
+
+      if (filter.tags ().size ())
+      {
+        std::vector <std::string> tags;
+        for (auto& tag : filter.tags ())
+          tags.push_back (quoteIfNeeded (tag));
+
+        std::cout << " tagged with " << join (", ", tags);
+      }
+
+      std::cout << ".\n";
+    }
   }
 
   return 0;
