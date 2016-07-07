@@ -32,6 +32,8 @@
 - Fixed problem where a specific start time closed the previous open interval
   at the current time.
           (thanks to Michael Meier).
+- Fixed utf8 encoding in Taskwarrior integration hook
+          (thanks to Martin Boeker).
 
 ------ current release ---------------------------
 
