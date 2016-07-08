@@ -76,7 +76,7 @@ int CmdJoin (
       combined.range.end = second.range.end;
 
       database.deleteInterval (second);
-      validateInterval (database, rules, combined);
+      validate (cli, rules, database, combined);
       database.modifyInterval (first, combined);
 
       // Feedback.

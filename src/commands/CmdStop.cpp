@@ -66,7 +66,7 @@ int CmdStop (
       modified.range.end = Datetime ();
 
     // Close the interval.
-    validateInterval (database, rules, modified);
+    validate (cli, rules, database, modified);
     database.modifyInterval (latest, modified);
 
     // If tags are specified, but are not a full set of tags, remove them
@@ -91,7 +91,7 @@ int CmdStop (
     {
       modified.range.start = modified.range.end;
       modified.range.end = {0};
-      validateInterval (database, rules, modified);
+      validate (cli, rules, database, modified);
       database.addInterval (modified);
       if (rules.getBoolean ("verbose"))
         std::cout << '\n' << intervalSummarize (database, rules, modified);

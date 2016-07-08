@@ -45,7 +45,7 @@ int CmdTrack (
   auto exclusions = getAllExclusions (rules, filter.range);
   for (auto& interval : flatten (filter, exclusions))
   {
-    validateInterval (database, rules, interval);
+    validate (cli, rules, database, interval);
     database.addInterval (interval);
   }
 

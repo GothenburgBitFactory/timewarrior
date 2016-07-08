@@ -17,7 +17,8 @@ set (timew_SRCS CLI.cpp        CLI.h
                 init.cpp
                 helper.cpp
                 log.cpp
-                util.cpp)
+                util.cpp
+                validate.cpp)
 
 set (libshared_SRCS libshared/src/Args.cpp          libshared/src/Args.h
                     libshared/src/Color.cpp         libshared/src/Color.h

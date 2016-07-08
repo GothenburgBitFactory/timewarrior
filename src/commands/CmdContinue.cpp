@@ -31,6 +31,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdContinue (
+  const CLI& cli,
   Rules& rules,
   Database& database)
 {
@@ -41,7 +42,7 @@ int CmdContinue (
     {
       // Open an identical interval and update hte DB.
       latest.range.open ();
-      validateInterval (database, rules, latest);
+      validate (cli, rules, database, latest);
       database.addInterval (latest);
 
       if (rules.getBoolean ("verbose"))

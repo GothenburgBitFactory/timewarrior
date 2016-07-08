@@ -56,6 +56,9 @@ std::vector <Range>     getUntracked      (Database&, const Rules&, Interval&);
 Interval                getLatestInterval (Database&);
 Range                   getFullDay        (const Datetime&);
 
+// validate.cpp
+void validate (const CLI& cli, const Rules& rules, Database&, Interval&);
+
 // init.cpp
 bool lightweightVersionCheck (int, const char**);
 void initializeEntities (CLI&);
@@ -75,7 +78,6 @@ int quantizeToNMinutes (const int, const int);
 bool dayIsHoliday (const Rules&, const Datetime&);
 bool findHint (const CLI&, const std::string&);
 std::string minimalDelta (const Datetime&, const Datetime&);
-void validateInterval (Database&, const Rules&, const Interval&);
 
 // log.cpp
 void enableDebugMode (bool);
