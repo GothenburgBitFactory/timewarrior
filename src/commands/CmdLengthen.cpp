@@ -66,11 +66,12 @@ int CmdLengthen (
       Interval i = tracked[tracked.size () - id];
       if (! i.range.is_open ())
       {
+        database.deleteInterval (tracked[tracked.size () - id]);
+
         Duration dur (delta);
         i.range.end += dur.toTime_t ();
-
         validate (cli, rules, database, i);
-        database.modifyInterval (tracked[tracked.size () - id], i);
+        database.addInterval (i);
 
         // Feedback.
         if (rules.getBoolean ("verbose"))
