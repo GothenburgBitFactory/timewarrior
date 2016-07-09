@@ -86,11 +86,18 @@ static void autoFill (
 //   recorded data.
 //
 static void autoAdjust (
+  const CLI& cli,
   const Rules& rules,
   Database& database,
   const Interval& filter,
   Interval& interval)
 {
+  if (findHint (cli, ":adjust"))
+  {
+    // An empty filter allows scanning beyond interval.range.
+    Interval range_filter;
+    auto tracked = getTracked (database, rules, range_filter);
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -134,10 +141,7 @@ void validate (
     filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
 
   autoFill (cli, rules, database, filter, interval);
-
-  if (findHint (cli, ":adjust"))
-    autoAdjust (rules, database, filter, interval);
-
+  autoAdjust (cli, rules, database, filter, interval);
   warnOnNewTag (rules, database, interval);
 }
 
