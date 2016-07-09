@@ -441,7 +441,7 @@ int CmdHelp (const CLI& cli)
                 << "  :nocolor       Force color off, even if connected to a TTY\n"
                 << "  :blank         Leaves tracked time out of a report\n"
                 << "  :fill          Expand time to fill surrounding available gap\n"
-                << "                 Only functions when exclusions are provided\n"
+                << "  :adjust        Automatically correct overlaps\n"
                 << "  :ids           Displays interval ID numbers in the summary report\n"
                 << '\n'
                 << "Range hints provide convenient shortcuts to date ranges:\n"
