@@ -69,10 +69,11 @@ int CmdShorten (
         Duration dur (delta);
         if (dur < (i.range.end - i.range.start))
         {
-          i.range.end -= dur.toTime_t ();
+          database.deleteInterval (tracked[tracked.size () - id]);
 
+          i.range.end -= dur.toTime_t ();
           validate (cli, rules, database, i);
-          database.modifyInterval (tracked[tracked.size () - id], i);
+          database.addInterval (i);
 
           // Feedback.
           if (rules.getBoolean ("verbose"))
