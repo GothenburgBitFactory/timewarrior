@@ -43,11 +43,35 @@ static void autoFill (
   const Interval& filter,
   Interval& interval)
 {
-  // TODO Get all intervals.
-  // TODO Get all exclusions.
-  // TODO Determine all gaps.
+  // An empty filter allows scanning beyond interval.range.
+  Interval range_filter;
 
+  // Look backwards from interval.range.start to a boundary.
+  auto tracked = getTracked (database, rules, range_filter);
+  for (auto earlier = tracked.rbegin (); earlier != tracked.rend (); ++earlier)
+  {
+    if (! earlier->range.is_open () &&
+        earlier->range.end < interval.range.start)
+    {
+      interval.range.start = earlier->range.end;
+      std::cout << "Backfilled to " << interval.range.start.toISOLocalExtended () << "\n";
+      break;
+    }
+  }
 
+  // If the interval is closed, scan forwards for the next boundary.
+  if (! interval.range.is_open ())
+  {
+    for (auto& later : tracked)
+    {
+      if (interval.range.end < later.range.start)
+      {
+        interval.range.end = later.range.start;
+        std::cout << "Filled to " << interval.range.end.toISOLocalExtended () << "\n";
+        break;
+      }
+    }
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
