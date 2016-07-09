@@ -75,9 +75,11 @@ int CmdJoin (
       auto combined = first;
       combined.range.end = second.range.end;
 
+      database.deleteInterval (first);
       database.deleteInterval (second);
+
       validate (cli, rules, database, combined);
-      database.modifyInterval (first, combined);
+      database.addInterval (combined);
 
       // Feedback.
       if (rules.getBoolean ("verbose"))
