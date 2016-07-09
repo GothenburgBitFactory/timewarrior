@@ -89,14 +89,55 @@ static void autoAdjust (
   const CLI& cli,
   const Rules& rules,
   Database& database,
-  const Interval& filter,
   Interval& interval)
 {
-  if (findHint (cli, ":adjust"))
+  // Without :adjust, overlapping intervals are an error condition.
+  auto adjust = findHint (cli, ":adjust");
+
+  // An empty filter allows scanning beyond interval.range.
+  Interval range_filter;
+  auto tracked = getTracked (database, rules, range_filter);
+
+  for (auto& track : tracked)
   {
-    // An empty filter allows scanning beyond interval.range.
-    Interval range_filter;
-    auto tracked = getTracked (database, rules, range_filter);
+    if (interval.range.overlap (track.range))
+    {
+      if (! adjust)
+        throw std::string ("You cannot overlap intervals. Adjust the start/end "
+                           "time, or specify the :adjust hint.");
+
+      std::cout << "# Overlap new      " << interval.dump () << "\n"
+                << "#         existing " << track.dump ()    << "\n";
+
+      if (interval.range.start <= track.range.start)
+      {
+        // interval                 [--------)
+        // C                          [----)
+        //
+        // adjusted (dominate)      C deleted
+        // adjusted (defer)         interval split, C unmodified
+
+        // interval                 [--------)
+        // D                             [--------)
+        //
+        // adjusted (dominate)      D modified
+        // adjusted (defer)         interval modified
+      }
+      else
+      {
+        // interval                 [--------)
+        // B                   [--------)
+        //
+        // adjusted (dominate)      B modified
+        // adjusted (defer)         interval modified
+
+        // interval                 [--------)
+        // F                      [-------------)
+        //
+        // adjusted (dominate)    F split
+        // adjusted (defer)       interval deleted
+      }
+    }
   }
 }
 
@@ -140,8 +181,9 @@ void validate (
   if (! filter.range.is_started ())
     filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
 
+  // All validation performed here.
   autoFill (cli, rules, database, filter, interval);
-  autoAdjust (cli, rules, database, filter, interval);
+  autoAdjust (cli, rules, database, interval);
   warnOnNewTag (rules, database, interval);
 }
 
