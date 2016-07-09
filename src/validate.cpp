@@ -38,37 +38,41 @@
 //   range.
 //
 static void autoFill (
+  const CLI& cli,
   const Rules& rules,
   Database& database,
   const Interval& filter,
   Interval& interval)
 {
-  // An empty filter allows scanning beyond interval.range.
-  Interval range_filter;
-
-  // Look backwards from interval.range.start to a boundary.
-  auto tracked = getTracked (database, rules, range_filter);
-  for (auto earlier = tracked.rbegin (); earlier != tracked.rend (); ++earlier)
+  if (findHint (cli, ":fill"))
   {
-    if (! earlier->range.is_open () &&
-        earlier->range.end < interval.range.start)
+    // An empty filter allows scanning beyond interval.range.
+    Interval range_filter;
+
+    // Look backwards from interval.range.start to a boundary.
+    auto tracked = getTracked (database, rules, range_filter);
+    for (auto earlier = tracked.rbegin (); earlier != tracked.rend (); ++earlier)
     {
-      interval.range.start = earlier->range.end;
-      std::cout << "Backfilled to " << interval.range.start.toISOLocalExtended () << "\n";
-      break;
+      if (! earlier->range.is_open () &&
+          earlier->range.end < interval.range.start)
+      {
+        interval.range.start = earlier->range.end;
+        std::cout << "Backfilled to " << interval.range.start.toISOLocalExtended () << "\n";
+        break;
+      }
     }
-  }
 
   // If the interval is closed, scan forwards for the next boundary.
-  if (! interval.range.is_open ())
-  {
-    for (auto& later : tracked)
+    if (! interval.range.is_open ())
     {
-      if (interval.range.end < later.range.start)
+      for (auto& later : tracked)
       {
-        interval.range.end = later.range.start;
-        std::cout << "Filled to " << interval.range.end.toISOLocalExtended () << "\n";
-        break;
+        if (interval.range.end < later.range.start)
+        {
+          interval.range.end = later.range.start;
+          std::cout << "Filled to " << interval.range.end.toISOLocalExtended () << "\n";
+          break;
+        }
       }
     }
   }
@@ -129,8 +133,7 @@ void validate (
   if (! filter.range.is_started ())
     filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
 
-  if (findHint (cli, ":fill"))
-    autoFill (rules, database, filter, interval);
+  autoFill (cli, rules, database, filter, interval);
 
   if (findHint (cli, ":adjust"))
     autoAdjust (rules, database, filter, interval);
