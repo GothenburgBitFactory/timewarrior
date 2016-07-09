@@ -66,8 +66,9 @@ int CmdStop (
       modified.range.end = Datetime ();
 
     // Close the interval.
+    database.deleteInterval (latest);
     validate (cli, rules, database, modified);
-    database.modifyInterval (latest, modified);
+    database.addInterval (modified);
 
     // If tags are specified, but are not a full set of tags, remove them
     // before closing the interval.
