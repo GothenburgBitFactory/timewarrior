@@ -92,25 +92,29 @@ static void autoAdjust (
 ////////////////////////////////////////////////////////////////////////////////
 // Warn on new tag.
 static void warnOnNewTag (
+  const Rules& rules,
   Database& database,
   const Interval& interval)
 {
-  std::set <std::string> tags;
-  for (auto& line : database.allLines ())
+  if (rules.getBoolean ("verbose"))
   {
-    if (line[0] == 'i')
+    std::set <std::string> tags;
+    for (auto& line : database.allLines ())
     {
-      Interval interval;
-      interval.initialize (line);
+      if (line[0] == 'i')
+      {
+        Interval interval;
+        interval.initialize (line);
 
-      for (auto& tag : interval.tags ())
-        tags.insert (tag);
+        for (auto& tag : interval.tags ())
+          tags.insert (tag);
+      }
     }
-  }
 
-  for (auto& tag : interval.tags ())
-    if (tags.find (tag) == tags.end ())
-      std::cout << "Note: '" << tag << "' is a new tag.\n";
+    for (auto& tag : interval.tags ())
+      if (tags.find (tag) == tags.end ())
+        std::cout << "Note: '" << tag << "' is a new tag.\n";
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -131,8 +135,7 @@ void validate (
   if (findHint (cli, ":adjust"))
     autoAdjust (rules, database, filter, interval);
 
-  if (rules.getBoolean ("verbose"))
-    warnOnNewTag (database, interval);
+  warnOnNewTag (rules, database, interval);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
