@@ -42,12 +42,12 @@ int CmdTrack (
       ! filter.range.is_ended ())
     return CmdStart (cli, rules, database);
 
+  // Validation must occur before flattening.
+  validate (cli, rules, database, filter);
+
   auto exclusions = getAllExclusions (rules, filter.range);
   for (auto& interval : flatten (filter, exclusions))
-  {
-    validate (cli, rules, database, interval);
     database.addInterval (interval);
-  }
 
   if (rules.getBoolean ("verbose"))
     std::cout << intervalSummarize (database, rules, filter);
