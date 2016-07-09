@@ -86,8 +86,10 @@ int CmdMove (
         i.range.end -= delta;
     }
 
+    database.deleteInterval (tracked[tracked.size () - id]);
+
     validate (cli, rules, database, i);
-    database.modifyInterval (tracked[tracked.size () - id], i);
+    database.addInterval (i);
 
     // Feedback.
     if (rules.getBoolean ("verbose"))
