@@ -64,7 +64,6 @@ int CmdTag (
       for (auto& tag : tags)
         i.tag (tag);
 
-      validate (cli, rules, database, i);
       database.modifyInterval (tracked[tracked.size () - id], i);
 
       // Feedback.
