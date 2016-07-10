@@ -102,12 +102,12 @@ static void autoAdjust (
   {
     if (interval.range.overlap (track.range))
     {
+      debug ("Input         " + interval.dump ());
+      debug ("Overlaps with " + track.dump ());
+
       if (! adjust)
         throw std::string ("You cannot overlap intervals. Adjust the start/end "
                            "time, or specify the :adjust hint.");
-
-      std::cout << "# Overlap new      " << interval.dump () << "\n"
-                << "#         existing " << track.dump ()    << "\n";
 
       if (interval.range.start <= track.range.start)
       {
