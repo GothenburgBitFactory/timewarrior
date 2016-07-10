@@ -1,13 +1,13 @@
 Timewarrior Data
 ================
 Timewarrior has a conceptual timeline, which is a continuum onto which the
-inclusions and exclusions are mapped.
+inclusions and exclusions are placed.
 
 An inclusion is a block of time with associated tags, i.e. data captured or
-provided by the user representing ongoing work.
+provided that represents ongoing work.
 
 An exclusion is also a block of time but represents untrackable time, and acts
-as a mask for the inclusions. Here is a visual example:
+as a mask for the inclusions that envelope it. Here is a visual example:
 
   Inclusion:           [---------------    ----------------) tag1
   Exclusion:                           [---) lunch
@@ -117,7 +117,7 @@ inclusion records.
 An example file looks like this:
 
   inc 20160228T080000Z - 20160228T120000Z # Upgrade Planning
-  inc 20160228T130000Z                    # Upgrade Presentation "ABCD Inc"
+  inc 20160228T130000Z # Upgrade Presentation "ABCD Inc"
 
 Blank lines are ignored. The first inclusion represents a four hour block of
 time with two tags 'Upgrade' and 'Planning'. The second inclusion is open ended,
