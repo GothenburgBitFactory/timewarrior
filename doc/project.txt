@@ -28,7 +28,7 @@ Goals
 
 Non-Goals
 ---------
-- No dependency on Taskwarrior, Taskserver and Tasksh.
+- No dependency on Taskwarrior, Taskserver or Tasksh.
 - Time tracking is about recording the past, not planning the future.
 - No cloud support, no sync support, all data is local. Tracked time is
   sensitive personal data and will not be transmitted.
@@ -42,16 +42,16 @@ Reports
 Anticipating all reporting needs is impossible, therefore custom reports are
 required. Rather than only provide the Taskwarrior design where flexibility is
 provided via configurable options for fixed-format reports, Timewarrior will
-use a more flexible approach of providing configuration and data via an
-extension API. This will not limit the kind of reports or supported formats
-that can be added.
+additionally provide a more flexible alternative, which provides configuration
+and data via an extension API. This will not limit the kind of reports or
+supported formats that can be added.
 
 Timewarrior will ship with several extension reports, which serve as example
 extensions for users to modify and improve, perhaps contribute back to the
 project.
 
-Timewarrior will also have a limited set of built-in reports, a minimally
-functional tabular and chart report of tracked time.
+Timewarrior will also have a limited set of built-in reports: tabular reports
+and charts showing tracked and untracked time.
 
 
 Tags
@@ -64,26 +64,16 @@ A tag may be used without being defined, but if a tag is defined, then it may
 have associated metadata, such as a start date representing the first date on
 which it may be used, and an end date, when it expires, and so on.
 
-Tags may be deifned as overlapping, which allows the tracking of multiple
-simultaneous intervals. By default, tags do not overlap.
-
 
 Hints
 -----
-There are built-in hints, that influence processing. For example, ':debug' puts
+There are built-in hints that influence processing. For example ':debug' puts
 the program in debug mode, and ':fill' indicates to a 'track' command that you
 wish to fill in the available time. Another hint, ':week' means that a command
 should only affect the last week.
 
 There are user-defined hints, that can act as macros⁄aliases, for example the
 ':staff' hint could mean a 'Staff Meeting' and 'Admin' tag set.
-
-
-Commands
---------
-There is a set of built-in commands that allow all the functionality to be
-used. An extension mechanism allows arbitrary read-only commands to be added.
-Extensions will be seamlessly integrated.
 
 
 Extensions
@@ -97,9 +87,9 @@ Undo
 All commands that change configuration or data need to be recorded as-is in the
 undo.data file, so that an 'undo' command can later rewind the changes properly.
 
-All undo will happen at the command level, not the delta level. That means if
-one command results in three changes, a single 'undo' command will revert the
-three changes associated with the one command.
+All undo will happen at the command level. That means if one command results in
+three changes, a single 'undo' command will revert the three changes associated
+with the one command.
 
 
 Rules
