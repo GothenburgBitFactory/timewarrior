@@ -20,11 +20,18 @@ All DOM references have this form:
   dom.<name>
 
 
---- Raw Notes ---
+Supported Names
+---------------
 
-- Possible DOM references to support:
+  dom.tags                        --> 14                  Tag count
+  dom.tags.1                      --> 'tag'               First tag used
+
+  dom.tag.[1-3]                   --> 't1', 't2', 't3'    First three tags
+  dom.tag.[1,2,3]                 --> 't1', 't2', 't3'    First three tags
+  dom.tag.*                       --> 't1', ... 't14'     All tags
 
   dom.active                      --> 0/1                 Boolean indicator that tracking is active
+
   dom.active.tags                 --> 2                   Active tag count
   dom.active.tag.1                --> 'tag'               Active 1st tag
   dom.active.start                --> YYYYMMDDTHHMMSSZ    Active start time
@@ -35,22 +42,22 @@ All DOM references have this form:
   dom.tracked.month               --> 21                  Quantity this month
   dom.tracked.week                --> 6                   Quantity this week
   dom.tracked.today               --> 2                   Quantity today
-  dom.tracked.today.1             --> {...}               1st interval today JSON
-  dom.tracked.today.1.start       --> YYYYMMDDTHHMMSSZ    1st interval today start
-  dom.tracked.today.1.end         --> YYYYMMDDTHHMMSSZ    1st interval today end
-  dom.tracked.today.1.tags        --> 1                   1st interval today tag count
-  dom.tracked.today.1.tag.1       --> 'tag1'              1st interval today tag
-  dom.tracked.today.1.duration    --> P1H25M8S            1st interval today duration
+  dom.tracked.@1             --> {...}               1st interval today JSON
+  dom.tracked.@1.start       --> YYYYMMDDTHHMMSSZ    1st interval today start
+  dom.tracked.@1.end         --> YYYYMMDDTHHMMSSZ    1st interval today end
+  dom.tracked.@1.tags        --> 1                   1st interval today tag count
+  dom.tracked.@1.tag.1       --> 'tag1'              1st interval today tag
+  dom.tracked.@1.duration    --> P1H25M8S            1st interval today duration
 
   dom.gap.today
   ...
 
   rc.<name>
 
-- The above needs to support overlapping tags.
+
+--- Raw Notes ---
 
 - The above does not support totals, as this would turn DOM references into a
   query language. Instead, a 'sum' command could do this. The rules.txt doc
   already mentions built-in functions.
-
 
