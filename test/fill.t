@@ -96,6 +96,22 @@ class TestFill(TestCase):
         self.assertEqual(j[2]['end'],   '20160709T100000Z')
         self.assertEqual(j[2]['tags'][0], 'three')
 
+    def test_filled_start(self):
+        """Add an open interval with fill"""
+        self.t("track 20160710T100000Z - 20160710T110000Z one")
+        code, out, err = self.t("start 20160710T113000Z two :fill")
+        self.assertIn('Backfilled to ', out)
+        self.assertNotIn('Filled to ', out)
+
+        j = self.t.export()
+        self.assertEqual(len(j), 2)
+        self.assertEqual(j[0]['start'], '20160710T100000Z')
+        self.assertEqual(j[0]['end'],   '20160710T110000Z')
+        self.assertEqual(j[0]['tags'][0], 'one')
+        self.assertEqual(j[1]['start'], '20160710T110000Z')
+        self.assertTrue('end' not in j[1])
+        self.assertEqual(j[1]['tags'][0], 'two')
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())
