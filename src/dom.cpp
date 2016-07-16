@@ -35,6 +35,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 bool domGet (
   Database& database,
+  const Rules& rules,
   const std::string& reference,
   std::string& value)
 {

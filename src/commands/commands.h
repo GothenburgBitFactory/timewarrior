@@ -41,7 +41,7 @@ int CmdDiagnostics   (            Rules&, Database&, const Extensions&);
 int CmdExport        (const CLI&, Rules&, Database&                   );
 int CmdExtensions    (            Rules&,            const Extensions&);
 int CmdGaps          (const CLI&, Rules&, Database&                   );
-int CmdGet           (const CLI&,         Database&                   );
+int CmdGet           (const CLI&, Rules&, Database&                   );
 int CmdHelpUsage     (                                                );
 int CmdHelp          (const CLI&                                      );
 int CmdImport        (                                                );

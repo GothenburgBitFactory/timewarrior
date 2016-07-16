@@ -265,7 +265,7 @@ int dispatchCommand (
     else if (command == "export")      status = CmdExport        (cli, rules, database            );
     else if (command == "extensions")  status = CmdExtensions    (     rules,           extensions);
     else if (command == "gaps")        status = CmdGaps          (cli, rules, database            );
-    else if (command == "get")         status = CmdGet           (cli,        database            );
+    else if (command == "get")         status = CmdGet           (cli, rules, database            );
     else if (command == "help")        status = CmdHelp          (cli                             );
     else if (command == "import")      status = CmdImport        (                                );
     else if (command == "join")        status = CmdJoin          (cli, rules, database            );

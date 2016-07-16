@@ -35,6 +35,7 @@
 // Іdentify DOM references in cli, provide space-separated results.
 int CmdGet (
   const CLI& cli,
+  Rules& rules,
   Database& database)
 {
   std::vector <std::string> results;
@@ -45,7 +46,7 @@ int CmdGet (
     {
       std::string reference = arg.attribute ("raw");
       std::string value;
-      if (! domGet (database, reference, value))
+      if (! domGet (database, rules, reference, value))
         throw format ("DOM reference '{1}' is not valid.", reference);
 
       results.push_back (value);

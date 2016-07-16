@@ -91,6 +91,6 @@ std::string escape (const std::string&, int);
 std::string quoteIfNeeded (const std::string&);
 
 // dom.cpp
-bool domGet (Database&, const std::string&, std::string&);
+bool domGet (Database&, const Rules&, const std::string&, std::string&);
 
 #endif
