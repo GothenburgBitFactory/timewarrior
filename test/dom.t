@@ -100,8 +100,8 @@ class TestDOM(TestCase):
 
     def test_dom_active_tag_count_inactive(self):
         """Test dom.active.tag.count with no active track"""
-        code, out, err = self.t("get dom.active.tag.count")
-        self.assertEqual('0\n', out)
+        code, out, err = self.t.runError("get dom.active.tag.count")
+        self.assertIn("DOM reference 'dom.active.tag.count' is not valid.", err)
 
     def test_dom_active_tag_count_zero(self):
         """Test dom.active.tag.count with zero tags"""

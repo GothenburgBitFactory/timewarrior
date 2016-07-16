@@ -70,7 +70,8 @@ bool domGet (
       }
 
       // dom.active.tag.count
-      if (pig.skipLiteral (".tag.count"))
+      if (pig.skipLiteral (".tag.count") &&
+          latest.range.is_open ())
       {
         value = format ("{1}", latest.tags ().size ());
         return true;
