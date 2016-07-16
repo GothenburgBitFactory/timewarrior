@@ -35,7 +35,6 @@
 // Іdentify DOM references in cli, provide space-separated results.
 int CmdGet (
   const CLI& cli,
-  Rules& rules,
   Database& database)
 {
   std::vector <std::string> results;
