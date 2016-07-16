@@ -116,7 +116,7 @@ class TestTrack(TestCase):
         """Test adding an overlapping interval fails"""
         self.t("track 20160709T1400 - 20160709T1500 foo")
         code, out, err = self.t.runError("track 20160709T1430 - 20160709T1530 foo")
-        self.assertIn('You cannot overlap intervals. Adjust the start/end time, or specify the :adjust hint.', err)
+        self.assertIn('You cannot overlap intervals. Correct the start/end time, or specify the :adjust hint.', err)
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

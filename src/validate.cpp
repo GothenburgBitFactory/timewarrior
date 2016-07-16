@@ -98,47 +98,50 @@ static void autoAdjust (
   Interval range_filter;
   auto tracked = getTracked (database, rules, range_filter);
 
+  // Find all overlapping intervals.
+  std::vector <Interval> overlapping;
   for (auto& track : tracked)
-  {
     if (interval.range.overlap (track.range))
-    {
-      debug ("Input         " + interval.dump ());
-      debug ("Overlaps with " + track.dump ());
+      overlapping.push_back (track);
 
-      if (! adjust)
-        throw std::string ("You cannot overlap intervals. Adjust the start/end "
-                           "time, or specify the :adjust hint.");
+  // Diagnostics.
+  debug ("Input         " + interval.dump ());
+  debug ("Overlaps with");
+  for (auto& overlap : overlapping)
+    debug ("             " + overlap.dump ());
 
-      if (interval.range.start <= track.range.start)
-      {
-        // interval                 [--------)
-        // C                          [----)
-        //
-        // adjusted (dominate)      C deleted
-        // adjusted (defer)         interval split, C unmodified
+  // Overlaps are forbidden.
+  if (! adjust && overlapping.size ())
+    throw std::string ("You cannot overlap intervals. Correct the start/end "
+                       "time, or specify the :adjust hint.");
 
-        // interval                 [--------)
-        // D                             [--------)
-        //
-        // adjusted (dominate)      D modified
-        // adjusted (defer)         interval modified
-      }
-      else
-      {
-        // interval                 [--------)
-        // B                   [--------)
-        //
-        // adjusted (dominate)      B modified
-        // adjusted (defer)         interval modified
+  // TODO Accumulate identifiable and correctable cases here.
 
-        // interval                 [--------)
-        // F                      [-------------)
-        //
-        // adjusted (dominate)    F split
-        // adjusted (defer)       interval deleted
-      }
-    }
-  }
+  // interval                 [--------)
+  // C                          [----)
+  //
+  // adjusted (dominate)      C deleted
+  // adjusted (defer)         interval split, C unmodified
+
+  // interval                 [--------)
+  // D                             [--------)
+  //
+  // adjusted (dominate)      D modified
+  // adjusted (defer)         interval modified
+
+
+
+  // interval                 [--------)
+  // B                   [--------)
+  //
+  // adjusted (dominate)      B modified
+  // adjusted (defer)         interval modified
+
+  // interval                 [--------)
+  // F                      [-------------)
+  //
+  // adjusted (dominate)    F split
+  // adjusted (defer)       interval deleted
 }
 
 ////////////////////////////////////////////////////////////////////////////////
