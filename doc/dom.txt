@@ -24,6 +24,7 @@ Supported Names
 ---------------
 
   dom.active                      --> 0/1                 Boolean indicator that tracking is active
+  dom.active.tag.count            --> N                   Number of active tags
 
 
 --- Raw Notes ---
@@ -38,7 +39,6 @@ Proposed:
   dom.tag.*                       --> 't1', ... 't14'     All tags
 
 
-  dom.active.tags                 --> 2                   Active tag count
   dom.active.tag.1                --> 'tag'               Active 1st tag
   dom.active.start                --> YYYYMMDDTHHMMSSZ    Active start time
   dom.active.duration             --> PT1H25M8S           Active elapsed

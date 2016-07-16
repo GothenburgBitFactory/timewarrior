@@ -575,6 +575,7 @@ Examples:
 Supported DOM references are:
 
   dom.active                '1' if there is active tracking, otherwise '0'
+  dom.active.tag.count      Count of active tags
 
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS
 Timewarrior stores its configuration in a file in the user's home directory:
