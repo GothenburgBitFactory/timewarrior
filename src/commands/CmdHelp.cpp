@@ -384,6 +384,8 @@ int CmdHelp (const CLI& cli)
                 << "  dom.tracked.1.duration    Tracked Nth, elapsed\n"
                 << "  dom.tracked.1.json        Tracked Nth, interval as JSON\n"
                 << '\n'
+                << "  dom.rc.<name>             Configuration setting\n"
+                << '\n'
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
