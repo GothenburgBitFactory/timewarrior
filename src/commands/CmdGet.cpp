@@ -35,6 +35,14 @@ int CmdGet (
   Rules& rules,
   Database& database)
 {
+  // Іdentify DOM references in cli.
+/*
+  for (each DOM reference in cli)
+  {
+    std::string value;
+    domGet (database, reference, value);
+  }
+*/
   return 0;
 }
 
