@@ -139,6 +139,16 @@ class TestDOM(TestCase):
         code, out, err = self.t("get dom.tag.count")
         self.assertEqual('2\n', out)
 
+    def test_dom_tag_N_none(self):
+        """Test dom.tag.N with no data"""
+        code, out, err = self.t.runError("get dom.tag.1")
+        self.assertIn("DOM reference 'dom.tag.1' is not valid.", err)
+
+    def test_dom_tag_N_two(self):
+        """Test dom.tag.N with two tags"""
+        self.t("start one two")
+        code, out, err = self.t("get dom.tag.2")
+        self.assertEqual('two\n', out)
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
