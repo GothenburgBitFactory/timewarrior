@@ -368,7 +368,8 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "  dom.active                '1' if there is active tracking, otherwise '0'\n"
                 << "  dom.active.tag.count      Count of active tags\n"
-                << "  dom.active.tag.1          Active first tag\n"
+                << "  dom.active.tag.1          Active Nth tag\n"
+                << "  dom.active.start          Active start timestamp (YYYY-MM-DDTHH:MM:SS)\n"
                 << '\n'
                 << '\n';
 
