@@ -580,6 +580,7 @@ Supported DOM references are:
   dom.active.start          Active start timestamp (ISO Extended local date)
   dom.active.duration       Active elapsed (ISO Period)
   dom.tag.count             Total tag count
+  dom.tag.1                 Nth tag used
 
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS
 Timewarrior stores its configuration in a file in the user's home directory:
