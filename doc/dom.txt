@@ -37,6 +37,7 @@ Supported Names
   dom.tracked.1.tag.count         --> N                    Tracked Nth, count of tags
   dom.tracked.1.tag.1             --> 'tag'                Tracked Nth, Nth tag
   dom.tracked.1.start             --> YYYY-MM-DDTHH:MM:SS  Tracked Nth, start time
+  dom.tracked.1.end               --> YYYY-MM-DDTHH:MM:SS  Tracked Nth, end time, blank if closed
 
 --- Raw Notes ---
 
