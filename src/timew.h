@@ -90,4 +90,7 @@ std::string osName ();
 std::string escape (const std::string&, int);
 std::string quoteIfNeeded (const std::string&);
 
+// dom.cpp
+bool domGet (Database&, const std::string&, std::string&);
+
 #endif
