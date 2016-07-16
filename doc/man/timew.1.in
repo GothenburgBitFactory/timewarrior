@@ -586,6 +586,7 @@ Supported DOM references are:
 
   dom.tracked.count         Count of tracked intervals
   dom.tracked.1.tag.count   Count of active tags
+  dom.tracked.1.tag.1       Tracked Nth, Nth tag
 
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS
 Timewarrior stores its configuration in a file in the user's home directory:
