@@ -27,18 +27,18 @@
 #include <cmake.h>
 #include <commands.h>
 #include <timew.h>
+#include <shared.h>
 #include <format.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
+// Іdentify DOM references in cli, provide space-separated results.
 int CmdGet (
   const CLI& cli,
   Rules& rules,
   Database& database)
 {
-  // TODO Join results together with spaces.
-
-  // Іdentify DOM references in cli.
+  std::vector <std::string> results;
   for (auto& arg : cli._args)
   {
     if (arg.hasTag ("TAG") &&
@@ -49,10 +49,11 @@ int CmdGet (
       if (! domGet (database, reference, value))
         throw format ("DOM reference '{1}' is not valid.", reference);
 
-      std::cout << value << '\n';
+      results.push_back (value);
     }
   }
 
+  std::cout << join (" ", results) << '\n';
   return 0;
 }
 
