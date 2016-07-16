@@ -26,7 +26,9 @@
 
 #include <cmake.h>
 #include <timew.h>
+#include <Pig.h>
 #include <format.h>
+#include <vector>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -35,28 +37,43 @@ bool domGet (
   const std::string& reference,
   std::string& value)
 {
-  // dom.active
-  if (reference.substr (0, 10) == "dom.active")
+  Pig pig (reference);
+  if (pig.skipLiteral ("dom."))
   {
-    auto latest = getLatestInterval (database);
+    if (pig.skipLiteral ("active"))
+    {
+      auto latest = getLatestInterval (database);
 
-    if (reference == "dom.active")
-    {
-      if (latest.range.is_open ())
+      // dom.active
+      if (pig.eos ())
       {
-        value = "1";
+        value = latest.range.is_open () ? "1" : "0";
         return true;
       }
-      else
+
+      if (pig.skipLiteral (".tag.count"))
       {
-        value = "0";
+        value = format ("{1}", latest.tags ().size ());
         return true;
       }
-    }
-    else if (reference == "dom.active.tag.count")
-    {
-      value = format ("{1}", latest.tags ().size ());
-      return true;
+
+      pig.save ();
+      int n;
+      if (pig.skipLiteral (".tag.") &&
+          pig.getDigits (n))
+      {
+        if (n <= static_cast <int> (latest.tags ().size ()))
+        {
+          std::vector <std::string> tags;
+          for (auto& tag : latest.tags ())
+            tags.push_back (tag);
+
+          value = format ("{1}", tags[n - 1]);
+          return true;
+        }
+      }
+
+      pig.restore ();
     }
   }
 
