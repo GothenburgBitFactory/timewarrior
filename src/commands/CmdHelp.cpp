@@ -378,6 +378,7 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "  dom.tracked.count         Count of tracked intervals\n"
                 << "  dom.tracked.1.tag.count   Count of active tags\n"
+                << "  dom.tracked.1.tag.1       Tracked Nth, Nth tag\n"
                 << '\n'
                 << '\n';
 
