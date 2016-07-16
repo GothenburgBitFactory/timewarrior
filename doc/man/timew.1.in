@@ -574,14 +574,17 @@ Examples:
 .SH DOM
 Supported DOM references are:
 
+  dom.tag.count             Count of all tags
+  dom.tag.1                 Nth tag used
+
   dom.active                '1' if there is active tracking, otherwise '0'
   dom.active.tag.count      Count of active tags
   dom.active.tag.1          Active Nth tag
   dom.active.start          Active start timestamp (ISO Extended local date)
   dom.active.duration       Active elapsed (ISO Period)
   dom.active.json           Active interval as JSON
-  dom.tag.count             Total tag count
-  dom.tag.1                 Nth tag used
+
+  dom.tracked.count         Count of tracked intervals
 
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS
 Timewarrior stores its configuration in a file in the user's home directory:

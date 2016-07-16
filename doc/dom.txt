@@ -23,15 +23,17 @@ All DOM references have this form:
 Supported Names
 ---------------
 
+  dom.tag.count                   --> 14                   Count of all tags
+  dom.tag.1                      --> 'tag'                 Nth tag used
+
   dom.active                      --> 0/1                  Boolean indicator that tracking is active
-  dom.active.tag.count            --> N                    Number of active tags
+  dom.active.tag.count            --> N                    Count of active tags
   dom.active.tag.1                --> 'tag'                Active Nth tag
   dom.active.start                --> YYYY-MM-DDTHH:MM:SS  Active start time
   dom.active.duration             --> PT1H25M8S            Active elapsed
   dom.active.json                 --> {...}                Active interval as JSON
 
-  dom.tag.count                   --> 14                   Total tag count
-  dom.tag.1                      --> 'tag'                 Nth tag used
+  dom.tracked.count               --> N                    Count of tracked intervals
 
 --- Raw Notes ---
 
@@ -41,17 +43,17 @@ Proposed:
   dom.tag.[1,2,3]                 --> 't1', 't2', 't3'    First three tags
   dom.tag.*                       --> 't1', ... 't14'     All tags
 
+  dom.tracked.1.tag.count         --> N                    Count of active tags
+  dom.tracked.1.tag.1             --> 'tag'                Tracked Nth, Nth tag
+  dom.tracked.1.start             --> YYYY-MM-DDTHH:MM:SS  Tracked Nth start time
+  dom.tracked.1.duration          --> PT1H25M8S            Tracked Nth elapsed
+  dom.tracked.1.json              --> {...}                Tracked Nth interval as JSON
+
   dom.tracked.year                --> 231                 Quantity this year
   dom.tracked.quarter             --> 64                  Quantity this quarter
   dom.tracked.month               --> 21                  Quantity this month
   dom.tracked.week                --> 6                   Quantity this week
   dom.tracked.today               --> 2                   Quantity today
-  dom.tracked.@1                  --> {...}               1st interval today JSON
-  dom.tracked.@1.start            --> YYYYMMDDTHHMMSSZ    1st interval today start
-  dom.tracked.@1.end              --> YYYYMMDDTHHMMSSZ    1st interval today end
-  dom.tracked.@1.tags             --> 1                   1st interval today tag count
-  dom.tracked.@1.tag.1            --> 'tag1'              1st interval today tag
-  dom.tracked.@1.duration         --> P1H25M8S            1st interval today duration
 
   dom.gap.today
   ...
