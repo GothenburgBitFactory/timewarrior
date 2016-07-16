@@ -61,8 +61,6 @@ class TestDOM(TestCase):
         code, out, err = self.t.runError("get dom.NOPE")
         self.assertIn("DOM reference 'dom.NOPE' is not valid.", err)
 
-
-
     def test_dom_tag_count_zero(self):
         """Test dom.tag.count with zero tags"""
         code, out, err = self.t("get dom.tag.count")
@@ -84,8 +82,6 @@ class TestDOM(TestCase):
         self.t("start one two")
         code, out, err = self.t("get dom.tag.2")
         self.assertEqual('two\n', out)
-
-
 
     def test_dom_active_inactive(self):
         """Test dom.active without an active interval"""
@@ -170,9 +166,6 @@ class TestDOM(TestCase):
         code, out, err = self.t("get dom.tracked.count")
         self.assertEqual('0\n', out)
 
-
-
-
 class TestDOMTracked(TestCase):
     @classmethod
     def setUpClass(cls):
@@ -253,6 +246,19 @@ class TestDOMTracked(TestCase):
         """Test dom.tracked.N.json of open track"""
         code, out, err = self.t("get dom.tracked.1.json")
         self.assertRegexpMatches(out, r'{"start":"\d{8}T\d{6}Z"}')
+
+class TestDOMRC(TestCase):
+    def setUp(self):
+        """Executed before each test in the class"""
+        self.t = Timew()
+
+    def test_dom_rc_missing(self):
+        """Test dom.rc.missing with no value"""
+        code, out, err = self.t("get dom.rc.missing")
+
+    def test_dom_rc_present(self):
+        """Test dom.rc.debug"""
+        code, out, err = self.t("get dom.rc.debug")
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
