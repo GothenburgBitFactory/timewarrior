@@ -219,6 +219,21 @@ class TestDOMTracked(TestCase):
         code, out, err = self.t("get dom.tracked.1.start")
         self.assertRegexpMatches(out, r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}')
 
+    def test_dom_tracked_end_invalid(self):
+        """Test dom.tracked.N.end with no active track"""
+        code, out, err = self.t.runError("get dom.tracked.3.end")
+        self.assertIn("DOM reference 'dom.tracked.3.end' is not valid.", err)
+
+    def test_dom_tracked_end_inactive(self):
+        """Test dom.tracked.N.end with active track"""
+        code, out, err = self.t("get dom.tracked.2.end")
+        self.assertRegexpMatches(out, r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}')
+
+    def test_dom_tracked_end_active(self):
+        """Test dom.tracked.N.end with active track"""
+        code, out, err = self.t("get dom.tracked.1.end")
+        self.assertEqual('\n', out)
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())
