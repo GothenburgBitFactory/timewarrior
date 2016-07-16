@@ -128,6 +128,18 @@ class TestDOM(TestCase):
         code, out, err = self.t("get dom.active.duration")
         self.assertRegexpMatches(out, r'PT\d+S')
 
+    def test_dom_tag_count_zero(self):
+        """Test dom.tag.count with zero tags"""
+        code, out, err = self.t("get dom.tag.count")
+        self.assertEqual('0\n', out)
+
+    def test_dom_tag_count_two(self):
+        """Test dom.tag.count with two tags"""
+        self.t("start one two")
+        code, out, err = self.t("get dom.tag.count")
+        self.assertEqual('2\n', out)
+
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())
