@@ -61,16 +61,16 @@ class TestDOM(TestCase):
         code, out, err = self.t.runError("get dom.NOPE")
         self.assertIn("DOM reference 'dom.NOPE' is not valid.", err)
 
+    def test_dom_active_inactive(self):
+        """Test dom.active without an active interval"""
+        code, out, err = self.t("get dom.active")
+        self.assertEqual('0\n', out)
+
     def test_dom_active_active(self):
         """Test dom.active with and with an active interval"""
         self.t("start foo")
         code, out, err = self.t("get dom.active")
         self.assertEqual('1\n', out)
-
-    def test_dom_active_inactive(self):
-        """Test dom.active with and without an active interval"""
-        code, out, err = self.t("get dom.active")
-        self.assertEqual('0\n', out)
 
     def test_dom_active_tag_count_inactive(self):
         """Test dom.active.tag.count with no active track"""
@@ -149,6 +149,17 @@ class TestDOM(TestCase):
         self.t("start one two")
         code, out, err = self.t("get dom.tag.2")
         self.assertEqual('two\n', out)
+
+    def test_dom_active_json_inactive(self):
+        """Test dom.active.json without an active interval"""
+        code, out, err = self.t.runError("get dom.active.json")
+        self.assertIn("DOM reference 'dom.active.json' is not valid.", err)
+
+    def test_dom_active_json_active(self):
+        """Test dom.active.json with and with an active interval"""
+        self.t("start foo")
+        code, out, err = self.t("get dom.active.json")
+        self.assertRegexpMatches(out, r'{"start":"\d{8}T\d{6}Z","tags":\["foo"\]}')
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
