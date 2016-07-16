@@ -244,6 +244,16 @@ class TestDOMTracked(TestCase):
         code, out, err = self.t("get dom.tracked.1.duration")
         self.assertRegexpMatches(out, r'PT\d+S')
 
+    def test_dom_tracked_N_json_inactive(self):
+        """Test dom.tracked.N.json of closed track"""
+        code, out, err = self.t("get dom.tracked.2.json")
+        self.assertRegexpMatches(out, r'{"start":"\d{8}T\d{6}Z","end":"\d{8}T\d{6}Z","tags":\["one","two"\]}')
+
+    def test_dom_tracked_N_json_active(self):
+        """Test dom.tracked.N.json of open track"""
+        code, out, err = self.t("get dom.tracked.1.json")
+        self.assertRegexpMatches(out, r'{"start":"\d{8}T\d{6}Z"}')
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())
