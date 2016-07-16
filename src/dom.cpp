@@ -94,6 +94,31 @@ bool domGet (
 
       pig.restore ();
     }
+
+    else if (pig.skipLiteral ("tag."))
+    {
+      // Generate a unique, ordered list of tags.
+      std::set <std::string> tags;
+      for (auto& line : database.allLines ())
+      {
+        if (line[0] == 'i')
+        {
+          Interval interval;
+          interval.initialize (line);
+
+          for (auto& tag : interval.tags ())
+            tags.insert (tag);
+        }
+      }
+
+      // dom.tag.count
+      if (pig.skipLiteral ("count"))
+      {
+        value = format ("{1}", tags.size ());
+        return true;
+      }
+
+    }
   }
 
   return false;
