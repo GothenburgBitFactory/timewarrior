@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <timew.h>
+#include <format.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -51,6 +52,11 @@ bool domGet (
         value = "0";
         return true;
       }
+    }
+    else if (reference == "dom.active.tag.count")
+    {
+      value = format ("{1}", latest.tags ().size ());
+      return true;
     }
   }
 
