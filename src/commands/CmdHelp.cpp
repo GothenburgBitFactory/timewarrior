@@ -367,6 +367,7 @@ int CmdHelp (const CLI& cli)
                 << "Supported DOM references are:\n"
                 << '\n'
                 << "  dom.active                '1' if there is active tracking, otherwise '0'\n"
+                << "  dom.active.tag.count      Count of active tags\n"
                 << '\n'
                 << '\n';
 
