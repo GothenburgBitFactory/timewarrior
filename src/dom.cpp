@@ -51,12 +51,22 @@ bool domGet (
         return true;
       }
 
+      // dom.active.start
+      if (pig.skipLiteral (".start") &&
+          latest.range.is_open ())
+      {
+        value = latest.range.start.toISOLocalExtended ();
+        return true;
+      }
+
+      // dom.active.tag.count
       if (pig.skipLiteral (".tag.count"))
       {
         value = format ("{1}", latest.tags ().size ());
         return true;
       }
 
+      // dom.active.tag.<N>
       pig.save ();
       int n;
       if (pig.skipLiteral (".tag.") &&
