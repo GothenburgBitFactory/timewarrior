@@ -75,6 +75,14 @@ bool domGet (
         return true;
       }
 
+      // dom.active.json
+      if (pig.skipLiteral (".json") &&
+          latest.range.is_open ())
+      {
+        value = latest.json ();
+        return true;
+      }
+
       // dom.active.tag.<N>
       int n;
       if (pig.skipLiteral (".tag.") &&
