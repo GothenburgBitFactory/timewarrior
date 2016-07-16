@@ -104,13 +104,28 @@ bool domGet (
 
     else if (pig.skipLiteral ("tracked."))
     {
-      auto tracked = getAllInclusions (database);
+      Interval filter;
+      auto tracked = getTracked (database, rules, filter);
+      int count = static_cast <int> (tracked.size ());
 
       // dom.tracked.count
       if (pig.skipLiteral ("count"))
       {
         value = format ("{1}", tracked.size ());
         return true;
+      }
+
+      int n;
+      if (pig.getDigits (n) &&
+          n <= count        &&
+          pig.skipLiteral ("."))
+      {
+        // dom.tracked.N.tag.count
+        if (pig.skipLiteral ("tag.count"))
+        {
+          value = format ("{1}", tracked[count - n].tags ().size ());
+          return true;
+        }
       }
     }
 
