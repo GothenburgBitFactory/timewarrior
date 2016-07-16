@@ -112,6 +112,15 @@ The default date range shown is ':day'.
 See also 'summary'.
 
 .TP
+.B timew get <DOM> [<DOM> ...]
+Validates the DOM reference, then obtains the value and displays it. For example
+
+  $ timew get dom.active
+  1
+
+See also 'DOM'.
+
+.TP
 .B timew help [<command> | interval | hints | date | duration]
 The help command shows detailed descriptions and examples of commands,
 interval syntax, supported hints, date and duration formats. For example:
@@ -561,6 +570,11 @@ Examples:
 
   Note that the year, quarter and month terms are imprecise, being defined as
   365d, 91d and 30d respectively. For precision use the other terms.
+
+.SH DOM
+Supported DOM references are:
+
+  dom.active                '1' if there is active tracking, otherwise '0'
 
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS
 Timewarrior stores its configuration in a file in the user's home directory:
