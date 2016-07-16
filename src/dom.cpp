@@ -99,17 +99,9 @@ bool domGet (
     {
       // Generate a unique, ordered list of tags.
       std::set <std::string> tags;
-      for (auto& line : database.allLines ())
-      {
-        if (line[0] == 'i')
-        {
-          Interval interval;
-          interval.initialize (line);
-
-          for (auto& tag : interval.tags ())
-            tags.insert (tag);
-        }
-      }
+      for (auto& interval : getAllInclusions (database))
+        for (auto& tag : interval.tags ())
+          tags.insert (tag);
 
       // dom.tag.count
       if (pig.skipLiteral ("count"))
@@ -118,6 +110,20 @@ bool domGet (
         return true;
       }
 
+      // dom.tag.<N>
+      int n;
+      if (pig.getDigits (n))
+      {
+        if (n <= static_cast <int> (tags.size ()))
+        {
+          std::vector <std::string> all;
+          for (auto& tag : tags)
+            all.push_back (tag);
+
+          value = format ("{1}", all[n - 1]);
+          return true;
+        }
+      }
     }
   }
 
