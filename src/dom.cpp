@@ -134,6 +134,16 @@ bool domGet (
           return true;
         }
 
+        // dom.tracked.N.end
+        if (pig.skipLiteral ("end"))
+        {
+          if (tracked[count -n].range.is_open ())
+            value = "";
+          else
+            value = tracked[count - n].range.end.toISOLocalExtended ();
+          return true;
+        }
+
         int n;
         if (pig.skipLiteral ("tag.") &&
             pig.getDigits (n))
