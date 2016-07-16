@@ -576,7 +576,8 @@ Supported DOM references are:
 
   dom.active                '1' if there is active tracking, otherwise '0'
   dom.active.tag.count      Count of active tags
-  dom.active.tag.1          Active first tag
+  dom.active.tag.1          Active Nth tag
+  dom.active.start          Active start timestamp (YYYY-MM-DDTHH:MM:SS)
 
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS
 Timewarrior stores its configuration in a file in the user's home directory:
