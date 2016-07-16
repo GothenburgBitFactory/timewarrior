@@ -381,6 +381,7 @@ int CmdHelp (const CLI& cli)
                 << "  dom.tracked.1.tag.1       Tracked Nth, Nth tag\n"
                 << "  dom.tracked.1.start       Tracked Nth, start time\n"
                 << "  dom.tracked.1.end         Tracked Nth, end time, blank if closed\n"
+                << "  dom.tracked.1.duration    Tracked Nth, elapsed\n"
                 << '\n'
                 << '\n';
 
