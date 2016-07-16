@@ -592,6 +592,8 @@ Supported DOM references are:
   dom.tracked.1.duration    Tracked Nth, elapsed
   dom.tracked.1.json        Tracked Nth, interval as JSON
 
+  dom.rc.<name>             Configuration setting
+
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS
 Timewarrior stores its configuration in a file in the user's home directory:
 ~/.timewarrior/timewarrior.cfg.

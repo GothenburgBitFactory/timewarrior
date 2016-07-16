@@ -24,7 +24,7 @@ Supported Names
 ---------------
 
   dom.tag.count                   --> 14                   Count of all tags
-  dom.tag.1                      --> 'tag'                 Nth tag used
+  dom.tag.1                       --> 'tag'                Nth tag used
 
   dom.active                      --> 0/1                  Boolean indicator that tracking is active
   dom.active.tag.count            --> N                    Count of active tags
@@ -41,6 +41,8 @@ Supported Names
   dom.tracked.1.duration          --> PT1H25M8S            Tracked Nth, elapsed
   dom.tracked.1.json              --> {...}                Tracked Nth, interval as JSON
 
+  dom.rc.<name>                   --> ...                  Configuration setting
+
 --- Raw Notes ---
 
 Proposed:
@@ -49,20 +51,7 @@ Proposed:
   dom.tag.[1,2,3]                 --> 't1', 't2', 't3'    First three tags
   dom.tag.*                       --> 't1', ... 't14'     All tags
 
-
-  dom.tracked.year                --> 231                 Quantity this year
-  dom.tracked.quarter             --> 64                  Quantity this quarter
-  dom.tracked.month               --> 21                  Quantity this month
-  dom.tracked.week                --> 6                   Quantity this week
-  dom.tracked.today               --> 2                   Quantity today
-
   dom.gap.today
   ...
 
-  rc.<name>
-
-
-- The above does not support totals, as this would turn DOM references into a
-  query language. Instead, a 'sum' command could do this. The rules.txt doc
-  already mentions built-in functions.
 
