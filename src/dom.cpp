@@ -205,6 +205,17 @@ bool domGet (
         }
       }
     }
+
+    // dom.rc.<name>
+    else if (pig.skipLiteral ("rc."))
+    {
+      std::string name;
+      if (pig.getRemainder (name))
+      {
+        value = rules.get (name);
+        return true;
+      }
+    }
   }
 
   return false;
