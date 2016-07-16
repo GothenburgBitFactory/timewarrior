@@ -43,6 +43,7 @@ int CmdHelpUsage ()
             << "       timew export [<interval>] [<tag> ...]\n"
             << "       timew extensions\n"
             << "       timew gaps [<interval>] [<tag> ...]\n"
+            << "       timew get <DOM> [<DOM> ...]\n"
             << "       timew help [<command> | interval | hints | date | duration]\n"
             << "       timew join @<id> @<id>\n"
             << "       timew lengthen @<id> [@<id> ...] <duration>\n"
@@ -67,6 +68,7 @@ int CmdHelpUsage ()
             << "       timew help hints\n"
             << "       timew help date\n"
             << "       timew help duration\n"
+            << "       timew help dom\n"
             << '\n'
             << "Interval:\n"
             << "       [from] <date>\n"
@@ -360,6 +362,16 @@ int CmdHelp (const CLI& cli)
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "dom")
+      std::cout << '\n'
+                << "Supported DOM references are:\n"
+                << '\n'
+                << "  dom.active                '1' if there is active tracking, otherwise '0'\n"
+                << '\n'
+                << '\n';
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "export")
       std::cout << '\n'
                 << "Syntax: timew export [<interval>] [<tag> ...]\n"
@@ -398,6 +410,20 @@ int CmdHelp (const CLI& cli)
                 << "time.\n"
                 << '\n'
                 << "See also 'summary'.\n"
+                << '\n';
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "get")
+      std::cout << '\n'
+                << "Syntax: timew get <DOM> [<DOM> ...]\n"
+                << '\n'
+                << "Validates the DOM reference, then obtains the value and displays it. For example\n"
+                << '\n'
+                << "  $ timew get dom.active\n"
+                << "  1\n"
+                << '\n'
+                << "See also 'dom'.\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
