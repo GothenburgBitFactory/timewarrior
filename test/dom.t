@@ -199,6 +199,17 @@ class TestDOMTracked(TestCase):
         code, out, err = self.t("get dom.tracked.2.tag.count")
         self.assertEqual('2\n', out)
 
+    def test_dom_tracked_N_tag_N_none(self):
+        """Test dom.tracked.N.tag.N with no data"""
+        code, out, err = self.t.runError("get dom.tracked.1.tag.1")
+        self.assertIn("DOM reference 'dom.tracked.1.tag.1' is not valid.", err)
+
+    def test_dom_tracked_N_tag_N_two(self):
+        """Test dom.tracked.N.tag.N with two tags"""
+        code, out, err = self.t("get dom.tracked.2.tag.2")
+        self.assertEqual('two\n', out)
+
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
