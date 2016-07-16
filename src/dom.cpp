@@ -34,6 +34,25 @@ bool domGet (
   const std::string& reference,
   std::string& value)
 {
+  // dom.active
+  if (reference.substr (0, 10) == "dom.active")
+  {
+    auto latest = getLatestInterval (database);
+
+    if (reference == "dom.active")
+    {
+      if (latest.is_open ())
+      {
+        value = "1";
+        return true;
+      }
+      else
+      {
+        value = "0";
+        return true;
+      }
+    }
+  }
 
   return false;
 }
