@@ -377,6 +377,7 @@ int CmdHelp (const CLI& cli)
                 << "  dom.active.json           Active interval as JSON\n"
                 << '\n'
                 << "  dom.tracked.count         Count of tracked intervals\n"
+                << "  dom.tracked.1.tag.count   Count of active tags\n"
                 << '\n'
                 << '\n';
 
