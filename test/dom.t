@@ -234,6 +234,16 @@ class TestDOMTracked(TestCase):
         code, out, err = self.t("get dom.tracked.1.end")
         self.assertEqual('\n', out)
 
+    def test_dom_tracked_duration_inactive(self):
+        """Test dom.tracked.N.duration of closed track"""
+        code, out, err = self.t("get dom.tracked.2.duration")
+        self.assertRegexpMatches(out, r'P1D')
+
+    def test_dom_tracked_duration_active(self):
+        """Test dom.tracked.duration with open track"""
+        code, out, err = self.t("get dom.tracked.1.duration")
+        self.assertRegexpMatches(out, r'PT\d+S')
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())
