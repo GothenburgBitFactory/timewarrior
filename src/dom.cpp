@@ -100,6 +100,18 @@ bool domGet (
       }
     }
 
+    else if (pig.skipLiteral ("tracked."))
+    {
+      auto tracked = getAllInclusions (database);
+
+      // dom.tracked.count
+      if (pig.skipLiteral ("count"))
+      {
+        value = format ("{1}", tracked.size ());
+        return true;
+      }
+    }
+
     else if (pig.skipLiteral ("tag."))
     {
       // Generate a unique, ordered list of tags.
