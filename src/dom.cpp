@@ -126,6 +126,21 @@ bool domGet (
           value = format ("{1}", tracked[count - n].tags ().size ());
           return true;
         }
+
+        int n;
+        if (pig.skipLiteral ("tag.") &&
+            pig.getDigits (n))
+        {
+          std::vector <std::string> tags;
+          for (auto& tag : tracked[count - n].tags ())
+            tags.push_back (tag);
+
+          if (n <= static_cast <int> (tags.size ()))
+          {
+            value = format ("{1}", tags[n - 1]);
+            return true;
+          }
+        }
       }
     }
 
