@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <timew.h>
 #include <Pig.h>
+#include <Duration.h>
 #include <format.h>
 #include <vector>
 #include <iostream>
@@ -56,6 +57,14 @@ bool domGet (
           latest.range.is_open ())
       {
         value = latest.range.start.toISOLocalExtended ();
+        return true;
+      }
+
+      // dom.active.duration
+      if (pig.skipLiteral (".duration") &&
+          latest.range.is_open ())
+      {
+        value = Duration (latest.range.total ()).formatISO ();
         return true;
       }
 
