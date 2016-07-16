@@ -127,6 +127,13 @@ bool domGet (
           return true;
         }
 
+        // dom.tracked.N.start
+        if (pig.skipLiteral ("start"))
+        {
+          value = tracked[count - n].range.start.toISOLocalExtended ();
+          return true;
+        }
+
         int n;
         if (pig.skipLiteral ("tag.") &&
             pig.getDigits (n))
