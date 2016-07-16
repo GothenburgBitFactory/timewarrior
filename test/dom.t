@@ -106,6 +106,17 @@ class TestDOM(TestCase):
         code, out, err = self.t("get dom.active.tag.2")
         self.assertEqual('two\n', out)
 
+    def test_dom_active_start_inactive(self):
+        """Test dom.active.start with no active track"""
+        code, out, err = self.t.runError("get dom.active.start")
+        self.assertIn("DOM reference 'dom.active.start' is not valid.", err)
+
+    def test_dom_active_start_active(self):
+        """Test dom.active.start with active track"""
+        self.t("start one two")
+        code, out, err = self.t("get dom.active.start")
+        self.assertRegexpMatches(out, r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}')
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())
