@@ -14,6 +14,7 @@ set (timew_SRCS CLI.cpp        CLI.h
                 Range.cpp      Range.h
                 Rules.cpp      Rules.h
                 data.cpp
+                dom.cpp
                 init.cpp
                 helper.cpp
                 log.cpp

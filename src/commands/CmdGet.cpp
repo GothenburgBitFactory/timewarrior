@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <commands.h>
 #include <timew.h>
+#include <format.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -35,14 +36,23 @@ int CmdGet (
   Rules& rules,
   Database& database)
 {
+  // TODO Join results together with spaces.
+
   // Іdentify DOM references in cli.
-/*
-  for (each DOM reference in cli)
+  for (auto& arg : cli._args)
   {
-    std::string value;
-    domGet (database, reference, value);
+    if (arg.hasTag ("TAG") &&
+        arg.hasTag ("FILTER"))
+    {
+      std::string reference = arg.attribute ("raw");
+      std::string value;
+      if (! domGet (database, reference, value))
+        throw format ("DOM reference '{1}' is not valid.", reference);
+
+      std::cout << value << '\n';
+    }
   }
-*/
+
   return 0;
 }
 
