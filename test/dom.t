@@ -89,6 +89,23 @@ class TestDOM(TestCase):
         code, out, err = self.t("get dom.active.tag.count")
         self.assertEqual('2\n', out)
 
+    def test_dom_active_tag_N_none(self):
+        """Test dom.active.tag.N with no active track"""
+        code, out, err = self.t.runError("get dom.active.tag.1")
+        self.assertIn("DOM reference 'dom.active.tag.1' is not valid.", err)
+
+    def test_dom_active_tag_N_zero(self):
+        """Test dom.active.tag.N with zero tags"""
+        self.t("start")
+        code, out, err = self.t.runError("get dom.active.tag.1")
+        self.assertIn("DOM reference 'dom.active.tag.1' is not valid.", err)
+
+    def test_dom_active_tag_N_two(self):
+        """Test dom.active.tag.N with two tags"""
+        self.t("start one two")
+        code, out, err = self.t("get dom.active.tag.2")
+        self.assertEqual('two\n', out)
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())
