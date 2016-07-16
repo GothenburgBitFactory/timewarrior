@@ -209,38 +209,38 @@ class TestDOMTracked(TestCase):
         code, out, err = self.t("get dom.tracked.2.tag.2")
         self.assertEqual('two\n', out)
 
-    def test_dom_tracked_start_inactive(self):
+    def test_dom_tracked_N_start_inactive(self):
         """Test dom.tracked.N.start with no active track"""
         code, out, err = self.t.runError("get dom.tracked.3.start")
         self.assertIn("DOM reference 'dom.tracked.3.start' is not valid.", err)
 
-    def test_dom_tracked_start_active(self):
+    def test_dom_tracked_N_start_active(self):
         """Test dom.tracked.N.start with active track"""
         code, out, err = self.t("get dom.tracked.1.start")
         self.assertRegexpMatches(out, r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}')
 
-    def test_dom_tracked_end_invalid(self):
+    def test_dom_tracked_N_end_invalid(self):
         """Test dom.tracked.N.end with no active track"""
         code, out, err = self.t.runError("get dom.tracked.3.end")
         self.assertIn("DOM reference 'dom.tracked.3.end' is not valid.", err)
 
-    def test_dom_tracked_end_inactive(self):
+    def test_dom_tracked_N_end_inactive(self):
         """Test dom.tracked.N.end with active track"""
         code, out, err = self.t("get dom.tracked.2.end")
         self.assertRegexpMatches(out, r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}')
 
-    def test_dom_tracked_end_active(self):
+    def test_dom_tracked_N_end_active(self):
         """Test dom.tracked.N.end with active track"""
         code, out, err = self.t("get dom.tracked.1.end")
         self.assertEqual('\n', out)
 
-    def test_dom_tracked_duration_inactive(self):
+    def test_dom_tracked_N_duration_inactive(self):
         """Test dom.tracked.N.duration of closed track"""
         code, out, err = self.t("get dom.tracked.2.duration")
         self.assertRegexpMatches(out, r'P1D')
 
-    def test_dom_tracked_duration_active(self):
-        """Test dom.tracked.duration with open track"""
+    def test_dom_tracked_N_duration_active(self):
+        """Test dom.tracked.N.duration with open track"""
         code, out, err = self.t("get dom.tracked.1.duration")
         self.assertRegexpMatches(out, r'PT\d+S')
 
