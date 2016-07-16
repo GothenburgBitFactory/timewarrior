@@ -144,6 +144,13 @@ bool domGet (
           return true;
         }
 
+        // dom.active.duration
+        if (pig.skipLiteral ("duration"))
+        {
+          value = Duration (tracked[count - n].range.total ()).formatISO ();
+          return true;
+        }
+
         int n;
         if (pig.skipLiteral ("tag.") &&
             pig.getDigits (n))
