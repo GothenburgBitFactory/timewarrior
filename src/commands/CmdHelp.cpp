@@ -372,6 +372,7 @@ int CmdHelp (const CLI& cli)
                 << "  dom.active.start          Active start timestamp (ISO Extended local date)\n"
                 << "  dom.active.duration       Active elapsed (ISO Period)\n"
                 << "  dom.tag.count             Total tag count\n"
+                << "  dom.tag.1                 Nth tag used\n"
                 << '\n'
                 << '\n';
 
