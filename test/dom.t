@@ -61,6 +61,32 @@ class TestDOM(TestCase):
         code, out, err = self.t.runError("get dom.NOPE")
         self.assertIn("DOM reference 'dom.NOPE' is not valid.", err)
 
+
+
+    def test_dom_tag_count_zero(self):
+        """Test dom.tag.count with zero tags"""
+        code, out, err = self.t("get dom.tag.count")
+        self.assertEqual('0\n', out)
+
+    def test_dom_tag_count_two(self):
+        """Test dom.tag.count with two tags"""
+        self.t("start one two")
+        code, out, err = self.t("get dom.tag.count")
+        self.assertEqual('2\n', out)
+
+    def test_dom_tag_N_none(self):
+        """Test dom.tag.N with no data"""
+        code, out, err = self.t.runError("get dom.tag.1")
+        self.assertIn("DOM reference 'dom.tag.1' is not valid.", err)
+
+    def test_dom_tag_N_two(self):
+        """Test dom.tag.N with two tags"""
+        self.t("start one two")
+        code, out, err = self.t("get dom.tag.2")
+        self.assertEqual('two\n', out)
+
+
+
     def test_dom_active_inactive(self):
         """Test dom.active without an active interval"""
         code, out, err = self.t("get dom.active")
@@ -128,28 +154,6 @@ class TestDOM(TestCase):
         code, out, err = self.t("get dom.active.duration")
         self.assertRegexpMatches(out, r'PT\d+S')
 
-    def test_dom_tag_count_zero(self):
-        """Test dom.tag.count with zero tags"""
-        code, out, err = self.t("get dom.tag.count")
-        self.assertEqual('0\n', out)
-
-    def test_dom_tag_count_two(self):
-        """Test dom.tag.count with two tags"""
-        self.t("start one two")
-        code, out, err = self.t("get dom.tag.count")
-        self.assertEqual('2\n', out)
-
-    def test_dom_tag_N_none(self):
-        """Test dom.tag.N with no data"""
-        code, out, err = self.t.runError("get dom.tag.1")
-        self.assertIn("DOM reference 'dom.tag.1' is not valid.", err)
-
-    def test_dom_tag_N_two(self):
-        """Test dom.tag.N with two tags"""
-        self.t("start one two")
-        code, out, err = self.t("get dom.tag.2")
-        self.assertEqual('two\n', out)
-
     def test_dom_active_json_inactive(self):
         """Test dom.active.json without an active interval"""
         code, out, err = self.t.runError("get dom.active.json")
@@ -160,6 +164,21 @@ class TestDOM(TestCase):
         self.t("start foo")
         code, out, err = self.t("get dom.active.json")
         self.assertRegexpMatches(out, r'{"start":"\d{8}T\d{6}Z","tags":\["foo"\]}')
+
+
+
+    def test_dom_tracked_count_none(self):
+        """Test dom.active without an active interval"""
+        code, out, err = self.t("get dom.tracked.count")
+        self.assertEqual('0\n', out)
+
+    def test_dom_tracked_count_some(self):
+        """Test dom.active with and with an active interval"""
+        self.t("track 1am - 2am foo")
+        self.t("track 2am - 3am bar")
+        code, out, err = self.t("get dom.tracked.count")
+        self.assertEqual('2\n', out)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
