@@ -38,6 +38,7 @@ Supported Names
   dom.tracked.1.tag.1             --> 'tag'                Tracked Nth, Nth tag
   dom.tracked.1.start             --> YYYY-MM-DDTHH:MM:SS  Tracked Nth, start time
   dom.tracked.1.end               --> YYYY-MM-DDTHH:MM:SS  Tracked Nth, end time, blank if closed
+  dom.tracked.1.duration          --> PT1H25M8S            Tracked Nth elapsed
 
 --- Raw Notes ---
 
@@ -47,7 +48,6 @@ Proposed:
   dom.tag.[1,2,3]                 --> 't1', 't2', 't3'    First three tags
   dom.tag.*                       --> 't1', ... 't14'     All tags
 
-  dom.tracked.1.duration          --> PT1H25M8S            Tracked Nth elapsed
   dom.tracked.1.json              --> {...}                Tracked Nth interval as JSON
 
   dom.tracked.year                --> 231                 Quantity this year

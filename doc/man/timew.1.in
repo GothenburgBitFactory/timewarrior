@@ -589,6 +589,7 @@ Supported DOM references are:
   dom.tracked.1.tag.1       Tracked Nth, Nth tag
   dom.tracked.1.start       Tracked Nth, start time
   dom.tracked.1.end         Tracked Nth, end time, blank if closed
+  dom.tracked.1.duration    Tracked Nth, elapsed
 
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS
 Timewarrior stores its configuration in a file in the user's home directory:
