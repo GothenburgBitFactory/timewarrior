@@ -117,6 +117,17 @@ class TestDOM(TestCase):
         code, out, err = self.t("get dom.active.start")
         self.assertRegexpMatches(out, r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}')
 
+    def test_dom_active_duration_inactive(self):
+        """Test dom.active.duration with no active track"""
+        code, out, err = self.t.runError("get dom.active.duration")
+        self.assertIn("DOM reference 'dom.active.duration' is not valid.", err)
+
+    def test_dom_active_duration_active(self):
+        """Test dom.active.duration with active track"""
+        self.t("start one two")
+        code, out, err = self.t("get dom.active.duration")
+        self.assertRegexpMatches(out, r'PT\d+S')
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())
