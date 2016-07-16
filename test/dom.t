@@ -165,18 +165,38 @@ class TestDOM(TestCase):
         code, out, err = self.t("get dom.active.json")
         self.assertRegexpMatches(out, r'{"start":"\d{8}T\d{6}Z","tags":\["foo"\]}')
 
-
-
     def test_dom_tracked_count_none(self):
         """Test dom.active without an active interval"""
         code, out, err = self.t("get dom.tracked.count")
         self.assertEqual('0\n', out)
 
+
+
+
+class TestDOMTracked(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        """Executed before each test in the class"""
+        cls.t = Timew()
+        cls.t("track :yesterday one two")    #2
+        cls.t("start")                       #1
+
+    def setUp(self):
+        """Executed before each test in the class"""
+
     def test_dom_tracked_count_some(self):
         """Test dom.active with and with an active interval"""
-        self.t("track 1am - 2am foo")
-        self.t("track 2am - 3am bar")
         code, out, err = self.t("get dom.tracked.count")
+        self.assertEqual('2\n', out)
+
+    def test_dom_tracked_N_tag_count_zero(self):
+        """Test dom.tracked.N.tag.count with zero tags"""
+        code, out, err = self.t("get dom.tracked.1.tag.count")
+        self.assertEqual('0\n', out)
+
+    def test_dom_tracked_N_tag_count_two(self):
+        """Test dom.tracked.N.tag.count with two tags"""
+        code, out, err = self.t("get dom.tracked.2.tag.count")
         self.assertEqual('2\n', out)
 
 
