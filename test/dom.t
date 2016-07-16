@@ -61,6 +61,17 @@ class TestDOM(TestCase):
         code, out, err = self.t.runError("get dom.NOPE")
         self.assertIn("DOM reference 'dom.NOPE' is not valid.", err)
 
+    def test_dom_active_active(self):
+        """Test dom.active with and with an active interval"""
+        self.t("start foo")
+        code, out, err = self.t("get dom.active")
+        self.assertEqual('1\n', out)
+
+    def test_dom_active_inactive(self):
+        """Test dom.active with and without an active interval"""
+        code, out, err = self.t("get dom.active")
+        self.assertEqual('0\n', out)
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())
