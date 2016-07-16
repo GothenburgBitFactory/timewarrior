@@ -25,6 +25,7 @@ Supported Names
 
   dom.active                      --> 0/1                 Boolean indicator that tracking is active
   dom.active.tag.count            --> N                   Number of active tags
+  dom.active.tag.1                --> 'tag'               Active 1st tag
 
 
 --- Raw Notes ---
