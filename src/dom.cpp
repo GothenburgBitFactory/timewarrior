@@ -41,7 +41,7 @@ bool domGet (
 
     if (reference == "dom.active")
     {
-      if (latest.is_open ())
+      if (latest.range.is_open ())
       {
         value = "1";
         return true;
