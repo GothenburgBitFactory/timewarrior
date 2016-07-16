@@ -144,10 +144,17 @@ bool domGet (
           return true;
         }
 
-        // dom.active.duration
+        // dom.tracked.N.duration
         if (pig.skipLiteral ("duration"))
         {
           value = Duration (tracked[count - n].range.total ()).formatISO ();
+          return true;
+        }
+
+        // dom.tracked.N.json
+        if (pig.skipLiteral ("json"))
+        {
+          value = tracked[count - n].json ();
           return true;
         }
 
