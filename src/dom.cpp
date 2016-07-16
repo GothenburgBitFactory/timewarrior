@@ -76,7 +76,6 @@ bool domGet (
       }
 
       // dom.active.tag.<N>
-      pig.save ();
       int n;
       if (pig.skipLiteral (".tag.") &&
           pig.getDigits (n))
@@ -91,8 +90,6 @@ bool domGet (
           return true;
         }
       }
-
-      pig.restore ();
     }
 
     else if (pig.skipLiteral ("tag."))
