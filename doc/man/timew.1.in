@@ -7,8 +7,13 @@ timew \- A command line time tracker.
 .B timew <command> [<arg> ...]
 
 .SH DESCRIPTION
-Timewarrior is a command line time tracker. It allows you to very easily track
-your time spent on projects, and generate summary reports.
+Timewarrior is a command line time tracker. It allows you to easily track your
+time and generate summary reports.
+
+This is a reference, not a tutorial. If you are looking for a tutorial, check
+the online documentation here:
+
+  https://taskwarrior.org/docs/timewarrior
 
 .SH SUBCOMMANDS
 
@@ -17,13 +22,14 @@ Timewarrior supports many commands. Alphabetically:
 .TP
 .B timew
 .br
-When run with no arguments, the default command is run, which indicates whether
-there is any active tracking, and if so, shows a summary, and exits with a code
+When run without arguments, the default command is run, which indicates whether
+there is any active tracking, and if so, shows a summary, then exits with a code
 0. If there is no active time tracking, exit code is 1.
+See also 'get'.
 
 .TP
 .B timew cancel
-If there is an open interval, closes and abandons it.
+If there is an open interval, it is abandoned.
 See also 'stop'.
 
 .TP
@@ -40,7 +46,8 @@ which overrides the default value. The third example deletes the 'verbose'
 setting.
 
 When modifying configuration in this way, interactive confirmation will be
-sought. To override this confirmation, use the ':yes' hint:
+sought. To override this confirmation, use the ':yes' hint, which means you
+intend to answer 'yes' to the confirmation questions:
 
   $ timew config verbose '' :yes
 
@@ -60,7 +67,11 @@ Resumes tracking the most recently closed interval. For example:
   $ timew continue
 
 The 'continue' command creates a new interval, starting now, and using the
-tags 'tag1' and 'tag2'. See also 'start', 'stop'.
+tags 'tag1' and 'tag2'.
+This command is a convenient way to resume work without re-entering the
+tags.
+
+See also 'start', 'stop'.
 
 .TP
 .B timew day [<interval>] [<tag> ...]
@@ -68,7 +79,7 @@ The day command shows a chart depicting a single day (today by default), with
 colored blocks drawn on a timeline. The chart summarizes the tracked and
 untracked time.
 
-Accepts date ranges and tags for filtering, or shortcut hints:
+Charts accept date ranges and tags for filtering, or shortcut hints:
 
   $ timew day monday - today
   $ timew day :week
@@ -78,7 +89,7 @@ The 'reports.day.range' configuration setting overrides the default date range.
 The default date range shown is ':day'.
 
 The ':blank' hint causes only the excluded time to be shown, with no tracked
-time.
+time. This can be used to see the exclusions.
 
 For more details, and precise times, use the 'summary' report.
 
@@ -86,44 +97,51 @@ See also 'week', 'month', 'summary'.
 
 .TP
 .B timew diagnostics
-This command shows details about your version of Timewarrior, platform, how it
-was built, compiler features, configuration, file access, extensions and more.
-The purpose of this command is to help diagnose configuration problems, and
+This command shows details about your version of Timewarrior, your platform, how
+it was built, compiler features, configuration, file access, extensions and more.
+The purpose of this command is to help diagnose configuration problems and
 provide supplemental information when reporting a problem. See also 'extensions'.
 
 .TP
 .B timew export [<interval>] [<tag> ...]
-Exports all the tracked time in JSON format. See also 'import'.
+Exports all the tracked time in JSON format. Supports filtering. For example:
+
+  $ timew export from 2016-01-01 for 3wks tag1
 
 .TP
 .B timew extensions
-Displays the directory containing the extension programs, and a table showing
+Displays the directory containing the extension programs and a table showing
 each extention and its status. See also 'diagnostics'.
 
 .TP
 .B timew gaps [<interval>] [<tag> ...]
-Displays a summary of time that is neither tracked, nor excluded from tracking.
+Displays a summary of time that is neither tracked nor excluded from tracking.
 
 The 'reports.gaps.range' configuration setting overrides the default date range.
 The ':blank' hint causes only the excluded time to be shown, with no tracked
 time.
 The default date range shown is ':day'.
 
+The ':blank' hint causes only the excluded time to be shown, with no tracked
+time.
+
 See also 'summary'.
 
 .TP
 .B timew get <DOM> [<DOM> ...]
-Validates the DOM reference, then obtains the value and displays it. For example
+Validates the DOM reference, then obtains the value and displays it. For example:
 
   $ timew get dom.active
   1
 
+It is an error to reference an interval or tag that does not exist.
 See also 'DOM'.
 
 .TP
 .B timew help [<command> | interval | hints | date | duration]
 The help command shows detailed descriptions and examples of commands,
-interval syntax, supported hints, date and duration formats. For example:
+interval syntax, supported hints, date and duration formats and DOM references.
+For example:
 
   $ timew help
   $ timew help start
@@ -131,6 +149,7 @@ interval syntax, supported hints, date and duration formats. For example:
   $ timew help interval
   $ timew help date
   $ timew help duration
+  $ timew help dom
 
 .TP
 .B timew join @<id> @<id>
@@ -189,7 +208,7 @@ See also 'day', 'week', 'summary'.
 
 .TP
 .B timew move @<id> <date>
-The 'move' command is used to relocate an interval intact to a new start time.
+The 'move' command is used to reposition an interval at a new start time.
 Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
 Using the right ID, you can identify an interval to move. For example, show
 the IDs:
@@ -234,12 +253,12 @@ See also 'summary', 'tag', 'untag', 'lengthen'.
 
 .TP
 .B timew show
-Displays the effective configuration, in hierarchical form.
+Displays the effective configuration in hierarchical form.
 See also 'config'.
 
 .TP
 .B timew split @<id> [@<id> ...]
-Ѕplits an interval into two equally sized, adjacent intervals, with the same
+Ѕplits an interval into two equally sized adjacent intervals, having the same
 tags. Using the 'summary' command, and specifying the ':ids' hint shows interval
  IDs. Using the right ID, you can identify an interval to split. For example,
 show the IDs:
@@ -250,12 +269,12 @@ Then having selected '@2' as the interval you wish to split:
 
   $ timew split @2
 
-See also 'lengthen', 'shorten'.
+See also 'join', 'lengthen', 'shorten'.
 
 .TP
 .B timew start [<date>] [<tag> ...]
-Begins tracking using the current time, and the specified optional set of tags.
-If a tag contains multiple words, and therefore contains spaces, use quotes to
+Begins tracking using the current time with any specified set of tags.
+If a tag contains multiple words, therefore containing spaces, use quotes to
 surround the whole tag. For example, this command specifies two tags ('weekend'
 and 'Home & Garden'), the second of which requires quotes.
 
@@ -266,8 +285,7 @@ time:
 
   $ timew start 8am weekend 'Home & Garden'
 
-If there is a previous open interval, it will be closed at the given start
-time.
+If there is a previous open interval, it will be closed at the given start time.
 
 Quotes are harmless if used unnecessarily. See also 'continue', 'stop', 'track'.
 
@@ -289,15 +307,14 @@ See also 'cancel', 'continue', 'start', 'track'.
 
 .TP
 .B timew summary [<interval>] [<tag> ...]
-Displays a report summarizing tracked and untracked time for
-the current day by default. Accepts date ranges and tags for
-filtering, or shortcut hints:
+Displays a report summarizing tracked and untracked time for the current day by
+default. Accepts date ranges and tags for filtering, or shortcut hints:
 
   $ timew summary monday - today
   $ timew summary :week
   $ timew summary :month
 
-The ':ids' hint adds an 'IDS' column to the summary report output, for interval
+The ':ids' hint adds an 'ID' column to the summary report output for interval
 modification.
 
 See also 'day', 'week', 'month', 'shorten', 'lengthen', 'tag', 'untag'.
@@ -687,14 +704,14 @@ Type is one of 'gaps', 'day', 'week', 'month'.
 .B reports.<type>.spacing = 1
 .br
 Specifies how many spaces are inserted between the hours in the <type> report
-exclusions. A value of '0' give a move compact report. Default value is '1'.
+exclusions. A value of '0' yields a more compact report. Default value is '1'.
 Type is one of 'month', 'week', 'day'.
 
 .TP
-.B reports.<type>.style = compact
+.B reports.<type>.axis = internal
 .br
-The 'compact' style puts the hour markers inside the exclusion blocks.
-Type is one of 'month', 'week', 'day'.
+The value 'internal' puts the hour markers inside the exclusion blocks.
+Default is <no value>.
 
 .TP
 .B reports.<type>.summary = on
