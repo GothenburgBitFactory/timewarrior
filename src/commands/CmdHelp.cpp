@@ -115,7 +115,7 @@ int CmdHelp (const CLI& cli)
       std::cout << '\n'
                 << "Syntax: timew cancel\n"
                 << '\n'
-                << "If there is an open interval, close and abandon it.\n"
+                << "If there is an open interval, it is abandoned.\n"
                 << '\n'
                 << "See also 'start', 'stop'.\n"
                 << '\n';
@@ -140,7 +140,8 @@ int CmdHelp (const CLI& cli)
                 << "setting.\n"
                 << '\n'
                 << "When modifying configuration in this way, interactive confirmation will be\n"
-                << "sought. To override this confirmation, use the ':yes' hint:\n"
+                << "sought. To override this confirmation, use the ':yes' hint, which means you\n"
+                << "intend to answer 'yes' to the confirmation questions:\n"
                 << '\n'
                 << "  $ timew config verbose '' :yes\n"
                 << '\n'
@@ -166,6 +167,8 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "The 'continue' command creates a new interval, starting now, and using the tags\n"
                 << "'tag1' and 'tag2'.\n"
+                << '\n'
+                << "This command is a convenient way to resume work without re-entering the tags.\n"
                 << '\n'
                 << "See also 'start', 'stop'.\n"
                 << '\n';
@@ -333,7 +336,7 @@ int CmdHelp (const CLI& cli)
                 << "The default date range shown is ':day'.\n"
                 << '\n'
                 << "The ':blank' hint causes only the excluded time to be shown, with no tracked\n"
-                << "time.\n"
+                << "time. This can be used to see the exclusions.\n"
                 << '\n'
                 << "For more details, and precise times, use the 'summary' report.\n"
                 << '\n'
@@ -346,10 +349,10 @@ int CmdHelp (const CLI& cli)
       std::cout << '\n'
                 << "Syntax: timew diagnostics\n"
                 << '\n'
-                << "This command shows details about your version of Timewarrior, platform, how it\n"
-                << "was built, compiler features, configuration, file access, extensions and more.\n"
+                << "This command shows details about your version of Timewarrior, your platform, how\n"
+                << "it was built, compiler features, configuration, file access, extensions and more.\n"
                 << '\n'
-                << "The purpose of this command is to help diagnose configuration problems, and\n"
+                << "The purpose of this command is to help diagnose configuration problems and\n"
                 << "provide supplemental information when reporting a problem.\n"
                 << '\n'
                 << "See also 'extensions'.\n"
@@ -392,8 +395,6 @@ int CmdHelp (const CLI& cli)
                 << "Exports all the tracked time in JSON format. Supports filtering. For example:\n"
                 << '\n'
                 << "  $ timew export from 2016-01-01 for 3wks tag1\n"
-                << '\n'
-                << "See also 'import'.\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
@@ -402,7 +403,7 @@ int CmdHelp (const CLI& cli)
       std::cout << '\n'
                 << "Syntax: timew extensions\n"
                 << '\n'
-                << "Displays the directory containing the extension programs, and a table showing\n"
+                << "Displays the directory containing the extension programs and a table showing\n"
                 << "each extensions and its status.\n"
                 << '\n'
                 << "See also 'diagnostics'.\n"
@@ -414,7 +415,7 @@ int CmdHelp (const CLI& cli)
       std::cout << '\n'
                 << "Syntax: timew gaps [<interval>] [<tag> ...]\n"
                 << '\n'
-                << "Displays a summary of time that is neither tracked, nor excluded from tracking.\n"
+                << "Displays a summary of time that is neither tracked nor excluded from tracking.\n"
                 << '\n'
                 << "The 'reports.gaps.range' configuration setting overrides the default date range.\n"
                 << "The default date range shown is ':day'.\n"
@@ -431,10 +432,13 @@ int CmdHelp (const CLI& cli)
       std::cout << '\n'
                 << "Syntax: timew get <DOM> [<DOM> ...]\n"
                 << '\n'
-                << "Validates the DOM reference, then obtains the value and displays it. For example\n"
+                << "Validates the DOM reference, then obtains the value and displays it. For\n"
+                << "example:\n"
                 << '\n'
                 << "  $ timew get dom.active\n"
                 << "  1\n"
+                << '\n'
+                << "It is an error to reference an interval or tag that does not exist.\n"
                 << '\n'
                 << "See also 'dom'.\n"
                 << '\n';
@@ -445,7 +449,8 @@ int CmdHelp (const CLI& cli)
       std::cout << '\n'
                 << "Syntax: timew help [<command> | interval | hints | date | duration]\n"
                 << "The help command shows detailed descriptions and examples of commands,\n"
-                << "interval syntax, supported hints, date and duration formats. For example:\n"
+                << "interval syntax, supported hints, date and duration formats and DOM references.\n"
+                << "For example:\n"
                 << '\n'
                 << "  $ timew help\n"
                 << "  $ timew help start\n"
@@ -453,6 +458,7 @@ int CmdHelp (const CLI& cli)
                 << "  $ timew help interval\n"
                 << "  $ timew help date\n"
                 << "  $ timew help duration\n"
+                << "  $ timew help dom\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
@@ -604,7 +610,7 @@ int CmdHelp (const CLI& cli)
       std::cout << '\n'
                 << "Syntax: timew move @<id> <date>\n"
                 << '\n'
-                << "The 'move' command is used to relocate an interval intact to a new start time.\n"
+                << "The 'move' command is used to reposition an interval at a new start time.\n"
                 << "Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.\n"
                 << "Using the right ID, you can identify an interval to move. For example, show\n"
                 << "the IDs:\n"
@@ -615,9 +621,24 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "  $ timew move @2 9am\n"
                 << '\n'
-                << "See also 'summary', 'tag', 'untag', 'lengthen', 'shorten'.\n";
+                << "See also 'summary', 'tag', 'untag', 'lengthen', 'shorten'.\n"
+                << '\n';
 
-    // TODO report
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "report")
+      std::cout << '\n'
+                << "Syntax: timew [report] <report> [<interval>] [<tag> ...]\n"
+                << '\n'
+                << "Runs an extension report, and supports filtering data.\n"
+                << "The 'report' command itself is optional, which means that these two commands\n"
+                << "are equivalent:\n"
+                << '\n'
+                << "  $ timew report foo :week\n"
+                << "  $ timew        foo :week\n"
+                << '\n'
+                << "This does however assume there is a 'foo' extension installed.\n"
+                << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
@@ -648,7 +669,7 @@ int CmdHelp (const CLI& cli)
       std::cout << '\n'
                 << "Syntax: timew show\n"
                 << '\n'
-                << "Displays the effective configuration, in hierarchical form.\n"
+                << "Displays the effective configuration in hierarchical form.\n"
                 << '\n'
                 << "See also 'config'.\n"
                 << '\n';
@@ -659,7 +680,7 @@ int CmdHelp (const CLI& cli)
       std::cout << '\n'
                 << "Syntax: timew split @<id> [@<id> ...]\n"
                 << '\n'
-                << "Ѕplits an interval into two equally sized, adjacent intervals, with the same\n"
+                << "Ѕplits an interval into two equally sized adjacent intervals, having the same\n"
                 << "tags. Using the 'summary' command, and specifying the ':ids' hint shows interval\n"
                 << " IDs. Using the right ID, you can identify an interval to split. For example,\n"
                 << "show the IDs:\n"
@@ -679,17 +700,19 @@ int CmdHelp (const CLI& cli)
       std::cout << '\n'
                 << "Syntax: timew start [<date>] [<tag> ...]\n"
                 << '\n'
-                << "Begins tracking using the current time, and the specified optional set of tags.\n"
-                << "If a tag contains multiple words, and therefore contains spaces, use quotes to\n"
-                << "surround the whole tag. For example, this command specifies two tags ('weekend'\n"
-                << "and 'Home & Garden'), the second of which requires quotes.\n"
+                << "Begins tracking using the current time with any specified set of tags. If a tag\n"
+                << "contains multiple words, therefore containing spaces, use quotes to surround the\n"
+                << "whole tag. For example, this command specifies two tags ('weekend' and\n"
+                << "'Home & Garden'), the second of which requires quotes.\n"
                 << '\n'
                 << "  $ timew start weekend 'Home & Garden'\n"
                 << '\n'
-                << "An optional date may be specified to indicate the intended start to the tracked\n"
+                << "An optional date may be specified to indicate the intended start of the tracked\n"
                 << "time:\n"
                 << '\n'
                 << "  $ time start 8am weekend 'Home & Garden'\n"
+                << '\n'
+                << "If there is a previous open interval, it will be closed at the given start time.\n"
                 << '\n'
                 << "Quotes are harmless if used unecessarily.\n"
                 << '\n'
@@ -723,15 +746,14 @@ int CmdHelp (const CLI& cli)
       std::cout << '\n'
                 << "Syntax: timew summary [<interval>] [<tag> ...]\n"
                 << '\n'
-                << "Displays a report summarizing tracked and untracked time for\n"
-                << "the current day by default. Accepts date ranges and tags for\n"
-                << "filtering, or shortcut hints:\n"
+                << "Displays a report summarizing tracked and untracked time for the current day by\n"
+                << "default. Accepts date ranges and tags for filtering, or shortcut hints:\n"
                 << '\n'
                 << "  $ timew summary monday - today\n"
                 << "  $ timew summary :week\n"
                 << "  $ timew summary :month\n"
                 << '\n'
-                << "The ':ids' hint adds an 'IDS' column to the summary report output, for interval\n"
+                << "The ':ids' hint adds an 'ID' column to the summary report output for interval\n"
                 << "modification.\n"
                 << '\n'
                 << "See also 'day', 'week', 'month', 'shorten', 'lengthen', 'tag', 'untag'.\n"
