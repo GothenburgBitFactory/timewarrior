@@ -55,6 +55,9 @@ int CmdMove (
       new_start = arg.attribute ("raw");
   }
 
+  if (! id)
+    throw std::string ("ID must be specified. See 'timew help move'.");
+
   // TODO Support :adjust
 
   // Load the data.

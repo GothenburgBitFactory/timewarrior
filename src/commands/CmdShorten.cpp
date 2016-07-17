@@ -50,6 +50,9 @@ int CmdShorten (
       delta = arg.attribute ("raw");
   }
 
+  if (! ids.size ())
+    throw std::string ("IDs must be specified. See 'timew help shorten'.");
+
   // TODO Support :adjust
 
   // Load the data.

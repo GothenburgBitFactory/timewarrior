@@ -48,6 +48,9 @@ int CmdTag (
       tags.push_back (arg.attribute ("raw"));
   }
 
+  if (! ids.size ())
+    throw std::string ("IDs must be specified. See 'timew help tag'.");
+
   // Load the data.
   // Note: There is no filter.
   Interval filter;

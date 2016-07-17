@@ -87,7 +87,7 @@ int CmdJoin (
     }
   }
   else
-    std::cout << "Provide two interval IDs to join them.\n";
+    throw std::string ("Two IDs must be specified. See 'timew help join'.");
 
   return 0;
 }
