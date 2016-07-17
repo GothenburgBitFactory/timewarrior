@@ -116,32 +116,41 @@ static void autoAdjust (
                        "time, or specify the :adjust hint.");
 
   // TODO Accumulate identifiable and correctable cases here.
+/*
 
-  // interval                 [--------)
-  // C                          [----)
-  //
-  // adjusted (dominate)      C deleted
-  // adjusted (defer)         interval split, C unmodified
+  ext      [-----]
+  new   [-----]
 
-  // interval                 [--------)
-  // D                             [--------)
-  //
-  // adjusted (dominate)      D modified
-  // adjusted (defer)         interval modified
+  ext   [-----]
+  new      [-----]
+
+  ext      [-]
+  new   [-----]
+
+  ext   [-----]
+  new      [-]
+
+  ext   [-----]
+  new   [-----]
+
+  ext      [-----]
+  new   [--
+
+  ext   [-----]
+  new      [--
+
+  ext      [-]
+  new   [--
+
+  ext   [-----]
+  new      [-
+
+  ext   [-----]
+  new   [--
+
+*/
 
 
-
-  // interval                 [--------)
-  // B                   [--------)
-  //
-  // adjusted (dominate)      B modified
-  // adjusted (defer)         interval modified
-
-  // interval                 [--------)
-  // F                      [-------------)
-  //
-  // adjusted (dominate)    F split
-  // adjusted (defer)       interval deleted
 }
 
 ////////////////////////////////////////////////////////////////////////////////
