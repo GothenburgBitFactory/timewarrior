@@ -132,7 +132,7 @@ int renderChart (
 
   // Render the axis.
   std::cout << '\n';
-  if (rules.get ("reports." + type + ".style") != "compact")
+  if (rules.get ("reports." + type + ".axis") != "internal")
     renderAxis (type,
                 rules,
                 palette,
@@ -443,7 +443,7 @@ static void renderExclusionBlocks (
   auto chars_per_hour = 60 / cell;
 
   auto spacing = rules.getInteger ("reports." + type + ".spacing");
-  auto style = rules.get ("reports." + type + ".style");
+  auto axis = rules.get ("reports." + type + ".axis");
   Color colorExc (palette.enabled ? rules.get ("theme.colors.exclusion") : "");
   Color colorLabel (palette.enabled ? rules.get ("theme.colors.label") : "");
 
@@ -454,7 +454,7 @@ static void renderExclusionBlocks (
     Range r (Datetime (day.year (), day.month (), day.day (), hour, 0, 0),
              Datetime (day.year (), day.month (), day.day (), hour + 1, 0, 0));
 
-    if (style == "compact")
+    if (axis == "internal")
     {
       auto label = format ("{1}", hour);
       int offset = (hour - first_hour) * (chars_per_hour + spacing);
@@ -477,7 +477,7 @@ static void renderExclusionBlocks (
         for (auto& line : lines)
           line.add (block, offset, colorExc);
 
-        if (style == "compact")
+        if (axis == "internal")
         {
           auto label = format ("{1}", hour);
           if (start_block == 0 &&

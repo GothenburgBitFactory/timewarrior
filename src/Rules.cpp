@@ -46,6 +46,7 @@ Rules::Rules ()
 
     // 'day' report.
     {"reports.day.hours",        "all"},
+    {"reports.day.axis",         "internal"},
     {"reports.day.lines",        "2"},
     {"reports.day.spacing",      "1"},
     {"reports.day.month",        "no"},
