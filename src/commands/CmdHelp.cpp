@@ -91,7 +91,6 @@ int CmdHelpUsage ()
   // TODO clear
   // TODO import
   // TODO undo
-  // TODO split
 
   // TODO List all extensions.
 
@@ -99,10 +98,6 @@ int CmdHelpUsage ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// TODO Perhaps have a set of 'documents' to display, and a keyword index that
-//      maps to the the appropriate ones. Then display a list of any ambiguous
-//      requests, or the appropriate doc for single hits. Perhaps a 'See also'.
-//
 // TODO Should the CmdXxx functions themselves be responsible for providing both
 //      the command syntax and the help text?
 //      A: Only if they are upgraded to objects.

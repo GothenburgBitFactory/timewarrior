@@ -7,8 +7,8 @@ tests, therefore it may harm your data. In fact, as a new project, it doesn't
 have adequate tests to prove that everything works. We do not guarantee proper
 or even adequate functionality, performance or timely fixes.
 
-We welcome bug reports from alpha-, beta- and release-level software, but
-generally not development versions. If you are undaunted by this, please:
+We welcome bug reports from beta- and release-level software, but generally not
+development versions. If you are undaunted by this, please:
 
 - Make proper backups.
 - Expect broken and missing functionality.

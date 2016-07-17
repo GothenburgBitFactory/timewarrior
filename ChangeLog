@@ -34,6 +34,7 @@
           (thanks to Michael Meier).
 - Fixed utf8 encoding in Taskwarrior integration hook
           (thanks to Martin Boeker).
+- Added DOM support and a 'get' command.
 
 ------ current release ---------------------------
 
