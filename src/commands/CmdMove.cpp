@@ -98,8 +98,6 @@ int CmdMove (
     if (rules.getBoolean ("verbose"))
       std::cout << "Moved @" << id << " to " << i.range.start.toISOLocalExtended () << '\n';
   }
-  else
-    std::cout << "Provide an interval IDs to move.\n";
 
   return 0;
 }
