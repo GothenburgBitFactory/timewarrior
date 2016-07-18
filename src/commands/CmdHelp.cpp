@@ -89,8 +89,6 @@ int CmdHelpUsage ()
             << "       rc.<name>=<value>\n"
             << '\n';
 
-  // TODO undo
-
   // TODO List all extensions.
 
   return 0;
@@ -821,8 +819,6 @@ int CmdHelp (const CLI& cli)
                 << "recording. If a closed interval is not provided, the 'track' command behaves the\n"
                 << "same as the 'start' command.\n"
                 << '\n';
-
-    // TODO undo
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890

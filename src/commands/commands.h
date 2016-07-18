@@ -56,7 +56,6 @@ int CmdStop          (const CLI&, Rules&, Database&                   );
 int CmdTag           (const CLI&, Rules&, Database&                   );
 int CmdTags          (            Rules&, Database&                   );
 int CmdTrack         (const CLI&, Rules&, Database&                   );
-int CmdUndo          (                                                );
 int CmdUntag         (const CLI&, Rules&, Database&                   );
 
 int CmdChartDay      (const CLI&, Rules&, Database&                   );
