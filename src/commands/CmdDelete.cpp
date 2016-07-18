@@ -27,6 +27,7 @@
 #include <cmake.h>
 #include <timew.h>
 #include <iostream>
+#include <stdlib.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdDelete (
