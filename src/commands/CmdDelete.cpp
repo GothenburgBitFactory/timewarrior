@@ -34,16 +34,36 @@ int CmdDelete (
   Rules& rules,
   Database& database)
 {
-  auto filter = getFilter (cli);
-  if (! filter.range.is_started () &&
-      filter.tags ().size () == 0)
-    throw std::string ("The 'delete' command refuses to delete all your data.");
+  // Gather IDs and TAGs.
+  std::vector <int> ids;
+  std::string delta;
+  for (auto& arg : cli._args)
+    if (arg.hasTag ("ID"))
+      ids.push_back (strtol (arg.attribute ("value").c_str (), NULL, 10));
 
+  if (! ids.size ())
+    throw std::string ("IDs must be specified. See 'timew help delete'.");
+
+  // TODO Support :adjust
+
+  // Load the data.
+  // Note: There is no filter.
+  Interval filter;
   auto tracked = getTracked (database, rules, filter);
-  auto extent = outerRange (tracked);
 
-  for (auto& interval : subset (extent, tracked))
-    std::cout << "# delete impacts " << interval.dump () << "\n";
+  // Apply tags to ids.
+  for (auto& id : ids)
+  {
+    if (id <= static_cast <int> (tracked.size ()))
+    {
+      // Note: It's okay to subtract a one-based number from a zero-based index.
+      database.deleteInterval (tracked[tracked.size () - id]);
+
+      // Feedback.
+      if (rules.getBoolean ("verbose"))
+        std::cout << "Deleted @" << id << '\n';
+    }
+  }
 
   return 0;
 }

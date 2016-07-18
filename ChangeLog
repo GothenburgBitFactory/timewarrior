@@ -16,6 +16,8 @@
           (thanks to Aaron Curtis).
 - TI-17   ids of tracked activities should not change when editing
           (thanks to lumbric).
+- TI-18   Add remove/delete command
+          (thanks to lumbric).
 - TI-20   Week number does not agree with Taskwarrior
           (thanks to Dirk Deimeke).
 - TI-22   The 'day' chart crashes if there is an open interval and no others
