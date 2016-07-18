@@ -89,7 +89,6 @@ int CmdHelpUsage ()
             << "       rc.<name>=<value>\n"
             << '\n';
 
-  // TODO import
   // TODO undo
 
   // TODO List all extensions.
@@ -520,8 +519,6 @@ int CmdHelp (const CLI& cli)
                 << "  :lastyear      Last year\n"
                 << '\n'
                 << '\n';
-
-    // TODO import
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890

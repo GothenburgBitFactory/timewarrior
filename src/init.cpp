@@ -67,7 +67,6 @@ void initializeEntities (CLI& cli)
   cli.entity ("command", "gaps");
   cli.entity ("command", "get");
   cli.entity ("command", "help");
-  cli.entity ("command", "import");
   cli.entity ("command", "join");
   cli.entity ("command", "lengthen");
   cli.entity ("command", "move");
@@ -267,7 +266,6 @@ int dispatchCommand (
     else if (command == "gaps")        status = CmdGaps          (cli, rules, database            );
     else if (command == "get")         status = CmdGet           (cli, rules, database            );
     else if (command == "help")        status = CmdHelp          (cli                             );
-    else if (command == "import")      status = CmdImport        (                                );
     else if (command == "join")        status = CmdJoin          (cli, rules, database            );
     else if (command == "lengthen")    status = CmdLengthen      (cli, rules, database            );
     else if (command == "month")       status = CmdChartMonth    (cli, rules, database            );
