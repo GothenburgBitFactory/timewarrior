@@ -7,10 +7,10 @@ include_directories (${CMAKE_SOURCE_DIR}
 
 set (commands_SRCS CmdCancel.cpp
                    CmdChart.cpp
-                   CmdClear.cpp
                    CmdConfig.cpp
                    CmdContinue.cpp
                    CmdDefault.cpp
+                   CmdDelete.cpp
                    CmdDiagnostics.cpp
                    CmdExport.cpp
                    CmdExtensions.cpp

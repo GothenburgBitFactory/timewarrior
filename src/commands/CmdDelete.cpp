@@ -29,7 +29,7 @@
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdClear (
+int CmdDelete (
   const CLI& cli,
   Rules& rules,
   Database& database)
@@ -37,13 +37,13 @@ int CmdClear (
   auto filter = getFilter (cli);
   if (! filter.range.is_started () &&
       filter.tags ().size () == 0)
-    throw std::string ("The 'clear' command refuses to delete all your data.");
+    throw std::string ("The 'delete' command refuses to delete all your data.");
 
   auto tracked = getTracked (database, rules, filter);
   auto extent = outerRange (tracked);
 
   for (auto& interval : subset (extent, tracked))
-    std::cout << "# clear impacts " << interval.dump () << "\n";
+    std::cout << "# delete impacts " << interval.dump () << "\n";
 
   return 0;
 }

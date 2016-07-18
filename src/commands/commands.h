@@ -33,10 +33,10 @@
 #include <Extensions.h>
 
 int CmdCancel        (            Rules&, Database&                   );
-int CmdClear         (const CLI&, Rules&, Database&                   );
 int CmdConfig        (const CLI&, Rules&, Database&                   );
 int CmdContinue      (const CLI&, Rules&, Database&                   );
 int CmdDefault       (            Rules&, Database&                   );
+int CmdDelete        (const CLI&, Rules&, Database&                   );
 int CmdDiagnostics   (            Rules&, Database&, const Extensions&);
 int CmdExport        (const CLI&, Rules&, Database&                   );
 int CmdExtensions    (            Rules&,            const Extensions&);

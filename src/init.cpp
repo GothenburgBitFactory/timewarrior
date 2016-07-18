@@ -58,9 +58,9 @@ void initializeEntities (CLI& cli)
 {
   // Command entities.
   cli.entity ("command", "cancel");
-  cli.entity ("command", "clear");
   cli.entity ("command", "config");
   cli.entity ("command", "continue");
+  cli.entity ("command", "delete");
   cli.entity ("command", "diagnostics");
   cli.entity ("command", "export");
   cli.entity ("command", "extensions");
@@ -257,10 +257,10 @@ int dispatchCommand (
     // These signatures are æxpected to be all different, therefore no
     // command to fn mapping.
          if (command == "cancel")      status = CmdCancel        (     rules, database            );
-    else if (command == "clear")       status = CmdClear         (cli, rules, database            );
     else if (command == "config")      status = CmdConfig        (cli, rules, database            );
     else if (command == "continue")    status = CmdContinue      (cli, rules, database            );
     else if (command == "day")         status = CmdChartDay      (cli, rules, database            );
+    else if (command == "delete")      status = CmdDelete        (cli, rules, database            );
     else if (command == "diagnostics") status = CmdDiagnostics   (     rules, database, extensions);
     else if (command == "export")      status = CmdExport        (cli, rules, database            );
     else if (command == "extensions")  status = CmdExtensions    (     rules,           extensions);
