@@ -37,6 +37,7 @@
 - Fixed utf8 encoding in Taskwarrior integration hook
           (thanks to Martin Boeker).
 - Added DOM support and a 'get' command.
+- Added 'totals.py' sample extension.
 
 ------ current release ---------------------------
 
