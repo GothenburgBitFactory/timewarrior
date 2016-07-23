@@ -196,7 +196,11 @@ void validate (
   // All validation performed here.
   autoFill (cli, rules, database, filter, interval);
   autoAdjust (cli, rules, database, interval);
-  warnOnNewTag (rules, database, interval);
+
+  // TODO This warning is not working properly, because when an interval is
+  //      modified, it ifirst deleted, then added. This causes this code to
+  //      dertmine that it is always a new tag.
+  //warnOnNewTag (rules, database, interval);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
