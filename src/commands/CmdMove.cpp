@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Datetime.h>
+#include <format.h>
 #include <commands.h>
 #include <timew.h>
 #include <iostream>
@@ -58,46 +59,43 @@ int CmdMove (
   if (! id)
     throw std::string ("ID must be specified. See 'timew help move'.");
 
-  // TODO Support :adjust
-
   // Load the data.
   // Note: There is no filter.
   Interval filter;
   auto tracked = getTracked (database, rules, filter);
 
+  if (id > static_cast <int> (tracked.size ()))
+    throw format ("ID '@{1}' does not correspond to any tracking.", id);
+
   // Move start time.
-  if (id && id <= static_cast <int> (tracked.size ()))
+  // Note: It's okay to subtract a one-based number from a zero-based index.
+  Interval i = tracked[tracked.size () - id];
+  Datetime start (new_start);
+
+  // Changing the start date should also change the end date by the same
+  // amount.
+  if (i.range.start < start)
   {
-    // Note: It's okay to subtract a one-based number from a zero-based index.
-    Interval i = tracked[tracked.size () - id];
-    Datetime start (new_start);
-
-    // Changing the start date should also change the end date by the same
-    // amount.
-    if (i.range.start < start)
-    {
-      auto delta = start - i.range.start;
-      i.range.start = start;
-      if (! i.range.is_open ())
-        i.range.end += delta;
-    }
-    else
-    {
-      auto delta = i.range.start - start;
-      i.range.start = start;
-      if (! i.range.is_open ())
-        i.range.end -= delta;
-    }
-
-    database.deleteInterval (tracked[tracked.size () - id]);
-
-    validate (cli, rules, database, i);
-    database.addInterval (i);
-
-    // Feedback.
-    if (rules.getBoolean ("verbose"))
-      std::cout << "Moved @" << id << " to " << i.range.start.toISOLocalExtended () << '\n';
+    auto delta = start - i.range.start;
+    i.range.start = start;
+    if (! i.range.is_open ())
+      i.range.end += delta;
   }
+  else
+  {
+    auto delta = i.range.start - start;
+    i.range.start = start;
+    if (! i.range.is_open ())
+      i.range.end -= delta;
+  }
+
+  database.deleteInterval (tracked[tracked.size () - id]);
+
+  validate (cli, rules, database, i);
+  database.addInterval (i);
+
+  if (rules.getBoolean ("verbose"))
+    std::cout << "Moved @" << id << " to " << i.range.start.toISOLocalExtended () << '\n';
 
   return 0;
 }
