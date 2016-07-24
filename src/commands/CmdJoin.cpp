@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Duration.h>
+#include <format.h>
 #include <commands.h>
 #include <timew.h>
 #include <iostream>
@@ -39,18 +40,9 @@ int CmdJoin (
 {
   // Gather IDs and TAGs.
   std::vector <int> ids;
-  std::string delta;
   for (auto& arg : cli._args)
-  {
     if (arg.hasTag ("ID"))
       ids.push_back (strtol (arg.attribute ("value").c_str (), NULL, 10));
-
-    if (arg.hasTag ("FILTER") &&
-        arg._lextype == Lexer::Type::duration)
-      delta = arg.attribute ("raw");
-  }
-
-  // TODO Support :adjust
 
   // Load the data.
   // Note: There is no filter.
@@ -58,36 +50,34 @@ int CmdJoin (
   auto tracked = getTracked (database, rules, filter);
 
   // Only 2 IDs allowed in a join.
-  if (ids.size () == 2)
-  {
-    if (ids[0] <= static_cast <int> (tracked.size ()) &&
-        ids[1] <= static_cast <int> (tracked.size ()))
-    {
-      // Note: It's okay to subtract a one-based number from a zero-based index.
-      auto first_id  = std::max (ids[0], ids[1]);
-      auto second_id = std::min (ids[0], ids[1]);
-      Interval first  = tracked[tracked.size () - first_id];
-      Interval second = tracked[tracked.size () - second_id];
-
-      // TODO Require confirmation if intervals are not consecutive.
-      // TODO Require confirmation if tags don't match.
-
-      auto combined = first;
-      combined.range.end = second.range.end;
-
-      database.deleteInterval (first);
-      database.deleteInterval (second);
-
-      validate (cli, rules, database, combined);
-      database.addInterval (combined);
-
-      // Feedback.
-      if (rules.getBoolean ("verbose"))
-        std::cout << "Joined @" << ids[0] << " and @" << ids[1] << '\n';
-    }
-  }
-  else
+  if (ids.size () != 2)
     throw std::string ("Two IDs must be specified. See 'timew help join'.");
+
+  // ID values must be in range.
+  for (auto& id : ids)
+    if (id > static_cast <int> (tracked.size ()))
+      throw format ("ID '@{1}' does not correspond to any tracking.", id);
+
+  // Note: It's okay to subtract a one-based number from a zero-based index.
+  auto first_id  = std::max (ids[0], ids[1]);
+  auto second_id = std::min (ids[0], ids[1]);
+  Interval first  = tracked[tracked.size () - first_id];
+  Interval second = tracked[tracked.size () - second_id];
+
+  // TODO Require confirmation if intervals are not consecutive.
+  // TODO Require confirmation if tags don't match.
+
+  auto combined = first;
+  combined.range.end = second.range.end;
+
+  database.deleteInterval (first);
+  database.deleteInterval (second);
+
+  validate (cli, rules, database, combined);
+  database.addInterval (combined);
+
+  if (rules.getBoolean ("verbose"))
+    std::cout << "Joined @" << ids[0] << " and @" << ids[1] << '\n';
 
   return 0;
 }
