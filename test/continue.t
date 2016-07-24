@@ -58,16 +58,16 @@ class TestContinue(TestCase):
 
     def test_continue_nothing(self):
         """Verify that continuing an empty db is an error"""
-        code, out, err = self.t("continue")
-        self.assertIn("There is no previous tracking to continue.", out)
+        code, out, err = self.t.runError("continue")
+        self.assertIn("There is no previous tracking to continue.", err)
 
     def test_continue_open(self):
         """Verify that continuing an open interval is an error"""
         code, out, err = self.t("start tag1 tag2")
         self.assertIn("Tracking tag1 tag2\n", out)
 
-        code, out, err = self.t("continue")
-        self.assertIn("There is already active tracking.", out)
+        code, out, err = self.t.runError("continue")
+        self.assertIn("There is already active tracking.", err)
 
     def test_continue_closed(self):
         """Verify that continuing a closed interval works"""
