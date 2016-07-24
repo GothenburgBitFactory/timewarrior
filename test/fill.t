@@ -51,7 +51,7 @@ from basetest import Timew, TestCase
 #     self.assertNotRegexpMatches(text, pattern)
 #     self.tap("")
 
-class TestFill(TestCase):
+class TestFillHint(TestCase):
     def setUp(self):
         """Executed before each test in the class"""
         self.t = Timew()
@@ -111,6 +111,25 @@ class TestFill(TestCase):
         self.assertEqual(j[1]['start'], '20160710T110000Z')
         self.assertTrue('end' not in j[1])
         self.assertEqual(j[1]['tags'][0], 'two')
+
+class TestFillCommand(TestCase):
+    def setUp(self):
+        """Executed before each test in the class"""
+        self.t = Timew()
+
+    def test_fill_command(self):
+        """Create gaps, then fill them"""
+        self.t("track 20160724T090000 - 20160724T100000 foo")
+        # 11:12 gap here.
+        self.t("track 20160724T101112 - 20160724T101213 bar")
+        # 47:47 gap here.
+        self.t("track 20160724T110000 - 20160724T120000 baz")
+
+        # Eliminate gaps.
+        code, out, err = self.t("fill @2")
+        self.assertIn('Backfilled @2 to 2016-07-24T10:00:00', out)
+        self.assertIn('Filled @2 to 2016-07-24T11:00:00', out)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
