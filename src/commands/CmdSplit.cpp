@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Duration.h>
+#include <format.h>
 #include <commands.h>
 #include <timew.h>
 #include <iostream>
@@ -39,21 +40,12 @@ int CmdSplit (
 {
   // Gather IDs and TAGs.
   std::vector <int> ids;
-  std::string delta;
   for (auto& arg : cli._args)
-  {
     if (arg.hasTag ("ID"))
       ids.push_back (strtol (arg.attribute ("value").c_str (), NULL, 10));
 
-    if (arg.hasTag ("FILTER") &&
-        arg._lextype == Lexer::Type::duration)
-      delta = arg.attribute ("raw");
-  }
-
   if (! ids.size ())
     throw std::string ("IDs must be specified. See 'timew help split'.");
-
-  // TODO Support :adjust
 
   // Load the data.
   // Note: There is no filter.
@@ -63,39 +55,38 @@ int CmdSplit (
   // Apply tags to ids.
   for (auto& id : ids)
   {
-    if (id <= static_cast <int> (tracked.size ()))
+    if (id > static_cast <int> (tracked.size ()))
+      throw format ("ID '@{1}' does not correspond to any tracking.", id);
+
+    // Note: It's okay to subtract a one-based number from a zero-based index.
+    Interval first = tracked[tracked.size () - id];
+    Interval second = first;
+
+    if (first.range.is_open ())
     {
-      // Note: It's okay to subtract a one-based number from a zero-based index.
-      Interval first = tracked[tracked.size () - id];
-      Interval second = first;
-
-      if (first.range.is_open ())
-      {
-        Datetime midpoint;
-        midpoint -= (midpoint - first.range.start) / 2;
-        first.range.end = midpoint;
-        second.range.start = midpoint;
-      }
-      else
-      {
-        Datetime midpoint = first.range.start;
-        midpoint += (first.range.end - first.range.start) / 2;
-        first.range.end = midpoint;
-        second.range.start = midpoint;
-      }
-
-      database.deleteInterval (tracked[tracked.size () - id]);
-
-      validate (cli, rules, database, first);
-      database.addInterval (first);
-
-      validate (cli, rules, database, second);
-      database.addInterval (second);
-
-      // Feedback.
-      if (rules.getBoolean ("verbose"))
-        std::cout << "Split @" << id << '\n';
+      Datetime midpoint;
+      midpoint -= (midpoint - first.range.start) / 2;
+      first.range.end = midpoint;
+      second.range.start = midpoint;
     }
+    else
+    {
+      Datetime midpoint = first.range.start;
+      midpoint += (first.range.end - first.range.start) / 2;
+      first.range.end = midpoint;
+      second.range.start = midpoint;
+    }
+
+    database.deleteInterval (tracked[tracked.size () - id]);
+
+    validate (cli, rules, database, first);
+    database.addInterval (first);
+
+    validate (cli, rules, database, second);
+    database.addInterval (second);
+
+    if (rules.getBoolean ("verbose"))
+      std::cout << "Split @" << id << '\n';
   }
 
   return 0;
