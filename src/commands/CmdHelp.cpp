@@ -43,7 +43,9 @@ int CmdHelpUsage ()
             << "       timew diagnostics\n"
             << "       timew export [<interval>] [<tag> ...]\n"
             << "       timew extensions\n"
+/*
             << "       timew fill @<id> [@<id> ...]\n"
+*/
             << "       timew gaps [<interval>] [<tag> ...]\n"
             << "       timew get <DOM> [<DOM> ...]\n"
             << "       timew help [<command> | interval | hints | date | duration]\n"
@@ -426,6 +428,7 @@ int CmdHelp (const CLI& cli)
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+/*
     else if (words[0] == "fill")
       std::cout << '\n'
                 << "Syntax: timew fill @<id> [@<id> ...]\n"
@@ -447,6 +450,7 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "See also 'hints'.\n"
                 << '\n';
+*/
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890

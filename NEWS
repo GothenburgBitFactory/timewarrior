@@ -6,6 +6,7 @@ New Features in 1.0.0
 Features not implemented in 1.0.0
 
   - The 'undo' command.
+  - The 'fill' command and ':adjust' hint are disabled for beta.
   - Rules.
 
 Known Issues
