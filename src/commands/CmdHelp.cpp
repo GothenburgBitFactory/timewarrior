@@ -43,6 +43,7 @@ int CmdHelpUsage ()
             << "       timew diagnostics\n"
             << "       timew export [<interval>] [<tag> ...]\n"
             << "       timew extensions\n"
+            << "       timew fill @<id> [@<id> ...]\n"
             << "       timew gaps [<interval>] [<tag> ...]\n"
             << "       timew get <DOM> [<DOM> ...]\n"
             << "       timew help [<command> | interval | hints | date | duration]\n"
@@ -425,6 +426,30 @@ int CmdHelp (const CLI& cli)
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "fill")
+      std::cout << '\n'
+                << "Syntax: timew fill @<id> [@<id> ...]\n"
+                << '\n'
+                << "The 'fill' command is used to adjust any interval to fill in surrounding gaps.\n"
+                << "Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.\n"
+                << "Using the right ID, you can identify an interval to fill. For example, show\n"
+                << "the IDs:\n"
+                << '\n'
+                << "  $ timew summary :week :ids\n"
+                << '\n'
+                << "Then having selected '@2' as the interval you wish to fill:\n"
+                << '\n'
+                << "  $ timew fill @2\n"
+                << '\n'
+                << "Note that you can fill multiple intervals:\n"
+                << '\n'
+                << "  $ timew fill @2 @10 @23\n"
+                << '\n'
+                << "See also 'hints'.\n"
+                << '\n';
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "gaps")
       std::cout << '\n'
                 << "Syntax: timew gaps [<interval>] [<tag> ...]\n"
@@ -584,11 +609,12 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "  $ timew lengthen @2 10mins\n"
                 << '\n'
-                << "Note that you can lengthen multiple intervals,:\n"
+                << "Note that you can lengthen multiple intervals:\n"
                 << '\n'
                 << "  $ timew lengthen @2 @10 @23 1hour\n"
                 << '\n'
-                << "See also 'summary', 'tag', 'untag', 'shorten'.\n";
+                << "See also 'summary', 'tag', 'untag', 'shorten'.\n"
+                << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
@@ -669,11 +695,12 @@ int CmdHelp (const CLI& cli)
                 << '\n'
                 << "  $ timew shorten @2 10mins\n"
                 << '\n'
-                << "Note that you can shorten multiple intervals,:\n"
+                << "Note that you can shorten multiple intervals:\n"
                 << '\n'
                 << "  $ timew shorten @2 @10 @23 1hour\n"
                 << '\n'
-                << "See also 'summary', 'tag', 'untag', 'lengthen'.\n";
+                << "See also 'summary', 'tag', 'untag', 'lengthen'.\n"
+                << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
