@@ -25,6 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <format.h>
 #include <timew.h>
 #include <iostream>
 
@@ -37,7 +38,7 @@
 //   either an interval or an exclusion, while being conћtrained by a filter
 //   range.
 //
-static void autoFill (
+void autoFill (
   const Rules& rules,
   Database& database,
   const Interval& filter,
@@ -54,7 +55,12 @@ static void autoFill (
         earlier->range.end < interval.range.start)
     {
       interval.range.start = earlier->range.end;
-      std::cout << "Backfilled to " << interval.range.start.toISOLocalExtended () << "\n";
+        if (rules.getBoolean ("verbose"))
+        std::cout << "Backfilled "
+                  << (interval.id ? format ("@{1} ", interval.id) : "")
+                  << "to "
+                  << interval.range.start.toISOLocalExtended ()
+                  << "\n";
       break;
     }
   }
@@ -67,7 +73,12 @@ static void autoFill (
       if (interval.range.end < later.range.start)
       {
         interval.range.end = later.range.start;
-        std::cout << "Filled to " << interval.range.end.toISOLocalExtended () << "\n";
+        if (rules.getBoolean ("verbose"))
+          std::cout << "Filled "
+                    << (interval.id ? format ("@{1} ", interval.id) : "")
+                    << "to "
+                    << interval.range.end.toISOLocalExtended ()
+                    << "\n";
         break;
       }
     }
