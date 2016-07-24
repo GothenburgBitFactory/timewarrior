@@ -36,23 +36,19 @@ int CmdContinue (
   Database& database)
 {
   auto latest = getLatestInterval (database);
-  if (! latest.empty ())
-  {
-    if (! latest.range.is_open ())
-    {
-      // Open an identical interval and update hte DB.
-      latest.range.open ();
-      validate (cli, rules, database, latest);
-      database.addInterval (latest);
+  if (latest.empty ())
+    throw std::string ("There is no previous tracking to continue.");
 
-      if (rules.getBoolean ("verbose"))
-        std::cout << intervalSummarize (database, rules, latest);
-    }
-    else
-      std::cout << "There is already active tracking.\n";
-  }
-  else
-    std::cout << "There is no previous tracking to continue.\n";
+  if (latest.range.is_open ())
+    throw std::string ("There is already active tracking.");
+
+  // Open an identical interval and update hte DB.
+  latest.range.open ();
+  validate (cli, rules, database, latest);
+  database.addInterval (latest);
+
+  if (rules.getBoolean ("verbose"))
+    std::cout << intervalSummarize (database, rules, latest);
 
   return 0;
 }
