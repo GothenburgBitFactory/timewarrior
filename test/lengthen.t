@@ -65,8 +65,8 @@ class TestLengthen(TestCase):
     def test_lengthen_open_interval(self):
         """Lengthen an open interval"""
         self.t("start 30mins ago foo")
-        code, out, err = self.t("lengthen @1 10mins")
-        self.assertIn('Cannot lengthen open interval @1', out)
+        code, out, err = self.t.runError("lengthen @1 10mins")
+        self.assertIn('Cannot lengthen open interval @1', err)
 
 # TODO Add :adjust tests.
 
