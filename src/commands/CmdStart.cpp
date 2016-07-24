@@ -57,7 +57,6 @@ int CmdStart (
     for (auto& interval : flatten (modified, exclusions))
       database.addInterval (interval);
 
-    // TODO intervalSummarїze needs to operate on a vector of similar intervals.
     if (rules.getBoolean ("verbose"))
       std::cout << intervalSummarize (database, rules, modified);
   }
@@ -76,8 +75,6 @@ int CmdStart (
   validate (cli, rules, database, now);
   database.addInterval (now);
 
-  // TODO intervalSummarїze needs to operate on a vector of similar intervals.
-  // User feedback.
   if (rules.getBoolean ("verbose"))
     std::cout << intervalSummarize (database, rules, now);
 
