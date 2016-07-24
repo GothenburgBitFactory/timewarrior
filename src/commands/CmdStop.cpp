@@ -54,54 +54,49 @@ int CmdStop (
   auto latest = getLatestInterval (database);
 
   // Verify the interval is open.
-  if (latest.range.is_open ())
+  if (! latest.range.is_open ())
+    throw std::string ("There is no active time tracking.");
+
+  Interval modified {latest};
+
+  // If a stop date is specified (and occupies filter.range.start) then use
+  // that instead of the current time.
+  if (filter.range.start.toEpoch () != 0)
+    modified.range.end = filter.range.start;
+  else
+    modified.range.end = Datetime ();
+
+  // Close the interval.
+  database.deleteInterval (latest);
+  validate (cli, rules, database, modified);
+  database.addInterval (modified);
+
+  // If tags are specified, but are not a full set of tags, remove them
+  // before closing the interval.
+  if (filter.tags ().size () &&
+      (setIntersect (filter.tags (), latest.tags ()).size () != latest.tags ().size ()))
   {
-    Interval modified {latest};
+    for (auto& tag : filter.tags ())
+      if (modified.hasTag (tag))
+        modified.untag (tag);
+      else
+        throw format ("The current interval does not have the '{1}' tag.", tag);
+  }
 
-    // If a stop date is specified (and occupies filter.range.start) then use
-    // that instead of the current time.
-    if (filter.range.start.toEpoch () != 0)
-      modified.range.end = filter.range.start;
-    else
-      modified.range.end = Datetime ();
+  latest.range.end = modified.range.end;
+  if (rules.getBoolean ("verbose"))
+    std::cout << intervalSummarize (database, rules, latest);
 
-    // Close the interval.
-    database.deleteInterval (latest);
+  // Open a new interval with remaining tags, if any.
+  if (filter.tags ().size () &&
+      modified.tags ().size () != latest.tags ().size ())
+  {
+    modified.range.start = modified.range.end;
+    modified.range.end = {0};
     validate (cli, rules, database, modified);
     database.addInterval (modified);
-
-    // If tags are specified, but are not a full set of tags, remove them
-    // before closing the interval.
-    if (filter.tags ().size () &&
-        (setIntersect (filter.tags (), latest.tags ()).size () != latest.tags ().size ()))
-    {
-      for (auto& tag : filter.tags ())
-        if (modified.hasTag (tag))
-          modified.untag (tag);
-        else
-          throw format ("The current interval does not have the '{1}' tag.", tag);
-    }
-
-    latest.range.end = modified.range.end;
     if (rules.getBoolean ("verbose"))
-      std::cout << intervalSummarize (database, rules, latest);
-
-    // Open a new interval with remaining tags, if any.
-    if (filter.tags ().size () &&
-        modified.tags ().size () != latest.tags ().size ())
-    {
-      modified.range.start = modified.range.end;
-      modified.range.end = {0};
-      validate (cli, rules, database, modified);
-      database.addInterval (modified);
-      if (rules.getBoolean ("verbose"))
-        std::cout << '\n' << intervalSummarize (database, rules, modified);
-    }
-  }
-  else
-  {
-    if (rules.getBoolean ("verbose"))
-      std::cout << "There is no active time tracking.\n";
+      std::cout << '\n' << intervalSummarize (database, rules, modified);
   }
 
   return 0;
