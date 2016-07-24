@@ -58,8 +58,8 @@ class TestClock(TestCase):
 
     def test_stop_nothing(self):
         """Verify that stopping an unstarted interval does nothing"""
-        code, out, err = self.t("stop")
-        self.assertIn("There is no active time tracking.", out)
+        code, out, err = self.t.runError("stop")
+        self.assertIn("There is no active time tracking.", err)
 
     def test_start_new(self):
         """Verify that 'start' creates an open interval"""
