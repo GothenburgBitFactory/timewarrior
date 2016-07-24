@@ -69,36 +69,36 @@ class TestTags(TestCase):
         self.assertIn('foo', out)
         self.assertIn('bar', out)
 
-class TestTagFeedback(TestCase):
-    def setUp(self):
-        """Executed before each test in the class"""
-        self.t = Timew()
+#class TestTagFeedback(TestCase):
+#    def setUp(self):
+#        """Executed before each test in the class"""
+#        self.t = Timew()
 
-    def test_verbose_new_tag(self):
-        """Test verbose feedback for new tag"""
-        code, out, err = self.t("start foo bar")
-        self.assertIn("Note: 'foo' is a new tag.", out)
-        self.assertIn("Note: 'bar' is a new tag.", out)
+#    def test_verbose_new_tag(self):
+#        """Test verbose feedback for new tag"""
+#        code, out, err = self.t("start foo bar")
+#        self.assertIn("Note: 'foo' is a new tag.", out)
+#        self.assertIn("Note: 'bar' is a new tag.", out)
 
-    def test_verbose_repeat_tag(self):
-        """Test verbose feedback for repeat tag"""
-        self.t("track yesterday - today foo bar")
-        code, out, err = self.t("start bar baz")
-        self.assertNotIn("Note: 'bar' is a new tag.", out)
-        self.assertIn("Note: 'baz' is a new tag.", out)
+#    def test_verbose_repeat_tag(self):
+#        """Test verbose feedback for repeat tag"""
+#        self.t("track yesterday - today foo bar")
+#        code, out, err = self.t("start bar baz")
+#        self.assertNotIn("Note: 'bar' is a new tag.", out)
+#        self.assertIn("Note: 'baz' is a new tag.", out)
 
-    def test_quiet_new_tag(self):
-        """Test quiet feedback for new tag"""
-        code, out, err = self.t("start foo bar :quiet")
-        self.assertNotIn("Note: 'foo' is a new tag.", out)
-        self.assertNotIn("Note: 'bar' is a new tag.", out)
+#    def test_quiet_new_tag(self):
+#        """Test quiet feedback for new tag"""
+#        code, out, err = self.t("start foo bar :quiet")
+#        self.assertNotIn("Note: 'foo' is a new tag.", out)
+#        self.assertNotIn("Note: 'bar' is a new tag.", out)
 
-    def test_quiet_repeat_tag(self):
-        """Test quiet feedback for repeat tag"""
-        self.t("track yesterday - today foo bar")
-        code, out, err = self.t("start bar baz :quiet")
-        self.assertNotIn("Note: 'foo' is a new tag.", out)
-        self.assertNotIn("Note: 'bar' is a new tag.", out)
+#    def test_quiet_repeat_tag(self):
+#        """Test quiet feedback for repeat tag"""
+#        self.t("track yesterday - today foo bar")
+#        code, out, err = self.t("start bar baz :quiet")
+#        self.assertNotIn("Note: 'foo' is a new tag.", out)
+#        self.assertNotIn("Note: 'bar' is a new tag.", out)
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
