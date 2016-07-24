@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Duration.h>
+#include <format.h>
 #include <commands.h>
 #include <timew.h>
 #include <iostream>
@@ -53,8 +54,6 @@ int CmdLengthen (
   if (! ids.size ())
     throw std::string ("IDs must be specified. See 'timew help lengthen'.");
 
-  // TODO Support :adjust
-
   // Load the data.
   // Note: There is no filter.
   Interval filter;
@@ -63,26 +62,23 @@ int CmdLengthen (
   // Apply tags to ids.
   for (auto& id : ids)
   {
-    if (id <= static_cast <int> (tracked.size ()))
-    {
-      // Note: It's okay to subtract a one-based number from a zero-based index.
-      Interval i = tracked[tracked.size () - id];
-      if (! i.range.is_open ())
-      {
-        database.deleteInterval (tracked[tracked.size () - id]);
+    if (id > static_cast <int> (tracked.size ()))
+      throw format ("ID '@{1}' does not correspond to any tracking.", id);
 
-        Duration dur (delta);
-        i.range.end += dur.toTime_t ();
-        validate (cli, rules, database, i);
-        database.addInterval (i);
+    // Note: It's okay to subtract a one-based number from a zero-based index.
+    Interval i = tracked[tracked.size () - id];
+    if (i.range.is_open ())
+      throw format ("Cannot lengthen open interval @{1}", id);
 
-        // Feedback.
-        if (rules.getBoolean ("verbose"))
-          std::cout << "Lengthened @" << id << " by " << dur.formatHours () << '\n';
-      }
-      else
-        std::cout << "Cannot lengthen open interval @" << id << '\n';
-    }
+    database.deleteInterval (tracked[tracked.size () - id]);
+
+    Duration dur (delta);
+    i.range.end += dur.toTime_t ();
+    validate (cli, rules, database, i);
+    database.addInterval (i);
+
+    if (rules.getBoolean ("verbose"))
+      std::cout << "Lengthened @" << id << " by " << dur.formatHours () << '\n';
   }
 
   return 0;
