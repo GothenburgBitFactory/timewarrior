@@ -14,6 +14,7 @@ set (commands_SRCS CmdCancel.cpp
                    CmdDiagnostics.cpp
                    CmdExport.cpp
                    CmdExtensions.cpp
+                   CmdFill.cpp
                    CmdGaps.cpp
                    CmdGet.cpp
                    CmdHelp.cpp

@@ -40,6 +40,7 @@ int CmdDelete        (const CLI&, Rules&, Database&                   );
 int CmdDiagnostics   (            Rules&, Database&, const Extensions&);
 int CmdExport        (const CLI&, Rules&, Database&                   );
 int CmdExtensions    (            Rules&,            const Extensions&);
+int CmdFill          (const CLI&, Rules&, Database&                   );
 int CmdGaps          (const CLI&, Rules&, Database&                   );
 int CmdGet           (const CLI&, Rules&, Database&                   );
 int CmdHelpUsage     (                                                );
