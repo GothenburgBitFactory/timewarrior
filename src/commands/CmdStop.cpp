@@ -74,7 +74,7 @@ int CmdStop (
   // If tags are specified, but are not a full set of tags, remove them
   // before closing the interval.
   if (filter.tags ().size () &&
-      (setIntersect (filter.tags (), latest.tags ()).size () != latest.tags ().size ()))
+      setIntersect (filter.tags (), latest.tags ()).size () != latest.tags ().size ())
   {
     for (auto& tag : filter.tags ())
       if (modified.hasTag (tag))
