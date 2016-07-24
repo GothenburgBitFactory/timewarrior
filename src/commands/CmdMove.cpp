@@ -68,7 +68,6 @@ int CmdMove (
     throw format ("ID '@{1}' does not correspond to any tracking.", id);
 
   // Move start time.
-  // Note: It's okay to subtract a one-based number from a zero-based index.
   Interval i = tracked[tracked.size () - id];
   Datetime start (new_start);
 

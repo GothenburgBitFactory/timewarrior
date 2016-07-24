@@ -58,7 +58,6 @@ int CmdJoin (
     if (id > static_cast <int> (tracked.size ()))
       throw format ("ID '@{1}' does not correspond to any tracking.", id);
 
-  // Note: It's okay to subtract a one-based number from a zero-based index.
   auto first_id  = std::max (ids[0], ids[1]);
   auto second_id = std::min (ids[0], ids[1]);
   Interval first  = tracked[tracked.size () - first_id];

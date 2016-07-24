@@ -56,7 +56,6 @@ int CmdDelete (
     if (id > static_cast <int> (tracked.size ()))
       throw format ("ID '@{1}' does not correspond to any tracking.", id);
 
-    // Note: It's okay to subtract a one-based number from a zero-based index.
     database.deleteInterval (tracked[tracked.size () - id]);
 
     if (rules.getBoolean ("verbose"))
