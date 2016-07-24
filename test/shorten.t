@@ -65,8 +65,8 @@ class TestShorten(TestCase):
     def test_shorten_open_interval(self):
         """Shorten an open interval"""
         self.t("start 30mins ago foo")
-        code, out, err = self.t("shorten @1 10mins")
-        self.assertIn('Cannot shorten open interval @1', out)
+        code, out, err = self.t.runError("shorten @1 10mins")
+        self.assertIn('Cannot shorten open interval @1', err)
 
 # TODO Add :adjust tests.
 
@@ -82,8 +82,8 @@ class TestBug6(TestCase):
            an assert is triggered, and should be an error instead.
         """
         self.t("track 2016-06-08T07:30:00 - 2016-06-08T07:35:00 foo")
-        code, out, err = self.t("shorten @1 10mins")
-        self.assertIn('Cannot shorten interval @1 by 0:10:00 because it is only 0:05:00 in length.', out)
+        code, out, err = self.t.runError("shorten @1 10mins")
+        self.assertIn('Cannot shorten interval @1 by 0:10:00 because it is only 0:05:00 in length.', err)
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
