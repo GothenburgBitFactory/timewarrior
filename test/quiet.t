@@ -65,12 +65,9 @@ class TestQuietMode(TestCase):
         self.assertNotIn('There is no active time tracking.', out)
 
     def test_stop(self):
-        """Stop command should obey :quiet hint"""
-        code, out, err = self.t("stop")
-        self.assertIn('There is no active time tracking.', out)
-
-        code, out, err = self.t("stop :quiet")
-        self.assertNotIn('There is no active time tracking.', out)
+        """Stop command should error on no active tracking"""
+        code, out, err = self.t.runError("stop")
+        self.assertIn('There is no active time tracking.', err)
 
 
 if __name__ == "__main__":
