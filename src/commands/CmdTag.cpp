@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <commands.h>
+#include <format.h>
 #include <timew.h>
 #include <iostream>
 #include <stdlib.h>
@@ -59,24 +60,25 @@ int CmdTag (
   // Apply tags to ids.
   for (auto& id : ids)
   {
-    if (id <= static_cast <int> (tracked.size ()))
+    if (id > static_cast <int> (tracked.size ()))
+      throw format ("ID '@{1}' does not correspond to any tracking.", id);
+
+    // Note: It's okay to subtract a one-based number from a zero-based index.
+    Interval i = tracked[tracked.size () - id];
+
+    for (auto& tag : tags)
+      i.tag (tag);
+
+    //TODO validate (cli, rules, database, i);
+    database.modifyInterval (tracked[tracked.size () - id], i);
+
+    // Feedback.
+    if (rules.getBoolean ("verbose"))
     {
-      // Note: It's okay to subtract a one-based number from a zero-based index.
-      Interval i = tracked[tracked.size () - id];
-
+      std::cout << "Added";
       for (auto& tag : tags)
-        i.tag (tag);
-
-      database.modifyInterval (tracked[tracked.size () - id], i);
-
-      // Feedback.
-      if (rules.getBoolean ("verbose"))
-      {
-        std::cout << "Added";
-        for (auto& tag : tags)
-          std::cout << ' ' << quoteIfNeeded (tag);
-        std::cout << " to @" << id << '\n';
-      }
+        std::cout << ' ' << quoteIfNeeded (tag);
+      std::cout << " to @" << id << '\n';
     }
   }
 
