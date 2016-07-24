@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <timew.h>
+#include <format.h>
 #include <iostream>
 #include <stdlib.h>
 
@@ -35,17 +36,14 @@ int CmdDelete (
   Rules& rules,
   Database& database)
 {
-  // Gather IDs and TAGs.
+  // Gather IDs.
   std::vector <int> ids;
-  std::string delta;
   for (auto& arg : cli._args)
     if (arg.hasTag ("ID"))
       ids.push_back (strtol (arg.attribute ("value").c_str (), NULL, 10));
 
   if (! ids.size ())
     throw std::string ("IDs must be specified. See 'timew help delete'.");
-
-  // TODO Support :adjust
 
   // Load the data.
   // Note: There is no filter.
@@ -55,15 +53,14 @@ int CmdDelete (
   // Apply tags to ids.
   for (auto& id : ids)
   {
-    if (id <= static_cast <int> (tracked.size ()))
-    {
-      // Note: It's okay to subtract a one-based number from a zero-based index.
-      database.deleteInterval (tracked[tracked.size () - id]);
+    if (id > static_cast <int> (tracked.size ()))
+      throw format ("ID '@{1}' does not correspond to any tracking.", id);
 
-      // Feedback.
-      if (rules.getBoolean ("verbose"))
-        std::cout << "Deleted @" << id << '\n';
-    }
+    // Note: It's okay to subtract a one-based number from a zero-based index.
+    database.deleteInterval (tracked[tracked.size () - id]);
+
+    if (rules.getBoolean ("verbose"))
+      std::cout << "Deleted @" << id << '\n';
   }
 
   return 0;
