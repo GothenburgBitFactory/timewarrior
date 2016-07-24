@@ -64,6 +64,7 @@ void initializeEntities (CLI& cli)
   cli.entity ("command", "diagnostics");
   cli.entity ("command", "export");
   cli.entity ("command", "extensions");
+  cli.entity ("command", "fill");
   cli.entity ("command", "gaps");
   cli.entity ("command", "get");
   cli.entity ("command", "help");
@@ -262,6 +263,7 @@ int dispatchCommand (
     else if (command == "diagnostics") status = CmdDiagnostics   (     rules, database, extensions);
     else if (command == "export")      status = CmdExport        (cli, rules, database            );
     else if (command == "extensions")  status = CmdExtensions    (     rules,           extensions);
+    else if (command == "fill")        status = CmdFill          (cli, rules, database            );
     else if (command == "gaps")        status = CmdGaps          (cli, rules, database            );
     else if (command == "get")         status = CmdGet           (cli, rules, database            );
     else if (command == "help")        status = CmdHelp          (cli                             );
