@@ -1,4 +1,7 @@
-1.0.0 -
+
+------ current release ---------------------------
+
+1.0.0.beta1 (2016-07-26) -
 
 - TI-9    Task spanning over whole day should show up as taking 24:00 instead
           of 23:59
@@ -39,7 +42,7 @@
 - Added DOM support and a 'get' command.
 - Added 'totals.py' sample extension.
 
------- current release ---------------------------
+------ old release ---------------------------
 
 0.9.5.alpha (2016-06-20) -
 

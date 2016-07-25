@@ -6,7 +6,7 @@ set (HAVE_CMAKE true)
 project (timew)
 include (CXXSniffer)
 
-set (PROJECT_VERSION "0.9.6.alpha")
+set (PROJECT_VERSION "1.0.0.beta1")
 
 message ("-- Looking for SHA1 references")
 if (EXISTS ${CMAKE_SOURCE_DIR}/.git/index)
@@ -60,6 +60,6 @@ set (CPACK_SOURCE_PACKAGE_FILE_NAME ${PACKAGE_NAME}-${PACKAGE_VERSION})
 set (CPACK_SOURCE_IGNORE_FILES  "CMakeCache" "CMakeFiles" "CPackConfig" "CPackSourceConfig"
                                 "_CPack_Packages" "cmake_install" "install_manifest" "Makefile$"
                                 "test" "package-config" "src/timew$" "src/libtimew.a"
-                                "src/commands/libcommands.a" "src/lex$"
+                                "src/commands/libcommands.a" "src/lex$" "src/liblibshared.a"
                                 "/\\\\.gitignore" "/\\\\.git/" "swp$")
 include (CPack)
