@@ -90,8 +90,11 @@ if max_width > 0:
   print '\nTotal by Tag, for %s - %s\n' % (start, end)
 
   # Compose table header.
-  print '%-*s %10s' % (max_width, 'Tag', 'Total')
-  print '-' * max_width, '----------'
+  if configuration['color'] == 'on':
+    print '[4m%-*s[0m [4m%10s[0m' % (max_width, 'Tag', 'Total')
+  else:
+    print '%-*s %10s' % (max_width, 'Tag', 'Total')
+    print '-' * max_width, '----------'
 
   # Compose table rows.
   grand_total = 0
@@ -101,7 +104,11 @@ if max_width > 0:
     print '%-*s %10s' % (max_width, tag, formatted)
 
   # Compose total.
-  print ' ' * max_width, '----------'
+  if configuration['color'] == 'on':
+    print ' ' * max_width, '[4m          [0m'
+  else:
+    print ' ' * max_width, '----------'
+
   print '%-*s %10s' % (max_width, 'Total', formatSeconds(grand_total))
 
 else:
