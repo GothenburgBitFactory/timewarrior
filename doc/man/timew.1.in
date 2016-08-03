@@ -635,7 +635,7 @@ The values 'true', '1', 'y', 'yes' and 'on' are all equivalent and enable a
 setting. Any other value means disable the setting.
 
 Default values may be overridden by timewarrior.cfg values, which may in turn be
-overriden on the command line using:
+overridden on the command line using:
 
   rc.<name>=<value>
 
