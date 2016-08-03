@@ -98,22 +98,33 @@ void Database::addInterval (const Interval& interval)
 {
   undoTxnStart ();
 
-  auto intervalRange = interval.range;
-  for (auto& segment : segmentRange (intervalRange))
+  if (interval.range.is_open ())
   {
     // Get the index into _files for the appropriate Datafile, which may be
     // created on demand.
-    auto df = getDatafile (segment.start.year (), segment.start.month ());
+    auto df = getDatafile (interval.range.start.year (), interval.range.start.month ());
+    _files[df].addInterval (interval);
+    undoTxn ("interval", "", interval.json ());
+  }
+  else
+  {
+    auto intervalRange = interval.range;
+    for (auto& segment : segmentRange (intervalRange))
+    {
+      // Get the index into _files for the appropriate Datafile, which may be
+      // created on demand.
+      auto df = getDatafile (segment.start.year (), segment.start.month ());
 
-    // Intersect the original interval range, and the segment.
-    Interval segmentedInterval (interval);
-    segmentedInterval.range = intervalRange.intersect (segment);
-    if (interval.range.is_open ())
-      segmentedInterval.range.end = Datetime (0);
+      // Intersect the original interval range, and the segment.
+      Interval segmentedInterval (interval);
+      segmentedInterval.range = intervalRange.intersect (segment);
+      if (interval.range.is_open ())
+        segmentedInterval.range.end = Datetime (0);
 
-    _files[df].addInterval (segmentedInterval);
+      _files[df].addInterval (segmentedInterval);
 
-    undoTxn ("interval", "", segmentedInterval.json ());
+      undoTxn ("interval", "", segmentedInterval.json ());
+    }
   }
 
   undoTxnEnd ();
