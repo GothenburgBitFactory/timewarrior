@@ -41,6 +41,7 @@
           (thanks to Martin Boeker).
 - Added DOM support and a 'get' command.
 - Added 'totals.py' sample extension.
+- Added extension list to the 'help' command.
 
 ------ old release ---------------------------
 

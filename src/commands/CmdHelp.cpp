@@ -29,7 +29,7 @@
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdHelpUsage ()
+int CmdHelpUsage (const Extensions& extensions)
 {
   // TODO This is going to need more formatting.
   // TODO Align the arg types?
@@ -65,8 +65,19 @@ int CmdHelpUsage ()
             << "       timew track <interval> [<tag> ...]\n"
             << "       timew untag @<id> [@<id> ...] <tag> [<tag> ...]\n"
             << "       timew week [<interval>] [<tag> ...]\n"
-            << '\n'
-            << "Additional help:\n"
+            << '\n';
+
+  if (extensions.all ().size ())
+  {
+    std::cout << "Extensions (extensions do not provide help):\n";
+
+    for (auto& ext : extensions.all ())
+      std::cout << "       " << File (ext).name () << '\n';
+
+    std::cout << '\n';
+  }
+
+  std::cout << "Additional help:\n"
             << "       timew help <command>\n"
             << "       timew help interval\n"
             << "       timew help hints\n"
@@ -104,7 +115,9 @@ int CmdHelpUsage ()
 //
 // Strict 80-character limit.
 // Provide examples where appropriate - enough to cover all uses.
-int CmdHelp (const CLI& cli)
+int CmdHelp (
+  const CLI& cli,
+  const Extensions& extensions)
 {
   auto words = cli.getWords ();
   if (words.size ())
@@ -906,7 +919,7 @@ int CmdHelp (const CLI& cli)
     return 0;
   }
 
-  return CmdHelpUsage ();
+  return CmdHelpUsage (extensions);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
