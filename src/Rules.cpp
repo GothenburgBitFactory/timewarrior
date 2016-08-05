@@ -356,7 +356,7 @@ void Rules::parseRule (const std::string& input)
   while (lexer.token (token, type))
     tokens.push_back (token);
 
-  // Based on the tokens of the first line, determine which rule ﬆype needs to
+  // Based on the tokens of the first line, determine which rule type needs to
   // be parsed.
   if (tokens.size () >= 2 &&
       tokens[0] == "define")
