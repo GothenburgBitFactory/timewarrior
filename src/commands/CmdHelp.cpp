@@ -173,7 +173,7 @@ int CmdHelp (
                 << '\n'
                 << "Resumes tracking the most recently closed interval. For exqample:\n"
                 << '\n'
-                << "  $ timew track 9am - 5pm tag1 tag2\n"
+                << "  $ timew track 9am - 10am tag1 tag2\n"
                 << "  $ timew continue\n"
                 << '\n'
                 << "The 'continue' command creates a new interval, starting now, and using the tags\n"

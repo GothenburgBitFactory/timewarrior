@@ -63,7 +63,7 @@ See also 'hints', 'show'.
 .B timew continue
 Resumes tracking the most recently closed interval. For example:
 
-  $ timew track yesterday 9am - 5pm tag1 tag2
+  $ timew track 9am - 10am tag1 tag2
   $ timew continue
 
 The 'continue' command creates a new interval, starting now, and using the

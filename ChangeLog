@@ -24,6 +24,8 @@
 - TI-20   Week number does not agree with Taskwarrior
           (thanks to Dirk Deimeke).
 - TI-22   The 'day' chart crashes if there is an open interval and no others
+- WWW-12  yesterday tag not recognised
+          (thanks to Michel Crucifix).
 - timew 0.9.5~alpha install bug
           (thanks to Gordon Ball).
 - Improved out-of-source build for themes, holidays
