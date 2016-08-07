@@ -44,6 +44,7 @@ configure_file (
 add_subdirectory (src)
 add_subdirectory (src/commands)
 add_subdirectory (doc)
+add_subdirectory (ext)
 if (EXISTS ${CMAKE_SOURCE_DIR}/test)
   add_subdirectory (test EXCLUDE_FROM_ALL)
 endif (EXISTS ${CMAKE_SOURCE_DIR}/test)
