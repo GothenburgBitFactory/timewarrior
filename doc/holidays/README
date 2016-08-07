@@ -14,6 +14,6 @@ If you need a specific locale region, do this:
 
   $ ./refresh --locale de-CH --region Bern
 
-If the locale is not supported by holidata.net, or the there is no data (yet)
-for the locale for this year and next year, you will see an error.
+If the locale is not supported by holidata.net, or there is no data (yet) for
+the locale for this year and next year, you will see an error.
 
