@@ -89,6 +89,13 @@ Rules::Rules ()
 
     // 'gaps' report.
     {"reports.gaps.range",       ":day"},
+
+    // Enough of a theme to make the charts work.
+    {"theme.description",        "Built-in default"},
+    {"theme.colors.exclusion",   "gray8 on gray4"},
+    {"theme.colors.today",       "white"},
+    {"theme.colors.holiday",     "gray4"},
+    {"theme.colors.label",       "gray4"},
   };
 }
 
