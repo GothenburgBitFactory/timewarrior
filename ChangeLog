@@ -1,7 +1,11 @@
 1.0.0 () -
 
+- WWW-12  yesterday tag not recognised
+          (thanks to Michel Crucifix).
 - TI-34   Make timew more user-friendly by adding --help and default output
           (thanks to Felix Wolfsteller).
+- Added 'totals.py' sample extension.
+- Added extension list to the 'help' command.
 
 ------ current release ---------------------------
 
@@ -28,8 +32,6 @@
 - TI-20   Week number does not agree with Taskwarrior
           (thanks to Dirk Deimeke).
 - TI-22   The 'day' chart crashes if there is an open interval and no others
-- WWW-12  yesterday tag not recognised
-          (thanks to Michel Crucifix).
 - timew 0.9.5~alpha install bug
           (thanks to Gordon Ball).
 - Improved out-of-source build for themes, holidays
@@ -46,8 +48,6 @@
 - Fixed utf8 encoding in Taskwarrior integration hook
           (thanks to Martin Boeker).
 - Added DOM support and a 'get' command.
-- Added 'totals.py' sample extension.
-- Added extension list to the 'help' command.
 
 ------ old release ---------------------------
 
