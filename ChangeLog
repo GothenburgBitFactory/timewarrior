@@ -1,3 +1,7 @@
+1.0.0 () -
+
+- TI-34   Make timew more user-friendly by adding --help and default output
+          (thanks to Felix Wolfsteller).
 
 ------ current release ---------------------------
 

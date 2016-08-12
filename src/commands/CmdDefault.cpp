@@ -45,7 +45,22 @@ int CmdDefault (Rules& rules, Database& database)
   else
   {
     if (rules.getBoolean ("verbose"))
-      std::cout << "There is no active time tracking.\n";
+    {
+      if (rules.getBoolean ("temp.shiny"))
+        std::cout << '\n'
+                  << "Welcome to Timewarrior.\n"
+                  << '\n'
+                  << "There is built-in help:\n"
+                  << "    timew help\n"
+                  << "    timew help <command>\n"
+                  << "    (and more)\n"
+                  << '\n'
+                  << "There is a fully-detailed man page:\n"
+                  << "    man timew\n"
+                  << '\n';
+      else
+        std::cout << "There is no active time tracking.\n";
+    }
 
     status = 1;
   }
