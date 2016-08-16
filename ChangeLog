@@ -34,6 +34,8 @@
 - TI-22   The 'day' chart crashes if there is an open interval and no others
 - TI-25   Work week not blocked off in charts
           (thanks to Jonathon Bly).
+- TI-34   Make timew more user-friendly by adding --help and default output
+          (thanks to Felix Wolfsteller).
 - timew 0.9.5~alpha install bug
           (thanks to Gordon Ball).
 - Improved out-of-source build for themes, holidays
