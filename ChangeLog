@@ -1,4 +1,6 @@
-1.0.0 () -
+------ current release ---------------------------
+
+1.0.0 (2016-08-17) -
 
 - WWW-12  yesterday tag not recognised
           (thanks to Michel Crucifix).
@@ -7,7 +9,7 @@
 - Added 'totals.py' sample extension.
 - Added extension list to the 'help' command.
 
------- current release ---------------------------
+------ old release ---------------------------
 
 1.0.0.beta1 (2016-07-26) -
 
@@ -52,8 +54,6 @@
 - Fixed utf8 encoding in Taskwarrior integration hook
           (thanks to Martin Boeker).
 - Added DOM support and a 'get' command.
-
------- old release ---------------------------
 
 0.9.5.alpha (2016-06-20) -
 

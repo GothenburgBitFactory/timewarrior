@@ -1,22 +1,3 @@
-# Disclaimer during ongoing development
-
-We want to discourage you from using the development version of Timewarrior.
-
-The development branch is being actively updated and may not pass all quality
-tests, therefore it may harm your data. In fact, as a new project, it doesn't
-have adequate tests to prove that everything works. We do not guarantee proper
-or even adequate functionality, performance or timely fixes.
-
-We welcome bug reports from beta- and release-level software, but generally not
-development versions. If you are undaunted by this, please:
-
-- Make proper backups.
-- Expect broken and missing functionality.
-- Be aware that using the development branch involves risks.
-- Give us lots of feedback, to improve the software.
-
----
-
 Thank you for taking a look at Timewarrior!
 
 Timewarrior is a time tracking utility that offers simple stopwatch features as

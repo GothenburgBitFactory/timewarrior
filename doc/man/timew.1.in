@@ -1,4 +1,4 @@
-.TH timew 1 2016-07-26 "${PACKAGE_STRING}" "User Manuals"
+.TH timew 1 2016-08-17 "${PACKAGE_STRING}" "User Manuals"
 
 .SH NAME
 timew \- A command line time tracker.
