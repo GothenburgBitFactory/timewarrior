@@ -1,13 +1,27 @@
 
-New Features in 1.0.0
+New Features in 1.1.0
 
-  - All features are new.
+  -
 
-Features not implemented in 1.0.0
+Features not implemented in 1.1.0
 
-  - The 'undo' command.
-  - The 'fill' command and ':adjust' hint are disabled for beta.
-  - Rules.
+  -
+
+New Commands in 1.1.0
+
+  -
+
+New Configuration Options 1.1.0
+
+  -
+
+Newly Deprecated Features in 1.1.0
+
+  -
+
+Removed Features in 1.1.0
+
+  -
 
 Known Issues
 
