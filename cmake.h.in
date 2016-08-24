@@ -34,3 +34,14 @@
 #cmakedefine GNUHURD
 #cmakedefine UNKNOWN
 
+/* Found tm.tm_gmtoff struct member */
+#cmakedefine HAVE_TM_GMTOFF
+
+/* Found st.st_birthtime struct member */
+#cmakedefine HAVE_ST_BIRTHTIME
+
+/* Functions */
+#cmakedefine HAVE_GET_CURRENT_DIR_NAME
+#cmakedefine HAVE_TIMEGM
+#cmakedefine HAVE_UUID_UNPARSE_LOWER
+

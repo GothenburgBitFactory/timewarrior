@@ -1,6 +1,9 @@
 1.1.0 () -
 
-- 
+- TD-120  Missing cmakedefine for HAVE_GET_CURRENT_DIR_NAME
+          (Thanks to Jörg Krause, Ben Boeckel).
+- TW-1845 Cygwin build fails, missing get_current_dir_name
+          (thanks to hosaka).
 
 ------ current release ---------------------------
 
