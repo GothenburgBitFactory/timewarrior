@@ -66,3 +66,16 @@ W17 Planning           1:00
                       -----
     Total             31:11
 
+
+Aaron Evers suggests:
+
+Tag   Description Time    Total
+----- ----------- ------- -------
+Item1 Task one    1:00:00
+      Task two    1:00:00
+      Task three  0:30:00
+                          2:30:00
+Item2 Task one    2:30:00
+      Task two    0:30:00
+                          3:00:00
+
