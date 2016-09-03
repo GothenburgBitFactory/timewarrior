@@ -4,6 +4,8 @@
           (Thanks to Jörg Krause, Ben Boeckel).
 - TW-1845 Cygwin build fails, missing get_current_dir_name
           (thanks to hosaka).
+- TI-42   refresh holiday script throws an error on nb-NO locale
+          (thanks to Jelle van der Waa).
 - Fixed Python 3 support of the holdiay/refresh script
           (thanks to Jelle van der Waa).
 
