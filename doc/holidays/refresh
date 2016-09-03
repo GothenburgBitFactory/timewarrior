@@ -72,8 +72,11 @@ def update_single_year(locales, regions, year):
             if j['region'] == '' or regions is None or len(regions) == 0 or j['region'] in regions:
               day = j['date'].replace("-", "_")
               desc = j['description']
-              fh.write('    %s = %s\n' % (day, desc))
-
+              data = '    %s = %s\n' % (day, desc)
+              if sys.version_info >= (3,0):
+                fh.write(data)
+              else:
+                fh.write(data.encode('utf-8'))
 
     except HTTPError as e:
       if e.code == 404:
