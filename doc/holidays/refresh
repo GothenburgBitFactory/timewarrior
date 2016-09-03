@@ -25,8 +25,13 @@
 ##
 ################################################################################
 
-import os, sys, re, time, datetime, json, argparse, urllib2
+import os, sys, re, time, datetime, json, argparse
 
+if sys.version_info >= (3,0):
+    from urllib.request import urlopen
+    from urllib.error import HTTPError
+else:
+    from urllib2 import urlopen, HTTPError
 
 def enumerate(path):
   if not os.path.exists(path):
@@ -49,10 +54,10 @@ def update_locales(locales, regions):
 
 def update_single_year(locales, regions, year):
   for locale in locales:
-    print holidata(locale, year)
+    print(holidata(locale, year))
     try:
       url = holidata(locale, year)
-      lines = urllib2.urlopen(url).read()
+      lines = urlopen(url).read().decode('utf-8')
 
       with open("holidays.%s" % locale, "w") as fh:
         fh.write('# Holiday data provided by Holidata.net\n')
@@ -70,11 +75,11 @@ def update_single_year(locales, regions, year):
               fh.write('    %s = %s\n' % (day, desc))
 
 
-    except urllib2.HTTPError as e:
+    except HTTPError as e:
       if e.code == 404:
-        print "Holidata.net does not have data for %s, for %d." % (locale, year)
+        print("Holidata.net does not have data for %s, for %d." % (locale, year))
       else:
-        print e.code, e.read()
+        print(e.code, e.read())
 
 
 def main(args):
@@ -103,5 +108,5 @@ if __name__ == "__main__":
   try:
     main(args)
   except Exception as msg:
-    print 'Error:', msg
+    print('Error:', msg)
 
