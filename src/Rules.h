@@ -41,7 +41,7 @@ public:
 
   bool        has        (const std::string&) const;
   std::string get        (const std::string&) const;
-  int         getInteger (const std::string&) const;
+  int         getInteger (const std::string&, int defaultValue = 0) const;
   double      getReal    (const std::string&) const;
   bool        getBoolean (const std::string&) const;
 

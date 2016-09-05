@@ -149,13 +149,17 @@ std::string Rules::get (const std::string& key) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-int Rules::getInteger (const std::string& key) const
+int Rules::getInteger (const std::string& key, int defaultValue) const
 {
   auto found = _settings.find (key);
-  if (found != _settings.end ())
-    return strtoimax (found->second.c_str (), nullptr, 10);
+  if (found != _settings.end ()) {
+    int tmp = strtoimax (found->second.c_str (), nullptr, 10);
+    // If conversion has performed, return the conversion.
+    if (tmp != 0)
+     return tmp;
+  }
 
-  return 0;
+  return defaultValue;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
