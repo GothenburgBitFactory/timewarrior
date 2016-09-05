@@ -167,7 +167,7 @@ int renderChart (
     // Render the exclusion blocks.
     int num_lines = 1;
     if (rules.has ("reports." + type + ".lines"))
-      num_lines = rules.getInteger ("reports." + type + ".lines");
+      num_lines = rules.getInteger ("reports." + type + ".lines", num_lines);
 
     int spacing = 1;
     if (rules.has ("reports." + type + ".spacing"))
