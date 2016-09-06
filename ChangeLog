@@ -8,6 +8,8 @@
           (thanks to Jelle van der Waa).
 - Fixed Python 3 support of the holdiay/refresh script
           (thanks to Jelle van der Waa).
+- Added missing man page link
+          (thanks to David Patrick).
 
 ------ current release ---------------------------
 
