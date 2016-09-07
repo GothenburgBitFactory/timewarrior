@@ -629,7 +629,8 @@ Supported DOM references are:
 Timewarrior stores its configuration in a file in the user's home directory:
 ~/.timewarrior/timewarrior.cfg.
 
-This file contains a mix of rules and configuration settings.
+This file contains a mix of rules and configuration settings. Note that the
+environment variable $TIMEWARRIORDB can be set to override this location.
 
 The values 'true', '1', 'y', 'yes' and 'on' are all equivalent and enable a
 setting. Any other value means disable the setting.
