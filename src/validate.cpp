@@ -41,7 +41,6 @@
 void autoFill (
   const Rules& rules,
   Database& database,
-  const Interval& filter,
   Interval& interval)
 {
   // An empty filter allows scanning beyond interval.range.
@@ -200,7 +199,7 @@ void validate (
 
   // All validation performed here.
   if (findHint (cli, ":fill"))
-    autoFill (rules, database, filter, interval);
+    autoFill (rules, database, interval);
 
   autoAdjust (findHint (cli, ":adjust"), rules, database, interval);
 

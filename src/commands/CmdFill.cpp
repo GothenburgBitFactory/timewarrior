@@ -62,7 +62,7 @@ int CmdFill (
     Interval to {from};
 
     database.deleteInterval (from);
-    autoFill (rules, database, filter, to);
+    autoFill (rules, database, to);
     validate (cli, rules, database, to);
     database.addInterval (to);
 
