@@ -33,8 +33,6 @@
 // Returns 0 if tracking is active, 1 if not.
 int CmdDefault (Rules& rules, Database& database)
 {
-  int status = 0;
-
   // Load the most recent interval, summarize and display.
   auto interval = getLatestInterval (database);
   if (interval.range.is_open ())
@@ -61,11 +59,9 @@ int CmdDefault (Rules& rules, Database& database)
       else
         std::cout << "There is no active time tracking.\n";
     }
-
-    status = 1;
   }
 
-  return status;
+  return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

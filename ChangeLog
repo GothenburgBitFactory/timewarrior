@@ -6,6 +6,8 @@
           (thanks to hosaka).
 - TI-42   refresh holiday script throws an error on nb-NO locale
           (thanks to Jelle van der Waa).
+- TI-47   first call successfully creates new database but returns exit status 1
+          (thanks to Georg Sauthoff)
 - Fixed Python 3 support of the holdiay/refresh script
           (thanks to Jelle van der Waa).
 - Added missing man page link
