@@ -58,10 +58,10 @@ class TestQuietMode(TestCase):
 
     def test_default(self):
         """Default command should obey :quiet hint"""
-        code, out, err = self.t.runError("")
+        code, out, err = self.t("")
         self.assertIn('There is no active time tracking.', out)
 
-        code, out, err = self.t.runError(":quiet")
+        code, out, err = self.t(":quiet")
         self.assertNotIn('There is no active time tracking.', out)
 
     def test_stop(self):
