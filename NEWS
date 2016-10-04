@@ -1,7 +1,8 @@
 
 New Features in 1.1.0
 
-  -
+  - Taskwarrior integration hook now uses a project 'Home.Garden' as a single
+    tag 'Home.Garden' as well as individual 'Home', 'Garden' tags.
 
 Features not implemented in 1.1.0
 

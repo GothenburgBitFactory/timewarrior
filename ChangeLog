@@ -12,6 +12,9 @@
           (thanks to Jelle van der Waa).
 - Added missing man page link
           (thanks to David Patrick).
+- Taskwarrior projects are now used as-is as tags, and also split on the '.' to
+  represent project hierarchy as separate tags.
+          (thanks to Josh Proehl).
 
 ------ current release ---------------------------
 

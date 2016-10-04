@@ -45,7 +45,10 @@ print(json.dumps(new))
 tags = [new['description']]
 
 if 'project' in new:
-  tags.append(new['project'])
+  project = new['project']
+  tags.append(project)
+  if '.' in project:
+    tags.extend([tag for tag in project.split('.')])
 
 if 'tags' in new:
   tags.extend(new['tags'])
