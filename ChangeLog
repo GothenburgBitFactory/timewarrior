@@ -7,7 +7,9 @@
 - TI-42   refresh holiday script throws an error on nb-NO locale
           (thanks to Jelle van der Waa).
 - TI-47   first call successfully creates new database but returns exit status 1
-          (thanks to Georg Sauthoff)
+          (thanks to Georg Sauthoff).
+- TI-51   in the taskwarrior hook, deleting a task doesn't stop the watch
+          (thanks to Mattia Rizzolo).
 - Fixed Python 3 support of the holdiay/refresh script
           (thanks to Jelle van der Waa).
 - Added missing man page link

@@ -3,6 +3,8 @@ New Features in 1.1.0
 
   - Taskwarrior integration hook now uses a project 'Home.Garden' as a single
     tag 'Home.Garden' as well as individual 'Home', 'Garden' tags.
+  - Taskwarrior integration hook now stops the clock in more situations, such
+    as deleting or waiting a task.
 
 Features not implemented in 1.1.0
 
