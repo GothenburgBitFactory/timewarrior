@@ -77,7 +77,7 @@ class TestFillHint(TestCase):
         self.assertEqual(j[2]['tags'][0], 'three')
 
     def test_filled_track_in_gap(self):
-        """Add closed interval into a gap without fill"""
+        """Add closed interval into a gap with fill"""
         self.t("track 20160709T050000Z - 20160709T060000Z one")
         self.t("track 20160709T090000Z - 20160709T100000Z three")
         code, out, err = self.t("track 20160709T070000Z - 20160709T080000Z two :fill")
