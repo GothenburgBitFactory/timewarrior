@@ -158,7 +158,8 @@ int Rules::getInteger (const std::string& key, int defaultValue) const
     int value = strtoimax (found->second.c_str (), nullptr, 10);
 
     // On щuccess return the value.
-    if (! errno)
+    if (errno != EINVAL &&
+        errno != ERANGE)
       return value;
   }
 
