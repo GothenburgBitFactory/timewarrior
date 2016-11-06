@@ -14,6 +14,11 @@ If you need a specific locale region, do this:
 
   $ ./refresh --locale de-CH --region Bern
 
-If the locale is not supported by holidata.net, or there is no data (yet) for
-the locale for this year and next year, you will see an error.
+By default, the current and next year are updated. If the locale is not
+supported by holidata.net, or there is no data (yet) for the locale for this
+year and next year, you will see an error.
+
+To specify a set of years to update, do this:
+
+  $ ./refresh --locale en-US --year 2015 2016 2017
 

@@ -47,47 +47,46 @@ def holidata(locale, year):
   return "http://holidata.net/%s/%d.json" % (locale, year)
 
 
-def update_locales(locales, regions):
-  update_single_year(locales, regions, datetime.datetime.now().year)
-  update_single_year(locales, regions, datetime.datetime.now().year + 1)
+def update_locales(locales, regions, years):
+  if years == []:
+    years = [datetime.datetime.now().year, datetime.datetime.now().year + 1]
 
-
-def update_single_year(locales, regions, year):
   for locale in locales:
-    print(holidata(locale, year))
-    try:
-      url = holidata(locale, year)
-      lines = urlopen(url).read().decode('utf-8')
+    with open("holidays.%s" % locale, "w") as fh:
+      fh.write('# Holiday data provided by Holidata.net\n')
+      fh.write('#   Generated ' + time.strftime('%Y-%m-%dT%H:%M:%S') + '\n\n')
+      fh.write('define holidays:\n')
+      fh.write('  ' + locale + ':\n')
 
-      with open("holidays.%s" % locale, "w") as fh:
-        fh.write('# Holiday data provided by Holidata.net\n')
-        fh.write('#   ' + url + '\n')
-        fh.write('#   Generated ' + time.strftime('%Y-%m-%dT%H:%M:%S') + '\n\n')
-        fh.write('define holidays:\n')
-        fh.write('  ' + locale + ':\n')
+      for year in years:
+          url = holidata(locale, year)
+          print(url)
+          try:
+            lines = urlopen(url).read().decode('utf-8')
 
-        for line in lines.split('\n'):
-          if line:
-            j = json.loads(line)
-            if j['region'] == '' or regions is None or len(regions) == 0 or j['region'] in regions:
-              day = j['date'].replace("-", "_")
-              desc = j['description']
-              data = '    %s = %s\n' % (day, desc)
-              if sys.version_info >= (3,0):
-                fh.write(data)
-              else:
-                fh.write(data.encode('utf-8'))
+            for line in lines.split('\n'):
+              if line:
+                j = json.loads(line)
+                if j['region'] == '' or regions is None or len(regions) == 0 or j['region'] in regions:
+                  day = j['date'].replace("-", "_")
+                  desc = j['description']
+                  data = '    %s = %s\n' % (day, desc)
+                  if sys.version_info >= (3,0):
+                    fh.write(data)
+                  else:
+                    fh.write(data.encode('utf-8'))
+            fh.write('\n')
 
-    except HTTPError as e:
-      if e.code == 404:
-        print("Holidata.net does not have data for %s, for %d." % (locale, year))
-      else:
-        print(e.code, e.read())
+          except HTTPError as e:
+            if e.code == 404:
+              print("Holidata.net does not have data for %s, for %d." % (locale, year))
+            else:
+              print(e.code, e.read())
 
 
 def main(args):
   if args.locale:
-    update_locales(args.locale, args.region)
+    update_locales(args.locale, args.region, args.year)
   else:
     # Enumerate all holiday files in the current directory.
     locales = []
@@ -98,7 +97,7 @@ def main(args):
         # Extract the locale name.
         locales.append(result.group(1))
 
-    update_locales(locales, args.region)
+    update_locales(locales, args.region, args.year)
 
 
 if __name__ == "__main__":
@@ -106,6 +105,7 @@ if __name__ == "__main__":
   parser = argparse.ArgumentParser(description="Update holiday data files. Simply run 'refresh' to update all of them.")
   parser.add_argument('--locale', nargs='+', help='Specific locale to update.')
   parser.add_argument('--region', nargs='+', help='Specific locale region to update.')
+  parser.add_argument('--year',   nargs='+', help='Specific year to fetch.', type=int, default=[])
   args = parser.parse_args()
 
   try:

@@ -10,6 +10,8 @@
           (thanks to Georg Sauthoff).
 - TI-51   in the taskwarrior hook, deleting a task doesn't stop the watch
           (thanks to Mattia Rizzolo).
+- TI-52   The 'refresh' scripts overwrites previous years data
+          (thanks to m8r).
 - Fixed Python 3 support of the holdiay/refresh script
           (thanks to Jelle van der Waa).
 - Added missing man page link
