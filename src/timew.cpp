@@ -34,12 +34,13 @@
 #include <commands.h>
 #include <timew.h>
 #include <iostream>
+#include <iomanip>
 #include <new>
 
 ////////////////////////////////////////////////////////////////////////////////
 int main (int argc, const char** argv)
 {
-  Timer run_time ("timew");
+  Timer run_time;
 
   // Lightweight version checking that doesn't require initialization or I/O.
   int status = 0;
@@ -107,7 +108,13 @@ int main (int argc, const char** argv)
   }
 
   run_time.stop ();
-  debug (run_time.str ());
+  std::stringstream s;
+  s << "Timer timew "
+    << std::setprecision (6)
+    << std::fixed
+    << run_time.total_us () / 1000000.0
+    << " sec\n";
+  debug (s.str ());
 
   return status;
 }
