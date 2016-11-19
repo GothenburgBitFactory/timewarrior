@@ -29,7 +29,9 @@
 #include <FS.h>
 #include <Timer.h>
 #include <shared.h>
+#include <timew.h>
 #include <sstream>
+#include <iomanip>
 #include <iostream>
 #include <algorithm>
 
@@ -83,8 +85,19 @@ int Extensions::callExtension (
 
   if (_debug)
   {
-    Timer t ("Extension: execute (" + script + ")");
+    Timer t;
     status = execute (script, {}, inputStr, outputStr);
+    t.stop ();
+
+    std::stringstream s;
+    s << "Timer Extension: execut ("
+      << script
+      << ") "
+      << std::setprecision (6)
+      << std::fixed
+      << t.total_us () / 1000000.0
+      << " sec\n";
+    ::debug (s.str ());
   }
   else
   {
