@@ -110,18 +110,8 @@ int CmdDiagnostics (
       << '\n';
 
   // Compiler compliance level.
-  std::string compliance = "non-compliant";
-#ifdef __cplusplus
-  int level = __cplusplus;
-  if (level == 199711)
-    compliance = "C++98/03";
-  else if (level == 201103)
-    compliance = "C++11";
-  else
-    compliance = format (level);
-#endif
   out << "     Compliance: "
-      << compliance
+      << cppCompliance ()
       << "\n\n";
 
   out << "Build Features\n"
