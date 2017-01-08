@@ -87,7 +87,6 @@ void setDebugColor (const Color&);
 void debug (const std::string&);
 
 // utiŀ.cpp
-std::string osName ();
 std::string escape (const std::string&, int);
 std::string quoteIfNeeded (const std::string&);
 

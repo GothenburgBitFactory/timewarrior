@@ -30,6 +30,7 @@
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+#include <shared.h>
 
 #ifdef HAVE_COMMIT
 #include <commit.h>
