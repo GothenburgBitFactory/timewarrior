@@ -49,6 +49,7 @@ int CmdJoin          (const CLI&, Rules&, Database&                   );
 int CmdLengthen      (const CLI&, Rules&, Database&                   );
 int CmdMove          (const CLI&, Rules&, Database&                   );
 int CmdReport        (const CLI&, Rules&, Database&, const Extensions&);
+int CmdResize        (const CLI&, Rules&, Database&                   );
 int CmdShorten       (const CLI&, Rules&, Database&                   );
 int CmdShow          (            Rules&                              );
 int CmdSplit         (const CLI&, Rules&, Database&                   );
