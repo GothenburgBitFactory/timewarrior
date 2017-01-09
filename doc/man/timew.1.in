@@ -178,7 +178,7 @@ Then having selected '@1' and '@2' as the intervals you wish to join:
 
   $ timew join @1 @2
 
-See also 'split', 'lengthen', 'shorten'.
+See also 'split', 'lengthen', 'shorten', 'resize'.
 
 .TP
 .B timew lengthen @<id> [@<id> ...] <duration>
@@ -197,7 +197,7 @@ Note that you can lengthen multiple intervals,:
 
   $ timew lengthen @2 @10 @23 1hour
 
-See also 'summary', 'tag', 'untag', 'shorten'.
+See also 'summary', 'tag', 'untag', 'shorten', 'resize'.
 
 .TP
 .B timew month [<interval>] [<tag> ...]
@@ -233,7 +233,7 @@ Then having selected '@2' as the interval you wish to move:
 
   $ timew move @2 9am
 
-See also 'summary', 'tag', 'untag', 'lengthen', 'shorten'.
+See also 'summary', 'tag', 'untag', 'lengthen', 'shorten', 'resize'.
 
 .TP
 .B timew [report] <report> [<interval>] [<tag> ...]
@@ -245,6 +245,25 @@ are equivalent:
   $ timew        foo :week
 
 This does however assume there is a 'foo' extension installed.
+
+.TP
+.B timew resize @<id> [@<id> ...] <duration>
+The 'resize' command is used to change the duration of a closed interval.
+Using the 'resized' command, and specifying the ':ids' hint shows interval IDs.
+Using the right ID, you can identify an interval to resize. For example, show
+the IDs:
+
+  $ timew summary :week :ids
+
+Then having selected '@3' as the interval you wish to resize:
+
+  $ timew resize @3 15mins
+
+Note that you can resize multiple intervals,:
+
+  $ timew resize @3 @1 @13 1hour
+
+See also 'summary', 'tag', 'untag', 'lengthen', 'shorten'.
 
 .TP
 .B timew shorten @<id> [@<id> ...] <duration>
@@ -263,7 +282,7 @@ Note that you can shorten multiple intervals,:
 
   $ timew shorten @2 @10 @23 1hour
 
-See also 'summary', 'tag', 'untag', 'lengthen'.
+See also 'summary', 'tag', 'untag', 'lengthen', 'resize'.
 
 .TP
 .B timew show
