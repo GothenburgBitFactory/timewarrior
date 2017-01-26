@@ -54,7 +54,7 @@ int main (int, char**)
     Exclusion e1 ("exclusions.monday", "<8:00:00 12:00:00-12:45:00 >17:30:00");
     auto tokens = e1.tokens ();
     t.ok (tokens.size () == 5,              "Exclusion 'exclusions.monday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5");
-    t.is (tokens[0], "exclusions",          "Exclusion 'eclusions. monday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
+    t.is (tokens[0], "exclusions",          "Exclusion 'exclusions.monday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'");
     t.is (tokens[1], "monday",              "Exclusion 'exclusions.monday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'monday'");
     t.is (tokens[2], "<8:00:00",            "Exclusion 'exclusions.monday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'");
     t.is (tokens[3], "12:00:00-12:45:00",   "Exclusion 'exclusions.monday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'");
