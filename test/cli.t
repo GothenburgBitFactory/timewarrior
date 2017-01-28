@@ -60,6 +60,21 @@ class TestCLI(TestCase):
         """TI-39: Bogus command line option causes segfault"""
         self.t("week rc.reports.week.lines=foobar")
 
+    def test_TimeWarrior_without_command_without_active_time_tracking(self):
+        """Call 'timew' without active time tracking """
+        code, out, err = self.t()
+        self.assertIn("There is no active time tracking", out)
+
+    def test_TimeWarrior_without_command_with_active_time_tracking(self):
+        """Call 'timew' with active time tracking """
+        self.t("start FOO")
+        code, out, err = self.t()
+        self.assertIn("Tracking FOO", out)
+
+    def test_TimeWarrior_with_invalid_command(self):
+        """Call a non-existing TimeWarrior command"""
+        code, out, err = self.t("bogus")
+        self.assertIn("'bogus' is not a timew command. See 'timew help'.", out)
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
