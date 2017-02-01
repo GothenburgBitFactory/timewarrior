@@ -171,7 +171,7 @@ int CmdHelp (
       std::cout << '\n'
                 << "Syntax: timew continue\n"
                 << '\n'
-                << "Resumes tracking the most recently closed interval. For exqample:\n"
+                << "Resumes tracking the most recently closed interval. For example:\n"
                 << '\n'
                 << "  $ timew track 9am - 10am tag1 tag2\n"
                 << "  $ timew continue\n"
@@ -770,7 +770,7 @@ int CmdHelp (
                 << '\n'
                 << "If there is a previous open interval, it will be closed at the given start time.\n"
                 << '\n'
-                << "Quotes are harmless if used unecessarily.\n"
+                << "Quotes are harmless if used unnecessarily.\n"
                 << '\n'
                 << "See also 'continue', 'stop', 'track'.\n"
                 << '\n';
