@@ -80,6 +80,46 @@ class TestContinue(TestCase):
         code, out, err = self.t("continue")
         self.assertIn("Tracking tag1 tag2\n", out)
 
+    def test_continue_with_multiple_ids(self):
+        """Verify that 'continue' with multiple ids is an error"""
+        code, out, err = self.t.runError("continue @1 @2")
+        self.assertIn("You can only specify one ID to continue.\n", err)
+
+    def test_continue_with_invalid_id(self):
+        """Verify that 'continue' with invalid id is an error"""
+        code, out, err = self.t.runError("continue @1")
+        self.assertIn("ID '@1' does not correspond to any tracking.\n", err)
+
+    def test_continue_with_id_without_active_tracking(self):
+        """Verify that continuing a specified interval works"""
+        code, out, err = self.t("start FOO")
+        self.assertIn("Tracking FOO\n", out)
+
+        code, out, err = self.t("stop")
+        self.assertIn("Recorded FOO\n", out)
+
+        code, out, err = self.t("start BAR")
+        self.assertIn("Tracking BAR\n", out)
+
+        code, out, err = self.t("stop")
+        self.assertIn("Recorded BAR\n", out)
+
+        code, out, err = self.t("continue @2")
+        self.assertIn("Tracking FOO\n", out)
+
+    def test_continue_with_id_with_active_tracking(self):
+        """Verify that continuing a specified interval stops active tracking"""
+        code, out, err = self.t("start FOO")
+        self.assertIn("Tracking FOO\n", out)
+
+        code, out, err = self.t("stop")
+        self.assertIn("Recorded FOO\n", out)
+
+        code, out, err = self.t("start BAR")
+        self.assertIn("Tracking BAR\n", out)
+
+        code, out, err = self.t("continue @2")
+        self.assertIn("Recorded BAR\nTracking FOO\n", out)
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
