@@ -487,6 +487,13 @@ Range hints provide convenient shortcuts to date ranges:
   :lastmonth     Last month
   :lastquarter   Last quarter
   :lastyear      Last year
+  :monday        Previous monday
+  :tuesday       Previous tuesday
+  :wednesday     Previous wednesday
+  :thursday      Previous thursday
+  :friday        Previous friday
+  :saturday      Previous saturday
+  :sunday        Previous sunday
 
 .SH DATES
 Timewarrior supports the following date formats based on ISO-8601:

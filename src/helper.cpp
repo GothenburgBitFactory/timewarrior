@@ -150,6 +150,17 @@ bool expandIntervalHint (
     {":year",        {"socy",      "eocy"}},
   };
 
+  static std::vector <std::string> dayNames
+  {
+    ":sunday",
+    ":monday",
+    ":tuesday",
+    ":wednesday",
+    ":thursday",
+    ":friday",
+    ":saturday"
+  };
+
   // Some hints are just synonyms.
   if (hints.find (hint) != hints.end ())
   {
@@ -263,6 +274,25 @@ bool expandIntervalHint (
     Datetime now;
     range.start = Datetime (now.year () - 1,  1,  1);
     range.end   = Datetime (now.year (),      1,  1);
+    debug (format ("Hint {1} expanded to {2} - {3}",
+                   hint,
+                   range.start.toISOLocalExtended (),
+                   range.end.toISOLocalExtended ()));
+    return true;
+  }
+  else if (std::find (dayNames.begin(), dayNames.end(), hint) != dayNames.end ())
+  {
+    Datetime now;
+
+    int wd = std::find (dayNames.begin(), dayNames.end(), hint) - dayNames.begin();
+
+    int dow = now.dayOfWeek();
+    Datetime sd = now - 86400*dow + 86400*(wd - 7*(wd <= dow ? 0 : 1));
+    Datetime ed = sd + 86400;
+
+    range.start = Datetime (sd.year(), sd.month(), sd.day());
+    range.end   = Datetime (ed.year(), ed.month(), ed.day());
+
     debug (format ("Hint {1} expanded to {2} - {3}",
                    hint,
                    range.start.toISOLocalExtended (),

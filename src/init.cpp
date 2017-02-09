@@ -111,6 +111,13 @@ void initializeEntities (CLI& cli)
   cli.entity ("hint", ":year");
   cli.entity ("hint", ":yes");
   cli.entity ("hint", ":yesterday");
+  cli.entity ("hint", ":monday");
+  cli.entity ("hint", ":tuesday");
+  cli.entity ("hint", ":wednesday");
+  cli.entity ("hint", ":thursday");
+  cli.entity ("hint", ":friday");
+  cli.entity ("hint", ":saturday");
+  cli.entity ("hint", ":sunday");
 }
 
 ////////////////////////////////////////////////////////////////////////////////

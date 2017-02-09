@@ -557,6 +557,13 @@ int CmdHelp (
                 << "  :lastmonth     Last month\n"
                 << "  :lastquarter   Last quarter\n"
                 << "  :lastyear      Last year\n"
+                << "  :monday        Previous monday\n"
+                << "  :tuesday       Previous tuesday\n"
+                << "  :wednesday     Previous wednesday\n"
+                << "  :thursday      Previous thursday\n"
+                << "  :friday        Previous friday\n"
+                << "  :saturday      Previous saturday\n"
+                << "  :sunday        Previous sunday\n"
                 << '\n'
                 << '\n';
 
