@@ -16,6 +16,8 @@
           (thanks to m8r).
 - TI-61   Typo in exclusion.t.cpp
           (thanks to Thomas Lauf).
+- TI-64   Command 'stop' with date before current interval's start date causes segfault
+          (thanks to Thomas Lauf).
 - Fixed Python 3 support of the holdiay/refresh script
           (thanks to Jelle van der Waa).
 - Added missing man page link
