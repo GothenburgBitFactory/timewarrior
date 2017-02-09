@@ -62,7 +62,12 @@ int CmdStop (
   // If a stop date is specified (and occupies filter.range.start) then use
   // that instead of the current time.
   if (filter.range.start.toEpoch () != 0)
+  {
+    if (modified.range.start >= filter.range.start)
+      throw std::string ("The end of a date range must be after the start.");
+
     modified.range.end = filter.range.start;
+  }
   else
     modified.range.end = Datetime ();
 

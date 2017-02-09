@@ -65,6 +65,12 @@ class TestStop(TestCase):
         self.assertIn('0100Z', j[0]['start'])
         self.assertIn('0200Z', j[0]['end'])
 
+    def test_invalid_stop(self):
+        """Verify stop date after start date is an error"""
+        self.t("start 20160516T100200")
+        code, out, err = self.t.runError("stop 20160516T090100")
+        self.assertIn("The end of a date range must be after the start.", err)
+
     def test_stop_all(self):
         """Start three tags, stop"""
         self.t("start 5mins ago one two three")
