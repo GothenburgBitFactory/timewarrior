@@ -31,6 +31,7 @@
           (thanks to Scott Mcdermott)
 - #512    help.t fails on alpine with mandoc package
           (thanks to Edd Salkield)
+-         Add option '--details' to 'test/problems' script
 
 ------ current release ---------------------------
 

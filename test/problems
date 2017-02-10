@@ -27,6 +27,8 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Report on test results")
     parser.add_argument('--summary', action="store_true",
                         help="Display only the totals in each category")
+    parser.add_argument('--details', action="store_true",
+                        help="Display details in each category")
     parser.add_argument('tapfile', default="all.log", nargs="?",
                         help="File containing TAP output")
     return parser.parse_args()
@@ -38,6 +40,13 @@ def print_category(tests):
             print("%-32s %4d" % (key, tests[key]))
 
 
+def print_category_with_details(tests, details):
+    if not cmd_args.summary:
+        for key in sorted(tests):
+            print("%s (%d):" % (key, tests[key]))
+            print(details[key])
+
+
 def pad(i):
     return " " * i
 
@@ -46,12 +55,18 @@ if __name__ == "__main__":
     cmd_args = parse_args()
 
     errors = defaultdict(int)
+    details_errors = defaultdict(str)
     skipped = defaultdict(int)
+    details_skipped = defaultdict(str)
     expected = defaultdict(int)
+    details_expected = defaultdict(str)
     unexpected = defaultdict(int)
+    details_unexpected = defaultdict(str)
     passed = defaultdict(int)
+    details_passed = defaultdict(str)
 
     file = re.compile(r"^# (?:./)?(\S+\.t)(?:\.exe)?$")
+    detail = re.compile("^[^:]+?: (.+)$")
     timestamp = re.compile(r"^# (\d+(?:\.\d+)?) ==>.*$")
 
     expected_fail = re.compile(r"^not ok.*?#\s*TODO", re.I)
@@ -97,18 +112,21 @@ if __name__ == "__main__":
             match = expected_fail.match(line)
             if match:
                 expected[filename] += 1
+                details_expected[filename] += line
                 expected_test_count -= 1
                 continue
 
             match = unexpected_pass.match(line)
             if match:
                 unexpected[filename] += 1
+                details_unexpected[filename] += line
                 expected_test_count -= 1
                 continue
 
             match = skip.match(line)
             if match:
                 skipped[filename] += 1
+                details_skipped[filename] += line
                 expected_test_count -= 1
                 continue
 
@@ -117,12 +135,14 @@ if __name__ == "__main__":
             match = ok.match(line)
             if match:
                 passed[filename] += 1
+                details_passed[filename] += line
                 expected_test_count -= 1
                 continue
 
             match = not_ok.match(line)
             if match:
                 errors[filename] += 1
+                details_errors[filename] += " - " + detail.match(line).group(1) + "\n"
                 expected_test_count -= 1
                 continue
 
@@ -157,6 +177,19 @@ if __name__ == "__main__":
         print(color(skipped_str, "yellow"), skipped_int)
         print(color(expected_str, "yellow"), expected_int)
         print(runtime_str, runtime_int)
+
+    elif cmd_args.details:
+        print(color(error_str, "red"))
+        print_category_with_details(errors, details_errors)
+        print()
+        print(color(unexpected_str, "red"))
+        print_category_with_details(unexpected, details_unexpected)
+        print()
+        print(color(skipped_str, "yellow"))
+        print_category_with_details(skipped, details_skipped)
+        print()
+        print(color(expected_str, "yellow"))
+        print_category_with_details(expected, details_expected)
 
     else:
         print(color(error_str, "red"))
