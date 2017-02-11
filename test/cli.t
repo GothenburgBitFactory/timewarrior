@@ -61,12 +61,12 @@ class TestCLI(TestCase):
         self.t("week rc.reports.week.lines=foobar")
 
     def test_TimeWarrior_without_command_without_active_time_tracking(self):
-        """Call 'timew' without active time tracking """
+        """Call 'timew' without active time tracking"""
         code, out, err = self.t()
         self.assertIn("There is no active time tracking", out)
 
     def test_TimeWarrior_without_command_with_active_time_tracking(self):
-        """Call 'timew' with active time tracking """
+        """Call 'timew' with active time tracking"""
         self.t("start FOO")
         code, out, err = self.t()
         self.assertIn("Tracking FOO", out)
