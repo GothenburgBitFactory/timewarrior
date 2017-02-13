@@ -38,6 +38,10 @@ int main (int, char**)
   t.is (r.get ("string"),         "234", "Rules set string, get string");
   t.is (r.getInteger ("string"),  234,   "Rules set string, get string");
 
+  r.set ("undefined", "foo");
+  t.is (r.getInteger ("undefined", -1), 0, "Rules set non-int string, get 0");
+  t.is (r.getBoolean ("undefined"), false, "Rules set non-bool string, get false");
+
   r.set ("integer", 123);
   t.is (r.getInteger ("integer"), 123,   "Rules set integer, get integer");
   t.is (r.get        ("integer"), "123", "Rules set integer, get string");

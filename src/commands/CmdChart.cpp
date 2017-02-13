@@ -158,6 +158,10 @@ int renderChart (
                (rules.getBoolean ("reports." + type + ".weekday") ? 4 : 0);
 
   auto cell = rules.getInteger ("reports." + type + ".cell");
+
+  if (cell < 1)
+    throw std::string ("Invalid value for 'reports." + type + ".cell': '" + rules.get("reports." + type + ".cell") + "'");
+
   auto chars_per_hour = 60 / cell;
 
   // Each day is rendered separately.
@@ -168,6 +172,9 @@ int renderChart (
     int num_lines = 1;
     if (rules.has ("reports." + type + ".lines"))
       num_lines = rules.getInteger ("reports." + type + ".lines", num_lines);
+
+    if (num_lines < 1)
+      throw std::string ("Invalid value for 'reports." + type + ".lines': '" + rules.get("reports." + type + ".lines") + "'");
 
     int spacing = 1;
     if (rules.has ("reports." + type + ".spacing"))
@@ -292,6 +299,10 @@ static void renderAxis (
   int last_hour)
 {
   auto cell = rules.getInteger ("reports." + type + ".cell");
+
+  if (cell < 1)
+    throw std::string ("Invalid value for 'reports." + type + ".cell': '" + rules.get("reports." + type + ".cell") + "'");
+
   auto chars_per_hour = 60 / cell;
 
   auto spacing = rules.getInteger ("reports." + type + ".spacing");
@@ -408,6 +419,10 @@ static std::string renderSubTotal (
     int spacing = rules.getInteger ("reports." + type + ".spacing");
 
     auto cell = rules.getInteger ("reports." + type + ".cell");
+
+    if (cell < 1)
+      throw std::string ("Invalid value for 'reports." + type + ".cell': '" + rules.get("reports." + type + ".cell") + "'");
+
     auto chars_per_hour = 60 / cell;
 
     std::string pad (indent + ((last_hour - first_hour + 1) * (chars_per_hour + spacing)) + 1, ' ');
@@ -440,6 +455,10 @@ static void renderExclusionBlocks (
   const std::vector <Range>& excluded)
 {
   auto cell = rules.getInteger ("reports." + type + ".cell");
+
+  if (cell < 1)
+    throw std::string ("Invalid value for 'reports." + type + ".cell': '" + rules.get("reports." + type + ".cell") + "'");
+
   auto chars_per_hour = 60 / cell;
 
   auto spacing = rules.getInteger ("reports." + type + ".spacing");

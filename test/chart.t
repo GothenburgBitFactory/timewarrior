@@ -51,26 +51,48 @@ from basetest import Timew, TestCase
 #     self.assertNotRegexpMatches(text, pattern)
 #     self.tap("")
 
-class TestCLI(TestCase):
+
+class TestChart(TestCase):
     def setUp(self):
         """Executed before each test in the class"""
         self.t = Timew()
 
-    def test_TimeWarrior_without_command_without_active_time_tracking(self):
-        """Call 'timew' without active time tracking"""
-        code, out, err = self.t()
-        self.assertIn("There is no active time tracking", out)
+    def test_chart_day_with_invalid_config_for_lines(self):
+        """Chart should report error on invalid value for 'reports.day.lines'"""
+        code, out, err = self.t.runError("day rc.reports.day.lines=foobar")
 
-    def test_TimeWarrior_without_command_with_active_time_tracking(self):
-        """Call 'timew' with active time tracking"""
-        self.t("start FOO")
-        code, out, err = self.t()
-        self.assertIn("Tracking FOO", out)
+        self.assertIn("Invalid value for 'reports.day.lines': 'foobar'", err)
 
-    def test_TimeWarrior_with_invalid_command(self):
-        """Call a non-existing TimeWarrior command"""
-        code, out, err = self.t("bogus")
-        self.assertIn("'bogus' is not a timew command. See 'timew help'.", out)
+    def test_chart_day_with_invalid_config_for_cell(self):
+        """Chart should report error on invalid value for 'reports.day.cell'"""
+        code, out, err = self.t.runError("day rc.reports.day.cell=foobar")
+
+        self.assertIn("Invalid value for 'reports.day.cell': 'foobar'", err)
+
+    def test_chart_week_with_invalid_config_for_lines(self):
+        """Chart should report error on invalid value for 'reports.week.lines'"""
+        code, out, err = self.t.runError("week rc.reports.week.lines=foobar")
+
+        self.assertIn("Invalid value for 'reports.week.lines': 'foobar'", err)
+
+    def test_chart_week_with_invalid_config_for_cell(self):
+        """Chart should report error on invalid value for 'reports.week.cell'"""
+        code, out, err = self.t.runError("week rc.reports.week.cell=foobar")
+
+        self.assertIn("Invalid value for 'reports.week.cell': 'foobar'", err)
+
+    def test_chart_month_with_invalid_config_for_lines(self):
+        """Chart should report error on invalid value for 'reports.month.lines'"""
+        code, out, err = self.t.runError("month rc.reports.month.lines=foobar")
+
+        self.assertIn("Invalid value for 'reports.month.lines': 'foobar'", err)
+
+    def test_chart_month_with_invalid_config_for_cell(self):
+        """Chart should report error on invalid value for 'reports.month.cell'"""
+        code, out, err = self.t.runError("month rc.reports.month.cell=foobar")
+
+        self.assertIn("Invalid value for 'reports.month.cell': 'foobar'", err)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
