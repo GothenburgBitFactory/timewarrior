@@ -6,6 +6,8 @@
           (thanks to hosaka).
 - TI-39   Bogus command line option causes segfault
           (thanks to Jan Stolarek, Thomas Lauf).
+- TI-40   totals.py extension script fails with an error
+          (thanks to Jan Stolarek)
 - TI-42   refresh holiday script throws an error on nb-NO locale
           (thanks to Jelle van der Waa).
 - TI-47   first call successfully creates new database but returns exit status 1
@@ -20,7 +22,7 @@
           (thanks to Thomas Lauf).
 - TI-64   Command 'stop' with date before current interval's start date causes segfault
           (thanks to Thomas Lauf).
-- Fixed Python 3 support of the holdiay/refresh script
+- Fixed Python 3 support of the holiday/refresh script
           (thanks to Jelle van der Waa).
 - Added missing man page link
           (thanks to David Patrick).

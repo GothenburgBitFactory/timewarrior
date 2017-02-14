@@ -60,6 +60,7 @@ for line in sys.stdin:
 
 # Sum the second tracked by tag.
 totals = dict()
+untagged = None
 j = json.loads(body)
 for object in j:
   start = datetime.datetime.strptime(object['start'], DATEFORMAT)
@@ -71,20 +72,31 @@ for object in j:
 
   tracked = end - start
 
-  for tag in object['tags']:
-    if tag in totals:
-      totals[tag] += tracked
+  if 'tags' not in object or object['tags'] == []:
+    if untagged is None:
+      untagged = tracked
     else:
-      totals[tag] = tracked
+      untagged += tracked
+  else:
+    for tag in object['tags']:
+      if tag in totals:
+        totals[tag] += tracked
+      else:
+        totals[tag] = tracked
 
 # Determine largest tag width.
-max_width = 0
+max_width = len('Total')
 for tag in totals:
   if len(tag) > max_width:
     max_width = len(tag)
 
+if 'temp.report.start' not in configuration:
+  print 'There is no data in the database'
+  exit()
+
 start = datetime.datetime.strptime(configuration['temp.report.start'], DATEFORMAT)
 end   = datetime.datetime.strptime(configuration['temp.report.end'],   DATEFORMAT)
+
 if max_width > 0:
   # Compose report header.
   print '\nTotal by Tag, for %s - %s\n' % (start, end)
@@ -103,6 +115,11 @@ if max_width > 0:
     grand_total += totals[tag].seconds
     print '%-*s %10s' % (max_width, tag, formatted)
 
+  if untagged is not None:
+    formatted = formatSeconds(untagged.seconds)
+    grand_total += untagged.seconds
+    print '%-*s %10s' % (max_width, '', formatted)
+
   # Compose total.
   if configuration['color'] == 'on':
     print ' ' * max_width, '[4m          [0m'
@@ -113,4 +130,3 @@ if max_width > 0:
 
 else:
   print 'No data in the range %s - %s' % (start, end)
-
