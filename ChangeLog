@@ -4,6 +4,8 @@
           (Thanks to Jörg Krause, Ben Boeckel).
 - TW-1845 Cygwin build fails, missing get_current_dir_name
           (thanks to hosaka).
+- TI-39   Bogus command line option causes segfault
+          (thanks to Jan Stolarek, Thomas Lauf).
 - TI-42   refresh holiday script throws an error on nb-NO locale
           (thanks to Jelle van der Waa).
 - TI-47   first call successfully creates new database but returns exit status 1
