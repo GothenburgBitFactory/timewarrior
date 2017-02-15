@@ -13,7 +13,7 @@ branch where your changes must go. If you see two branches, `1.2.3` and
 
 Any patch against `master`, or an older development branch, means additional
 merge work for maintainers, and will not be accepted. If your change is on the
-wrong branch, rebase it onto the right branch. Then retest.
+wrong branch, rebase it onto the right branch. Then retest before submitting.
 
 By contributing a patch, you are declaring that you have the right to submit
 the code under the project licensing terms.
@@ -60,7 +60,7 @@ contribute that may not be immediately obvious to you:
     the work is done well and doesn't create other problems or introduce new
     dependencies. We recommend talking to us before starting. Seriously.
 
-  - Add unit tests. Unit tests are possibly the most useful contributions of
+  - Add unit tests. Unit tests are likely the most useful contributions of
     all, because they not only improve the quality of the code, but prevent
     future regressions, therefore maintaining quality of subsequent releases.
     Plus, broken tests are a great motivator for us to fix the causal defect.
@@ -92,7 +92,8 @@ How to make a patch
 Clone the repository from the right place. Do not clone from our github mirror,
 we don't use it. Do not patch the contents of one of our tarballs.
 
-    $ git clone https://git.tasktools.org/scm/tm/timew.git
+    $ git clone https://git.tasktools.org/scm/tm/timew.git timew.git
+    $ cd timew.git
 
 Find the latest development branch, and checkout.
 
@@ -103,6 +104,8 @@ Find the latest development branch, and checkout.
     remotes/origin/HEAD -> origin/master
     remotes/origin/master
     $ git checkout 1.2.4
+    $ git submodule init
+    $ git submodule update
 
 Prepare your fix. Use a commit message that matches the prevailing format.
 See 'git log' for examples.
