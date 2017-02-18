@@ -543,13 +543,14 @@ static void renderInterval (
 
   auto start_mins = (clipped.range.start.hour () - first_hour) * 60 + clipped.range.start.minute ();
   auto end_mins   = (clipped.range.end.hour ()   - first_hour) * 60 + clipped.range.end.minute ();
-  if (end_mins == 0)
-    end_mins = (23 * 60) + 59;
+
+  if (clipped.range.end.hour () == 0)
+    end_mins += (clipped.range.end.day() - clipped.range.start.day()) * 24 * 60;
 
   work = clipped.range.total ();
 
   auto start_block = quantizeToNMinutes (start_mins, cell) / cell;
-  auto end_block   = quantizeToNMinutes (end_mins == 0 ? 60 : end_mins, cell) / cell;
+  auto end_block   = quantizeToNMinutes (end_mins == start_mins ? start_mins + 60 : end_mins, cell) / cell;
 
   int start_offset = start_block + (spacing * (start_mins / 60));
   int end_offset   = end_block   + (spacing * (end_mins   / 60));
