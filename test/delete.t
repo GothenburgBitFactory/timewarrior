@@ -96,6 +96,29 @@ class TestDelete(TestCase):
         j = self.t.export()
         self.assertEqual(len(j), 0)
 
+    # TI-58
+    def test_delete_open_interval_straddling_lunch(self):
+        """Delete a single open interval that straddles lunch, verify that is is gone"""
+        self.t.config("exclusions.monday",    "12:00-13:00")
+        self.t.config("exclusions.tuesday",   "12:00-13:00")
+        self.t.config("exclusions.wednesday", "12:00-13:00")
+        self.t.config("exclusions.thursday",  "12:00-13:00")
+        self.t.config("exclusions.friday",    "12:00-13:00")
+        self.t.config("exclusions.saturday",  "12:00-13:00")
+        self.t.config("exclusions.sunday",    "12:00-13:00")
+
+        self.t("start 20170223T110000 foo")
+
+        # Delete the open interval.
+        code, out, err = self.t("delete @1")
+        self.assertEqual(out, 'Deleted @1\n')
+
+        # The last interval should be closed, because the open interval was deleted.
+        j = self.t.export()
+        self.assertTrue(len(j) >= 1)
+        self.assertTrue('start' in j[-1])
+        self.assertTrue('end' in j[-1])    # Closed
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
