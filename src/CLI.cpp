@@ -58,11 +58,13 @@ void A2::tag (const std::string& tag)
 void A2::unTag (const std::string& tag)
 {
   for (auto i = _tags.begin (); i != _tags.end (); ++i)
+  {
     if (*i == tag)
     {
       _tags.erase (i);
       break;
     }
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -113,7 +115,7 @@ std::string A2::dump () const
 
   // Dump tags.
   std::string tags;
-  for (auto& tag : _tags)
+  for (const auto& tag : _tags)
   {
          if (tag == "BINARY")        tags += "\033[1;37;44m"             + tag + "\033[0m ";
     else if (tag == "CMD")           tags += "\033[1;37;46m"             + tag + "\033[0m ";
@@ -278,7 +280,7 @@ void CLI::analyze ()
 std::vector <std::string> CLI::getWords () const
 {
   std::vector <std::string> words;
-  for (auto& a : _args)
+  for (const auto& a : _args)
     if (! a.hasTag ("BINARY") &&
         ! a.hasTag ("CMD")    &&
         ! a.hasTag ("CONFIG") &&
@@ -333,11 +335,11 @@ std::string CLI::getBinary () const
 ////////////////////////////////////////////////////////////////////////////////
 std::string CLI::getCommand () const
 {
-  for (auto& a : _args)
+  for (const auto& a : _args)
     if (a.hasTag ("CMD"))
       return a.attribute ("canonical");
 
-  for (auto& a : _args)
+  for (const auto& a : _args)
     if (a.hasTag ("EXT"))
       return a.attribute ("canonical");
 
