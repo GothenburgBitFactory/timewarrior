@@ -26,6 +26,7 @@
           (thanks to Thomas Lauf).
 - TI-64   Command 'stop' with date before current interval's start date causes segfault
           (thanks to Thomas Lauf).
+- TI-65   The 'tags' command should support a filter
 - Fixed Python 3 support of the holiday/refresh script
           (thanks to Jelle van der Waa).
 - Added missing man page link

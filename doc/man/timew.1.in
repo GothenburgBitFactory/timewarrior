@@ -371,8 +371,9 @@ Note that you can tag multiple intervals, with multiple tags:
 See also 'summary', 'shorten', 'lengthen', 'untag'.
 
 .TP
-.B timew tags
-Displays all the tags that have been used.
+.B timew tags [<interval>] [<tag> ...]
+Displays all the tags that have been used by default. When a filter is specified,
+shows only the tags that were used during that time.
 
 .TP
 .B timew track <interval> [<tag> ...]

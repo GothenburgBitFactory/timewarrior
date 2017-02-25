@@ -61,7 +61,7 @@ int CmdHelpUsage (const Extensions& extensions)
             << "       timew stop [<tag> ...]\n"
             << "       timew summary [<interval>] [<tag> ...]\n"
             << "       timew tag @<id> [@<id> ...] <tag> [<tag> ...]\n"
-            << "       timew tags\n"
+            << "       timew tags [<interval>] [<tag> ...]\n"
             << "       timew track <interval> [<tag> ...]\n"
             << "       timew untag @<id> [@<id> ...] <tag> [<tag> ...]\n"
             << "       timew week [<interval>] [<tag> ...]\n"
@@ -849,9 +849,10 @@ int CmdHelp (
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "tags")
       std::cout << '\n'
-                << "Syntax: timew tags\n"
+                << "Syntax: timew tags [<interval>] [<tag> ...]\n"
                 << '\n'
-                << "Displays all the tags that have been used.\n"
+                << "Displays all the tags that have been used by default. When a filter is specified,\n"
+                << "shows only the tags that were used during that time.\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8

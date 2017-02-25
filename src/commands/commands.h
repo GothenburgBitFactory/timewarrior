@@ -56,7 +56,7 @@ int CmdSplit         (const CLI&, Rules&, Database&                   );
 int CmdStart         (const CLI&, Rules&, Database&                   );
 int CmdStop          (const CLI&, Rules&, Database&                   );
 int CmdTag           (const CLI&, Rules&, Database&                   );
-int CmdTags          (            Rules&, Database&                   );
+int CmdTags          (const CLI&, Rules&, Database&                   );
 int CmdTrack         (const CLI&, Rules&, Database&                   );
 int CmdUntag         (const CLI&, Rules&, Database&                   );
 

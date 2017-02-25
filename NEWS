@@ -5,6 +5,7 @@ New Features in 1.1.0
     tag 'Home.Garden' as well as individual 'Home', 'Garden' tags.
   - Taskwarrior integration hook now stops the clock in more situations, such
     as deleting or waiting a task.
+  - The 'tags' command now suports filters.
 
 Features not implemented in 1.1.0
 

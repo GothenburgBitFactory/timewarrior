@@ -292,7 +292,7 @@ int dispatchCommand (
     else if (command == "stop")        status = CmdStop          (cli, rules, database            );
     else if (command == "summary")     status = CmdSummary       (cli, rules, database            );
     else if (command == "tag")         status = CmdTag           (cli, rules, database            );
-    else if (command == "tags")        status = CmdTags          (     rules, database            );
+    else if (command == "tags")        status = CmdTags          (cli, rules, database            );
     else if (command == "track")       status = CmdTrack         (cli, rules, database            );
     else if (command == "untag")       status = CmdUntag         (cli, rules, database            );
     else if (command == "week")        status = CmdChartWeek     (cli, rules, database            );
