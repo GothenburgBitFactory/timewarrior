@@ -157,10 +157,9 @@ int renderChart (
                (rules.getBoolean ("reports." + type + ".day")     ? 3 : 0) +
                (rules.getBoolean ("reports." + type + ".weekday") ? 4 : 0);
 
-  auto cell = rules.getInteger ("reports." + type + ".cell");
-
+  auto cell = rules.getInteger ("reports." + type + ".cell", 15);
   if (cell < 1)
-    throw std::string ("Invalid value for 'reports." + type + ".cell': '" + rules.get("reports." + type + ".cell") + "'");
+    throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
 
   auto chars_per_hour = 60 / cell;
 
@@ -174,7 +173,7 @@ int renderChart (
       num_lines = rules.getInteger ("reports." + type + ".lines", num_lines);
 
     if (num_lines < 1)
-      throw std::string ("Invalid value for 'reports." + type + ".lines': '" + rules.get("reports." + type + ".lines") + "'");
+      throw format ("Invalid value for 'reports.{1}.lines': '{2}'", type, rules.get ("reports." + type + ".lines"));
 
     int spacing = 1;
     if (rules.has ("reports." + type + ".spacing"))
@@ -298,10 +297,9 @@ static void renderAxis (
   int first_hour,
   int last_hour)
 {
-  auto cell = rules.getInteger ("reports." + type + ".cell");
-
+  auto cell = rules.getInteger ("reports." + type + ".cell", 15);
   if (cell < 1)
-    throw std::string ("Invalid value for 'reports." + type + ".cell': '" + rules.get("reports." + type + ".cell") + "'");
+    throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
 
   auto chars_per_hour = 60 / cell;
 
@@ -418,10 +416,9 @@ static std::string renderSubTotal (
                  (rules.getBoolean ("reports." + type + ".weekday") ? 4 : 0);
     int spacing = rules.getInteger ("reports." + type + ".spacing");
 
-    auto cell = rules.getInteger ("reports." + type + ".cell");
-
+    auto cell = rules.getInteger ("reports." + type + ".cell", 15);
     if (cell < 1)
-      throw std::string ("Invalid value for 'reports." + type + ".cell': '" + rules.get("reports." + type + ".cell") + "'");
+      throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
 
     auto chars_per_hour = 60 / cell;
 
@@ -454,10 +451,9 @@ static void renderExclusionBlocks (
   int last_hour,
   const std::vector <Range>& excluded)
 {
-  auto cell = rules.getInteger ("reports." + type + ".cell");
-
+  auto cell = rules.getInteger ("reports." + type + ".cell", 15);
   if (cell < 1)
-    throw std::string ("Invalid value for 'reports." + type + ".cell': '" + rules.get("reports." + type + ".cell") + "'");
+    throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
 
   auto chars_per_hour = 60 / cell;
 
@@ -521,7 +517,9 @@ static void renderInterval (
   bool ids)
 {
   Datetime now;
-  auto cell = rules.getInteger ("reports." + type + ".cell");
+  auto cell = rules.getInteger ("reports." + type + ".cell", 15);
+  if (cell < 1)
+    throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
   auto spacing = rules.getInteger ("reports." + type + ".spacing");
 
   // Ignore any track that doesn't overlap with day.

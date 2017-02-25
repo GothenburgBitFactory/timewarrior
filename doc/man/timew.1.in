@@ -696,6 +696,7 @@ Determines how many minutes are represented by a single character cell, for the
 charts.
 A value of '15' means that an hour is represented by 60/15, or 4 character cells.
 Suitable values are the divisors of 60 (30, 20, 15, 12, ...).
+The value must be greater than '0'.
 Default value is '15'.
 Type is one of 'month', 'week', 'day'.
 
