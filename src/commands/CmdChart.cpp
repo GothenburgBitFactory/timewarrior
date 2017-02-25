@@ -157,7 +157,7 @@ int renderChart (
                (rules.getBoolean ("reports." + type + ".day")     ? 3 : 0) +
                (rules.getBoolean ("reports." + type + ".weekday") ? 4 : 0);
 
-  auto cell = rules.getInteger ("reports." + type + ".cell", 15);
+  auto cell = rules.getInteger ("reports." + type + ".cell");
   if (cell < 1)
     throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
 
@@ -297,7 +297,7 @@ static void renderAxis (
   int first_hour,
   int last_hour)
 {
-  auto cell = rules.getInteger ("reports." + type + ".cell", 15);
+  auto cell = rules.getInteger ("reports." + type + ".cell");
   if (cell < 1)
     throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
 
@@ -416,7 +416,7 @@ static std::string renderSubTotal (
                  (rules.getBoolean ("reports." + type + ".weekday") ? 4 : 0);
     int spacing = rules.getInteger ("reports." + type + ".spacing");
 
-    auto cell = rules.getInteger ("reports." + type + ".cell", 15);
+    auto cell = rules.getInteger ("reports." + type + ".cell");
     if (cell < 1)
       throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
 
@@ -451,7 +451,7 @@ static void renderExclusionBlocks (
   int last_hour,
   const std::vector <Range>& excluded)
 {
-  auto cell = rules.getInteger ("reports." + type + ".cell", 15);
+  auto cell = rules.getInteger ("reports." + type + ".cell");
   if (cell < 1)
     throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
 
@@ -517,7 +517,7 @@ static void renderInterval (
   bool ids)
 {
   Datetime now;
-  auto cell = rules.getInteger ("reports." + type + ".cell", 15);
+  auto cell = rules.getInteger ("reports." + type + ".cell");
   if (cell < 1)
     throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
   auto spacing = rules.getInteger ("reports." + type + ".spacing");
