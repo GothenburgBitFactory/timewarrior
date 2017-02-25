@@ -220,7 +220,7 @@ void Rules::set (const std::string& key, const std::string& value)
 std::vector <std::string> Rules::all (const std::string& stem) const
 {
   std::vector <std::string> items;
-  for (auto& it : _settings)
+  for (const auto& it : _settings)
     if (stem == "" || it.first.find (stem) == 0)
       items.push_back (it.first);
 
@@ -245,7 +245,7 @@ std::string Rules::dump () const
       << '\n';
 
   out << "  Settings\n";
-  for (auto& item : _settings)
+  for (const auto& item : _settings)
     out << "    " << item.first << "=" << item.second << '\n';
 
   return out.str ();
@@ -396,7 +396,7 @@ void Rules::parseRuleSettings (
   std::vector <unsigned int> indents;
   indents.push_back (0);
 
-  for (auto& line : lines)
+  for (const auto& line : lines)
   {
     auto indent = getIndentation (line);
     auto tokens = tokenizeLine (line);
