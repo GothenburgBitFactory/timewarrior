@@ -14,6 +14,8 @@
           (thanks to Michael Meier)
 - TI-47   first call successfully creates new database but returns exit status 1
           (thanks to Georg Sauthoff).
+- TI-48   Timewarrior hook is not Python3 compatible
+          (thanks to Josh Proehl, Armado Martinez)
 - TI-49   new theme files aren't installed
           (thanks to Richard Brown).
 - TI-51   in the taskwarrior hook, deleting a task doesn't stop the watch
