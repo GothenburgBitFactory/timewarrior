@@ -13,3 +13,6 @@ csv.py
   This extension exports the data in CSV format, with a variable number of tag
   fields.
 
+totals.py
+  Sample extension report that shows totals by tag.
+
