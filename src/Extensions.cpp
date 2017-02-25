@@ -90,7 +90,7 @@ int Extensions::callExtension (
     t.stop ();
 
     std::stringstream s;
-    s << "Timer Extension: execut ("
+    s << "Timer Extension: execute ("
       << script
       << ") "
       << std::setprecision (6)
