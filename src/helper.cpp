@@ -280,14 +280,13 @@ bool expandIntervalHint (
                    range.end.toISOLocalExtended ()));
     return true;
   }
-  else if (std::find (dayNames.begin(), dayNames.end(), hint) != dayNames.end ())
+  else if (std::find (dayNames.begin (), dayNames.end (), hint) != dayNames.end ())
   {
+    int wd = std::find (dayNames.begin (), dayNames.end (), hint) - dayNames.begin ();
+
     Datetime now;
-
-    int wd = std::find (dayNames.begin(), dayNames.end(), hint) - dayNames.begin();
-
-    int dow = now.dayOfWeek();
-    Datetime sd = now - 86400*dow + 86400*(wd - 7*(wd <= dow ? 0 : 1));
+    int dow = now.dayOfWeek ();
+    Datetime sd = now - (86400 * dow) + (86400 * (wd - 7 * (wd <= dow ? 0 : 1)));
     Datetime ed = sd + 86400;
 
     range.start = Datetime (sd.year(), sd.month(), sd.day());
