@@ -69,6 +69,14 @@ class TestTags(TestCase):
         self.assertIn('foo', out)
         self.assertIn('bar', out)
 
+    def test_tags_filtered(self):
+        """Test that tags command filtering excludes tags that are outside the filter range"""
+        self.t("track 20160101T0100 - 20160101T1000 foo")
+        self.t("track 9am - 11am bar")
+        code, out, err = self.t("tags :week")
+        self.assertNotIn('foo', out)
+        self.assertIn('bar', out)
+
 #class TestTagFeedback(TestCase):
 #    def setUp(self):
 #        """Executed before each test in the class"""
