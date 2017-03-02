@@ -46,12 +46,15 @@ int main (int, char**)
 
   // Verify strtoimax handling of proper integers.
   auto value = strtoimax ("42", nullptr, 10);
-  t.ok (value == 42,     "Platform: strtoimax '42' --> 42");
+  t.ok (value == 42, "Platform: strtoimax '42' --> 42");
 
   // Verify strtoimax handling of non-integers.
+  // Must set errno to zero, and must read it immediately.
+  errno = 0;
   value = strtoimax ("foobar", nullptr, 10);
-  t.ok (value == 0,      "Platform: strtoimax 'foobar' --> 0");
-  t.ok (errno == EINVAL, "Platform: strtoimax errno --> EINVAL");
+  auto captured_errno = errno;
+  t.ok (value == 0,               "Platform: strtoimax 'foobar' --> 0");
+  t.ok (captured_errno == EINVAL, "Platform: strtoimax errno --> EINVAL");
   t.diag (format (errno));
 
   return 0;
