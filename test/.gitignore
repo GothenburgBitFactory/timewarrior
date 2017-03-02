@@ -4,6 +4,7 @@ data.t
 exclusion.t
 helper.t
 interval.t
+platform.t
 range.t
 rules.t
 util.t
