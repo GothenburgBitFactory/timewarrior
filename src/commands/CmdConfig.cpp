@@ -26,7 +26,7 @@
 
 #include <cmake.h>
 #include <FS.h>
-#include <JSON2.h>
+#include <JSON.h>
 #include <shared.h>
 #include <format.h>
 #include <unicode.h>
@@ -134,7 +134,7 @@ static bool setConfigVariable (Database& database, const Rules& rules, std::stri
         lines.push_back ("");
 
       // Add new line.
-      lines.push_back (name + " = " + JSON2::encode (value));
+      lines.push_back (name + " = " + json::encode (value));
 
       database.undoTxnStart ();
       database.undoTxn ("config", "", lines.back ());
