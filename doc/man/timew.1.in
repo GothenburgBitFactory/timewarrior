@@ -540,7 +540,6 @@ In addition to the standard date formats, the following are supported:
 
   now                                   Current date and time
   today                                 Current date at 0:00:00
-  sod, eod                              Current date at 0:00:00 and 23:59:59
   yesterday                             Yesterday at 0:00:00
   tomorrow                              Tomorrow at 0:00:00 (midnight tonight)
   <day-of-week>                         Previous named day at 0:00:00
@@ -550,15 +549,24 @@ In addition to the standard date formats, the following are supported:
   <epoch>                               POSIX time
   later                                 2038-01-18T0:00:00 (Y2K38)
   someday                               2038-01-18T0:00:00 (Y2K38)
-  soy, eoy                              Previous start/end of year
-  socy, eocy                            Start/end of current year
-  soq, eoq                              Previous start/end of quarter
-  socq, eocq                            Start/end of current quarter
-  som, eom                              Previous start/end of month
-  socm, eocm                            Start/end of current month
-  sow, eow                              Previous start/end of week
-  socw, eocw                            Start/end of current week
+  sopd, eopd                            Start/end of previous day
+  sod, eod                              Start/end of current day
+  sond, eond                            Start/end of next day
+  sopw, eopw                            Start/end of previous week
+  sow, eow                              Start/end of current week
+  sonw, eonw                            Start/end of next week
+  sopww, eopww                          Start/end of previous work week (mon - fri)
   soww, eoww                            Start/end of current work week (mon - fri)
+  sonww, eonww                          Start/end of next work week (mon - fri)
+  sopm, eopm                            Start/end of previous month
+  som, eom                              Start/end of current month
+  sonm, eonm                            Start/end of next month
+  sopq, eopq                            Start/end of previous quarter
+  soq, eoq                              Start/end of current quarter
+  sonq, eonq                            Start/end of next quarter
+  sopy, eopy                            Start/end of previous year
+  soy, eoy                              Start/end of current year
+  sony, eony                            Start/end of next year
   easter                                Easter Sunday
   eastermonday                          Easter Monday
   ascension                             Ascension
