@@ -6,10 +6,8 @@ New Features in 1.1.0
   - Taskwarrior integration hook now stops the clock in more situations, such
     as deleting or waiting a task.
   - The 'tags' command now suports filters.
-
-Features not implemented in 1.1.0
-
-  -
+  - New date names supported (see 'timew help date' or 'man timew').
+  - Timewarrior and Taskwarrior now use the same date handling.
 
 New Commands in 1.1.0
 
@@ -25,7 +23,9 @@ Newly Deprecated Features in 1.1.0
 
 Removed Features in 1.1.0
 
-  -
+  - Named dates 'socw', 'socm', 'socq' and 'socy' are now named 'sow', 'som',
+    'soq' and 'soy'. Similarly the 'eocw' etc are modified. The 'c' is now
+    implicit.
 
 Known Issues
 

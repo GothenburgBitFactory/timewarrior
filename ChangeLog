@@ -34,6 +34,10 @@
 - Taskwarrior projects are now used as-is as tags, and also split on the '.' to
   represent project hierarchy as separate tags.
           (thanks to Josh Proehl).
+- New date names supported (see 'timew help date' or 'man timew').
+- Named dates 'socw', 'socm', 'socq' and 'socy' are now named 'sow', 'som',
+  'soq' and 'soy'. Similarly the 'eocw' etc are modified. The 'c' is now
+  implicit.
 
 ------ current release ---------------------------
 
