@@ -220,9 +220,6 @@ void initializeDataAndRules (
 
   // Initialize the database (no data read), but files are enumerated.
   database.initialize (data._data);
-
-  // Set date names like "monday" to represent the past, not the future.
-  Datetime::lookForwards = false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
