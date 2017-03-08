@@ -82,7 +82,7 @@ int CmdChartWeek (
     if (rules.has ("reports.week.range"))
       expandIntervalHint (rules.get ("reports.week.range"), filter.range);
     else
-      filter.range = Range (Datetime ("socw"), Datetime ("eocw"));
+      filter.range = Range (Datetime ("sow"), Datetime ("eow"));
   }
 
   return renderChart (cli, "week", filter, rules, database);
@@ -101,7 +101,7 @@ int CmdChartMonth (
     if (rules.has ("reports.month.range"))
       expandIntervalHint (rules.get ("reports.month.range"), filter.range);
     else
-      filter.range = Range (Datetime ("socm"), Datetime ("eocm"));
+      filter.range = Range (Datetime ("som"), Datetime ("eom"));
   }
 
   return renderChart (cli, "month", filter, rules, database);
