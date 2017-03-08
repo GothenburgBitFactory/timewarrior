@@ -144,10 +144,10 @@ bool expandIntervalHint (
   {
     {":yesterday",   {"yesterday", "today"}},
     {":day",         {"today",     "eod"}},
-    {":week",        {"socw",      "eocw"}},
-    {":month",       {"socm",      "eocm"}},
-    {":quarter",     {"socq",      "eocq"}},
-    {":year",        {"socy",      "eocy"}},
+    {":week",        {"sow",       "eow"}},
+    {":month",       {"som",       "eom"}},
+    {":quarter",     {"soq",       "eoq"}},
+    {":year",        {"soy",       "eoy"}},
   };
 
   static std::vector <std::string> dayNames
@@ -176,17 +176,17 @@ bool expandIntervalHint (
   // Some require math.
   if (hint == ":lastweek")
   {
-    // Note: Simply subtracting (7 * 86400) from socw, eocw fails to consider
+    // Note: Simply subtracting (7 * 86400) from sow, eow fails to consider
     //       daylight savings.
-    Datetime socw ("socw");
-    int sy = socw.year ();
-    int sm = socw.month ();
-    int sd = socw.day ();
+    Datetime sow ("sow");
+    int sy = sow.year ();
+    int sm = sow.month ();
+    int sd = sow.day ();
 
-    Datetime eocw ("eocw");
-    int ey = eocw.year ();
-    int em = eocw.month ();
-    int ed = eocw.day ();
+    Datetime eow ("eow");
+    int ey = eow.year ();
+    int em = eow.month ();
+    int ed = eow.day ();
 
     sd -= 7;
     if (sd < 1)
