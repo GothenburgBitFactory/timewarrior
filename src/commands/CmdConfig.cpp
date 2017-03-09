@@ -119,6 +119,30 @@ static bool setConfigVariable (Database& database, const Rules& rules, std::stri
         }
       }
     }
+    if (! found)
+    {
+      // Remove name
+      if (! confirmation ||
+          confirm (format ("Are you sure you want to change the value of '{1}' from '{2}' to '{3}'?",
+                           name,
+                           rules.get (name),
+                           value)))
+      {
+        // Add blank line required by rules.
+        if (lines.size () &&
+            lines.back () != "")
+          lines.push_back ("");
+
+        // Add new line.
+        lines.push_back (name + " = " + json::encode (value));
+
+        database.undoTxnStart ();
+        database.undoTxn ("config", "", lines.back());
+        database.undoTxnEnd ();
+
+        change = true;
+      }
+    }
   }
   else
   {
