@@ -29,7 +29,7 @@
 import sys
 import os
 import unittest
-from datetime import datetime
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -97,8 +97,8 @@ class TestConfig(TestCase):
         code, out, err = self.t("config")
         self.assertIn("name = ", out)
 
-    def test_set_new_name_no_value(self):
-        """Test setting a new name, no value"""
+    def test_unset_new_name(self):
+        """Test unsetting a new name, no value"""
         code, out, err = self.t("config name value :yes")
         self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
 
@@ -107,6 +107,122 @@ class TestConfig(TestCase):
 
         code, out, err = self.t("config")
         self.assertNotIn("name = ", out)
+
+    def test_set_new_hierarchical_name_new_value(self):
+        """Test setting a new hierarchical name, new value"""
+        code, out, err = self.t("config foo.bar.baz value :yes")
+        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+
+        code, out, err = self.t("config")
+        self.assertIn("baz = value", out)
+
+    def test_set_new_hierarchical_name_same_value(self):
+        """Test setting a new hierarchical name, same value"""
+        code, out, err = self.t("config foo.bar.baz value :yes")
+        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        code, out, err = self.t("config")
+        self.assertIn("baz = value", out)
+
+        # Should fail with exit 1, because the value does not change.
+        code, out, err = self.t.runError("config foo.bar.baz value :yes")
+        self.assertIs(code, 1)
+
+    def test_set_new_hierarchical_name_blank_value(self):
+        """Test setting a new hierarchical name, blank value"""
+        code, out, err = self.t("config foo.bar.baz '' :yes")
+        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+
+        code, out, err = self.t("config")
+        self.assertIn("baz = ", out)
+
+    def test_unset_new_hierarchical_name(self):
+        """Test unsetting a new hierarchical name, no value"""
+        code, out, err = self.t("config foo.bar.baz value :yes")
+        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+
+        code, out, err = self.t("config foo.bar.baz :yes")
+        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+
+        code, out, err = self.t("config")
+        self.assertNotIn("baz = ", out)
+
+    def test_set_known_name(self):
+        """Test setting a known name, new value"""
+        code, out, err = self.t("config debug value :yes")
+        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+
+        code, out, err = self.t("config")
+        self.assertIn("debug = value", out)
+
+    def test_set_known_name_same_value(self):
+        """Test setting a known name, same value"""
+        code, out, err = self.t("config debug value :yes")
+        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        code, out, err = self.t("config")
+        self.assertIn("debug = value", out)
+
+        # Should fail with exit 1, because the value does not change.
+        code, out, err = self.t.runError("config debug value :yes")
+        self.assertIs(code, 1)
+
+    def test_set_known_name_blank_value(self):
+        """Test setting a known name, blank value"""
+        code, out, err = self.t("config debug '' :yes")
+        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+
+        code, out, err = self.t("config")
+        self.assertIn("debug = ", out)
+
+    def test_unset_known_name(self):
+        """Test unsetting a known name"""
+        code, out, err = self.t.runError("config debug :yes")
+        self.assertRegexpMatches(err, r"No entry named 'debug' found\.\n$")
+
+    def test_reset_known_name(self):
+        """Test setting a known name"""
+        code, out, err = self.t("config debug foo :yes")
+
+        code, out, err = self.t("config debug :yes")
+        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+
+    def test_set_known_hierarchical_name(self):
+        """Test setting a known hierarchical name, new value"""
+        code, out, err = self.t("config reports.day.month value :yes")
+        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+
+        code, out, err = self.t("config")
+        self.assertIn("month = value", out)
+
+    def test_set_known_hierarchical_name_same_value(self):
+        """Test setting a known hierarchical name, same value"""
+        code, out, err = self.t("config reports.day.month value :yes")
+        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        code, out, err = self.t("config")
+        self.assertIn("month = value", out)
+
+        # Should fail with exit 1, because the value does not change.
+        code, out, err = self.t.runError("config reports.day.month value :yes")
+        self.assertIs(code, 1)
+
+    def test_set_known_hierarchical_name_blank_value(self):
+        """Test setting a known hierarchical name, blank value"""
+        code, out, err = self.t("config reports.day.month '' :yes")
+        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+
+        code, out, err = self.t("config")
+        self.assertIn("month = ", out)
+
+    def test_unset_known_hierarchical_name(self):
+        """Test unsetting a known hierarchical name"""
+        code, out, err = self.t.runError("config reports.day.month :yes")
+        self.assertRegexpMatches(err, r"^No entry named 'reports.day.month' found\.\n$")
+
+    def test_reset_known_hierarchical_name(self):
+        """Test resetting a known hierarchical name"""
+        code, out, err = self.t("config reports.day.month foo :yes")
+
+        code, out, err = self.t("config reports.day.month :yes")
+        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
