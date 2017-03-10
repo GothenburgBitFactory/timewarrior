@@ -68,6 +68,22 @@ class TestShorten(TestCase):
         code, out, err = self.t.runError("shorten @1 10mins")
         self.assertIn('Cannot shorten open interval @1', err)
 
+    def test_shorten_interval_moved_into_exclusion(self):
+        """Shorten an interval moved to span an exclusion."""
+        self.t.config("exclusions.friday", "<7:30 12:00-13:00 >16:30")
+        self.t.config("exclusions.thursday", "<7:30 12:00-13:00 >16:30")
+        self.t.config("exclusions.wednesday", "<7:30 12:00-13:00 >16:30")
+        self.t.config("exclusions.tuesday", "<7:30 12:00-13:00 >16:30")
+        self.t.config("exclusions.monday", "<7:30 12:00-13:00 >16:30")
+        self.t.config("exclusions.sunday", "<7:30 12:00-13:00 >16:30")
+        self.t.config("exclusions.saturday", "<7:30 12:00-13:00 >16:30")
+
+        self.t('track 20170308T140000 - 20170308T161500')
+
+        # self.t("shorten @1 5min") # This would work.
+        self.t("move @1 20170308T113000")
+        self.t("shorten @1 5min") # Does not work.
+
 # TODO Add :adjust tests.
 
 class TestBug6(TestCase):
