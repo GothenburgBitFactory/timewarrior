@@ -49,6 +49,13 @@ bool Range::operator== (const Range& other) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+bool Range::operator!= (const Range& other) const
+{
+  return start != other.start ||
+         end   != other.end;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void Range::open ()
 {
   start = Datetime ();

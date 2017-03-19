@@ -36,6 +36,7 @@ public:
   Range () = default;
   Range (const Datetime&, const Datetime&);
   bool operator== (const Range&) const;
+  bool operator!= (const Range&) const;
 
   void open ();
   void open (const Datetime&);
