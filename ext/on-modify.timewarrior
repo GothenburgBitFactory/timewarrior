@@ -63,10 +63,7 @@ if 'start' in new and not 'start' in old:
 elif not 'start' in new and 'start' in old:
     os.system('timew stop ' + combined.decode() + ' :yes')
 
-# TI-51 - in the taskwarrior hook, deleting a task doesn't stop the watch
-#
-# Broadened to: Any task that is active, with a non-pending status should not
-# be tracked.
+# Any task that is active, with a non-pending status should not be tracked.
 elif 'start' in new and new['status'] != 'pending':
     os.system('timew stop ' + combined.decode() + ' :yes')
 

@@ -6,6 +6,8 @@
           (thanks to hosaka).
 - TI-29   timew config can't add new value
           (thanks to Yury Vidineev)
+- TI-32   taskwarrior hook script doesn't stop recording waiting task
+          (thanks to Yury Videneev).
 - TI-39   Bogus command line option causes segfault
           (thanks to Jan Stolarek, Thomas Lauf).
 - TI-40   totals.py extension script fails with an error
