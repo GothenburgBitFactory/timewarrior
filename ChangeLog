@@ -12,6 +12,8 @@
           (thanks to Jan Stolarek)
 - TI-42   refresh holiday script throws an error on nb-NO locale
           (thanks to Jelle van der Waa).
+- TI-43   :lastweek on sunday
+          (thanks to Michel Crucifix).
 - TI-46   Display error in visual reports (day,week,month)
           (thanks to Michael Meier)
 - TI-47   first call successfully creates new database but returns exit status 1
