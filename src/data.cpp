@@ -664,7 +664,13 @@ std::vector <Interval> getTracked (
   {
     for (auto& inclusion : inclusions)
       for (auto& interval : flatten (inclusion, exclusions))
+      {
+        if (inclusion.synthetic ||
+            inclusion.range != interval.range)
+          interval.synthetic = true;
+
         intervals.push_back (interval);
+      }
   }
   else
   {
