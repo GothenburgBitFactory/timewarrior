@@ -48,8 +48,9 @@ public:
   std::string dump () const;
 
 public:
-  Range                  range  {};
-  int                    id     {0};
+  Range                  range     {};
+  int                    id        {0};
+  bool                   synthetic {false};
 
 private:
   std::set <std::string> _tags  {};

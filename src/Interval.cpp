@@ -199,6 +199,9 @@ std::string Interval::dump () const
       out << ' ' << quoteIfNeeded (tag);
   }
 
+  if (synthetic)
+    out << " synthetic";
+
   return out.str ();
 }
 
