@@ -641,7 +641,7 @@ std::vector <Interval> getTracked (
   const Rules& rules,
   Interval& filter)
 {
-  auto inclusions = subset (filter, getAllInclusions (database));
+  auto inclusions = getAllInclusions (database);
 
   // Exclusions are only usable within a range, so if no filter range exists,
   // determine the outermost range of the inclusions, ie:
@@ -654,6 +654,13 @@ std::vector <Interval> getTracked (
     auto outer = outerRange (inclusions);
     if (outer.total ())
       filter.range = outer;
+
+    if (inclusions.size() > 0) {
+      auto latest = inclusions.back();
+      if (latest.range.is_open()) {;
+        filter.range.end = 0;
+      }
+    }
   }
 
   // Get the set of expanded exclusions that overlap the range defined by the
@@ -682,7 +689,7 @@ std::vector <Interval> getTracked (
     intervals[i].id = intervals.size () - i;
 
   debug (format ("Loaded {1} tracked intervals", intervals.size ()));
-  return intervals;
+  return subset (filter, intervals);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
