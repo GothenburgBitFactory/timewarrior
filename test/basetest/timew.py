@@ -60,12 +60,11 @@ class Timew(object):
         return "{0} running from {1}>".format(txt[:-1], self.datadir)
 
     def __call__(self, *args, **kwargs):
-        "aka t = Timew() ; t() which is now an alias to t.runSuccess()"
+        """aka t = Timew() ; t() which is now an alias to t.runSuccess()"""
         return self.runSuccess(*args, **kwargs)
 
     def reset_env(self):
-        """Set a new environment derived from the one used to launch the test
-        """
+        """Set a new environment derived from the one used to launch the test"""
         # Copy all env variables to avoid clashing subprocess environments
         self.env = os.environ.copy()
 
@@ -73,8 +72,7 @@ class Timew(object):
         self.env["TIMEWARRIORDB"] = self.datadir
 
     def config(self, var, value):
-        """Run setup `var` as `value` in timew config
-        """
+        """Run setup `var` as `value` in timew config"""
         # Add -- to avoid misinterpretation of - in things like UUIDs
         # TODO Revisit this decision as timew matures.
         #cmd = (self.timew, "config", "--", var, value)
@@ -82,16 +80,13 @@ class Timew(object):
         return run_cmd_wait(cmd, env=self.env, input="y\n")
 
     def del_config(self, var):
-        """Remove `var` from timew config
-        """
+        """Remove `var` from timew config"""
         cmd = (self.timew, ":yes", "config", var)
         return run_cmd_wait(cmd, env=self.env, input="y\n")
 
     @property
     def timewrc_content(self):
-        """
-        Returns the contents of the timewrc file.
-        """
+        """Returns the contents of the timewrc file."""
 
         with open(self.timewrc, "r") as f:
             return f.readlines()

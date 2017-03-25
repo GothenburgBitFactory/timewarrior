@@ -89,7 +89,7 @@ class TestDOM(TestCase):
         self.assertEqual('0\n', out)
 
     def test_dom_active_active(self):
-        """Test dom.active with and with an active interval"""
+        """Test dom.active with an active interval"""
         self.t("start foo")
         code, out, err = self.t("get dom.active")
         self.assertEqual('1\n', out)
@@ -156,7 +156,7 @@ class TestDOM(TestCase):
         self.assertIn("DOM reference 'dom.active.json' is not valid.", err)
 
     def test_dom_active_json_active(self):
-        """Test dom.active.json with and with an active interval"""
+        """Test dom.active.json with an active interval"""
         self.t("start foo")
         code, out, err = self.t("get dom.active.json")
         self.assertRegexpMatches(out, r'{"start":"\d{8}T\d{6}Z","tags":\["foo"\]}')
@@ -178,7 +178,7 @@ class TestDOMTracked(TestCase):
         """Executed before each test in the class"""
 
     def test_dom_tracked_count_some(self):
-        """Test dom.active with and with an active interval"""
+        """Test dom.tracked.count with an active interval"""
         code, out, err = self.t("get dom.tracked.count")
         self.assertEqual('2\n', out)
 
