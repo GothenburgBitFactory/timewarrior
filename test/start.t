@@ -88,6 +88,28 @@ class TestStart(TestCase):
 
         self.assertIn("Ended              01:00:00", out)
 
+    def test_start_with_more_tags_than_current_tracking(self):
+        """Test 'start' with more tags than current tracking should start new tracking"""
+        self.t("start 1h ago foo")
+        code, out, err = self.t("start foo bar")
+        self.assertIn("Recorded foo", out)
+        self.assertIn("Tracking bar foo", out)
+
+    def test_start_with_less_tags_than_current_tracking(self):
+        """Test 'start' with less tags than current tracking should start new tracking"""
+        self.t("start 1h ago foo bar")
+        code, out, err = self.t("start foo")
+        self.assertIn("Recorded bar foo", out)
+        self.assertIn("Tracking foo", out)
+
+    def test_start_with_same_tags_as_current_tracking(self):
+        """Test 'start' with same tags as current tracking should not start new tracking"""
+        self.t("start 1h ago bar foo")
+        code, out, err = self.t("start foo bar")
+        self.assertNotIn("Recorded bar foo", out)
+        self.assertNotIn("Tracking bar foo", out)
+
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())
