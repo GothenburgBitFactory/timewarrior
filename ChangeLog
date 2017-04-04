@@ -35,6 +35,8 @@
 - TI-65   The 'tags' command should support a filter
 - TI-67   Summary with parameters shows wrong ids
           (thanks to Bodo Graumann)
+- TI-70   Timew starts a new interval even if a current interval contains the same set of tags
+          (Thanks to Thomas Babej).
 - Fixed Python 3 support of the holiday/refresh script
           (thanks to Jelle van der Waa).
 - Added missing man page link

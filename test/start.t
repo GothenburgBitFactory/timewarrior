@@ -107,7 +107,6 @@ class TestStart(TestCase):
         self.t("start 1h ago bar foo")
         code, out, err = self.t("start foo bar")
         self.assertNotIn("Recorded bar foo", out)
-        self.assertNotIn("Tracking bar foo", out)
 
 
 if __name__ == "__main__":

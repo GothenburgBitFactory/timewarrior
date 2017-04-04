@@ -45,6 +45,16 @@ int CmdStart (
   auto latest = getLatestInterval (database);
   if (latest.range.is_open ())
   {
+    // If the new interval tags match those of the currnetly open interval, then
+    // do nothing - the tags are already being tracked.
+    if (latest.tags () == filter.tags ())
+    {
+      if (rules.getBoolean ("verbose"))
+        std::cout << intervalSummarize (database, rules, latest);
+
+      return 0;
+    }
+
     // Stop it, at the given start time, if applicable.
     Interval modified {latest};
     if (filter.range.start.toEpoch () != 0)
