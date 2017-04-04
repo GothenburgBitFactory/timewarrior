@@ -80,14 +80,13 @@ class TestStart(TestCase):
         self.assertIn("Tracking bar", out)
 
     def test_start_with_open_interval_timed(self):
-        """Test timed start with already open interval, which should be auto-stopped
-        at given datetime"""
+        """Test timed start with already open interval, which should be auto-stopped at given datetime"""
         self.t("start 2016-01-01T00:00:00 foo")
         code, out, err = self.t("start 2016-01-01T01:00:00 bar")
         self.assertIn("Recorded foo", out)
         self.assertIn("Tracking bar", out)
 
-        self.assertIn("Ended              01:00:00",out)
+        self.assertIn("Ended              01:00:00", out)
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
