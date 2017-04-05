@@ -204,8 +204,8 @@ void validate (
   autoAdjust (findHint (cli, ":adjust"), rules, database, interval);
 
   // TODO This warning is not working properly, because when an interval is
-  //      modified, it ifirst deleted, then added. This causes this code to
-  //      dertmine that it is always a new tag.
+  //      modified, it is first deleted, then added. This causes this code to
+  //      determine that it is always a new tag.
   //warnOnNewTag (rules, database, interval);
 }
 
