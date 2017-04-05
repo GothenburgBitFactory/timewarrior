@@ -28,6 +28,8 @@
           (thanks to Mattia Rizzolo).
 - TI-52   The 'refresh' scripts overwrites previous years data
           (thanks to m8r).
+- TI-58   Delete command is not always deleting
+          (thanks to Lynoure, asmyers).
 - TI-61   Typo in exclusion.t.cpp
           (thanks to Thomas Lauf).
 - TI-64   Command 'stop' with date before current interval's start date causes segfault
