@@ -92,16 +92,16 @@ class TestContinue(TestCase):
 
     def test_continue_with_id_without_active_tracking(self):
         """Verify that continuing a specified interval works"""
-        code, out, err = self.t("start FOO")
+        code, out, err = self.t("start FOO 1h ago")
         self.assertIn("Tracking FOO\n", out)
 
-        code, out, err = self.t("stop")
+        code, out, err = self.t("stop 30min ago")
         self.assertIn("Recorded FOO\n", out)
 
-        code, out, err = self.t("start BAR")
+        code, out, err = self.t("start BAR 30min ago")
         self.assertIn("Tracking BAR\n", out)
 
-        code, out, err = self.t("stop")
+        code, out, err = self.t("stop 15min ago")
         self.assertIn("Recorded BAR\n", out)
 
         code, out, err = self.t("continue @2")
@@ -109,17 +109,18 @@ class TestContinue(TestCase):
 
     def test_continue_with_id_with_active_tracking(self):
         """Verify that continuing a specified interval stops active tracking"""
-        code, out, err = self.t("start FOO")
+        code, out, err = self.t("start FOO 1h ago")
         self.assertIn("Tracking FOO\n", out)
 
-        code, out, err = self.t("stop")
+        code, out, err = self.t("stop 30min ago")
         self.assertIn("Recorded FOO\n", out)
 
-        code, out, err = self.t("start BAR")
+        code, out, err = self.t("start BAR 30min ago")
         self.assertIn("Tracking BAR\n", out)
 
         code, out, err = self.t("continue @2")
-        self.assertIn("Recorded BAR\nTracking FOO\n", out)
+        self.assertIn("Recorded BAR\n", out)
+        self.assertIn("Tracking FOO\n", out)
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

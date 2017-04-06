@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <commands.h>
+#include <format.h>
 #include <timew.h>
 #include <iostream>
 
@@ -35,20 +36,71 @@ int CmdContinue (
   Rules& rules,
   Database& database)
 {
-  auto latest = getLatestInterval (database);
-  if (latest.empty ())
-    throw std::string ("There is no previous tracking to continue.");
+  // Gather IDs and TAGs.
+  std::vector <int> ids;
 
-  if (latest.range.is_open ())
-    throw std::string ("There is already active tracking.");
+  for (auto& arg : cli._args)
+  {
+    if (arg.hasTag ("ID"))
+      ids.push_back (strtol (arg.attribute ("value").c_str (), NULL, 10));
+  }
 
-  // Open an identical interval and update hte DB.
-  latest.range.open ();
-  validate (cli, rules, database, latest);
-  database.addInterval (latest);
+  if (ids.size() > 1)
+    throw std::string ("You can only specify one ID to continue.");
+
+  Interval to_copy;
+  Interval latest = getLatestInterval (database);
+
+  if (ids.size() == 1)
+  {
+    // Load the data.
+    // Note: There is no filter.
+    Interval filter;
+    auto tracked = getTracked (database, rules, filter);
+
+    if (ids[0] > static_cast <int> (tracked.size ()))
+      throw format ("ID '@{1}' does not correspond to any tracking.", ids[0]);
+
+    to_copy = tracked[tracked.size () - ids[0]];
+  }
+  else
+  {
+    if (latest.empty ())
+      throw std::string ("There is no previous tracking to continue.");
+
+    if (latest.range.is_open ())
+      throw std::string ("There is already active tracking.");
+
+    to_copy = latest;
+  }
+
+  Datetime current_time = Datetime ();
+
+  if (latest.range.is_open()) {
+    auto filter = getFilter (cli);
+    auto exclusions = getAllExclusions (rules, filter.range);
+
+    // Stop it, at the given start time, if applicable.
+    Interval modified {latest};
+    modified.range.end = current_time;
+
+    // Update database.
+    database.deleteInterval (latest);
+    for (auto& interval : flatten (modified, exclusions)) {
+      database.addInterval (interval);
+
+      if (rules.getBoolean ("verbose"))
+        std::cout << '\n' << intervalSummarize (database, rules, interval);
+    }
+  }
+
+  // Open an identical interval and update the DB.
+  to_copy.range.open (current_time);
+  validate (cli, rules, database, to_copy);
+  database.addInterval (to_copy);
 
   if (rules.getBoolean ("verbose"))
-    std::cout << intervalSummarize (database, rules, latest);
+    std::cout << intervalSummarize (database, rules, to_copy);
 
   return 0;
 }
