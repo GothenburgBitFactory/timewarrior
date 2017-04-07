@@ -663,25 +663,31 @@ std::vector <Interval> getTracked (
     }
   }
 
-  // Get the set of expanded exclusions that overlap the range defined by the
-  // timeline.
-  auto exclusions = getAllExclusions (rules, filter.range);
-  std::vector <Interval> intervals;
-  if (! exclusions.empty ())
-  {
-    for (auto& inclusion : inclusions)
-      for (auto& interval : flatten (inclusion, exclusions))
-      {
-        if (inclusion.synthetic ||
-            inclusion.range != interval.range)
-          interval.synthetic = true;
+  std::vector <Interval> intervals = inclusions;
 
-        intervals.push_back (interval);
-      }
-  }
-  else
+  if (intervals.size () > 0)
   {
-    intervals = inclusions;
+    auto latest = inclusions.back ();
+
+    if (latest.range.is_open ())
+    {
+      // Get the set of expanded exclusions that overlap the range defined by the
+      // timeline.
+      auto exclusions = getAllExclusions (rules, filter.range);
+      if (! exclusions.empty ())
+      {
+        intervals.pop_back ();
+
+        for (auto& interval : flatten (latest, exclusions))
+        {
+          if (latest.synthetic ||
+              latest.range != interval.range)
+            interval.synthetic = true;
+
+          intervals.push_back (interval);
+        }
+      }
+    }
   }
 
   // Assign an ID to each interval.
