@@ -29,7 +29,7 @@
 import sys
 import os
 import unittest
-from datetime import datetime
+from datetime import datetime, timedelta
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -82,10 +82,46 @@ class TestShorten(TestCase):
 
         # self.t("shorten @1 5min") # This would work.
         self.t("move @1 20170308T113000")
-        self.t("shorten @1 5min") # Does not work.
+        self.t("shorten @1 5min")  # Does not work.
+
+    def test_shorten_synthetic_interval(self):
+        """Shorten a synthetic interval."""
+        now = datetime.now()
+        now_utc = now.utcnow()
+
+        three_hours_before = now - timedelta(hours=3)
+        four_hours_before = now - timedelta(hours=4)
+        five_hours_before = now - timedelta(hours=5)
+
+        exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
+
+        self.t.config("exclusions.friday", exclusion)
+        self.t.config("exclusions.thursday", exclusion)
+        self.t.config("exclusions.wednesday", exclusion)
+        self.t.config("exclusions.tuesday", exclusion)
+        self.t.config("exclusions.monday", exclusion)
+        self.t.config("exclusions.sunday", exclusion)
+        self.t.config("exclusions.saturday", exclusion)
+
+        self.t("start {}T{:%H}:45:00".format(now.date(), five_hours_before))
+
+        self.t("shorten @2 5min")
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 2)
+        self.assertTrue('start' in j[0])
+        self.assertEqual(j[0]['start'], '{:%Y%m%dT%H}4500Z'.format(now_utc - timedelta(hours=5)), 'start time of lengthened interval does not match')
+        self.assertTrue('end' in j[0])
+        self.assertEqual(j[0]['end'], '{:%Y%m%dT%H}5500Z'.format(now_utc - timedelta(hours=5)), 'end time of lengthened interval does not match')
+        self.assertFalse('tags' in j[0])
+        self.assertTrue('start' in j[1])
+        self.assertEqual(j[1]['start'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=3)), 'start time of unmodified interval does not match')
+        self.assertFalse('end' in j[1])
+        self.assertFalse('tags' in j[1])
+
 
 # TODO Add :adjust tests.
-
 class TestBug6(TestCase):
     def setUp(self):
         """Executed before each test in the class"""

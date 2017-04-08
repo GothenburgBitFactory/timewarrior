@@ -29,7 +29,7 @@
 import sys
 import os
 import unittest
-from datetime import datetime
+from datetime import datetime, timedelta
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -94,6 +94,46 @@ class TestTag(TestCase):
         code, out, err = self.t("tag @1 @2 foo bar")
         self.assertIn('Added foo bar to @1\nAdded foo bar to @2', out)
 
+    def test_tag_synthetic_interval(self):
+        """Tag a synthetic interval."""
+        now = datetime.now()
+        now_utc = now.utcnow()
+
+        three_hours_before = now - timedelta(hours=3)
+        four_hours_before = now - timedelta(hours=4)
+        five_hours_before = now - timedelta(hours=5)
+
+        exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
+
+        self.t.config("exclusions.friday", exclusion)
+        self.t.config("exclusions.thursday", exclusion)
+        self.t.config("exclusions.wednesday", exclusion)
+        self.t.config("exclusions.tuesday", exclusion)
+        self.t.config("exclusions.monday", exclusion)
+        self.t.config("exclusions.sunday", exclusion)
+        self.t.config("exclusions.saturday", exclusion)
+
+        self.t("start {}T{:%H}:45:00 foo".format(now.date(), five_hours_before))
+
+        self.t("tag @2 bar")
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 2)
+        self.assertTrue('start' in j[0])
+        self.assertEqual(j[0]['start'], '{:%Y%m%dT%H}4500Z'.format(now_utc-timedelta(hours=5)), 'start time of modified interval does not match')
+        self.assertTrue('end' in j[0])
+        self.assertEqual(j[0]['end'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=4)), 'end time of modified interval does not match')
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'], ['bar', 'foo'], 'tags of modified interval do not match')
+        self.assertTrue('start' in j[1])
+        self.assertEqual(j[1]['start'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=3)), 'start time of unmodified interval does not match')
+        self.assertFalse('end' in j[1])
+        self.assertTrue('tags' in j[1])
+        self.assertEqual(j[1]['tags'], ['foo'], 'tags of unmodified interval do not match')
+
+
+
 class TestUntag(TestCase):
     def setUp(self):
         """Executed before each test in the class"""
@@ -136,6 +176,45 @@ class TestUntag(TestCase):
         self.t("track 2016-01-01T01:00:00 - 2016-01-01T02:00:00 foo bar baz")
         code, out, err = self.t("untag @1 @2 foo bar")
         self.assertIn('Removed foo bar from @1\nRemoved foo bar from @2', out)
+
+    def test_untag_synthetic_interval(self):
+        """Untag a synthetic interval."""
+        now = datetime.now()
+        now_utc = now.utcnow()
+
+        three_hours_before = now - timedelta(hours=3)
+        four_hours_before = now - timedelta(hours=4)
+        five_hours_before = now - timedelta(hours=5)
+
+        exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
+
+        self.t.config("exclusions.friday", exclusion)
+        self.t.config("exclusions.thursday", exclusion)
+        self.t.config("exclusions.wednesday", exclusion)
+        self.t.config("exclusions.tuesday", exclusion)
+        self.t.config("exclusions.monday", exclusion)
+        self.t.config("exclusions.sunday", exclusion)
+        self.t.config("exclusions.saturday", exclusion)
+
+        self.t("start {}T{:%H}:45:00 foo bar".format(now.date(), five_hours_before))
+
+        self.t("untag @2 foo")
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 2)
+        self.assertTrue('start' in j[0])
+        self.assertEqual(j[0]['start'], '{:%Y%m%dT%H}4500Z'.format(now_utc-timedelta(hours=5)), 'start time of modified interval does not match')
+        self.assertTrue('end' in j[0])
+        self.assertEqual(j[0]['end'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=4)), 'end time of modified interval does not match')
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'], ['bar'], 'tags of modified interval do not match')
+        self.assertTrue('start' in j[1])
+        self.assertEqual(j[1]['start'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=3)), 'start time of unmodified interval does not match')
+        self.assertFalse('end' in j[1])
+        self.assertTrue('tags' in j[1])
+        self.assertEqual(j[1]['tags'], ['bar', 'foo'], 'tags of unmodified interval do not match')
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
