@@ -159,7 +159,9 @@ int Rules::getInteger (const std::string& key, int defaultValue) const
 
     // Invalid values are handled.  ERANGE errors are simply capped by
     // strtoimax, which is desired behavior.
-    if (value == 0 && errno == EINVAL)
+    // Note that not all platforms behave alike, and the EINVAL is not
+    // necessarily returned.
+    if (value == 0 && (errno == EINVAL || found->second != "0"))
       throw format ("Invalid integer value for '{1}': '{2}'", key, found->second);
 
     return value;

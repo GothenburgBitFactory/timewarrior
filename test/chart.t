@@ -61,37 +61,37 @@ class TestChart(TestCase):
         """Chart should report error on invalid value for 'reports.day.lines'"""
         code, out, err = self.t.runError("day rc.reports.day.lines=foobar")
 
-        self.assertIn("Invalid value for 'reports.day.lines': 'foobar'", err)
+        self.assertIn("Invalid integer value for 'reports.day.lines': 'foobar'", err)
 
     def test_chart_day_with_invalid_config_for_cell(self):
         """Chart should report error on invalid value for 'reports.day.cell'"""
         code, out, err = self.t.runError("day rc.reports.day.cell=foobar")
 
-        self.assertIn("The value for 'reports.day.cell' must be at least 1.\n", err)
+        self.assertIn("Invalid integer value for 'reports.day.cell': 'foobar'", err)
 
     def test_chart_week_with_invalid_config_for_lines(self):
         """Chart should report error on invalid value for 'reports.week.lines'"""
         code, out, err = self.t.runError("week rc.reports.week.lines=foobar")
 
-        self.assertIn("Invalid value for 'reports.week.lines': 'foobar'", err)
+        self.assertIn("Invalid integer value for 'reports.week.lines': 'foobar'", err)
 
     def test_chart_week_with_invalid_config_for_cell(self):
         """Chart should report error on invalid value for 'reports.week.cell'"""
         code, out, err = self.t.runError("week rc.reports.week.cell=foobar")
 
-        self.assertIn("The value for 'reports.week.cell' must be at least 1.\n", err)
+        self.assertIn("Invalid integer value for 'reports.week.cell': 'foobar'", err)
 
     def test_chart_month_with_invalid_config_for_lines(self):
         """Chart should report error on invalid value for 'reports.month.lines'"""
         code, out, err = self.t.runError("month rc.reports.month.lines=foobar")
 
-        self.assertIn("Invalid value for 'reports.month.lines': 'foobar'", err)
+        self.assertIn("Invalid integer value for 'reports.month.lines': 'foobar'", err)
 
     def test_chart_month_with_invalid_config_for_cell(self):
         """Chart should report error on invalid value for 'reports.month.cell'"""
         code, out, err = self.t.runError("month rc.reports.month.cell=foobar")
 
-        self.assertIn("The value for 'reports.month.cell' must be at least 1.", err)
+        self.assertIn("Invalid integer value for 'reports.month.cell': 'foobar'", err)
 
     def test_chart_day_with_less_than_one_minute_interval_at_day_start(self):
         self.t("track 2016-01-15T00:00:00 - 2016-01-15T00:00:40 XOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXO")
