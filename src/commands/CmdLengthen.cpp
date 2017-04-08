@@ -59,7 +59,30 @@ int CmdLengthen (
   Interval filter;
   auto tracked = getTracked (database, rules, filter);
 
-  // Apply tags to ids.
+  bool dirty = true;
+
+  for (auto& id : ids)
+  {
+    if (id > static_cast <int> (tracked.size ()))
+      throw format ("ID '@{1}' does not correspond to any tracking.", id);
+
+    if (tracked[tracked.size() - id].synthetic && dirty)
+    {
+      auto latest = getLatestInterval(database);
+      auto exclusions = getAllExclusions (rules, filter.range);
+
+      Interval modified {latest};
+
+      // Update database.
+      database.deleteInterval (latest);
+      for (auto& interval : flatten (modified, exclusions))
+        database.addInterval (interval);
+
+      dirty = false;
+    }
+  }
+
+  // Lengthen intervals specified by ids
   for (auto& id : ids)
   {
     if (id > static_cast <int> (tracked.size ()))
