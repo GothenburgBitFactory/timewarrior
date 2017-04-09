@@ -213,10 +213,6 @@ Interval getFilter (const CLI& cli)
   if (filter.range.start > filter.range.end)
     throw std::string ("The end of a date range must be after the start.");
 
-/*
-  std::cout << "# getFilter:\n"
-            << "#   " << filter.dump () << "\n";
-*/
   return filter;
 }
 
@@ -305,13 +301,6 @@ std::vector <Range> getAllExclusions (
       for (auto& r : exclusion.ranges (range))
         exclusionRanges.push_back (r);
 
-/*
-  auto all = addRanges (range, results, exclusionRanges);
-  std::cout << "# getAllExclusions:\n";
-  for (auto& r : all)
-    std::cout << "#   " << r.dump () << "\n";
-  return all;
-*/
   return merge (addRanges (range, results, exclusionRanges));
 }
 
@@ -326,11 +315,6 @@ std::vector <Interval> getAllInclusions (Database& database)
     all.push_back (i);
   }
 
-/*
-  std::cout << "# getAllInclusions:\n";
-  for (auto& i : all)
-    std::cout << "#   " << i.dump () << "\n";
-*/
   return all;
 }
 
@@ -344,11 +328,6 @@ std::vector <Interval> subset (
     if (matchesFilter (interval, filter))
       all.push_back (interval);
 
-/*
-  std::cout << "# subset (filter intervals):\n";
-  for (auto& i : all)
-    std::cout << "#   " << i.dump () << "\n";
-*/
   return all;
 }
 
@@ -362,11 +341,6 @@ std::vector <Range> subset (
     if (range.overlap (r))
       all.push_back (r);
 
-/*
-  std::cout << "# subset (ranges):\n";
-  for (auto& r : all)
-    std::cout << "#   " << r.dump () << "\n";
-*/
   return all;
 }
 
@@ -380,11 +354,6 @@ std::vector <Interval> subset (
     if (range.overlap (interval.range))
       all.push_back (interval);
 
-/*
-  std::cout << "# subset (intervals):\n";
-  for (auto& i : all)
-    std::cout << "#   " << i.dump () << "\n";
-*/
   return all;
 }
 
@@ -426,11 +395,6 @@ std::vector <Interval> flatten (
     }
   }
 
-/*
-  std::cout << "#   results:\n";
-  for (auto& i : all)
-    std::cout << "#     " << i.dump () << "\n";
-*/
   return all;
 }
 
@@ -490,11 +454,6 @@ std::vector <Range> addRanges (
     if (limits.overlap (addition))
       results.push_back (addition);
 
-/*
-  std::cout << "# addRange:\n";
-  for (auto& result : results)
-    std::cout << "#   " << result.dump () << "\n";
-*/
   return results;
 }
 
@@ -516,11 +475,6 @@ std::vector <Range> subtractRanges (
     results = split_results;
   }
 
-/*
-  std::cout << "# subtractRange:\n";
-  for (auto& result : results)
-    std::cout << "#   " << result.dump () << "\n";
-*/
   return results;
 }
 
@@ -546,9 +500,6 @@ Range outerRange (const std::vector <Interval>& intervals)
       outer.end = Datetime ();
   }
 
-/*
-  std::cout << "# outerRange " << outer.dump () << "\n";
-*/
   return outer;
 }
 
@@ -626,12 +577,6 @@ Interval clip (const Interval& interval, const Range& range)
       clipped.range.end > range.end)
     clipped.range.end = range.end;
 
-/*
-  std::cout << "# clip:\n"
-            << "#   input   " << interval.dump () << "\n"
-            << "#   range   " << range.dump () << "\n"
-            << "#   clipped " << clipped.dump () << "\n";
-*/
   return clipped;
 }
 
