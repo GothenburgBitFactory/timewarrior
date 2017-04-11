@@ -34,6 +34,7 @@
           (thanks to Lynoure, asmyers).
 - TI-61   Typo in exclusion.t.cpp
           (thanks to Thomas Lauf).
+- TI-62   TimeWarrior should not ignore invalid command
 - TI-64   Command 'stop' with date before current interval's start date causes segfault
           (thanks to Thomas Lauf).
 - TI-65   The 'tags' command should support a filter

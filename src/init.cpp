@@ -297,7 +297,16 @@ int dispatchCommand (
   }
   else
   {
-    status = CmdDefault (rules, database);
+    auto words = cli.getWords ();
+
+    if (words.size () > 0)
+    {
+      throw format ("'{1}' is not a timew command. See 'timew help'.", words[0]);
+    }
+    else
+    {
+      status = CmdDefault (rules, database);
+    }
   }
 
   return status;
