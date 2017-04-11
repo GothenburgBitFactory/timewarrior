@@ -66,9 +66,9 @@ int CmdLengthen (
     if (id > static_cast <int> (tracked.size ()))
       throw format ("ID '@{1}' does not correspond to any tracking.", id);
 
-    if (tracked[tracked.size() - id].synthetic && dirty)
+    if (tracked[tracked.size () - id].synthetic && dirty)
     {
-      auto latest = getLatestInterval(database);
+      auto latest = getLatestInterval (database);
       auto exclusions = getAllExclusions (rules, filter.range);
 
       Interval modified {latest};
