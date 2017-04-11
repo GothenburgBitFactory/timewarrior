@@ -51,6 +51,7 @@ from basetest import Timew, TestCase
 #     self.assertNotRegexpMatches(text, pattern)
 #     self.tap("")
 
+
 class TestCLI(TestCase):
     def setUp(self):
         """Executed before each test in the class"""
@@ -68,9 +69,10 @@ class TestCLI(TestCase):
         self.assertIn("Tracking FOO", out)
 
     def test_TimeWarrior_with_invalid_command(self):
-        """Call a non-existing TimeWarrior command"""
-        code, out, err = self.t("bogus")
-        self.assertIn("'bogus' is not a timew command. See 'timew help'.", out)
+        """Call a non-existing TimeWarrior command should be an error"""
+        code, out, err = self.t.runError("bogus")
+        self.assertIn("'bogus' is not a timew command. See 'timew help'.", err)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
