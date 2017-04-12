@@ -87,7 +87,8 @@ int CmdContinue (
 
     // Update database.
     database.deleteInterval (latest);
-    for (auto& interval : flatten (modified, exclusions)) {
+    for (auto& interval : flatten (modified, exclusions))
+    {
       database.addInterval (interval);
 
       if (rules.getBoolean ("verbose"))
