@@ -60,7 +60,7 @@
 
 1.0.0 (2016-08-17) 6428ce89fcf2a5665d9351c50c2a84c98543206c
 
-- WWW-12  yesterday tag not recognised
+- WWW-12  yesterday tag not recognized
           (thanks to Michel Crucifix).
 - TI-34   Make timew more user-friendly by adding --help and default output
           (thanks to Felix Wolfsteller).
