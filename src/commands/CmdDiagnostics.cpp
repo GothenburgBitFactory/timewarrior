@@ -205,6 +205,7 @@ int CmdDiagnostics (
     for (auto& e : exts)
       if (e.length () > longest)
         longest = e.length ();
+
     longest -= extDir._data.length () + 1;
 
     for (auto& ext : exts)
