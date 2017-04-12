@@ -76,7 +76,8 @@ int CmdContinue (
 
   Datetime current_time = Datetime ();
 
-  if (latest.range.is_open()) {
+  if (latest.range.is_open ())
+  {
     auto filter = getFilter (cli);
     auto exclusions = getAllExclusions (rules, filter.range);
 
