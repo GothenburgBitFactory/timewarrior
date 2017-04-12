@@ -8,6 +8,7 @@ New Features in 1.1.0
   - The 'tags' command now suports filters.
   - New date names supported (see 'timew help date' or 'man timew').
   - Timewarrior and Taskwarrior now use the same date handling.
+  - The 'continue' command can resume tracking by @id.
 
 New Commands in 1.1.0
 
