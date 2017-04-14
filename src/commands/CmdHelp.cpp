@@ -171,7 +171,7 @@ int CmdHelp (
       std::cout << '\n'
                 << "Syntax: timew continue\n"
                 << '\n'
-                << "Resumes tracking the most recently closed interval. For example:\n"
+                << "Resumes tracking of closed interval. For example:\n"
                 << '\n'
                 << "  $ timew track 9am - 10am tag1 tag2\n"
                 << "  $ timew track 11am - 1pm tag3\n"
