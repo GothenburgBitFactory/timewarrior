@@ -31,15 +31,18 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (6);
+  UnitTest t (8);
 
   Rules r;
   r.set ("string", "234");
   t.is (r.get ("string"),         "234", "Rules set string, get string");
   t.is (r.getInteger ("string"),  234,   "Rules set string, get string");
 
+  // Throws on error.
   r.set ("undefined", "foo");
-  t.is (r.getInteger ("undefined", -1), 0, "Rules set non-int string, get 0");
+  try {r.getInteger ("undefined", -1);  t.fail ("Rules set non-int string, get 0");}
+  catch (...)                          {t.pass ("Rules set non-int string, get 0");}
+
   t.is (r.getBoolean ("undefined"), false, "Rules set non-bool string, get false");
 
   r.set ("integer", 123);
