@@ -94,7 +94,7 @@ for tag in totals:
         max_width = len(tag)
 
 if 'temp.report.start' not in configuration:
-    print 'There is no data in the database'
+    print('There is no data in the database')
     exit()
 
 start = datetime.datetime.strptime(configuration['temp.report.start'], DATEFORMAT)
@@ -102,34 +102,34 @@ end = datetime.datetime.strptime(configuration['temp.report.end'], DATEFORMAT)
 
 if max_width > 0:
     # Compose report header.
-    print '\nTotal by Tag, for %s - %s\n' % (start, end)
+    print('\nTotal by Tag, for %s - %s\n' % (start, end))
 
     # Compose table header.
     if configuration['color'] == 'on':
-        print '[4m%-*s[0m [4m%10s[0m' % (max_width, 'Tag', 'Total')
+        print('[4m%-*s[0m [4m%10s[0m' % (max_width, 'Tag', 'Total'))
     else:
-        print '%-*s %10s' % (max_width, 'Tag', 'Total')
-        print '-' * max_width, '----------'
+        print('%-*s %10s' % (max_width, 'Tag', 'Total'))
+        print('{} {}'.format('-' * max_width, '----------'))
 
     # Compose table rows.
     grand_total = 0
     for tag in sorted(totals):
         formatted = format_seconds(totals[tag].seconds)
         grand_total += totals[tag].seconds
-        print '%-*s %10s' % (max_width, tag, formatted)
+        print('%-*s %10s' % (max_width, tag, formatted))
 
     if untagged is not None:
         formatted = format_seconds(untagged.seconds)
         grand_total += untagged.seconds
-        print '%-*s %10s' % (max_width, '', formatted)
+        print('%-*s %10s' % (max_width, '', formatted))
 
     # Compose total.
     if configuration['color'] == 'on':
-        print ' ' * max_width, '[4m          [0m'
+        print('{} {}'.format(' ' * max_width, '[4m          [0m'))
     else:
-        print ' ' * max_width, '----------'
+        print('{} {}'.format(' ' * max_width, '----------'))
 
-    print '%-*s %10s' % (max_width, 'Total', format_seconds(grand_total))
+    print('%-*s %10s' % (max_width, 'Total', format_seconds(grand_total)))
 
 else:
-    print 'No data in the range %s - %s' % (start, end)
+    print('No data in the range %s - %s' % (start, end))
