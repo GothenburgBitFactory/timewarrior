@@ -46,6 +46,7 @@ Examples are
 * `1pm`
 * `10:33`
 * `2017-04-11T17:12:23`
+* `now`
 * `...`
 
 ### `Duration`
@@ -63,9 +64,9 @@ It can be specified as the difference between two `dates` or as a combination of
 * `one hour ago` which means `-1hr - now`
 
 ### `Tag`
-A `tag` is a lexical token that is at least one non-whitespace character, and
-could be a quoted phrase.  It is treated as one word.  It is used to label an
-`interval`.
+A `tag` is a lexical token that is at least one non-whitespace character, and could be a quoted phrase.
+It is treated as one word.
+It is used to label an `interval`.
 
 ### `Filter`
 Commands can use `filters` to limit the list of intervals they operate on.
@@ -75,16 +76,14 @@ Filters can be
 
 ### `Hints`
 Hints are words that begin wіth the `:` character, for example `:quiet`.
-A hint is a request that behavior be modified in a specific way.  The example of
-the `:quiet` hint requests that no extraneous output is generated, making the
-command more useful for scripting.
+A hint is a request that behavior be modified in a specific way.
+The example of the `:quiet` hint requests that no extraneous output is generated, making the command more useful for scripting.
 
-There is a supported set of hints (`timew help hints`), and commands will
-respond to hints that make sense in context, and ignore those that do not.
+There is a supported set of hints (`timew help hints`), and commands will respond to hints that make sense in context, and ignore those that do not.
 
-It is not an error to specify unrelated (but supported) hints. Commands may
-implicitly behave as though a hint were specified. For this reason hints are
-so named, they are not necessarily obeyed, not necessarily relevant.
+It is not an error to specify unrelated (but supported) hints.
+Commands may implicitly behave as though a hint were specified.
+For this reason hints are so named, they are not necessarily obeyed, not necessarily relevant.
 
 ## Commands
 Sorting the command line zoo.
@@ -97,10 +96,11 @@ All arguments are optional.
 * `cancel`
 
 ### Modifying commands
-These commands modify existing intervals. They require an `id` to know on which interval(s) to operate on.
-* `tag/untag`
+These commands modify existing intervals.
+They require an `id` to know on which interval(s) to operate on.
+* `tag`
 * `delete`
-* `shorten/lengthen/resize`
+* `shorten`/`lengthen`/`resize`
 * `move`
 * `fill`
 * `split`
@@ -110,7 +110,7 @@ These commands modify existing intervals. They require an `id` to know on which 
 Listing and reporting on the database...
 * `export`
 * `summary`
-* `chart (day, week, month)`
+* `chart` (`day`, `week`, `month`)
 * `gaps`
 * `tags`
 * `report`
@@ -121,7 +121,7 @@ Shortcut commands combine functionality of basic commands.
 * `continue` (combines tags & start)
 
 ### Administrative commands
-Not typical user-level commands, but provide support and diagnostic features...
+These are not typical user-level commands, but provide support and diagnostic features.
 * `help`
 * `show`
 * `config`
@@ -136,7 +136,8 @@ Not typical user-level commands, but provide support and diagnostic features...
     timew start [<date>] [<tags>]
 
 ### Arguments
-* `date` is an optional argument. If no date is given, the current date is used.
+* `date` is an optional argument.
+If no date is given, the current date is used.
 * `tags` is an optional list of one or more tags.
 
 ### Behavior
@@ -154,7 +155,7 @@ Not typical user-level commands, but provide support and diagnostic features...
 
 ### Behavior
 * If there is no active time tracking `stop` has no effect.
-* In case of active time tracking, `stop` closes the current open interval.
+* In case of active time tracking, `stop` closes the current open interval at the specified `date`.
 * If a tag list is given, a new open interval is created with all tags which are part of the current interval's tag list but not part of the given tag list.
 Tags which are part of the given tag list but not part of the current interval's tag list are ignored.
 
@@ -193,7 +194,8 @@ and thus behaves the same way.
     timew continue [<id>]
 
 ### Arguments
-* `id` is an optional argument. If no id is given, `@1` is used.
+* `id` is an optional argument.
+If no id is given, `@1` is used.
 
 ### Behavior
 `timew continue <id>` acts as a shortcut for
@@ -209,8 +211,10 @@ and thus behaves the same way.
     timew tag list [<ids>]
 
 ### Arguments
-* `remove` is an optional subcommand. If given, the specified tags are removed and not added.
-* `id` is an optional argument. If no id is given, `@1` is used.
+* `remove` is an optional subcommand.
+If given, the specified tags are removed and not added.
+* `id` is an optional argument.
+If no id is given, `@1` is used.
 * `tags` is a list of one or more tags.
 * `list` is an optional subcommand.
 * `ids` is an optional list of one or more ids.
@@ -218,3 +222,21 @@ and thus behaves the same way.
 ### Behavior
 * Tags which are not in the tag list of the specified interval are ignored.
 * If no id is given, `tag list` lists all available tags.
+
+## Command `annotate`
+### Synopsis
+
+    timew annotate [<id>] [:append] <annotation>
+
+### Arguments
+* `id` is an optional argument.
+If no id is given, `@1` is used.
+* `annotation` is everything after the `id`.
+
+### Behavior
+This command can be used to add additional information to intervals.
+
+* There can be only one or no annotation for an interval.
+* A new annotation overwrites an existing one unless the `:append` hint was given.
+* To delete an annotation overwrite it with an empty string.
+* Annotations can be displayed using the `summary` command.
