@@ -9,6 +9,8 @@ New Features in 1.1.0
   - New date names supported (see 'timew help date' or 'man timew').
   - Timewarrior and Taskwarrior now use the same date handling.
   - The 'continue' command can resume tracking by @id.
+  - When specifying a time without a date (e.g. '10:00am'), the day is assumed
+    to be today, and is no longer projected back in time.
 
 New Commands in 1.1.0
 
