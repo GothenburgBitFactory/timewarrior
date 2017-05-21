@@ -160,10 +160,14 @@ static void autoAdjust (
 ////////////////////////////////////////////////////////////////////////////////
 // Warn on new tag.
 static void warnOnNewTag (
-  const Rules& rules,
-  Database& database,
-  const Interval& interval)
+  const Rules&,
+  Database&,
+  const Interval&)
 {
+  // TODO This warning is not working properly, because when an interval is
+  //      modified, it is first deleted, then added. This causes this code to
+  //      determine that it is always a new tag.
+/*
   if (rules.getBoolean ("verbose"))
   {
     std::set <std::string> tags;
@@ -183,6 +187,7 @@ static void warnOnNewTag (
       if (tags.find (tag) == tags.end ())
         std::cout << "Note: '" << tag << "' is a new tag.\n";
   }
+*/
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -203,10 +208,7 @@ void validate (
 
   autoAdjust (findHint (cli, ":adjust"), rules, database, interval);
 
-  // TODO This warning is not working properly, because when an interval is
-  //      modified, it is first deleted, then added. This causes this code to
-  //      determine that it is always a new tag.
-  //warnOnNewTag (rules, database, interval);
+  warnOnNewTag (rules, database, interval);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
