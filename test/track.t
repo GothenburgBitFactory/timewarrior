@@ -118,6 +118,12 @@ class TestTrack(TestCase):
         code, out, err = self.t.runError("track 20160709T1430 - 20160709T1530 foo")
         self.assertIn('You cannot overlap intervals. Correct the start/end time, or specify the :adjust hint.', err)
 
+    def test_track_at_time(self):
+        """Test adding time in the past, using only times, fails to be recorded."""
+        self.t('track 12:01am - 12:02am "Test track interval"')
+        j = self.t.export()
+        self.assertTrue(len(j) > 0)
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())
