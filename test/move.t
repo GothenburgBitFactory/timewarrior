@@ -86,7 +86,7 @@ class TestMove(TestCase):
         """Move an open interval backwards to specific time."""
         self.t("start 5mins ago foo")
         code, out, err = self.t("move @1 12:01am")
-        self.assertRegexpMatches(out, 'Moved @1 to \d\d\d\d-\d\d-\d\dT00:00:00')
+        self.assertRegexpMatches(out, 'Moved @1 to \d\d\d\d-\d\d-\d\dT00:01:00')
 
         j = self.t.export()
         self.assertEqual(len(j), 1)
