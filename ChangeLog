@@ -46,8 +46,10 @@
 - TI-70   Timew starts a new interval even if a current interval contains the
           same set of tags
           (Thanks to Thomas Babej).
+- TI-73   timew move with a specific time broken on 1.1.0
+          (Thanks to A M).
 - TI-77   timew track seems to think today is tomorrow
-          (Thanks to A M)
+          (Thanks to A M).
 - Fixed Python 3 support of the holiday/refresh script
           (thanks to Jelle van der Waa).
 - Added missing man page link
