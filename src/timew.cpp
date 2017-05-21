@@ -29,6 +29,7 @@
 #include <Database.h>
 #include <Rules.h>
 #include <Extensions.h>
+#include <Datetime.h>
 #include <Timer.h>
 #include <shared.h>
 #include <commands.h>
@@ -49,6 +50,15 @@ int main (int argc, const char** argv)
 
   try
   {
+    // Timewarrior has special handling needs for times, such that a time that
+    // is before the current time is not projected forwards to tomorrow. For
+    // example:
+    //
+    //   now:    2017-05-21T12:22:00
+    //   input:                10:00
+    //   result: 2017-05-21T10:00:00
+    Datetime::timeRelative = false;
+
     // Add entities so that command line tokens such as 'help' are recognized as
     // commands.
     CLI cli;
