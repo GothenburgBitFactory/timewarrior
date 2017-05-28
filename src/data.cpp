@@ -213,6 +213,9 @@ Interval getFilter (const CLI& cli)
     throw std::string ("Unrecognized date range: '") + join (" ", args) + "'.";
   }
 
+  if (filter.range.start > now)
+    throw std::string ("Time tracking cannot be set in the future.");
+
   if (filter.range.start > filter.range.end)
     throw std::string ("The end of a date range must be after the start.");
 
