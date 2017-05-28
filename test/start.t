@@ -64,13 +64,18 @@ class TestStart(TestCase):
         self.assertTrue('start' in j[0])
         self.assertFalse('end' in j[0])
 
-    def test_timed_start(self):
-        """Test timed start"""
-        self.t("start 10:30am")
+    def test_timed_start_past(self):
+        """Test timed start past"""
+        self.t("start 00:00am")
         j = self.t.export()
         self.assertEqual(len(j), 1)
         self.assertTrue('start' in j[0])
         self.assertFalse('end' in j[0])
+
+    def test_timed_start_future(self):
+        """Test timed start future"""
+        code, out, err = self.t.runError("start 11:59pm")
+        self.assertIn("Time tracking cannot be set in the future.", err)
 
     def test_start_with_open_interval(self):
         """Test start with already open interval, which should be auto-stopped"""
