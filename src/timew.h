@@ -79,6 +79,7 @@ int quantizeToNMinutes (const int, const int);
 bool dayIsHoliday (const Rules&, const Datetime&);
 bool findHint (const CLI&, const std::string&);
 std::string minimalDelta (const Datetime&, const Datetime&);
+std::vector <Interval> getOverlaps (Database&, const Rules&, const Interval&);
 
 // log.cpp
 void enableDebugMode (bool);
