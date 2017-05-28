@@ -44,6 +44,9 @@
 //
 Interval getFilter (const CLI& cli)
 {
+  // One instance, so we can directly compare.
+  Datetime now;
+
   Interval filter;
   std::string start;
   std::string end;
@@ -114,7 +117,7 @@ Interval getFilter (const CLI& cli)
   if (args.size () == 1 &&
       args[0] == "<date>")
   {
-    filter.range = {Datetime (start), Datetime ()};
+    filter.range = {Datetime (start), now};
   }
 
   // from <date>
@@ -122,7 +125,7 @@ Interval getFilter (const CLI& cli)
            args[0] == "from" &&
            args[1] == "<date>")
   {
-    filter.range = {Datetime (start), Datetime ()};
+    filter.range = {Datetime (start), now};
   }
 
   // <date> to/- <date>
@@ -186,7 +189,7 @@ Interval getFilter (const CLI& cli)
            args[0] == "<duration>" &&
            args[1] == "ago")
   {
-    filter.range = {Datetime () - Duration (duration).toTime_t (), Datetime ()};
+    filter.range = {now - Duration (duration).toTime_t (), now};
   }
 
   // for <duration>
@@ -194,14 +197,14 @@ Interval getFilter (const CLI& cli)
            args[0] == "for"        &&
            args[1] == "<duration>")
   {
-    filter.range = {Datetime () - Duration (duration).toTime_t (), Datetime ()};
+    filter.range = {now - Duration (duration).toTime_t (), now};
   }
 
   // <duration>
   else if (args.size () == 1 &&
            args[0] == "<duration>")
   {
-    filter.range = {Datetime () - Duration (duration).toTime_t (), Datetime ()};
+    filter.range = {now - Duration (duration).toTime_t (), now};
   }
 
   // Unrecognized date range construct.
