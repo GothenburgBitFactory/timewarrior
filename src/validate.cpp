@@ -112,36 +112,53 @@ static void autoAdjust (
 
   // TODO Accumulate identifiable and correctable cases here.
 /*
+  // Closed
 
-  ext      [-----]
-  new   [-----]
+  int      [-----]
+  ovl   [-----]
 
-  ext   [-----]
-  new      [-----]
+  int   [-----]
+  ovl      [-----]
 
-  ext      [-]
-  new   [-----]
+  int      [-]
+  ovl   [-----]
 
-  ext   [-----]
-  new      [-]
+  int   [-----]
+  ovl      [-]
 
-  ext   [-----]
-  new   [-----]
+  int   [-----]
+  ovl   [-----]
 
-  ext      [-----]
-  new   [--
+  // Interval is open
 
-  ext   [-----]
-  new      [--
+  int      [--
+  ovl   [-----]
 
-  ext      [-]
-  new   [--
+  int   [--
+  ovl      [-----]
 
-  ext   [-----]
-  new      [-
+  int      [--
+  ovl   [-----]
 
-  ext   [-----]
-  new   [--
+  int   [--
+  ovl      [-]
+
+  int   [--
+  ovl   [-----]
+
+  // Overlap is open
+
+  int      [-----]
+  ovl   [--
+
+  int   [-----]
+  ovl      [--
+
+  int      [-]
+  ovl   [--
+
+  int   [-----]
+  ovl   [--
 
 */
 
