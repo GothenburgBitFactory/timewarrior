@@ -97,28 +97,18 @@ static void autoAdjust (
   Database& database,
   Interval& interval)
 {
-  // Without (adjust == true), overlapping intervals are an error condition.
-
-  // An empty filter allows scanning beyond interval.range.
-  Interval range_filter;
-  auto tracked = getTracked (database, rules, range_filter);
-
-  // Find all overlapping intervals.
-  std::vector <Interval> overlapping;
-  for (auto& track : tracked)
-    if (interval.range.overlap (track.range))
-      overlapping.push_back (track);
-
-  // Diagnostics.
+  auto overlaps = getOverlaps (database, rules, interval);
   debug ("Input         " + interval.dump ());
   debug ("Overlaps with");
-  for (auto& overlap : overlapping)
-    debug ("             " + overlap.dump ());
+  for (auto& overlap : overlaps)
+    debug ("              " + overlap.dump ());
 
-  // Overlaps are forbidden.
-  if (! adjust && overlapping.size ())
+  // Without (adjust == true), overlapping intervals are an error condition.
+  if (! adjust && overlaps.size ())
     throw std::string ("You cannot overlap intervals. Correct the start/end "
                        "time, or specify the :adjust hint.");
+
+  // TODO If there is overlap, and the tags are the same, merge.
 
   // TODO Accumulate identifiable and correctable cases here.
 /*
