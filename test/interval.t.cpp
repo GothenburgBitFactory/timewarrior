@@ -173,8 +173,12 @@ int main (int, char**)
   t.is (i21.json (), "{\"tags\":[\"one-two\",\"three\"]}",
                "JSON '{\"tags\":[\"one-two\",\"three\"]}'");
 
+  // make sure that underscores are escaped
+  Interval i22;
+  i22.tag ("foo_bar");
+  t.is (i22.serialize (), "inc # \"foo_bar\"", "Interval().serialize -> 'inc # \"foo_bar\"'");
+
   return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
