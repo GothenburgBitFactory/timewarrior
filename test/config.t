@@ -224,6 +224,11 @@ class TestConfig(TestCase):
         code, out, err = self.t("config reports.day.month :yes")
         self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
 
+    def test_number_to_date_upgrade(self):
+        """Test that an integer remains an integer"""
+        code, out, err = self.t("config number 5", input="yes\n")
+        self.assertIn(" with a value of '5'?", out)
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())

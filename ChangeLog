@@ -43,6 +43,8 @@
           (thanks to Bodo Graumann)
 - TI-68   Cannot shorten interval which has been moved into an exclusion.
           (thanks to A M)
+- TI-69   timew config converts integers to times
+          (thanks to Thomas Lauf).
 - TI-70   Timew starts a new interval even if a current interval contains the
           same set of tags
           (Thanks to Thomas Babej).

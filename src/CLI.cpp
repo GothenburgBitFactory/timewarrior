@@ -486,14 +486,6 @@ void CLI::identifyFilter ()
       a.tag ("FILTER");
     }
 
-    else if (a._lextype == Lexer::Type::number)
-    {
-      // Upgrade numbers to hours.
-      a.attribute ("raw", raw + ":00");
-      a._lextype = Lexer::Type::date;
-      a.tag ("FILTER");
-    }
-
     else if (raw == "from"   ||
              raw == "since"  ||
              raw == "to"     ||
