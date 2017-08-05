@@ -52,6 +52,8 @@
           (Thanks to A M).
 - TI-77   timew track seems to think today is tomorrow
           (Thanks to A M).
+- TI-78   Tag parsing broken for tags starting with "or_"
+          (Thanks to Lukas Barth).
 - Fixed Python 3 support of the holiday/refresh script
           (thanks to Jelle van der Waa).
 - Added missing man page link
