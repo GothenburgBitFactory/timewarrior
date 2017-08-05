@@ -130,6 +130,19 @@ class TestFillHint(TestCase):
 #        self.assertIn('Backfilled @2 to 2016-07-24T10:00:00', out)
 #        self.assertIn('Filled @2 to 2016-07-24T11:00:00', out)
 
+    def test_fill_last_interval(self):
+        """TI-75: The :fill hint not properly detecting the last interval"""
+        self.t("track 20170805T0100 - 20170805T0200 tag1")
+        self.t("track 20170805T0200 - 20170805T0300 tag2")
+        # Gap 0300 - 0400
+        self.t("start 20170805T0400 tag3")
+        code, out, err = self.t("summary :ids")
+        self.tap(out)
+        self.tap(err)
+
+        code, out, err = self.t("track :fill 20170805T0300 - 20170805T0330 tag4")
+        self.tap(out)
+        self.tap(err)
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
