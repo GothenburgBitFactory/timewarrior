@@ -214,6 +214,25 @@ class TestMove(TestCase):
         self.assertFalse('end' in j[1])
         self.assertFalse('tags' in j[1])
 
+    def test_move_interval_over_another_with_adjust(self):
+        """Move an interval over another with :adjust"""
+
+        code, out, err = self.t("track 20170301T110000Z - 20170301T140000Z foo")
+        code, out, err = self.t("track 20170301T150000Z - 20170301T160000Z foo")
+
+        # Move the interval.
+        code, out, err = self.t("move @1 20170301T133000Z :adjust")
+        # Display is in local time zone so we can't match time exactly.
+        self.assertRegexpMatches(out, 'Moved @1 to 2017-03-01T\d\d:\d\d:\d\d\n')
+
+        # There should now be an interval starting at 13:30.
+        starts = [str(x['start']) for x in self.t.export()]
+        self.assertIn('20170301T133000Z', starts)
+
+        # There should no longer be an interval ending at
+        # 14:00 as that should have been adjusted.
+        ends = [str(x['end']) for x in self.t.export()]
+        self.assertNotIn('20170301T140000Z', ends)
 
 # TODO Add :adjust tests.
 
