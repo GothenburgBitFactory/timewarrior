@@ -92,7 +92,7 @@ How to make a patch
 Clone the repository from the right place. Do not clone from our github mirror,
 we don't use it. Do not patch the contents of one of our tarballs.
 
-    $ git clone https://git.tasktools.org/scm/tm/timew.git timew.git
+    $ git clone --recursive https://git.tasktools.org/TM/timew.git timew.git
     $ cd timew.git
 
 Find the latest development branch, and checkout.
