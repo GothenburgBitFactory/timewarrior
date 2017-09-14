@@ -56,7 +56,7 @@ int CmdChartDay (
   Rules& rules,
   Database& database)
 {
-  // Create a filter, and if empty, choose the current month.
+  // Create a filter, and if empty, choose the current day.
   auto filter = getFilter (cli);
   if (! filter.range.is_started ())
   {
@@ -75,7 +75,7 @@ int CmdChartWeek (
   Rules& rules,
   Database& database)
 {
-  // Create a filter, and if empty, choose the current month.
+  // Create a filter, and if empty, choose the current week.
   auto filter = getFilter (cli);
   if (! filter.range.is_started ())
   {

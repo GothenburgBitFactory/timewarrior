@@ -34,9 +34,9 @@
 //   The :fill hint is used to eliminate gaps on interval modification, and only
 //   a single interval is affected.
 //
-//   Fill works by extending an interval in both directions if possible, to abut
-//   either an interval or an exclusion, while being conћtrained by a filter
-//   range.
+//   Fill works by extending an interval in both directions if possible, to
+//   about either an interval or an exclusion, while being constrained by a
+//   filter range.
 //
 void autoFill (
   const Rules& rules,
