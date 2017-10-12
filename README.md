@@ -23,8 +23,7 @@ Please send your code patches to:
 
     support@taskwarrior.org
 
-Consider joining bug.tasktools.org, answers.tasktools.org and participating in
-the future of Timewarrior.
+Consider joining bug.tasktools.org and participating in the future of Timewarrior.
 
 ---
 
