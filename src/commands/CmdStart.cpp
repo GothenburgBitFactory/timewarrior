@@ -45,7 +45,7 @@ int CmdStart (
   auto latest = getLatestInterval (database);
   if (latest.range.is_open ())
   {
-    // If the new interval tags match those of the currnetly open interval, then
+    // If the new interval tags match those of the currently open interval, then
     // do nothing - the tags are already being tracked.
     if (latest.tags () == filter.tags ())
     {

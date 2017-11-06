@@ -85,7 +85,7 @@ int main (int argc, const char** argv)
     initializeDataAndRules (cli, database, rules);
 
     // Load extension script info.
-    // Re-analyze command because of the new extention entities.
+    // Re-analyze command because of the new extension entities.
     Extensions extensions;
     initializeExtensions (cli, rules, extensions);
     cli.analyze ();
