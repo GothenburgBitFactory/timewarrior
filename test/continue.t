@@ -150,24 +150,29 @@ class TestContinue(TestCase):
 
         j = self.t.export()
 
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+
         self.assertEqual(len(j), 3)
 
         self.assertTrue('start' in j[0])
-        self.assertEqual(j[0]['start'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=5)), 'start time of first interval does not match')
+        self.assertEqual(j[0]['start'], '{:%Y%m%dT%H}0000Z'.format(five_hours_before_utc), 'start time of first interval does not match: expected {:%Y%m%dT%H}0000Z, actual {}'.format(five_hours_before_utc, j[0]['start']))
         self.assertTrue('end' in j[0])
-        self.assertEqual(j[0]['end'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=4)), 'end time of first interval does not match')
+        self.assertEqual(j[0]['end'], '{:%Y%m%dT%H}0000Z'.format(four_hours_before_utc), 'end time of first interval does not match: expected {:%Y%m%dT%H}0000Z, actual {}'.format(four_hours_before_utc, j[0]['end']))
         self.assertTrue('tags' in j[0])
         self.assertEqual(j[0]['tags'], ['FOO'])
 
         self.assertTrue('start' in j[1])
-        self.assertEqual(j[1]['start'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=4)), 'start time of second interval does not match')
+        self.assertEqual(j[1]['start'], '{:%Y%m%dT%H}0000Z'.format(four_hours_before_utc), 'start time of second interval does not match: expected {:%Y%m%dT%H}0000Z, actual {}'.format(four_hours_before_utc, j[1]['start']))
         self.assertTrue('end' in j[1])
-        self.assertEqual(j[1]['end'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=3)), 'end time of second interval does not match')
+        self.assertEqual(j[1]['end'], '{:%Y%m%dT%H}0000Z'.format(three_hours_before_utc), 'end time of second interval does not match: expected {:%Y%m%dT%H}0000Z, actual {}'.format(three_hours_before_utc, j[1]['end']))
         self.assertTrue('tags' in j[1])
         self.assertEqual(j[1]['tags'], ['BAR'])
 
         self.assertTrue('start' in j[2])
-        self.assertEqual(j[2]['start'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=2)), 'start time of continued interval does not match: expected {:%Y%m%dT%H}0000Z, actual {}'.format(now_utc - timedelta(hours=2), j[2]['start']))
+        self.assertEqual(j[2]['start'], '{:%Y%m%dT%H}0000Z'.format(two_hours_before_utc), 'start time of continued interval does not match: expected {:%Y%m%dT%H}0000Z, actual {}'.format(two_hours_before_utc, j[2]['start']))
         self.assertFalse('end' in j[2])
         self.assertTrue('tags' in j[2])
         self.assertEqual(j[2]['tags'], ['FOO'])
