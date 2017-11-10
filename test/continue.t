@@ -29,7 +29,8 @@
 import sys
 import os
 import unittest
-from datetime import datetime
+from datetime import datetime, timedelta
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -121,6 +122,55 @@ class TestContinue(TestCase):
         code, out, err = self.t("continue @2")
         self.assertIn("Recorded BAR\n", out)
         self.assertIn("Tracking FOO\n", out)
+
+
+    def test_continue_with_id_and_date(self):
+        """Verify that continuing a specified interval with date continues at given date"""
+        now = datetime.now()
+        now_utc = now.utcnow()
+
+        two_hours_before = now - timedelta(hours=2)
+        three_hours_before = now - timedelta(hours=3)
+        four_hours_before = now - timedelta(hours=4)
+        five_hours_before = now - timedelta(hours=5)
+
+        code, out, err = self.t("start FOO {}T{:%H}:00:00".format(now.date(), five_hours_before))
+        self.assertIn("Tracking FOO\n", out)
+
+        code, out, err = self.t("stop {}T{:%H}:00:00".format(now.date(), four_hours_before))
+        self.assertIn("Recorded FOO\n", out)
+
+        code, out, err = self.t("start BAR {}T{:%H}:00:00".format(now.date(), four_hours_before))
+        self.assertIn("Tracking BAR\n", out)
+
+        code, out, err = self.t("stop {}T{:%H}:00:00".format(now.date(), three_hours_before))
+        self.assertIn("Recorded BAR\n", out)
+
+        self.t("continue @2 {}T{:%H}:00:00".format(now.date(), two_hours_before))
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 3)
+
+        self.assertTrue('start' in j[0])
+        self.assertEqual(j[0]['start'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=5)), 'start time of first interval does not match')
+        self.assertTrue('end' in j[0])
+        self.assertEqual(j[0]['end'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=4)), 'end time of first interval does not match')
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'], ['FOO'])
+
+        self.assertTrue('start' in j[1])
+        self.assertEqual(j[1]['start'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=4)), 'start time of second interval does not match')
+        self.assertTrue('end' in j[1])
+        self.assertEqual(j[1]['end'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=3)), 'end time of second interval does not match')
+        self.assertTrue('tags' in j[1])
+        self.assertEqual(j[1]['tags'], ['BAR'])
+
+        self.assertTrue('start' in j[2])
+        self.assertEqual(j[2]['start'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=2)), 'start time of continued interval does not match: expected {:%Y%m%dT%H}0000Z, actual {}'.format(now_utc - timedelta(hours=2), j[2]['start']))
+        self.assertFalse('end' in j[2])
+        self.assertTrue('tags' in j[2])
+        self.assertEqual(j[2]['tags'], ['FOO'])
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
