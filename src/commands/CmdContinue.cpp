@@ -68,11 +68,16 @@ int CmdContinue (
     to_copy = latest;
   }
 
-  Datetime current_time = Datetime ();
+  auto filter = getFilter (cli);
+  Datetime current_time;
+
+  if (filter.range.start.toEpoch () != 0)
+    current_time = filter.range.start;
+  else
+    current_time = Datetime ();
 
   if (latest.range.is_open ())
   {
-    auto filter = getFilter (cli);
     auto exclusions = getAllExclusions (rules, filter.range);
 
     // Stop it, at the given start time, if applicable.
