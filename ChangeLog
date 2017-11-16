@@ -59,6 +59,8 @@
 - TI-78   Tag parsing broken for tags starting with "or_"
           (Thanks to Lukas Barth).
 - TI-90   Let 'continue' accept a date or a date range
+- TI-91   Timewarrior does not compile on DragonFly
+          (Thanks to Michael Neumann).
 - Fixed Python 3 support of the holiday/refresh script
           (thanks to Jelle van der Waa).
 - Added missing man page link
