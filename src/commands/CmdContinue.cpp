@@ -37,13 +37,7 @@ int CmdContinue (
   Database& database)
 {
   // Gather IDs and TAGs.
-  std::vector <int> ids;
-
-  for (auto& arg : cli._args)
-  {
-    if (arg.hasTag ("ID"))
-      ids.push_back (strtol (arg.attribute ("value").c_str (), NULL, 10));
-  }
+  std::vector <int> ids = cli.getIds();
 
   if (ids.size() > 1)
     throw std::string ("You can only specify one ID to continue.");

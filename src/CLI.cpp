@@ -524,3 +524,17 @@ bool CLI::exactMatch (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::vector<int> CLI::getIds() const
+{
+  std::vector <int> ids;
+
+  for (auto& arg : _args)
+  {
+    if (arg.hasTag ("ID"))
+      ids.push_back (strtol (arg.attribute ("value").c_str (), NULL, 10));
+  }
+
+  return ids;
+}
+
+////////////////////////////////////////////////////////////////////////////////

@@ -39,19 +39,16 @@ int CmdJoin (
   Database& database)
 {
   // Gather IDs and TAGs.
-  std::vector <int> ids;
-  for (auto& arg : cli._args)
-    if (arg.hasTag ("ID"))
-      ids.push_back (strtol (arg.attribute ("value").c_str (), NULL, 10));
+  std::vector <int> ids = cli.getIds();
+
+  // Only 2 IDs allowed in a join.
+  if (ids.size () != 2)
+    throw std::string ("Two IDs must be specified. See 'timew help join'.");
 
   // Load the data.
   // Note: There is no filter.
   Interval filter;
   auto tracked = getTracked (database, rules, filter);
-
-  // Only 2 IDs allowed in a join.
-  if (ids.size () != 2)
-    throw std::string ("Two IDs must be specified. See 'timew help join'.");
 
   // ID values must be in range.
   for (auto& id : ids)

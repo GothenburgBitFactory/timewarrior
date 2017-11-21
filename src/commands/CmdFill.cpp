@@ -38,13 +38,9 @@ int CmdFill (
   Rules& rules,
   Database& database)
 {
-  // Gather IDs and TAGs.
-  std::vector <int> ids;
-  for (auto& arg : cli._args)
-    if (arg.hasTag ("ID"))
-      ids.push_back (strtol (arg.attribute ("value").c_str (), NULL, 10));
+  std::vector <int> ids = cli.getIds();
 
-  if (! ids.size ())
+  if (ids.empty ())
     throw std::string ("IDs must be specified. See 'timew help fill'.");
 
   // Load the data.

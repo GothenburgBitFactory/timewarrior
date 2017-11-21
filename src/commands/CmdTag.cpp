@@ -38,19 +38,17 @@ int CmdTag (
   Database& database)
 {
   // Gather IDs and TAGs.
-  std::vector <int> ids;
+  std::vector <int> ids = cli.getIds();
+
+  if (ids.empty ())
+    throw std::string ("IDs must be specified. See 'timew help tag'.");
+
   std::vector <std::string> tags;
   for (auto& arg : cli._args)
   {
-    if (arg.hasTag ("ID"))
-      ids.push_back (strtol (arg.attribute ("value").c_str (), NULL, 10));
-
     if (arg.hasTag ("TAG"))
       tags.push_back (arg.attribute ("raw"));
   }
-
-  if (! ids.size ())
-    throw std::string ("IDs must be specified. See 'timew help tag'.");
 
   // Load the data.
   // Note: There is no filter.
