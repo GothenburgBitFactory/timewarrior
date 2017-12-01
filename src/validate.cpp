@@ -51,7 +51,7 @@ void autoFill (
   for (auto earlier = tracked.rbegin (); earlier != tracked.rend (); ++earlier)
   {
     if (! earlier->range.is_open () &&
-        earlier->range.end < interval.range.start)
+        earlier->range.end <= interval.range.start)
     {
       interval.range.start = earlier->range.end;
         if (rules.getBoolean ("verbose"))
@@ -69,7 +69,7 @@ void autoFill (
   {
     for (auto& later : tracked)
     {
-      if (interval.range.end < later.range.start)
+      if (interval.range.end <= later.range.start)
       {
         interval.range.end = later.range.start;
         if (rules.getBoolean ("verbose"))

@@ -50,6 +50,8 @@
           (Thanks to Thomas Babej).
 - TI-73   timew move with a specific time broken on 1.1.0
           (Thanks to A M).
+- TI-75   The :fill hint not properly detecting the last interval
+          (Thanks to Thomas Babej).
 - TI-77   timew track seems to think today is tomorrow
           (Thanks to A M).
 - TI-78   Tag parsing broken for tags starting with "or_"
