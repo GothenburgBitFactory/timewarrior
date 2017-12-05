@@ -48,6 +48,9 @@ int CmdSummary (
   if (! filter.range.is_started ())
     filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
 
+  if (! filter.range.is_ended())
+    filter.range.end = Datetime ("tomorrow");
+
   // Load the data.
   auto tracked = getTracked (database, rules, filter);
 

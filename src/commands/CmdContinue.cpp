@@ -69,12 +69,19 @@ int CmdContinue (
   }
 
   auto filter = getFilter (cli);
-  Datetime current_time;
+  Datetime start_time;
+  Datetime end_time;
 
   if (filter.range.start.toEpoch () != 0)
-    current_time = filter.range.start;
+  {
+    start_time = filter.range.start;
+    end_time = filter.range.end;
+  }
   else
-    current_time = Datetime ();
+  {
+    start_time = Datetime ();
+    end_time = 0;
+  }
 
   if (latest.range.is_open ())
   {
@@ -82,7 +89,7 @@ int CmdContinue (
 
     // Stop it, at the given start time, if applicable.
     Interval modified {latest};
-    modified.range.end = current_time;
+    modified.range.end = start_time;
 
     // Update database.
     database.deleteInterval (latest);
@@ -95,8 +102,10 @@ int CmdContinue (
     }
   }
 
-  // Open an identical interval and update the DB.
-  to_copy.range.open (current_time);
+  // Create an identical interval and update the DB.
+  to_copy.range.start = start_time;
+  to_copy.range.end = end_time;
+
   validate (cli, rules, database, to_copy);
   database.addInterval (to_copy);
 

@@ -117,7 +117,7 @@ Interval getFilter (const CLI& cli)
   if (args.size () == 1 &&
       args[0] == "<date>")
   {
-    filter.range = {Datetime (start), now};
+    filter.range = {Datetime (start), 0};
   }
 
   // from <date>
@@ -125,7 +125,7 @@ Interval getFilter (const CLI& cli)
            args[0] == "from" &&
            args[1] == "<date>")
   {
-    filter.range = {Datetime (start), now};
+    filter.range = {Datetime (start), 0};
   }
 
   // <date> to/- <date>
@@ -137,7 +137,7 @@ Interval getFilter (const CLI& cli)
     filter.range = {Datetime (start), Datetime (end)};
   }
 
-  // from/since <date> to/- <date>
+  // from <date> to/- <date>
   else if (args.size () == 4                   &&
            args[0] == "from"                   &&
            args[1] == "<date>"                 &&
@@ -156,7 +156,7 @@ Interval getFilter (const CLI& cli)
     filter.range = {Datetime (start), Datetime (start) + Duration (duration).toTime_t ()};
   }
 
-  // from/since <date> for <duration>
+  // from <date> for <duration>
   else if (args.size () == 4       &&
            args[0] == "from"       &&
            args[1] == "<date>"     &&
@@ -189,7 +189,7 @@ Interval getFilter (const CLI& cli)
            args[0] == "<duration>" &&
            args[1] == "ago")
   {
-    filter.range = {now - Duration (duration).toTime_t (), now};
+    filter.range = {now - Duration (duration).toTime_t (), 0};
   }
 
   // for <duration>
@@ -216,7 +216,7 @@ Interval getFilter (const CLI& cli)
   if (filter.range.start > now)
     throw std::string ("Time tracking cannot be set in the future.");
 
-  if (filter.range.start > filter.range.end)
+  if (filter.range.end != 0 && filter.range.start > filter.range.end)
     throw std::string ("The end of a date range must be after the start.");
 
   return filter;

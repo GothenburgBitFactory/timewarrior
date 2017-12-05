@@ -65,7 +65,9 @@ int CmdStart (
     // Update database.
     database.deleteInterval (latest);
     for (auto& interval : flatten (modified, exclusions))
+    {
       database.addInterval (interval);
+    }
 
     if (rules.getBoolean ("verbose"))
       std::cout << intervalSummarize (database, rules, modified);
