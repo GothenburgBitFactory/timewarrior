@@ -37,7 +37,7 @@ int CmdHelpUsage (const Extensions& extensions)
             << "Usage: timew [--version]\n"
             << "       timew cancel\n"
             << "       timew config [<name> [<value | '']]\n"
-            << "       timew continue\n"
+            << "       timew continue [@<id>] [<date>|<interval>]\n"
             << "       timew day [<interval>] [<tag> ...]\n"
             << "       timew delete @<id> [@<id> ...]\n"
             << "       timew diagnostics\n"
@@ -169,19 +169,35 @@ int CmdHelp (
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "continue")
       std::cout << '\n'
-                << "Syntax: timew continue\n"
+                << "Syntax: timew continue [<ID>] [<date>|<interval>]\n"
                 << '\n'
-                << "Resumes tracking of closed interval. For example:\n"
+                << "Resumes tracking of a closed interval. For example:\n"
+                << '\n'
+                << "  $ timew track 9am - 10am tag1 tag2\n"
+                << "  $ timew continue\n"
+                << '\n'
+                << "This continues the most recent interval. One can refer to another closed\n"
+                << "interval by referencing its id:\n"
                 << '\n'
                 << "  $ timew track 9am - 10am tag1 tag2\n"
                 << "  $ timew track 11am - 1pm tag3\n"
                 << "  $ timew continue @2\n"
                 << '\n'
                 << "The 'continue' command creates a new interval, starting now, and using the tags\n"
-                << "'tag1' and 'tag2'.\n"
-                << "Using the 'summary' command and specifying the ':ids' hint shows interval IDs.\n"
+                << "'tag1' and 'tag2'. (Using the 'summary' command and specifying the ':ids' hint\n"
+                << "shows interval IDs.) Independently from an ID, one can specify a new start time\n"
+                << "or an interval range:\n"
                 << '\n'
-                << "This command is a convenient way to resume work without re-entering the tags.\n"
+                << "  $ timew continue @2 4min ago\n"
+                << '\n'
+                << "This continues the interval referenced by ID 2 with a new start time (4 minutes\n"
+                << "before now)\n"
+                << '\n'
+                << "  $ timew continue 18pm - 19pm\n"
+                << '\n'
+                << "This adds a copy of the latest interval with a new interval range.\n"
+                << '\n'
+                << "'continue' is a convenient way to resume work without re-entering the tags.\n"
                 << '\n'
                 << "See also 'start', 'stop'.\n"
                 << '\n';
