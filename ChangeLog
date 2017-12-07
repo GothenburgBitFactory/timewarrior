@@ -56,6 +56,7 @@
           (Thanks to A M).
 - TI-78   Tag parsing broken for tags starting with "or_"
           (Thanks to Lukas Barth).
+- TI-90   Let 'continue' accept a date or a date range
 - Fixed Python 3 support of the holiday/refresh script
           (thanks to Jelle van der Waa).
 - Added missing man page link
