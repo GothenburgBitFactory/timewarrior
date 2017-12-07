@@ -91,6 +91,21 @@ W10 2017-03-09 Thu @3 Tag2       11:38:39 11:45:35 0:06:56
                                                            0:20:52
 """, out)
 
+    def test_with_date_filter(self):
+        self.t("track 2017-03-09T10:00:00 - 2017-03-09T11:00:00")
+        self.t("track 2017-03-10T10:00:00 - 2017-03-10T11:00:00")
+        self.t("track 2017-03-11T10:00:00 - 2017-03-11T11:00:00")
+
+        code, out, err = self.t("summary 2017-03-10 :ids")
+
+        self.assertIn("""
+Wk  Date       Day ID Tags    Start      End    Time   Total
+--- ---------- --- -- ---- -------- -------- ------- -------
+W10 2017-03-10 Fri @2      10:00:00 11:00:00 1:00:00 1:00:00
+
+                                                     1:00:00
+""", out)
+
     def test_with_tag_filter(self):
 
 

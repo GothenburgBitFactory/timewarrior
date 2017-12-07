@@ -49,7 +49,7 @@ int CmdSummary (
     filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
 
   if (! filter.range.is_ended())
-    filter.range.end = Datetime ("tomorrow");
+    filter.range.end = filter.range.start + Duration("1d").toTime_t();
 
   // Load the data.
   auto tracked = getTracked (database, rules, filter);
