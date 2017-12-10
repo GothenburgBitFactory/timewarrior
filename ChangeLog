@@ -4,6 +4,8 @@
           (Thanks to Jörg Krause, Ben Boeckel).
 - TW-1845 Cygwin build fails, missing get_current_dir_name
           (thanks to hosaka).
+- TW-1936 Tweak tests to have fuller TAP compliance
+          (thanks to Paul J. Fenwick)
 - TI-27   Continue tracking by ID
           (thanks to Dennis Schubert)
 - TI-29   timew config can't add new value
