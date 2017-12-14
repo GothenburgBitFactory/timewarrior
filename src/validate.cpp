@@ -103,65 +103,62 @@ static void autoAdjust (
   for (auto& overlap : overlaps)
     debug ("              " + overlap.dump ());
 
-  // Without (adjust == true), overlapping intervals are an error condition.
-  if (! adjust && overlaps.size ())
-    throw std::string ("You cannot overlap intervals. Correct the start/end "
-                       "time, or specify the :adjust hint.");
+  if (! overlaps.empty ())
+  {
+    if (! adjust)
+      throw std::string("You cannot overlap intervals. Correct the start/end "
+                          "time, or specify the :adjust hint.");
 
-  // TODO If there is overlap, and the tags are the same, merge.
+    // implement overwrite resolution, i.e. the new interval overwrites existing intervals
+    for (auto& overlap : overlaps)
+    {
+      bool start_within_overlap = overlap.range.contains (interval.range.start);
+      bool end_within_overlap = interval.range.end != 0 && overlap.range.contains (interval.range.end);
 
-  // TODO Accumulate identifiable and correctable cases here.
-/*
-  // Closed
+      if (start_within_overlap && !end_within_overlap)
+      {
+        // start date of new interval within old interval
+        Interval modified {overlap};
+        modified.range.end = interval.range.start;
+        database.modifyInterval (overlap, modified);
+      }
+      else if (!start_within_overlap && end_within_overlap)
+      {
+        // end date of new interval within old interval
+        Interval modified {overlap};
+        modified.range.start = interval.range.end;
+        database.modifyInterval (overlap, modified);
+      }
+      else if (!start_within_overlap && !end_within_overlap)
+      {
+        // new interval encloses old interval
+        database.deleteInterval (overlap);
+      }
+      else
+      {
+        // new interval enclosed by old interval
+        Interval split2 {overlap};
+        Interval split1 {overlap};
 
-  int      [-----]
-  ovl   [-----]
+        split1.range.end = interval.range.start;
+        split2.range.start = interval.range.end;
 
-  int   [-----]
-  ovl      [-----]
+        if (split1.range.is_empty ())
+        {
+          database.deleteInterval (overlap);
+        }
+        else
+        {
+          database.modifyInterval (overlap, split1);
+        }
 
-  int      [-]
-  ovl   [-----]
-
-  int   [-----]
-  ovl      [-]
-
-  int   [-----]
-  ovl   [-----]
-
-  // Interval is open
-
-  int      [--
-  ovl   [-----]
-
-  int   [--
-  ovl      [-----]
-
-  int      [--
-  ovl   [-----]
-
-  int   [--
-  ovl      [-]
-
-  int   [--
-  ovl   [-----]
-
-  // Overlap is open
-
-  int      [-----]
-  ovl   [--
-
-  int   [-----]
-  ovl      [--
-
-  int      [-]
-  ovl   [--
-
-  int   [-----]
-  ovl   [--
-
-*/
-
+        if (! split2.range.is_empty ())
+        {
+          database.addInterval (split2);
+        }
+      }
+    }
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////

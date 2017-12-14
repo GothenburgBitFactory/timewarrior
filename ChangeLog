@@ -41,6 +41,8 @@
           segfault
           (thanks to Thomas Lauf).
 - TI-65   The 'tags' command should support a filter
+- TI-66   Move with :adjust leaves overlapping intervals.
+          (thanks to A M)
 - TI-67   Summary with parameters shows wrong ids
           (thanks to Bodo Graumann)
 - TI-68   Cannot shorten interval which has been moved into an exclusion.
@@ -58,6 +60,8 @@
           (Thanks to A M).
 - TI-78   Tag parsing broken for tags starting with "or_"
           (Thanks to Lukas Barth).
+- TI-85   :adjust creates overlapping interval
+          (thanks to Tim Ruffing)
 - TI-90   Let 'continue' accept a date or a date range
 - TI-91   Timewarrior does not compile on DragonFly
           (Thanks to Michael Neumann).

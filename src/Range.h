@@ -45,6 +45,9 @@ public:
   bool is_open () const;
   bool is_started () const;
   bool is_ended () const;
+  bool is_empty () const;
+
+  bool contains (const Datetime&) const;
 
   bool overlap (const Range&) const;
   bool encloses (const Range&) const;
