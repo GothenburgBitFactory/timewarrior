@@ -1,7 +1,7 @@
 1.1.0 () -
 
 - TD-120  Missing cmakedefine for HAVE_GET_CURRENT_DIR_NAME
-          (Thanks to Jörg Krause, Ben Boeckel).
+          (thanks to Jörg Krause, Ben Boeckel).
 - TW-1845 Cygwin build fails, missing get_current_dir_name
           (thanks to hosaka).
 - TW-1936 Tweak tests to have fuller TAP compliance
@@ -51,20 +51,20 @@
           (thanks to Thomas Lauf).
 - TI-70   Timew starts a new interval even if a current interval contains the
           same set of tags
-          (Thanks to Thomas Babej).
+          (thanks to Thomas Babej).
 - TI-73   timew move with a specific time broken on 1.1.0
-          (Thanks to A M).
+          (thanks to A M).
 - TI-75   The :fill hint not properly detecting the last interval
-          (Thanks to Thomas Babej).
+          (thanks to Thomas Babej).
 - TI-77   timew track seems to think today is tomorrow
-          (Thanks to A M).
+          (thanks to A M).
 - TI-78   Tag parsing broken for tags starting with "or_"
-          (Thanks to Lukas Barth).
+          (thanks to Lukas Barth).
 - TI-85   :adjust creates overlapping interval
           (thanks to Tim Ruffing)
 - TI-90   Let 'continue' accept a date or a date range
 - TI-91   Timewarrior does not compile on DragonFly
-          (Thanks to Michael Neumann).
+          (thanks to Michael Neumann).
 - Fixed Python 3 support of the holiday/refresh script
           (thanks to Jelle van der Waa).
 - Added missing man page link

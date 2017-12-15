@@ -1,5 +1,5 @@
 ###############################################################################
-# taskwarrior - a command line task list manager.
+# timewarrior - a command line time tracker.
 #
 # Copyright 2006 - 2017, Paul Beckingham, Federico Hernandez.
 #
