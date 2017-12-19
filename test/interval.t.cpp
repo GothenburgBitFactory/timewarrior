@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (39);
+  UnitTest t (40);
 
   // bool is_started () const;
   // bool is_ended () const;
