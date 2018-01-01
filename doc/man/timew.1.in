@@ -127,7 +127,27 @@ Exports all the tracked time in JSON format. Supports filtering. For example:
 .TP
 .B timew extensions
 Displays the directory containing the extension programs and a table showing
-each extention and its status. See also 'diagnostics'.
+each extension and its status. See also 'diagnostics'.
+
+.TP
+.B timew fill @<id> [@<id> ...]
+
+The 'fill' command is used to adjust any interval to fill in surrounding gaps.
+Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
+Using the right ID, you can identify an interval to fill. For example, show
+the IDs:
+
+  $ timew summary :week :ids
+
+Then having selected '@2' as the interval you wish to fill:
+
+  $ timew fill @2
+
+Note that you can fill multiple intervals:
+
+  $ timew fill @2 @10 @23
+
+See also 'hints'.
 
 .TP
 .B timew gaps [<interval>] [<tag> ...]
@@ -821,7 +841,7 @@ User configuration file.
 Time tracking data files.
 
 .SH "CREDITS & COPYRIGHTS"
-Copyright (C) 2015 \- 2017 P. Beckingham, F. Hernandez.
+Copyright (C) 2015 \- 2018 P. Beckingham, F. Hernandez.
 
 Timewarrior is distributed under the MIT license. See
 http://www.opensource.org/licenses/mit-license.php for more information.

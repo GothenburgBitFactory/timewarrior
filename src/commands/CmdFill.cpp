@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2017, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -55,11 +55,13 @@ int CmdFill (
       throw format ("ID '@{1}' does not correspond to any tracking.", id);
 
     Interval from = tracked[tracked.size () - id];
+    std::cout << "# from " << from.dump () << "\n";
     Interval to {from};
 
     database.deleteInterval (from);
     autoFill (rules, database, to);
     validate (cli, rules, database, to);
+    std::cout << "# to " << to.dump () << "\n";
     database.addInterval (to);
 
     // Note: Feedback generated inside autoFill().

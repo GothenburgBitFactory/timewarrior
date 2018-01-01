@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# Copyright 2006 - 2017, Paul Beckingham, Federico Hernandez.
+# Copyright 2006 - 2018, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -112,11 +112,11 @@ class TestFillHint(TestCase):
         self.assertTrue('end' not in j[1])
         self.assertEqual(j[1]['tags'][0], 'two')
 
-#class TestFillCommand(TestCase):
-#    def setUp(self):
-#        """Executed before each test in the class"""
-#        self.t = Timew()
-#
+class TestFillCommand(TestCase):
+    def setUp(self):
+        """Executed before each test in the class"""
+        self.t = Timew()
+
 #    def test_fill_command(self):
 #        """Create gaps, then fill them"""
 #        self.t("track 20160724T090000 - 20160724T100000 foo")
