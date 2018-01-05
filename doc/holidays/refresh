@@ -53,7 +53,7 @@ def update_locales(locales, regions, years):
 
   for locale in locales:
     with open("holidays.%s" % locale, "w") as fh:
-      fh.write('# Holiday data provided by Holidata.net\n')
+      fh.write('# Holiday data provided by holidata.net\n')
       fh.write('#   Generated ' + time.strftime('%Y-%m-%dT%H:%M:%S') + '\n\n')
       fh.write('define holidays:\n')
       fh.write('  ' + locale + ':\n')
@@ -79,7 +79,7 @@ def update_locales(locales, regions, years):
 
           except HTTPError as e:
             if e.code == 404:
-              print("Holidata.net does not have data for %s, for %d." % (locale, year))
+              print("holidata.net does not have data for %s, for %d." % (locale, year))
             else:
               print(e.code, e.read())
 

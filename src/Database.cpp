@@ -159,7 +159,7 @@ void Database::deleteInterval (const Interval& interval)
 ////////////////////////////////////////////////////////////////////////////////
 // The algorithm to modify an interval is first to find and remove it from the
 // Datafile, then add it back to the right Datafile. This is because
-// modifїcation may involve changing the start date, which could mean the
+// modification may involve changing the start date, which could mean the
 // Interval belongs in a different file.
 void Database::modifyInterval (const Interval& from, const Interval& to)
 {
@@ -171,7 +171,7 @@ void Database::modifyInterval (const Interval& from, const Interval& to)
 
 ////////////////////////////////////////////////////////////////////////////////
 // The _txn member is a reference count, allowing multiple nested transactions.
-// This accomodates the Database::modifyInterval call, that in turn calls
+// This accommodates the Database::modifyInterval call, that in turn calls
 // ::addInterval and ::deleteInterval.
 void Database::undoTxnStart ()
 {

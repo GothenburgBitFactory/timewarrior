@@ -142,7 +142,7 @@ int main (int, char**)
   // exc      [---)   [---)   [---)
   // output     [-----)   [---)   [...
   test_flatten (t,
-                "[6] (inc) - (1 overlapping exc, 2 enclused exc) = (3 inc)",
+                "[6] (inc) - (1 overlapping exc, 2 enclosed exc) = (3 inc)",
                 "inc 20160523T100000Z # foo",
                 {{Datetime ("20160523T080000Z"), Datetime ("20160523T120000Z")},
                  {Datetime ("20160523T160000Z"), Datetime ("20160523T170000Z")},
@@ -272,7 +272,7 @@ int main (int, char**)
   t.ok (r1.end   == Datetime ("20160502T000000"), "getFullDay 2016-05-01T20:31:23 -> end   2016-05-02T00:00:00");
 
   // std::vector <Range> subtractRanges (const Range&, const std::vector <Range>&, const std::vector <Range>&);
-  // Subtract three non-overlapping ranges from a full day, yielding two resultant rangeṡ.
+  // Subtract three non-overlapping ranges from a full day, yielding two resultant ranges.
   Range limit (Datetime ("20160101T000000"), Datetime ("20160101T235959"));
   std::vector <Range> exclusions = {{Datetime ("20160101T000000"), Datetime ("20160101T080000")},
                                     {Datetime ("20160101T120000"), Datetime ("20160101T130000")},

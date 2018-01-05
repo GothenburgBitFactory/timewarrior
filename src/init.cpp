@@ -259,7 +259,7 @@ int dispatchCommand (
   std::string command = cli.getCommand ();
   if (command != "")
   {
-    // These signatures are æxpected to be all different, therefore no
+    // These signatures are expected to be all different, therefore no
     // command to fn mapping.
          if (command == "cancel")      status = CmdCancel        (     rules, database            );
     else if (command == "config")      status = CmdConfig        (cli, rules, database            );

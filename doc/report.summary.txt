@@ -36,7 +36,7 @@ W17 2016-04-29 Fri Research, C17, Dept Meeting, Planning  7:59
                    Total                                 31:11
 
 
-(total by tag: Reasearch)
+(total by tag: Research)
 
 Tags            Wk  Date       Day Start End   Time  Sub
 --------------- --- ---------- --- ----- ----- ----- -----

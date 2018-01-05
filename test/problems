@@ -143,5 +143,5 @@ if __name__ == "__main__":
         print(color(expected_str, "yellow"))
         print_category(expected)
 
-    # If we encoutered any failures, return non-zero code
+    # If we encountered any failures, return non-zero code
     sys.exit(1 if int(error_int) or int(unexpected_int) else 0)

@@ -26,8 +26,8 @@ function setup_cfg {
 
 function find_timew_binary {
     # $bashtap_org_pwd is set in bash_tap.sh. It is the directory the parent script is
-    # run from. Check for the tiemw binary relative to that directory.
-    # Do not use the system "tiemw" if no local one is found, error out instead.
+    # run from. Check for the timew binary relative to that directory.
+    # Do not use the system "timew" if no local one is found, error out instead.
     for t in "${bashtap_org_pwd}/timew" "${bashtap_org_pwd}/src/timew" "${bashtap_org_pwd}/../timew" "${bashtap_org_pwd}/../src/timew" "${bashtap_org_pwd}/../build/src/timew"; do
         if [ -f "$t" ] && [ -x "$t" ]; then
             t_abs=$(bashtap_get_absolute_path "$t")
