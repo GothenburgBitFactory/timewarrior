@@ -24,14 +24,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cmake.h>
 #include <Table.h>
 #include <Duration.h>
 #include <shared.h>
 #include <format.h>
 #include <commands.h>
 #include <timew.h>
-#include <algorithm>
 #include <iostream>
 
 // Implemented in CmdChart.cpp.

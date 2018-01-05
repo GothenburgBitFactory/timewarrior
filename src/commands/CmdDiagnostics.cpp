@@ -27,9 +27,7 @@
 #include <cmake.h>
 #include <format.h>
 #include <timew.h>
-#include <algorithm>
 #include <iostream>
-#include <sstream>
 #include <shared.h>
 
 #ifdef HAVE_COMMIT
