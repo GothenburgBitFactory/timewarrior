@@ -42,18 +42,16 @@ int CmdMove (
   std::vector<int> ids = cli.getIds();
 
   if (ids.size() > 1)
-    throw std::string ("The 'move' command only supports a single ID.");
-
-  int id;
+  {
+    throw std::string("The 'move' command only supports a single ID.");
+  }
 
   if (ids.empty())
   {
-    id = 0;
+    throw std::string ("ID must be specified. See 'timew help move'.");
   }
-  else
-  {
-    id = ids[0];
-  }
+
+  int id = ids[0];
 
   std::string new_start;
   for (auto& arg : cli._args)
@@ -61,9 +59,6 @@ int CmdMove (
     if (arg.hasTag ("FILTER") && arg._lextype == Lexer::Type::date)
       new_start = arg.attribute ("raw");
   }
-
-  if (! id)
-    throw std::string ("ID must be specified. See 'timew help move'.");
 
   // Load the data.
   // Note: There is no filter.
