@@ -95,10 +95,7 @@ int CmdTag (
     // Feedback.
     if (rules.getBoolean ("verbose"))
     {
-      std::cout << "Added";
-      for (auto& tag : tags)
-        std::cout << ' ' << quoteIfNeeded (tag);
-      std::cout << " to @" << id << '\n';
+      std::cout << "Added " << joinQuotedIfNeeded (" ", tags) << " to @" << id << '\n';
     }
   }
 

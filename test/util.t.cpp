@@ -31,7 +31,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (7);
+  UnitTest t (7 + 6 + 6 + 6);
 
   // std::string escape (const std::string& input, int c)
   t.is (escape ("", 'x'),    "",        "escape '','x' --> ''");
@@ -44,6 +44,59 @@ int main (int, char**)
   t.is (quoteIfNeeded ("foo"), "foo",         "quoteIfNeeded 'foo' --> 'foo'");
   t.is (quoteIfNeeded ("f o o"), "\"f o o\"", "quoteIfNeeded 'f o o' --> '\"f o o\"'");
 
+  {
+    std::set<std::string> unjoined;
+    std::string joined;
+
+    joined = join("", unjoined);
+    t.is(joined.length(), (size_t) 0, "join -> length 0");
+    t.is(joined, "", "join -> ''");
+
+    unjoined = {"", "a", "bc", "def"};
+    joined = join("", unjoined);
+    t.is(joined.length(), (size_t) 6, "join '' 'a' 'bc' 'def' -> length 6");
+    t.is(joined, "abcdef", "join '' 'a' 'bc' 'def' -> 'abcdef'");
+
+    joined = join("-", unjoined);
+    t.is(joined.length(), (size_t) 9, "join '' - 'a' - 'bc' - 'def' -> length 9");
+    t.is(joined, "-a-bc-def", "join '' - 'a' - 'bc' - 'def' -> '-a-bc-def'");
+  }
+
+  {
+    std::set <std::string> unjoined;
+    std::string joined;
+
+    joined = joinQuotedIfNeeded ("", unjoined);
+    t.is (joined.length (), (size_t) 0,  "join -> length 0");
+    t.is (joined,           "",          "join -> ''");
+
+    unjoined = {"", "a", "bc", "d e f"};
+    joined = joinQuotedIfNeeded ("", unjoined);
+    t.is (joined.length (), (size_t) 10, "join '' 'a' 'bc' 'd e f' -> length 6");
+    t.is (joined,           "abc\"d e f\"",   "join '' 'a' 'bc' 'def' -> 'abc\"d e f\"'");
+
+    joined = joinQuotedIfNeeded ("-", unjoined);
+    t.is (joined.length (), (size_t) 13,  "join '' - 'a' - 'bc' - 'def' -> length 9");
+    t.is (joined,           "-a-bc-\"d e f\"", "join '' - 'a' - 'bc' - 'def' -> '-a-bc-\"d e f\"'");
+  }
+
+  {
+    std::vector <std::string> unjoined;
+    std::string joined;
+
+    joined = joinQuotedIfNeeded ("", unjoined);
+    t.is (joined.length (), (size_t) 0,  "join -> length 0");
+    t.is (joined,           "",          "join -> ''");
+
+    unjoined = {"", "a", "bc", "d e f"};
+    joined = joinQuotedIfNeeded ("", unjoined);
+    t.is (joined.length (), (size_t) 10, "join '' 'a' 'bc' 'def' -> length 6");
+    t.is (joined,           "abc\"d e f\"",   "join '' 'a' 'bc' 'def' -> 'abc\"d e f\"'");
+
+    joined = joinQuotedIfNeeded ("-", unjoined);
+    t.is (joined.length (), (size_t) 13,  "join '' - 'a' - 'bc' - 'def' -> length 9");
+    t.is (joined,           "-a-bc-\"d e f\"", "join '' - 'a' - 'bc' - 'def' -> '-a-bc-\"d e f\"'");
+  }
   return 0;
 }
 

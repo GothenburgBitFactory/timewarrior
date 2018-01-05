@@ -105,13 +105,7 @@ int CmdSummary (
       if (track.range.is_open () && day <= Datetime ())
         today.end = Datetime ();
 
-      std::string tags = "";
-      for (auto& tag : track.tags ())
-      {
-        if (tags != "")
-          tags += ", ";
-        tags += tag;
-      }
+      std::string tags = join(", ", track.tags());
 
       if (ids)
         table.set (row, 3, format ("@{1}", track.id), colorID);
@@ -156,11 +150,7 @@ int CmdSummary (
 
       if (filter.tags ().size ())
       {
-        std::vector <std::string> tags;
-        for (auto& tag : filter.tags ())
-          tags.push_back (quoteIfNeeded (tag));
-
-        std::cout << " tagged with " << join (", ", tags);
+        std::cout << " tagged with " << joinQuotedIfNeeded (", ", filter.tags ());
       }
 
       std::cout << ".\n";

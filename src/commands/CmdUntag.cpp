@@ -94,10 +94,7 @@ int CmdUntag (
 
     if (rules.getBoolean ("verbose"))
     {
-      std::cout << "Removed";
-      for (auto& tag : tags)
-        std::cout << ' ' << quoteIfNeeded (tag);
-      std::cout << " from @" << id << '\n';
+      std::cout << "Removed " << joinQuotedIfNeeded (" ", tags) << " from @" << id << '\n';
     }
   }
 
