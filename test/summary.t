@@ -67,9 +67,9 @@ class TestSummary(TestCase):
         code, out, err = self.t("summary :ids")
 
         self.assertRegexpMatches(out, """
-Wk  Date       Day ID Tags    ?Start      ?End    Time   Total
+Wk  ?Date       Day ID Tags    ?Start      ?End    Time   Total
 [ -]+
-W[0-9]{2} [0-9]{4}-[0-9]{2}-[0-9]{2} .{3} @1      [0-9]{1,2}:[0-9]{2}:[0-9]{2} [0-9]{1,2}:[0-9]{2}:[0-9]{2} 1:00:00 1:00:00
+W[0-9]{1,2} [0-9]{4}-[0-9]{2}-[0-9]{2} .{3} @1      [0-9]{1,2}:[0-9]{2}:[0-9]{2} [0-9]{1,2}:[0-9]{2}:[0-9]{2} 1:00:00 1:00:00
 
 [ ]+1:00:00
 """)
