@@ -34,33 +34,39 @@ int CmdDefault (Rules& rules, Database& database)
 {
   // Load the most recent interval, summarize and display.
   auto interval = getLatestInterval (database);
+
   if (interval.range.is_open ())
   {
     if (rules.getBoolean ("verbose"))
-      std::cout << intervalSummarize (database, rules, interval);
-  }
-  else
-  {
-    if (rules.getBoolean ("verbose"))
     {
-      if (rules.getBoolean ("temp.shiny"))
-        std::cout << '\n'
-                  << "Welcome to Timewarrior.\n"
-                  << '\n'
-                  << "There is built-in help:\n"
-                  << "    timew help\n"
-                  << "    timew help <command>\n"
-                  << "    (and more)\n"
-                  << '\n'
-                  << "There is a fully-detailed man page:\n"
-                  << "    man timew\n"
-                  << '\n';
-      else
-        std::cout << "There is no active time tracking.\n";
+      std::cout << intervalSummarize (database, rules, interval);
     }
+
+    return 0;
   }
 
-  return 0;
+  if (rules.getBoolean ("temp.shiny"))
+  {
+    std::cout << '\n'
+              << "Welcome to Timewarrior.\n"
+              << '\n'
+              << "There is built-in help:\n"
+              << "    timew help\n"
+              << "    timew help <command>\n"
+              << "    (and more)\n"
+              << '\n'
+              << "There is a fully-detailed man page:\n"
+              << "    man timew\n"
+              << '\n';
+    return 0;
+  }
+
+  if (rules.getBoolean ("verbose"))
+  {
+    std::cout << "There is no active time tracking.\n";
+  }
+
+  return 1;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

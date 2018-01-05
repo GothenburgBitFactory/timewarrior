@@ -28,6 +28,7 @@
 
 import sys
 import os
+import shutil
 import unittest
 from datetime import datetime
 # Ensure python finds the local simpletap module
@@ -57,16 +58,27 @@ class TestCLI(TestCase):
         """Executed before each test in the class"""
         self.t = Timew()
 
+    def test_initial_call_of_timew(self):
+      """Verify that calling 'timew' the first time returns exit code 0"""
+      self.t.reset_env()
+      shutil.rmtree(self.t.env["TIMEWARRIORDB"])
+
+      code, out, err = self.t.runSuccess(":yes")
+      self.assertIn("Welcome to Timewarrior.\n", out)
+
+      assert os.path.isdir(self.t.env["TIMEWARRIORDB"])
+      assert os.path.exists(self.t.env["TIMEWARRIORDB"])
+
     def test_TimeWarrior_without_command_without_active_time_tracking(self):
         """Call 'timew' without active time tracking"""
-        code, out, err = self.t()
+        code, out, err = self.t.runError()
         self.assertIn("There is no active time tracking", out)
 
     def test_TimeWarrior_without_command_with_active_time_tracking(self):
         """Call 'timew' with active time tracking"""
         self.t("start FOO")
         code, out, err = self.t()
-        self.assertIn("Tracking FOO", out)
+        self.assertIn("Tracking FOO\n", out)
 
     def test_TimeWarrior_with_invalid_command(self):
         """Call a non-existing TimeWarrior command should be an error"""
