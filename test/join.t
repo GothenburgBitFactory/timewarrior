@@ -55,11 +55,13 @@ class TestJoin(TestCase):
         self.assertTrue('tags' in j[0])
         self.assertEqual(j[0]['tags'][0], 'foo')
 
+
 # TODO Add :adjust tests.
 
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
+
     unittest.main(testRunner=TAPTestRunner())
 
 # vim: ai sts=4 et sw=4 ft=python

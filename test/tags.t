@@ -64,7 +64,8 @@ class TestTags(TestCase):
         self.assertNotIn('foo', out)
         self.assertIn('bar', out)
 
-#class TestTagFeedback(TestCase):
+
+# class TestTagFeedback(TestCase):
 #    def setUp(self):
 #        """Executed before each test in the class"""
 #        self.t = Timew()
@@ -98,6 +99,7 @@ class TestTags(TestCase):
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
+
     unittest.main(testRunner=TAPTestRunner())
 
 # vim: ai sts=4 et sw=4 ft=python

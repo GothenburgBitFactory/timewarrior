@@ -101,11 +101,12 @@ class TestDelete(TestCase):
         j = self.t.export()
         self.assertTrue(len(j) >= 1)
         self.assertTrue('start' in j[-1])
-        self.assertTrue('end' in j[-1])    # Closed
+        self.assertTrue('end' in j[-1])  # Closed
 
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
+
     unittest.main(testRunner=TAPTestRunner())
 
 # vim: ai sts=4 et sw=4 ft=python

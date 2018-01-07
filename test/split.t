@@ -81,11 +81,13 @@ class TestSplit(TestCase):
 
         self.assertEqual(j[0]['end'], j[1]['start'])
 
+
 # TODO Add :adjust tests.
 
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
+
     unittest.main(testRunner=TAPTestRunner())
 
 # vim: ai sts=4 et sw=4 ft=python

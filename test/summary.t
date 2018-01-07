@@ -196,6 +196,7 @@ W10 2017-03-11 Sat @3 FOO  10:00:00 11:00:00 1:00:00
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
+
     unittest.main(testRunner=TAPTestRunner())
 
 # vim: ai sts=4 et sw=4 ft=python

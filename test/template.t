@@ -37,6 +37,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from basetest import Timew, TestCase
 
+
 # Test methods available:
 #     self.assertEqual(a, b)
 #     self.assertNotEqual(a, b)
@@ -115,6 +116,7 @@ class TestBugNumber(TestCase):
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
+
     unittest.main(testRunner=TAPTestRunner())
 
 # vim: ai sts=4 et sw=4 ft=python
