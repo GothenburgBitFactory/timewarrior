@@ -57,10 +57,12 @@ class TestSummary(TestCase):
         self.t = Timew()
 
     def test_empty(self):
+        """Summary should print warning if no data in range"""
         code, out, err = self.t("summary")
         self.assertIn("No filtered data found in the range", out)
 
     def test_filled(self):
+        """Summary should be printed if data is available"""
         self.t("start 1h ago")
         self.t("stop")
 
@@ -75,6 +77,7 @@ W[0-9]{1,2} [0-9]{4}-[0-9]{2}-[0-9]{2} .{3} @1      [0-9]{1,2}:[0-9]{2}:[0-9]{2}
 """)
 
     def test_with_range_filter(self):
+        """Summary should print data filtered by date range"""
         self.t("track Tag1 2017-03-09T08:43:08 - 2017-03-09T09:38:15")
         self.t("track Tag2 2017-03-09T11:38:39 - 2017-03-09T11:45:35")
         self.t("track Tag2 Tag3 2017-03-09T11:46:21 - 2017-03-09T12:00:17")
@@ -92,6 +95,7 @@ W10 2017-03-09 Thu @3 Tag2       11:38:39 11:45:35 0:06:56
 """, out)
 
     def test_with_date_filter(self):
+        """Summary should print data filtered by date"""
         self.t("track 2017-03-09T10:00:00 - 2017-03-09T11:00:00")
         self.t("track 2017-03-10T10:00:00 - 2017-03-10T11:00:00")
         self.t("track 2017-03-11T10:00:00 - 2017-03-11T11:00:00")
@@ -107,8 +111,7 @@ W10 2017-03-10 Fri @2      10:00:00 11:00:00 1:00:00 1:00:00
 """, out)
 
     def test_with_tag_filter(self):
-
-
+        """Summary should print data filtered by tag"""
         self.t("track Tag1 2017-03-09T08:43:08 - 2017-03-09T09:38:15")
         self.t("track Tag2 2017-03-09T11:38:39 - 2017-03-09T11:45:35")
         self.t("track Tag2 Tag3 2017-03-09T11:46:21 - 2017-03-09T12:00:17")
