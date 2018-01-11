@@ -31,6 +31,7 @@
 #include <iomanip>
 #include <map>
 #include <sstream>
+#include <string>
 #include <timew.h>
 #include <vector>
 
@@ -45,6 +46,21 @@ Color summaryIntervalColor (
   for (auto& tag : tags)
   {
     c.blend (tagColor (rules, tag));
+  }
+
+  return c;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Color summaryIntervalColor (
+  std::map <std::string, Color>& tagColors,
+  const std::set <std::string>& tags)
+{
+  Color c;
+
+  for (const auto& tag : tags)
+  {
+    c.blend (tagColors[tag]);
   }
 
   return c;
@@ -404,6 +420,30 @@ std::map <std::string, Color> createTagColorMap (
       {
         mapping[tag] = palette.next ();
       }
+    }
+  }
+
+  return mapping;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::map <std::string, Color> createTagColorMap (const Rules& rules, const std::vector <Interval>& intervals)
+{
+  std::set <std::string> tags;
+
+  for (const auto& interval : intervals)
+  {
+    tags.insert (interval.tags ().begin (), interval.tags ().end ());
+  }
+
+  std::map <std::string, Color> mapping;
+
+  for (const auto& tag : tags)
+  {
+    std::string key = "tags." + tag + ".color";
+    if (rules.has (key))
+    {
+      mapping[tag] = Color (rules.get (key));
     }
   }
 
