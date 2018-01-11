@@ -27,6 +27,7 @@ set (timew_SRCS AtomicFile.cpp AtomicFile.h
                 Journal.cpp    Journal.h
                 Range.cpp      Range.h
                 Rules.cpp      Rules.h
+                SummaryTable.cpp SummaryTable.h
                 TagDescription.cpp TagDescription.h
                 TagInfo.cpp    TagInfo.h
                 TagInfoDatabase.cpp TagInfoDatabase.h
