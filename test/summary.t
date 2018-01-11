@@ -77,6 +77,20 @@ W[0-9]{1,2} [0-9]{4}-[0-9]{2}-[0-9]{2} .{3} @1      [0-9]{1,2}:[0-9]{2}:[0-9]{2}
 [ ]+1:00:00
 """)
 
+    def test_with_open_interval(self):
+        """Summary should print open interval"""
+        self.t("start 1h ago")
+
+        code, out, err = self.t("summary :ids")
+
+        self.assertRegexpMatches(out, """
+Wk  ?Date       Day ID Tags    ?Start End    Time   Total
+[ -]+
+W[0-9]{1,2} [0-9]{4}-[0-9]{2}-[0-9]{2} .{3} @1      [0-9]{1,2}:[0-9]{2}:[0-9]{2}[ ]+- 1:00:00 1:00:00
+
+[ ]+1:00:00
+""")
+
     def test_with_range_filter(self):
         """Summary should print data filtered by date range"""
         self.t("track Tag1 2017-03-09T08:43:08 - 2017-03-09T09:38:15")
@@ -126,8 +140,64 @@ Wk  Date       Day ID Tags   Start     End    Time   Total
 W10 2017-03-09 Thu @4 Tag1 8:43:08 9:38:15 0:55:07 0:55:07
 
                                                    0:55:07
-
 """, out)
+
+    def test_with_day_gap(self):
+        """Summary should skip days with no data"""
+        self.t("track 2017-03-09T10:00:00 - 2017-03-09T11:00:00")
+        self.t("track 2017-03-11T10:00:00 - 2017-03-11T11:00:00")
+
+        code, out, err = self.t("summary 2017-03-09 - 2017-03-12 :ids")
+
+        self.assertIn("""
+Wk  Date       Day ID Tags    Start      End    Time   Total
+--- ---------- --- -- ---- -------- -------- ------- -------
+W10 2017-03-09 Thu @2      10:00:00 11:00:00 1:00:00 1:00:00
+W10 2017-03-11 Sat @1      10:00:00 11:00:00 1:00:00 1:00:00
+
+                                                     2:00:00
+""", out)
+
+    def test_with_week_change(self):
+        """Summary should display week change"""
+        self.t("track 2017-03-11T10:00:00 - 2017-03-11T11:00:00")
+        self.t("track 2017-03-13T10:00:00 - 2017-03-13T11:00:00")
+
+        code, out, err = self.t("summary 2017-03-11 - 2017-03-14 :ids")
+
+        self.assertIn("""
+Wk  Date       Day ID Tags    Start      End    Time   Total
+--- ---------- --- -- ---- -------- -------- ------- -------
+W10 2017-03-11 Sat @2      10:00:00 11:00:00 1:00:00 1:00:00
+W11 2017-03-13 Mon @1      10:00:00 11:00:00 1:00:00 1:00:00
+
+                                                     2:00:00
+""", out)
+
+    def test_with_several_tracks_per_day(self):
+        """Summary should display daily total"""
+        self.t("track FOO 2017-03-09T10:00:00 - 2017-03-09T11:00:00")
+        self.t("track BAR 2017-03-09T12:00:00 - 2017-03-09T13:00:00")
+        self.t("track BAZ 2017-03-09T14:00:00 - 2017-03-09T15:00:00")
+        self.t("track FOO 2017-03-11T10:00:00 - 2017-03-11T11:00:00")
+        self.t("track BAR 2017-03-11T12:00:00 - 2017-03-11T13:00:00")
+        self.t("track BAZ 2017-03-11T14:00:00 - 2017-03-11T15:00:00")
+
+        code, out, err = self.t("summary 2017-03-09 - 2017-03-12 :ids")
+
+        self.assertIn("""
+Wk  Date       Day ID Tags    Start      End    Time   Total
+--- ---------- --- -- ---- -------- -------- ------- -------
+W10 2017-03-09 Thu @6 FOO  10:00:00 11:00:00 1:00:00
+                   @5 BAR  12:00:00 13:00:00 1:00:00
+                   @4 BAZ  14:00:00 15:00:00 1:00:00 3:00:00
+W10 2017-03-11 Sat @3 FOO  10:00:00 11:00:00 1:00:00
+                   @2 BAR  12:00:00 13:00:00 1:00:00
+                   @1 BAZ  14:00:00 15:00:00 1:00:00 3:00:00
+
+                                                     6:00:00
+""", out)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
