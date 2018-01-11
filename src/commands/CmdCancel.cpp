@@ -35,17 +35,19 @@ int CmdCancel (
 {
   // If there is an open interval, cancel it by deleting it..
   auto latest = getLatestInterval (database);
-  if (latest.range.is_open ())
-  {
-    database.deleteInterval (latest);
-    if (rules.getBoolean ("verbose"))
-      std::cout << "Canceled active time tracking.\n";
-  }
-  else
+
+  if (!latest.range.is_open ())
   {
     if (rules.getBoolean ("verbose"))
       std::cout << "There is no active time tracking.\n";
+
+    return 0;
   }
+
+  database.deleteInterval(latest);
+
+  if (rules.getBoolean ("verbose"))
+    std::cout << "Canceled active time tracking.\n";
 
   return 0;
 }
