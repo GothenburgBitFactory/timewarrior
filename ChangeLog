@@ -60,6 +60,8 @@
           (thanks to A M).
 - TI-78   Tag parsing broken for tags starting with "or_"
           (thanks to Lukas Barth).
+- TI-81   Allow correction with filtered ids
+          (thanks to Plup)
 - TI-85   :adjust creates overlapping interval
           (thanks to Tim Ruffing)
 - TI-90   Let 'continue' accept a date or a date range
