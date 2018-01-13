@@ -1,4 +1,4 @@
-1.1.0 (2018-01-13) -
+1.1.0 (2018-01-13) 836bc41014018ab333e6ea73412ee09d015beb4e
 
 - TD-120  Missing cmakedefine for HAVE_GET_CURRENT_DIR_NAME
           (thanks to Jörg Krause, Ben Boeckel).
