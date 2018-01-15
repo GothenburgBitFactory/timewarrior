@@ -70,7 +70,9 @@
           (thanks to Tim Ruffing)
 - TI-90   Let 'continue' accept a date or a date range
 - TI-91   Timewarrior does not compile on DragonFly
-          (thanks to Michael Neumann).
+          (thanks to Michael Neumann)
+- TI-100  :lastquarter throws exception in first quarter
+          (thanks to Andreas Poisel)
 - Fixed Python 3 support of the holiday/refresh script
           (thanks to Jelle van der Waa).
 - Added missing man page link

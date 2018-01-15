@@ -260,8 +260,13 @@ bool expandIntervalHint (
 
     m = ((q - 1) * 3) + 1;
 
-    range.start = Datetime (y, m,     1);
-    range.end   = Datetime (y, m + 3, 1);
+    range.start = Datetime (y, m, 1);
+
+    m += 3;
+    y += m/12;
+    m %= 12;
+
+    range.end   = Datetime (y, m, 1);
 
     debug (format ("Hint {1} expanded to {2} - {3}",
                    hint,
