@@ -26,10 +26,12 @@
 #
 ###############################################################################
 
-import sys
 import os
+import sys
 import unittest
-from datetime import datetime
+
+import datetime
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -51,6 +53,7 @@ from basetest import Timew, TestCase
 #     self.assertNotRegexpMatches(text, pattern)
 #     self.tap("")
 
+
 class TestExport(TestCase):
     def setUp(self):
         """Executed before each test in the class"""
@@ -71,6 +74,124 @@ class TestExport(TestCase):
         self.assertTrue('end' in j[0])
         self.assertTrue('tags' in j[0])
         self.assertEqual(j[0]['tags'][0], 'foo')
+
+    def test_changing_exclusion_does_not_change_flattened_intervals(self):
+        """Changing exclusions does not change flattened intervals"""
+        self.t.config("exclusions.monday",    "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.tuesday",   "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.wednesday", "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.thursday",  "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.friday",    "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.saturday",  "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.sunday",    "<9:11:50 12:22:44-13:32:23 >18:05:11")
+
+        self.t("track 20160101T102255 - 20160101T154422 foo")
+
+        self.t.config("exclusions.monday",    "<9:11:50 12:44:22-13:23:32 >18:05:11")
+        self.t.config("exclusions.tuesday",   "<9:11:50 12:44:22-13:23:32 >18:05:11")
+        self.t.config("exclusions.wednesday", "<9:11:50 12:44:22-13:23:32 >18:05:11")
+        self.t.config("exclusions.thursday",  "<9:11:50 12:44:22-13:23:32 >18:05:11")
+        self.t.config("exclusions.friday",    "<9:11:50 12:44:22-13:23:32 >18:05:11")
+        self.t.config("exclusions.saturday",  "<9:11:50 12:44:22-13:23:32 >18:05:11")
+        self.t.config("exclusions.sunday",    "<9:11:50 12:44:22-13:23:32 >18:05:11")
+
+        self.t("track 20160102T102255 - 20160102T154422 bar")
+
+        j = self.t.export()
+        self.assertEqual(len(j), 4)
+
+        self.assertTrue('start' in j[0])
+        self.assertIn('2255Z', j[0]['start'])
+        self.assertTrue('end' in j[0])
+        self.assertIn('2244Z', j[0]['end'])
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'][0], 'foo')
+
+        self.assertTrue('start' in j[1])
+        self.assertIn('3223Z', j[1]['start'])
+        self.assertTrue('end' in j[1])
+        self.assertIn('4422Z', j[1]['end'])
+        self.assertTrue('tags' in j[1])
+        self.assertEqual(j[1]['tags'][0], 'foo')
+
+        self.assertTrue('start' in j[2])
+        self.assertIn('2255Z', j[2]['start'])
+        self.assertTrue('end' in j[2])
+        self.assertIn('4422Z', j[2]['end'])
+        self.assertTrue('tags' in j[2])
+        self.assertEqual(j[2]['tags'][0], 'bar')
+
+        self.assertTrue('start' in j[3])
+        self.assertIn('2332Z', j[3]['start'])
+        self.assertTrue('end' in j[3])
+        self.assertIn('4422Z', j[3]['end'])
+        self.assertTrue('tags' in j[3])
+        self.assertEqual(j[3]['tags'][0], 'bar')
+
+    def test_changing_exclusion_does_change_open_interval(self):
+        """Changing exclusions does change open interval"""
+        now = datetime.datetime.now()
+
+        if now.time() < datetime.time(5):
+            self.skipTest("Test cannot not be run before 05:00:00")
+            return
+
+        three_hours_before = now - datetime.timedelta(hours=3)
+        four_hours_before = now - datetime.timedelta(hours=4)
+        five_hours_before = now - datetime.timedelta(hours=5)
+
+        exclusion = "{:%H}:12:21-{:%H}:34:43".format(four_hours_before, three_hours_before)
+
+        self.t.config("exclusions.friday", exclusion)
+        self.t.config("exclusions.thursday", exclusion)
+        self.t.config("exclusions.wednesday", exclusion)
+        self.t.config("exclusions.tuesday", exclusion)
+        self.t.config("exclusions.monday", exclusion)
+        self.t.config("exclusions.sunday", exclusion)
+        self.t.config("exclusions.saturday", exclusion)
+
+        self.t("start {}T{:%H}:00:00 foo".format(now.date(), five_hours_before))
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 2)
+
+        self.assertTrue('start' in j[0])
+        self.assertIn('0000Z', j[0]['start'])
+        self.assertTrue('end' in j[0])
+        self.assertIn('1221Z', j[0]['end'])
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'][0], 'foo')
+
+        self.assertTrue('start' in j[1])
+        self.assertIn('3443Z', j[1]['start'])
+        self.assertFalse('end' in j[1])
+
+        exclusion = "{:%H}:34:43-{:%H}:12:21".format(four_hours_before, three_hours_before)
+
+        self.t.config("exclusions.friday", exclusion)
+        self.t.config("exclusions.thursday", exclusion)
+        self.t.config("exclusions.wednesday", exclusion)
+        self.t.config("exclusions.tuesday", exclusion)
+        self.t.config("exclusions.monday", exclusion)
+        self.t.config("exclusions.sunday", exclusion)
+        self.t.config("exclusions.saturday", exclusion)
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 2)
+
+        self.assertTrue('start' in j[0])
+        self.assertIn('0000Z', j[0]['start'])
+        self.assertTrue('end' in j[0])
+        self.assertIn('3443Z', j[0]['end'])
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'][0], 'foo')
+
+        self.assertTrue('start' in j[1])
+        self.assertIn('1221Z', j[1]['start'])
+        self.assertFalse('end' in j[1])
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
