@@ -24,12 +24,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cmake.h>
 #include <format.h>
 #include <commands.h>
 #include <timew.h>
-#include <Interval.h>
-#include <Lexer.h>
 #include <iostream>
 
 template <class T> T setIntersect (
@@ -69,12 +66,21 @@ int CmdStop (
     modified.range.end = filter.range.start;
   }
   else
+  {
     modified.range.end = Datetime ();
+  }
 
   // Close the interval.
   database.deleteInterval (latest);
   validate (cli, rules, database, modified);
-  database.addInterval (modified);
+
+  for (auto& interval : flatten (modified, getAllExclusions (rules, modified.range)))
+  {
+    database.addInterval (interval);
+
+    if (rules.getBoolean ("verbose"))
+      std::cout << intervalSummarize (database, rules, interval);
+  }
 
   // If tags are specified, but are not a full set of tags, remove them
   // before closing the interval.
