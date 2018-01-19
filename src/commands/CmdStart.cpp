@@ -24,10 +24,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cmake.h>
 #include <commands.h>
 #include <timew.h>
-#include <Interval.h>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -37,12 +35,10 @@ int CmdStart (
   Database& database)
 {
   // Add a new open interval, which may have a defined start time.
-  auto filter     = getFilter (cli);
-  auto holidays   = subset (filter.range, getHolidays (rules));
-  auto exclusions = getAllExclusions (rules, filter.range);
+  auto filter = getFilter (cli);
+  auto latest = getLatestInterval (database);
 
   // If the latest interval is open, close it.
-  auto latest = getLatestInterval (database);
   if (latest.range.is_open ())
   {
     // If the new interval tags match those of the currently open interval, then
@@ -64,13 +60,15 @@ int CmdStart (
 
     // Update database.
     database.deleteInterval (latest);
-    for (auto& interval : flatten (modified, exclusions))
+    validate (cli, rules, database, modified);
+
+    for (auto& interval : flatten (modified, getAllExclusions (rules, modified.range)))
     {
       database.addInterval (interval);
-    }
 
-    if (rules.getBoolean ("verbose"))
-      std::cout << intervalSummarize (database, rules, modified);
+      if (rules.getBoolean ("verbose"))
+        std::cout << intervalSummarize (database, rules, interval);
+    }
   }
 
   // Now add the new open interval.
