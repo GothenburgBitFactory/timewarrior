@@ -24,7 +24,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cmake.h>
 #include <commands.h>
 #include <timew.h>
 #include <iostream>
@@ -35,9 +34,10 @@ int CmdTrack (
   Rules& rules,
   Database& database)
 {
+  auto filter = getFilter (cli);
+
   // If this is not a proper closed interval, then the user is trying to make
   // the 'track' command behave like 'start', so delegate to CmdStart.
-  auto filter = getFilter (cli);
   if (! filter.range.is_started () ||
       ! filter.range.is_ended ())
     return CmdStart (cli, rules, database);
@@ -45,12 +45,13 @@ int CmdTrack (
   // Validation must occur before flattening.
   validate (cli, rules, database, filter);
 
-  auto exclusions = getAllExclusions (rules, filter.range);
-  for (auto& interval : flatten (filter, exclusions))
+  for (auto& interval : flatten (filter, getAllExclusions (rules, filter.range)))
+  {
     database.addInterval (interval);
 
-  if (rules.getBoolean ("verbose"))
-    std::cout << intervalSummarize (database, rules, filter);
+    if (rules.getBoolean ("verbose"))
+      std::cout << intervalSummarize (database, rules, interval);
+  }
 
   return 0;
 }
