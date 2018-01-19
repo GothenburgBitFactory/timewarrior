@@ -26,10 +26,10 @@
 #
 ###############################################################################
 
-import sys
 import os
+import sys
 import unittest
-from datetime import datetime
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -50,6 +50,7 @@ from basetest import Timew, TestCase
 #     self.assertRegexpMatches(text, pattern)
 #     self.assertNotRegexpMatches(text, pattern)
 #     self.tap("")
+
 
 class TestTrack(TestCase):
     def setUp(self):
@@ -123,6 +124,7 @@ class TestTrack(TestCase):
         self.t('track 12:01am - 12:02am "Test track interval"')
         j = self.t.export()
         self.assertTrue(len(j) > 0)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

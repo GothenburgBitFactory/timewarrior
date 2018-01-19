@@ -26,10 +26,10 @@
 #
 ###############################################################################
 
-import sys
 import os
+import sys
 import unittest
-from datetime import datetime
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -112,6 +112,131 @@ class TestStart(TestCase):
         self.t("start 1h ago bar foo")
         code, out, err = self.t("start foo bar")
         self.assertNotIn("Recorded bar foo", out)
+
+
+    def test_single_interval_enclosing_exclusion(self):
+        """Add one interval that encloseѕ an exclusion, and is therefore flattened"""
+        self.t.config("exclusions.monday",    "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.tuesday",   "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.wednesday", "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.thursday",  "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.friday",    "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.saturday",  "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.sunday",    "<9:11:50 12:22:44-13:32:23 >18:05:11")
+
+        self.t("start 20160101T102255 foo")
+        self.t("start 20160101T154422 bar")  # start bar, so foo gets closed and flattened
+        self.t("cancel")  # cancel tracking of bar
+
+        j = self.t.export()
+        self.assertEqual(len(j), 2)
+
+        self.assertTrue('start' in j[0])
+        self.assertIn('2255Z', j[0]['start'])
+        self.assertTrue('end' in j[0])
+        self.assertIn('2244Z', j[0]['end'])
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'][0], 'foo')
+
+        self.assertTrue('start' in j[1])
+        self.assertIn('3223Z', j[1]['start'])
+        self.assertTrue('end' in j[1])
+        self.assertIn('4422Z', j[1]['end'])
+        self.assertTrue('tags' in j[1])
+        self.assertEqual(j[1]['tags'][0], 'foo')
+
+    def test_single_interval_starting_within_an_exclusion_and_enclosing_an_exclusion(self):
+        """Add one interval that starts within an exclusion and encloses an exclusion"""
+        self.t.config("exclusions.monday",    "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.tuesday",   "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.wednesday", "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.thursday",  "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.friday",    "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.saturday",  "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.sunday",    "<9:11:50 12:22:44-13:32:23 >18:05:11")
+
+        self.t("start 20160101T082255 foo")
+        self.t("start 20160101T144422 bar")  # start bar, so foo gets closed and flattened
+        self.t("cancel")  # cancel tracking of bar
+
+        j = self.t.export()
+        self.assertEqual(len(j), 2)
+
+        self.assertTrue('start' in j[0])
+        self.assertIn('2255Z', j[0]['start'])
+        self.assertTrue('end' in j[0])
+        self.assertIn('2244Z', j[0]['end'])
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'][0], 'foo')
+
+        self.assertTrue('start' in j[1])
+        self.assertIn('3223Z', j[1]['start'])
+        self.assertTrue('end' in j[1])
+        self.assertIn('4422Z', j[1]['end'])
+        self.assertTrue('tags' in j[1])
+        self.assertEqual(j[1]['tags'][0], 'foo')
+
+    def test_single_interval_ending_within_an_exclusion_and_enclosing_an_exclusion(self):
+        """Add one interval that ends within an exclusion and encloses an exclusion"""
+        self.t.config("exclusions.monday",    "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.tuesday",   "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.wednesday", "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.thursday",  "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.friday",    "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.saturday",  "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.sunday",    "<9:11:50 12:22:44-13:32:23 >18:05:11")
+
+        self.t("start 20160101T102255 foo")
+        self.t("start 20160101T194422 bar")  # start bar, so foo gets closed and flattened
+        self.t("cancel")  # cancel tracking of bar
+
+        j = self.t.export()
+        self.assertEqual(len(j), 2)
+
+        self.assertTrue('start' in j[0])
+        self.assertIn('2255Z', j[0]['start'])
+        self.assertTrue('end' in j[0])
+        self.assertIn('2244Z', j[0]['end'])
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'][0], 'foo')
+
+        self.assertTrue('start' in j[1])
+        self.assertIn('3223Z', j[1]['start'])
+        self.assertTrue('end' in j[1])
+        self.assertIn('4422Z', j[1]['end'])
+        self.assertTrue('tags' in j[1])
+        self.assertEqual(j[1]['tags'][0], 'foo')
+
+    def test_single_interval_and_enclosing_an_exclusion_with_day_change(self):
+        """Add one interval that encloses an exclusion with day change"""
+        self.t.config("exclusions.monday",    "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.tuesday",   "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.wednesday", "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.thursday",  "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.friday",    "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.saturday",  "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.config("exclusions.sunday",    "<9:11:50 12:22:44-13:32:23 >18:05:11")
+
+        self.t("start 20160101T172255 foo")
+        self.t("start 20160102T104422 bar")  # start bar, so foo gets closed and flattened
+        self.t("cancel")  # cancel tracking of bar
+
+        j = self.t.export()
+        self.assertEqual(len(j), 2)
+
+        self.assertTrue('start' in j[0])
+        self.assertIn('2255Z', j[0]['start'])
+        self.assertTrue('end' in j[0])
+        self.assertIn('0511Z', j[0]['end'])
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'][0], 'foo')
+
+        self.assertTrue('start' in j[1])
+        self.assertIn('1150Z', j[1]['start'])
+        self.assertTrue('end' in j[1])
+        self.assertIn('4422Z', j[1]['end'])
+        self.assertTrue('tags' in j[1])
+        self.assertEqual(j[1]['tags'][0], 'foo')
 
 
 if __name__ == "__main__":
