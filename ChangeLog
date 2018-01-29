@@ -1,5 +1,8 @@
 1.2.0 () -
 
+- TI-102  Exclusions stopped working
+          (thanks to Christian Decker)
+
 ------ current release ---------------------------
 
 1.1.0 (2018-01-13) 836bc41014018ab333e6ea73412ee09d015beb4e
