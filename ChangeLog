@@ -1,3 +1,10 @@
+1.1.1 () -
+
+- TI-102  Exclusions stopped working
+          (thanks to Christian Decker)
+
+------ current release ---------------------------
+
 1.1.0 (2018-01-13) 836bc41014018ab333e6ea73412ee09d015beb4e
 
 - TD-120  Missing cmakedefine for HAVE_GET_CURRENT_DIR_NAME
@@ -66,7 +73,7 @@
           (thanks to Tim Ruffing)
 - TI-90   Let 'continue' accept a date or a date range
 - TI-91   Timewarrior does not compile on DragonFly
-          (thanks to Michael Neumann).
+          (thanks to Michael Neumann)
 - Fixed Python 3 support of the holiday/refresh script
           (thanks to Jelle van der Waa).
 - Added missing man page link
@@ -79,7 +86,7 @@
   'soq' and 'soy'. Similarly the 'eocw' etc are modified. The 'c' is now
   implicit.
 
------- current release ---------------------------
+------ old release -------------------------------
 
 1.0.0 (2016-08-17) 6428ce89fcf2a5665d9351c50c2a84c98543206c
 
@@ -89,8 +96,6 @@
           (thanks to Felix Wolfsteller).
 - Added 'totals.py' sample extension.
 - Added extension list to the 'help' command.
-
------- old release ---------------------------
 
 1.0.0.beta1 (2016-07-26) -
 
