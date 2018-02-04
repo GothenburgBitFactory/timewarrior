@@ -2,10 +2,15 @@
 
 - TI-100  :lastquarter throws exception in first quarter
           (thanks to Andreas Poisel)
+
+------ current release ---------------------------
+
+1.1.1 (2018-02-03) ef26ebd6fec8472d4b91644806f48b546bb35747
+
 - TI-102  Exclusions stopped working
           (thanks to Christian Decker)
 
------- current release ---------------------------
+------ old release -------------------------------
 
 1.1.0 (2018-01-13) 836bc41014018ab333e6ea73412ee09d015beb4e
 
@@ -87,8 +92,6 @@
 - Named dates 'socw', 'socm', 'socq' and 'socy' are now named 'sow', 'som',
   'soq' and 'soy'. Similarly the 'eocw' etc are modified. The 'c' is now
   implicit.
-
------- old release -------------------------------
 
 1.0.0 (2016-08-17) 6428ce89fcf2a5665d9351c50c2a84c98543206c
 
