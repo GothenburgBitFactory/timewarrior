@@ -21,7 +21,7 @@ Removed Features in 1.2.0
 
 Known Issues
 
-  - See https://bug.tasktools.org/
+  - See https://github.com/GothenburgBitFactory/timewarrior/issues
 
 Timewarrior has been built and tested on the following configurations:
 
@@ -38,10 +38,10 @@ Timewarrior has been built and tested on the following configurations:
 While Timewarrior has undergone testing, bugs are sure to remain.  If you find
 a bug, please enter a new issue at:
 
-  https://bug.tasktools.org
+  https://github.com/GothenburgBitFactory/timewarrior/issues
 
 Or just send a message to:
 
-  support@taskwarrior.org
+  support@gothenburgbitfactory.org
 
 Thank you.

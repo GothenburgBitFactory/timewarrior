@@ -851,18 +851,18 @@ For more information regarding Timewarrior, see the following:
 
 .TP
 The official site at
-<http://taskwarrior.org>
+<http://timewarrior.org>
 
 .TP
 The official code repository at
-<https://git.tasktools.org/scm/tm/timew.git>
+<https://github.com/GothenburgBitFactory/timewarrior>
 
 .TP
 You can contact the project by emailing
-<support@taskwarrior.org>
+<support@gothenburgbitfactory.org>
 
 .SH REPORTING BUGS
 .TP
 Bugs in Timewarrior may be reported to the issue-tracker at
-<https://bug.tasktools.org/>
+<https://github.com/GothenburgBitFactory/timewarrior/issues>
 

@@ -21,9 +21,10 @@ For support options, take a look at:
 
 Please send your code patches to:
 
-    support@taskwarrior.org
+    support@gothenburgbitfactory.org
 
-Consider joining bug.tasktools.org and participating in the future of Timewarrior.
+Consider joining https://github.com/GothenburgBitFactory/timewarrior/issues and
+participating in the future of Timewarrior.
 
 ---
 
