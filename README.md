@@ -23,8 +23,8 @@ Please send your code patches to:
 
     support@gothenburgbitfactory.org
 
-Consider joining https://github.com/GothenburgBitFactory/timewarrior/issues and
-participating in the future of Timewarrior.
+Visit [Github](https://github.com/GothenburgBitFactory/timewarrior) and
+participate in the future of Timewarrior.
 
 ---
 
