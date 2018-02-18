@@ -25,10 +25,14 @@
 # http://www.opensource.org/licenses/mit-license.php
 #
 ###############################################################################
-import sys
+
 import os
 import subprocess
+import sys
 import unittest
+
+import datetime
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -45,29 +49,61 @@ class TestTotals(TestCase):
 
     def test_totals_with_empty_database(self):
         """totals extension should report error on empty database"""
-        out, err = self.process.communicate(input="color: off\ndebug: on\ntemp.report.start: \ntemp.report.end: \n\n[]")
+        out, err = self.process.communicate(input="""\
+color: off
+debug: off
+temp.report.start:
+temp.report.end:
+
+[
+]\
+""")
 
         self.assertEqual('There is no data in the database\n', out)
         self.assertEqual('', err)
 
     def test_totals_with_filled_database(self):
         """totals extension should print report for filled database"""
-        out, err = self.process.communicate(input="color: off\ndebug: on\ntemp.report.start: 20160101T070000Z\ntemp.report.end: 20160101T080000Z\n\n[{\"start\":\"20160101T070000Z\",\"end\":\"20160101T080000Z\",\"tags\":[\"foo\"]}]")
+        out, err = self.process.communicate(input="""\
+color: off
+debug: off
+temp.report.start: 20160101T070000Z
+temp.report.end: 20160101T080000Z
+
+[
+{"start":"20160101T070000Z","end":"20160101T080000Z","tags":["foo"]}
+]\
+""")
 
         self.assertEqual('\nTotal by Tag, for 2016-01-01 07:00:00 - 2016-01-01 08:00:00\n\nTag        Total\n----- ----------\nfoo      1:00:00\n      ----------\nTotal    1:00:00\n', out)
         self.assertEqual('', err)
 
     def test_totals_with_interval_without_tags(self):
         """totals extension should handle interval without tags"""
-        out, err = self.process.communicate(input="color: off\ndebug: on\ntemp.report.start: 20160101T070000Z\ntemp.report.end: 20160101T080000Z\n\n[{\"start\":\"20160101T070000Z\",\"end\":\"20160101T080000Z\"}]")
+        out, err = self.process.communicate(input="""\
+color: off
+debug: off
+temp.report.start: 20160101T070000Z
+temp.report.end: 20160101T080000Z
+
+[{"start":"20160101T070000Z","end":"20160101T080000Z"}]\
+""")
 
         self.assertEqual('\nTotal by Tag, for 2016-01-01 07:00:00 - 2016-01-01 08:00:00\n\nTag        Total\n----- ----------\n         1:00:00\n      ----------\nTotal    1:00:00\n', out)
         self.assertEqual('', err)
 
     def test_totals_with_interval_with_empty_tag_list(self):
         """totals extension should handle interval with empty tag list"""
-        out, err = self.process.communicate(
-            input="color: off\ndebug: on\ntemp.report.start: 20160101T070000Z\ntemp.report.end: 20160101T080000Z\n\n[{\"start\":\"20160101T070000Z\",\"end\":\"20160101T080000Z\",\"tags\":[]}]")
+        out, err = self.process.communicate(input="""\
+color: off
+debug: off
+temp.report.start: 20160101T070000Z
+temp.report.end: 20160101T080000Z
+
+[
+{"start":"20160101T070000Z","end":"20160101T080000Z","tags":[]}
+]\
+""")
 
         self.assertEqual('\nTotal by Tag, for 2016-01-01 07:00:00 - 2016-01-01 08:00:00\n\nTag        Total\n----- ----------\n         1:00:00\n      ----------\nTotal    1:00:00\n', out)
         self.assertEqual('', err)
