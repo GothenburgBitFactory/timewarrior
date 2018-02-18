@@ -97,13 +97,12 @@ if 'temp.report.start' not in configuration:
     print('There is no data in the database')
     exit()
 
-if 'temp.report.end' not in configuration:
-    configuration.update( {
-        'temp.report.end': datetime.datetime.now().strftime( '%Y%m%dT%H%M%SZ' )
-    } )
-
 start = datetime.datetime.strptime(configuration['temp.report.start'], DATEFORMAT)
-end = datetime.datetime.strptime(configuration['temp.report.end'], DATEFORMAT)
+
+if 'temp.report.end' in configuration:
+    end = datetime.datetime.strptime(configuration['temp.report.end'], DATEFORMAT)
+else:
+    end = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 if max_width > 0:
     # Compose report header.
