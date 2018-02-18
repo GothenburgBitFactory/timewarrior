@@ -108,6 +108,31 @@ temp.report.end: 20160101T080000Z
         self.assertEqual('\nTotal by Tag, for 2016-01-01 07:00:00 - 2016-01-01 08:00:00\n\nTag        Total\n----- ----------\n         1:00:00\n      ----------\nTotal    1:00:00\n', out)
         self.assertEqual('', err)
 
+    def test_totals_with_open_interval(self):
+        """totals extension should handle open interval"""
+        now = datetime.datetime.now()
+        now_utc = now.utcnow()
+
+        one_hour_before = now - datetime.timedelta(hours=1)
+        two_hours_before = now - datetime.timedelta(hours=2)
+
+        one_hour_before_utc = now_utc - datetime.timedelta(hours=1)
+        two_hours_before_utc = now_utc - datetime.timedelta(hours=2)
+
+        out, err = self.process.communicate(input="""\
+color: off
+debug: off
+temp.report.start: {:%Y%m%dT%H%M%S}Z
+temp.report.end: 
+
+[
+{{"start":"{:%Y%m%dT%H%M%S}Z","tags":["foo"]}}
+]\
+""".format(one_hour_before_utc, one_hour_before_utc))
+
+        self.assertEqual('\nTotal by Tag, for {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}\n\nTag        Total\n----- ----------\nfoo      1:00:00\n      ----------\nTotal    1:00:00\n'.format(two_hours_before, now), out)
+        self.assertEqual('', err)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
