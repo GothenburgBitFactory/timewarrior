@@ -2,6 +2,8 @@
 
 - TI-100  :lastquarter throws exception in first quarter
           (thanks to Andreas Poisel)
+- Fixed error from totals.py while timer is active
+          (thanks to davisdude)
 
 ------ current release ---------------------------
 
