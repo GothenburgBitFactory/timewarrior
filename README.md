@@ -51,7 +51,7 @@ At the site you'll find online documentation, downloads, news and more.
 Your contributions are especially welcome.
 Whether it comes in the form of code patches, ideas, discussion, bug reports, encouragement or criticism, your input is needed.
 
-For support options, take a look at:
+For support options, take a look at [CONTRIBUTING.md](CONTRIBUTING.md) or visit
 
     http://taskwarrior.org/support
 
