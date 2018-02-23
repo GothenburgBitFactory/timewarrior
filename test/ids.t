@@ -26,10 +26,10 @@
 #
 ###############################################################################
 
-import sys
 import os
+import sys
 import unittest
-from datetime import datetime
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -51,6 +51,7 @@ from basetest import Timew, TestCase
 #     self.assertNotRegexpMatches(text, pattern)
 #     self.tap("")
 
+
 class TestIds(TestCase):
     def setUp(self):
         """Executed before each test in the class"""
@@ -63,9 +64,9 @@ class TestIds(TestCase):
         self.assertIn(' @1 ', out)
         self.assertIn(' @2 ', out)
 
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
     unittest.main(testRunner=TAPTestRunner())
 
 # vim: ai sts=4 et sw=4 ft=python
-

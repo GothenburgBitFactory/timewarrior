@@ -52,6 +52,30 @@ int CmdSummary (
   // Load the data.
   auto tracked = getTracked (database, rules, filter);
 
+  if (tracked.empty ())
+  {
+    if (rules.getBoolean ("verbose"))
+    {
+      std::cout << "No filtered data found";
+
+      if (filter.range.is_started ())
+      {
+        std::cout << " in the range " << filter.range.start.toISOLocalExtended ();
+        if (filter.range.is_ended ())
+          std::cout << " - " << filter.range.end.toISOLocalExtended ();
+      }
+
+      if (filter.tags ().size ())
+      {
+        std::cout << " tagged with " << joinQuotedIfNeeded (", ", filter.tags ());
+      }
+
+      std::cout << ".\n";
+    }
+
+    return 0;
+  }
+
   // Map tags to colors.
   auto palette = createPalette (rules);
   auto tag_colors = createTagColorMap (rules, palette, tracked);
@@ -128,34 +152,10 @@ int CmdSummary (
   table.set (table.addRow (), (ids ? 8 : 7), " ", Color ("underline"));
   table.set (table.addRow (), (ids ? 8 : 7), Duration (grand_total).formatHours ());
 
-  if (table.rows () > 2)
-  {
-    std::cout << '\n'
-              << table.render ()
-              << renderHolidays ("summary", rules, filter)
-              << '\n';
-  }
-  else
-  {
-    if (rules.getBoolean ("verbose"))
-    {
-      std::cout << "No filtered data found";
-
-      if (filter.range.is_started ())
-      {
-        std::cout << " in the range " << filter.range.start.toISOLocalExtended ();
-        if (filter.range.is_ended ())
-          std::cout << " - " << filter.range.end.toISOLocalExtended ();
-      }
-
-      if (filter.tags ().size ())
-      {
-        std::cout << " tagged with " << joinQuotedIfNeeded (", ", filter.tags ());
-      }
-
-      std::cout << ".\n";
-    }
-  }
+  std::cout << '\n'
+            << table.render ()
+            << renderHolidays ("summary", rules, filter)
+            << '\n';
 
   return 0;
 }
