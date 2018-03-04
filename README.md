@@ -11,7 +11,7 @@ It is a portable, well supported and very active Open Source project.
 
 Thanks to the community, there are binary packages available [here](https://taskwarrior.org/docs/timewarrior/download.html#Distributions).
 
-### From Tarball
+### Building Timewarrior
 
 Building Timewarrior yourself requires
 
@@ -19,30 +19,43 @@ Building Timewarrior yourself requires
 * cmake
 * make
 * C++ compiler, currently gcc 4.7+ or clang 3.3+ for full C++11 support
+* Python, for running the testsuite
 
-You can download the tarball with curl, as an example of just one of many ways to download the tarball.
+There are two ways to retrieve the Timewarrior sources:
 
-    $ curl -O https://taskwarrior.org/download/timew-1.1.1.tar.gz
+* Clone the repository from Github,
 
-Expand the tarball, build Timewarrior, optionally run the test suite, and install it.
+      git clone https://github.com/GothenburgBitFactory/timewarrior
+
+  checkout the dev branch, and update submodules
+
+      cd timewarrior
+      git checkout dev
+      git submodule update
+
+* Or download the tarball with curl,
+
+      curl -O https://taskwarrior.org/download/timew-1.1.1.tar.gz
+
+  and expand the tarball
+
+      tar xzf timew-1.1.1.tar.gz
+      cd timew-1.1.1
+
+Build Timewarrior, optionally run the test suite (note: the tarball does not contain tests), and install it.
 This copies files into the right place, and installs man pages.
 
-    $ tar xzf timew-1.1.1.tar.gz
-    $ cd timew-1.1.1
-    $ cmake -DCMAKE_BUILD_TYPE=release .
-    ...
-    $ make
-    ...
-    [$ make test]
-    ...
-    $ sudo make install
-    
+    cmake -DCMAKE_BUILD_TYPE=release .
+    make
+    [make test]
+    sudo make install
+
 ## Documentation
 
 There is extensive online documentation.
 You'll find all the details at:
 
-    http://taskwarrior.org/docs/timewarrior
+    https://taskwarrior.org/docs/timewarrior
 
 At the site you'll find online documentation, downloads, news and more.
 
@@ -53,13 +66,9 @@ Whether it comes in the form of code patches, ideas, discussion, bug reports, en
 
 For support options, take a look at [CONTRIBUTING.md](CONTRIBUTING.md) or visit
 
-    http://taskwarrior.org/support
+    https://taskwarrior.org/support
 
-Please use pull requests, or send your code patches to:
-
-    support@gothenburgbitfactory.org
-
-Visit https://github.com/GothenburgBitFactory/timewarrior and participate in the future of Timewarrior.
+Visit [Github](https://github.com/GothenburgBitFactory/timewarrior) and participate in the future of Timewarrior.
 
 ## License
 
