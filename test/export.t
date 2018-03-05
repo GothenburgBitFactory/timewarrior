@@ -132,15 +132,16 @@ class TestExport(TestCase):
         """Changing exclusions does change open interval"""
         now = datetime.datetime.now()
 
-        if now.time() < datetime.time(5):
-            self.skipTest("Test cannot not be run before 05:00:00")
-            return
-
         three_hours_before = now - datetime.timedelta(hours=3)
         four_hours_before = now - datetime.timedelta(hours=4)
         five_hours_before = now - datetime.timedelta(hours=5)
 
-        exclusion = "{:%H}:12:21-{:%H}:34:43".format(four_hours_before, three_hours_before)
+        if four_hours_before.day < three_hours_before.day:
+            exclusion = "<{:%H}:34:43 >{:%H}:12:21".format(three_hours_before, four_hours_before)
+        else:
+            exclusion = "{:%H}:12:21-{:%H}:34:43".format(four_hours_before, three_hours_before)
+
+        # exclusion = "{:%H}:12:21-{:%H}:34:43".format(four_hours_before, three_hours_before)
 
         self.t.config("exclusions.friday", exclusion)
         self.t.config("exclusions.thursday", exclusion)
@@ -150,7 +151,7 @@ class TestExport(TestCase):
         self.t.config("exclusions.sunday", exclusion)
         self.t.config("exclusions.saturday", exclusion)
 
-        self.t("start {}T{:%H}:00:00 foo".format(now.date(), five_hours_before))
+        self.t("start {:%Y-%m-%dT%H}:00:00 foo".format(five_hours_before))
 
         j = self.t.export()
 
@@ -167,7 +168,10 @@ class TestExport(TestCase):
         self.assertIn('3443Z', j[1]['start'])
         self.assertFalse('end' in j[1])
 
-        exclusion = "{:%H}:34:43-{:%H}:12:21".format(four_hours_before, three_hours_before)
+        if four_hours_before.day < three_hours_before.day:
+            exclusion = "<{:%H}:12:21 >{:%H}:34:43".format(three_hours_before, four_hours_before)
+        else:
+            exclusion = "{:%H}:34:43-{:%H}:12:21".format(four_hours_before, three_hours_before)
 
         self.t.config("exclusions.friday", exclusion)
         self.t.config("exclusions.thursday", exclusion)
