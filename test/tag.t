@@ -103,7 +103,10 @@ class TestTag(TestCase):
         four_hours_before = now - timedelta(hours=4)
         five_hours_before = now - timedelta(hours=5)
 
-        exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
+        if four_hours_before.day < three_hours_before.day:
+            exclusion = "<{:%H}:00 >{:%H}:00".format(three_hours_before, four_hours_before)
+        else:
+            exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
 
         self.t.config("exclusions.friday", exclusion)
         self.t.config("exclusions.thursday", exclusion)
@@ -113,7 +116,7 @@ class TestTag(TestCase):
         self.t.config("exclusions.sunday", exclusion)
         self.t.config("exclusions.saturday", exclusion)
 
-        self.t("start {}T{:%H}:45:00 foo".format(now.date(), five_hours_before))
+        self.t("start {:%Y-%m-%dT%H}:45:00 foo".format(five_hours_before))
 
         self.t("tag @2 bar")
 
@@ -186,7 +189,10 @@ class TestUntag(TestCase):
         four_hours_before = now - timedelta(hours=4)
         five_hours_before = now - timedelta(hours=5)
 
-        exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
+        if four_hours_before.day < three_hours_before.day:
+            exclusion = "<{:%H}:00 >{:%H}:00".format(three_hours_before, four_hours_before)
+        else:
+            exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
 
         self.t.config("exclusions.friday", exclusion)
         self.t.config("exclusions.thursday", exclusion)
@@ -196,7 +202,7 @@ class TestUntag(TestCase):
         self.t.config("exclusions.sunday", exclusion)
         self.t.config("exclusions.saturday", exclusion)
 
-        self.t("start {}T{:%H}:45:00 foo bar".format(now.date(), five_hours_before))
+        self.t("start {:%Y-%m-%dT%H}:45:00 foo bar".format(five_hours_before))
 
         self.t("untag @2 foo")
 
