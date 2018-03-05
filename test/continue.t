@@ -92,7 +92,7 @@ class TestContinue(TestCase):
         self.assertIn("Tracking FOO\n", out)
 
         code, out, err = self.t("stop 30min ago")
-        self.assertIn("Tracking BAR\n", out)
+        self.assertIn("Recorded FOO\n", out)
 
         code, out, err = self.t.runError("continue @4")
         self.assertIn("ID '@4' does not correspond to any tracking.\n", err)
@@ -123,7 +123,6 @@ class TestContinue(TestCase):
         self.assertIn("Recorded BAR\n", out)
         self.assertIn("Tracking FOO\n", out)
 
-
     def test_continue_with_id_and_date(self):
         """Verify that continuing a specified interval with date continues at given date"""
         now = datetime.now()
@@ -134,19 +133,19 @@ class TestContinue(TestCase):
         four_hours_before = now - timedelta(hours=4)
         five_hours_before = now - timedelta(hours=5)
 
-        code, out, err = self.t("start FOO {}T{:%H}:00:00".format(now.date(), five_hours_before))
+        code, out, err = self.t("start FOO {:%Y-%m-%dT%H}:00:00".format(five_hours_before))
         self.assertIn("Tracking FOO\n", out)
 
-        code, out, err = self.t("stop {}T{:%H}:00:00".format(now.date(), four_hours_before))
+        code, out, err = self.t("stop {:%Y-%m-%dT%H}:00:00".format(four_hours_before))
         self.assertIn("Recorded FOO\n", out)
 
-        code, out, err = self.t("start BAR {}T{:%H}:00:00".format(now.date(), four_hours_before))
+        code, out, err = self.t("start BAR {:%Y-%m-%dT%H}:00:00".format(four_hours_before))
         self.assertIn("Tracking BAR\n", out)
 
-        code, out, err = self.t("stop {}T{:%H}:00:00".format(now.date(), three_hours_before))
+        code, out, err = self.t("stop {:%Y-%m-%dT%H}:00:00".format(three_hours_before))
         self.assertIn("Recorded BAR\n", out)
 
-        self.t("continue @2 {}T{:%H}:00:00".format(now.date(), two_hours_before))
+        self.t("continue @2 {:%Y-%m-%dT%H}:00:00".format(two_hours_before))
 
         j = self.t.export()
 
@@ -188,19 +187,19 @@ class TestContinue(TestCase):
         four_hours_before = now - timedelta(hours=4)
         five_hours_before = now - timedelta(hours=5)
 
-        code, out, err = self.t("start FOO {}T{:%H}:00:00".format(now.date(), five_hours_before))
+        code, out, err = self.t("start FOO {:%Y-%m-%dT%H}:00:00".format(five_hours_before))
         self.assertIn("Tracking FOO\n", out)
 
-        code, out, err = self.t("stop {}T{:%H}:00:00".format(now.date(), four_hours_before))
+        code, out, err = self.t("stop {:%Y-%m-%dT%H}:00:00".format(four_hours_before))
         self.assertIn("Recorded FOO\n", out)
 
-        code, out, err = self.t("start BAR {}T{:%H}:00:00".format(now.date(), four_hours_before))
+        code, out, err = self.t("start BAR {:%Y-%m-%dT%H}:00:00".format(four_hours_before))
         self.assertIn("Tracking BAR\n", out)
 
-        code, out, err = self.t("stop {}T{:%H}:00:00".format(now.date(), three_hours_before))
+        code, out, err = self.t("stop {:%Y-%m-%dT%H}:00:00".format(three_hours_before))
         self.assertIn("Recorded BAR\n", out)
 
-        self.t("continue @2 {0}T{1:%H}:00:00 - {0}T{2:%H}:00:00".format(now.date(), two_hours_before, one_hour_before))
+        self.t("continue @2 {:%Y-%m-%dT%H}:00:00 - {:%Y-%m-%dT%H}:00:00".format(two_hours_before, one_hour_before))
 
         j = self.t.export()
 
