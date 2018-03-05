@@ -77,17 +77,20 @@ class TestLengthen(TestCase):
         four_hours_before = now - timedelta(hours=4)
         five_hours_before = now - timedelta(hours=5)
 
-        exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
+        if four_hours_before.day < three_hours_before.day:
+            exclusion = "<{:%H}:00 >{:%H}:00".format(three_hours_before, four_hours_before)
+        else:
+            exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
 
-        self.t.config("exclusions.friday", exclusion)
-        self.t.config("exclusions.thursday", exclusion)
-        self.t.config("exclusions.wednesday", exclusion)
-        self.t.config("exclusions.tuesday", exclusion)
-        self.t.config("exclusions.monday", exclusion)
         self.t.config("exclusions.sunday", exclusion)
+        self.t.config("exclusions.monday", exclusion)
+        self.t.config("exclusions.tuesday", exclusion)
+        self.t.config("exclusions.wednesday", exclusion)
+        self.t.config("exclusions.thursday", exclusion)
+        self.t.config("exclusions.friday", exclusion)
         self.t.config("exclusions.saturday", exclusion)
 
-        self.t("start {}T{:%H}:45:00".format(now.date(), five_hours_before))
+        self.t("start {:%Y-%m-%dT%H}:45:00".format(five_hours_before))
 
         self.t("lengthen @2 5min")
 
@@ -105,6 +108,7 @@ class TestLengthen(TestCase):
         self.assertFalse('tags' in j[1])
 
 # TODO Add :adjust tests.
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
