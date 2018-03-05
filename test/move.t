@@ -51,6 +51,7 @@ from basetest import Timew, TestCase
 #     self.assertNotRegexpMatches(text, pattern)
 #     self.tap("")
 
+
 class TestMove(TestCase):
     def setUp(self):
         """Executed before each test in the class"""
@@ -84,9 +85,11 @@ class TestMove(TestCase):
 
     def test_move_open_backwards_to_specific_time(self):
         """Move an open interval backwards to specific time."""
+        one_hour_before = datetime.now() - timedelta(hours=1)
+
         self.t("start 5mins ago foo")
-        code, out, err = self.t("move @1 12:01am")
-        self.assertRegexpMatches(out, 'Moved @1 to \d\d\d\d-\d\d-\d\dT00:01:00')
+        code, out, err = self.t("move @1 {:%Y-%m-%dT%H}:01:23".format(one_hour_before))
+        self.assertRegexpMatches(out, "Moved @1 to {:%Y-%m-%dT%H}:01:23".format(one_hour_before))
 
         j = self.t.export()
         self.assertEqual(len(j), 1)
@@ -151,7 +154,10 @@ class TestMove(TestCase):
         four_hours_before = now - timedelta(hours=4)
         five_hours_before = now - timedelta(hours=5)
 
-        exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
+        if four_hours_before.day < three_hours_before.day:
+            exclusion = "<{:%H}:00 >{:%H}:00".format(three_hours_before, four_hours_before)
+        else:
+            exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
 
         self.t.config("exclusions.friday", exclusion)
         self.t.config("exclusions.thursday", exclusion)
@@ -161,9 +167,9 @@ class TestMove(TestCase):
         self.t.config("exclusions.sunday", exclusion)
         self.t.config("exclusions.saturday", exclusion)
 
-        self.t("start {}T{:%H}:45:00".format(now.date(), five_hours_before))
+        self.t("start {:%Y-%m-%dT%H}:45:00".format(five_hours_before))
 
-        self.t("move @2 {}T{:%H}:50:00".format(now.date(), five_hours_before))
+        self.t("move @2 {:%Y-%m-%dT%H}:50:00".format(five_hours_before))
 
         j = self.t.export()
 
@@ -187,7 +193,10 @@ class TestMove(TestCase):
         four_hours_before = now - timedelta(hours=4)
         five_hours_before = now - timedelta(hours=5)
 
-        exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
+        if four_hours_before.day < three_hours_before.day:
+            exclusion = "<{:%H}:00 >{:%H}:00".format(three_hours_before, four_hours_before)
+        else:
+            exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
 
         self.t.config("exclusions.friday", exclusion)
         self.t.config("exclusions.thursday", exclusion)
@@ -197,9 +206,9 @@ class TestMove(TestCase):
         self.t.config("exclusions.sunday", exclusion)
         self.t.config("exclusions.saturday", exclusion)
 
-        self.t("start {}T{:%H}:45:00".format(now.date(), five_hours_before))
+        self.t("start {:%Y-%m-%dT%H}:45:00".format(five_hours_before))
 
-        self.t("move @2 {}T{:%H}:40:00".format(now.date(), five_hours_before))
+        self.t("move @2 {:%Y-%m-%dT%H}:40:00".format(five_hours_before))
 
         j = self.t.export()
 
