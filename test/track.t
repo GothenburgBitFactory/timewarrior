@@ -30,6 +30,8 @@ import os
 import sys
 import unittest
 
+from datetime import datetime, timedelta
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -120,8 +122,10 @@ class TestTrack(TestCase):
         self.assertIn('You cannot overlap intervals. Correct the start/end time, or specify the :adjust hint.', err)
 
     def test_track_at_time(self):
-        """Test adding time in the past, using only times, fails to be recorded."""
-        self.t('track 12:01am - 12:02am "Test track interval"')
+        """Test adding time in the past, using only times"""
+        one_hour_before = datetime.now() - timedelta(hours=1)
+
+        self.t('track {0:%Y-%m-%dT%H}:01:00 - {0:%Y-%m-%dT%H}:02:00 "Test track interval"'.format(one_hour_before))
         j = self.t.export()
         self.assertTrue(len(j) > 0)
 
