@@ -8,7 +8,7 @@
 # "timewarrior.cfg" is a file set up in bash_tap_ti.sh:setup_cfg(), and can be
 # appended to or changed as needed.
 #
-# Subject to the MIT License. See LICENSE file or http://opensource.org/licenses/MIT
+# Subject to the MIT License. See LICENSE file or https://opensource.org/licenses/MIT
 # Copyright (c) 2015-2018 Wilhelm Schürmann
 
 function setup_cfg {
