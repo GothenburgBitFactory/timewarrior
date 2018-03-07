@@ -4,6 +4,8 @@
           (thanks to Andreas Poisel)
 - Fixed error from totals.py while timer is active
           (thanks to davisdude)
+- #111    Some tests fail depending on the time of day
+          (thanks to chronitis)
 
 ------ current release ---------------------------
 
