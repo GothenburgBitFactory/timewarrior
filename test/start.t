@@ -35,22 +35,6 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from basetest import Timew, TestCase
 
-# Test methods available:
-#     self.assertEqual(a, b)
-#     self.assertNotEqual(a, b)
-#     self.assertTrue(x)
-#     self.assertFalse(x)
-#     self.assertIs(a, b)
-#     self.assertIsNot(substring, text)
-#     self.assertIsNone(x)
-#     self.assertIsNotNone(x)
-#     self.assertIn(substring, text)
-#     self.assertNotIn(substring, text
-#     self.assertRaises(e)
-#     self.assertRegexpMatches(text, pattern)
-#     self.assertNotRegexpMatches(text, pattern)
-#     self.tap("")
-
 
 class TestStart(TestCase):
     def setUp(self):
@@ -113,7 +97,6 @@ class TestStart(TestCase):
         self.t("start 1h ago bar foo")
         code, out, err = self.t("start foo bar")
         self.assertNotIn("Recorded bar foo", out)
-
 
     def test_single_interval_enclosing_exclusion(self):
         """Add one interval that encloseѕ an exclusion, and is therefore flattened"""

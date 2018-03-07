@@ -26,30 +26,17 @@
 #
 ###############################################################################
 
-import sys
 import os
+import sys
 import unittest
+
 from datetime import datetime, timedelta
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from basetest import Timew, TestCase
 
-# Test methods available:
-#     self.assertEqual(a, b)
-#     self.assertNotEqual(a, b)
-#     self.assertTrue(x)
-#     self.assertFalse(x)
-#     self.assertIs(a, b)
-#     self.assertIsNot(substring, text)
-#     self.assertIsNone(x)
-#     self.assertIsNotNone(x)
-#     self.assertIn(substring, text)
-#     self.assertNotIn(substring, text
-#     self.assertRaises(e)
-#     self.assertRegexpMatches(text, pattern)
-#     self.assertNotRegexpMatches(text, pattern)
-#     self.tap("")
 
 class TestShorten(TestCase):
     def setUp(self):
@@ -139,6 +126,7 @@ class TestBug6(TestCase):
         self.t("track 2016-06-08T07:30:00 - 2016-06-08T07:35:00 foo")
         code, out, err = self.t.runError("shorten @1 10mins")
         self.assertIn('Cannot shorten interval @1 by 0:10:00 because it is only 0:05:00 in length.', err)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

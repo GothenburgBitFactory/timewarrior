@@ -26,32 +26,15 @@
 #
 ###############################################################################
 
-import sys
 import os
+import sys
 import unittest
-from datetime import datetime
-from basetest.utils import DEFAULT_EXTENSION_PATH
-import shutil
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from basetest import Timew, TestCase
 
-# Test methods available:
-#     self.assertEqual(a, b)
-#     self.assertNotEqual(a, b)
-#     self.assertTrue(x)
-#     self.assertFalse(x)
-#     self.assertIs(a, b)
-#     self.assertIsNot(substring, text)
-#     self.assertIsNone(x)
-#     self.assertIsNotNone(x)
-#     self.assertIn(substring, text)
-#     self.assertNotIn(substring, text
-#     self.assertRaises(e)
-#     self.assertRegexpMatches(text, pattern)
-#     self.assertNotRegexpMatches(text, pattern)
-#     self.tap("")
 
 class TestExtensions(TestCase):
     def setUp(self):
@@ -72,6 +55,7 @@ class TestExtensions(TestCase):
 
         code, out, err = self.t('report ext')
         self.assertIn('test works', out)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

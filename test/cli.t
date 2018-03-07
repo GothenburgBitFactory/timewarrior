@@ -26,31 +26,15 @@
 #
 ###############################################################################
 
-import sys
 import os
 import shutil
+import sys
 import unittest
-from datetime import datetime
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from basetest import Timew, TestCase
-
-# Test methods available:
-#     self.assertEqual(a, b)
-#     self.assertNotEqual(a, b)
-#     self.assertTrue(x)
-#     self.assertFalse(x)
-#     self.assertIs(a, b)
-#     self.assertIsNot(substring, text)
-#     self.assertIsNone(x)
-#     self.assertIsNotNone(x)
-#     self.assertIn(substring, text)
-#     self.assertNotIn(substring, text
-#     self.assertRaises(e)
-#     self.assertRegexpMatches(text, pattern)
-#     self.assertNotRegexpMatches(text, pattern)
-#     self.tap("")
 
 
 class TestCLI(TestCase):
@@ -59,15 +43,15 @@ class TestCLI(TestCase):
         self.t = Timew()
 
     def test_initial_call_of_timew(self):
-      """Verify that calling 'timew' the first time returns exit code 0"""
-      self.t.reset_env()
-      shutil.rmtree(self.t.env["TIMEWARRIORDB"])
+        """Verify that calling 'timew' the first time returns exit code 0"""
+        self.t.reset_env()
+        shutil.rmtree(self.t.env["TIMEWARRIORDB"])
 
-      code, out, err = self.t.runSuccess(":yes")
-      self.assertIn("Welcome to Timewarrior.\n", out)
+        code, out, err = self.t.runSuccess(":yes")
+        self.assertIn("Welcome to Timewarrior.\n", out)
 
-      assert os.path.isdir(self.t.env["TIMEWARRIORDB"])
-      assert os.path.exists(self.t.env["TIMEWARRIORDB"])
+        assert os.path.isdir(self.t.env["TIMEWARRIORDB"])
+        assert os.path.exists(self.t.env["TIMEWARRIORDB"])
 
     def test_TimeWarrior_without_command_without_active_time_tracking(self):
         """Call 'timew' without active time tracking"""

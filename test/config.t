@@ -26,8 +26,8 @@
 #
 ###############################################################################
 
-import sys
 import os
+import sys
 import unittest
 
 # Ensure python finds the local simpletap module
@@ -35,21 +35,6 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from basetest import Timew, TestCase
 
-# Test methods available:
-#     self.assertEqual(a, b)
-#     self.assertNotEqual(a, b)
-#     self.assertTrue(x)
-#     self.assertFalse(x)
-#     self.assertIs(a, b)
-#     self.assertIsNot(substring, text)
-#     self.assertIsNone(x)
-#     self.assertIsNotNone(x)
-#     self.assertIn(substring, text)
-#     self.assertNotIn(substring, text
-#     self.assertRaises(e)
-#     self.assertRegexpMatches(text, pattern)
-#     self.assertNotRegexpMatches(text, pattern)
-#     self.tap("")
 
 class TestConfig(TestCase):
     def setUp(self):
@@ -228,6 +213,7 @@ class TestConfig(TestCase):
         """Test that an integer remains an integer"""
         code, out, err = self.t("config number 5", input="yes\n")
         self.assertIn(" with a value of '5'?", out)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

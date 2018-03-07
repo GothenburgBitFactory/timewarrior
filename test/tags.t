@@ -26,30 +26,15 @@
 #
 ###############################################################################
 
-import sys
 import os
+import sys
 import unittest
-from datetime import datetime
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from basetest import Timew, TestCase
 
-# Test methods available:
-#     self.assertEqual(a, b)
-#     self.assertNotEqual(a, b)
-#     self.assertTrue(x)
-#     self.assertFalse(x)
-#     self.assertIs(a, b)
-#     self.assertIsNot(substring, text)
-#     self.assertIsNone(x)
-#     self.assertIsNotNone(x)
-#     self.assertIn(substring, text)
-#     self.assertNotIn(substring, text
-#     self.assertRaises(e)
-#     self.assertRegexpMatches(text, pattern)
-#     self.assertNotRegexpMatches(text, pattern)
-#     self.tap("")
 
 class TestTags(TestCase):
     def setUp(self):
@@ -109,6 +94,7 @@ class TestTags(TestCase):
 #        code, out, err = self.t("start bar baz :quiet")
 #        self.assertNotIn("Note: 'foo' is a new tag.", out)
 #        self.assertNotIn("Note: 'bar' is a new tag.", out)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

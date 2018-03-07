@@ -26,30 +26,15 @@
 #
 ###############################################################################
 
-import sys
 import os
+import sys
 import unittest
-from datetime import datetime
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from basetest import Timew, TestCase
 
-# Test methods available:
-#     self.assertEqual(a, b)
-#     self.assertNotEqual(a, b)
-#     self.assertTrue(x)
-#     self.assertFalse(x)
-#     self.assertIs(a, b)
-#     self.assertIsNot(substring, text)
-#     self.assertIsNone(x)
-#     self.assertIsNotNone(x)
-#     self.assertIn(substring, text)
-#     self.assertNotIn(substring, text
-#     self.assertRaises(e)
-#     self.assertRegexpMatches(text, pattern)
-#     self.assertNotRegexpMatches(text, pattern)
-#     self.tap("")
 
 class TestFillHint(TestCase):
     def setUp(self):
@@ -112,6 +97,7 @@ class TestFillHint(TestCase):
         self.assertTrue('end' not in j[1])
         self.assertEqual(j[1]['tags'][0], 'two')
 
+
 class TestFillCommand(TestCase):
     def setUp(self):
         """Executed before each test in the class"""
@@ -143,6 +129,7 @@ class TestFillCommand(TestCase):
         code, out, err = self.t("track :fill 20170805T0300 - 20170805T0330 tag4")
         self.tap(out)
         self.tap(err)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
