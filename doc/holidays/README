@@ -1,7 +1,7 @@
 Timewarrior Holiday Files
 =========================
 
-The holiday files were created using http://holidata.net data by the 'refresh'
+The holiday files were created using https://holidata.net data by the 'refresh'
 script. This data can be updated using these commands:
 
   $ ./refresh
