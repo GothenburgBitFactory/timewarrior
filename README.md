@@ -43,12 +43,13 @@ There are two ways to retrieve the Timewarrior sources:
       cd timew-1.1.1
 
 Build Timewarrior, optionally run the test suite (note: the tarball does not contain tests), and install it.
-This copies files into the right place, and installs man pages.
 
     cmake -DCMAKE_BUILD_TYPE=release .
     make
     [make test]
     sudo make install
+
+This copies files into the right place, and installs man pages.
 
 ## Documentation
 
