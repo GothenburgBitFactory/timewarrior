@@ -52,7 +52,7 @@ def enumerate(path):
 
 
 def holidata(locale, year):
-    return "http://holidata.net/%s/%d.json" % (locale, year)
+    return "https://holidata.net/%s/%d.json" % (locale, year)
 
 
 def update_locales(locales, regions, years):
@@ -109,7 +109,7 @@ def main(args):
 
 
 if __name__ == "__main__":
-    usage = """See http://holidata.net for details of supported locales and regions."""
+    usage = """See https://holidata.net for details of supported locales and regions."""
     parser = argparse.ArgumentParser(
         description="Update holiday data files. Simply run 'refresh' to update all of them.")
     parser.add_argument('--locale', nargs='+', help='Specific locale to update.')

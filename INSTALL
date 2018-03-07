@@ -10,7 +10,7 @@ Dependencies
 
 In order to build Timewarrior, you will need:
 
-  - cmake (See http://cmake.org)
+  - cmake (See https://cmake.org)
   - make
 
 You will need a C++ compiler that supports full C++11, which includes:
