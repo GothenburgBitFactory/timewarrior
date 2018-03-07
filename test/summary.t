@@ -35,6 +35,9 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from basetest import Timew, TestCase
 
+from datetime import datetime, timedelta
+
+
 # Test methods available:
 #     self.assertEqual(a, b)
 #     self.assertNotEqual(a, b)
@@ -64,31 +67,40 @@ class TestSummary(TestCase):
 
     def test_filled(self):
         """Summary should be printed if data is available"""
-        self.t("start 1h ago")
-        self.t("stop")
+        now = datetime.now()
+        yesterday = now - timedelta(days=1)
+        tomorrow = now + timedelta(days=1)
 
-        code, out, err = self.t("summary :ids")
+        self.t("track for 1h")
+
+        code, out, err = self.t("summary :ids {:%Y-%m-%d} - {:%Y-%m-%d}".format(yesterday, tomorrow))
 
         self.assertRegexpMatches(out, """
 Wk  ?Date       Day ID Tags    ?Start      ?End    Time   Total
 [ -]+
-W[0-9]{1,2} [0-9]{4}-[0-9]{2}-[0-9]{2} .{3} @1      [0-9]{1,2}:[0-9]{2}:[0-9]{2} [0-9]{1,2}:[0-9]{2}:[0-9]{2} 1:00:00 1:00:00
+W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2}(
+W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2})?
 
-[ ]+1:00:00
+[ ]+1:00:0[01]
 """)
 
     def test_with_open_interval(self):
         """Summary should print open interval"""
+        now = datetime.now()
+        yesterday = now - timedelta(days=1)
+        tomorrow = now + timedelta(days=1)
+
         self.t("start 1h ago")
 
-        code, out, err = self.t("summary :ids")
+        code, out, err = self.t("summary :ids {:%Y-%m-%d} - {:%Y-%m-%d}".format(yesterday, tomorrow))
 
         self.assertRegexpMatches(out, """
 Wk  ?Date       Day ID Tags    ?Start End    Time   Total
 [ -]+
-W[0-9]{1,2} [0-9]{4}-[0-9]{2}-[0-9]{2} .{3} @1      [0-9]{1,2}:[0-9]{2}:[0-9]{2}[ ]+- 1:00:00 1:00:00
+W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2}[ ]+- \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2}(
+W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2}[ ]+- \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2})?
 
-[ ]+1:00:00
+[ ]+1:00:0[01]
 """)
 
     def test_with_range_filter(self):
