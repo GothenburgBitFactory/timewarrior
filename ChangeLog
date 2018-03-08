@@ -13,6 +13,8 @@
 
 - TI-102  Exclusions stopped working
           (thanks to Christian Decker)
+- TI-76   Shortening an interval over an exclusion makes the exclusion no longer apply
+          (thanks to A M)
 
 ------ old release -------------------------------
 
