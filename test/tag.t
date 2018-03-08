@@ -122,6 +122,15 @@ class TestTag(TestCase):
         self.assertTrue('tags' in j[1])
         self.assertEqual(j[1]['tags'], ['foo'], 'tags of unmodified interval do not match')
 
+    def test_tag_with_identical_ids(self):
+        self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00")
+        self.t("tag @1 @1 foo")
+
+        j = self.t.export()
+
+        self.assertEquals(len(j), 1)
+        self.assertEqual(j[0]['tags'], ['foo'])
+
 
 class TestUntag(TestCase):
     def setUp(self):
@@ -206,6 +215,15 @@ class TestUntag(TestCase):
         self.assertFalse('end' in j[1])
         self.assertTrue('tags' in j[1])
         self.assertEqual(j[1]['tags'], ['bar', 'foo'], 'tags of unmodified interval do not match')
+
+    def test_untag_with_identical_ids(self):
+        self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00 foo bar")
+        self.t("untag @1 @1 foo")
+
+        j = self.t.export()
+
+        self.assertEquals(len(j), 1)
+        self.assertEqual(j[0]['tags'], ['bar'])
 
 
 if __name__ == "__main__":
