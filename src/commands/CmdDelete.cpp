@@ -35,7 +35,7 @@ int CmdDelete (
   Database& database)
 {
   // Gather IDs.
-  std::vector <int> ids = cli.getIds();
+  std::set <int> ids = cli.getIds ();
 
   if (ids.empty ())
     throw std::string ("IDs must be specified. See 'timew help delete'.");

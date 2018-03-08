@@ -39,7 +39,7 @@ int CmdMove (
   Database& database)
 {
   // Gather ID and TAGs.
-  std::vector<int> ids = cli.getIds();
+  std::set <int> ids = cli.getIds ();
 
   if (ids.size() > 1)
   {
@@ -51,7 +51,7 @@ int CmdMove (
     throw std::string ("ID must be specified. See 'timew help move'.");
   }
 
-  int id = ids[0];
+  int id = *ids.begin ();
 
   std::string new_start;
   for (auto& arg : cli._args)

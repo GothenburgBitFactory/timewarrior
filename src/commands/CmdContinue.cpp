@@ -36,7 +36,7 @@ int CmdContinue (
   Database& database)
 {
   // Gather IDs and TAGs.
-  std::vector <int> ids = cli.getIds();
+  std::set <int> ids = cli.getIds();
 
   if (ids.size() > 1)
     throw std::string ("You can only specify one ID to continue.");
@@ -51,10 +51,12 @@ int CmdContinue (
     Interval filter;
     auto tracked = getTracked (database, rules, filter);
 
-    if (ids[0] > static_cast <int> (tracked.size ()))
-      throw format ("ID '@{1}' does not correspond to any tracking.", ids[0]);
+    auto id = *ids.begin ();
 
-    to_copy = tracked[tracked.size () - ids[0]];
+    if (id > static_cast <int> (tracked.size ()))
+      throw format ("ID '@{1}' does not correspond to any tracking.", id);
+
+    to_copy = tracked[tracked.size () - id];
   }
   else
   {
