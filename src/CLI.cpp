@@ -33,6 +33,7 @@
 #include <utf8.h>
 #include <sstream>
 #include <algorithm>
+#include <set>
 
 ////////////////////////////////////////////////////////////////////////////////
 A2::A2 (const std::string& raw, Lexer::Type lextype)
@@ -524,14 +525,14 @@ bool CLI::exactMatch (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector<int> CLI::getIds() const
+std::set<int> CLI::getIds() const
 {
-  std::vector <int> ids;
+  std::set <int> ids;
 
   for (auto& arg : _args)
   {
     if (arg.hasTag ("ID"))
-      ids.push_back (strtol (arg.attribute ("value").c_str (), NULL, 10));
+      ids.insert (strtol (arg.attribute ("value").c_str (), NULL, 10));
   }
 
   return ids;

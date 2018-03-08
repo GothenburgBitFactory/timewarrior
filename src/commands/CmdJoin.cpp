@@ -39,7 +39,7 @@ int CmdJoin (
   Database& database)
 {
   // Gather IDs and TAGs.
-  std::vector <int> ids = cli.getIds();
+  std::set <int> ids = cli.getIds ();
 
   // Only 2 IDs allowed in a join.
   if (ids.size () != 2)
@@ -52,20 +52,25 @@ int CmdJoin (
 
   // ID values must be in range.
   for (auto& id : ids)
+  {
     if (id > static_cast <int> (tracked.size ()))
+    {
       throw format ("ID '@{1}' does not correspond to any tracking.", id);
+    }
 
-  auto first_id  = std::max (ids[0], ids[1]);
-  auto second_id = std::min (ids[0], ids[1]);
+  }
+
+  auto first_id  = std::min (*ids.begin (), *ids.end ());
+  auto second_id = std::max (*ids.begin (), *ids.end ());
+
   Interval first  = tracked[tracked.size () - first_id];
   Interval second = tracked[tracked.size () - second_id];
 
   // TODO Require confirmation if intervals are not consecutive.
   // TODO Require confirmation if tags don't match.
 
-  auto combined = first;
-  combined.range.end = second.range.end;
-
+  auto combined = second;
+  combined.range.end = first.range.end;
   database.deleteInterval (first);
   database.deleteInterval (second);
 
@@ -73,7 +78,7 @@ int CmdJoin (
   database.addInterval (combined);
 
   if (rules.getBoolean ("verbose"))
-    std::cout << "Joined @" << ids[0] << " and @" << ids[1] << '\n';
+    std::cout << "Joined @" << first_id << " and @" << second_id << '\n';
 
   return 0;
 }
