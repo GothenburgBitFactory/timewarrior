@@ -152,7 +152,7 @@ temp.report.end:
 """.format(one_hour_before_utc))
 
         self.assertRegexpMatches(out, """
-Total by Tag, for {:%Y-%m-%d %H:%M}:0[01] - {:%Y-%m-%d %H:%M}:0[01]
+Total by Tag, for {:%Y-%m-%d %H:%M}:\d{{2}} - {:%Y-%m-%d %H:%M}:\d{{2}}
 
 Tag        Total
 ----- ----------
