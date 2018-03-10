@@ -94,10 +94,6 @@ int CmdStop (
         throw format ("The current interval does not have the '{1}' tag.", tag);
   }
 
-  latest.range.end = modified.range.end;
-  if (rules.getBoolean ("verbose"))
-    std::cout << intervalSummarize (database, rules, latest);
-
   // Open a new interval with remaining tags, if any.
   if (filter.tags ().size () &&
       modified.tags ().size () != latest.tags ().size ())
