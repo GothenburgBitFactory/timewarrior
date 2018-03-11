@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import unittest
 import sys
+import unittest
+
 
 class BaseTestCase(unittest.TestCase):
     def tap(self, out):
@@ -9,6 +10,7 @@ class BaseTestCase(unittest.TestCase):
         for line in out.splitlines():
             sys.stderr.write(line + '\n')
         sys.stderr.write("---  tap output end  ---\n")
+
 
 class TestCase(BaseTestCase):
     pass

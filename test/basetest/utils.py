@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import division
-import os
-import sys
-import socket
-import signal
-import functools
+
 import atexit
+import functools
+import os
+import signal
+import sys
 import tempfile
 from subprocess import Popen, PIPE, STDOUT
 from threading import Thread
+
 try:
     from Queue import Queue, Empty
 except ImportError:
@@ -50,21 +51,18 @@ UUID_REGEXP = ("[0-9A-Fa-f]{8}-" + ("[0-9A-Fa-f]{4}-" * 3) + "[0-9A-Fa-f]{12}")
 
 
 def timew_binary_location(cmd="timew"):
-    """ ../src/ is used by default.
-    """
+    """ ../src/ is used by default."""
     return os.path.join(BIN_PREFIX, cmd)
     return binary_location(cmd, TIMEW_USE_PATH)
 
 
 def binary_location(cmd, USE_PATH=False):
-    """ ../src/ is used by default.
-    """
+    """ ../src/ is used by default."""
     return os.path.join(BIN_PREFIX, cmd)
 
 
 def wait_condition(cond, timeout=1, sleeptime=.01):
-    """Wait for condition to return anything other than None
-    """
+    """Wait for condition to return anything other than None"""
     # NOTE Increasing sleeptime can dramatically increase testsuite runtime
     # It also reduces CPU load significantly
     if timeout is None:
@@ -89,8 +87,7 @@ def wait_condition(cond, timeout=1, sleeptime=.01):
 
 
 def wait_process(pid, timeout=None):
-    """Wait for process to finish
-    """
+    """Wait for process to finish"""
     def process():
         try:
             os.kill(pid, 0)
@@ -138,8 +135,7 @@ def _queue_output(arguments, pidq, outputq):
 
 
 def _retrieve_output(thread, timeout, queue, thread_error):
-    """Fetch output from binary subprocess queues
-    """
+    """Fetch output from binary subprocess queues"""
     # Try to join the thread on failure abort
     thread.join(timeout)
     if thread.isAlive():
@@ -213,7 +209,7 @@ def _get_output(arguments, timeout=None):
 
 def run_cmd_wait(cmd, input=None, stdout=PIPE, stderr=PIPE,
                  merge_streams=False, env=os.environ, timeout=None):
-    "Run a subprocess and wait for it to finish"
+    """Run a subprocess and wait for it to finish"""
 
     if input is None:
         stdin = None
@@ -252,7 +248,7 @@ def run_cmd_wait(cmd, input=None, stdout=PIPE, stderr=PIPE,
 
 
 def run_cmd_wait_nofail(*args, **kwargs):
-    "Same as run_cmd_wait but silence the exception if it happens"
+    """Same as run_cmd_wait but silence the exception if it happens"""
     try:
         return run_cmd_wait(*args, **kwargs)
     except CommandError as e:
@@ -260,8 +256,7 @@ def run_cmd_wait_nofail(*args, **kwargs):
 
 
 def memoize(obj):
-    """Keep an in-memory cache of function results given it's inputs
-    """
+    """Keep an in-memory cache of function results given it's inputs"""
     cache = obj.cache = {}
 
     @functools.wraps(obj)
@@ -343,8 +338,7 @@ except ImportError:
 
 
 def parse_datafile(file):
-    """Parse .data files, treating files as JSON
-    """
+    """Parse .data files, treating files as JSON"""
     data = []
     with open(file) as fh:
         for line in fh:
@@ -362,9 +356,7 @@ def parse_datafile(file):
 
 
 def mkstemp(data):
-    """
-    Create a temporary file that is removed at process exit
-    """
+    """Create a temporary file that is removed at process exit"""
     def rmtemp(name):
         try:
             os.remove(name)
@@ -382,8 +374,7 @@ def mkstemp(data):
 
 
 def mkstemp_exec(data):
-    """Create a temporary executable file that is removed at process exit
-    """
+    """Create a temporary executable file that is removed at process exit"""
     name = mkstemp(data)
     os.chmod(name, 0o755)
 

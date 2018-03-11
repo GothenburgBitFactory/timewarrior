@@ -27,12 +27,12 @@
 
 # Original version by Renato Alves
 
+import inspect
 import os
 import sys
+import traceback
 import unittest
 import warnings
-import traceback
-import inspect
 
 
 def color(text, c):

@@ -200,7 +200,7 @@ class TestMove(TestCase):
 
         self.assertEqual(len(j), 2)
         self.assertTrue('start' in j[0])
-        self.assertEqual(j[0]['start'], '{:%Y%m%dT%H}4000Z'.format(now_utc-timedelta(hours=5)), 'start time of lengthened interval does not match')
+        self.assertEqual(j[0]['start'], '{:%Y%m%dT%H}4000Z'.format(now_utc - timedelta(hours=5)), 'start time of lengthened interval does not match')
         self.assertTrue('end' in j[0])
         self.assertEqual(j[0]['end'], '{:%Y%m%dT%H}5500Z'.format(now_utc - timedelta(hours=5)), 'end time of lengthened interval does not match')
         self.assertFalse('tags' in j[0])

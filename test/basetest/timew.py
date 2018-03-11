@@ -7,9 +7,10 @@ import shlex
 import shutil
 import tempfile
 import unittest
+
+from .compat import STRING_TYPE
 from .exceptions import CommandError
 from .utils import run_cmd_wait, run_cmd_wait_nofail, which, timew_binary_location, DEFAULT_EXTENSION_PATH
-from .compat import STRING_TYPE
 
 
 class Timew(object):
