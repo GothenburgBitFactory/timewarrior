@@ -53,7 +53,6 @@ UUID_REGEXP = ("[0-9A-Fa-f]{8}-" + ("[0-9A-Fa-f]{4}-" * 3) + "[0-9A-Fa-f]{12}")
 def timew_binary_location(cmd="timew"):
     """ ../src/ is used by default."""
     return os.path.join(BIN_PREFIX, cmd)
-    return binary_location(cmd, TIMEW_USE_PATH)
 
 
 def binary_location(cmd, USE_PATH=False):
