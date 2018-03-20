@@ -45,8 +45,7 @@ class Timew(object):
         self.reset_env()
 
     def add_default_extension(self, filename):
-        """Add default extension to current instance
-        """
+        """Add default extension to current instance"""
         if not os.path.isdir(self.extdir):
             os.mkdir(self.extdir)
 
@@ -184,8 +183,7 @@ class Timew(object):
         return output
 
     def destroy(self):
-        """Cleanup the data folder and release server port for other instances
-        """
+        """Cleanup the data folder and release server port for other instances"""
         try:
             shutil.rmtree(self.datadir)
         except OSError as e:
