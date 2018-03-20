@@ -2,21 +2,21 @@
 
 - #98     Command Injection Security Vulnerability in on-modify.timewarrior (TI-94)
           (thanks to Aaron Fields)
-- TI-100  :lastquarter throws exception in first quarter
+- #104    :lastquarter throws exception in first quarter (TI-100)
           (thanks to Andreas Poisel)
-- Fixed error from totals.py while timer is active
-          (thanks to davisdude)
 - #111    Some tests fail depending on the time of day
           (thanks to chronitis)
+- Fixed error from totals.py while timer is active
+          (thanks to davisdude)
 
 ------ current release ---------------------------
 
 1.1.1 (2018-02-03) ef26ebd6fec8472d4b91644806f48b546bb35747
 
-- TI-102  Exclusions stopped working
-          (thanks to Christian Decker)
 - TI-76   Shortening an interval over an exclusion makes the exclusion no longer apply
           (thanks to A M)
+- TI-102  Exclusions stopped working
+          (thanks to Christian Decker)
 
 ------ old release -------------------------------
 
