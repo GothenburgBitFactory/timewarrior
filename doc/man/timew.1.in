@@ -781,10 +781,12 @@ exclusions. A value of '0' yields a more compact report. Default value is '1'.
 Type is one of 'month', 'week', 'day'.
 
 .TP
-.B reports.<type>.axis = internal
+.B reports.<type>.axis = external
 .br
-The value 'internal' puts the hour markers inside the exclusion blocks.
-Default is <no value>.
+The value 'internal' puts the hour markers (time line at the top) inside the
+exclusion blocks, 'external' puts the hour markers in a separate line;
+additional values might be defined in the future. Default is 'internal' for
+the day report and 'external' for other reports.
 
 .TP
 .B reports.<type>.summary = on
