@@ -30,6 +30,8 @@ import os
 import sys
 import unittest
 
+from datetime import datetime, timedelta
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -81,27 +83,45 @@ class TestDelete(TestCase):
         j = self.t.export()
         self.assertEqual(len(j), 0)
 
-    def test_delete_open_interval_straddling_lunch(self):
-        """Delete a single open interval that straddles lunch, verify that is is gone"""
-        self.t.config("exclusions.monday",    "12:00-13:00")
-        self.t.config("exclusions.tuesday",   "12:00-13:00")
-        self.t.config("exclusions.wednesday", "12:00-13:00")
-        self.t.config("exclusions.thursday",  "12:00-13:00")
-        self.t.config("exclusions.friday",    "12:00-13:00")
-        self.t.config("exclusions.saturday",  "12:00-13:00")
-        self.t.config("exclusions.sunday",    "12:00-13:00")
+    def test_delete_open_interval_spanning_exclusion(self):
+        """Delete an open interval that spans over an exclusion"""
+        now = datetime.now()
+        now_utc = now.utcnow()
 
-        self.t("start 20170223T110000 foo")
+        three_hours_before = now - timedelta(hours=3)
+        four_hours_before = now - timedelta(hours=4)
+        five_hours_before = now - timedelta(hours=5)
+
+        if four_hours_before.day < three_hours_before.day:
+            exclusion = "<{:%H}:00 >{:%H}:00".format(three_hours_before, four_hours_before)
+        else:
+            exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
+
+        self.t.config("exclusions.sunday", exclusion)
+        self.t.config("exclusions.monday", exclusion)
+        self.t.config("exclusions.tuesday", exclusion)
+        self.t.config("exclusions.wednesday", exclusion)
+        self.t.config("exclusions.thursday", exclusion)
+        self.t.config("exclusions.friday", exclusion)
+        self.t.config("exclusions.saturday", exclusion)
+
+        self.t("start {:%Y-%m-%dT%H}:00:00 foo".format(five_hours_before))
 
         # Delete the open interval.
-        code, out, err = self.t("delete @1")
+        code, out, err = self.t("delete @1")  # self.t("delete @1 :debug")
+        print(out)
         self.assertEqual(out, 'Deleted @1\n')
 
         # The last interval should be closed, because the open interval was deleted.
         j = self.t.export()
-        self.assertTrue(len(j) >= 1)
-        self.assertTrue('start' in j[-1])
-        self.assertTrue('end' in j[-1])  # Closed
+        print(j)
+        self.assertEqual(len(j), 1)
+        self.assertInterval(
+            j[0],
+            '{:%Y%m%dT%H}0000Z'.format(now_utc-timedelta(hours=5)),
+            '{:%Y%m%dT%H}0000Z'.format(now_utc-timedelta(hours=4)),
+            ['foo'],
+            'remaining interval')
 
 
 if __name__ == "__main__":

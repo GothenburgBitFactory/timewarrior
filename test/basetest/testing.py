@@ -13,6 +13,19 @@ class BaseTestCase(unittest.TestCase):
 
 
 class TestCase(BaseTestCase):
-    pass
+    def assertInterval(self, interval, expectedStart=None, expectedEnd=None, expectedTags=None, description=None):
+        self.assertTrue('start' in interval)
+        self.assertTrue('end' in interval)
+
+        if expectedStart:
+            self.assertEqual(interval['start'], expectedStart, description)
+
+        if expectedEnd:
+            self.assertEqual(interval['end'], expectedEnd, description)
+
+        if expectedTags:
+            self.assertTrue('tags' in interval)
+            self.assertEqual(interval['tags'], expectedTags, description)
+
 
 # vim: ai sts=4 et sw=4
