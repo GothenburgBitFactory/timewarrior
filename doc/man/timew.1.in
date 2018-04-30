@@ -60,7 +60,7 @@ If no arguments are provided, all configuration settings are shown:
 See also 'hints', 'show'.
 
 .TP
-.B timew continue
+.B timew continue [@<id>] [<date>|<interval>]
 Resumes tracking of closed intervals. For example:
 
   $ timew track 9am - 10am tag1 tag2
