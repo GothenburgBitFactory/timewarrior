@@ -142,12 +142,18 @@ std::string Interval::json () const
   std::stringstream out;
   out << '{';
 
-  if (range.is_started ())
+  if (id)
+    out << "\"id\":\"@" << id << "\"";
+  
+  if (range.is_started ()) {
+    if (id)
+      out << ',';
     out << "\"start\":\"" << range.start.toISO () << "\"";
+  }
 
   if (range.is_ended ())
   {
-    if (range.is_started ())
+    if (id || range.is_started ())
       out << ',';
     out << "\"end\":\"" << range.end.toISO () << "\"";
   }
