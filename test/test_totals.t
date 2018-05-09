@@ -56,7 +56,7 @@ temp.report.start:
 temp.report.end:
 
 [
-]\
+]
 """)
 
         self.assertEqual('There is no data in the database\n', out)
@@ -64,78 +64,98 @@ temp.report.end:
 
     def test_totals_with_filled_database(self):
         """totals extension should print report for filled database"""
+        now = datetime.datetime.now()
+        one_hour_before = now - datetime.timedelta(hours=1)
+
+        now_utc = now.utcnow()
+        one_hour_before_utc = now_utc - datetime.timedelta(hours=1)
+
         out, err = self.process.communicate(input="""\
 color: off
 debug: off
-temp.report.start: 20160101T070000Z
-temp.report.end: 20160101T080000Z
+temp.report.start: {0:%Y%m%dT%H%M%S}Z
+temp.report.end: {1:%Y%m%dT%H%M%S}Z
 
 [
-{"start":"20160101T070000Z","end":"20160101T080000Z","tags":["foo"]}
-]\
-""")
+{{"start":"{0:%Y%m%dT%H%M%S}Z","end":"{1:%Y%m%dT%H%M%S}Z","tags":["foo"]}}
+]
+""".format(one_hour_before_utc, now_utc))
 
         self.assertRegexpMatches(out, """
-Total by Tag, for 2016-01-01 07:00:00 - 2016-01-01 08:00:00
+Total by Tag, for {0:%Y-%m-%d %H:%M}:\d{{2}} - {1:%Y-%m-%d %H:%M}:\d{{2}}
 
 Tag        Total
 ----- ----------
 foo      1:00:0[01]
       ----------
 Total    1:00:0[01]
-""")
+""".format(one_hour_before, now))
         self.assertEqual('', err)
 
     def test_totals_with_interval_without_tags(self):
         """totals extension should handle interval without tags"""
+        now = datetime.datetime.now()
+        one_hour_before = now - datetime.timedelta(hours=1)
+
+        now_utc = now.utcnow()
+        one_hour_before_utc = now_utc - datetime.timedelta(hours=1)
+
         out, err = self.process.communicate(input="""\
 color: off
 debug: off
-temp.report.start: 20160101T070000Z
-temp.report.end: 20160101T080000Z
+temp.report.start: {0:%Y%m%dT%H%M%S}Z
+temp.report.end: {1:%Y%m%dT%H%M%S}Z
 
-[{"start":"20160101T070000Z","end":"20160101T080000Z"}]\
-""")
+[
+{{"start":"{0:%Y%m%dT%H%M%S}Z","end":"{1:%Y%m%dT%H%M%S}Z"}}
+]
+""".format(one_hour_before_utc, now_utc))
 
         self.assertRegexpMatches(out, """
-Total by Tag, for 2016-01-01 07:00:00 - 2016-01-01 08:00:00
+Total by Tag, for {0:%Y-%m-%d %H:%M}:\d{{2}} - {1:%Y-%m-%d %H:%M}:\d{{2}}
 
 Tag        Total
 ----- ----------
          1:00:0[01]
       ----------
 Total    1:00:0[01]
-""")
+""".format(one_hour_before, now))
         self.assertEqual('', err)
 
     def test_totals_with_interval_with_empty_tag_list(self):
         """totals extension should handle interval with empty tag list"""
+        now = datetime.datetime.now()
+        one_hour_before = now - datetime.timedelta(hours=1)
+
+        now_utc = now.utcnow()
+        one_hour_before_utc = now_utc - datetime.timedelta(hours=1)
+
         out, err = self.process.communicate(input="""\
 color: off
 debug: off
-temp.report.start: 20160101T070000Z
-temp.report.end: 20160101T080000Z
+temp.report.start: {0:%Y%m%dT%H%M%S}Z
+temp.report.end: {1:%Y%m%dT%H%M%S}Z
 
 [
-{"start":"20160101T070000Z","end":"20160101T080000Z","tags":[]}
-]\
-""")
+{{"start":"{0:%Y%m%dT%H%M%S}Z","end":"{1:%Y%m%dT%H%M%S}Z", "tags":[]}}
+]
+""".format(one_hour_before_utc, now_utc))
 
         self.assertRegexpMatches(out, """
-Total by Tag, for 2016-01-01 07:00:00 - 2016-01-01 08:00:00
+Total by Tag, for {0:%Y-%m-%d %H:%M}:\d{{2}} - {1:%Y-%m-%d %H:%M}:\d{{2}}
 
 Tag        Total
 ----- ----------
          1:00:0[01]
       ----------
 Total    1:00:0[01]
-""")
+""".format(one_hour_before, now))
         self.assertEqual('', err)
 
     def test_totals_with_open_interval(self):
         """totals extension should handle open interval"""
         now = datetime.datetime.now()
-        two_hours_before = now - datetime.timedelta(hours=2)
+        one_hour_before = now - datetime.timedelta(hours=1)
 
         now_utc = now.utcnow()
         one_hour_before_utc = now_utc - datetime.timedelta(hours=1)
@@ -148,18 +168,18 @@ temp.report.end:
 
 [
 {{"start":"{0:%Y%m%dT%H%M%S}Z","tags":["foo"]}}
-]\
+]
 """.format(one_hour_before_utc))
 
         self.assertRegexpMatches(out, """
-Total by Tag, for {:%Y-%m-%d %H:%M}:\d{{2}} - {:%Y-%m-%d %H:%M}:\d{{2}}
+Total by Tag, for {0:%Y-%m-%d %H:%M}:\d{{2}} - {1:%Y-%m-%d %H:%M}:\d{{2}}
 
 Tag        Total
 ----- ----------
 foo      1:00:0[01]
       ----------
 Total    1:00:0[01]
-""".format(two_hours_before, now))
+""".format(one_hour_before, now))
         self.assertEqual('', err)
 
 
