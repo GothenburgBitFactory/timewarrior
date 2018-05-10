@@ -27,7 +27,6 @@
 ###############################################################################
 
 import os
-import subprocess
 import sys
 import unittest
 
@@ -35,32 +34,27 @@ import datetime
 
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'ext'))
 
 from basetest import TestCase
+from totals import *
 
 
 class TestTotals(TestCase):
-    def setUp(self):
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        self.process = subprocess.Popen([os.path.join(current_dir, '../ext/totals.py')],
-                                        stdin=subprocess.PIPE,
-                                        stdout=subprocess.PIPE,
-                                        stderr=subprocess.PIPE)
-
     def test_totals_with_empty_database(self):
         """totals extension should report error on empty database"""
-        out, err = self.process.communicate(input="""\
-color: off
-debug: off
-temp.report.start:
-temp.report.end:
+        input_stream = [
+            'color: off\n',
+            'debug: on\n',
+            'temp.report.start: \n',
+            'temp.report.end: \n',
+            '\n',
+            '[]',
+        ]
 
-[
-]
-""")
+        out = calculate_totals(input_stream)
 
-        self.assertEqual('There is no data in the database\n', out)
-        self.assertEqual('', err)
+        self.assertEqual(['There is no data in the database'], out)
 
     def test_totals_with_filled_database(self):
         """totals extension should print report for filled database"""
@@ -70,27 +64,51 @@ temp.report.end:
         now_utc = now.utcnow()
         one_hour_before_utc = now_utc - datetime.timedelta(hours=1)
 
-        out, err = self.process.communicate(input="""\
-color: off
-debug: off
-temp.report.start: {0:%Y%m%dT%H%M%S}Z
-temp.report.end: {1:%Y%m%dT%H%M%S}Z
+        input_stream = [
+            'color: off\n',
+            'debug: on\n',
+            'temp.report.start: {:%Y%m%dT%H%M%S}Z\n'.format(one_hour_before_utc),
+            'temp.report.end: {:%Y%m%dT%H%M%S}Z\n'.format(now_utc),
+            '\n',
+            '[{{"start":"{:%Y%m%dT%H%M%S}Z","end":"{:%Y%m%dT%H%M%S}Z","tags":["foo"]}}]'.format(one_hour_before_utc, now_utc)
+        ]
 
-[
-{{"start":"{0:%Y%m%dT%H%M%S}Z","end":"{1:%Y%m%dT%H%M%S}Z","tags":["foo"]}}
-]
-""".format(one_hour_before_utc, now_utc))
+        out = calculate_totals(input_stream)
 
-        self.assertRegexpMatches(out, """
-Total by Tag, for {0:%Y-%m-%d %H:%M}:\d{{2}} - {1:%Y-%m-%d %H:%M}:\d{{2}}
+        self.assertEqual(
+            [
+                '',
+                'Total by Tag, for {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}'.format(one_hour_before, now),
+                '',
+                'Tag        Total',
+                '----- ----------',
+                'foo      1:00:00',
+                '      ----------',
+                'Total    1:00:00',
+                '',
+            ],
+            out)
 
-Tag        Total
------ ----------
-foo      1:00:0[01]
-      ----------
-Total    1:00:0[01]
-""".format(one_hour_before, now))
-        self.assertEqual('', err)
+    def test_totals_with_emtpy_range(self):
+        """totals extension should report error on emtpy range"""
+        now = datetime.datetime.now()
+        one_hour_before = now - datetime.timedelta(hours=1)
+
+        now_utc = now.utcnow()
+        one_hour_before_utc = now_utc - datetime.timedelta(hours=1)
+
+        input_stream = [
+            'color: off\n',
+            'debug: on\n',
+            'temp.report.start: {:%Y%m%dT%H%M%S}Z\n'.format(one_hour_before_utc),
+            'temp.report.end: {:%Y%m%dT%H%M%S}Z\n'.format(now_utc),
+            '\n',
+            '[]',
+        ]
+
+        out = calculate_totals(input_stream)
+
+        self.assertEqual(['No data in the range {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}'.format(one_hour_before, now)], out)
 
     def test_totals_with_interval_without_tags(self):
         """totals extension should handle interval without tags"""
@@ -100,27 +118,30 @@ Total    1:00:0[01]
         now_utc = now.utcnow()
         one_hour_before_utc = now_utc - datetime.timedelta(hours=1)
 
-        out, err = self.process.communicate(input="""\
-color: off
-debug: off
-temp.report.start: {0:%Y%m%dT%H%M%S}Z
-temp.report.end: {1:%Y%m%dT%H%M%S}Z
+        input_stream = [
+            'color: off\n',
+            'debug: on\n',
+            'temp.report.start: {:%Y%m%dT%H%M%S}Z\n'.format(one_hour_before_utc),
+            'temp.report.end: {:%Y%m%dT%H%M%S}Z\n'.format(now_utc),
+            '\n',
+            '[{{"start":"{:%Y%m%dT%H%M%S}Z","end":"{:%Y%m%dT%H%M%S}Z"}}]'.format(one_hour_before_utc, now_utc)
+        ]
 
-[
-{{"start":"{0:%Y%m%dT%H%M%S}Z","end":"{1:%Y%m%dT%H%M%S}Z"}}
-]
-""".format(one_hour_before_utc, now_utc))
+        out = calculate_totals(input_stream)
 
-        self.assertRegexpMatches(out, """
-Total by Tag, for {0:%Y-%m-%d %H:%M}:\d{{2}} - {1:%Y-%m-%d %H:%M}:\d{{2}}
-
-Tag        Total
------ ----------
-         1:00:0[01]
-      ----------
-Total    1:00:0[01]
-""".format(one_hour_before, now))
-        self.assertEqual('', err)
+        self.assertEqual(
+            [
+                '',
+                'Total by Tag, for {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}'.format(one_hour_before, now),
+                '',
+                'Tag        Total',
+                '----- ----------',
+                '         1:00:00',
+                '      ----------',
+                'Total    1:00:00',
+                '',
+            ],
+            out)
 
     def test_totals_with_interval_with_empty_tag_list(self):
         """totals extension should handle interval with empty tag list"""
@@ -130,27 +151,30 @@ Total    1:00:0[01]
         now_utc = now.utcnow()
         one_hour_before_utc = now_utc - datetime.timedelta(hours=1)
 
-        out, err = self.process.communicate(input="""\
-color: off
-debug: off
-temp.report.start: {0:%Y%m%dT%H%M%S}Z
-temp.report.end: {1:%Y%m%dT%H%M%S}Z
+        input_stream = [
+            'color: off\n',
+            'debug: on\n',
+            'temp.report.start: {:%Y%m%dT%H%M%S}Z\n'.format(one_hour_before_utc),
+            'temp.report.end: {:%Y%m%dT%H%M%S}Z\n'.format(now_utc),
+            '\n',
+            '[{{"start":"{:%Y%m%dT%H%M%S}Z","end":"{:%Y%m%dT%H%M%S}Z","tags":[]}}]'.format(one_hour_before_utc, now_utc)
+        ]
 
-[
-{{"start":"{0:%Y%m%dT%H%M%S}Z","end":"{1:%Y%m%dT%H%M%S}Z", "tags":[]}}
-]
-""".format(one_hour_before_utc, now_utc))
+        out = calculate_totals(input_stream)
 
-        self.assertRegexpMatches(out, """
-Total by Tag, for {0:%Y-%m-%d %H:%M}:\d{{2}} - {1:%Y-%m-%d %H:%M}:\d{{2}}
-
-Tag        Total
------ ----------
-         1:00:0[01]
-      ----------
-Total    1:00:0[01]
-""".format(one_hour_before, now))
-        self.assertEqual('', err)
+        self.assertEqual(
+            [
+                '',
+                'Total by Tag, for {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}'.format(one_hour_before, now),
+                '',
+                'Tag        Total',
+                '----- ----------',
+                '         1:00:00',
+                '      ----------',
+                'Total    1:00:00',
+                '',
+            ],
+            out)
 
     def test_totals_with_open_interval(self):
         """totals extension should handle open interval"""
@@ -160,31 +184,215 @@ Total    1:00:0[01]
         now_utc = now.utcnow()
         one_hour_before_utc = now_utc - datetime.timedelta(hours=1)
 
-        out, err = self.process.communicate(input="""\
-color: off
-debug: off
-temp.report.start: {0:%Y%m%dT%H%M%S}Z
-temp.report.end: 
+        input_stream = [
+            'color: off\n',
+            'debug: off\n',
+            'temp.report.start: {:%Y%m%dT%H%M%S}Z\n'.format(one_hour_before_utc),
+            'temp.report.end: \n',
+            '\n',
+            '[{{"start":"{:%Y%m%dT%H%M%S}Z","tags":["foo"]}}]'.format(one_hour_before_utc),
+        ]
 
-[
-{{"start":"{0:%Y%m%dT%H%M%S}Z","tags":["foo"]}}
-]
-""".format(one_hour_before_utc))
+        out = calculate_totals(input_stream)
 
-        self.assertRegexpMatches(out, """
-Total by Tag, for {0:%Y-%m-%d %H:%M}:\d{{2}} - {1:%Y-%m-%d %H:%M}:\d{{2}}
+        self.assertEqual(
+            [
+                '',
+                'Total by Tag, for {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}'.format(one_hour_before, now),
+                '',
+                'Tag        Total',
+                '----- ----------',
+                'foo      1:00:00',
+                '      ----------',
+                'Total    1:00:00',
+                '',
+            ],
+            out)
 
-Tag        Total
------ ----------
-foo      1:00:0[01]
-      ----------
-Total    1:00:0[01]
-""".format(one_hour_before, now))
-        self.assertEqual('', err)
+    def test_totals_colored_with_empty_database(self):
+        """totals extension should report error on empty database (colored)"""
+        input_stream = [
+            'color: on\n',
+            'debug: on\n',
+            'temp.report.start: \n',
+            'temp.report.end: \n',
+            '\n',
+            '[]',
+        ]
+
+        out = calculate_totals(input_stream)
+
+        self.assertEqual(['There is no data in the database'], out)
+
+    def test_totals_colored_with_filled_database(self):
+        """totals extension should print report for filled database (colored)"""
+        now = datetime.datetime.now()
+        one_hour_before = now - datetime.timedelta(hours=1)
+
+        now_utc = now.utcnow()
+        one_hour_before_utc = now_utc - datetime.timedelta(hours=1)
+
+        input_stream = [
+            'color: on\n',
+            'debug: on\n',
+            'temp.report.start: {:%Y%m%dT%H%M%S}Z\n'.format(one_hour_before_utc),
+            'temp.report.end: {:%Y%m%dT%H%M%S}Z\n'.format(now_utc),
+            '\n',
+            '[{{"start":"{:%Y%m%dT%H%M%S}Z","end":"{:%Y%m%dT%H%M%S}Z","tags":["foo"]}}]'.format(one_hour_before_utc, now_utc)
+        ]
+
+        out = calculate_totals(input_stream)
+
+        self.assertEqual(
+            [
+                '',
+                'Total by Tag, for {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}'.format(one_hour_before, now),
+                '',
+                '[4mTag  [0m [4m     Total[0m',
+                'foo      1:00:00',
+                '      [4m          [0m',
+                'Total    1:00:00',
+                '',
+            ],
+            out)
+
+    def test_totals_colored_with_emtpy_range(self):
+        """totals extension should report error on emtpy range (colored)"""
+        now = datetime.datetime.now()
+        one_hour_before = now - datetime.timedelta(hours=1)
+
+        now_utc = now.utcnow()
+        one_hour_before_utc = now_utc - datetime.timedelta(hours=1)
+
+        input_stream = [
+            'color: on\n',
+            'debug: on\n',
+            'temp.report.start: {:%Y%m%dT%H%M%S}Z\n'.format(one_hour_before_utc),
+            'temp.report.end: {:%Y%m%dT%H%M%S}Z\n'.format(now_utc),
+            '\n',
+            '[]',
+        ]
+
+        out = calculate_totals(input_stream)
+
+        self.assertEqual(['No data in the range {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}'.format(one_hour_before, now)], out)
+
+    def test_totals_colored_with_interval_without_tags(self):
+        """totals extension should handle interval without tags (colored)"""
+        now = datetime.datetime.now()
+        one_hour_before = now - datetime.timedelta(hours=1)
+
+        now_utc = now.utcnow()
+        one_hour_before_utc = now_utc - datetime.timedelta(hours=1)
+
+        input_stream = [
+            'color: on\n',
+            'debug: on\n',
+            'temp.report.start: {:%Y%m%dT%H%M%S}Z\n'.format(one_hour_before_utc),
+            'temp.report.end: {:%Y%m%dT%H%M%S}Z\n'.format(now_utc),
+            '\n',
+            '[{{"start":"{:%Y%m%dT%H%M%S}Z","end":"{:%Y%m%dT%H%M%S}Z"}}]'.format(one_hour_before_utc, now_utc)
+        ]
+
+        out = calculate_totals(input_stream)
+
+        self.assertEqual(
+            [
+                '',
+                'Total by Tag, for {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}'.format(one_hour_before, now),
+                '',
+                '[4mTag  [0m [4m     Total[0m',
+                '         1:00:00',
+                '      [4m          [0m',
+                'Total    1:00:00',
+                '',
+            ],
+            out)
+
+    def test_totals_colored_with_interval_with_empty_tag_list(self):
+        """totals extension should handle interval with empty tag list (colored)"""
+        now = datetime.datetime.now()
+        one_hour_before = now - datetime.timedelta(hours=1)
+
+        now_utc = now.utcnow()
+        one_hour_before_utc = now_utc - datetime.timedelta(hours=1)
+
+        input_stream = [
+            'color: on\n',
+            'debug: on\n',
+            'temp.report.start: {:%Y%m%dT%H%M%S}Z\n'.format(one_hour_before_utc),
+            'temp.report.end: {:%Y%m%dT%H%M%S}Z\n'.format(now_utc),
+            '\n',
+            '[{"start":"20160101T070000Z","end":"20160101T080000Z","tags":[]}]',
+        ]
+
+        out = calculate_totals(input_stream)
+
+        self.assertEqual(
+            [
+                '',
+                'Total by Tag, for {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}'.format(one_hour_before, now),
+                '',
+                '[4mTag  [0m [4m     Total[0m',
+                '         1:00:00',
+                '      [4m          [0m',
+                'Total    1:00:00',
+                '',
+            ],
+            out)
+
+    def test_totals_colored_with_open_interval(self):
+        """totals extension should handle open interval (colored)"""
+        now = datetime.datetime.now()
+        one_hour_before = now - datetime.timedelta(hours=1)
+
+        now_utc = now.utcnow()
+        one_hour_before_utc = now_utc - datetime.timedelta(hours=1)
+
+        input_stream = [
+            'color: on\n',
+            'debug: off\n',
+            'temp.report.start: {:%Y%m%dT%H%M%S}Z\n'.format(one_hour_before_utc),
+            'temp.report.end: \n',
+            '\n',
+            '[{{"start":"{:%Y%m%dT%H%M%S}Z","tags":["foo"]}}]'.format(one_hour_before_utc),
+        ]
+
+        out = calculate_totals(input_stream)
+
+        self.assertEqual(
+            [
+                '',
+                'Total by Tag, for {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}'.format(one_hour_before, now),
+                '',
+                '[4mTag  [0m [4m     Total[0m',
+                'foo      1:00:00',
+                '      [4m          [0m',
+                'Total    1:00:00',
+                '',
+            ],
+            out)
+
+    def test_format_seconds_with_less_than_1_minute(self):
+        """Test format_seconds with less than 1 minute"""
+        self.assertEqual(format_seconds(34), '   0:00:34')
+
+    def test_format_seconds_with_1_minute(self):
+        """Test format_seconds with 1 minute"""
+        self.assertEqual(format_seconds(60), '   0:01:00')
+
+    def test_format_seconds_with_1_hour(self):
+        """Test format_seconds with 1 hour"""
+        self.assertEqual(format_seconds(3600), '   1:00:00')
+
+    def test_format_seconds_with_more_than_1_hour(self):
+        """Test format_seconds with more than 1 hour"""
+        self.assertEqual(format_seconds(3645), '   1:00:45')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     from simpletap import TAPTestRunner
+
     unittest.main(testRunner=TAPTestRunner())
 
 # vim: ai sts=4 et sw=4 ft=python

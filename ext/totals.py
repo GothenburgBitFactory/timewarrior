@@ -25,124 +25,135 @@
 #
 ###############################################################################
 
+from __future__ import print_function
 import sys
 import json
 import datetime
 from dateutil import tz
+
+DATEFORMAT = "%Y%m%dT%H%M%SZ"
 
 
 def format_seconds(seconds):
     """Convert seconds to a formatted string
 
     Convert seconds: 3661
-    To formatted:    1:01:01
+    To formatted: "   1:01:01"
     """
     hours = int(seconds / 3600)
-    minutes = int(seconds % 3600) / 60
+    minutes = int(seconds % 3600 / 60)
     seconds = seconds % 60
-    return "%4d:%02d:%02d" % (hours, minutes, seconds)
+    return "{:4d}:{:02d}:{:02d}".format(hours, minutes, seconds)
 
 
-DATEFORMAT = "%Y%m%dT%H%M%SZ"
+def calculate_totals(input_stream):
+    from_zone = tz.tzutc()
+    to_zone = tz.tzlocal()
 
-# Extract the configuration settings.
-header = 1
-configuration = dict()
-body = ""
-for line in sys.stdin:
-    if header:
-        if line == "\n":
-            header = 0
-        else:
-            fields = line.strip().split(": ", 2)
-            if len(fields) == 2:
-                configuration[fields[0]] = fields[1]
+    # Extract the configuration settings.
+    header = 1
+    configuration = dict()
+    body = ""
+    for line in input_stream:
+        if header:
+            if line == "\n":
+                header = 0
             else:
-                configuration[fields[0]] = ""
-    else:
-        body += line
-
-# Sum the second tracked by tag.
-totals = dict()
-untagged = None
-
-from_zone = tz.tzutc()
-to_zone = tz.tzlocal()
-
-j = json.loads(body)
-for object in j:
-    start = datetime.datetime.strptime(object["start"], DATEFORMAT)
-
-    if "end" in object:
-        end = datetime.datetime.strptime(object["end"], DATEFORMAT)
-    else:
-        end = datetime.datetime.utcnow()
-
-    tracked = end - start
-
-    if "tags" not in object or object["tags"] == []:
-        if untagged is None:
-            untagged = tracked
+                fields = line.strip().split(": ", 2)
+                if len(fields) == 2:
+                    configuration[fields[0]] = fields[1]
+                else:
+                    configuration[fields[0]] = ""
         else:
-            untagged += tracked
-    else:
-        for tag in object["tags"]:
-            if tag in totals:
-                totals[tag] += tracked
+            body += line
+
+    # Sum the seconds tracked by tag.
+    totals = dict()
+    untagged = None
+    j = json.loads(body)
+    for object in j:
+        start = datetime.datetime.strptime(object["start"], DATEFORMAT)
+
+        if "end" in object:
+            end = datetime.datetime.strptime(object["end"], DATEFORMAT)
+        else:
+            end = datetime.datetime.utcnow()
+
+        tracked = end - start
+
+        if "tags" not in object or object["tags"] == []:
+            if untagged is None:
+                untagged = tracked
             else:
-                totals[tag] = tracked
+                untagged += tracked
+        else:
+            for tag in object["tags"]:
+                if tag in totals:
+                    totals[tag] += tracked
+                else:
+                    totals[tag] = tracked
 
-# Determine largest tag width.
-max_width = len("Total")
-for tag in totals:
-    if len(tag) > max_width:
-        max_width = len(tag)
+    # Determine largest tag width.
+    max_width = len("Total")
+    for tag in totals:
+        if len(tag) > max_width:
+            max_width = len(tag)
 
-if "temp.report.start" not in configuration:
-    print("There is no data in the database")
-    exit()
+    if "temp.report.start" not in configuration:
+        return ["There is no data in the database"]
 
-start_utc = datetime.datetime.strptime(configuration["temp.report.start"], DATEFORMAT)
-start_utc = start_utc.replace(tzinfo=from_zone)
-start = start_utc.astimezone(to_zone)
+    start_utc = datetime.datetime.strptime(configuration["temp.report.start"], DATEFORMAT)
+    start_utc = start_utc.replace(tzinfo=from_zone)
+    start = start_utc.astimezone(to_zone)
 
-if "temp.report.end" in configuration:
-    end_utc = datetime.datetime.strptime(configuration["temp.report.end"], DATEFORMAT)
-    end_utc = end_utc.replace(tzinfo=from_zone)
-    end = end_utc.astimezone(to_zone)
-else:
-    end = datetime.datetime.now()
+    if "temp.report.end" in configuration:
+        end_utc = datetime.datetime.strptime(configuration["temp.report.end"], DATEFORMAT)
+        end_utc = end_utc.replace(tzinfo=from_zone)
+        end = end_utc.astimezone(to_zone)
+    else:
+        end = datetime.datetime.now()
 
-if max_width > 0:
+    if len(totals) == 0 and untagged is None:
+        return ["No data in the range {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}".format(start, end)]
+
     # Compose report header.
-    print("\nTotal by Tag, for {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}\n".format(start, end))
+    output = [
+        "",
+        "Total by Tag, for {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}".format(start, end),
+        ""
+    ]
 
     # Compose table header.
     if configuration["color"] == "on":
-        print("[4m{:{width}}[0m [4m{:>10}[0m".format("Tag", "Total", width=max_width))
+        output.append("[4m{:{width}}[0m [4m{:>10}[0m".format("Tag", "Total", width=max_width))
     else:
-        print("{:{width}} {:>10}".format("Tag", "Total", width=max_width))
-        print("{} {}".format("-" * max_width, "----------"))
+        output.append("{:{width}} {:>10}".format("Tag", "Total", width=max_width))
+        output.append("{} {}".format("-" * max_width, "----------"))
 
     # Compose table rows.
     grand_total = 0
     for tag in sorted(totals):
         formatted = format_seconds(totals[tag].seconds)
         grand_total += totals[tag].seconds
-        print("%-*s %10s" % (max_width, tag, formatted))
+        output.append("{:{width}} {:10}".format(tag, formatted, width=max_width))
 
     if untagged is not None:
         formatted = format_seconds(untagged.seconds)
         grand_total += untagged.seconds
-        print("%-*s %10s" % (max_width, "", formatted))
+        output.append("{:{width}} {:10}".format("", formatted, width=max_width))
 
     # Compose total.
     if configuration["color"] == "on":
-        print("{} {}".format(" " * max_width, "[4m          [0m"))
+        output.append("{} {}".format(" " * max_width, "[4m          [0m"))
     else:
-        print("{} {}".format(" " * max_width, "----------"))
+        output.append("{} {}".format(" " * max_width, "----------"))
 
-    print("%-*s %10s" % (max_width, "Total", format_seconds(grand_total)))
+    output.append("{:{width}} {:10}".format("Total", format_seconds(grand_total), width=max_width))
+    output.append("")
 
-else:
-    print("No data in the range {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}".format(start, end))
+    return output
+
+
+if __name__ == "__main__":
+    for line in calculate_totals(sys.stdin):
+        print(line)
