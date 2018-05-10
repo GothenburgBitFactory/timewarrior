@@ -25,13 +25,8 @@ There are two ways to retrieve the Timewarrior sources:
 
 * Clone the repository from Github,
 
-      git clone https://github.com/GothenburgBitFactory/timewarrior
-
-  checkout the dev branch, and update submodules
-
+      git clone --recurse-submodules https://github.com/GothenburgBitFactory/timewarrior
       cd timewarrior
-      git checkout dev
-      git submodule update
 
 * Or download the tarball with curl,
 
