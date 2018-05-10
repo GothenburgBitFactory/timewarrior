@@ -48,7 +48,7 @@ int CmdTags (
       tags.insert (tag);
 
   // Shows all tags.
-  if (tags.size ())
+  if (! tags.empty ())
   {
     Table t;
     t.width (1024);

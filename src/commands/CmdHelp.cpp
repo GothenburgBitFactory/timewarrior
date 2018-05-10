@@ -67,7 +67,7 @@ int CmdHelpUsage (const Extensions& extensions)
             << "       timew week [<interval>] [<tag> ...]\n"
             << '\n';
 
-  if (extensions.all ().size ())
+  if (!extensions.all ().empty ())
   {
     std::cout << "Extensions (extensions do not provide help):\n";
 
@@ -120,7 +120,8 @@ int CmdHelp (
   const Extensions& extensions)
 {
   auto words = cli.getWords ();
-  if (words.size ())
+
+  if (! words.empty ())
   {
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890

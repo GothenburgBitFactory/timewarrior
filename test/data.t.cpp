@@ -296,7 +296,7 @@ int main (int, char**)
   // no results.
   exclusions = {{Datetime ("20151201T000000"), Datetime ("20160201T000000")}};
   subtracted = subtractRanges ({limit}, exclusions);
-  t.ok (subtracted.size () == 0, "subtractRanges: all_day - 2 overlapping months = 0 ranges");
+  t.ok (subtracted.empty (), "subtractRanges: all_day - 2 overlapping months = 0 ranges");
 
   return 0;
 }

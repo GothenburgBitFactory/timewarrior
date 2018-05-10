@@ -44,7 +44,7 @@ void Interval::initialize (const std::string& line)
     tokens.push_back (Lexer::dequote (token));
 
   // Minimal requirement 'inc'.
-  if (tokens.size () &&
+  if (!tokens.empty () &&
       tokens[0] == "inc")
   {
     unsigned int offset = 0;
@@ -86,7 +86,7 @@ bool Interval::empty () const
 {
   return range.start.toEpoch () == 0 &&
          range.end.toEpoch ()   == 0 &&
-         _tags.size ()          == 0;
+    _tags.empty ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -126,7 +126,7 @@ std::string Interval::serialize () const
   if (range.end.toEpoch ())
     out << " - " << range.end.toISO ();
 
-  if (_tags.size ())
+  if (! _tags.empty ())
   {
     out << " #";
     for (auto& tag : _tags)
@@ -152,7 +152,7 @@ std::string Interval::json () const
     out << "\"end\":\"" << range.end.toISO () << "\"";
   }
 
-  if (_tags.size ())
+  if (! _tags.empty ())
   {
     std::string tags;
     for (auto& tag : _tags)
@@ -192,7 +192,7 @@ std::string Interval::dump () const
   if (range.end.toEpoch ())
     out << " - " << range.end.toISOLocalExtended ();
 
-  if (_tags.size ())
+  if (! _tags.empty ())
   {
     out << " #";
     for (auto& tag : _tags)

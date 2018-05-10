@@ -197,7 +197,7 @@ int CmdDiagnostics (
       << "       Location: " << describeFile (extDir) << '\n';
 
   auto exts = extensions.all ();
-  if (exts.size ())
+  if (! exts.empty ())
   {
     unsigned int longest = 0;
     for (auto& e : exts)

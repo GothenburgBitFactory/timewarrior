@@ -54,7 +54,7 @@ int main (int, char**)
   // std::set <std::string> tags () const;
   // void tag (const std::string&);
   Interval i2;
-  t.ok (i2.tags () == std::set <std::string> {}, "Interval(tag=) -> {}");
+  t.ok (i2.tags ().empty (), "Interval(tag=) -> {}");
   i2.tag ("foo");
   t.ok (i2.tags () == std::set <std::string> {"foo"}, "Interval(tag=foo) -> {foo}");
   i2.tag ("foo");  // Duplicate

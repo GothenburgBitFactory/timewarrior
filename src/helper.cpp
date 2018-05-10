@@ -47,7 +47,7 @@ Color intervalColor (
   std::string first_tag;
   for (auto& tag : interval.tags ())
   {
-    if (first_tag == "")
+    if (first_tag.empty ())
       first_tag = tag;
 
     std::string name = std::string ("tags.") + tag + ".color";
@@ -58,7 +58,7 @@ Color intervalColor (
   if (c.nontrivial ())
     return c;
 
-  if (interval.tags ().size ())
+  if (! interval.tags ().empty ())
     return tag_colors[first_tag];
 
   return c;
@@ -106,7 +106,7 @@ std::string intervalSummarize (
     std::string tags;
     for (auto& tag : interval.tags ())
     {
-      if (tags != "")
+      if (! tags.empty ())
         tags += " ";
 
       tags += tagColor (rules, tag).colorize (quoteIfNeeded (tag));
@@ -345,7 +345,8 @@ Palette createPalette (const Rules& rules)
 {
   Palette p;
   auto colors = rules.all ("theme.palette.color");
-  if (colors.size ())
+
+  if (! colors.empty ())
   {
     p.clear ();
     for (auto& c : colors)

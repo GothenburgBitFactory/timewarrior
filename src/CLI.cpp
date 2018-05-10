@@ -327,7 +327,7 @@ bool CLI::canonicalize (
 ////////////////////////////////////////////////////////////////////////////////
 std::string CLI::getBinary () const
 {
-  if (_args.size ())
+  if (! _args.empty ())
     return _args[0].attribute ("raw");
 
   return "";
@@ -366,7 +366,7 @@ std::string CLI::dump (const std::string& title) const
 
   out << '\n';
 
-  if (_args.size ())
+  if (! _args.empty ())
   {
     out << "  _args\n";
     for (auto& a : _args)

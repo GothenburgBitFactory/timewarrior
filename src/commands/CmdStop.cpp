@@ -84,7 +84,7 @@ int CmdStop (
 
   // If tags are specified, but are not a full set of tags, remove them
   // before closing the interval.
-  if (filter.tags ().size () &&
+  if (! filter.tags ().empty () &&
       setIntersect (filter.tags (), latest.tags ()).size () != latest.tags ().size ())
   {
     for (auto& tag : filter.tags ())
@@ -95,7 +95,7 @@ int CmdStop (
   }
 
   // Open a new interval with remaining tags, if any.
-  if (filter.tags ().size () &&
+  if (! filter.tags ().empty () &&
       modified.tags ().size () != latest.tags ().size ())
   {
     modified.range.start = modified.range.end;

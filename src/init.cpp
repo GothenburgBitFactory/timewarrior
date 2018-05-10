@@ -249,7 +249,8 @@ int dispatchCommand (
 
   // Dispatch to the right command function.
   std::string command = cli.getCommand ();
-  if (command != "")
+
+  if (! command.empty ())
   {
     // These signatures are expected to be all different, therefore no
     // command to fn mapping.
@@ -291,7 +292,7 @@ int dispatchCommand (
   {
     auto words = cli.getWords ();
 
-    if (words.size () > 0)
+    if (! words.empty ())
     {
       throw format ("'{1}' is not a timew command. See 'timew help'.", words[0]);
     }

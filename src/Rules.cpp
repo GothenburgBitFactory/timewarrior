@@ -223,7 +223,7 @@ std::vector <std::string> Rules::all (const std::string& stem) const
 {
   std::vector <std::string> items;
   for (const auto& it : _settings)
-    if (stem == "" || it.first.find (stem) == 0)
+    if (stem.empty () || it.first.find (stem) == 0)
       items.push_back (it.first);
 
   return items;
@@ -274,7 +274,7 @@ void Rules::parse (const std::string& input, int nest /* = 1 */)
     auto indent = line.find_first_not_of (' ');
 
     auto tokens = Lexer::tokenize (line);
-    if (tokens.size ())
+    if (! tokens.empty ())
     {
       if (inRule)
       {
@@ -302,7 +302,7 @@ void Rules::parse (const std::string& input, int nest /* = 1 */)
         //
         if (firstWord == "define")
         {
-          if (ruleDef != "")
+          if (! ruleDef.empty ())
           {
             parseRule (ruleDef);
             ruleDef = "";
@@ -357,7 +357,7 @@ void Rules::parse (const std::string& input, int nest /* = 1 */)
     }
   }
 
-  if (ruleDef != "")
+  if (! ruleDef.empty ())
     parseRule (ruleDef);
 }
 
@@ -411,7 +411,7 @@ void Rules::parseRuleSettings (
     // If indent decreased.
     else if (indent < indents.back ())
     {
-      while (indents.size () && indent != indents.back ())
+      while (!indents.empty () && indent != indents.back ())
       {
         indents.pop_back ();
         hierarchy.pop_back ();
@@ -423,7 +423,7 @@ void Rules::parseRuleSettings (
     }
 
     // Descend.
-    if (group != "")
+    if (! group.empty ())
       hierarchy.push_back (group);
 
     // Settings.

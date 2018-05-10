@@ -126,8 +126,7 @@ static bool setConfigVariable (Database& database, const Rules& rules, std::stri
                            value)))
       {
         // Add blank line required by rules.
-        if (lines.size () &&
-            lines.back () != "")
+        if (lines.empty () || lines.back ().empty ())
           lines.push_back ("");
 
         // Add new line.
@@ -150,8 +149,7 @@ static bool setConfigVariable (Database& database, const Rules& rules, std::stri
       //      new leaf/value properly. But that's non-trivial.
 
       // Add blank line required by rules.
-      if (lines.size () &&
-          lines.back () != "")
+      if (lines.empty () || lines.back ().empty ())
         lines.push_back ("");
 
       // Add new line.
@@ -272,7 +270,7 @@ int CmdConfig (
   //   task config name value    # set name to value
   //   task config name ""       # set name to blank
   //   task config name          # remove name
-  if (words.size ())
+  if (! words.empty ())
   {
     bool confirmation = rules.getBoolean ("confirmation");
     std::string name = words[0];
@@ -290,7 +288,7 @@ int CmdConfig (
       }
     }
 
-    if (name != "")
+    if (! name.empty ())
     {
       bool change = false;
 

@@ -65,7 +65,7 @@ int CmdSummary (
           std::cout << " - " << filter.range.end.toISOLocalExtended ();
       }
 
-      if (filter.tags ().size ())
+      if (! filter.tags ().empty ())
       {
         std::cout << " tagged with " << joinQuotedIfNeeded (", ", filter.tags ());
       }

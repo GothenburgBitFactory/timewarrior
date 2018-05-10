@@ -241,7 +241,7 @@ static void determineHourRange (
     last_hour = 23;
 
     // If there is no data, show the whole day.
-    if (tracked.size ())
+    if (! tracked.empty ())
     {
       // Get the extreme time range for the filtered data.
       first_hour = 23;
@@ -562,7 +562,7 @@ static void renderInterval (
 
     for (auto& tag : track.tags ())
     {
-      if (label != "")
+      if (! label.empty ())
         label += ' ';
 
       label += tag;

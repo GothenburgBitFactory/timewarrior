@@ -47,7 +47,7 @@ static std::string findExtension (
   std::vector <std::string> matches;
   autoComplete (partial, options, matches);
 
-  if (matches.size () == 0)
+  if (matches.empty ())
     throw format ("The report '{1}' is not recognized.", partial);
 
   if (matches.size () > 1)
@@ -75,7 +75,7 @@ int CmdReport (
     if (arg.hasTag ("EXT"))
       script = findExtension (extensions, arg.attribute ("canonical"));
 
-  if (script == "")
+  if (script.empty ())
     throw std::string ("Specify which report to run.");
 
   // Compose Header info.

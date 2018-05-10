@@ -81,16 +81,16 @@ Interval getFilter (const CLI& cli)
       }
       else if (arg._lextype == Lexer::Type::date)
       {
-        if (start == "")
+        if (start.empty ())
           start = raw;
-        else if (end == "")
+        else if (end.empty ())
           end = raw;
 
         args.push_back ("<date>");
       }
       else if (arg._lextype == Lexer::Type::duration)
       {
-        if (duration == "")
+        if (duration.empty ())
           duration = raw;
 
         args.push_back ("<duration>");
@@ -208,7 +208,7 @@ Interval getFilter (const CLI& cli)
   }
 
   // Unrecognized date range construct.
-  else if (args.size ())
+  else if (! args.empty ())
   {
     throw std::string ("Unrecognized date range: '") + join (" ", args) + "'.";
   }
@@ -291,9 +291,9 @@ std::vector <Range> getAllExclusions (
 
   // daysOff are combined with existing holidays.
   results = addRanges (range, results, daysOff);
-  if (daysOn.size ())
+  if (! daysOn.empty ())
     debug (format ("Found {1} additional working days", daysOn.size ()));
-  if (daysOff.size ())
+  if (! daysOff.empty ())
     debug (format ("Found {1} additional non-working days", daysOff.size ()));
 
   // daysOn are subtracted from the existing holidays.
@@ -606,7 +606,7 @@ std::vector <Interval> getTracked (
     if (outer.total ())
       filter.range = outer;
 
-    if (inclusions.size() > 0) {
+    if (! inclusions.empty ()) {
       auto latest = inclusions.back();
       if (latest.range.is_open()) {;
         filter.range.end = 0;
@@ -616,7 +616,7 @@ std::vector <Interval> getTracked (
 
   std::vector <Interval> intervals = inclusions;
 
-  if (intervals.size () > 0)
+  if (! intervals.empty ())
   {
     auto latest = inclusions.back ();
 
@@ -682,7 +682,7 @@ Interval getLatestInterval (Database& database)
   }
 
   auto lastLine = database.lastLine ();
-  if (lastLine != "")
+  if (! lastLine.empty ())
     i.initialize (lastLine);
 
   return i;
