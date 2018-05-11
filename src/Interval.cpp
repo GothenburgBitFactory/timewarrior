@@ -160,7 +160,7 @@ std::string Interval::json () const
       if (tags[0])
         tags += ',';
 
-      tags += "\"" + tag + "\"";
+      tags += "\"" + escape (tag, '"') + "\"";
     }
 
     if (range.start.toEpoch () ||
