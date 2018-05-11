@@ -180,6 +180,28 @@ class TestExport(TestCase):
         self.assertIn('1221Z', j[1]['start'])
         self.assertFalse('end' in j[1])
 
+    def test_export_with_tag_with_spaces(self):
+        """Interval with tag with spaces"""
+        self.t("track 20160531T0800 - 20160531T0900 \"tag with spaces\"")
+
+        j = self.t.export()
+        self.assertEqual(len(j), 1)
+        self.assertTrue('start' in j[0])
+        self.assertTrue('end' in j[0])
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'][0], 'tag with spaces')
+
+    def test_export_with_tag_with_quote(self):
+        """Interval with tag with quote"""
+        self.t("track 20160531T0800 - 20160531T0900 \"tag with \\\"quote\"")
+
+        j = self.t.export()
+        self.assertEqual(len(j), 1)
+        self.assertTrue('start' in j[0])
+        self.assertTrue('end' in j[0])
+        self.assertTrue('tags' in j[0])
+        self.assertEqual(j[0]['tags'][0], 'tag with "quote')
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
