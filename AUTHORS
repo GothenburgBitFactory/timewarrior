@@ -1,5 +1,4 @@
-The development of Timewarrior was made possible by the significant
-contributions of the following people:
+The development of Timewarrior was made possible by the significant contributions of the following people:
 
   Thomas Lauf        (Principal Author)
   Paul Beckingham    (Contributing Author)
@@ -30,8 +29,7 @@ The following submitted code, packages or analysis, and deserve special thanks:
   davisdude
   Aaron Fields
 
-Thanks to the following, who submitted detailed bug reports and excellent
-suggestions:
+Thanks to the following, who submitted detailed bug reports and excellent suggestions:
 
   Shawn Wilson
   creatid
@@ -64,3 +62,4 @@ suggestions:
   Christian Decker
   chronitis
   rudis
+  bognolo

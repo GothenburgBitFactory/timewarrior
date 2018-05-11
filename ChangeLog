@@ -6,6 +6,8 @@
           (thanks to Andreas Poisel)
 - #111    Some tests fail depending on the time of day
           (thanks to chronitis)
+- #138    Entering an escaped quote in a tag name causes incorrect JSON to be generated
+          (thanks to bognolo)
 - Fixed error from totals.py while timer is active
           (thanks to davisdude)
 
