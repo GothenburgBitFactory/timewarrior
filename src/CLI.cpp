@@ -539,3 +539,17 @@ std::set<int> CLI::getIds() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::vector<std::string> CLI::getTags () const
+{
+  std::vector <std::string> tags;
+
+  for (auto& arg : _args)
+  {
+    if (arg.hasTag ("TAG"))
+      tags.push_back (arg.attribute ("raw"));
+  }
+
+  return tags;
+}
+
+////////////////////////////////////////////////////////////////////////////////
