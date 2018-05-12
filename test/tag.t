@@ -49,6 +49,17 @@ class TestTag(TestCase):
         code, out, err = self.t("tag @1 foo")
         self.assertIn('Added foo to @1', out)
 
+    def test_should_use_default_on_missing_id_and_active_time_tracking(self):
+        """Use open interval on missing id and active time tracking"""
+        self.t("track yesterday for 1hour foo")
+        self.t("start 30min ago bar")
+        code, out, err = self.t("tag baz")
+        self.assertIn("Added baz to @1", out)
+
+    def test_should_fail_on_missing_id_and_empty_database(self):
+        """Missing id on empty database is an error"""
+        code, out, err = self.t.runError("tag foo")
+        self.assertIn("There is no active time tracking.", err)
 
     def test_should_fail_on_missing_id_and_inactive_time_tracking(self):
         """Missing id on inactive time tracking is an error"""
