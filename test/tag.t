@@ -56,6 +56,12 @@ class TestTag(TestCase):
         code, out, err = self.t.runError("tag foo")
         self.assertIn("At least one ID must be specified.", err)
 
+    def test_should_fail_on_no_tags(self):
+        """No tags is an error"""
+        self.t("track yesterday for 1hour")
+        code, out, err = self.t.runError("tag @1")
+        self.assertIn("At least one tag must be specified.", err)
+
     def test_add_tag_to_closed_interval(self):
         """Add a tag to an closed interval"""
         self.t("track yesterday for 1hour")
