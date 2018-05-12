@@ -49,6 +49,13 @@ class TestTag(TestCase):
         code, out, err = self.t("tag @1 foo")
         self.assertIn('Added foo to @1', out)
 
+
+    def test_should_fail_on_missing_id_and_inactive_time_tracking(self):
+        """Missing id on inactive time tracking is an error"""
+        self.t("track yesterday for 1hour")
+        code, out, err = self.t.runError("tag foo")
+        self.assertIn("At least one ID must be specified.", err)
+
     def test_add_tag_to_closed_interval(self):
         """Add a tag to an closed interval"""
         self.t("track yesterday for 1hour")

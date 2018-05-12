@@ -39,12 +39,6 @@ int CmdTag (
 {
   // Gather IDs and TAGs.
   std::set <int> ids = cli.getIds ();
-
-  if (ids.empty ())
-  {
-    throw std::string ("IDs must be specified. See 'timew help tag'.");
-  }
-
   std::vector<std::string> tags = cli.getTags ();
 
   // Load the data.
@@ -73,6 +67,11 @@ int CmdTag (
 
       dirty = false;
     }
+  }
+
+  if (ids.empty ())
+  {
+    throw std::string ("At least one ID must be specified. See 'timew help tag'.");
   }
 
   // Apply tags to ids.
