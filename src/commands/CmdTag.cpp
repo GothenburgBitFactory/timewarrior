@@ -76,7 +76,17 @@ int CmdTag (
 
   if (ids.empty ())
   {
-    throw std::string ("At least one ID must be specified. See 'timew help tag'.");
+    if (tracked.empty ())
+    {
+      throw std::string ("There is no active time tracking.");
+    }
+
+    if (!tracked.back ().range.is_open ())
+    {
+      throw std::string ("At least one ID must be specified. See 'timew help tag'.");
+    }
+
+    ids.insert (1);
   }
 
   // Apply tags to ids.
