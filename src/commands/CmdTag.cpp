@@ -41,6 +41,11 @@ int CmdTag (
   std::set <int> ids = cli.getIds ();
   std::vector<std::string> tags = cli.getTags ();
 
+  if (tags.empty ())
+  {
+    throw std::string ("At least one tag must be specified. See 'timew help tag'.");
+  }
+
   // Load the data.
   // Note: There is no filter.
   Interval filter;
