@@ -13,19 +13,62 @@ class BaseTestCase(unittest.TestCase):
 
 
 class TestCase(BaseTestCase):
-    def assertInterval(self, interval, expectedStart=None, expectedEnd=None, expectedTags=None, description=None):
-        self.assertTrue('start' in interval)
-        self.assertTrue('end' in interval)
+    def assertOpenInterval(self, interval,
+                           expectedStart=None,
+                           expectedTags=None,
+                           description="interval"):
+        self.assertTrue("start" in interval, "{} does not contain a start date".format(description))
+        self.assertFalse("end" in interval, "{} does contain an end date".format(description))
 
+        return self.assertInterval(interval,
+                                   expectedStart=expectedStart,
+                                   expectedEnd=None,
+                                   expectedTags=expectedTags,
+                                   description=description)
+
+    def assertClosedInterval(self, interval,
+                             expectedStart=None,
+                             expectedEnd=None,
+                             expectedTags=None,
+                             description="interval"):
+        self.assertTrue("start" in interval, "{} does not contain a start date".format(description))
+        self.assertTrue("end" in interval, "{} does not contain an end date".format(description))
+
+        return self.assertInterval(interval,
+                                   expectedStart=expectedStart,
+                                   expectedEnd=expectedEnd,
+                                   expectedTags=expectedTags,
+                                   description=description)
+
+    def assertInterval(self, interval,
+                       expectedStart=None,
+                       expectedEnd=None,
+                       expectedTags=None,
+                       description="interval"):
         if expectedStart:
-            self.assertEqual(interval['start'], expectedStart, description)
+            self.assertEqual(
+                interval["start"],
+                expectedStart,
+                "start time of {} does not match (expected: {}, actual: {})".format(description,
+                                                                                    expectedStart,
+                                                                                    interval["start"]))
 
         if expectedEnd:
-            self.assertEqual(interval['end'], expectedEnd, description)
+            self.assertEqual(
+                interval["end"],
+                expectedEnd,
+                "end time of {} does not match (expected: {}, actual: {})".format(description,
+                                                                                  expectedEnd,
+                                                                                  interval["end"]))
 
         if expectedTags:
-            self.assertTrue('tags' in interval)
-            self.assertEqual(interval['tags'], expectedTags, description)
+            self.assertTrue("tags" in interval)
+            self.assertEqual(
+                interval["tags"],
+                expectedTags,
+                "tags of {} do not match (expected: {}, actual: {})". format(description,
+                                                                             expectedTags,
+                                                                             interval["tags"]))
 
 
 # vim: ai sts=4 et sw=4

@@ -47,28 +47,35 @@ class TestTag(TestCase):
         """Add a tag to an open interval"""
         self.t("start 30min ago")
         code, out, err = self.t("tag @1 foo")
-        self.assertIn('Added foo to @1', out)
+        self.assertIn("Added foo to @1", out)
+
+        j = self.t.export()
+        self.assertOpenInterval(j[0], expectedTags=["foo"])
 
     def test_should_use_default_on_missing_id_and_active_time_tracking(self):
-        """Use open interval on missing id and active time tracking"""
+        """Use open interval when adding tags with missing id and active time tracking"""
         self.t("track yesterday for 1hour foo")
         self.t("start 30min ago bar")
         code, out, err = self.t("tag baz")
         self.assertIn("Added baz to @1", out)
 
+        j = self.t.export()
+        self.assertClosedInterval(j[0], expectedTags=["foo"])
+        self.assertOpenInterval(j[1], expectedTags=["bar", "baz"])
+
     def test_should_fail_on_missing_id_and_empty_database(self):
-        """Missing id on empty database is an error"""
+        """Adding tag with missing id on empty database is an error"""
         code, out, err = self.t.runError("tag foo")
         self.assertIn("There is no active time tracking.", err)
 
     def test_should_fail_on_missing_id_and_inactive_time_tracking(self):
-        """Missing id on inactive time tracking is an error"""
+        """Adding tag with missing id on inactive time tracking is an error"""
         self.t("track yesterday for 1hour")
         code, out, err = self.t.runError("tag foo")
         self.assertIn("At least one ID must be specified.", err)
 
     def test_should_fail_on_no_tags(self):
-        """No tags is an error"""
+        """Calling command 'tag' without tags is an error"""
         self.t("track yesterday for 1hour")
         code, out, err = self.t.runError("tag @1")
         self.assertIn("At least one tag must be specified.", err)
@@ -77,33 +84,50 @@ class TestTag(TestCase):
         """Add a tag to an closed interval"""
         self.t("track yesterday for 1hour")
         code, out, err = self.t("tag @1 foo")
-        self.assertIn('Added foo to @1', out)
+        self.assertIn("Added foo to @1", out)
+
+        j = self.t.export()
+        self.assertClosedInterval(j[0], expectedTags=["foo"])
 
     def test_add_tags_to_open_interval(self):
         """Add tags to an open interval"""
         self.t("start 30min ago")
         code, out, err = self.t("tag @1 foo bar")
-        self.assertIn('Added foo bar to @1', out)
+        self.assertIn("Added foo bar to @1", out)
+
+        j = self.t.export()
+        self.assertOpenInterval(j[0], expectedTags=["bar", "foo"])
 
     def test_add_tags_to_closed_interval(self):
         """Add tags to an closed interval"""
         self.t("track yesterday for 1hour")
         code, out, err = self.t("tag @1 foo bar")
-        self.assertIn('Added foo bar to @1', out)
+        self.assertIn("Added foo bar to @1", out)
+
+        j = self.t.export()
+        self.assertClosedInterval(j[0], expectedTags=["bar", "foo"])
 
     def test_add_tag_to_multiple_intervals(self):
         """Add a tag to multiple intervals"""
-        self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00")
-        self.t("track 2016-01-01T01:00:00 - 2016-01-01T02:00:00")
+        self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00 one")
+        self.t("track 2016-01-01T01:00:00 - 2016-01-01T02:00:00 two")
         code, out, err = self.t("tag @1 @2 foo")
-        self.assertIn('Added foo to @1\nAdded foo to @2', out)
+        self.assertIn("Added foo to @1\nAdded foo to @2", out)
+
+        j = self.t.export()
+        self.assertClosedInterval(j[0], expectedTags=["foo", "one"])
+        self.assertClosedInterval(j[1], expectedTags=["foo", "two"])
 
     def test_add_tags_to_multiple_intervals(self):
         """Add tags to multiple intervals"""
-        self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00")
-        self.t("track 2016-01-01T01:00:00 - 2016-01-01T02:00:00")
+        self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00 one")
+        self.t("track 2016-01-01T01:00:00 - 2016-01-01T02:00:00 two")
         code, out, err = self.t("tag @1 @2 foo bar")
         self.assertIn('Added foo bar to @1\nAdded foo bar to @2', out)
+
+        j = self.t.export()
+        self.assertClosedInterval(j[0], expectedTags=["bar", "foo", "one"])
+        self.assertClosedInterval(j[1], expectedTags=["bar", "foo", "two"])
 
     def test_tag_synthetic_interval(self):
         """Tag a synthetic interval."""
@@ -134,17 +158,15 @@ class TestTag(TestCase):
         j = self.t.export()
 
         self.assertEqual(len(j), 2)
-        self.assertTrue('start' in j[0])
-        self.assertEqual(j[0]['start'], '{:%Y%m%dT%H}4500Z'.format(now_utc-timedelta(hours=5)), 'start time of modified interval does not match')
-        self.assertTrue('end' in j[0])
-        self.assertEqual(j[0]['end'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=4)), 'end time of modified interval does not match')
-        self.assertTrue('tags' in j[0])
-        self.assertEqual(j[0]['tags'], ['bar', 'foo'], 'tags of modified interval do not match')
-        self.assertTrue('start' in j[1])
-        self.assertEqual(j[1]['start'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=3)), 'start time of unmodified interval does not match')
-        self.assertFalse('end' in j[1])
-        self.assertTrue('tags' in j[1])
-        self.assertEqual(j[1]['tags'], ['foo'], 'tags of unmodified interval do not match')
+        self.assertClosedInterval(j[0],
+                                  expectedStart="{:%Y%m%dT%H}4500Z".format(now_utc - timedelta(hours=5)),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(now_utc - timedelta(hours=4)),
+                                  expectedTags=["bar", "foo"],
+                                  description="modified interval")
+        self.assertOpenInterval(j[1],
+                                expectedStart="{:%Y%m%dT%H}0000Z".format(now_utc - timedelta(hours=3)),
+                                expectedTags=["foo"],
+                                description="unmodified interval")
 
     def test_tag_with_identical_ids(self):
         self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00")
@@ -153,7 +175,7 @@ class TestTag(TestCase):
         j = self.t.export()
 
         self.assertEquals(len(j), 1)
-        self.assertEqual(j[0]['tags'], ['foo'])
+        self.assertClosedInterval(j[0], expectedTags=["foo"])
 
 
 class TestUntag(TestCase):
@@ -167,11 +189,45 @@ class TestUntag(TestCase):
         code, out, err = self.t("untag @1 foo")
         self.assertIn('Removed foo from @1', out)
 
+        j = self.t.export()
+        self.assertOpenInterval(j[0], expectedTags=["bar", "baz"])
+
+    def test_should_use_default_on_missing_id_and_active_time_tracking(self):
+        """Use open interval when removing tags with missing id and active time tracking"""
+        self.t("track yesterday for 1hour foo")
+        self.t("start 30min ago bar baz")
+        code, out, err = self.t("untag baz")
+        self.assertIn("Removed baz from @1", out)
+
+        j = self.t.export()
+        self.assertClosedInterval(j[0], expectedTags=["foo"])
+        self.assertOpenInterval(j[1], expectedTags=["bar"])
+
+    def test_should_fail_on_missing_id_and_empty_database(self):
+        """Removing tag with missing id on empty database is an error"""
+        code, out, err = self.t.runError("untag foo")
+        self.assertIn("There is no active time tracking.", err)
+
+    def test_should_fail_on_missing_id_and_inactive_time_tracking(self):
+        """Removing tag with missing id on inactive time tracking is an error"""
+        self.t("track yesterday for 1hour")
+        code, out, err = self.t.runError("untag foo")
+        self.assertIn("At least one ID must be specified.", err)
+
+    def test_should_fail_on_no_tags(self):
+        """Calling command 'untag' without tags is an error"""
+        self.t("track yesterday for 1hour")
+        code, out, err = self.t.runError("untag @1")
+        self.assertIn("At least one tag must be specified.", err)
+
     def test_remove_tag_from_closed_interval(self):
-        """Remove a tag from an closed interval"""
+        """Remove a tag from a closed interval"""
         self.t("track yesterday for 1hour foo bar baz")
         code, out, err = self.t("untag @1 foo")
         self.assertIn('Removed foo from @1', out)
+
+        j = self.t.export()
+        self.assertClosedInterval(j[0], expectedTags=["bar", "baz"])
 
     def test_remove_tags_from_open_interval(self):
         """Remove tags from an open interval"""
@@ -179,25 +235,39 @@ class TestUntag(TestCase):
         code, out, err = self.t("untag @1 foo bar")
         self.assertIn('Removed foo bar from @1', out)
 
+        j = self.t.export()
+        self.assertOpenInterval(j[0], expectedTags=["baz"])
+
     def test_remove_tags_from_closed_interval(self):
         """Remove tags from an closed interval"""
         self.t("track yesterday for 1hour foo bar baz")
         code, out, err = self.t("untag @1 foo bar")
         self.assertIn('Removed foo bar from @1', out)
 
+        j = self.t.export()
+        self.assertClosedInterval(j[0], expectedTags=["baz"])
+
     def test_remove_tag_from_multiple_intervals(self):
         """Remove a tag from multiple intervals"""
-        self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00 foo bar baz")
-        self.t("track 2016-01-01T01:00:00 - 2016-01-01T02:00:00 foo bar baz")
+        self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00 foo bar one")
+        self.t("track 2016-01-01T01:00:00 - 2016-01-01T02:00:00 foo bar two")
         code, out, err = self.t("untag @1 @2 foo")
         self.assertIn('Removed foo from @1\nRemoved foo from @2', out)
 
+        j = self.t.export()
+        self.assertClosedInterval(j[0], expectedTags=["bar", "one"])
+        self.assertClosedInterval(j[1], expectedTags=["bar", "two"])
+
     def test_remove_tags_from_multiple_intervals(self):
         """Remove tags from multiple intervals"""
-        self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00 foo bar baz")
-        self.t("track 2016-01-01T01:00:00 - 2016-01-01T02:00:00 foo bar baz")
+        self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00 foo bar one")
+        self.t("track 2016-01-01T01:00:00 - 2016-01-01T02:00:00 foo bar two")
         code, out, err = self.t("untag @1 @2 foo bar")
         self.assertIn('Removed foo bar from @1\nRemoved foo bar from @2', out)
+
+        j = self.t.export()
+        self.assertClosedInterval(j[0], expectedTags=["one"])
+        self.assertClosedInterval(j[1], expectedTags=["two"])
 
     def test_untag_synthetic_interval(self):
         """Untag a synthetic interval."""
@@ -228,17 +298,15 @@ class TestUntag(TestCase):
         j = self.t.export()
 
         self.assertEqual(len(j), 2)
-        self.assertTrue('start' in j[0])
-        self.assertEqual(j[0]['start'], '{:%Y%m%dT%H}4500Z'.format(now_utc-timedelta(hours=5)), 'start time of modified interval does not match')
-        self.assertTrue('end' in j[0])
-        self.assertEqual(j[0]['end'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=4)), 'end time of modified interval does not match')
-        self.assertTrue('tags' in j[0])
-        self.assertEqual(j[0]['tags'], ['bar'], 'tags of modified interval do not match')
-        self.assertTrue('start' in j[1])
-        self.assertEqual(j[1]['start'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=3)), 'start time of unmodified interval does not match')
-        self.assertFalse('end' in j[1])
-        self.assertTrue('tags' in j[1])
-        self.assertEqual(j[1]['tags'], ['bar', 'foo'], 'tags of unmodified interval do not match')
+        self.assertClosedInterval(j[0],
+                                  expectedStart="{:%Y%m%dT%H}4500Z".format(now_utc - timedelta(hours=5)),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(now_utc - timedelta(hours=4)),
+                                  expectedTags=["bar"],
+                                  description="modified interval")
+        self.assertOpenInterval(j[1],
+                                expectedStart="{:%Y%m%dT%H}0000Z".format(now_utc - timedelta(hours=3)),
+                                expectedTags=["bar", "foo"],
+                                description="unmodified interval")
 
     def test_untag_with_identical_ids(self):
         self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00 foo bar")
@@ -247,7 +315,7 @@ class TestUntag(TestCase):
         j = self.t.export()
 
         self.assertEquals(len(j), 1)
-        self.assertEqual(j[0]['tags'], ['bar'])
+        self.assertClosedInterval(j[0], expectedTags=["bar"])
 
 
 if __name__ == "__main__":

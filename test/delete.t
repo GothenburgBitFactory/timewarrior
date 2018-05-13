@@ -116,12 +116,11 @@ class TestDelete(TestCase):
         j = self.t.export()
         print(j)
         self.assertEqual(len(j), 1)
-        self.assertInterval(
-            j[0],
-            '{:%Y%m%dT%H}0000Z'.format(now_utc-timedelta(hours=5)),
-            '{:%Y%m%dT%H}0000Z'.format(now_utc-timedelta(hours=4)),
-            ['foo'],
-            'remaining interval')
+        self.assertClosedInterval(j[0],
+                                  expectedStart='{:%Y%m%dT%H}0000Z'.format(now_utc-timedelta(hours=5)),
+                                  expectedEnd='{:%Y%m%dT%H}0000Z'.format(now_utc-timedelta(hours=4)),
+                                  expectedTags=['foo'],
+                                  description='remaining interval')
 
 
 if __name__ == "__main__":
