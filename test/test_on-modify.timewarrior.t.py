@@ -110,14 +110,90 @@ class TestOnModifyHookScript(TestCase):
         self.assertEqual('{"status": "pending", "entry": "20180316T231125Z", "uuid": "e11d7d19-20a7-47bb-999e-6554a70ea094", "description": "FooBar", "modified": "20180316T231055Z"}\n', out)
         self.assertEqual('', err)
 
-    def test_hook_should_process_modify(self):
-        """on-modify hook should process 'task modify'"""
+    def test_hook_should_process_modify_desc(self):
+        """on-modify hook should process 'task modify' for changing description"""
+
+        self.t("start dummy")
         out, err = self.process.communicate(input="""\
 {"description":"dummy","entry":"20180317T092629Z","modified":"20180317T092629Z","start":"20180317T092629Z","status":"pending","uuid":"3422d76c-c087-4ecd-9c62-1246b078e534"}
 {"description":"foo","entry":"20180317T092629Z","modified":"20180317T092629Z","start":"20180317T092629Z","status":"pending","uuid":"3422d76c-c087-4ecd-9c62-1246b078e534"}
 """)
 
-        self.assertEqual('{"status": "pending", "uuid": "3422d76c-c087-4ecd-9c62-1246b078e534", "modified": "20180317T092629Z", "start": "20180317T092629Z", "entry": "20180317T092629Z", "description": "foo"}\n', out)
+        self.assertRegexpMatches(out, """\
+Tracking foo
+  Started \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}
+  Current               (\d{2}:|   )\d{2}
+  Total                ?\d{1,2}:\d{2}:\d{2}
+\{"status": "pending", "uuid": "3422d76c-c087-4ecd-9c62-1246b078e534", "modified": "20180317T092629Z", "start": "20180317T092629Z", "entry": "20180317T092629Z", "description": "foo"\}
+""")
+        self.assertEqual('', err)
+
+    def test_hook_should_process_modify_tags(self):
+        """on-modify hook should process 'task modify' for changing tags"""
+
+        self.t("start dummy tag1 tag2")
+        out, err = self.process.communicate(input="""\
+{"description":"dummy","entry":"20180317T092629Z","modified":"20180317T092629Z","start":"20180317T092629Z","status":"pending","uuid":"3422d76c-c087-4ecd-9c62-1246b078e534","tags":["tag1","tag2"]}
+{"description":"dummy","entry":"20180317T092629Z","modified":"20180317T092629Z","start":"20180317T092629Z","status":"pending","uuid":"3422d76c-c087-4ecd-9c62-1246b078e534","tags":["tag3","tag4"]}
+""")
+
+        self.assertRegexpMatches(out, """\
+Recorded dummy tag1 tag2
+  Started \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}
+  Ended                 (\d{2}:|   )\d{2}
+  Total               ?\d{1,2}:\d{2}:\d{2}
+Tracking dummy tag3 tag4
+  Started \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}
+  Current               (\d{2}:|   )\d{2}
+  Total                ?\d{1,2}:\d{2}:\d{2}
+\{"status": "pending", "uuid": "3422d76c-c087-4ecd-9c62-1246b078e534", "tags": \["tag3", "tag4"\], "modified": "20180317T092629Z", "start": "20180317T092629Z", "entry": "20180317T092629Z", "description": "dummy"\}
+""")
+        self.assertEqual('', err)
+
+    def test_hook_should_process_modify_project(self):
+        """on-modify hook should process 'task modify' for changing project"""
+
+        self.t("start dummy proj1")
+        out, err = self.process.communicate(input="""\
+{"description":"dummy","entry":"20180317T092629Z","modified":"20180317T092629Z","start":"20180317T092629Z","status":"pending","uuid":"3422d76c-c087-4ecd-9c62-1246b078e534","project":"proj1"}
+{"description":"dummy","entry":"20180317T092629Z","modified":"20180317T092629Z","start":"20180317T092629Z","status":"pending","uuid":"3422d76c-c087-4ecd-9c62-1246b078e534","project":"proj2"}
+""")
+
+        self.assertRegexpMatches(out, """\
+Recorded dummy proj1
+  Started \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}
+  Ended                 (\d{2}:|   )\d{2}
+  Total               ?\d{1,2}:\d{2}:\d{2}
+Tracking dummy proj2
+  Started \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}
+  Current               (\d{2}:|   )\d{2}
+  Total                ?\d{1,2}:\d{2}:\d{2}
+\{"status": "pending", "uuid": "3422d76c-c087-4ecd-9c62-1246b078e534", "modified": "20180317T092629Z", "project": "proj2", "start": "20180317T092629Z", "entry": "20180317T092629Z", "description": "dummy"\}
+""")
+        self.assertEqual('', err)
+
+    def test_hook_should_process_modify_not_tracked(self):
+        """on-modify hook should process 'task modify' for tasks which are not time-tracked"""
+        out, err = self.process.communicate(input="""\
+{"description":"dummy","entry":"20180317T092629Z","modified":"20180317T092629Z","status":"pending","uuid":"3422d76c-c087-4ecd-9c62-1246b078e534","project":"proj1"}
+{"description":"dummy","entry":"20180317T092629Z","modified":"20180317T092629Z","status":"pending","uuid":"3422d76c-c087-4ecd-9c62-1246b078e534","project":"proj2"}
+""")
+
+        self.assertEqual('{"status": "pending", "uuid": "3422d76c-c087-4ecd-9c62-1246b078e534", "modified": "20180317T092629Z", "project": "proj2", "entry": "20180317T092629Z", "description": "dummy"}\n', out)
+        self.assertEqual('', err)
+
+    # This is needed to test the case for task which are time-tracked and modify is called for changes other than project/tag/description
+    def test_hook_should_process_modify_due_date(self):
+        """on-modify hook should process 'task modify' for time-tracked task for changing annotations"""
+
+        self.t("start dummy")
+        out, err = self.process.communicate(input="""\
+{"status": "pending", "description": "dummy", "modified": "20180513T073915Z", "due": "20180514T000000Z", "start": "20180513T073915Z", "entry": "20180513T054634Z", "uuid": "09e9620e-8906-47ad-92c5-305894534aac"}
+{"status": "pending", "description": "dummy", "modified": "20180513T073915Z", "due": "20180512T000000Z", "start": "20180513T073915Z", "entry": "20180513T054634Z", "uuid": "09e9620e-8906-47ad-92c5-305894534aac"}
+""")
+
+        self.assertEqual('{"status": "pending", "description": "dummy", "due": "20180512T000000Z", "modified": "20180513T073915Z", "start": "20180513T073915Z", "entry": "20180513T054634Z", "uuid": "09e9620e-8906-47ad-92c5-305894534aac"}\n', out)
+
         self.assertEqual('', err)
 
     def test_hook_should_process_prepend(self):
