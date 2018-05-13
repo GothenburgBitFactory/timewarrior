@@ -1,5 +1,6 @@
 1.2.0 () -
-
+- #21     Add/Remove tag to/from current activity (TI-13)
+          (thanks to lumbric)
 - #98     Command Injection Security Vulnerability in on-modify.timewarrior (TI-94)
           (thanks to Aaron Fields)
 - #104    :lastquarter throws exception in first quarter (TI-100)
