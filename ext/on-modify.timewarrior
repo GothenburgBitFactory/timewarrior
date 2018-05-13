@@ -42,6 +42,18 @@ old = json.loads(sys.stdin.readline())
 new = json.loads(sys.stdin.readline())
 print(json.dumps(new))
 
+def get_timew_name_from_json(json_obj):
+    # Extract attributes for use as tags.
+    tags = [json_obj['description']]
+
+    if 'project' in json_obj:
+        tags.append(json_obj['project'])
+
+    if 'tags' in json_obj:
+        tags.extend(json_obj['tags'])
+
+    return ' '.join(['"%s"' % tag for tag in tags]).encode('utf-8').strip()
+
 start_or_stop = ''
 
 # Started task.
@@ -53,16 +65,19 @@ elif 'start' not in new and 'start' in old:
     start_or_stop = 'stop'
 
 if start_or_stop:
-    # Extract attributes for use as tags.
-    tags = [new['description']]
-
-    if 'project' in new:
-        tags.append(new['project'])
-
-    if 'tags' in new:
-        tags.extend(new['tags'])
-
-    combined = ' '.join(['"%s"' % tag for tag in tags]).encode('utf-8').strip()
+    combined = get_timew_name_from_json(new)
 
     command = 'timew {0} {1} :yes'.format(start_or_stop, combined)
     subprocess.call(shlex.split(command))
+
+# Modifications to task other than start/stop
+elif 'start' in new and 'start' in old:
+    old_combined = get_timew_name_from_json(old)
+    new_combined = get_timew_name_from_json(new)
+
+    if old_combined != new_combined:
+        command = 'timew stop {0} :yes'.format(old_combined)
+        subprocess.call(shlex.split(command))
+
+        command = 'timew start {0} :yes'.format(new_combined)
+        subprocess.call(shlex.split(command))
