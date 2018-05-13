@@ -39,15 +39,11 @@ int CmdUntag (
 {
   // Gather IDs and TAGs.
   std::set <int> ids = cli.getIds ();
+  std::vector<std::string> tags = cli.getTags ();
 
-  if (ids.empty ())
-    throw std::string ("IDs must be specified. See 'timew help untag'.");
-
-  std::vector <std::string> tags;
-  for (auto& arg : cli._args)
+  if (tags.empty ())
   {
-    if (arg.hasTag ("TAG"))
-      tags.push_back (arg.attribute ("raw"));
+    throw std::string ("At least one tag must be specified. See 'timew help untag'.");
   }
 
   // Load the data.
@@ -78,7 +74,22 @@ int CmdUntag (
     }
   }
 
-  // Apply tags to ids.
+  if (ids.empty ())
+  {
+    if (tracked.empty ())
+    {
+      throw std::string ("There is no active time tracking.");
+    }
+
+    if (!tracked.back ().range.is_open ())
+    {
+      throw std::string ("At least one ID must be specified. See 'timew help tag'.");
+    }
+
+    ids.insert (1);
+  }
+
+  // Remove tags from ids.
   for (auto& id : ids)
   {
     if (id > static_cast <int> (tracked.size ()))

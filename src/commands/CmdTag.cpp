@@ -103,7 +103,6 @@ int CmdTag (
     //TODO validate (cli, rules, database, i);
     database.modifyInterval (tracked[tracked.size () - id], i);
 
-    // Feedback.
     if (rules.getBoolean ("verbose"))
     {
       std::cout << "Added " << joinQuotedIfNeeded (" ", tags) << " to @" << id << '\n';
