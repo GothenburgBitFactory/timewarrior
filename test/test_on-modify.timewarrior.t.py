@@ -120,10 +120,8 @@ class TestOnModifyHookScript(TestCase):
 """)
 
         self.assertRegexpMatches(out, """\
-Tracking foo
-  Started \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}
-  Current               (\d{2}:|   )\d{2}
-  Total                ?\d{1,2}:\d{2}:\d{2}
+Removed dummy from @1
+Added foo to @1
 \{"status": "pending", "uuid": "3422d76c-c087-4ecd-9c62-1246b078e534", "modified": "20180317T092629Z", "start": "20180317T092629Z", "entry": "20180317T092629Z", "description": "foo"\}
 """)
         self.assertEqual('', err)
@@ -138,14 +136,8 @@ Tracking foo
 """)
 
         self.assertRegexpMatches(out, """\
-Recorded dummy tag1 tag2
-  Started \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}
-  Ended                 (\d{2}:|   )\d{2}
-  Total               ?\d{1,2}:\d{2}:\d{2}
-Tracking dummy tag3 tag4
-  Started \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}
-  Current               (\d{2}:|   )\d{2}
-  Total                ?\d{1,2}:\d{2}:\d{2}
+Removed dummy tag1 tag2 from @1
+Added dummy tag3 tag4 to @1
 \{"status": "pending", "uuid": "3422d76c-c087-4ecd-9c62-1246b078e534", "tags": \["tag3", "tag4"\], "modified": "20180317T092629Z", "start": "20180317T092629Z", "entry": "20180317T092629Z", "description": "dummy"\}
 """)
         self.assertEqual('', err)
@@ -160,14 +152,8 @@ Tracking dummy tag3 tag4
 """)
 
         self.assertRegexpMatches(out, """\
-Recorded dummy proj1
-  Started \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}
-  Ended                 (\d{2}:|   )\d{2}
-  Total               ?\d{1,2}:\d{2}:\d{2}
-Tracking dummy proj2
-  Started \d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}
-  Current               (\d{2}:|   )\d{2}
-  Total                ?\d{1,2}:\d{2}:\d{2}
+Removed dummy proj1 from @1
+Added dummy proj2 to @1
 \{"status": "pending", "uuid": "3422d76c-c087-4ecd-9c62-1246b078e534", "modified": "20180317T092629Z", "project": "proj2", "start": "20180317T092629Z", "entry": "20180317T092629Z", "description": "dummy"\}
 """)
         self.assertEqual('', err)
