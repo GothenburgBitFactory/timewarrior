@@ -387,7 +387,7 @@ static std::string renderTotal (
   {
     int hours = work / 3600;
     int minutes = (work % 3600) / 60;
-    std::cout << "  "
+    std::cout << " "
               << std::setw (3) << std::setfill (' ') << hours
               << ':'
               << std::setw (2) << std::setfill ('0') << minutes;
@@ -540,7 +540,7 @@ static void renderInterval (
   auto end_mins   = (clipped.range.end.hour ()   - first_hour) * 60 + clipped.range.end.minute ();
 
   if (clipped.range.end.hour () == 0)
-    end_mins += (clipped.range.end.day() - clipped.range.start.day()) * 24 * 60;
+    end_mins += (clipped.range.end.day() + (clipped.range.end.month () - clipped.range.start.month () - 1) * clipped.range.start.day ()) * 24 * 60;
 
   work = clipped.range.total ();
 
