@@ -39,12 +39,15 @@ There are two ways to retrieve the Timewarrior sources:
 
 Build Timewarrior, optionally run the test suite (note: the tarball does not contain tests), and install it.
 
-    cmake -DCMAKE_BUILD_TYPE=release .
+    cmake -DCMAKE_BUILD_TYPE=release
     make
     [make test]
     sudo make install
 
-This copies files into the right place, and installs man pages.
+This copies files into the right place (default under `/usr/local`), and installs man pages.
+
+Add the optional parameter `-DCMAKE_INSTALL_PREFIX=/path/to/your/install/location` to the `cmake` command if you want to install Timewarrior at a location other than `/usr/local`.
+The `make install` command may not require `sudo` depending on your choice of install location.
 
 ## Documentation
 
