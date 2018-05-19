@@ -46,6 +46,12 @@ Build Timewarrior, optionally run the test suite (note: the tarball does not con
 
 This copies files into the right place, and installs man pages.
 
+To build and install Timewarrior for a single user, pass `-DCMAKE_INSTALL_PREFIX=$HOME` to `cmake`:
+
+    cmake -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=$HOME .
+    make
+    make install
+
 ## Documentation
 
 There is extensive online documentation.
