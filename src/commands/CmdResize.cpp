@@ -65,13 +65,13 @@ int CmdResize (
       throw format ("ID '@{1}' does not correspond to any tracking.", id);
 
     Interval i = tracked[tracked.size () - id];
-    if (i.range.is_open ())
+    if (i.is_open ())
       throw format ("Cannot resize open interval @{1}", id);
 
     Duration dur (delta);
     database.deleteInterval (tracked[tracked.size () - id]);
 
-    i.range.end = i.range.start + dur.toTime_t ();
+    i.end = i.start + dur.toTime_t ();
     validate (cli, rules, database, i);
     database.addInterval (i, rules.getBoolean ("verbose"));
 

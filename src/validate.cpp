@@ -43,40 +43,40 @@ void autoFill (
   Database& database,
   Interval& interval)
 {
-  // An empty filter allows scanning beyond interval.range.
+  // An empty filter allows scanning beyond interval range.
   Interval range_filter;
 
-  // Look backwards from interval.range.start to a boundary.
+  // Look backwards from interval.start to a boundary.
   auto tracked = getTracked (database, rules, range_filter);
   for (auto earlier = tracked.rbegin (); earlier != tracked.rend (); ++earlier)
   {
-    if (! earlier->range.is_open () &&
-        earlier->range.end <= interval.range.start)
+    if (! earlier->is_open () &&
+        earlier->end <= interval.start)
     {
-      interval.range.start = earlier->range.end;
+      interval.start = earlier->end;
         if (rules.getBoolean ("verbose"))
         std::cout << "Backfilled "
                   << (interval.id ? format ("@{1} ", interval.id) : "")
                   << "to "
-                  << interval.range.start.toISOLocalExtended ()
+                  << interval.start.toISOLocalExtended ()
                   << "\n";
       break;
     }
   }
 
 // If the interval is closed, scan forwards for the next boundary.
-  if (! interval.range.is_open ())
+  if (! interval.is_open ())
   {
     for (auto& later : tracked)
     {
-      if (interval.range.end <= later.range.start)
+      if (interval.end <= later.start)
       {
-        interval.range.end = later.range.start;
+        interval.end = later.start;
         if (rules.getBoolean ("verbose"))
           std::cout << "Filled "
                     << (interval.id ? format ("@{1} ", interval.id) : "")
                     << "to "
-                    << interval.range.end.toISOLocalExtended ()
+                    << interval.end.toISOLocalExtended ()
                     << "\n";
         break;
       }
@@ -116,21 +116,21 @@ static void autoAdjust (
     // implement overwrite resolution, i.e. the new interval overwrites existing intervals
     for (auto& overlap : overlaps)
     {
-      bool start_within_overlap = interval.range.startsWithin (overlap.range);
-      bool end_within_overlap = interval.range.endsWithin (overlap.range);
+      bool start_within_overlap = interval.startsWithin (overlap);
+      bool end_within_overlap = interval.endsWithin (overlap);
 
       if (start_within_overlap && !end_within_overlap)
       {
         // start date of new interval within old interval
         Interval modified {overlap};
-        modified.range.end = interval.range.start;
+        modified.end = interval.start;
         database.modifyInterval (overlap, modified, rules.getBoolean ("verbose"));
       }
       else if (!start_within_overlap && end_within_overlap)
       {
         // end date of new interval within old interval
         Interval modified {overlap};
-        modified.range.start = interval.range.end;
+        modified.start = interval.end;
         database.modifyInterval (overlap, modified, rules.getBoolean ("verbose"));
       }
       else if (!start_within_overlap && !end_within_overlap)
@@ -144,10 +144,10 @@ static void autoAdjust (
         Interval split2 {overlap};
         Interval split1 {overlap};
 
-        split1.range.end = interval.range.start;
-        split2.range.start = interval.range.end;
+        split1.end = interval.start;
+        split2.start = interval.end;
 
-        if (split1.range.is_empty ())
+        if (split1.is_empty ())
         {
           database.deleteInterval (overlap);
         }
@@ -156,7 +156,7 @@ static void autoAdjust (
           database.modifyInterval (overlap, split1, rules.getBoolean ("verbose"));
         }
 
-        if (! split2.range.is_empty ())
+        if (! split2.is_empty ())
         {
           database.addInterval (split2, rules.getBoolean ("verbose"));
         }
@@ -174,8 +174,8 @@ void validate (
 {
   // Create a filter, and if empty, choose 'today'.
   auto filter = getFilter (cli);
-  if (! filter.range.is_started ())
-    filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
+  if (! filter.is_started ())
+    filter.setRange (Range (Datetime ("today"), Datetime ("tomorrow")));
 
   // All validation performed here.
   if (findHint (cli, ":fill"))

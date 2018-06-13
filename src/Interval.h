@@ -31,7 +31,7 @@
 #include <set>
 #include <string>
 
-class Interval
+class Interval : public Range
 {
 public:
   Interval () = default;
@@ -43,6 +43,8 @@ public:
   void tag (const std::string&);
   void untag (const std::string&);
 
+  void setRange (const Range& range);
+
   std::string serialize () const;
   std::string json () const;
   std::string dump () const;
@@ -50,7 +52,6 @@ public:
   static Interval fromJson (std::string json);
 
 public:
-  Range                  range     {};
   int                    id        {0};
   bool                   synthetic {false};
 

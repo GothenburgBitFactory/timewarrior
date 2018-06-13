@@ -63,7 +63,7 @@ int CmdContinue (
     if (latest.empty ())
       throw std::string ("There is no previous tracking to continue.");
 
-    if (latest.range.is_open ())
+    if (latest.is_open ())
       throw std::string ("There is already active tracking.");
 
     to_copy = latest;
@@ -75,10 +75,10 @@ int CmdContinue (
 
   database.startTransaction ();
 
-  if (filter.range.start.toEpoch () != 0)
+  if (filter.start.toEpoch () != 0)
   {
-    start_time = filter.range.start;
-    end_time = filter.range.end;
+    start_time = filter.start;
+    end_time = filter.end;
   }
   else
   {
@@ -86,13 +86,13 @@ int CmdContinue (
     end_time = 0;
   }
 
-  if (latest.range.is_open ())
+  if (latest.is_open ())
   {
-    auto exclusions = getAllExclusions (rules, filter.range);
+    auto exclusions = getAllExclusions (rules, filter);
 
     // Stop it, at the given start time, if applicable.
     Interval modified {latest};
-    modified.range.end = start_time;
+    modified.end = start_time;
 
     // Update database.
     database.deleteInterval (latest);
@@ -106,8 +106,8 @@ int CmdContinue (
   }
 
   // Create an identical interval and update the DB.
-  to_copy.range.start = start_time;
-  to_copy.range.end = end_time;
+  to_copy.start = start_time;
+  to_copy.end = end_time;
 
   validate (cli, rules, database, to_copy);
   database.addInterval (to_copy, rules.getBoolean ("verbose"));

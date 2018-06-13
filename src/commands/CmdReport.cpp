@@ -82,8 +82,8 @@ int CmdReport (
   auto filter = getFilter (cli);
   auto tracked = getTracked (database, rules, filter);
 
-  rules.set ("temp.report.start", filter.range.start.toEpoch () > 0 ? filter.range.start.toISO () : "");
-  rules.set ("temp.report.end",   filter.range.end.toEpoch ()   > 0 ? filter.range.end.toISO ()   : "");
+  rules.set ("temp.report.start", filter.start.toEpoch () > 0 ? filter.start.toISO () : "");
+  rules.set ("temp.report.end",   filter.end.toEpoch ()   > 0 ? filter.end.toISO ()   : "");
   rules.set ("temp.report.tags", joinQuotedIfNeeded (",", filter.tags ()));
   rules.set ("temp.version", VERSION);
 

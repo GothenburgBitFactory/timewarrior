@@ -41,7 +41,7 @@ int CmdStart (
   database.startTransaction ();
 
   // If the latest interval is open, close it.
-  if (latest.range.is_open ())
+  if (latest.is_open ())
   {
     // If the new interval tags match those of the currently open interval, then
     // do nothing - the tags are already being tracked.
@@ -55,16 +55,16 @@ int CmdStart (
 
     // Stop it, at the given start time, if applicable.
     Interval modified {latest};
-    if (filter.range.start.toEpoch () != 0)
-      modified.range.end = filter.range.start;
+    if (filter.start.toEpoch () != 0)
+      modified.end = filter.start;
     else
-      modified.range.end = Datetime ();
+      modified.end = Datetime ();
 
     // Update database.
     database.deleteInterval (latest);
     validate (cli, rules, database, modified);
 
-    for (auto& interval : flatten (modified, getAllExclusions (rules, modified.range)))
+    for (auto& interval : flatten (modified, getAllExclusions (rules, modified)))
     {
       database.addInterval (interval, rules.getBoolean ("verbose"));
 
@@ -75,10 +75,10 @@ int CmdStart (
 
   // Now add the new open interval.
   Interval now;
-  if (filter.range.start.toEpoch () != 0)
-    now.range.start = filter.range.start;
+  if (filter.start.toEpoch () != 0)
+    now.start = filter.start;
   else
-    now.range.start = Datetime ();
+    now.start = Datetime ();
 
   for (auto& tag : filter.tags ())
     now.tag (tag);

@@ -116,7 +116,7 @@ void Database::addInterval (const Interval& interval, bool verbose)
 
   // Get the index into _files for the appropriate Datafile, which may be
   // created on demand.
-  auto df = getDatafile (interval.range.start.year (), interval.range.start.month ());
+  auto df = getDatafile (interval.start.year (), interval.start.month ());
   _files[df].addInterval (interval);
   recordIntervalAction ("", interval.json ());
 }
@@ -132,7 +132,7 @@ void Database::deleteInterval (const Interval& interval)
 
   // Get the index into _files for the appropriate Datafile, which may be
   // created on demand.
-  auto df = getDatafile (interval.range.start.year (), interval.range.start.month ());
+  auto df = getDatafile (interval.start.year (), interval.start.month ());
 
   _files[df].deleteInterval (interval);
 
@@ -347,7 +347,8 @@ std::vector <Range> Database::segmentRange (const Range& range)
     // Capture date after incrementing month.
     Datetime segmentEnd (start_y, start_m, 1);
     auto segment = Range (segmentStart, segmentEnd);
-    if (range.intersects (segment)) {
+    if (range.intersects (segment))
+    {
       segments.push_back (segment);
     }
   }
@@ -366,7 +367,7 @@ void Database::initializeTagDatabase ()
   }
 
   auto* json = (json::object*) json::parse (content);
-  
+
   for (auto& pair : json->_data)
   {
     auto key = pair.first;

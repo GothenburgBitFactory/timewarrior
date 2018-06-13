@@ -46,8 +46,8 @@ void test_flatten (
     Interval tmp;
     tmp.initialize (output[i]);
 
-    t.is (tmp.range.start.toISO (), results[i].range.start.toISO (), "flatten: " + label + " start matches");
-    t.is (tmp.range.end.toISO (),   results[i].range.end.toISO (),   "flatten: " + label + " end matches");
+    t.is (tmp.start.toISO (), results[i].start.toISO (), "flatten: " + label + " start matches");
+    t.is (tmp.end.toISO (),   results[i].end.toISO (),   "flatten: " + label + " end matches");
     t.ok (tmp.tags () == results[i].tags (),                         "flatten: " + label + " tags match");
   }
 }
@@ -201,12 +201,12 @@ int main (int, char**)
 
   // bool matchesFilter (const Interval& interval, const Interval& filter);
   Interval refOpen;
-  refOpen.range = Range (Datetime (2016, 6, 1), Datetime (0));
+  refOpen.setRange (Range (Datetime (2016, 6, 1), Datetime (0)));
   refOpen.tag ("tag1");
   refOpen.tag ("tag2");
 
   Interval refClosed;
-  refClosed.range = Range (Datetime (2016, 6, 1), Datetime (2016, 6, 30));
+  refClosed.setRange (Range (Datetime (2016, 6, 1), Datetime (2016, 6, 30)));
   refClosed.tag ("tag1");
   refClosed.tag ("tag2");
 
@@ -235,15 +235,15 @@ int main (int, char**)
   Interval i;
   i.tag ("tag1");
   i.tag ("tag2");
-  i.range = testA; t.notok (matchesFilter (i, refClosed), "matchesFilter A <!> refClosed");
-  i.range = testB; t.ok    (matchesFilter (i, refClosed), "matchesFilter B <=> refClosed");
-  i.range = testC; t.ok    (matchesFilter (i, refClosed), "matchesFilter C <=> refClosed");
-  i.range = testD; t.ok    (matchesFilter (i, refClosed), "matchesFilter D <=> refClosed");
-  i.range = testE; t.notok (matchesFilter (i, refClosed), "matchesFilter E <!> refClosed");
-  i.range = testF; t.ok    (matchesFilter (i, refClosed), "matchesFilter F <=> refClosed");
-  i.range = testG; t.ok    (matchesFilter (i, refClosed), "matchesFilter G <=> refClosed");
-  i.range = testH; t.ok    (matchesFilter (i, refClosed), "matchesFilter H <=> refClosed");
-  i.range = testI; t.notok (matchesFilter (i, refClosed), "matchesFilter I <!> refClosed");
+  i.setRange (testA); t.notok (matchesFilter (i, refClosed), "matchesFilter A <!> refClosed");
+  i.setRange (testB); t.ok    (matchesFilter (i, refClosed), "matchesFilter B <=> refClosed");
+  i.setRange (testC); t.ok    (matchesFilter (i, refClosed), "matchesFilter C <=> refClosed");
+  i.setRange (testD); t.ok    (matchesFilter (i, refClosed), "matchesFilter D <=> refClosed");
+  i.setRange (testE); t.notok (matchesFilter (i, refClosed), "matchesFilter E <!> refClosed");
+  i.setRange (testF); t.ok    (matchesFilter (i, refClosed), "matchesFilter F <=> refClosed");
+  i.setRange (testG); t.ok    (matchesFilter (i, refClosed), "matchesFilter G <=> refClosed");
+  i.setRange (testH); t.ok    (matchesFilter (i, refClosed), "matchesFilter H <=> refClosed");
+  i.setRange (testI); t.notok (matchesFilter (i, refClosed), "matchesFilter I <!> refClosed");
 
   // this                     [...
   // A          [--------)
@@ -255,15 +255,15 @@ int main (int, char**)
   // G                      [...
   // H                           [...
   // I                                   [...
-  i.range = testA; t.notok (matchesFilter (i, refOpen), "matchesFilter A <!> refOpen");
-  i.range = testB; t.ok    (matchesFilter (i, refOpen), "matchesFilter B <=> refOpen");
-  i.range = testC; t.ok    (matchesFilter (i, refOpen), "matchesFilter C <=> refOpen");
-  i.range = testD; t.ok    (matchesFilter (i, refOpen), "matchesFilter D <=> refOpen");
-  i.range = testE; t.ok    (matchesFilter (i, refOpen), "matchesFilter E <=> refOpen");
-  i.range = testF; t.ok    (matchesFilter (i, refOpen), "matchesFilter F <=> refOpen");
-  i.range = testG; t.ok    (matchesFilter (i, refOpen), "matchesFilter G <=> refOpen");
-  i.range = testH; t.ok    (matchesFilter (i, refOpen), "matchesFilter H <=> refOpen");
-  i.range = testI; t.ok    (matchesFilter (i, refOpen), "matchesFilter I <=> refOpen");
+  i.setRange (testA); t.notok (matchesFilter (i, refOpen), "matchesFilter A <!> refOpen");
+  i.setRange (testB); t.ok    (matchesFilter (i, refOpen), "matchesFilter B <=> refOpen");
+  i.setRange (testC); t.ok    (matchesFilter (i, refOpen), "matchesFilter C <=> refOpen");
+  i.setRange (testD); t.ok    (matchesFilter (i, refOpen), "matchesFilter D <=> refOpen");
+  i.setRange (testE); t.ok    (matchesFilter (i, refOpen), "matchesFilter E <=> refOpen");
+  i.setRange (testF); t.ok    (matchesFilter (i, refOpen), "matchesFilter F <=> refOpen");
+  i.setRange (testG); t.ok    (matchesFilter (i, refOpen), "matchesFilter G <=> refOpen");
+  i.setRange (testH); t.ok    (matchesFilter (i, refOpen), "matchesFilter H <=> refOpen");
+  i.setRange (testI); t.ok    (matchesFilter (i, refOpen), "matchesFilter I <=> refOpen");
 
   // Range getFullDay (const Datetime&);
   auto r1 = getFullDay (Datetime ("20160501T203112"));

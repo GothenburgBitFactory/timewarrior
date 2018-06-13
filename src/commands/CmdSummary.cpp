@@ -43,11 +43,11 @@ int CmdSummary (
 {
   // Create a filter, and if empty, choose 'today'.
   auto filter = getFilter (cli);
-  if (! filter.range.is_started ())
-    filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
+  if (! filter.is_started ())
+    filter.setRange (Range (Datetime ("today"), Datetime ("tomorrow")));
 
-  if (! filter.range.is_ended())
-    filter.range.end = filter.range.start + Duration("1d").toTime_t();
+  if (! filter.is_ended())
+    filter.end = filter.start + Duration("1d").toTime_t();
 
   // Load the data.
   auto tracked = getTracked (database, rules, filter);
@@ -58,11 +58,11 @@ int CmdSummary (
     {
       std::cout << "No filtered data found";
 
-      if (filter.range.is_started ())
+      if (filter.is_started ())
       {
-        std::cout << " in the range " << filter.range.start.toISOLocalExtended ();
-        if (filter.range.is_ended ())
-          std::cout << " - " << filter.range.end.toISOLocalExtended ();
+        std::cout << " in the range " << filter.start.toISOLocalExtended ();
+        if (filter.is_ended ())
+          std::cout << " - " << filter.end.toISOLocalExtended ();
       }
 
       if (! filter.tags ().empty ())
@@ -102,7 +102,7 @@ int CmdSummary (
   // Each day is rendered separately.
   time_t grand_total = 0;
   Datetime previous;
-  for (Datetime day = filter.range.start; day < filter.range.end; day++)
+  for (Datetime day = filter.start; day < filter.end; day++)
   {
     auto day_range = getFullDay (day);
     time_t daily_total = 0;
@@ -111,7 +111,7 @@ int CmdSummary (
     for (auto& track : subset (day_range, tracked))
     {
       // Make sure the track only represents one day.
-      if ((track.range.is_open () && day > Datetime ()))
+      if ((track.is_open () && day > Datetime ()))
         continue;
 
       row = table.addRow ();
@@ -125,8 +125,8 @@ int CmdSummary (
       }
 
       // Intersect track with day.
-      auto today = day_range.intersect (track.range);
-      if (track.range.is_open () && day <= Datetime () && today.end > Datetime ())
+      auto today = day_range.intersect (track);
+      if (track.is_open () && day <= Datetime () && today.end > Datetime ())
         today.end = Datetime ();
 
       std::string tags = join(", ", track.tags());
@@ -136,7 +136,7 @@ int CmdSummary (
 
       table.set (row, (ids ? 4 : 3), tags);
       table.set (row, (ids ? 5 : 4), today.start.toString ("h:N:S"));
-      table.set (row, (ids ? 6 : 5), (track.range.is_open () ? "-" : today.end.toString ("h:N:S")));
+      table.set (row, (ids ? 6 : 5), (track.is_open () ? "-" : today.end.toString ("h:N:S")));
       table.set (row, (ids ? 7 : 6), Duration (today.total ()).formatHours ());
 
       daily_total += today.total ();

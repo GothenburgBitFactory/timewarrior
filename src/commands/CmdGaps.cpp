@@ -39,12 +39,12 @@ int CmdGaps (
 {
   // If filter is empty, choose 'today'.
   auto filter = getFilter (cli);
-  if (! filter.range.is_started ())
+  if (! filter.is_started ())
   {
     if (rules.has ("reports.gaps.range"))
-      expandIntervalHint (rules.get ("reports.gaps.range"), filter.range);
+      expandIntervalHint (rules.get ("reports.gaps.range"), filter);
     else
-      filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
+      filter.setRange (Range (Datetime ("today"), Datetime ("tomorrow")));
   }
 
   // Is the :blank hint being used?
@@ -52,7 +52,7 @@ int CmdGaps (
 
   std::vector <Range> untracked;
   if (blank)
-    untracked = subtractRanges ({filter.range}, getAllExclusions (rules, filter.range));
+    untracked = subtractRanges ({filter}, getAllExclusions (rules, filter));
   else
     untracked = getUntracked (database, rules, filter);
 
@@ -70,7 +70,7 @@ int CmdGaps (
   // Each day is rendered separately.
   time_t grand_total = 0;
   Datetime previous;
-  for (Datetime day = filter.range.start; day < filter.range.end; day++)
+  for (Datetime day = filter.start; day < filter.end; day++)
   {
     auto day_range = getFullDay (day);
     time_t daily_total = 0;

@@ -73,7 +73,7 @@ int CmdMove (
   if (tracked[tracked.size() - id].synthetic)
   {
     auto latest = getLatestInterval(database);
-    auto exclusions = getAllExclusions (rules, filter.range);
+    auto exclusions = getAllExclusions (rules, filter);
 
     Interval modified {latest};
 
@@ -89,19 +89,19 @@ int CmdMove (
 
   // Changing the start date should also change the end date by the same
   // amount.
-  if (i.range.start < start)
+  if (i.start < start)
   {
-    auto delta = start - i.range.start;
-    i.range.start = start;
-    if (! i.range.is_open ())
-      i.range.end += delta;
+    auto delta = start - i.start;
+    i.start = start;
+    if (! i.is_open ())
+      i.end += delta;
   }
   else
   {
-    auto delta = i.range.start - start;
-    i.range.start = start;
-    if (! i.range.is_open ())
-      i.range.end -= delta;
+    auto delta = i.start - start;
+    i.start = start;
+    if (! i.is_open ())
+      i.end -= delta;
   }
 
   database.deleteInterval (tracked[tracked.size () - id]);
@@ -112,7 +112,7 @@ int CmdMove (
   database.endTransaction ();
 
   if (rules.getBoolean ("verbose"))
-    std::cout << "Moved @" << id << " to " << i.range.start.toISOLocalExtended () << '\n';
+    std::cout << "Moved @" << id << " to " << i.start.toISOLocalExtended () << '\n';
 
   return 0;
 }

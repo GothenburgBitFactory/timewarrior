@@ -59,7 +59,7 @@ public:
   std::vector <Range> subtract (const Range&) const;
   time_t total () const;
 
-  std::string dump () const;
+  virtual std::string dump () const;
 
 public:
   Datetime start {0};

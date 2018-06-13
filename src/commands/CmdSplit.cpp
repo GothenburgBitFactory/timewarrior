@@ -59,19 +59,19 @@ int CmdSplit (
     Interval first = tracked[tracked.size () - id];
     Interval second = first;
 
-    if (first.range.is_open ())
+    if (first.is_open ())
     {
       Datetime midpoint;
-      midpoint -= (midpoint - first.range.start) / 2;
-      first.range.end = midpoint;
-      second.range.start = midpoint;
+      midpoint -= (midpoint - first.start) / 2;
+      first.end = midpoint;
+      second.start = midpoint;
     }
     else
     {
-      Datetime midpoint = first.range.start;
-      midpoint += (first.range.end - first.range.start) / 2;
-      first.range.end = midpoint;
-      second.range.start = midpoint;
+      Datetime midpoint = first.start;
+      midpoint += (first.end - first.start) / 2;
+      first.end = midpoint;
+      second.start = midpoint;
     }
 
     database.deleteInterval (tracked[tracked.size () - id]);

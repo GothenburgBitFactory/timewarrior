@@ -57,7 +57,7 @@ int CmdDelete (
     if (tracked[tracked.size() - id].synthetic && dirty)
     {
       auto latest = getLatestInterval(database);
-      auto exclusions = getAllExclusions (rules, filter.range);
+      auto exclusions = getAllExclusions (rules, filter);
 
       Interval modified {latest};
 

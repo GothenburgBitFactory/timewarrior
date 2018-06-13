@@ -51,32 +51,32 @@ int CmdStop (
   auto latest = getLatestInterval (database);
 
   // Verify the interval is open.
-  if (! latest.range.is_open ())
+  if (! latest.is_open ())
     throw std::string ("There is no active time tracking.");
 
   database.startTransaction ();
 
   Interval modified {latest};
 
-  // If a stop date is specified (and occupies filter.range.start) then use
+  // If a stop date is specified (and occupies filter.start) then use
   // that instead of the current time.
-  if (filter.range.start.toEpoch () != 0)
+  if (filter.start.toEpoch () != 0)
   {
-    if (modified.range.start >= filter.range.start)
+    if (modified.start >= filter.start)
       throw std::string ("The end of a date range must be after the start.");
 
-    modified.range.end = filter.range.start;
+    modified.end = filter.start;
   }
   else
   {
-    modified.range.end = Datetime ();
+    modified.end = Datetime ();
   }
 
   // Close the interval.
   database.deleteInterval (latest);
   validate (cli, rules, database, modified);
 
-  for (auto& interval : flatten (modified, getAllExclusions (rules, modified.range)))
+  for (auto& interval : flatten (modified, getAllExclusions (rules, modified)))
   {
     database.addInterval (interval, rules.getBoolean ("verbose"));
 
@@ -100,8 +100,8 @@ int CmdStop (
   if (! filter.tags ().empty () &&
       modified.tags ().size () != latest.tags ().size ())
   {
-    modified.range.start = modified.range.end;
-    modified.range.end = {0};
+    modified.start = modified.end;
+    modified.end = {0};
     validate (cli, rules, database, modified);
     database.addInterval (modified, rules.getBoolean ("verbose"));
     if (rules.getBoolean ("verbose"))

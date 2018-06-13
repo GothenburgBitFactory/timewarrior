@@ -63,7 +63,7 @@ int CmdTag (
     if (tracked[tracked.size() - id].synthetic && dirty)
     {
       auto latest = getLatestInterval(database);
-      auto exclusions = getAllExclusions (rules, filter.range);
+      auto exclusions = getAllExclusions (rules, filter);
 
       Interval modified {latest};
 
@@ -83,7 +83,7 @@ int CmdTag (
       throw std::string ("There is no active time tracking.");
     }
 
-    if (!tracked.back ().range.is_open ())
+    if (!tracked.back ().is_open ())
     {
       throw std::string ("At least one ID must be specified. See 'timew help tag'.");
     }

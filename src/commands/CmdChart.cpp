@@ -55,12 +55,12 @@ int CmdChartDay (
 {
   // Create a filter, and if empty, choose the current day.
   auto filter = getFilter (cli);
-  if (! filter.range.is_started ())
+  if (! filter.is_started ())
   {
     if (rules.has ("reports.day.range"))
-      expandIntervalHint (rules.get ("reports.day.range"), filter.range);
+      expandIntervalHint (rules.get ("reports.day.range"), filter);
     else
-      filter.range = Range (Datetime ("today"), Datetime ("tomorrow"));
+      filter.setRange (Range (Datetime ("today"), Datetime ("tomorrow")));
   }
 
   return renderChart (cli, "day", filter, rules, database);
@@ -74,12 +74,12 @@ int CmdChartWeek (
 {
   // Create a filter, and if empty, choose the current week.
   auto filter = getFilter (cli);
-  if (! filter.range.is_started ())
+  if (! filter.is_started ())
   {
     if (rules.has ("reports.week.range"))
-      expandIntervalHint (rules.get ("reports.week.range"), filter.range);
+      expandIntervalHint (rules.get ("reports.week.range"), filter);
     else
-      filter.range = Range (Datetime ("sow"), Datetime ("eow"));
+      filter.setRange (Range (Datetime ("sow"), Datetime ("eow")));
   }
 
   return renderChart (cli, "week", filter, rules, database);
@@ -93,12 +93,12 @@ int CmdChartMonth (
 {
   // Create a filter, and if empty, choose the current month.
   auto filter = getFilter (cli);
-  if (! filter.range.is_started ())
+  if (! filter.is_started ())
   {
     if (rules.has ("reports.month.range"))
-      expandIntervalHint (rules.get ("reports.month.range"), filter.range);
+      expandIntervalHint (rules.get ("reports.month.range"), filter);
     else
-      filter.range = Range (Datetime ("som"), Datetime ("eom"));
+      filter.setRange (Range (Datetime ("som"), Datetime ("eom")));
   }
 
   return renderChart (cli, "month", filter, rules, database);
@@ -113,7 +113,7 @@ int renderChart (
   Database& database)
 {
   // Load the data.
-  auto exclusions = getAllExclusions (rules, filter.range);
+  auto exclusions = getAllExclusions (rules, filter);
   auto tracked    = getTracked (database, rules, filter);
 
   // Map tags to colors.
@@ -162,7 +162,7 @@ int renderChart (
 
   // Each day is rendered separately.
   time_t total_work = 0;
-  for (Datetime day = filter.range.start; day < filter.range.end; day++)
+  for (Datetime day = filter.start; day < filter.end; day++)
   {
     // Render the exclusion blocks.
     int num_lines = 1;
@@ -246,24 +246,24 @@ static void determineHourRange (
       // Get the extreme time range for the filtered data.
       first_hour = 23;
       last_hour  = 0;
-      for (Datetime day = filter.range.start; day < filter.range.end; day++)
+      for (Datetime day = filter.start; day < filter.end; day++)
       {
         auto day_range = getFullDay (day);
 
         for (auto& track : tracked)
         {
-          if (day_range.overlaps (track.range))
+          if (day_range.overlaps (track))
           {
             Interval clipped = clip (track, day_range);
-            if (track.range.is_open ())
-              clipped.range.end = Datetime ();
+            if (track.is_open ())
+              clipped.end = Datetime ();
 
-            if (clipped.range.start.hour () < first_hour)
-              first_hour = clipped.range.start.hour ();
+            if (clipped.start.hour () < first_hour)
+              first_hour = clipped.start.hour ();
 
-            if (! clipped.range.is_open () &&
-                clipped.range.end.hour () > last_hour)
-              last_hour = clipped.range.end.hour ();
+            if (! clipped.is_open () &&
+                clipped.end.hour () > last_hour)
+              last_hour = clipped.end.hour ();
           }
         }
       }
@@ -521,28 +521,28 @@ static void renderInterval (
 
   // Ignore any track that doesn't overlap with day.
   auto day_range = getFullDay (day);
-  if (!day_range.overlaps (track.range) ||
-      (track.range.is_open () && day > now))
+  if (! day_range.overlaps (track) ||
+      (track.is_open () && day > now))
     return;
 
   // If the track is open and day is today, then closed the track now, otherwise
   // it will be rendered until midnight.
   Interval clipped = clip (track, day_range);
-  if (track.range.is_open ())
+  if (track.is_open ())
   {
     if (day_range.start.sameDay (now))
-      clipped.range.end = now;
+      clipped.end = now;
     else
-      clipped.range.end = day_range.end;
+      clipped.end = day_range.end;
   }
 
-  auto start_mins = (clipped.range.start.hour () - first_hour) * 60 + clipped.range.start.minute ();
-  auto end_mins   = (clipped.range.end.hour ()   - first_hour) * 60 + clipped.range.end.minute ();
+  auto start_mins = (clipped.start.hour () - first_hour) * 60 + clipped.start.minute ();
+  auto end_mins   = (clipped.end.hour ()   - first_hour) * 60 + clipped.end.minute ();
 
-  if (clipped.range.end.hour () == 0)
-    end_mins += (clipped.range.end.day() + (clipped.range.end.month () - clipped.range.start.month () - 1) * clipped.range.start.day ()) * 24 * 60;
+  if (clipped.end.hour () == 0)
+    end_mins += (clipped.end.day() + (clipped.end.month () - clipped.start.month () - 1) * clipped.start.day ()) * 24 * 60;
 
-  work = clipped.range.total ();
+  work = clipped.total ();
 
   auto start_block = quantizeToNMinutes (start_mins, cell) / cell;
   auto end_block   = quantizeToNMinutes (end_mins == start_mins ? start_mins + 60 : end_mins, cell) / cell;
@@ -584,7 +584,7 @@ static void renderInterval (
 
       // An open interval gets a "..." in the bottom right corner, or
       // whatever fits.
-      if (track.range.is_open ())
+      if (track.is_open ())
         lines.back ().add ("+", start_offset + width - 1, colorTrack);
     }
   }
@@ -608,8 +608,8 @@ std::string renderHolidays (
         auto date = entry.substr (last_dot + 1);
         std::replace (date.begin (), date.end (), '_', '-');
         Datetime holiday (date);
-        if (holiday >= filter.range.start &&
-            holiday <= filter.range.end)
+        if (holiday >= filter.start &&
+            holiday <= filter.end)
         {
           out << Datetime (date).toString ("Y-M-D")
               << " ["
@@ -640,26 +640,26 @@ static std::string renderSummary (
   {
     time_t total_unavailable = 0;
     for (auto& exclusion : exclusions)
-      if (filter.range.overlaps (exclusion))
-        total_unavailable += filter.range.intersect (exclusion).total ();
+      if (filter.overlaps (exclusion))
+        total_unavailable += filter.intersect (exclusion).total ();
 
     time_t total_worked = 0;
     if (! blank)
     {
       for (auto& interval : tracked)
       {
-        if (filter.range.overlaps (interval.range))
+        if (filter.overlaps (interval))
         {
-          Interval clipped = clip (interval, filter.range);
-          if (interval.range.is_open ())
-            clipped.range.end = Datetime ();
+          Interval clipped = clip (interval, filter);
+          if (interval.is_open ())
+            clipped.end = Datetime ();
 
-          total_worked += clipped.range.total ();
+          total_worked += clipped.total ();
         }
       }
     }
 
-    auto total_available = filter.range.total () - total_unavailable;
+    auto total_available = filter.total () - total_unavailable;
     assert (total_available >= 0);
     auto total_remaining = total_available - total_worked;
 

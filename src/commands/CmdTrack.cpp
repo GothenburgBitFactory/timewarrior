@@ -38,8 +38,8 @@ int CmdTrack (
 
   // If this is not a proper closed interval, then the user is trying to make
   // the 'track' command behave like 'start', so delegate to CmdStart.
-  if (! filter.range.is_started () ||
-      ! filter.range.is_ended ())
+  if (! filter.is_started () ||
+      ! filter.is_ended ())
     return CmdStart (cli, rules, database);
 
   database.startTransaction ();
@@ -47,7 +47,7 @@ int CmdTrack (
   // Validation must occur before flattening.
   validate (cli, rules, database, filter);
 
-  for (auto& interval : flatten (filter, getAllExclusions (rules, filter.range)))
+  for (auto& interval : flatten (filter, getAllExclusions (rules, filter)))
   {
     database.addInterval (interval, rules.getBoolean ("verbose"));
 

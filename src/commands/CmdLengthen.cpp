@@ -70,7 +70,7 @@ int CmdLengthen (
     if (tracked[tracked.size () - id].synthetic && dirty)
     {
       auto latest = getLatestInterval (database);
-      auto exclusions = getAllExclusions (rules, filter.range);
+      auto exclusions = getAllExclusions (rules, filter);
 
       Interval modified {latest};
 
@@ -90,13 +90,13 @@ int CmdLengthen (
       throw format ("ID '@{1}' does not correspond to any tracking.", id);
 
     Interval i = tracked[tracked.size () - id];
-    if (i.range.is_open ())
+    if (i.is_open ())
       throw format ("Cannot lengthen open interval @{1}", id);
 
     database.deleteInterval (tracked[tracked.size () - id]);
 
     Duration dur (delta);
-    i.range.end += dur.toTime_t ();
+    i.end += dur.toTime_t ();
     validate (cli, rules, database, i);
     database.addInterval (i, rules.getBoolean ("verbose"));
 

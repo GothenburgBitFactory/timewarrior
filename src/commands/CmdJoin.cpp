@@ -72,7 +72,7 @@ int CmdJoin (
   // TODO Require confirmation if tags don't match.
 
   auto combined = second;
-  combined.range.end = first.range.end;
+  combined.end = first.end;
   database.deleteInterval (first);
   database.deleteInterval (second);
 

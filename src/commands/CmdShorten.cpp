@@ -68,7 +68,7 @@ int CmdShorten (
     if (tracked[tracked.size() - id].synthetic && dirty)
     {
       auto latest = getLatestInterval(database);
-      auto exclusions = getAllExclusions (rules, filter.range);
+      auto exclusions = getAllExclusions (rules, filter);
 
       Interval modified {latest};
 
@@ -88,16 +88,16 @@ int CmdShorten (
       throw format ("ID '@{1}' does not correspond to any tracking.", id);
 
     Interval i = tracked[tracked.size () - id];
-    if (i.range.is_open ())
+    if (i.is_open ())
       throw format ("Cannot shorten open interval @{1}", id);
 
     Duration dur (delta);
-    if (dur > (i.range.end - i.range.start))
-      throw format ("Cannot shorten interval @{1} by {2} because it is only {3} in length.", id, dur.formatHours (), Duration (i.range.end - i.range.start).formatHours ());
+    if (dur > (i.end - i.start))
+      throw format ("Cannot shorten interval @{1} by {2} because it is only {3} in length.", id, dur.formatHours (), Duration (i.end - i.start).formatHours ());
 
     database.deleteInterval (tracked[tracked.size () - id]);
 
-    i.range.end -= dur.toTime_t ();
+    i.end -= dur.toTime_t ();
     validate (cli, rules, database, i);
     database.addInterval (i, rules.getBoolean ("verbose"));
 

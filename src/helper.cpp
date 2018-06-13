@@ -85,7 +85,7 @@ std::string intervalSummarize (
 {
   std::stringstream out;
 
-  if (interval.range.is_started ())
+  if (interval.is_started ())
   {
     // Walk backwards through the inclusions, and stop as soon as the tags
     // no longer match interval. This means the 'total' is the sum of all time
@@ -96,7 +96,7 @@ std::string intervalSummarize (
     std::vector <Interval>::reverse_iterator i;
     for (i = inclusions.rbegin (); i != inclusions.rend (); i++)
       if (interval.tags () == i->tags ())
-        total_recorded += i->range.total ();
+        total_recorded += i->total ();
       else
         break;
 
@@ -113,11 +113,11 @@ std::string intervalSummarize (
     }
 
     // Interval open.
-    if (interval.range.is_open ())
+    if (interval.is_open ())
     {
       out << "Tracking " << tags << '\n'
-          << "  Started " << interval.range.start.toISOLocalExtended () << '\n'
-          << "  Current " << minimalDelta (interval.range.start, Datetime ()) << '\n'
+          << "  Started " << interval.start.toISOLocalExtended () << '\n'
+          << "  Current " << minimalDelta (interval.start, Datetime ()) << '\n'
           << "  Total   " << std::setw (19) << std::setfill (' ') << total.formatHours () << '\n';
     }
 
@@ -125,8 +125,8 @@ std::string intervalSummarize (
     else
     {
       out << "Recorded " << tags << '\n'
-          << "  Started " << interval.range.start.toISOLocalExtended () << '\n'
-          << "  Ended   " << minimalDelta (interval.range.start, interval.range.end) << '\n'
+          << "  Started " << interval.start.toISOLocalExtended () << '\n'
+          << "  Ended   " << minimalDelta (interval.start, interval.end) << '\n'
           << "  Total   " << std::setw (19) << std::setfill (' ') << total.formatHours () << '\n';
     }
   }
@@ -456,7 +456,7 @@ std::vector <Interval> getOverlaps (
 
   std::vector <Interval> overlaps;
   for (auto& track : tracked)
-    if (interval.range.overlaps (track.range))
+    if (interval.overlaps (track))
       overlaps.push_back (track);
 
   return overlaps;
