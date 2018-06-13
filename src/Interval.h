@@ -44,6 +44,7 @@ public:
   void untag (const std::string&);
 
   void setRange (const Range& range);
+  void setRange (const Datetime& start, const Datetime& end);
 
   std::string serialize () const;
   std::string json () const;
@@ -54,6 +55,7 @@ public:
 public:
   int                    id        {0};
   bool                   synthetic {false};
+  std::string            annotation {};
 
 private:
   std::set <std::string> _tags  {};

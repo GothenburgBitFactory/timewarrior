@@ -44,7 +44,7 @@ int CmdSummary (
   // Create a filter, and if empty, choose 'today'.
   auto filter = getFilter (cli);
   if (! filter.is_started ())
-    filter.setRange (Range (Datetime ("today"), Datetime ("tomorrow")));
+    filter.setRange (Datetime ("today"), Datetime ("tomorrow"));
 
   if (! filter.is_ended())
     filter.end = filter.start + Duration("1d").toTime_t();

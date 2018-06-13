@@ -44,7 +44,7 @@ int CmdGaps (
     if (rules.has ("reports.gaps.range"))
       expandIntervalHint (rules.get ("reports.gaps.range"), filter);
     else
-      filter.setRange (Range (Datetime ("today"), Datetime ("tomorrow")));
+      filter.setRange (Datetime ("today"), Datetime ("tomorrow"));
   }
 
   // Is the :blank hint being used?

@@ -175,7 +175,7 @@ void validate (
   // Create a filter, and if empty, choose 'today'.
   auto filter = getFilter (cli);
   if (! filter.is_started ())
-    filter.setRange (Range (Datetime ("today"), Datetime ("tomorrow")));
+    filter.setRange (Datetime ("today"), Datetime ("tomorrow"));
 
   // All validation performed here.
   if (findHint (cli, ":fill"))

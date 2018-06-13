@@ -201,12 +201,12 @@ int main (int, char**)
 
   // bool matchesFilter (const Interval& interval, const Interval& filter);
   Interval refOpen;
-  refOpen.setRange (Range (Datetime (2016, 6, 1), Datetime (0)));
+  refOpen.setRange (Datetime (2016, 6, 1), Datetime (0));
   refOpen.tag ("tag1");
   refOpen.tag ("tag2");
 
   Interval refClosed;
-  refClosed.setRange (Range (Datetime (2016, 6, 1), Datetime (2016, 6, 30)));
+  refClosed.setRange (Datetime (2016, 6, 1), Datetime (2016, 6, 30));
   refClosed.tag ("tag1");
   refClosed.tag ("tag2");
 

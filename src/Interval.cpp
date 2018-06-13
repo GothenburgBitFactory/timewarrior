@@ -212,6 +212,12 @@ void Interval::setRange (const Range& range)
   end = range.end;
 }
 
+void Interval::setRange (const Datetime& start, const Datetime& end)
+{
+  this->start = start;
+  this->end = end;
+}
+
 Interval Interval::fromJson (std::string jsonString)
 {
   Interval interval = Interval ();
