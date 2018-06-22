@@ -1,3 +1,5 @@
+.TH timew-shorten 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+
 .TP
 .B timew shorten @<id> [@<id> ...] <duration>
 The 'shorten' command is used to advance the end date of a closed interval.

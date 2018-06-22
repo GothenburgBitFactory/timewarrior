@@ -1,3 +1,5 @@
+.TH timew-untag 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+
 .TP
 .B timew untag [@<id> ...] <tag> ...
 The 'untag' command is used to remove a tag from an interval. Using the 'summary'

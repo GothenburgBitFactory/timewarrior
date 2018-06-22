@@ -1,3 +1,5 @@
+.TH timew-split 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+
 .TP
 .B timew split @<id> [@<id> ...]
 Ѕplits an interval into two equally sized adjacent intervals, having the same

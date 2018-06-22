@@ -1,3 +1,5 @@
+.TH timew-tag 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+
 .TP
 .B timew tag [@<id> ...] <tag> ...
 The 'tag' command is used to add a tag to an interval. Using the 'summary'

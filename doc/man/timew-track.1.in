@@ -1,3 +1,5 @@
+.TH timew-track 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+
 .TP
 .B timew track <interval> [<tag> ...]
 The track command is used to add tracked time in the past. Perhaps you forgot

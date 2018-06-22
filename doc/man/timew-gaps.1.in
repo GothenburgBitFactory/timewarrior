@@ -1,3 +1,5 @@
+.TH timew-gaps 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+
 .TP
 .B timew gaps [<interval>] [<tag> ...]
 Displays a summary of time that is neither tracked nor excluded from tracking.

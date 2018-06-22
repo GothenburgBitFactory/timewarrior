@@ -1,3 +1,5 @@
+.TH timew-resize 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+
 .TP
 .B timew resize @<id> [@<id> ...] <duration>
 The 'resize' command is used to change the duration of a closed interval.
