@@ -1,0 +1,4 @@
+.TP
+.B timew tags [<interval>] [<tag> ...]
+Displays all the tags that have been used by default. When a filter is specified,
+shows only the tags that were used during that time.

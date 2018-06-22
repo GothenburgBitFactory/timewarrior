@@ -1,0 +1,13 @@
+.TP
+.B timew gaps [<interval>] [<tag> ...]
+Displays a summary of time that is neither tracked nor excluded from tracking.
+
+The 'reports.gaps.range' configuration setting overrides the default date range.
+The ':blank' hint causes only the excluded time to be shown, with no tracked
+time.
+The default date range shown is ':day'.
+
+The ':blank' hint causes only the excluded time to be shown, with no tracked
+time.
+
+See also 'summary'.

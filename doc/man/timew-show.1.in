@@ -1,0 +1,4 @@
+.TP
+.B timew show
+Displays the effective configuration in hierarchical form.
+See also 'config'.

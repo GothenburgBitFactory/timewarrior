@@ -1,0 +1,18 @@
+.TP
+.B timew resize @<id> [@<id> ...] <duration>
+The 'resize' command is used to change the duration of a closed interval.
+Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
+Using the right ID, you can identify an interval to resize. For example, show
+the IDs:
+
+  $ timew summary :week :ids
+
+Then having selected '@3' as the interval you wish to resize:
+
+  $ timew resize @3 15mins
+
+Note that you can resize multiple intervals,:
+
+  $ timew resize @3 @1 @13 1hour
+
+See also 'summary', 'tag', 'untag', 'lengthen', 'shorten'.

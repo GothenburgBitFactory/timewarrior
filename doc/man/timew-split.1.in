@@ -1,0 +1,14 @@
+.TP
+.B timew split @<id> [@<id> ...]
+Ѕplits an interval into two equally sized adjacent intervals, having the same
+tags. Using the 'summary' command, and specifying the ':ids' hint shows interval
+ IDs. Using the right ID, you can identify an interval to split. For example,
+show the IDs:
+
+  $ timew summary :week :ids
+
+Then having selected '@2' as the interval you wish to split:
+
+  $ timew split @2
+
+See also 'join', 'lengthen', 'shorten'.

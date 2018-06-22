@@ -1,0 +1,10 @@
+.TP
+.B timew [report] <report> [<interval>] [<tag> ...]
+Runs an extension report, and supports filtering data.
+The 'report' command itself is optional, which means that these two commands
+are equivalent:
+
+  $ timew report foo :week
+  $ timew        foo :week
+
+This does however assume there is a 'foo' extension installed.

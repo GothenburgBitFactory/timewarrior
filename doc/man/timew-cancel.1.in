@@ -1,0 +1,4 @@
+.TP
+.B timew cancel
+If there is an open interval, it is abandoned.
+See also 'stop'.

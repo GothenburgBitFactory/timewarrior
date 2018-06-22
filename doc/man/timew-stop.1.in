@@ -1,0 +1,15 @@
+.TP
+.B timew stop [<tag> ...]
+Stops tracking time. If tags are specified, then they are no longer tracked.
+If no tags are specified, all tracking stops. For example:
+
+  $ timew start tag1 tag2
+  ...
+  $ timew stop tag1
+
+Initially time is tracked for both 'tag1' and 'tag2', then 'tag1' tracking is
+stopped, leaving tag2 active. To stop all tracking:
+
+  $ timew stop
+
+See also 'cancel', 'continue', 'start', 'track'.

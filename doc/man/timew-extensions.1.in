@@ -1,0 +1,4 @@
+.TP
+.B timew extensions
+Displays the directory containing the extension programs and a table showing
+each extension and its status. See also 'diagnostics'.

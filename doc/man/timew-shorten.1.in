@@ -1,0 +1,18 @@
+.TP
+.B timew shorten @<id> [@<id> ...] <duration>
+The 'shorten' command is used to advance the end date of a closed interval.
+Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
+Using the right ID, you can identify an interval to shorten. For example, show
+the IDs:
+
+  $ timew summary :week :ids
+
+Then having selected '@2' as the interval you wish to shorten:
+
+  $ timew shorten @2 10mins
+
+Note that you can shorten multiple intervals,:
+
+  $ timew shorten @2 @10 @23 1hour
+
+See also 'summary', 'tag', 'untag', 'lengthen', 'resize'.

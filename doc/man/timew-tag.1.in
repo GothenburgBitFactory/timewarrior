@@ -1,0 +1,24 @@
+.TP
+.B timew tag [@<id> ...] <tag> ...
+The 'tag' command is used to add a tag to an interval. Using the 'summary'
+command, and specifying the ':ids' hint shows interval IDs. Using the right ID,
+you can identify an interval to tag. For example, show the IDs:
+
+  $ timew summary :week :ids
+
+Then having selected '@2' as the interval you wish to tag:
+
+  $ timew tag @2 'New Tag'
+
+Note that you can tag multiple intervals, with multiple tags:
+
+  $ timew tag @2 @10 @23 'Tag One' tag2 tag3
+
+If there is active time tracking, you can omit the ID when you want to add tags to the current open interval:
+
+  $ timew start foo
+  $ timew tag bar
+
+This results in the current interval having tags 'foo' and 'bar'.
+
+See also 'summary', 'shorten', 'lengthen', 'untag'.
