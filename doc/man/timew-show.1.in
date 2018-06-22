@@ -1,5 +1,8 @@
 .TH timew-show 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
 
+.SH NAME
+timew-show \- display configuration
+
 .TP
 .B timew show
 Displays the effective configuration in hierarchical form.

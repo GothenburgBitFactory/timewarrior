@@ -1,5 +1,8 @@
 .TH timew-extensions 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
 
+.SH NAME
+timew-extension \- list available extensions
+
 .TP
 .B timew extensions
 Displays the directory containing the extension programs and a table showing

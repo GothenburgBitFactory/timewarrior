@@ -1,5 +1,8 @@
 .TH timew-diagnostics 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
 
+.SH NAME
+timew-diagnostics \- show diagnostic information
+
 .TP
 .B timew diagnostics
 This command shows details about your version of Timewarrior, your platform, how

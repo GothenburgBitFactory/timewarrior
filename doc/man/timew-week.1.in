@@ -1,5 +1,8 @@
 .TH timew-week 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
 
+.SH NAME
+timew-week \- display week chart
+
 .TP
 .B timew week [<interval>] [<tag> ...]
 The week command shows a chart depicting a single week (current week by

@@ -1,5 +1,8 @@
 .TH timew-cancel 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
 
+.SH NAME
+timew-cancel \- cancel time tracking
+
 .TP
 .B timew cancel
 If there is an open interval, it is abandoned.

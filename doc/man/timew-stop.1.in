@@ -1,5 +1,8 @@
 .TH timew-stop 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
 
+.SH NAME
+timew-stop \- stop time tracking
+
 .TP
 .B timew stop [<tag> ...]
 Stops tracking time. If tags are specified, then they are no longer tracked.

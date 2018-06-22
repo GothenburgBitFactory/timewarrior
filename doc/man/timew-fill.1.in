@@ -1,5 +1,8 @@
 .TH timew-fill 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
 
+.SH NAME
+timew-fill \- adjust intervals to fill in surrounding gaps
+
 .TP
 .B timew fill @<id> [@<id> ...]
 

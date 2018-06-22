@@ -1,5 +1,8 @@
 .TH timew-month 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
 
+.SH NAME
+timew-month \- display month chart
+
 .TP
 .B timew month [<interval>] [<tag> ...]
 The month command shows a chart depicting a single month (current month by

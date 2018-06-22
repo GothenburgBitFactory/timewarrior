@@ -1,5 +1,8 @@
 .TH timew-day 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
 
+.SH NAME
+timew-day \- display day chart
+
 .TP
 .B timew day [<interval>] [<tag> ...]
 The day command shows a chart depicting a single day (today by default), with

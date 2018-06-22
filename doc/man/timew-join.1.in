@@ -1,5 +1,8 @@
 .TH timew-join 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
 
+.SH NAME
+timew-join \- join intervals
+
 .TP
 .B timew join @<id> @<id>
 Joins two intervals, by using the earlier of the two start times, and the later

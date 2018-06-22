@@ -1,5 +1,8 @@
 .TH timew-delete 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
 
+.SH NAME
+timew-delete \- delete intervals
+
 .TP
 .B timew delete @<id> [@<id> ...]
 Deletes an interval. Using the 'summary' command, and specifying the ':ids' hint

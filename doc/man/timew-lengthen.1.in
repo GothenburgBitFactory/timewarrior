@@ -1,5 +1,8 @@
 .TH timew-lengthen 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
 
+.SH NAME
+timew-lengthen \- lengthen intervals
+
 .TP
 .B timew lengthen @<id> [@<id> ...] <duration>
 The 'lengthen' command is used to defer the end date of a closed interval.

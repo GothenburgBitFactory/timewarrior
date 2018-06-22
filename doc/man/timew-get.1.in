@@ -1,5 +1,8 @@
 .TH timew-get 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
 
+.SH NAME
+timew-get \- display DOM values
+
 .TP
 .B timew get <DOM> [<DOM> ...]
 Validates the DOM reference, then obtains the value and displays it. For example:

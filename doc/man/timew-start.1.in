@@ -1,5 +1,8 @@
 .TH timew-start 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
 
+.SH NAME
+timew-start \- start time tracking
+
 .TP
 .B timew start [<date>] [<tag> ...]
 Begins tracking using the current time with any specified set of tags.

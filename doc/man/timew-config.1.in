@@ -1,5 +1,8 @@
 .TH timew-config 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
 
+.SH NAME
+timew-config \- get and set Timewarrior configuration
+
 .TP
 .B timew config [<name> [<value> | '']]
 Allows setting and removing configuration values, as an alternative to directly
