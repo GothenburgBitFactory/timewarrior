@@ -20,5 +20,5 @@ Then having selected '@2' as the interval you wish to delete:
 .
   $ timew delete @2
 .
-See also 'cancel'.
-.
+.SH "SEE ALSO"
+.BR timew-cancel

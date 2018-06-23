@@ -8,5 +8,6 @@ timew-show \- display configuration
 .
 .SH DESCRIPTION
 Displays the effective configuration in hierarchical form.
-See also 'config'.
 .
+.SH "SEE ALSO"
+.BR timew-config (1)

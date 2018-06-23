@@ -20,5 +20,7 @@ Then having selected '@2' as the interval you wish to split:
 .
   $ timew split @2
 .
-See also 'join', 'lengthen', 'shorten'.
-.
+.SH "SEE ALSO"
+.BR timew-join (1),
+.BR timew-lengthen (1),
+.BR timew-shorten (1)

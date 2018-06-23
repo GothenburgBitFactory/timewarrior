@@ -9,5 +9,6 @@ timew-diagnostics \- show diagnostic information
 .SH DESCRIPTION
 This command shows details about your version of Timewarrior, your platform, how it was built, compiler features, configuration, file access, extensions and more.
 The purpose of this command is to help diagnose configuration problems and provide supplemental information when reporting a problem.
-See also 'extensions'.
 .
+.SH "SEE ALSO"
+.BR timew-extensions (1)

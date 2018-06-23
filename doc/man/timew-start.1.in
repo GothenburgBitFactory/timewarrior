@@ -26,5 +26,7 @@ An optional date may be specified to indicate the intended start of the tracked 
 If there is a previous open interval, it will be closed at the given start time.
 .
 Quotes are harmless if used unnecessarily.
-See also 'continue', 'stop', 'track'.
-.
+.SH "SEE ALSO"
+.BR timew-continue (1),
+.BR timew-stop (1),
+.BR timew-track (1)

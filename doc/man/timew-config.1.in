@@ -37,5 +37,6 @@ If no arguments are provided, all configuration settings are shown:
   verbose = yes
   ...
 .
-See also 'hints', 'show'.
-.
+.SH "SEE ALSO"
+.BR timew-hints (1),
+.BR timew-show (1)

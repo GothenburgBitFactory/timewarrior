@@ -28,5 +28,7 @@ The ':blank' hint causes only the excluded time to be shown, with no tracked tim
 .
 For more details, and precise times, use the 'summary' report.
 .
-See also 'day', 'month', 'summary'.
-.
+.SH "SEE ALSO"
+.BR timew-day (1),
+.BR timew-month (1),
+.BR timew-summary (1)

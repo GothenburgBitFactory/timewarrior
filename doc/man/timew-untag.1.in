@@ -35,5 +35,8 @@ If there is active time tracking, you can omit the ID when you want to remove ta
 .
 This results in the current interval having tag 'foo' but not 'bar'.
 .
-See also 'summary', 'shorten', 'lengthen', 'tag'.
-.
+.SH "SEE ALSO"
+.BR timew-lengthen (1),
+.BR timew-shorten (1),
+.BR timew-summary (1),
+.BR timew-tag (1)

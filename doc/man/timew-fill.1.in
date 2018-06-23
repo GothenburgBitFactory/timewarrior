@@ -24,5 +24,5 @@ Note that you can fill multiple intervals:
 .
   $ timew fill @2 @10 @23
 .
-See also 'hints'.
-.
+.SH "SEE ALSO"
+.BR timew-hints (1)

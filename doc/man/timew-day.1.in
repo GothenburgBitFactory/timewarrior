@@ -30,5 +30,7 @@ This can be used to see the exclusions.
 .
 For more details, and precise times, use the 'summary' report.
 .
-See also 'week', 'month', 'summary'.
-.
+.SH "SEE ALSO"
+.BR timew-month (1),
+.BR timew-summary (1),
+.BR timew-week (1)

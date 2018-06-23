@@ -19,5 +19,8 @@ Then having selected '@1' and '@2' as the intervals you wish to join:
 .
   $ timew join @1 @2
 .
-See also 'split', 'lengthen', 'shorten', 'resize'.
-.
+.SH "SEE ALSO"
+.BR timew-lengthen (1),
+.BR timew-resize (1),
+.BR timew-shorten (1),
+.BR timew-split (1)

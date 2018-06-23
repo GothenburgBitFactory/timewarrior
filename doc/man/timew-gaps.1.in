@@ -21,5 +21,5 @@ The default date range shown is ':day'.
 .
 The ':blank' hint causes only the excluded time to be shown, with no tracked time.
 .
-See also 'summary'.
-.
+.SH "SEE ALSO"
+.BR timew-summary (1)

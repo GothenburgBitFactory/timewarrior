@@ -27,5 +27,8 @@ To stop all tracking:
 .
   $ timew stop
 .
-See also 'cancel', 'continue', 'start', 'track'.
-.
+.SH "SEE ALSO"
+.BR timew-cancel (1),
+.BR timew-continue (1),
+.BR timew-start (1),
+.BR timew-track (1)

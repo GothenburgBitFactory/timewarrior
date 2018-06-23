@@ -8,5 +8,6 @@ timew-extension \- list available extensions
 .
 .SH DESCRIPTION
 Displays the directory containing the extension programs and a table showing each extension and its status.
-See also 'diagnostics'.
 .
+.SH "SEE ALSO"
+.BR timew-diagnostics (1)

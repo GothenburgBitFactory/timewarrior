@@ -16,5 +16,6 @@ For example:
   1
 .
 It is an error to reference an interval or tag that does not exist.
-See also 'DOM'.
 .
+.SH "SEE ALSO"
+.BR timew-DOM

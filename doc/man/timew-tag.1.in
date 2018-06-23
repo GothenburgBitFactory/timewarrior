@@ -35,5 +35,8 @@ If there is active time tracking, you can omit the ID when you want to add tags 
 .
 This results in the current interval having tags 'foo' and 'bar'.
 .
-See also 'summary', 'shorten', 'lengthen', 'untag'.
-.
+.SH "SEE ALSO"
+.BR timew-lengthen (1),
+.BR timew-shorten (1),
+.BR timew-summary (1),
+.BR timew-untag (1)
