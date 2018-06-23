@@ -1,24 +1,25 @@
 .TH timew-split 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
-
+.
 .SH NAME
 timew-split \- split intervals
-
+.
 .SH SYNOPSIS
 .B timew split
 .I <id>
 .B ...
-
+.
 .SH DESCRIPTION
 .B timew split @<id> [@<id> ...]
 Ѕplits an interval into two equally sized adjacent intervals, having the same
 tags. Using the 'summary' command, and specifying the ':ids' hint shows interval
  IDs. Using the right ID, you can identify an interval to split. For example,
 show the IDs:
-
+.
   $ timew summary :week :ids
-
+.
 Then having selected '@2' as the interval you wish to split:
-
+.
   $ timew split @2
-
+.
 See also 'join', 'lengthen', 'shorten'.
+.

@@ -1,8 +1,8 @@
 .TH timew-export 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
-
+.
 .SH NAME
 timew-export \- export tracked time in JSON
-
+.
 .SH SYNOPSIS
 .B timew export
 [
@@ -10,9 +10,10 @@ timew-export \- export tracked time in JSON
 ] [
 .I <tag> ...
 ]
-
+.
 .SH DESCRIPTION
 .B timew export [<interval>] [<tag> ...]
 Exports all the tracked time in JSON format. Supports filtering. For example:
-
+.
   $ timew export from 2016-01-01 for 3wks tag1
+.

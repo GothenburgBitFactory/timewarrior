@@ -1,8 +1,8 @@
 .TH timew-report 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
-
+.
 .SH NAME
 timew-report \- run an extension report
-
+.
 .SH SYNOPSIS
 .B timew
 [
@@ -15,14 +15,15 @@ timew-report \- run an extension report
 .I <tag>
 .B ...
 ]
-
+.
 .SH DESCRIPTION
 .B timew [report] <report> [<interval>] [<tag> ...]
 Runs an extension report, and supports filtering data.
 The 'report' command itself is optional, which means that these two commands
 are equivalent:
-
+.
   $ timew report foo :week
   $ timew        foo :week
-
+.
 This does however assume there is a 'foo' extension installed.
+.

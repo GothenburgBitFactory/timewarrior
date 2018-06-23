@@ -1,8 +1,8 @@
 .TH timew-summary 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
-
+.
 .SH NAME
 timew-summary \- display a time-tracking summary
-
+.
 .SH SYNOPSIS
 .B timew summary
 [
@@ -11,17 +11,18 @@ timew-summary \- display a time-tracking summary
 .I <tag>
 .B ...
 ]
-
+.
 .SH DESCRIPTION
 .B timew summary [<interval>] [<tag> ...]
 Displays a report summarizing tracked and untracked time for the current day by
 default. Accepts date ranges and tags for filtering, or shortcut hints:
-
+.
   $ timew summary monday - today
   $ timew summary :week
   $ timew summary :month
-
+.
 The ':ids' hint adds an 'ID' column to the summary report output for interval
 modification.
-
+.
 See also 'day', 'week', 'month', 'shorten', 'lengthen', 'tag', 'untag'.
+.

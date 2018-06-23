@@ -1,19 +1,20 @@
 .TH timew-get 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
-
+.
 .SH NAME
 timew-get \- display DOM values
-
+.
 .SH SYNOPSIS
 .B timew get
 .I <DOM>
 .B ...
-
+.
 .SH DESCRIPTION
 .B timew get <DOM> [<DOM> ...]
 Validates the DOM reference, then obtains the value and displays it. For example:
-
+.
   $ timew get dom.active
   1
-
+.
 It is an error to reference an interval or tag that does not exist.
 See also 'DOM'.
+.

@@ -1,29 +1,30 @@
 .TH timew-lengthen 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
-
+.
 .SH NAME
 timew-lengthen \- lengthen intervals
-
+.
 .SH SYNOPSIS
 .B timew lengthen
 .I <id>
 .B ...
 .I <duration>
-
+.
 .SH DESCRIPTION
 .B timew lengthen @<id> [@<id> ...] <duration>
 The 'lengthen' command is used to defer the end date of a closed interval.
 Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
 Using the right ID, you can identify an interval to lengthen. For example, show
 the IDs:
-
+.
   $ timew summary :week :ids
-
+.
 Then having selected '@2' as the interval you wish to lengthen:
-
+.
   $ timew lengthen @2 10mins
-
+.
 Note that you can lengthen multiple intervals,:
-
+.
   $ timew lengthen @2 @10 @23 1hour
-
+.
 See also 'summary', 'tag', 'untag', 'shorten', 'resize'.
+.

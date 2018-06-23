@@ -1,23 +1,24 @@
 .TH timew-move 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
-
+.
 .SH NAME
 timew-move \- change interval start-time
-
+.
 .SH SYNOPSIS
 .B timew move
 .I <id> <date>
-
+.
 .SH DESCRIPTION
 .B timew move @<id> <date>
 The 'move' command is used to reposition an interval at a new start time.
 Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
 Using the right ID, you can identify an interval to move. For example, show
 the IDs:
-
+.
   $ timew summary :week :ids
-
+.
 Then having selected '@2' as the interval you wish to move:
-
+.
   $ timew move @2 9am
-
+.
 See also 'summary', 'tag', 'untag', 'lengthen', 'shorten', 'resize'.
+.

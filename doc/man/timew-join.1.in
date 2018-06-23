@@ -1,23 +1,24 @@
 .TH timew-join 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
-
+.
 .SH NAME
 timew-join \- join intervals
-
+.
 .SH SYNOPSIS
 .B timew join
 .I <id> <id>
-
+.
 .SH DESCRIPTION
 .B timew join @<id> @<id>
 Joins two intervals, by using the earlier of the two start times, and the later
 of the two end times, and the combined set of tags. Using the 'summary' command,
 and specifying the ':ids' hint shows interval IDs. Using the correct IDs, you
 can identify an intervals to join. For example, show the IDs:
-
+.
   $ timew summary :week :ids
-
+.
 Then having selected '@1' and '@2' as the intervals you wish to join:
-
+.
   $ timew join @1 @2
-
+.
 See also 'split', 'lengthen', 'shorten', 'resize'.
+.

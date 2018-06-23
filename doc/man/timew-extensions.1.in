@@ -1,12 +1,13 @@
 .TH timew-extensions 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
-
+.
 .SH NAME
 timew-extension \- list available extensions
-
+.
 .SH SYNOPSIS
 .B timew extensions
-
+.
 .SH DESCRIPTION
 .B timew extensions
 Displays the directory containing the extension programs and a table showing
 each extension and its status. See also 'diagnostics'.
+.

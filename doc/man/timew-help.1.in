@@ -1,8 +1,8 @@
 .TH timew-help 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
-
+.
 .SH NAME
 timew-help \- display help
-
+.
 .SH SYNOPSIS
 .B timew help
 {
@@ -16,13 +16,13 @@ timew-help \- display help
 |
 .B duration
 }
-
+.
 .SH DESCRIPTION
 .B timew help [<command> | interval | hints | date | duration]
 The help command shows detailed descriptions and examples of commands,
 interval syntax, supported hints, date and duration formats and DOM references.
 For example:
-
+.
   $ timew help
   $ timew help start
   $ timew help hints
@@ -30,3 +30,4 @@ For example:
   $ timew help date
   $ timew help duration
   $ timew help dom
+.

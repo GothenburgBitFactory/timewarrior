@@ -1,8 +1,8 @@
 .TH timew-track 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
-
+.
 .SH NAME
 timew-track \- add intervals to the database
-
+.
 .SH SYNOPSIS
 .B timew track
 .I <range>
@@ -10,15 +10,16 @@ timew-track \- add intervals to the database
 .I <tag>
 .B ...
 ]
-
+.
 .SH DESCRIPTION
 .B timew track <interval> [<tag> ...]
 The track command is used to add tracked time in the past. Perhaps you forgot
 to record time, or are just filling in old entries. For example:
-
+.
   $ timew track :yesterday 'Training Course'
   $ timew track 9am - 11am 'Staff Meeting'
-
+.
 Note that the track command expects a closed interval (start and end time), when
 recording. If a closed interval is not provided, the 'track' command behaves the
 same as the 'start' command.
+.
