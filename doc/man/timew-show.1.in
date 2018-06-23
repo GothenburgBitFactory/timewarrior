@@ -3,6 +3,9 @@
 .SH NAME
 timew-show \- display configuration
 
+.SH SYNOPSIS
+.B timew show
+
 .TP
 .B timew show
 Displays the effective configuration in hierarchical form.

@@ -3,6 +3,10 @@
 .SH NAME
 timew-join \- join intervals
 
+.SH SYNOPSIS
+.B timew join
+.I <id> <id>
+
 .TP
 .B timew join @<id> @<id>
 Joins two intervals, by using the earlier of the two start times, and the later

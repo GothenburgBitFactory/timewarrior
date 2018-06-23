@@ -3,6 +3,15 @@
 .SH NAME
 timew-untag \- remove tags from intervals
 
+.SH SYNOPSIS
+.B timew untag
+[
+.I <id>
+.B ...
+]
+.I <tag>
+.B ...
+
 .TP
 .B timew untag [@<id> ...] <tag> ...
 The 'untag' command is used to remove a tag from an interval. Using the 'summary'

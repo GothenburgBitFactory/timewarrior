@@ -3,6 +3,14 @@
 .SH NAME
 timew-export \- export tracked time in JSON
 
+.SH SYNOPSIS
+.B timew export
+[
+.I <range>
+] [
+.I <tag> ...
+]
+
 .TP
 .B timew export [<interval>] [<tag> ...]
 Exports all the tracked time in JSON format. Supports filtering. For example:

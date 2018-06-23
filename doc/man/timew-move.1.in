@@ -3,6 +3,10 @@
 .SH NAME
 timew-move \- change interval start-time
 
+.SH SYNOPSIS
+.B timew move
+.I <id> <date>
+
 .TP
 .B timew move @<id> <date>
 The 'move' command is used to reposition an interval at a new start time.

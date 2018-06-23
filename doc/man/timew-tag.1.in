@@ -3,6 +3,15 @@
 .SH NAME
 timew-tag \- add tags to intervals
 
+.SH SYNOPSIS
+.B timew tag
+[
+.I <id>
+.B ...
+]
+.I <tag>
+.B ...
+
 .TP
 .B timew tag [@<id> ...] <tag> ...
 The 'tag' command is used to add a tag to an interval. Using the 'summary'

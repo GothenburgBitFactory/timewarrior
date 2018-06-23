@@ -3,6 +3,9 @@
 .SH NAME
 timew-extension \- list available extensions
 
+.SH SYNOPSIS
+.B timew extensions
+
 .TP
 .B timew extensions
 Displays the directory containing the extension programs and a table showing

@@ -3,6 +3,20 @@
 .SH NAME
 timew-help \- display help
 
+.SH SYNOPSIS
+.B timew help
+{
+.I <command>
+|
+.B interval
+|
+.B hints
+|
+.B date
+|
+.B duration
+}
+
 .TP
 .B timew help [<command> | interval | hints | date | duration]
 The help command shows detailed descriptions and examples of commands,

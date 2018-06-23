@@ -3,6 +3,15 @@
 .SH NAME
 timew-summary \- display a time-tracking summary
 
+.SH SYNOPSIS
+.B timew summary
+[
+.I <range>
+] [
+.I <tag>
+.B ...
+]
+
 .TP
 .B timew summary [<interval>] [<tag> ...]
 Displays a report summarizing tracked and untracked time for the current day by

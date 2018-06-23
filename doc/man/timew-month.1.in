@@ -3,6 +3,15 @@
 .SH NAME
 timew-month \- display month chart
 
+.SH SYNOPSIS
+.B timew month
+[
+.I <range>
+] [
+.I <tag>
+.B ...
+]
+
 .TP
 .B timew month [<interval>] [<tag> ...]
 The month command shows a chart depicting a single month (current month by

@@ -3,6 +3,15 @@
 .SH NAME
 timew-stop \- stop time tracking
 
+.SH SYNOPSIS
+.B timew stop
+[
+.I <date>
+] [
+.I <tag>
+.B ...
+]
+
 .TP
 .B timew stop [<tag> ...]
 Stops tracking time. If tags are specified, then they are no longer tracked.

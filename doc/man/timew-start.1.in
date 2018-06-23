@@ -3,6 +3,15 @@
 .SH NAME
 timew-start \- start time tracking
 
+.SH SYNOPSIS
+.B timew start
+[
+.I <date>
+] [
+.I <tag>
+.B ...
+]
+
 .TP
 .B timew start [<date>] [<tag> ...]
 Begins tracking using the current time with any specified set of tags.

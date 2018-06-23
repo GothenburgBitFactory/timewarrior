@@ -3,6 +3,11 @@
 .SH NAME
 timew-get \- display DOM values
 
+.SH SYNOPSIS
+.B timew get
+.I <DOM>
+.B ...
+
 .TP
 .B timew get <DOM> [<DOM> ...]
 Validates the DOM reference, then obtains the value and displays it. For example:

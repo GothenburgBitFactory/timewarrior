@@ -3,6 +3,12 @@
 .SH NAME
 timew-lengthen \- lengthen intervals
 
+.SH SYNOPSIS
+.B timew lengthen
+.I <id>
+.B ...
+.I <duration>
+
 .TP
 .B timew lengthen @<id> [@<id> ...] <duration>
 The 'lengthen' command is used to defer the end date of a closed interval.

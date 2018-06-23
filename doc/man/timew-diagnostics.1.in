@@ -3,6 +3,9 @@
 .SH NAME
 timew-diagnostics \- show diagnostic information
 
+.SH SYNOPSIS
+.B timew diagnostics
+
 .TP
 .B timew diagnostics
 This command shows details about your version of Timewarrior, your platform, how

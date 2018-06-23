@@ -3,6 +3,9 @@
 .SH NAME
 timew-cancel \- cancel time tracking
 
+.SH SYNOPSIS
+.B timew cancel
+
 .TP
 .B timew cancel
 If there is an open interval, it is abandoned.

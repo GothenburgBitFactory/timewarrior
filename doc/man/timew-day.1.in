@@ -3,6 +3,15 @@
 .SH NAME
 timew-day \- display day chart
 
+.SH SYNOPSIS
+.B timew day
+[
+.I <range>
+] [
+.I <tag>
+.B ...
+]
+
 .TP
 .B timew day [<interval>] [<tag> ...]
 The day command shows a chart depicting a single day (today by default), with

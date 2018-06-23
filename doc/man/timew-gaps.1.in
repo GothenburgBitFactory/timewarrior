@@ -3,6 +3,15 @@
 .SH NAME
 timew-gaps \- display time tracking gaps
 
+.SH SYNOPSIS
+.B timew gaps
+[
+.I <range>
+] [
+.I <tag>
+.B ...
+]
+
 .TP
 .B timew gaps [<interval>] [<tag> ...]
 Displays a summary of time that is neither tracked nor excluded from tracking.

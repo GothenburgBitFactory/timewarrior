@@ -3,6 +3,17 @@
 .SH NAME
 timew-config \- get and set Timewarrior configuration
 
+.SH SYNOPSIS
+.B timew config
+[
+.I <name>
+{
+.I <value>
+|
+.B ''
+}
+]
+
 .TP
 .B timew config [<name> [<value> | '']]
 Allows setting and removing configuration values, as an alternative to directly

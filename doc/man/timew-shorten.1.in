@@ -3,6 +3,12 @@
 .SH NAME
 timew-shorten \- shorten intervals
 
+.SH SYNOPSIS
+.B timew shorten
+.I <id>
+.B ...
+.I <duration>
+
 .TP
 .B timew shorten @<id> [@<id> ...] <duration>
 The 'shorten' command is used to advance the end date of a closed interval.

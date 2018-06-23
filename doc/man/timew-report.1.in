@@ -3,6 +3,19 @@
 .SH NAME
 timew-report \- run an extension report
 
+.SH SYNOPSIS
+.B timew
+[
+.B report
+]
+.I <report>
+[
+.I <range>
+] [
+.I <tag>
+.B ...
+]
+
 .TP
 .B timew [report] <report> [<interval>] [<tag> ...]
 Runs an extension report, and supports filtering data.

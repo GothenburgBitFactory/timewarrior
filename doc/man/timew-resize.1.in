@@ -3,6 +3,12 @@
 .SH NAME
 timew-resize \- set interval duration
 
+.SH SYNOPSIS
+.B timew resize
+.I <id>
+.B ...
+.I <duration>
+
 .TP
 .B timew resize @<id> [@<id> ...] <duration>
 The 'resize' command is used to change the duration of a closed interval.

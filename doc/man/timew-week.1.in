@@ -3,6 +3,15 @@
 .SH NAME
 timew-week \- display week chart
 
+.SH SYNOPSIS
+.B timew week
+[
+.I <range>
+] [
+.I <tag>
+.B ...
+]
+
 .TP
 .B timew week [<interval>] [<tag> ...]
 The week command shows a chart depicting a single week (current week by
