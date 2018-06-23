@@ -13,7 +13,6 @@ timew-week \- display week chart
 ]
 .
 .SH DESCRIPTION
-.B timew week [<interval>] [<tag> ...]
 The week command shows a chart depicting a single week (current week by
 default), with colored blocks drawn on a timeline. The chart summarizes the
 tracked and untracked time.

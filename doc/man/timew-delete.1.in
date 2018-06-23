@@ -9,7 +9,6 @@ timew-delete \- delete intervals
 .B ...
 .
 .SH DESCRIPTION
-.B timew delete @<id> [@<id> ...]
 Deletes an interval. Using the 'summary' command, and specifying the ':ids' hint
 shows interval IDs. Using the right ID, you can identify an interval to delete.
 For example, show the IDs:

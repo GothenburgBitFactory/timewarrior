@@ -13,7 +13,6 @@ timew-gaps \- display time tracking gaps
 ]
 .
 .SH DESCRIPTION
-.B timew gaps [<interval>] [<tag> ...]
 Displays a summary of time that is neither tracked nor excluded from tracking.
 .
 The 'reports.gaps.range' configuration setting overrides the default date range.

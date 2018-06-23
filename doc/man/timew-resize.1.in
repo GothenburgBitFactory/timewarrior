@@ -10,7 +10,6 @@ timew-resize \- set interval duration
 .I <duration>
 .
 .SH DESCRIPTION
-.B timew resize @<id> [@<id> ...] <duration>
 The 'resize' command is used to change the duration of a closed interval.
 Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
 Using the right ID, you can identify an interval to resize. For example, show

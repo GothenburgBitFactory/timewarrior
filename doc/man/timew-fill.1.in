@@ -9,8 +9,6 @@ timew-fill \- adjust intervals to fill in surrounding gaps
 .B ...
 .
 .SH DESCRIPTION
-.B timew fill @<id> [@<id> ...]
-.
 The 'fill' command is used to adjust any interval to fill in surrounding gaps.
 Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
 Using the right ID, you can identify an interval to fill. For example, show

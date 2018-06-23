@@ -13,7 +13,6 @@ timew-summary \- display a time-tracking summary
 ]
 .
 .SH DESCRIPTION
-.B timew summary [<interval>] [<tag> ...]
 Displays a report summarizing tracked and untracked time for the current day by
 default. Accepts date ranges and tags for filtering, or shortcut hints:
 .

@@ -15,7 +15,6 @@ timew-config \- get and set Timewarrior configuration
 ]
 .
 .SH DESCRIPTION
-.B timew config [<name> [<value> | '']]
 Allows setting and removing configuration values, as an alternative to directly
 editing your ~/.timewarrior/timewarrior.cfg file. For example:
 .

@@ -8,7 +8,6 @@ timew-join \- join intervals
 .I <id> <id>
 .
 .SH DESCRIPTION
-.B timew join @<id> @<id>
 Joins two intervals, by using the earlier of the two start times, and the later
 of the two end times, and the combined set of tags. Using the 'summary' command,
 and specifying the ':ids' hint shows interval IDs. Using the correct IDs, you

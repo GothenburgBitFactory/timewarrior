@@ -13,7 +13,6 @@ timew-untag \- remove tags from intervals
 .B ...
 .
 .SH DESCRIPTION
-.B timew untag [@<id> ...] <tag> ...
 The 'untag' command is used to remove a tag from an interval. Using the 'summary'
 command, and specifying the ':ids' hint shows interval IDs. Using the right ID,
 you can identify an interval to untag. For example, show the IDs:

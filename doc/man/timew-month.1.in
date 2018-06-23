@@ -13,7 +13,6 @@ timew-month \- display month chart
 ]
 .
 .SH DESCRIPTION
-.B timew month [<interval>] [<tag> ...]
 The month command shows a chart depicting a single month (current month by
 default), with colored blocks drawn on a timeline. The chart summarizes the
 tracked and untracked time.
