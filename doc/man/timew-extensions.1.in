@@ -6,7 +6,7 @@ timew-extension \- list available extensions
 .SH SYNOPSIS
 .B timew extensions
 
-.TP
+.SH DESCRIPTION
 .B timew extensions
 Displays the directory containing the extension programs and a table showing
 each extension and its status. See also 'diagnostics'.

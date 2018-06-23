@@ -12,7 +12,7 @@ timew-stop \- stop time tracking
 .B ...
 ]
 
-.TP
+.SH DESCRIPTION
 .B timew stop [<tag> ...]
 Stops tracking time. If tags are specified, then they are no longer tracked.
 If no tags are specified, all tracking stops. For example:

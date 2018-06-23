@@ -8,7 +8,7 @@ timew-get \- display DOM values
 .I <DOM>
 .B ...
 
-.TP
+.SH DESCRIPTION
 .B timew get <DOM> [<DOM> ...]
 Validates the DOM reference, then obtains the value and displays it. For example:
 

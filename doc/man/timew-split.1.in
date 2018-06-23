@@ -8,7 +8,7 @@ timew-split \- split intervals
 .I <id>
 .B ...
 
-.TP
+.SH DESCRIPTION
 .B timew split @<id> [@<id> ...]
 Ѕplits an interval into two equally sized adjacent intervals, having the same
 tags. Using the 'summary' command, and specifying the ':ids' hint shows interval

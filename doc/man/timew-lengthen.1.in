@@ -9,7 +9,7 @@ timew-lengthen \- lengthen intervals
 .B ...
 .I <duration>
 
-.TP
+.SH DESCRIPTION
 .B timew lengthen @<id> [@<id> ...] <duration>
 The 'lengthen' command is used to defer the end date of a closed interval.
 Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.

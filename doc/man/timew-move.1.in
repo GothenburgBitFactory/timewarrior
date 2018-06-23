@@ -7,7 +7,7 @@ timew-move \- change interval start-time
 .B timew move
 .I <id> <date>
 
-.TP
+.SH DESCRIPTION
 .B timew move @<id> <date>
 The 'move' command is used to reposition an interval at a new start time.
 Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.

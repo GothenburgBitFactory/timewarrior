@@ -12,7 +12,7 @@ timew-start \- start time tracking
 .B ...
 ]
 
-.TP
+.SH DESCRIPTION
 .B timew start [<date>] [<tag> ...]
 Begins tracking using the current time with any specified set of tags.
 If a tag contains multiple words, therefore containing spaces, use quotes to

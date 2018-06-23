@@ -12,7 +12,7 @@ timew-day \- display day chart
 .B ...
 ]
 
-.TP
+.SH DESCRIPTION
 .B timew day [<interval>] [<tag> ...]
 The day command shows a chart depicting a single day (today by default), with
 colored blocks drawn on a timeline. The chart summarizes the tracked and

@@ -16,7 +16,7 @@ timew-report \- run an extension report
 .B ...
 ]
 
-.TP
+.SH DESCRIPTION
 .B timew [report] <report> [<interval>] [<tag> ...]
 Runs an extension report, and supports filtering data.
 The 'report' command itself is optional, which means that these two commands

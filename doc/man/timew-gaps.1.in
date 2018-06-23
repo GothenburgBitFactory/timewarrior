@@ -12,7 +12,7 @@ timew-gaps \- display time tracking gaps
 .B ...
 ]
 
-.TP
+.SH DESCRIPTION
 .B timew gaps [<interval>] [<tag> ...]
 Displays a summary of time that is neither tracked nor excluded from tracking.
 

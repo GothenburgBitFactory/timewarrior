@@ -6,7 +6,7 @@ timew-diagnostics \- show diagnostic information
 .SH SYNOPSIS
 .B timew diagnostics
 
-.TP
+.SH DESCRIPTION
 .B timew diagnostics
 This command shows details about your version of Timewarrior, your platform, how
 it was built, compiler features, configuration, file access, extensions and more.

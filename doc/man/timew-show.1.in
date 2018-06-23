@@ -6,7 +6,7 @@ timew-show \- display configuration
 .SH SYNOPSIS
 .B timew show
 
-.TP
+.SH DESCRIPTION
 .B timew show
 Displays the effective configuration in hierarchical form.
 See also 'config'.
