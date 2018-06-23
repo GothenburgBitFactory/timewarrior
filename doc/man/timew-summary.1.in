@@ -13,15 +13,14 @@ timew-summary \- display a time-tracking summary
 ]
 .
 .SH DESCRIPTION
-Displays a report summarizing tracked and untracked time for the current day by
-default. Accepts date ranges and tags for filtering, or shortcut hints:
+Displays a report summarizing tracked and untracked time for the current day by default.
+Accepts date ranges and tags for filtering, or shortcut hints:
 .
   $ timew summary monday - today
   $ timew summary :week
   $ timew summary :month
 .
-The ':ids' hint adds an 'ID' column to the summary report output for interval
-modification.
+The ':ids' hint adds an 'ID' column to the summary report output for interval modification.
 .
 See also 'day', 'week', 'month', 'shorten', 'lengthen', 'tag', 'untag'.
 .

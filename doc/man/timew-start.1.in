@@ -14,18 +14,17 @@ timew-start \- start time tracking
 .
 .SH DESCRIPTION
 Begins tracking using the current time with any specified set of tags.
-If a tag contains multiple words, therefore containing spaces, use quotes to
-surround the whole tag. For example, this command specifies two tags ('weekend'
-and 'Home & Garden'), the second of which requires quotes.
+If a tag contains multiple words, therefore containing spaces, use quotes to surround the whole tag.
+For example, this command specifies two tags ('weekend' and 'Home & Garden'), the second of which requires quotes.
 .
   $ timew start weekend 'Home & Garden'
 .
-An optional date may be specified to indicate the intended start of the tracked
-time:
+An optional date may be specified to indicate the intended start of the tracked time:
 .
   $ timew start 8am weekend 'Home & Garden'
 .
 If there is a previous open interval, it will be closed at the given start time.
 .
-Quotes are harmless if used unnecessarily. See also 'continue', 'stop', 'track'.
+Quotes are harmless if used unnecessarily.
+See also 'continue', 'stop', 'track'.
 .

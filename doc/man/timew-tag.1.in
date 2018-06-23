@@ -13,9 +13,10 @@ timew-tag \- add tags to intervals
 .B ...
 .
 .SH DESCRIPTION
-The 'tag' command is used to add a tag to an interval. Using the 'summary'
-command, and specifying the ':ids' hint shows interval IDs. Using the right ID,
-you can identify an interval to tag. For example, show the IDs:
+The 'tag' command is used to add a tag to an interval.
+Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
+Using the right ID, you can identify an interval to tag.
+For example, show the IDs:
 .
   $ timew summary :week :ids
 .

@@ -18,8 +18,7 @@ timew-report \- run an extension report
 .
 .SH DESCRIPTION
 Runs an extension report, and supports filtering data.
-The 'report' command itself is optional, which means that these two commands
-are equivalent:
+The 'report' command itself is optional, which means that these two commands are equivalent:
 .
   $ timew report foo :week
   $ timew        foo :week

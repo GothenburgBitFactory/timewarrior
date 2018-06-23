@@ -18,8 +18,7 @@ timew-help \- display help
 }
 .
 .SH DESCRIPTION
-The help command shows detailed descriptions and examples of commands,
-interval syntax, supported hints, date and duration formats and DOM references.
+The help command shows detailed descriptions and examples of commands, interval syntax, supported hints, date and duration formats and DOM references.
 For example:
 .
   $ timew help

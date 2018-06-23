@@ -15,20 +15,19 @@ timew-config \- get and set Timewarrior configuration
 ]
 .
 .SH DESCRIPTION
-Allows setting and removing configuration values, as an alternative to directly
-editing your ~/.timewarrior/timewarrior.cfg file. For example:
+Allows setting and removing configuration values, as an alternative to directly editing your ~/.timewarrior/timewarrior.cfg file.
+For example:
 .
   $ timew config verbose yes
   $ timew config verbose ''
   $ timew config verbose
 .
-The first command sets 'verbose' to 'yes'. The second sets it to a blank value
-which overrides the default value. The third example deletes the 'verbose'
-setting.
+The first command sets 'verbose' to 'yes'.
+The second sets it to a blank value which overrides the default value.
+The third example deletes the 'verbose' setting.
 .
-When modifying configuration in this way, interactive confirmation will be
-sought. To override this confirmation, use the ':yes' hint, which means you
-intend to answer 'yes' to the confirmation questions:
+When modifying configuration in this way, interactive confirmation will be sought.
+To override this confirmation, use the ':yes' hint, which means you intend to answer 'yes' to the confirmation questions:
 .
   $ timew config verbose '' :yes
 .
