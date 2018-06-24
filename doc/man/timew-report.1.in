@@ -24,4 +24,3 @@ The 'report' command itself is optional, which means that these two commands are
   $ timew        foo :week
 .
 This does however assume there is a 'foo' extension installed.
-.
