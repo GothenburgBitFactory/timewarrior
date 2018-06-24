@@ -16,6 +16,8 @@ timew-stop \- stop time tracking
 Stops tracking time.
 If tags are specified, then they are no longer tracked.
 If no tags are specified, all tracking stops.
+.
+.SH EXAMPLES
 For example:
 .
   $ timew start tag1 tag2

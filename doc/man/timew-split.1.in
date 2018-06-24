@@ -12,6 +12,8 @@ timew-split \- split intervals
 Ѕplits an interval into two equally sized adjacent intervals, having the same tags.
 Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
 Using the right ID, you can identify an interval to split.
+.
+.SH EXAMPLES
 For example, show the IDs:
 .
   $ timew summary :week :ids

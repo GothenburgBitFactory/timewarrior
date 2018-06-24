@@ -12,6 +12,8 @@ timew-delete \- delete intervals
 Deletes an interval.
 Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
 Using the right ID, you can identify an interval to delete.
+.
+.SH EXAMPLES
 For example, show the IDs:
 .
   $ timew summary :week :ids

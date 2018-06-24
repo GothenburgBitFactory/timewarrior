@@ -9,5 +9,7 @@ timew-cancel \- cancel time tracking
 .SH DESCRIPTION
 If there is an open interval, it is abandoned.
 .
+.SH EXAMPLES
+.
 .SH "SEE ALSO"
 .BR timew-stop (1)

@@ -17,6 +17,8 @@ timew-continue \- resume tracking of existing interval
 .
 .SH DESCRIPTION
 Resumes tracking of closed intervals.
+.
+.SH EXAMPLES
 For example:
 .
   $ timew track 9am - 10am tag1 tag2

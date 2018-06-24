@@ -11,6 +11,8 @@ timew-join \- join intervals
 Joins two intervals, by using the earlier of the two start times, and the later of the two end times, and the combined set of tags.
 Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
 Using the correct IDs, you can identify an intervals to join.
+.
+.SH EXAMPLES
 For example, show the IDs:
 .
   $ timew summary :week :ids

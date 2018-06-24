@@ -13,6 +13,8 @@ timew-shorten \- shorten intervals
 The 'shorten' command is used to advance the end date of a closed interval.
 Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
 Using the right ID, you can identify an interval to shorten.
+.
+.SH EXAMPLES
 For example, show the IDs:
 .
   $ timew summary :week :ids

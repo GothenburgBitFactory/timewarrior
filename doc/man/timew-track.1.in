@@ -14,6 +14,8 @@ timew-track \- add intervals to the database
 .SH DESCRIPTION
 The track command is used to add tracked time in the past.
 Perhaps you forgot to record time, or are just filling in old entries.
+.
+.SH EXAMPLES
 For example:
 .
   $ timew track :yesterday 'Training Course'

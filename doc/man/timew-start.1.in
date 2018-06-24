@@ -15,6 +15,8 @@ timew-start \- start time tracking
 .SH DESCRIPTION
 Begins tracking using the current time with any specified set of tags.
 If a tag contains multiple words, therefore containing spaces, use quotes to surround the whole tag.
+.
+.SH EXAMPLES
 For example, this command specifies two tags ('weekend' and 'Home & Garden'), the second of which requires quotes.
 .
   $ timew start weekend 'Home & Garden'

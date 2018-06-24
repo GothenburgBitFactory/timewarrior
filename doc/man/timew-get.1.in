@@ -10,6 +10,8 @@ timew-get \- display DOM values
 .
 .SH DESCRIPTION
 Validates the DOM reference, then obtains the value and displays it.
+.
+.SH EXAMPLES
 For example:
 .
   $ timew get dom.active

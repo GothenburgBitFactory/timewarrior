@@ -13,6 +13,8 @@ timew-lengthen \- lengthen intervals
 The 'lengthen' command is used to defer the end date of a closed interval.
 Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
 Using the right ID, you can identify an interval to lengthen.
+.
+.SH EXAMPLES
 For example, show the IDs:
 .
   $ timew summary :week :ids
