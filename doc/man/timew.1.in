@@ -1,45 +1,45 @@
 .TH timew 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
-
+.
 .SH NAME
 timew \- A command line time tracker.
-
+.
 .SH SYNOPSIS
 .B timew <command> [<arg> ...]
-
+.
 .SH DESCRIPTION
-Timewarrior is a command line time tracker. It allows you to easily track your
-time and generate summary reports.
-
-This is a reference, not a tutorial. If you are looking for a tutorial, check
-the online documentation here:
-
+Timewarrior is a command line time tracker.
+It allows you to easily track your time and generate summary reports.
+.
+This is a reference, not a tutorial.
+If you are looking for a tutorial, check the online documentation here:
+.
   https://taskwarrior.org/docs/timewarrior
-
+.
 .SH SUBCOMMANDS
-
-Timewarrior supports many commands. Alphabetically:
-
+.
+Timewarrior supports many commands.
+Alphabetically:
+.
 .TP
 .B timew
 .br
-When run without arguments, the default command is run, which indicates whether
-there is any active tracking, and if so, shows a summary, then exits with a code
-0. If there is no active time tracking, exit code is 1.
+When run without arguments, the default command is run, which indicates whether there is any active tracking, and if so, shows a summary, then exits with a code 0.
+If there is no active time tracking, exit code is 1.
 See also 'get'.
-
+.
 .SH INTERVAL
-An interval defines a block of time that is tracked. The syntax for specifying
-an interval is flexible, and may be one of:
-
+An interval defines a block of time that is tracked.
+The syntax for specifying an interval is flexible, and may be one of:
+.
   [from] <date>
   [from] <date> to/- <date>
   [from] <date> for <duration>
   <duration> before/after <date>
   <duration> ago
   [for] <duration>
-
+.
 Examples are:
-
+.
   from 9:00
   from 9am - 11am
   from 9:00:00 to 11:00
@@ -48,37 +48,36 @@ Examples are:
   2h before 11:00
   2h ago
   for 2h
-
-An interval is said to be 'closed' if there is both a start and end, and 'open'
-if there is no end date.
-
+.
+An interval is said to be 'closed' if there is both a start and end, and 'open' if there is no end date.
+.
 .SH HINTS
-Timewarrior supports hints, which are single-word command line features that
-start with a colon like this:
-
+Timewarrior supports hints, which are single-word command line features that start with a colon like this:
+.
   :week
-
-Hints serve several purposes. This example is a shortcut for the date range
-that defines the current week. Other hints, such as:
-
+.
+Hints serve several purposes.
+This example is a shortcut for the date range that defines the current week.
+Other hints, such as:
+.
   :quiet
-
-Are ways to control the behavior of Timewarrior, in this case eliminating all
-forms of feedback, for purposes of automation. The supported hints are:
-
+.
+Are ways to control the behavior of Timewarrior, in this case eliminating all forms of feedback, for purposes of automation.
+The supported hints are:
+.
   :quiet         Turns off all feedback. For automation
   :debug         Runs in debug mode, shows many runtime details
   :yes           Overrides confirmation by answering 'yes' to the questions
-
+.
   :color         Force color on, even if not connected to a TTY
   :nocolor       Force color off, even if connected to a TTY
   :blank         Leaves tracked time out of a report
   :fill          Expand time to fill surrounding available gap
   :adjust        Automatically correct overlaps
   :ids           Displays interval ID numbers in the summary report
-
+.
 Range hints provide convenient shortcuts to date ranges:
-
+.
   :yesterday     The 24 hours of the previous day
   :day           The 24 hours of the current day
   :week          This week
@@ -96,35 +95,35 @@ Range hints provide convenient shortcuts to date ranges:
   :friday        Previous friday
   :saturday      Previous saturday
   :sunday        Previous sunday
-
+.
 .SH DATES
 Timewarrior supports the following date formats based on ISO-8601:
-
+.
   <extended-date> [T <extended-time>]   Extended date, optional extended time
   <date> [T <time>]                     Date, optional time
   <extended-time>                       Extended time
   <time>                                Time
-
+.
   extended-date:
     YYYY-MM-DD                          Year, month, day
     YYYY-MM                             Year, month, 1st
     YYYY-DDD                            Year, Julian day 001-366
     YYYY-WwwD                           Year, week number, day number
     YYYY-Www                            Year, week number, day 1
-
+.
   extended-time:
     hh:mm[:ss]Z                         Hours, minutes, optional seconds, UTC
     hh:mm[:ss][+/-hh:mm]                Hours, minutes, optional seconds, TZ
-
+.
   date:
     YYYYMMDD                            Year, month, day
     YYYYWww                             Year, week number, day number
     YYYYDDD                             Year, Julian day 001-366
-
+.
   time:
     hhmm[ss]Z                           Hour, minutes, optional seconds, UTC
     hhmm[ss][+/-hh[mm]]                 Hour, minutes, optional seconds, TZ
-
+.
 Examples:
   2016-06-09T08:12:00Z
   2016-06T08:12:00+01:00
@@ -136,9 +135,9 @@ Examples:
   2016W24
   8:12:00Z
   0812-0500
-
+.
 In addition to the standard date formats, the following are supported:
-
+.
   now                                   Current date and time
   today                                 Current date at 0:00:00
   yesterday                             Yesterday at 0:00:00
@@ -176,21 +175,21 @@ In addition to the standard date formats, the following are supported:
   midsommar                             midnight, 1st Saturday after 20th June
   midsommarafton                        midnight, 1st Friday after 19th June
   juhannus                              midnight, 1st Friday after 19th June
-
+.
 Examples:
   8am
   24th
   monday
   august
-
+.
 See also 'duration', 'hints'.
-
+.
 .SH DURATIONS
 Timewarrior supports the following duration formats based on ISO-8601:
-
+.
   'P' [nn 'Y'] [nn 'M'] [nn 'D'] ['T' [nn 'H'] [nn 'M'] [nn 'S']]
   PnnW
-
+.
 Examples:
   P1Y           1 year
   P1.5M         1.5 months
@@ -200,16 +199,16 @@ Examples:
   P600D         600 days
   P3W           3 weeks
   P1Y1DT1H1M1S  1 year and 25 hours, 61 seconds (imprecise term)
-
-  Note that the year and month terms are imprecise, being defined as 365d and
-  30d respectively. For precision use the other terms.
-
+.
+Note that the year and month terms are imprecise, being defined as 365d and 30d respectively.
+For precision use the other terms.
+.
 In addition to the standard duration formats, the following are supported:
-
+.
   n[.n]<unit>
-
+.
 Where the <unit> is one of:
-
+.
   annual
   biannual
   bimonthly
@@ -228,29 +227,29 @@ Where the <unit> is one of:
   weekdays
   weekly, weeks, week, wks, wk, w
   yearly, years, year, yrs, yr, y
-
+.
 Examples:
   1hour         60 minutes
   1.5h          90 minutes
   3mo           3 months
   10d           10 days
-
-  Note that the year, quarter and month terms are imprecise, being defined as
-  365d, 91d and 30d respectively. For precision use the other terms.
-
+.
+Note that the year, quarter and month terms are imprecise, being defined as 365d, 91d and 30d respectively.
+For precision use the other terms.
+.
 .SH DOM
 Supported DOM references are:
-
+.
   dom.tag.count             Count of all tags
   dom.tag.1                 Nth tag used
-
+.
   dom.active                '1' if there is active tracking, otherwise '0'
   dom.active.tag.count      Count of active tags
   dom.active.tag.1          Active Nth tag
   dom.active.start          Active start timestamp (ISO Extended local date)
   dom.active.duration       Active elapsed (ISO Period)
   dom.active.json           Active interval as JSON
-
+.
   dom.tracked.count         Count of tracked intervals
   dom.tracked.1.tag.count   Count of active tags
   dom.tracked.1.tag.1       Tracked Nth, Nth tag
@@ -258,192 +257,184 @@ Supported DOM references are:
   dom.tracked.1.end         Tracked Nth, end time, blank if closed
   dom.tracked.1.duration    Tracked Nth, elapsed
   dom.tracked.1.json        Tracked Nth, interval as JSON
-
+.
   dom.rc.<name>             Configuration setting
-
+.
 .SH CONFIGURATION FILE AND OVERRIDE OPTIONS
 Timewarrior stores its configuration in a file in the user's home directory:
 ~/.timewarrior/timewarrior.cfg.
-
-This file contains a mix of rules and configuration settings. Note that the
-environment variable $TIMEWARRIORDB can be set to override this location.
-
-The values 'true', '1', 'y', 'yes' and 'on' are all equivalent and enable a
-setting. Any other value means disable the setting.
-
-Default values may be overridden by timewarrior.cfg values, which may in turn be
-overridden on the command line using:
-
+.
+This file contains a mix of rules and configuration settings.
+Note that the environment variable $TIMEWARRIORDB can be set to override this location.
+.
+The values 'true', '1', 'y', 'yes' and 'on' are all equivalent and enable a setting.
+Any other value means disable the setting.
+.
+Default values may be overridden by timewarrior.cfg values, which may in turn be overridden on the command line using:
+.
   rc.<name>=<value>
-
+.
 For example, to turn off verbose mode:
-
+.
   rc.verbose=0
-
+.
 Note that hints can also do this (:quiet).
-
+.
 .TP
 .B confirmation = yes
 Determines whether harmful operations require interactive confirmation.
 May be overridden by the ':yes' hint.
 Default value is 'yes'.
-
+.
 .TP
 .B debug = off
 Determines whether diagnostic debugging information is shown.
 Useful for troubleshooting, but not for general use.
 Default value is 'off'.
-
+.
 .TP
 .B debug.indicator = >>
 The debug output prefix string.
 Default value is '>>'.
-
+.
 .TP
 .B reports.<type>.cell = 15
 .br
-Determines how many minutes are represented by a single character cell, for the
-charts.
+Determines how many minutes are represented by a single character cell, for the charts.
 A value of '15' means that an hour is represented by 60/15, or 4 character cells.
 Suitable values are the divisors of 60 (30, 20, 15, 12, ...).
 The value must be greater than '0'.
 Default value is '15'.
 Type is one of 'month', 'week', 'day'.
-
+.
 .TP
 .B reports.<type>.day = yes
 .br
 Determines whether the current day of the month is shown at left margin.
 Default value is 'yes'.
 Type is one of 'month', 'week', 'day'.
-
+.
 .TP
 .B reports.<type>.holidays = yes
 .br
 Determines whether relevant holidays are shown beneath the report.
 Default value is 'yes'.
 Type is one of 'month', 'week', 'day', 'summary'.
-
+.
 .TP
 .B reports.<type>.hours = all
 .br
-Determines how the <type> report shows all the hours in a day ('all'), or is
-limited to only hours where data is tracked ('auto'). Default value is 'all'.
+Determines how the <type> report shows all the hours in a day ('all'), or is limited to only hours where data is tracked ('auto').
+Default value is 'all'.
 Type is one of 'month', 'week', 'day'.
-
+.
 .TP
 .B reports.<type>.lines = 1
 .br
 Determines how many lines are used to render each day on the <type> report.
 Default value is '1'.
 Type is one of 'month', 'week', 'day'.
-
+.
 .TP
 .B reports.<type>.month = yes
 .br
 Determines whether the current month is shown at left margin.
 Default value is 'yes'.
 Type is one of 'month', 'week', 'day'.
-
+.
 .TP
 .B reports.<type>.range = <range hint>
 .br
-For reports that show a range of data, this setting will override the default
-value. The value should be a range hint, see 'hints'
+For reports that show a range of data, this setting will override the default value.
+The value should be a range hint, see 'hints'
 Type is one of 'gaps', 'day', 'week', 'month'.
-
+.
 .TP
 .B reports.<type>.spacing = 1
 .br
-Specifies how many spaces are inserted between the hours in the <type> report
-exclusions. A value of '0' yields a more compact report. Default value is '1'.
+Specifies how many spaces are inserted between the hours in the <type> report exclusions.
+A value of '0' yields a more compact report.
+Default value is '1'.
 Type is one of 'month', 'week', 'day'.
-
+.
 .TP
 .B reports.<type>.axis = external
 .br
-The value 'internal' puts the hour markers (time line at the top) inside the
-exclusion blocks, 'external' puts the hour markers in a separate line;
-additional values might be defined in the future. Default is 'internal' for
-the day report and 'external' for other reports.
-
+The value 'internal' puts the hour markers (time line at the top) inside the exclusion blocks, 'external' puts the hour markers in a separate line; additional values might be defined in the future.
+Default is 'internal' for the day report and 'external' for other reports.
+.
 .TP
 .B reports.<type>.summary = on
 .br
-Determines whether the hours summary is shown. Default value is 'on'.
+Determines whether the hours summary is shown.
+Default value is 'on'.
 Type is one of 'month', 'week', 'day'.
-
+.
 .TP
 .B reports.<type>.totals = on
 .br
 Determines whether the time totals are shown for each day on the report.
 Default value is 'on'.
 Type is one of 'month', 'week', 'day'.
-
+.
 .TP
 .B reports.<type>.week = yes
 .br
 Determines whether the current week number is shown at left margin.
 Default value is 'yes'.
 Type is one of 'month', 'week', 'day'.
-
+.
 .TP
 .B reports.<type>.weekday = yes
 .br
 Determines whether the current weekday is shown at left margin.
 Default value is 'yes'.
 Type is one of 'month', 'week', 'day'.
-
+.
 .TP
 .B verbose = yes
 Determines whether Timewarrior generates feedback.
 May be overridden by the ':quiet' hint.
 Default value is 'yes'.
-
-.SH MORE EXAMPLES
-
+.
+.SH "MORE EXAMPLES"
+.
 For examples please see the online documentation starting at:
-
+.
 .RS
 <https://taskwarrior.org/docs/timewarrior/>
 .RE
-
-Note that the online documentation can be more detailed and more current than
-this man page.
-
+.
+Note that the online documentation can be more detailed and more current than this man page.
+.
 .SH FILES
-
+.
 .TP
 ~/.timewarrior/timewarrior.cfg
 User configuration file.
-
+.
 .TP
 ~/.timewarrior/data/YYYY-MM.data
 Time tracking data files.
-
+.
 .SH "CREDITS & COPYRIGHTS"
-Copyright (C) 2015 \- 2018 P. Beckingham, F. Hernandez.
-
-Timewarrior is distributed under the MIT license. See
-https://www.opensource.org/licenses/mit-license.php for more information.
-
-.SH SEE ALSO
+Copyright (C) 2015 \- 2018 T.Lauf, P. Beckingham, F. Hernandez.
+.
+Timewarrior is distributed under the MIT license.
+See https://www.opensource.org/licenses/mit-license.php for more information.
+.
+.SH "SEE ALSO"
 For more information regarding Timewarrior, see the following:
-
+.
 .TP
-The official site at
-<https://timewarrior.net>
-
+The official site at <https://timewarrior.net>
+.
 .TP
-The official code repository at
-<https://github.com/GothenburgBitFactory/timewarrior>
-
+The official code repository at <https://github.com/GothenburgBitFactory/timewarrior>
+.
 .TP
-You can contact the project by emailing
-<support@gothenburgbitfactory.org>
-
+You can contact the project by emailing <support@gothenburgbitfactory.org>
+.
 .SH REPORTING BUGS
 .TP
-Bugs in Timewarrior may be reported to the issue-tracker at
-<https://github.com/GothenburgBitFactory/timewarrior/issues>
-
+Bugs in Timewarrior may be reported to the issue-tracker at <https://github.com/GothenburgBitFactory/timewarrior/issues>
