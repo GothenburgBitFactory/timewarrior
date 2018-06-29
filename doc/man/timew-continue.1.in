@@ -30,5 +30,7 @@ Using the 'summary' command and specifying the ':ids' hint shows interval IDs.
 This command is a convenient way to resume work without re-entering the tags.
 .
 .SH "SEE ALSO"
+.BR timew-cancel (1),
 .BR timew-start (1),
-.BR timew-stop (1)
+.BR timew-stop (1),
+.BR timew-track (1)

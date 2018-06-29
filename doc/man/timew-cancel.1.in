@@ -12,4 +12,7 @@ If there is an open interval, it is abandoned.
 .SH EXAMPLES
 .
 .SH "SEE ALSO"
-.BR timew-stop (1)
+.BR timew-continue (1),
+.BR timew-start (1),
+.BR timew-stop (1),
+.BR timew-track (1)
