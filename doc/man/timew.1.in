@@ -183,7 +183,7 @@ The syntax for specifying an interval is flexible, and may be one of:
   <duration> before/after <date>
   <duration> ago
   [for] <duration>
-.
+.br
 Examples are:
 .
   from 9:00
@@ -194,21 +194,23 @@ Examples are:
   2h before 11:00
   2h ago
   for 2h
-.
+.br
 An interval is said to be 'closed' if there is both a start and end, and 'open' if there is no end date.
 .
 .SH HINTS
 Timewarrior supports hints, which are single-word command line features that start with a colon like this:
 .
   :week
-.
+.br
 Hints serve several purposes.
 This example is a shortcut for the date range that defines the current week.
+.br
 Other hints, such as:
 .
   :quiet
-.
+.br
 Are ways to control the behavior of Timewarrior, in this case eliminating all forms of feedback, for purposes of automation.
+.br
 The supported hints are:
 .
   :quiet         Turns off all feedback. For automation
@@ -221,7 +223,7 @@ The supported hints are:
   :fill          Expand time to fill surrounding available gap
   :adjust        Automatically correct overlaps
   :ids           Displays interval ID numbers in the summary report
-.
+.br
 Range hints provide convenient shortcuts to date ranges:
 .
   :yesterday     The 24 hours of the previous day
@@ -269,7 +271,7 @@ Timewarrior supports the following date formats based on ISO-8601:
   time:
     hhmm[ss]Z                           Hour, minutes, optional seconds, UTC
     hhmm[ss][+/-hh[mm]]                 Hour, minutes, optional seconds, TZ
-.
+.br
 Examples:
   2016-06-09T08:12:00Z
   2016-06T08:12:00+01:00
@@ -281,7 +283,7 @@ Examples:
   2016W24
   8:12:00Z
   0812-0500
-.
+.br
 In addition to the standard date formats, the following are supported:
 .
   now                                   Current date and time
@@ -321,13 +323,13 @@ In addition to the standard date formats, the following are supported:
   midsommar                             midnight, 1st Saturday after 20th June
   midsommarafton                        midnight, 1st Friday after 19th June
   juhannus                              midnight, 1st Friday after 19th June
-.
+.br
 Examples:
   8am
   24th
   monday
   august
-.
+.br
 See also 'duration', 'hints'.
 .
 .SH DURATIONS
@@ -335,7 +337,7 @@ Timewarrior supports the following duration formats based on ISO-8601:
 .
   'P' [nn 'Y'] [nn 'M'] [nn 'D'] ['T' [nn 'H'] [nn 'M'] [nn 'S']]
   PnnW
-.
+.br
 Examples:
   P1Y           1 year
   P1.5M         1.5 months
@@ -345,14 +347,14 @@ Examples:
   P600D         600 days
   P3W           3 weeks
   P1Y1DT1H1M1S  1 year and 25 hours, 61 seconds (imprecise term)
-.
+.br
 Note that the year and month terms are imprecise, being defined as 365d and 30d respectively.
 For precision use the other terms.
-.
+.br
 In addition to the standard duration formats, the following are supported:
 .
   n[.n]<unit>
-.
+.br
 Where the <unit> is one of:
 .
   annual
@@ -373,13 +375,13 @@ Where the <unit> is one of:
   weekdays
   weekly, weeks, week, wks, wk, w
   yearly, years, year, yrs, yr, y
-.
+.br
 Examples:
   1hour         60 minutes
   1.5h          90 minutes
   3mo           3 months
   10d           10 days
-.
+.br
 Note that the year, quarter and month terms are imprecise, being defined as 365d, 91d and 30d respectively.
 For precision use the other terms.
 .
@@ -565,6 +567,7 @@ Time tracking data files.
 .
 .SH "CREDITS & COPYRIGHTS"
 Copyright (C) 2015 \- 2018 T. Lauf, P. Beckingham, F. Hernandez.
+.br
 Timewarrior is distributed under the MIT license.
 See https://www.opensource.org/licenses/mit-license.php for more information.
 .
