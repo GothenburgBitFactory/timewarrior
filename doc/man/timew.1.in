@@ -4,7 +4,10 @@
 timew \- A command line time tracker.
 .
 .SH SYNOPSIS
-.B timew <command> [<arg> ...]
+.BR "timew " [ --version | --help ]
+.br
+.B timew
+.RI [ "<command> " [ <arg> "...]]"
 .
 .SH DESCRIPTION
 Timewarrior is a command line time tracker.
