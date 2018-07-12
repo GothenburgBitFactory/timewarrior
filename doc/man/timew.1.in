@@ -564,8 +564,7 @@ User configuration file.
 Time tracking data files.
 .
 .SH "CREDITS & COPYRIGHTS"
-Copyright (C) 2015 \- 2018 T.Lauf, P. Beckingham, F. Hernandez.
-.
+Copyright (C) 2015 \- 2018 T. Lauf, P. Beckingham, F. Hernandez.
 Timewarrior is distributed under the MIT license.
 See https://www.opensource.org/licenses/mit-license.php for more information.
 .
