@@ -15,8 +15,11 @@ It allows you to easily track your time and generate summary reports.
 .
 This is a reference, not a tutorial.
 If you are looking for a tutorial, check the online documentation here:
-.
+.br
   https://taskwarrior.org/docs/timewarrior
+.br
+When run without arguments or options, the default command is run, which indicates whether there is any active tracking, and if so, shows a summary, then exits with a code 0.
+If there is no active time tracking, exit code is 1.
 .
 .SH OPTIONS
 .TP
@@ -35,11 +38,140 @@ Timewarrior supports many commands.
 Alphabetically:
 .
 .TP
-.B timew
-.br
-When run without arguments, the default command is run, which indicates whether there is any active tracking, and if so, shows a summary, then exits with a code 0.
-If there is no active time tracking, exit code is 1.
-See also 'get'.
+.BR timew-cancel (1)
+.RS
+Cancel time tracking
+.RE
+.TP
+.BR timew-config (1)
+.RS
+Get and set Timewarrior configuration
+.RE
+.TP
+.BR timew-continue (1)
+.RS
+Resume tracking of existing interval
+.RE
+.TP
+.BR timew-day (1)
+.RS
+Display day chart
+.RE
+.TP
+.BR timew-delete (1)
+.RS
+Delete intervals
+.RE
+.TP
+.BR timew-diagnostics (1)
+.RS
+Show diagnostic information
+.RE
+.TP
+.BR timew-export (1)
+.RS
+Export tracked time in JSON
+.RE
+.TP
+.BR timew-extensions (1)
+.RS
+List available extensions
+.RE
+.TP
+.BR timew-get (1)
+.RS
+Display DOM values
+.RE
+.TP
+.BR timew-help (1)
+.RS
+Display help
+.RE
+.TP
+.BR timew-join (1)
+.RS
+Join intervals
+.RE
+.TP
+.BR timew-lengthen (1)
+.RS
+Lengthen intervals
+.RE
+.TP
+.BR timew-month (1)
+.RS
+Display month chart
+.RE
+.TP
+.BR timew-move (1)
+.RS
+Change interval start-time
+.RE
+.TP
+.BR timew-report (1)
+.RS
+Run an extension report
+.RE
+.TP
+.BR timew-resize (1)
+.RS
+Set interval duration
+.RE
+.TP
+.BR timew-shorten (1)
+.RS
+Shorten intervals
+.RE
+.TP
+.BR timew-show (1)
+.RS
+Display configuration
+.RE
+.TP
+.BR timew-split (1)
+.RS
+Split intervals
+.RE
+.TP
+.BR timew-start (1)
+.RS
+Start time tracking
+.RE
+.TP
+.BR timew-stop (1)
+.RS
+Stop time tracking
+.RE
+.TP
+.BR timew-summary (1)
+.RS
+Display a time-tracking summary
+.RE
+.TP
+.BR timew-tag (1)
+.RS
+Add tags to intervals
+.RE
+.TP
+.BR timew-tags (1)
+.RS
+Display a list of tags
+.RE
+.TP
+.BR timew-track (1)
+.RS
+Add intervals to the database
+.RE
+.TP
+.BR timew-untag (1)
+.RS
+Remove tags from intervals
+.RE
+.TP
+.BR timew-week (1)
+.RS
+Display week chart
+.RE
 .
 .SH INTERVAL
 An interval defines a block of time that is tracked.
