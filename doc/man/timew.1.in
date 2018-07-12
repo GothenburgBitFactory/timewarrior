@@ -18,8 +18,19 @@ If you are looking for a tutorial, check the online documentation here:
 .
   https://taskwarrior.org/docs/timewarrior
 .
-.SH SUBCOMMANDS
+.SH OPTIONS
+.TP
+.B \-\-version
+.RS
+Displays TimeWarrior version information
+.RE
+.TP
+.B \-\-help
+.RS
+Display TimeWarrior usage information
+.RE
 .
+.SH "TIMEWARRIOR COMMANDS"
 Timewarrior supports many commands.
 Alphabetically:
 .
