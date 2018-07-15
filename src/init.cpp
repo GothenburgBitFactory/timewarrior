@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2016, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -74,6 +74,7 @@ void initializeEntities (CLI& cli)
   cli.entity ("command", "tag");
   cli.entity ("command", "tags");
   cli.entity ("command", "track");
+  cli.entity ("command", "undo");
   cli.entity ("command", "untag");
 
   // Some command list themselves as extensions, to integrate with the real
@@ -284,6 +285,7 @@ int dispatchCommand (
     else if (command == "tag")         status = CmdTag           (cli, rules, database            );
     else if (command == "tags")        status = CmdTags          (cli, rules, database            );
     else if (command == "track")       status = CmdTrack         (cli, rules, database            );
+    else if (command == "undo")        status = CmdUndo          (            database            );
     else if (command == "untag")       status = CmdUntag         (cli, rules, database            );
     else if (command == "week")        status = CmdChartWeek     (cli, rules, database            );
     else                               status = CmdReport        (cli, rules, database, extensions);

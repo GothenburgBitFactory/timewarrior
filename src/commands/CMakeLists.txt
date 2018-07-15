@@ -32,6 +32,7 @@ set (commands_SRCS CmdCancel.cpp
                    CmdTag.cpp
                    CmdTags.cpp
                    CmdTrack.cpp
+                   CmdUndo.cpp
                    CmdUntag.cpp)
 
 add_library (commands STATIC ${commands_SRCS})
