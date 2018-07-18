@@ -293,9 +293,13 @@ int CmdConfig (
     return CmdShow (rules);
   }
 
-  // Join the remaining words into config variable's value
+  bool change = false;
+
+  // timew config name value
+  // timew config name ""
   if (words.size () > 1)
   {
+    // Join the remaining words into config variable's value
     for (unsigned int i = 1; i < words.size (); ++i)
     {
       if (i > 1)
@@ -305,15 +309,9 @@ int CmdConfig (
 
       value += words[i];
     }
-  }
 
-  bool change = false;
-
-  // timew config name value
-  // timew config name ""
-  if (words.size () > 1)
-  {
     change = setConfigVariable (database, rules, name, value, confirmation);
+
     if (!change)
     {
       rc = 1;
