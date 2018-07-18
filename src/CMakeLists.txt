@@ -13,6 +13,8 @@ set (timew_SRCS CLI.cpp        CLI.h
                 Interval.cpp   Interval.h
                 Range.cpp      Range.h
                 Rules.cpp      Rules.h
+                Transaction.cpp Transaction.h
+                UndoAction.cpp UndoAction.h
                 data.cpp
                 dom.cpp
                 init.cpp
