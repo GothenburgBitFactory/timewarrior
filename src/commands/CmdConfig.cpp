@@ -72,9 +72,9 @@ static bool setConfigVariable (Database& database, const Rules& rules, std::stri
           auto before = line;
           line = line.substr (0, pos) + name + " = " + value;
 
-          database.undoTxnStart ();
-          database.undoTxn ("config", before, line);
-          database.undoTxnEnd ();
+          database.startTransaction ();
+          database.recordUndoAction ("config", before, line);
+          database.endTransaction ();
 
           change = true;
         }
@@ -107,9 +107,9 @@ static bool setConfigVariable (Database& database, const Rules& rules, std::stri
             auto before = line;
             line = line.substr (0, pos) + leaf + " " + value;
 
-            database.undoTxnStart ();
-            database.undoTxn ("config", before, line);
-            database.undoTxnEnd ();
+            database.startTransaction ();
+            database.recordUndoAction ("config", before, line);
+            database.endTransaction ();
 
             change = true;
           }
@@ -132,9 +132,9 @@ static bool setConfigVariable (Database& database, const Rules& rules, std::stri
         // Add new line.
         lines.push_back (name + " = " + json::encode (value));
 
-        database.undoTxnStart ();
-        database.undoTxn ("config", "", lines.back());
-        database.undoTxnEnd ();
+        database.startTransaction ();
+        database.recordUndoAction ("config", "", lines.back ());
+        database.endTransaction ();
 
         change = true;
       }
@@ -155,9 +155,9 @@ static bool setConfigVariable (Database& database, const Rules& rules, std::stri
       // Add new line.
       lines.push_back (name + " = " + json::encode (value));
 
-      database.undoTxnStart ();
-      database.undoTxn ("config", "", lines.back ());
-      database.undoTxnEnd ();
+      database.startTransaction ();
+      database.recordUndoAction ("config", "", lines.back ());
+      database.endTransaction ();
 
       change = true;
     }
@@ -203,9 +203,9 @@ static int unsetConfigVariable (Database& database, const Rules& rules, std::str
       if (! confirmation ||
           confirm (format ("Are you sure you want to remove '{1}'?", name)))
       {
-        database.undoTxnStart ();
-        database.undoTxn ("config", line, "");
-        database.undoTxnEnd ();
+        database.startTransaction ();
+        database.recordUndoAction ("config", line, "");
+        database.endTransaction ();
 
         line = "";
         change = true;

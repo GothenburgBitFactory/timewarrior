@@ -96,7 +96,7 @@ std::vector <std::string> Database::allLines ()
 ////////////////////////////////////////////////////////////////////////////////
 void Database::addInterval (const Interval& interval)
 {
-  undoTxnStart ();
+  startTransaction ();
 
   if (interval.range.is_open ())
   {
@@ -104,7 +104,7 @@ void Database::addInterval (const Interval& interval)
     // created on demand.
     auto df = getDatafile (interval.range.start.year (), interval.range.start.month ());
     _files[df].addInterval (interval);
-    undoTxn ("interval", "", interval.json ());
+    recordUndoAction ("interval", "", interval.json ());
   }
   else
   {
@@ -123,17 +123,17 @@ void Database::addInterval (const Interval& interval)
 
       _files[df].addInterval (segmentedInterval);
 
-      undoTxn ("interval", "", segmentedInterval.json ());
+      recordUndoAction ("interval", "", segmentedInterval.json ());
     }
   }
 
-  undoTxnEnd ();
+  endTransaction ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Database::deleteInterval (const Interval& interval)
 {
-  undoTxnStart ();
+  startTransaction ();
 
   auto intervalRange = interval.range;
   for (auto& segment : segmentRange (intervalRange))
@@ -150,10 +150,10 @@ void Database::deleteInterval (const Interval& interval)
 
     _files[df].deleteInterval (segmentedInterval);
 
-    undoTxn ("interval", segmentedInterval.json (), "");
+    recordUndoAction ("interval", segmentedInterval.json (), "");
   }
 
-  undoTxnEnd ();
+  endTransaction ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -163,17 +163,17 @@ void Database::deleteInterval (const Interval& interval)
 // Interval belongs in a different file.
 void Database::modifyInterval (const Interval& from, const Interval& to)
 {
-  undoTxnStart ();
+  startTransaction ();
   deleteInterval (from);
   addInterval (to);
-  undoTxnEnd ();
+  endTransaction ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // The _txn member is a reference count, allowing multiple nested transactions.
 // This accommodates the Database::modifyInterval call, that in turn calls
 // ::addInterval and ::deleteInterval.
-void Database::undoTxnStart ()
+void Database::startTransaction ()
 {
   if (_txn == 0)
   {
@@ -185,9 +185,9 @@ void Database::undoTxnStart ()
 
 ////////////////////////////////////////////////////////////////////////////////
 // The _txn member is a reference count. The undo data is only written when
-// ::undoTxnEnd decrements the counter to zero, therefore the undo command can
+// ::endTransaction decrements the counter to zero, therefore the undo command can
 // perform multiple atomic steps.
-void Database::undoTxnEnd ()
+void Database::endTransaction ()
 {
   --_txn;
   if (_txn == 0)
@@ -212,10 +212,10 @@ void Database::undoTxnEnd ()
 // Record undoable transactions. There are several types:
 //   interval    changes to stored intervals
 //   config      changes to configuration
-void Database::undoTxn (
-  const std::string& type,
-  const std::string& before,
-  const std::string& after)
+void Database::recordUndoAction (
+  const std::string &type,
+  const std::string &before,
+  const std::string &after)
 {
   _currentTransaction->addUndoAction (type, before, after);
 }

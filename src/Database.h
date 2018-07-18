@@ -49,9 +49,9 @@ public:
   void deleteInterval (const Interval&);
   void modifyInterval (const Interval&, const Interval&);
 
-  void undoTxnStart ();
-  void undoTxnEnd ();
-  void undoTxn (const std::string&, const std::string&, const std::string&);
+  void startTransaction ();
+  void endTransaction ();
+  void recordUndoAction (const std::string &, const std::string &, const std::string &);
 
   std::string dump () const;
 
