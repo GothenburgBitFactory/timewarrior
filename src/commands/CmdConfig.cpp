@@ -73,7 +73,7 @@ static bool setConfigVariable (Database& database, const Rules& rules, std::stri
           line = line.substr (0, pos) + name + " = " + value;
 
           database.startTransaction ();
-          database.recordUndoAction ("config", before, line);
+          database.recordConfigAction (before, line);
           database.endTransaction ();
 
           change = true;
@@ -108,7 +108,7 @@ static bool setConfigVariable (Database& database, const Rules& rules, std::stri
             line = line.substr (0, pos) + leaf + " " + value;
 
             database.startTransaction ();
-            database.recordUndoAction ("config", before, line);
+            database.recordConfigAction (before, line);
             database.endTransaction ();
 
             change = true;
@@ -133,7 +133,7 @@ static bool setConfigVariable (Database& database, const Rules& rules, std::stri
         lines.push_back (name + " = " + json::encode (value));
 
         database.startTransaction ();
-        database.recordUndoAction ("config", "", lines.back ());
+        database.recordConfigAction ("", lines.back ());
         database.endTransaction ();
 
         change = true;
@@ -156,7 +156,7 @@ static bool setConfigVariable (Database& database, const Rules& rules, std::stri
       lines.push_back (name + " = " + json::encode (value));
 
       database.startTransaction ();
-      database.recordUndoAction ("config", "", lines.back ());
+      database.recordConfigAction ("", lines.back ());
       database.endTransaction ();
 
       change = true;
@@ -204,7 +204,7 @@ static int unsetConfigVariable (Database& database, const Rules& rules, std::str
           confirm (format ("Are you sure you want to remove '{1}'?", name)))
       {
         database.startTransaction ();
-        database.recordUndoAction ("config", line, "");
+        database.recordConfigAction (line, "");
         database.endTransaction ();
 
         line = "";

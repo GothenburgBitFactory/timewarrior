@@ -51,7 +51,8 @@ public:
 
   void startTransaction ();
   void endTransaction ();
-  void recordUndoAction (const std::string &, const std::string &, const std::string &);
+  void recordConfigAction(const std::string&, const std::string&);
+  void recordIntervalAction(const std::string&, const std::string&);
 
   std::string dump () const;
 
@@ -59,6 +60,8 @@ private:
   unsigned int getDatafile (int, int);
   std::vector <Range> segmentRange (const Range&);
   void initializeDatafiles ();
+
+  void recordUndoAction (const std::string &, const std::string &, const std::string &);
 
 private:
   std::string               _location {"~/.timewarrior/data"};

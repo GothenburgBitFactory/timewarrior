@@ -104,7 +104,7 @@ void Database::addInterval (const Interval& interval)
     // created on demand.
     auto df = getDatafile (interval.range.start.year (), interval.range.start.month ());
     _files[df].addInterval (interval);
-    recordUndoAction ("interval", "", interval.json ());
+    recordIntervalAction ("", interval.json ());
   }
   else
   {
@@ -123,7 +123,7 @@ void Database::addInterval (const Interval& interval)
 
       _files[df].addInterval (segmentedInterval);
 
-      recordUndoAction ("interval", "", segmentedInterval.json ());
+      recordIntervalAction ("", segmentedInterval.json ());
     }
   }
 
@@ -150,7 +150,7 @@ void Database::deleteInterval (const Interval& interval)
 
     _files[df].deleteInterval (segmentedInterval);
 
-    recordUndoAction ("interval", segmentedInterval.json (), "");
+    recordIntervalAction (segmentedInterval.json (), "");
   }
 
   endTransaction ();
@@ -218,6 +218,22 @@ void Database::recordUndoAction (
   const std::string &after)
 {
   _currentTransaction->addUndoAction (type, before, after);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Database::recordConfigAction (
+  const std::string& before,
+  const std::string& after)
+{
+  recordUndoAction ("config", before, after);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Database::recordIntervalAction (
+  const std::string& before,
+  const std::string& after)
+{
+  recordUndoAction ("interval", before, after);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
