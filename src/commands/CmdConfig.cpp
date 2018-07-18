@@ -279,67 +279,78 @@ int CmdConfig (
   //   timew config name value    # set name to value
   //   timew config name ""       # set name to blank
   //   timew config name          # remove name
-  if (! words.empty ())
+  if (words.empty ())
   {
-    bool confirmation = rules.getBoolean ("confirmation");
-    std::string name = words[0];
-    std::string value = "";
+    return CmdShow (rules);
+  }
 
-    // Join the remaining words into config variable's value
-    if (words.size () > 1)
+  bool confirmation = rules.getBoolean ("confirmation");
+  std::string name = words[0];
+  std::string value;
+
+  if (name.empty ())
+  {
+    return CmdShow (rules);
+  }
+
+  // Join the remaining words into config variable's value
+  if (words.size () > 1)
+  {
+    for (unsigned int i = 1; i < words.size (); ++i)
     {
-      for (unsigned int i = 1; i < words.size (); ++i)
+      if (i > 1)
       {
-        if (i > 1)
-          value += " ";
-
-        value += words[i];
+        value += " ";
       }
+
+      value += words[i];
+    }
+  }
+
+  bool change = false;
+
+  // timew config name value
+  // timew config name ""
+  if (words.size () > 1)
+  {
+    change = setConfigVariable (database, rules, name, value, confirmation);
+    if (!change)
+    {
+      rc = 1;
+    }
+  }
+  // timew config name
+  else
+  {
+    bool found = false;
+    rc = unsetConfigVariable (database, rules, name, confirmation);
+    if (rc == 0)
+    {
+      change = true;
+      found = true;
+    }
+    else if (rc == 1)
+    {
+      found = true;
     }
 
-    if (! name.empty ())
+    if (!found)
     {
-      bool change = false;
+      throw format ("No entry named '{1}' found.", name);
+    }
+  }
 
-      // timew config name value
-      // timew config name ""
-      if (words.size () > 1)
-      {
-        change = setConfigVariable (database, rules, name, value, confirmation);
-        if (! change)
-          rc = 1;
-      }
-
-      // timew config name
-      else
-      {
-        bool found = false;
-        rc = unsetConfigVariable (database, rules, name, confirmation);
-        if (rc == 0)
-        {
-          change = true;
-          found = true;
-        }
-        else if (rc == 1)
-          found = true;
-
-        if (!found)
-          throw format ("No entry named '{1}' found.", name);
-      }
-
-      if (rules.getBoolean ("verbose"))
-      {
-        if (change)
-          std::cout << "Config file " << rules.file () << " modified.\n";
-        else
-          std::cout << "No changes made.\n";
-      }
+  if (rules.getBoolean ("verbose"))
+  {
+    if (change)
+    {
+      std::cout << "Config file " << rules.file () << " modified.\n";
     }
     else
-      CmdShow (rules);
+    {
+      std::cout << "No changes made.\n";
+    }
   }
-  else
-    CmdShow (rules);
 
   return rc;
 }
