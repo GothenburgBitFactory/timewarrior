@@ -276,9 +276,9 @@ int CmdConfig (
   auto words = cli.getWords ();
 
   // Support:
-  //   task config name value    # set name to value
-  //   task config name ""       # set name to blank
-  //   task config name          # remove name
+  //   timew config name value    # set name to value
+  //   timew config name ""       # set name to blank
+  //   timew config name          # remove name
   if (! words.empty ())
   {
     bool confirmation = rules.getBoolean ("confirmation");
@@ -301,8 +301,8 @@ int CmdConfig (
     {
       bool change = false;
 
-      // task config name value
-      // task config name ""
+      // timew config name value
+      // timew config name ""
       if (words.size () > 1)
       {
         change = setConfigVariable (database, rules, name, value, confirmation);
@@ -310,7 +310,7 @@ int CmdConfig (
           rc = 1;
       }
 
-      // task config name
+      // timew config name
       else
       {
         bool found = false;
