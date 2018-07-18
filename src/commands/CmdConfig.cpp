@@ -36,7 +36,12 @@
 // Note that because this function does not recurse with includes, it therefore
 // only sees the top-level settings. This has the desirable effect of adding as
 // an override any setting which resides in an imported file.
-static bool setConfigVariable (Database& database, const Rules& rules, std::string name, std::string value, bool confirmation /* = false */)
+static bool setConfigVariable (
+  Database& database,
+  const Rules& rules,
+  std::string name,
+  std::string value,
+  bool confirmation /* = false */)
 {
   // Read config file as lines of text.
   std::vector <std::string> lines;
@@ -176,7 +181,11 @@ static bool setConfigVariable (Database& database, const Rules& rules, std::stri
 //   0 - found and removed
 //   1 - found and not removed
 //   2 - not found
-static int unsetConfigVariable (Database& database, const Rules& rules, std::string name, bool confirmation /* = false */)
+static int unsetConfigVariable (
+  Database& database,
+  const Rules& rules,
+  std::string name,
+  bool confirmation /* = false */)
 {
   // Setting not found.
   if (! rules.has (name))
