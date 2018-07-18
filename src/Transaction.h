@@ -35,6 +35,8 @@ class Transaction
 public:
   void addUndoAction(const std::string&, const std::string&, const std::string&);
 
+  std::string toString();
+
 private:
   std::vector<UndoAction> _actions {};
 };

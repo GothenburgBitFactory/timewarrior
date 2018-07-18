@@ -35,3 +35,10 @@ UndoAction::UndoAction (
   _before = before;
   _after = after;
 }
+
+std::string UndoAction::toString ()
+{
+  return "  type: " + _type + "\n" +
+         "  before: " + _before + "\n" +
+         "  after: " + _after + "\n";
+}

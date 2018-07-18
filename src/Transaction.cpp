@@ -34,3 +34,15 @@ void Transaction::addUndoAction (
 {
    _actions.emplace_back (type, before, after);
 }
+
+std::string Transaction::toString ()
+{
+  std::string output = "txn:\n";
+
+  for (auto& action : _actions)
+  {
+    output += action.toString ();
+  }
+
+  return output;
+}

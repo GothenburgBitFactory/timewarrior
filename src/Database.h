@@ -30,6 +30,7 @@
 #include <Datafile.h>
 #include <Interval.h>
 #include <Range.h>
+#include <Transaction.h>
 #include <vector>
 #include <string>
 
@@ -62,8 +63,9 @@ private:
 private:
   std::string               _location {"~/.timewarrior/data"};
   std::vector <Datafile>    _files    {};
-  std::vector <std::string> _undo     {};
   int                       _txn      {0};
+
+  std::shared_ptr <Transaction> _currentTransaction = nullptr;
 };
 
 #endif

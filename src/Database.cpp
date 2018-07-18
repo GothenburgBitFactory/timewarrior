@@ -176,7 +176,9 @@ void Database::modifyInterval (const Interval& from, const Interval& to)
 void Database::undoTxnStart ()
 {
   if (_txn == 0)
-    _undo.push_back ("txn:");
+  {
+    _currentTransaction = std::make_shared <Transaction> ();
+  }
 
   ++_txn;
 }
@@ -191,16 +193,18 @@ void Database::undoTxnEnd ()
   if (_txn == 0)
   {
     File undo (_location + "/undo.data");
+
     if (undo.open ())
     {
-      for (auto& line : _undo)
-        undo.append (line + "\n");
+      undo.append (_currentTransaction->toString());
 
       undo.close ();
-      _undo.clear ();
+      _currentTransaction.reset ();
     }
     else
+    {
       throw format ("Unable to write the undo transaction to {1}", undo._data);
+    }
   }
 }
 
@@ -213,9 +217,7 @@ void Database::undoTxn (
   const std::string& before,
   const std::string& after)
 {
-  _undo.push_back ("  type: " + type);
-  _undo.push_back ("  before: " + before);
-  _undo.push_back ("  after: " + after);
+  _currentTransaction->addUndoAction (type, before, after);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
