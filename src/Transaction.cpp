@@ -35,6 +35,11 @@ void Transaction::addUndoAction (
    _actions.emplace_back (type, before, after);
 }
 
+std::vector<UndoAction> Transaction::getActions ()
+{
+  return _actions;
+}
+
 std::string Transaction::toString ()
 {
   std::string output = "txn:\n";

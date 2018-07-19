@@ -24,23 +24,26 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef INCLUDED_TRANSACTION
-#define INCLUDED_TRANSACTION
+#ifndef INCLUDED_TRANSACTIONSFACTORY
+#define INCLUDED_TRANSACTIONSFACTORY
 
-#include <UndoAction.h>
-#include <vector>
+#include <string>
+#include <Transaction.h>
 
-class Transaction
+class TransactionsFactory
 {
 public:
-  void addUndoAction(const std::string&, const std::string&, const std::string&);
+  void parseLine(const std::string& line);
 
-  std::string toString();
-
-  std::vector<UndoAction> getActions ();
+  std::vector< Transaction > get();
 
 private:
-  std::vector<UndoAction> _actions {};
+  std::string _type;
+  std::string _before;
+  std::string _after;
+
+  std::vector< Transaction > _transactions {};
 };
 
-#endif
+
+#endif //INCLUDED_TRANSACTIONSFACTORY

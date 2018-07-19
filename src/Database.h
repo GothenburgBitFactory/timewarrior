@@ -54,6 +54,8 @@ public:
   void recordConfigAction(const std::string&, const std::string&);
   void recordIntervalAction(const std::string&, const std::string&);
 
+  Transaction popLastTransaction ();
+
   std::string dump () const;
 
 private:

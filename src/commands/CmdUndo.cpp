@@ -31,6 +31,23 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdUndo (Database& database)
 {
+  Transaction transaction = database.popLastTransaction ();
+
+  std::vector <UndoAction> actions = transaction.getActions ();
+
+  if (actions.empty ())
+  {
+    // No (more) undoing...
+  }
+  else
+  {
+    for (auto& action : actions)
+    {
+      // Select database...
+      // Rollback action...
+    }
+  }
+
   return 0;
 }
 

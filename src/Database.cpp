@@ -32,6 +32,7 @@
 #include <sstream>
 #include <iterator>
 #include <iomanip>
+#include <TransactionsFactory.h>
 #include <ctime>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -234,6 +235,45 @@ void Database::recordIntervalAction (
   const std::string& after)
 {
   recordUndoAction ("interval", before, after);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Transaction Database::popLastTransaction ()
+{
+  File undo (_location + "/undo.data");
+
+  std::vector <std::string> read_lines;
+  undo.read (read_lines);
+  undo.close ();
+
+  TransactionsFactory transactionsFactory;
+
+  for (auto& line: read_lines)
+  {
+    transactionsFactory.parseLine (line);
+  }
+
+  std::vector <Transaction> transactions = transactionsFactory.get ();
+
+  if (transactions.empty ())
+  {
+    return Transaction {};
+  }
+
+  Transaction last = transactions.back ();
+  transactions.pop_back ();
+
+  File::remove (undo._data);
+  undo.open ();
+
+  for (auto& transaction : transactions)
+  {
+    undo.append (transaction.toString ());
+  }
+
+  undo.close ();
+
+  return last;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

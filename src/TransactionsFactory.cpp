@@ -24,23 +24,36 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef INCLUDED_TRANSACTION
-#define INCLUDED_TRANSACTION
-
-#include <UndoAction.h>
 #include <vector>
+#include "TransactionsFactory.h"
+#include "Transaction.h"
 
-class Transaction
+void TransactionsFactory::parseLine (const std::string& line)
 {
-public:
-  void addUndoAction(const std::string&, const std::string&, const std::string&);
+  if (!line.compare(0, 4, "txn:"))
+  {
+    _transactions.emplace_back ();
+  }
+  else if (!line.compare(0, 7, "  type:"))
+  {
+    _type = line.substr (8, line.size ());
+  }
+  else if (!line.compare(0, 9, "  before:"))
+  {
+    _before = line.substr (10, line.size ());
+  }
+  else if (!line.compare(0, 8, "  after:"))
+  {
+    _after = line.substr (9, line.size ());
+    _transactions.back ().addUndoAction (_type, _before, _after);
+  }
+  else
+  {
+    throw "Cannot handle line '" + line + "'";
+  }
+}
 
-  std::string toString();
-
-  std::vector<UndoAction> getActions ();
-
-private:
-  std::vector<UndoAction> _actions {};
-};
-
-#endif
+std::vector<Transaction> TransactionsFactory::get ()
+{
+  return _transactions;
+}

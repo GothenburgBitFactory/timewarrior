@@ -14,6 +14,7 @@ set (timew_SRCS CLI.cpp        CLI.h
                 Range.cpp      Range.h
                 Rules.cpp      Rules.h
                 Transaction.cpp Transaction.h
+                TransactionsFactory.cpp TransactionsFactory.h
                 UndoAction.cpp UndoAction.h
                 data.cpp
                 dom.cpp
