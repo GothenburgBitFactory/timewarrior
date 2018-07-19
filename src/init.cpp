@@ -285,7 +285,7 @@ int dispatchCommand (
     else if (command == "tag")         status = CmdTag           (cli, rules, database            );
     else if (command == "tags")        status = CmdTags          (cli, rules, database            );
     else if (command == "track")       status = CmdTrack         (cli, rules, database            );
-    else if (command == "undo")        status = CmdUndo          (            database            );
+    else if (command == "undo")        status = CmdUndo          (     rules, database            );
     else if (command == "untag")       status = CmdUntag         (cli, rules, database            );
     else if (command == "week")        status = CmdChartWeek     (cli, rules, database            );
     else                               status = CmdReport        (cli, rules, database, extensions);

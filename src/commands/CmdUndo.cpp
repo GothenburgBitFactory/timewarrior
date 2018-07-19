@@ -27,9 +27,10 @@
 #include <commands.h>
 #include <timew.h>
 #include <iostream>
+#include <format.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdUndo (Database& database)
+int CmdUndo (Rules& rules, Database& database)
 {
   Transaction transaction = database.popLastTransaction ();
 
@@ -38,6 +39,10 @@ int CmdUndo (Database& database)
   if (actions.empty ())
   {
     // No (more) undoing...
+    if (rules.getBoolean ("verbose"))
+    {
+      std::cout << "Nothing to undo." << std::endl;
+    }
   }
   else
   {
@@ -45,6 +50,11 @@ int CmdUndo (Database& database)
     {
       // Select database...
       // Rollback action...
+    }
+
+    if (rules.getBoolean ("verbose"))
+    {
+      std::cout << "Undo" << std::endl;
     }
   }
 
