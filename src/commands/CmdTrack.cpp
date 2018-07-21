@@ -42,6 +42,8 @@ int CmdTrack (
       ! filter.range.is_ended ())
     return CmdStart (cli, rules, database);
 
+  database.startTransaction ();
+
   // Validation must occur before flattening.
   validate (cli, rules, database, filter);
 
@@ -52,6 +54,8 @@ int CmdTrack (
     if (rules.getBoolean ("verbose"))
       std::cout << intervalSummarize (database, rules, interval);
   }
+
+  database.endTransaction ();
 
   return 0;
 }

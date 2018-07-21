@@ -53,6 +53,8 @@ int CmdTag (
 
   bool dirty = true;
 
+  database.startTransaction ();
+
   for (auto& id : ids)
   {
     if (id > static_cast <int> (tracked.size ()))
@@ -108,6 +110,8 @@ int CmdTag (
       std::cout << "Added " << joinQuotedIfNeeded (" ", tags) << " to @" << id << '\n';
     }
   }
+
+  database.endTransaction ();
 
   return 0;
 }

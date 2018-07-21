@@ -48,6 +48,8 @@ int CmdSplit (
   Interval filter;
   auto tracked = getTracked (database, rules, filter);
 
+  database.startTransaction ();
+
   // Apply tags to ids.
   for (auto& id : ids)
   {
@@ -83,6 +85,8 @@ int CmdSplit (
     if (rules.getBoolean ("verbose"))
       std::cout << "Split @" << id << '\n';
   }
+
+  database.endTransaction ();
 
   return 0;
 }

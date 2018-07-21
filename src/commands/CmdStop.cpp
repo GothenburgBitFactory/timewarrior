@@ -54,6 +54,8 @@ int CmdStop (
   if (! latest.range.is_open ())
     throw std::string ("There is no active time tracking.");
 
+  database.startTransaction ();
+
   Interval modified {latest};
 
   // If a stop date is specified (and occupies filter.range.start) then use
@@ -105,6 +107,8 @@ int CmdStop (
     if (rules.getBoolean ("verbose"))
       std::cout << '\n' << intervalSummarize (database, rules, modified);
   }
+
+  database.endTransaction ();
 
   return 0;
 }

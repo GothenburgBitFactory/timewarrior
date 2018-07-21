@@ -44,7 +44,9 @@ int CmdCancel (
     return 0;
   }
 
+  database.startTransaction ();
   database.deleteInterval(latest);
+  database.endTransaction ();
 
   if (rules.getBoolean ("verbose"))
     std::cout << "Canceled active time tracking.\n";

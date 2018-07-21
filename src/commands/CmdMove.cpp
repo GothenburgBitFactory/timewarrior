@@ -51,6 +51,8 @@ int CmdMove (
     throw std::string ("ID must be specified. See 'timew help move'.");
   }
 
+  database.startTransaction ();
+
   int id = *ids.begin ();
 
   std::string new_start;
@@ -106,6 +108,8 @@ int CmdMove (
 
   validate (cli, rules, database, i);
   database.addInterval (i);
+
+  database.endTransaction ();
 
   if (rules.getBoolean ("verbose"))
     std::cout << "Moved @" << id << " to " << i.range.start.toISOLocalExtended () << '\n';

@@ -73,6 +73,8 @@ int CmdContinue (
   Datetime start_time;
   Datetime end_time;
 
+  database.startTransaction ();
+
   if (filter.range.start.toEpoch () != 0)
   {
     start_time = filter.range.start;
@@ -109,6 +111,8 @@ int CmdContinue (
 
   validate (cli, rules, database, to_copy);
   database.addInterval (to_copy);
+
+  database.endTransaction ();
 
   if (rules.getBoolean ("verbose"))
     std::cout << intervalSummarize (database, rules, to_copy);

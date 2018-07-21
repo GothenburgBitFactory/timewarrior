@@ -38,6 +38,8 @@ int CmdStart (
   auto filter = getFilter (cli);
   auto latest = getLatestInterval (database);
 
+  database.startTransaction ();
+
   // If the latest interval is open, close it.
   if (latest.range.is_open ())
   {
@@ -87,6 +89,8 @@ int CmdStart (
 
   if (rules.getBoolean ("verbose"))
     std::cout << intervalSummarize (database, rules, now);
+
+  database.endTransaction ();
 
   return 0;
 }

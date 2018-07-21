@@ -24,16 +24,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cmake.h>
 #include <Database.h>
-#include <FS.h>
 #include <format.h>
-#include <algorithm>
-#include <sstream>
 #include <iterator>
 #include <iomanip>
 #include <TransactionsFactory.h>
-#include <ctime>
 
 ////////////////////////////////////////////////////////////////////////////////
 void Database::initialize (const std::string& location)
@@ -97,8 +92,6 @@ std::vector <std::string> Database::allLines ()
 ////////////////////////////////////////////////////////////////////////////////
 void Database::addInterval (const Interval& interval)
 {
-  startTransaction ();
-
   if (interval.range.is_open ())
   {
     // Get the index into _files for the appropriate Datafile, which may be
@@ -127,15 +120,11 @@ void Database::addInterval (const Interval& interval)
       recordIntervalAction ("", segmentedInterval.json ());
     }
   }
-
-  endTransaction ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Database::deleteInterval (const Interval& interval)
 {
-  startTransaction ();
-
   auto intervalRange = interval.range;
   for (auto& segment : segmentRange (intervalRange))
   {
@@ -153,8 +142,6 @@ void Database::deleteInterval (const Interval& interval)
 
     recordIntervalAction (segmentedInterval.json (), "");
   }
-
-  endTransaction ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -164,8 +151,6 @@ void Database::deleteInterval (const Interval& interval)
 // Interval belongs in a different file.
 void Database::modifyInterval (const Interval& from, const Interval& to)
 {
-  startTransaction ();
-
   if (!from.empty ())
   {
     deleteInterval (from);
@@ -175,58 +160,59 @@ void Database::modifyInterval (const Interval& from, const Interval& to)
   {
     addInterval (to);
   }
-
-  endTransaction ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// The _txn member is a reference count, allowing multiple nested transactions.
-// This accommodates the Database::modifyInterval call, that in turn calls
-// ::addInterval and ::deleteInterval.
 void Database::startTransaction ()
 {
-  if (_txn == 0)
+  if (_currentTransaction != nullptr)
   {
-    _currentTransaction = std::make_shared <Transaction> ();
+    throw "Subsequent call to start transaction";
   }
 
-  ++_txn;
+  _currentTransaction = std::make_shared <Transaction> ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// The _txn member is a reference count. The undo data is only written when
-// ::endTransaction decrements the counter to zero, therefore the undo command can
-// perform multiple atomic steps.
 void Database::endTransaction ()
 {
-  --_txn;
-  if (_txn == 0)
+  if (_currentTransaction == nullptr)
   {
-    File undo (_location + "/undo.data");
+    throw "Call to end non-existent transaction";
+  }
 
-    if (undo.open ())
-    {
-      undo.append (_currentTransaction->toString());
+  File undo (_location + "/undo.data");
 
-      undo.close ();
-      _currentTransaction.reset ();
-    }
-    else
-    {
-      throw format ("Unable to write the undo transaction to {1}", undo._data);
-    }
+  if (undo.open ())
+  {
+    undo.append (_currentTransaction->toString());
+
+    undo.close ();
+    _currentTransaction.reset ();
+  }
+  else
+  {
+    throw format ("Unable to write the undo transaction to {1}", undo._data);
   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Record undoable transactions. There are several types:
+// Record undoable actions. There are several types:
 //   interval    changes to stored intervals
 //   config      changes to configuration
+//
+// Actions are only recorded if a transaction is open
+//
 void Database::recordUndoAction (
   const std::string &type,
   const std::string &before,
   const std::string &after)
 {
+  if (_currentTransaction == nullptr)
+  {
+    return;
+  }
+
   _currentTransaction->addUndoAction (type, before, after);
 }
 

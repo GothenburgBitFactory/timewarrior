@@ -53,6 +53,8 @@ int CmdLengthen (
       delta = arg.attribute ("raw");
   }
 
+  database.startTransaction ();
+
   // Load the data.
   // Note: There is no filter.
   Interval filter;
@@ -101,6 +103,8 @@ int CmdLengthen (
     if (rules.getBoolean ("verbose"))
       std::cout << "Lengthened @" << id << " by " << dur.formatHours () << '\n';
   }
+
+  database.endTransaction ();
 
   return 0;
 }

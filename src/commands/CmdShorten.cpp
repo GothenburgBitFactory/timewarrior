@@ -51,6 +51,8 @@ int CmdShorten (
       delta = arg.attribute ("raw");
   }
 
+  database.startTransaction ();
+
   // Load the data.
   // Note: There is no filter.
   Interval filter;
@@ -102,6 +104,8 @@ int CmdShorten (
     if (rules.getBoolean ("verbose"))
       std::cout << "Shortened @" << id << " by " << dur.formatHours () << '\n';
   }
+
+  database.endTransaction ();
 
   return 0;
 }

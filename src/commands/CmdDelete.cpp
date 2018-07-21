@@ -45,6 +45,8 @@ int CmdDelete (
   Interval filter;
   auto tracked = getTracked (database, rules, filter);
 
+  database.startTransaction ();
+
   bool dirty = true;
 
   for (auto& id : ids)
@@ -76,6 +78,8 @@ int CmdDelete (
     if (rules.getBoolean ("verbose"))
       std::cout << "Deleted @" << id << '\n';
   }
+
+  database.endTransaction ();
 
   return 0;
 }

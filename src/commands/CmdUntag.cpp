@@ -46,6 +46,8 @@ int CmdUntag (
     throw std::string ("At least one tag must be specified. See 'timew help untag'.");
   }
 
+  database.startTransaction ();
+
   // Load the data.
   // Note: There is no filter.
   Interval filter;
@@ -108,6 +110,8 @@ int CmdUntag (
       std::cout << "Removed " << joinQuotedIfNeeded (" ", tags) << " from @" << id << '\n';
     }
   }
+
+  database.endTransaction ();
 
   return 0;
 }

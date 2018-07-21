@@ -60,6 +60,8 @@ int CmdJoin (
 
   }
 
+  database.startTransaction ();
+
   auto first_id  = std::min (*ids.begin (), *ids.end ());
   auto second_id = std::max (*ids.begin (), *ids.end ());
 
@@ -76,6 +78,8 @@ int CmdJoin (
 
   validate (cli, rules, database, combined);
   database.addInterval (combined);
+
+  database.endTransaction ();
 
   if (rules.getBoolean ("verbose"))
     std::cout << "Joined @" << first_id << " and @" << second_id << '\n';

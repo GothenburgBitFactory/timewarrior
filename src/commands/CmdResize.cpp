@@ -51,6 +51,8 @@ int CmdResize (
       delta = arg.attribute ("raw");
   }
 
+  database.startTransaction ();
+
   // Load the data.
   // Note: There is no filter.
   Interval filter;
@@ -76,6 +78,8 @@ int CmdResize (
     if (rules.getBoolean ("verbose"))
       std::cout << "Resized @" << id << " to " << dur.formatHours () << '\n';
   }
+
+  database.endTransaction ();
 
   return 0;
 }

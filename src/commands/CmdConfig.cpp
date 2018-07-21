@@ -77,9 +77,7 @@ static bool setConfigVariable (
           auto before = line;
           line = line.substr (0, pos) + name + " = " + value;
 
-          database.startTransaction ();
           database.recordConfigAction (before, line);
-          database.endTransaction ();
 
           change = true;
         }
@@ -112,9 +110,7 @@ static bool setConfigVariable (
             auto before = line;
             line = line.substr (0, pos) + leaf + " " + value;
 
-            database.startTransaction ();
             database.recordConfigAction (before, line);
-            database.endTransaction ();
 
             change = true;
           }
@@ -137,9 +133,7 @@ static bool setConfigVariable (
         // Add new line.
         lines.push_back (name + " = " + json::encode (value));
 
-        database.startTransaction ();
         database.recordConfigAction ("", lines.back ());
-        database.endTransaction ();
 
         change = true;
       }
@@ -160,9 +154,7 @@ static bool setConfigVariable (
       // Add new line.
       lines.push_back (name + " = " + json::encode (value));
 
-      database.startTransaction ();
       database.recordConfigAction ("", lines.back ());
-      database.endTransaction ();
 
       change = true;
     }
@@ -212,9 +204,7 @@ static int unsetConfigVariable (
       if (! confirmation ||
           confirm (format ("Are you sure you want to remove '{1}'?", name)))
       {
-        database.startTransaction ();
         database.recordConfigAction (line, "");
-        database.endTransaction ();
 
         line = "";
         change = true;
@@ -288,12 +278,14 @@ int CmdConfig (
   std::string name = words[0];
   std::string value;
 
-  if (name.empty ())
+  if (name.empty ()) // is this possible?
   {
     return CmdShow (rules);
   }
 
   bool change = false;
+
+  database.startTransaction ();
 
   // timew config name value
   // timew config name ""
@@ -337,6 +329,8 @@ int CmdConfig (
       throw format ("No entry named '{1}' found.", name);
     }
   }
+
+  database.endTransaction ();
 
   if (rules.getBoolean ("verbose"))
   {
