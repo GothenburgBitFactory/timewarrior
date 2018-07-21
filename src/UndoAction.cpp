@@ -42,3 +42,20 @@ std::string UndoAction::toString ()
          "  before: " + _before + "\n" +
          "  after: " + _after + "\n";
 }
+
+std::string UndoAction::getType ()
+{
+  return _type;
+}
+
+std::string UndoAction::getBefore ()
+{
+  return _before;
+}
+
+std::string UndoAction::getAfter ()
+{
+  return _after;
+}
+
+

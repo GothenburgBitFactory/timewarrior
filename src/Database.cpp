@@ -165,8 +165,17 @@ void Database::deleteInterval (const Interval& interval)
 void Database::modifyInterval (const Interval& from, const Interval& to)
 {
   startTransaction ();
-  deleteInterval (from);
-  addInterval (to);
+
+  if (!from.empty ())
+  {
+    deleteInterval (from);
+  }
+
+  if (!to.empty ())
+  {
+    addInterval (to);
+  }
+
   endTransaction ();
 }
 

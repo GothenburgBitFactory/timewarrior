@@ -29,6 +29,14 @@
 #include <iostream>
 #include <format.h>
 
+static void undoIntervalAction(UndoAction& action, Database& database)
+{
+  Interval before = Interval::fromJson (action.getBefore ());
+  Interval after = Interval::fromJson (action.getAfter ());
+
+  database.modifyInterval (after, before);
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 int CmdUndo (Rules& rules, Database& database)
 {
@@ -49,7 +57,21 @@ int CmdUndo (Rules& rules, Database& database)
     for (auto& action : actions)
     {
       // Select database...
+      std::string type = action.getType ();
+
       // Rollback action...
+      if (type == "interval")
+      {
+        undoIntervalAction (action, database);
+      }
+      else if (type == "config")
+      {
+        throw "Undo of config actions not yet implemented!";
+      }
+      else
+      {
+        throw format ("Unknown undo action type '{}'", type);
+      }
     }
 
     if (rules.getBoolean ("verbose"))

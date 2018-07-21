@@ -47,6 +47,8 @@ public:
   std::string json () const;
   std::string dump () const;
 
+  static Interval fromJson (std::string json);
+
 public:
   Range                  range     {};
   int                    id        {0};

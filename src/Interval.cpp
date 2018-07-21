@@ -30,6 +30,7 @@
 #include <format.h>
 #include <Lexer.h>
 #include <sstream>
+#include <JSON.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Syntax:
@@ -203,6 +204,31 @@ std::string Interval::dump () const
     out << " synthetic";
 
   return out.str ();
+}
+
+Interval Interval::fromJson (std::string jsonString)
+{
+  Interval interval = Interval ();
+
+  if (!jsonString.empty ())
+  {
+    auto* json = (json::object*) json::parse (jsonString);
+
+    json::array* tags = (json::array*) json->_data["tags"];
+
+    for (auto& tag : tags->_data)
+    {
+      auto* value = (json::string*) tag;
+      interval.tag(value->_data);
+    }
+
+    json::string* start = (json::string*) json->_data["start"];
+    interval.range.start = Datetime(start->_data, "YmdTHnsZ");
+    json::string* end = (json::string*) json->_data["end"];
+    interval.range.end = Datetime(end->_data, "YmdTHnsZ");
+  }
+
+  return interval;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
