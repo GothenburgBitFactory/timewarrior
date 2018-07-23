@@ -2,7 +2,7 @@
 
 import sys
 import unittest
-
+import datetime
 
 class BaseTestCase(unittest.TestCase):
     def tap(self, out):
@@ -17,8 +17,8 @@ class TestCase(BaseTestCase):
                            expectedStart=None,
                            expectedTags=None,
                            description="interval"):
-        self.assertTrue("start" in interval, "{} does not contain a start date".format(description))
-        self.assertFalse("end" in interval, "{} does contain an end date".format(description))
+        self.assertKeyExists(interval, "start", description, "{} does not contain a start date")
+        self.assertKeyNotExists(interval, "end", description, "{} does contain an end date")
 
         return self.assertInterval(interval,
                                    expectedStart=expectedStart,
@@ -31,8 +31,8 @@ class TestCase(BaseTestCase):
                              expectedEnd=None,
                              expectedTags=None,
                              description="interval"):
-        self.assertTrue("start" in interval, "{} does not contain a start date".format(description))
-        self.assertTrue("end" in interval, "{} does not contain an end date".format(description))
+        self.assertKeyExists(interval, "start", description, "{} does not contain a start date")
+        self.assertKeyExists(interval, "end", description, "{} does not contain an end date")
 
         return self.assertInterval(interval,
                                    expectedStart=expectedStart,
@@ -46,29 +46,39 @@ class TestCase(BaseTestCase):
                        expectedTags=None,
                        description="interval"):
         if expectedStart:
-            self.assertEqual(
-                interval["start"],
-                expectedStart,
-                "start time of {} does not match (expected: {}, actual: {})".format(description,
-                                                                                    expectedStart,
-                                                                                    interval["start"]))
+            self.assertIntervalTimestamp(interval, "start", expectedStart, description)
 
         if expectedEnd:
-            self.assertEqual(
-                interval["end"],
-                expectedEnd,
-                "end time of {} does not match (expected: {}, actual: {})".format(description,
-                                                                                  expectedEnd,
-                                                                                  interval["end"]))
+            self.assertIntervalTimestamp(interval, "end", expectedEnd, description)
 
         if expectedTags:
-            self.assertTrue("tags" in interval)
-            self.assertEqual(
-                interval["tags"],
-                expectedTags,
-                "tags of {} do not match (expected: {}, actual: {})". format(description,
-                                                                             expectedTags,
-                                                                             interval["tags"]))
+            self.assertKeyExists(interval, "tags", description, "{} does not contain tags")
+            self.assertIntervalValue(interval,
+                                     "tags",
+                                     expectedTags,
+                                     description,
+                                     "{} of {} do not match (expected: {}, actual: {})")
 
+    def assertKeyExists(self, interval, key, description, message):
+        self.assertTrue(key in interval, message.format(description))
+
+    def assertKeyNotExists(self, interval, key, description, message):
+        self.assertFalse(key in interval, message.format(description))
+
+    def assertIntervalTimestamp(self, interval, key, expected, description):
+        if isinstance(expected, datetime.datetime):
+            expected = "{:%Y%m%dT%H%M%SZ}".format(expected)
+
+        self.assertIntervalValue(interval,
+                                 key,
+                                 expected,
+                                 description,
+                                 "{} time of {} does not match (expected: {}, actual: {})")
+
+    def assertIntervalValue(self, interval, key, expected, description, message):
+        actual = interval[key]
+        self.assertEqual(actual,
+                         expected,
+                         message.format(key, description, expected, actual))
 
 # vim: ai sts=4 et sw=4

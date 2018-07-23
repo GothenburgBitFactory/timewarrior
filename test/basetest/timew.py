@@ -92,12 +92,11 @@ class Timew(object):
             return f.readlines()
 
     def export(self, export_filter=None):
-        """Run "task export", return JSON array of exported intervals."""
+        """Run "timew export", return JSON array of exported intervals."""
         if export_filter is None:
             export_filter = ""
 
-        code, out, err = self.runSuccess("{0} export"
-                                         "".format(export_filter))
+        code, out, err = self.runSuccess("{0} export".format(export_filter))
 
         return json.loads(out)
 
@@ -112,8 +111,7 @@ class Timew(object):
 
         return args
 
-    def runSuccess(self, args="", input=None, merge_streams=False,
-                   timeout=5):
+    def runSuccess(self, args="", input=None, merge_streams=False, timeout=5):
         """Invoke timew with given arguments and fail if exit code != 0
 
         Use runError if you want exit_code to be tested automatically and
