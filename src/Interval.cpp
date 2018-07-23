@@ -223,9 +223,9 @@ Interval Interval::fromJson (std::string jsonString)
     }
 
     json::string* start = (json::string*) json->_data["start"];
-    interval.range.start = Datetime(start->_data, "YmdTHnsZ");
+    interval.range.start = Datetime(start->_data);
     json::string* end = (json::string*) json->_data["end"];
-    interval.range.end = Datetime(end->_data, "YmdTHnsZ");
+    interval.range.end = (end != nullptr) ? Datetime(end->_data) : 0;
   }
 
   return interval;
