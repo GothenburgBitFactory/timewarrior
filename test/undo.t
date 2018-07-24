@@ -61,6 +61,58 @@ class TestUndo(TestCase):
                                 expectedStart=one_hour_before_utc,
                                 expectedTags=["foo"])
 
+    def test_undo_config_add_name(self):
+        """Test undo of command 'config' (add name)"""
+        self.t("config foo bar :yes")
+
+        before = [x for x in self.t.timewrc_content if x != '\n']
+
+        self.t("undo")
+
+        after = [x for x in self.t.timewrc_content if x != '\n']
+
+        self.assertNotEqual(before, after)
+        self.assertEqual([], after)
+
+    def test_undo_config_remove_name(self):
+        """Test undo of command 'config' (remove name)"""
+        self.t("config foo bar :yes")
+        self.t("config foo :yes")
+
+        before = self.t.timewrc_content[:]
+
+        self.t("undo")
+
+        after = self.t.timewrc_content[:]
+
+        self.assertNotEqual(before, after)
+
+    def test_undo_config_set_value(self):
+        """Test undo of command 'config' (set value)"""
+        self.t("config foo bar :yes")
+        self.t("config foo baz :yes")
+
+        before = self.t.timewrc_content[:]
+
+        self.t("undo")
+
+        after = self.t.timewrc_content[:]
+
+        self.assertNotEqual(before, after)
+
+    def test_undo_config_remove_value(self):
+        """Test undo of command 'config' (remove value)"""
+        self.t("config foo bar :yes")
+        self.t("config foo '' :yes")
+
+        before = self.t.timewrc_content[:]
+
+        self.t("undo")
+
+        after = self.t.timewrc_content[:]
+
+        self.assertNotEqual(before, after)
+
     def test_undo_continue(self):
         """Test undo of command 'continue'"""
         now_utc = datetime.now().utcnow()

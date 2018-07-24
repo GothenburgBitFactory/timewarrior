@@ -37,6 +37,27 @@ static void undoIntervalAction(UndoAction& action, Database& database)
   database.modifyInterval (after, before);
 }
 
+static void undoConfigAction (UndoAction& action, Rules &rules, Database& database)
+{
+  const std::string& before = action.getBefore ();
+
+  if (before.empty ()) {
+    const std::string& after = action.getAfter ();
+    auto pos = after.find (' ');
+    std::string name = after.substr (0, pos);
+
+    Rules::unsetConfigVariable (database, rules, name, false);
+  }
+  else
+  {
+    auto pos = before.find ('=');
+    std::string name = before.substr (0, pos-1);
+    std::string value = before.substr (pos+1, before.length ());
+
+    Rules::setConfigVariable (database, rules, name, value, false);
+  }
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 int CmdUndo (Rules& rules, Database& database)
 {
@@ -66,7 +87,7 @@ int CmdUndo (Rules& rules, Database& database)
       }
       else if (type == "config")
       {
-        throw "Undo of config actions not yet implemented!";
+        undoConfigAction (action, rules, database);
       }
       else
       {
