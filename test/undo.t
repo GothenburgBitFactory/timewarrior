@@ -356,8 +356,6 @@ class TestUndo(TestCase):
         """Test undo of command 'start'"""
         now_utc = datetime.now().utcnow()
         one_hour_before_utc = now_utc - timedelta(hours=1)
-        two_hours_before_utc = now_utc - timedelta(hours=2)
-        three_hours_before_utc = now_utc - timedelta(hours=3)
 
         self.t("start {:%Y%m%dT%H%M%SZ} foo".format(one_hour_before_utc))
 

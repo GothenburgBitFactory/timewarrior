@@ -4,6 +4,7 @@ import sys
 import unittest
 import datetime
 
+
 class BaseTestCase(unittest.TestCase):
     def tap(self, out):
         sys.stderr.write("--- tap output start ---\n")
