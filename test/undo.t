@@ -372,6 +372,33 @@ class TestUndo(TestCase):
         j = self.t.export()
         self.assertEqual(len(j), 0, msg="Expected 0 interval afterwards, got {}".format(len(j)))
 
+    def test_undo_consecutive_start(self):
+        """Test undo of consecutive commands 'start'"""
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+
+        self.t("start {:%Y%m%dT%H%M%SZ} foo".format(two_hours_before_utc))
+        self.t("start {:%Y%m%dT%H%M%SZ} bar".format(one_hour_before_utc))
+
+        j = self.t.export()
+        self.assertEqual(len(j), 2, msg="Expected 2 intervals before, got {}".format(len(j)))
+        self.assertClosedInterval(j[0],
+                                  expectedStart=two_hours_before_utc,
+                                  expectedEnd=one_hour_before_utc,
+                                  expectedTags=["foo"])
+        self.assertOpenInterval(j[1],
+                                expectedStart=one_hour_before_utc,
+                                expectedTags=["bar"])
+
+        self.t("undo")
+
+        j = self.t.export()
+        self.assertEqual(len(j), 1, msg="Expected 1 interval afterwards, got {}".format(len(j)))
+        self.assertOpenInterval(j[0],
+                                expectedStart=two_hours_before_utc,
+                                expectedTags=["foo"])
+
     def test_undo_stop(self):
         """Test undo of command 'stop'"""
         now_utc = datetime.now().utcnow()
