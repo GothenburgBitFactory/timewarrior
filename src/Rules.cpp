@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2016, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,7 @@
 #include <cassert>
 #include <cerrno>
 #include <inttypes.h>
+#include <JSON.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 Rules::Rules ()
@@ -492,3 +493,219 @@ std::string Rules::parseGroup (const std::vector <std::string>& tokens)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Note that because this function does not recurse with includes, it therefore
+// only sees the top-level settings. This has the desirable effect of adding as
+// an override any setting which resides in an imported file.
+bool Rules::setConfigVariable (
+  Database& database,
+  const Rules& rules,
+  std::string name,
+  std::string value,
+  bool confirmation /* = false */)
+{
+  // Read config file as lines of text.
+  std::vector <std::string> lines;
+  File::read (rules.file (), lines);
+
+  bool change = false;
+
+  if (rules.has (name))
+  {
+    // No change.
+    if (rules.get (name) == value)
+      return false;
+
+    // If there is a non-comment line containing the entry in flattened form:
+    //   a.b.c = value
+    bool found = false;
+    for (auto& line : lines)
+    {
+      auto comment = line.find ('#');
+      auto pos     = line.find (name);
+      if (pos != std::string::npos &&
+          (comment == std::string::npos || comment > pos))
+      {
+        found = true;
+
+        // Modify value
+        if (! confirmation ||
+            confirm (format ("Are you sure you want to change the value of '{1}' from '{2}' to '{3}'?",
+                             name,
+                             rules.get (name),
+                             value)))
+        {
+          auto before = line;
+          line = line.substr (0, pos) + name + " = " + value;
+
+          database.recordConfigAction (before, line);
+
+          change = true;
+        }
+      }
+    }
+
+    // If it was not found, then retry in hierarchical form∴
+    //   a:
+    //     b:
+    //       c = value
+    if (! found)
+    {
+      auto leaf = split (name, '.').back () + ":";
+      for (auto& line : lines)
+      {
+        auto comment = line.find ('#');
+        auto pos     = line.find (leaf);
+        if (pos != std::string::npos &&
+            (comment == std::string::npos || comment > pos))
+        {
+          found = true;
+
+          // Remove name
+          if (! confirmation ||
+              confirm (format ("Are you sure you want to change the value of '{1}' from '{2}' to '{3}'?",
+                               name,
+                               rules.get (name),
+                               value)))
+          {
+            auto before = line;
+            line = line.substr (0, pos) + leaf + " " + value;
+
+            database.recordConfigAction (before, line);
+
+            change = true;
+          }
+        }
+      }
+    }
+    if (! found)
+    {
+      // Remove name
+      if (! confirmation ||
+          confirm (format ("Are you sure you want to change the value of '{1}' from '{2}' to '{3}'?",
+                           name,
+                           rules.get (name),
+                           value)))
+      {
+        // Add blank line required by rules.
+        if (lines.empty () || lines.back ().empty ())
+          lines.push_back ("");
+
+        // Add new line.
+        lines.push_back (name + " = " + json::encode (value));
+
+        database.recordConfigAction ("", lines.back ());
+
+        change = true;
+      }
+    }
+  }
+  else
+  {
+    if (! confirmation ||
+        confirm (format ("Are you sure you want to add '{1}' with a value of '{2}'?", name, value)))
+    {
+      // TODO Ideally, this would locate an existing hierarchy and insert the
+      //      new leaf/value properly. But that's non-trivial.
+
+      // Add blank line required by rules.
+      if (lines.empty () || lines.back ().empty ())
+        lines.push_back ("");
+
+      // Add new line.
+      lines.push_back (name + " = " + json::encode (value));
+
+      database.recordConfigAction ("", lines.back ());
+
+      change = true;
+    }
+  }
+
+  if (change)
+    File::write (rules.file (), lines);
+
+  return change;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Removes lines from configuration but leaves comments intact.
+//
+// Return codes:
+//   0 - found and removed
+//   1 - found and not removed
+//   2 - not found
+int Rules::unsetConfigVariable (
+  Database& database,
+  const Rules& rules,
+  std::string name,
+  bool confirmation /* = false */)
+{
+  // Setting not found.
+  if (! rules.has (name))
+    return 2;
+
+  // Read config file as lines of text.
+  std::vector <std::string> lines;
+  File::read (rules.file (), lines);
+
+  // If there is a non-comment line containing the entry in flattened form:
+  //   a.b.c = value
+  bool found = false;
+  bool change = false;
+  for (auto& line : lines)
+  {
+    auto comment = line.find ('#');
+    auto pos     = line.find (name);
+    if (pos != std::string::npos &&
+        (comment == std::string::npos || comment > pos))
+    {
+      found = true;
+
+      // Remove name
+      if (! confirmation ||
+          confirm (format ("Are you sure you want to remove '{1}'?", name)))
+      {
+        database.recordConfigAction (line, "");
+
+        line = "";
+        change = true;
+      }
+    }
+  }
+
+  // If it was not found, then retry in hierarchical form∴
+  //   a:
+  //     b:
+  //       c = value
+  if (! found)
+  {
+    auto leaf = split (name, '.').back () + ":";
+    for (auto& line : lines)
+    {
+      auto comment = line.find ('#');
+      auto pos     = line.find (leaf);
+      if (pos != std::string::npos &&
+          (comment == std::string::npos || comment > pos))
+      {
+        found = true;
+
+        // Remove name
+        if (! confirmation ||
+            confirm (format ("Are you sure you want to remove '{1}'?", name)))
+        {
+          line = "";
+          change = true;
+        }
+      }
+    }
+  }
+
+  if (change)
+    File::write (rules.file (), lines);
+
+  if (change && found)
+    return 0;
+  else if (found)
+    return 1;
+
+  return 2;
+}
