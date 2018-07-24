@@ -1,4 +1,5 @@
 1.2.0 () -
+- #9      Add an 'undo' command (TI-1)
 - #21     Add/Remove tag to/from current activity (TI-13)
           (thanks to lumbric)
 - #98     Command Injection Security Vulnerability in on-modify.timewarrior (TI-94)
