@@ -370,7 +370,7 @@ class TestUndo(TestCase):
         self.t("undo")
 
         j = self.t.export()
-        self.assertEqual(len(j), 0, msg="Expected 1 interval afterwards, got {}".format(len(j)))
+        self.assertEqual(len(j), 0, msg="Expected 0 interval afterwards, got {}".format(len(j)))
 
     def test_undo_stop(self):
         """Test undo of command 'stop'"""
