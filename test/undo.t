@@ -451,6 +451,40 @@ class TestUndo(TestCase):
                                   expectedEnd=three_hours_before_utc,
                                   expectedTags=["foo"])
 
+    def test_undo_track_with_adjust_hint(self):
+        """Test undo of command 'track' with adjust hint"""
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        six_hours_before_utc = now_utc - timedelta(hours=6)
+
+        self.t("track {:%Y%m%dT%H%M%SZ} - {:%Y%m%dT%H%M%SZ} foo".format(four_hours_before_utc, three_hours_before_utc))
+        self.t("track {:%Y%m%dT%H%M%SZ} - {:%Y%m%dT%H%M%SZ} bar".format(two_hours_before_utc, one_hour_before_utc))
+
+        self.t("track {:%Y%m%dT%H%M%SZ} - {:%Y%m%dT%H%M%SZ} xyz :adjust".format(six_hours_before_utc, now_utc))
+
+        j = self.t.export()
+        self.assertEqual(len(j), 1, msg="Expected 2 intervals before, got {}".format(len(j)))
+        self.assertClosedInterval(j[0],
+                                  expectedStart=six_hours_before_utc,
+                                  expectedEnd=now_utc,
+                                  expectedTags=["xyz"])
+
+        self.t("undo")
+
+        j = self.t.export()
+        self.assertEqual(len(j), 2, msg="Expected 2 interval afterwards, got {}".format(len(j)))
+        self.assertClosedInterval(j[0],
+                                  expectedStart=four_hours_before_utc,
+                                  expectedEnd=three_hours_before_utc,
+                                  expectedTags=["foo"])
+        self.assertClosedInterval(j[1],
+                                  expectedStart=two_hours_before_utc,
+                                  expectedEnd=one_hour_before_utc,
+                                  expectedTags=["bar"])
+
     def test_undo_untag(self):
         """Test undo of command 'untag'"""
         now_utc = datetime.now().utcnow()
