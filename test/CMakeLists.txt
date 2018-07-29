@@ -14,7 +14,7 @@ include_directories (${CMAKE_SOURCE_DIR}
 include_directories (${CMAKE_INSTALL_PREFIX}/include)
 link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 
-set (test_SRCS data.t exclusion.t helper.t interval.t range.t rules.t util.t)
+set (test_SRCS data.t exclusion.t helper.t interval.t range.t rules.t util.t TagInfoDatabase.t)
 
 add_custom_target (test ./run_all --verbose
                         DEPENDS ${test_SRCS}
