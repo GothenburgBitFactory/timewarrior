@@ -13,6 +13,8 @@ set (timew_SRCS CLI.cpp        CLI.h
                 Interval.cpp   Interval.h
                 Range.cpp      Range.h
                 Rules.cpp      Rules.h
+                TagInfo.cpp    TagInfo.h
+                TagInfoDatabase.cpp TagInfoDatabase.h
                 Transaction.cpp Transaction.h
                 TransactionsFactory.cpp TransactionsFactory.h
                 UndoAction.cpp UndoAction.h
