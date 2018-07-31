@@ -162,39 +162,6 @@ static void autoAdjust (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Warn on new tag.
-static void warnOnNewTag (
-  const Rules&,
-  Database&,
-  const Interval&)
-{
-  // TODO This warning is not working properly, because when an interval is
-  //      modified, it is first deleted, then added. This causes this code to
-  //      determine that it is always a new tag.
-/*
-  if (rules.getBoolean ("verbose"))
-  {
-    std::set <std::string> tags;
-    for (auto& line : database.allLines ())
-    {
-      if (line[0] == 'i')
-      {
-        Interval interval;
-        interval.initialize (line);
-
-        for (auto& tag : interval.tags ())
-          tags.insert (tag);
-      }
-    }
-
-    for (auto& tag : interval.tags ())
-      if (tags.find (tag) == tags.end ())
-        std::cout << "Note: '" << tag << "' is a new tag.\n";
-  }
-*/
-}
-
-////////////////////////////////////////////////////////////////////////////////
 void validate (
   const CLI& cli,
   const Rules& rules,
@@ -211,8 +178,6 @@ void validate (
     autoFill (rules, database, interval);
 
   autoAdjust (findHint (cli, ":adjust"), rules, database, interval);
-
-  warnOnNewTag (rules, database, interval);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
