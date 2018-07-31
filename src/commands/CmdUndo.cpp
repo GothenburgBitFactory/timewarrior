@@ -91,7 +91,7 @@ int CmdUndo (Rules& rules, Database& database)
       }
       else
       {
-        throw format ("Unknown undo action type '{}'", type);
+        throw format ("Unknown undo action type '{1}'", type);
       }
     }
 
