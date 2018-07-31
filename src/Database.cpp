@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2016, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,11 +29,15 @@
 #include <iterator>
 #include <iomanip>
 #include <TransactionsFactory.h>
+#include <JSON.h>
+#include <iostream>
+#include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 void Database::initialize (const std::string& location)
 {
   _location = location;
+  initializeTagDatabase ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -41,6 +45,8 @@ void Database::commit ()
 {
   for (auto& file : _files)
     file.commit ();
+
+  File::write (_location + "/tags.data", _tagInfoDatabase.toJson ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -92,6 +98,16 @@ std::vector <std::string> Database::allLines ()
 ////////////////////////////////////////////////////////////////////////////////
 void Database::addInterval (const Interval& interval)
 {
+  auto tags = interval.tags ();
+
+  for (auto& tag : tags)
+  {
+    if (_tagInfoDatabase.incrementTag (tag) == -1)
+    {
+      std::cout << "Note: '" << quoteIfNeeded (tag) << "' is a new tag." << std::endl;
+    }
+  }
+
   if (interval.range.is_open ())
   {
     // Get the index into _files for the appropriate Datafile, which may be
@@ -125,6 +141,13 @@ void Database::addInterval (const Interval& interval)
 ////////////////////////////////////////////////////////////////////////////////
 void Database::deleteInterval (const Interval& interval)
 {
+  auto tags = interval.tags ();
+
+  for (auto& tag : tags)
+  {
+    _tagInfoDatabase.decrementTag (tag);
+  }
+
   auto intervalRange = interval.range;
   for (auto& segment : segmentRange (intervalRange))
   {
@@ -355,6 +378,28 @@ std::vector <Range> Database::segmentRange (const Range& range)
   }
 
   return segments;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Database::initializeTagDatabase ()
+{
+  std::string content;
+
+  if (!File::read (_location + "/tags.data", content))
+  {
+    return;
+  }
+
+  auto* json = (json::object*) json::parse (content);
+  
+  for (auto& pair : json->_data)
+  {
+    auto key = pair.first;
+    auto* value = (json::object*) pair.second;
+    auto* number = (json::number*) value->_data["count"];
+
+    _tagInfoDatabase.add (key, TagInfo {(unsigned int) number->_dvalue});
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
