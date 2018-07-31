@@ -39,6 +39,8 @@ public:
 
   void add (const std::string&, const TagInfo&);
 
+  std::string toJson ();
+
 private:
   std::map <std::string, TagInfo> _tagInformation {};
 };
