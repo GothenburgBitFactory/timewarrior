@@ -28,14 +28,16 @@
 #define INCLUDED_TAGINFODATABASE
 
 #include <string>
-#include <TagInfo.h>
 #include <map>
+#include <TagInfo.h>
 
 class TagInfoDatabase
 {
 public:
   int incrementTag (const std::string&);
   int decrementTag (const std::string&);
+
+  void add (const std::string&, const TagInfo&);
 
 private:
   std::map <std::string, TagInfo> _tagInformation {};
