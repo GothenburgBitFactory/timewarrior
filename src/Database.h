@@ -33,6 +33,7 @@
 #include <Transaction.h>
 #include <vector>
 #include <string>
+#include <TagInfoDatabase.h>
 
 class Database
 {
@@ -62,14 +63,14 @@ private:
   unsigned int getDatafile (int, int);
   std::vector <Range> segmentRange (const Range&);
   void initializeDatafiles ();
+  void initializeTagDatabase ();
 
   void recordUndoAction (const std::string &, const std::string &, const std::string &);
 
 private:
   std::string               _location {"~/.timewarrior/data"};
   std::vector <Datafile>    _files    {};
-  int                       _txn      {0};
-
+  TagInfoDatabase           _tagInfoDatabase {};
   std::shared_ptr <Transaction> _currentTransaction = nullptr;
 };
 
