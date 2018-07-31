@@ -30,13 +30,14 @@
 class TagInfo
 {
 public:
-  explicit TagInfo (int);
+  explicit TagInfo (unsigned int);
 
-  int increment ();
-  int decrement ();
+  unsigned int increment ();
+  unsigned int decrement ();
+
 
 private:
-  int _count = 0;
+  unsigned int _count = 0;
 };
 
 #endif
