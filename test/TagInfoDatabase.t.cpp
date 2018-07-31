@@ -31,28 +31,25 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (9);
-
+  UnitTest t (4);
 
   TagInfoDatabase tagInfoDatabase {};
 
-  t.is (tagInfoDatabase.incrementTag ("foo"), -1, "First insertion of 'foo' returns -1");
-  t.is (tagInfoDatabase.incrementTag ("foo"), 1, "New insertion of 'foo' increments count");
-  t.is (tagInfoDatabase.incrementTag ("bar"), -1, "First insertion of 'bar' returns -1");
-  t.is (tagInfoDatabase.incrementTag ("bar"), 1, "New insertion of 'bar' increments count");
-  t.is (tagInfoDatabase.decrementTag ("foo"), 1, "Removal of 'foo' decrements count");
-  t.is (tagInfoDatabase.decrementTag ("bar"), 1, "Removal of 'bar' decrements count");
-  t.is (tagInfoDatabase.decrementTag ("foo"), 0, "Deletion of 'foo' returns 0");
-  t.is (tagInfoDatabase.decrementTag ("bar"), 0, "Deletion of 'bar' returns 0");
+  tagInfoDatabase.add("foo", TagInfo {1});
+  tagInfoDatabase.add("bar", TagInfo {2});
+
+  t.is (tagInfoDatabase.incrementTag ("baz"), -1, "Insertion of new tag returns -1");
+  t.is (tagInfoDatabase.incrementTag ("foo"), 1, "Increment of existing tag returns previous count");
+  t.is (tagInfoDatabase.decrementTag ("bar"), 1, "Decrement of existing tag returns new count");
 
   try
   {
     tagInfoDatabase.decrementTag ("xyz");
-    t.fail ("Deletion of non-existent tag throws an exception");
+    t.fail ("Decrement of non-existent tag throws an exception");
   }
   catch (...)
   {
-    t.pass ("Deletion of non-existent tag throws an exception");
+    t.pass ("Decrement of non-existent tag throws an exception");
   }
 
   return 0;

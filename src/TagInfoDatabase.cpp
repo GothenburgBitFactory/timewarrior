@@ -27,6 +27,7 @@
 #include <TagInfoDatabase.h>
 #include <format.h>
 #include <TagInfo.h>
+#include "timew.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // Increment tag count
@@ -34,13 +35,13 @@
 //
 // Returns the previous tag count, -1 if it did not exist
 //
-int TagInfoDatabase::incrementTag (const std::string &tag)
+int TagInfoDatabase::incrementTag (const std::string& tag)
 {
   auto search = _tagInformation.find (tag);
 
   if (search == _tagInformation.end ())
   {
-    _tagInformation.emplace (tag, TagInfo (1));
+    add (tag, TagInfo {1});
 
     return -1;
   }
@@ -53,14 +54,22 @@ int TagInfoDatabase::incrementTag (const std::string &tag)
 //
 // Returns the new tag count
 //
-int TagInfoDatabase::decrementTag (const std::string &tag)
+int TagInfoDatabase::decrementTag (const std::string& tag)
 {
   auto search = _tagInformation.find (tag);
 
   if (search == _tagInformation.end ())
   {
-    throw format ("Trying to remove non-existent tag '{}'", tag);
+    throw format ("Trying to decrement non-existent tag '{1}'", tag);
   }
 
   return search->second.decrement ();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Add tag to database
+//
+void TagInfoDatabase::add (const std::string& tag, const TagInfo& tagInfo)
+{
+  _tagInformation.emplace (tag, tagInfo);
 }
