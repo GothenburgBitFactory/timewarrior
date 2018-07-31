@@ -44,7 +44,9 @@ void Database::initialize (const std::string& location)
 void Database::commit ()
 {
   for (auto& file : _files)
+  {
     file.commit ();
+  }
 
   File::write (_location + "/tags.data", _tagInfoDatabase.toJson ());
 }
@@ -64,7 +66,9 @@ std::vector <std::string> Database::files () const
 std::string Database::lastLine ()
 {
   if (_files.empty ())
+  {
     initializeDatafiles ();
+  }
 
   std::vector <Datafile>::reverse_iterator ri;
   for (ri = _files.rbegin (); ri != _files.rend (); ri++)
@@ -81,7 +85,9 @@ std::string Database::lastLine ()
 std::vector <std::string> Database::allLines ()
 {
   if (_files.empty ())
+  {
     initializeDatafiles ();
+  }
 
   std::vector <std::string> all;
   for (auto& file : _files)
