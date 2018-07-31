@@ -27,6 +27,8 @@
 #ifndef INCLUDED_TAGINFO
 #define INCLUDED_TAGINFO
 
+#include <string>
+
 class TagInfo
 {
 public:
@@ -35,6 +37,9 @@ public:
   unsigned int increment ();
   unsigned int decrement ();
 
+  bool hasCount ();
+
+  std::string toJson ();
 
 private:
   unsigned int _count = 0;

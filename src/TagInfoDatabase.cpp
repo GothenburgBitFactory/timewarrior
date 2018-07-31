@@ -73,3 +73,30 @@ void TagInfoDatabase::add (const std::string& tag, const TagInfo& tagInfo)
 {
   _tagInformation.emplace (tag, tagInfo);
 }
+
+///////////////////////////////////////////////////////////////////////////////
+std::string TagInfoDatabase::toJson ()
+{
+  std::stringstream json;
+  bool first = true;
+
+  json << "{";
+
+  for (auto& pair : _tagInformation)
+  {
+    auto tagInfo = pair.second;
+
+    if (tagInfo.hasCount ())
+    {
+      json << (first ? "" : ",")
+         << "\"" << escape(pair.first, '"') << "\":"
+         << tagInfo.toJson ();
+
+      first = (first ? false : first);
+    }
+  }
+
+  json << "}";
+
+  return json.str ();
+}
