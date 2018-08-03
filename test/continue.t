@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# Copyright 2006 - 2018, Paul Beckingham, Federico Hernandez.
+# Copyright 2006 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -111,83 +111,48 @@ class TestContinue(TestCase):
 
     def test_continue_with_id_and_date(self):
         """Verify that continuing a specified interval with date continues at given date"""
-        now = datetime.now()
-        now_utc = now.utcnow()
-
-        two_hours_before = now - timedelta(hours=2)
-        three_hours_before = now - timedelta(hours=3)
-        four_hours_before = now - timedelta(hours=4)
-        five_hours_before = now - timedelta(hours=5)
-
-        code, out, err = self.t("start FOO {:%Y-%m-%dT%H}:00:00".format(five_hours_before))
-        self.assertIn("Tracking FOO\n", out)
-
-        code, out, err = self.t("stop {:%Y-%m-%dT%H}:00:00".format(four_hours_before))
-        self.assertIn("Recorded FOO\n", out)
-
-        code, out, err = self.t("start BAR {:%Y-%m-%dT%H}:00:00".format(four_hours_before))
-        self.assertIn("Tracking BAR\n", out)
-
-        code, out, err = self.t("stop {:%Y-%m-%dT%H}:00:00".format(three_hours_before))
-        self.assertIn("Recorded BAR\n", out)
-
-        self.t("continue @2 {:%Y-%m-%dT%H}:00:00".format(two_hours_before))
-
-        j = self.t.export()
+        now_utc = datetime.now().utcnow()
 
         two_hours_before_utc = now_utc - timedelta(hours=2)
         three_hours_before_utc = now_utc - timedelta(hours=3)
         four_hours_before_utc = now_utc - timedelta(hours=4)
         five_hours_before_utc = now_utc - timedelta(hours=5)
 
+        code, out, err = self.t("start FOO {:%Y-%m-%dT%H}:00:00Z".format(five_hours_before_utc))
+        self.assertIn("Tracking FOO\n", out)
+
+        code, out, err = self.t("stop {:%Y-%m-%dT%H}:00:00Z".format(four_hours_before_utc))
+        self.assertIn("Recorded FOO\n", out)
+
+        code, out, err = self.t("start BAR {:%Y-%m-%dT%H}:00:00Z".format(four_hours_before_utc))
+        self.assertIn("Tracking BAR\n", out)
+
+        code, out, err = self.t("stop {:%Y-%m-%dT%H}:00:00Z".format(three_hours_before_utc))
+        self.assertIn("Recorded BAR\n", out)
+
+        self.t("continue @2 {:%Y-%m-%dT%H}:00:00Z".format(two_hours_before_utc))
+
+        j = self.t.export()
+
         self.assertEqual(len(j), 3)
-
-        self.assertTrue('start' in j[0])
-        self.assertEqual(j[0]['start'], '{:%Y%m%dT%H}0000Z'.format(five_hours_before_utc), 'start time of first interval does not match: expected {:%Y%m%dT%H}0000Z, actual {}'.format(five_hours_before_utc, j[0]['start']))
-        self.assertTrue('end' in j[0])
-        self.assertEqual(j[0]['end'], '{:%Y%m%dT%H}0000Z'.format(four_hours_before_utc), 'end time of first interval does not match: expected {:%Y%m%dT%H}0000Z, actual {}'.format(four_hours_before_utc, j[0]['end']))
-        self.assertTrue('tags' in j[0])
-        self.assertEqual(j[0]['tags'], ['FOO'])
-
-        self.assertTrue('start' in j[1])
-        self.assertEqual(j[1]['start'], '{:%Y%m%dT%H}0000Z'.format(four_hours_before_utc), 'start time of second interval does not match: expected {:%Y%m%dT%H}0000Z, actual {}'.format(four_hours_before_utc, j[1]['start']))
-        self.assertTrue('end' in j[1])
-        self.assertEqual(j[1]['end'], '{:%Y%m%dT%H}0000Z'.format(three_hours_before_utc), 'end time of second interval does not match: expected {:%Y%m%dT%H}0000Z, actual {}'.format(three_hours_before_utc, j[1]['end']))
-        self.assertTrue('tags' in j[1])
-        self.assertEqual(j[1]['tags'], ['BAR'])
-
-        self.assertTrue('start' in j[2])
-        self.assertEqual(j[2]['start'], '{:%Y%m%dT%H}0000Z'.format(two_hours_before_utc), 'start time of continued interval does not match: expected {:%Y%m%dT%H}0000Z, actual {}'.format(two_hours_before_utc, j[2]['start']))
-        self.assertFalse('end' in j[2])
-        self.assertTrue('tags' in j[2])
-        self.assertEqual(j[2]['tags'], ['FOO'])
+        self.assertClosedInterval(j[0],
+                                  expectedStart="{:%Y%m%dT%H}0000Z".format(five_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(four_hours_before_utc),
+                                  expectedTags=["FOO"],
+                                  description="first interval")
+        self.assertClosedInterval(j[1],
+                                  expectedStart="{:%Y%m%dT%H}0000Z".format(four_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(three_hours_before_utc),
+                                  expectedTags=["BAR"],
+                                  description="second interval")
+        self.assertOpenInterval(j[2],
+                                expectedStart="{:%Y%m%dT%H}0000Z".format(two_hours_before_utc),
+                                expectedTags=["FOO"],
+                                description="continued interval")
 
     def test_continue_with_id_and_range(self):
         """Verify that continue with a range adds a copy with same tags"""
-        now = datetime.now()
-        now_utc = now.utcnow()
-
-        one_hour_before = now - timedelta(hours=1)
-        two_hours_before = now - timedelta(hours=2)
-        three_hours_before = now - timedelta(hours=3)
-        four_hours_before = now - timedelta(hours=4)
-        five_hours_before = now - timedelta(hours=5)
-
-        code, out, err = self.t("start FOO {:%Y-%m-%dT%H}:00:00".format(five_hours_before))
-        self.assertIn("Tracking FOO\n", out)
-
-        code, out, err = self.t("stop {:%Y-%m-%dT%H}:00:00".format(four_hours_before))
-        self.assertIn("Recorded FOO\n", out)
-
-        code, out, err = self.t("start BAR {:%Y-%m-%dT%H}:00:00".format(four_hours_before))
-        self.assertIn("Tracking BAR\n", out)
-
-        code, out, err = self.t("stop {:%Y-%m-%dT%H}:00:00".format(three_hours_before))
-        self.assertIn("Recorded BAR\n", out)
-
-        self.t("continue @2 {:%Y-%m-%dT%H}:00:00 - {:%Y-%m-%dT%H}:00:00".format(two_hours_before, one_hour_before))
-
-        j = self.t.export()
+        now_utc = datetime.now().utcnow()
 
         one_hour_before_utc = now_utc - timedelta(hours=1)
         two_hours_before_utc = now_utc - timedelta(hours=2)
@@ -195,28 +160,39 @@ class TestContinue(TestCase):
         four_hours_before_utc = now_utc - timedelta(hours=4)
         five_hours_before_utc = now_utc - timedelta(hours=5)
 
+        code, out, err = self.t("start FOO {:%Y-%m-%dT%H}:00:00Z".format(five_hours_before_utc))
+        self.assertIn("Tracking FOO\n", out)
+
+        code, out, err = self.t("stop {:%Y-%m-%dT%H}:00:00Z".format(four_hours_before_utc))
+        self.assertIn("Recorded FOO\n", out)
+
+        code, out, err = self.t("start BAR {:%Y-%m-%dT%H}:00:00Z".format(four_hours_before_utc))
+        self.assertIn("Tracking BAR\n", out)
+
+        code, out, err = self.t("stop {:%Y-%m-%dT%H}:00:00Z".format(three_hours_before_utc))
+        self.assertIn("Recorded BAR\n", out)
+
+        self.t("continue @2 {:%Y-%m-%dT%H}:00:00Z - {:%Y-%m-%dT%H}:00:00Z".format(two_hours_before_utc, one_hour_before_utc))
+
+        j = self.t.export()
+
         self.assertEqual(len(j), 3)
 
-        self.assertTrue('start' in j[0])
-        self.assertEqual(j[0]['start'], '{:%Y%m%dT%H}0000Z'.format(five_hours_before_utc), 'start time of first interval does not match: expected {:%Y%m%dT%H}0000Z, actual {}'.format(five_hours_before_utc, j[0]['start']))
-        self.assertTrue('end' in j[0])
-        self.assertEqual(j[0]['end'], '{:%Y%m%dT%H}0000Z'.format(four_hours_before_utc), 'end time of first interval does not match: expected {:%Y%m%dT%H}0000Z, actual {}'.format(four_hours_before_utc, j[0]['end']))
-        self.assertTrue('tags' in j[0])
-        self.assertEqual(j[0]['tags'], ['FOO'])
-
-        self.assertTrue('start' in j[1])
-        self.assertEqual(j[1]['start'], '{:%Y%m%dT%H}0000Z'.format(four_hours_before_utc), 'start time of second interval does not match: expected {:%Y%m%dT%H}0000Z, actual {}'.format(four_hours_before_utc, j[1]['start']))
-        self.assertTrue('end' in j[1])
-        self.assertEqual(j[1]['end'], '{:%Y%m%dT%H}0000Z'.format(three_hours_before_utc), 'end time of second interval does not match: expected {:%Y%m%dT%H}0000Z, actual {}'.format(three_hours_before_utc, j[1]['end']))
-        self.assertTrue('tags' in j[1])
-        self.assertEqual(j[1]['tags'], ['BAR'])
-
-        self.assertTrue('start' in j[2])
-        self.assertEqual(j[2]['start'], '{:%Y%m%dT%H}0000Z'.format(two_hours_before_utc), 'start time of added interval does not match: expected {:%Y%m%dT%H}0000Z, actual {}'.format(two_hours_before_utc, j[2]['start']))
-        self.assertTrue('end' in j[2])
-        self.assertEqual(j[2]['end'], '{:%Y%m%dT%H}0000Z'.format(one_hour_before_utc), 'end time of added interval does not match: expected {:%Y%m%dT%H}0000Z, actual {}'.format(one_hour_before_utc, j[2]['end']))
-        self.assertTrue('tags' in j[2])
-        self.assertEqual(j[2]['tags'], ['FOO'])
+        self.assertClosedInterval(j[0],
+                                  expectedStart="{:%Y%m%dT%H}0000Z".format(five_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(four_hours_before_utc),
+                                  expectedTags=["FOO"],
+                                  description="first interval")
+        self.assertClosedInterval(j[1],
+                                  expectedStart="{:%Y%m%dT%H}0000Z".format(four_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(three_hours_before_utc),
+                                  expectedTags=["BAR"],
+                                  description="second interval")
+        self.assertClosedInterval(j[2],
+                                  expectedStart="{:%Y%m%dT%H}0000Z".format(two_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(one_hour_before_utc),
+                                  expectedTags=["FOO"],
+                                  description="added interval")
 
 
 if __name__ == "__main__":
