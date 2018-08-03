@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# Copyright 2006 - 2018, Paul Beckingham, Federico Hernandez.
+# Copyright 2006 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,8 @@ import os
 import sys
 import unittest
 
+from datetime import datetime, timedelta
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -41,29 +43,56 @@ class TestCancel(TestCase):
         """Executed before each test in the class"""
         self.t = Timew()
 
-    def test_cancel_nothing(self):
-        """Verify that cancelling an empty db is an error"""
+    def test_cancel_inactive_time_tracking(self):
+        """Verify cancelling inactive time tracking"""
+        now_utc = datetime.now().utcnow()
+
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("track foo {:%Y-%m-%dT%H:%M:%SZ} - {:%Y-%m-%dT%H:%M:%SZ}".format(one_hour_before_utc, now_utc))
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertClosedInterval(j[0],
+                                  expectedStart=one_hour_before_utc,
+                                  expectedEnd=now_utc,
+                                  expectedTags=["foo"])
+
         code, out, err = self.t("cancel")
+
         self.assertIn("There is no active time tracking.", out)
 
-    def test_cancel_open(self):
-        """Verify that continuing an open interval is an error"""
-        code, out, err = self.t("start tag1 tag2")
-        self.assertIn("Tracking tag1 tag2\n", out)
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertClosedInterval(j[0],
+                                  expectedStart=one_hour_before_utc,
+                                  expectedEnd=now_utc,
+                                  expectedTags=["foo"])
+
+    def test_cancel_active_time_tracking(self):
+        """Verify cancelling active time tracking"""
+        now_utc = datetime.now().utcnow()
+
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("start foo {:%Y-%m-%dT%H:%M:%SZ}".format(one_hour_before_utc))
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertOpenInterval(j[0],
+                                expectedStart=one_hour_before_utc,
+                                expectedTags=["foo"])
 
         code, out, err = self.t("cancel")
+
         self.assertIn("Canceled active time tracking.", out)
 
-    def test_cancel_closed(self):
-        """Verify that canceling a closed interval works"""
-        code, out, err = self.t("start tag1 tag2")
-        self.assertIn("Tracking tag1 tag2\n", out)
+        j = self.t.export()
 
-        code, out, err = self.t("stop")
-        self.assertIn("Recorded tag1 tag2\n", out)
-
-        code, out, err = self.t("cancel")
-        self.assertIn("There is no active time tracking.", out)
+        self.assertEqual(len(j), 0)
 
 
 if __name__ == "__main__":
