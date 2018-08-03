@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# Copyright 2006 - 2018, Paul Beckingham, Federico Hernandez.
+# Copyright 2006 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -54,10 +54,10 @@ class TestClock(TestCase):
         code, out, err = self.t("start tag1 tag2")
         self.assertIn("Tracking tag1 tag2\n", out)
 
-        code, out, err = self.t("export")
-        self.assertIn('"start":', out)
-        self.assertNotIn('"end":', out)
-        self.assertIn('"tags":["tag1","tag2"]', out)
+        j = self.t.export()
+
+        self.assertEquals(len(j), 1)
+        self.assertOpenInterval(j[0], expectedTags=["tag1", "tag2"])
 
     def test_start_stop(self):
         """Verify that start/stop creates and closes an interval"""
@@ -70,10 +70,10 @@ class TestClock(TestCase):
         code, out, err = self.t("stop")
         self.assertIn("Recorded tag1 tag2\n", out)
 
-        code, out, err = self.t("export")
-        self.assertIn('"start":', out)
-        self.assertIn('"end":', out)
-        self.assertIn('"tags":["tag1","tag2"]', out)
+        j = self.t.export()
+
+        self.assertEquals(len(j), 1)
+        self.assertClosedInterval(j[0], expectedTags=["tag1", "tag2"])
 
         code, out, err = self.t.runError("")
         self.assertIn("There is no active time tracking.", out)
@@ -90,17 +90,11 @@ class TestClock(TestCase):
         self.assertIn("Recorded tag1 tag2\n", out)
         self.assertIn("Tracking tag3\n", out)
 
-        code, out, err = self.t("stop")
-        self.assertIn("Recorded tag3\n", out)
+        j = self.t.export()
 
-        code, out, err = self.t("export")
-        self.assertIn('"start":', out)
-        self.assertIn('"end":', out)
-        self.assertIn('"tags":["tag1","tag2"]', out)
-        self.assertIn('"tags":["tag3"]', out)
-
-        code, out, err = self.t.runError("")
-        self.assertIn("There is no active time tracking.", out)
+        self.assertEquals(len(j), 2)
+        self.assertClosedInterval(j[1], expectedTags=["tag1", "tag2"])
+        self.assertOpenInterval(j[0], expectedTags=["tag3"])
 
     def test_start_subtract(self):
         """Verify that starting multiple tags and stopping one leaves an open interval"""
