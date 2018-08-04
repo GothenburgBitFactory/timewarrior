@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import atexit
+import datetime
 import json
 import os
 import shlex
@@ -75,9 +76,26 @@ class Timew(object):
         """Run setup `var` as `value` in timew config"""
         # Add -- to avoid misinterpretation of - in things like UUIDs
         # TODO Revisit this decision as timew matures.
-        #cmd = (self.timew, "config", "--", var, value)
+        # cmd = (self.timew, "config", "--", var, value)
         cmd = (self.timew, ":yes", "config", var, value)
         return run_cmd_wait(cmd, env=self.env, input="y\n")
+
+    def configure_exclusions(self, start, end):
+        if isinstance(start, datetime.time) and isinstance(end, datetime.time):
+            if start > end:
+                exclusion = "<{:%H:%M:%S} >{:%H:%M:%S}".format(end, start)
+            else:
+                exclusion = "{:%H:%M:%S}-{:%H:%M:%S}".format(start, end)
+        else:
+            exclusion = "{}-{}".format(start, end)
+
+        self.config("exclusions.monday", exclusion)
+        self.config("exclusions.tuesday", exclusion)
+        self.config("exclusions.wednesday", exclusion)
+        self.config("exclusions.thursday", exclusion)
+        self.config("exclusions.friday", exclusion)
+        self.config("exclusions.saturday", exclusion)
+        self.config("exclusions.sunday", exclusion)
 
     def del_config(self, var):
         """Remove `var` from timew config"""

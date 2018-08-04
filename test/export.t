@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# Copyright 2006 - 2018, Paul Beckingham, Federico Hernandez.
+# Copyright 2006 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ import os
 import sys
 import unittest
 
-import datetime
+from datetime import datetime, timedelta
 
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -50,157 +50,114 @@ class TestExport(TestCase):
 
     def test_single_unobstructed_interval(self):
         """Single unobstructed interval"""
-        self.t("track 20160531T0800 - 20160531T0900 foo")
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z foo".format(one_hour_before_utc, now_utc))
 
         j = self.t.export()
         self.assertEqual(len(j), 1)
-        self.assertTrue('start' in j[0])
-        self.assertTrue('end' in j[0])
-        self.assertTrue('tags' in j[0])
-        self.assertEqual(j[0]['tags'][0], 'foo')
+        self.assertClosedInterval(j[0],
+                                  expectedStart=one_hour_before_utc,
+                                  expectedEnd=now_utc,
+                                  expectedTags=["foo"])
 
     def test_changing_exclusion_does_not_change_flattened_intervals(self):
         """Changing exclusions does not change flattened intervals"""
-        self.t.config("exclusions.monday",    "<9:11:50 12:22:44-13:32:23 >18:05:11")
-        self.t.config("exclusions.tuesday",   "<9:11:50 12:22:44-13:32:23 >18:05:11")
-        self.t.config("exclusions.wednesday", "<9:11:50 12:22:44-13:32:23 >18:05:11")
-        self.t.config("exclusions.thursday",  "<9:11:50 12:22:44-13:32:23 >18:05:11")
-        self.t.config("exclusions.friday",    "<9:11:50 12:22:44-13:32:23 >18:05:11")
-        self.t.config("exclusions.saturday",  "<9:11:50 12:22:44-13:32:23 >18:05:11")
-        self.t.config("exclusions.sunday",    "<9:11:50 12:22:44-13:32:23 >18:05:11")
+        self.t.configure_exclusions("12:22:44", "13:32:23")
 
-        self.t("track 20160101T102255 - 20160101T154422 foo")
+        self.t("track 20160101T102255Z - 20160101T154422Z foo")
 
-        self.t.config("exclusions.monday",    "<9:11:50 12:44:22-13:23:32 >18:05:11")
-        self.t.config("exclusions.tuesday",   "<9:11:50 12:44:22-13:23:32 >18:05:11")
-        self.t.config("exclusions.wednesday", "<9:11:50 12:44:22-13:23:32 >18:05:11")
-        self.t.config("exclusions.thursday",  "<9:11:50 12:44:22-13:23:32 >18:05:11")
-        self.t.config("exclusions.friday",    "<9:11:50 12:44:22-13:23:32 >18:05:11")
-        self.t.config("exclusions.saturday",  "<9:11:50 12:44:22-13:23:32 >18:05:11")
-        self.t.config("exclusions.sunday",    "<9:11:50 12:44:22-13:23:32 >18:05:11")
+        self.t.configure_exclusions("12:44:22", "13:23:32")
 
-        self.t("track 20160102T102255 - 20160102T154422 bar")
+        self.t("track 20160102T102255Z - 20160102T154422Z bar")
 
         j = self.t.export()
+
         self.assertEqual(len(j), 4)
-
-        self.assertTrue('start' in j[0])
-        self.assertIn('2255Z', j[0]['start'])
-        self.assertTrue('end' in j[0])
-        self.assertIn('2244Z', j[0]['end'])
-        self.assertTrue('tags' in j[0])
-        self.assertEqual(j[0]['tags'][0], 'foo')
-
-        self.assertTrue('start' in j[1])
-        self.assertIn('3223Z', j[1]['start'])
-        self.assertTrue('end' in j[1])
-        self.assertIn('4422Z', j[1]['end'])
-        self.assertTrue('tags' in j[1])
-        self.assertEqual(j[1]['tags'][0], 'foo')
-
-        self.assertTrue('start' in j[2])
-        self.assertIn('2255Z', j[2]['start'])
-        self.assertTrue('end' in j[2])
-        self.assertIn('4422Z', j[2]['end'])
-        self.assertTrue('tags' in j[2])
-        self.assertEqual(j[2]['tags'][0], 'bar')
-
-        self.assertTrue('start' in j[3])
-        self.assertIn('2332Z', j[3]['start'])
-        self.assertTrue('end' in j[3])
-        self.assertIn('4422Z', j[3]['end'])
-        self.assertTrue('tags' in j[3])
-        self.assertEqual(j[3]['tags'][0], 'bar')
+        self.assertClosedInterval(j[0],
+                                  expectedStart="20160101T102255Z",
+                                  expectedEnd="20160101T112244Z",
+                                  expectedTags=["foo"])
+        self.assertClosedInterval(j[1],
+                                  expectedStart="20160101T123223Z",
+                                  expectedEnd="20160101T154422Z",
+                                  expectedTags=["foo"])
+        self.assertClosedInterval(j[2],
+                                  expectedStart="20160102T102255Z",
+                                  expectedEnd="20160102T114422Z",
+                                  expectedTags=["bar"])
+        self.assertClosedInterval(j[3],
+                                  expectedStart="20160102T122332Z",
+                                  expectedEnd="20160102T154422Z",
+                                  expectedTags=["bar"])
 
     def test_changing_exclusion_does_change_open_interval(self):
         """Changing exclusions does change open interval"""
-        now = datetime.datetime.now()
+        now = datetime.now()
+        now_utc = now.utcnow()
 
-        three_hours_before = now - datetime.timedelta(hours=3)
-        four_hours_before = now - datetime.timedelta(hours=4)
-        five_hours_before = now - datetime.timedelta(hours=5)
+        two_hours_before = now - timedelta(hours=2)
+        three_hours_before = now - timedelta(hours=3)
+        four_hours_before = now - timedelta(hours=4)
 
-        if four_hours_before.day < three_hours_before.day:
-            exclusion = "<{:%H}:34:43 >{:%H}:12:21".format(three_hours_before, four_hours_before)
-        else:
-            exclusion = "{:%H}:12:21-{:%H}:34:43".format(four_hours_before, three_hours_before)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
 
-        # exclusion = "{:%H}:12:21-{:%H}:34:43".format(four_hours_before, three_hours_before)
+        self.t.configure_exclusions(four_hours_before.time(), three_hours_before.time())
 
-        self.t.config("exclusions.friday", exclusion)
-        self.t.config("exclusions.thursday", exclusion)
-        self.t.config("exclusions.wednesday", exclusion)
-        self.t.config("exclusions.tuesday", exclusion)
-        self.t.config("exclusions.monday", exclusion)
-        self.t.config("exclusions.sunday", exclusion)
-        self.t.config("exclusions.saturday", exclusion)
-
-        self.t("start {:%Y-%m-%dT%H}:00:00 foo".format(five_hours_before))
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc))
 
         j = self.t.export()
 
         self.assertEqual(len(j), 2)
 
-        self.assertTrue('start' in j[0])
-        self.assertIn('0000Z', j[0]['start'])
-        self.assertTrue('end' in j[0])
-        self.assertIn('1221Z', j[0]['end'])
-        self.assertTrue('tags' in j[0])
-        self.assertEqual(j[0]['tags'][0], 'foo')
+        self.assertClosedInterval(j[0],
+                                  expectedStart="{:%Y%m%dT%H%M%S}Z".format(five_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H%M%S}Z".format(four_hours_before_utc),
+                                  expectedTags=["foo"])
+        self.assertOpenInterval(j[1],
+                                expectedStart="{:%Y%m%dT%H%M%S}Z".format(three_hours_before_utc),
+                                expectedTags=["foo"])
 
-        self.assertTrue('start' in j[1])
-        self.assertIn('3443Z', j[1]['start'])
-        self.assertFalse('end' in j[1])
-
-        if four_hours_before.day < three_hours_before.day:
-            exclusion = "<{:%H}:12:21 >{:%H}:34:43".format(three_hours_before, four_hours_before)
-        else:
-            exclusion = "{:%H}:34:43-{:%H}:12:21".format(four_hours_before, three_hours_before)
-
-        self.t.config("exclusions.friday", exclusion)
-        self.t.config("exclusions.thursday", exclusion)
-        self.t.config("exclusions.wednesday", exclusion)
-        self.t.config("exclusions.tuesday", exclusion)
-        self.t.config("exclusions.monday", exclusion)
-        self.t.config("exclusions.sunday", exclusion)
-        self.t.config("exclusions.saturday", exclusion)
+        self.t.configure_exclusions(three_hours_before.time(), two_hours_before.time())
 
         j = self.t.export()
 
         self.assertEqual(len(j), 2)
-
-        self.assertTrue('start' in j[0])
-        self.assertIn('0000Z', j[0]['start'])
-        self.assertTrue('end' in j[0])
-        self.assertIn('3443Z', j[0]['end'])
-        self.assertTrue('tags' in j[0])
-        self.assertEqual(j[0]['tags'][0], 'foo')
-
-        self.assertTrue('start' in j[1])
-        self.assertIn('1221Z', j[1]['start'])
-        self.assertFalse('end' in j[1])
+        self.assertClosedInterval(j[0],
+                                  expectedStart="{:%Y%m%dT%H%M%S}Z".format(five_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H%M%S}Z".format(three_hours_before_utc),
+                                  expectedTags=["foo"])
+        self.assertOpenInterval(j[1],
+                                expectedStart="{:%Y%m%dT%H%M%S}Z".format(two_hours_before_utc),
+                                expectedTags=["foo"])
 
     def test_export_with_tag_with_spaces(self):
         """Interval with tag with spaces"""
-        self.t("track 20160531T0800 - 20160531T0900 \"tag with spaces\"")
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z \"tag with spaces\"".format(one_hour_before_utc, now_utc))
 
         j = self.t.export()
+
         self.assertEqual(len(j), 1)
-        self.assertTrue('start' in j[0])
-        self.assertTrue('end' in j[0])
-        self.assertTrue('tags' in j[0])
-        self.assertEqual(j[0]['tags'][0], 'tag with spaces')
+        self.assertClosedInterval(j[0], expectedTags=["tag with spaces"])
 
     def test_export_with_tag_with_quote(self):
         """Interval with tag with quote"""
-        self.t("track 20160531T0800 - 20160531T0900 \"tag with \\\"quote\"")
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z \"tag with \\\"quote\"".format(one_hour_before_utc, now_utc))
 
         j = self.t.export()
+
         self.assertEqual(len(j), 1)
-        self.assertTrue('start' in j[0])
-        self.assertTrue('end' in j[0])
-        self.assertTrue('tags' in j[0])
-        self.assertEqual(j[0]['tags'][0], 'tag with "quote')
+        self.assertClosedInterval(j[0], expectedTags=["tag with \"quote"])
 
 
 if __name__ == "__main__":
