@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# Copyright 2006 - 2018, Paul Beckingham, Federico Hernandez.
+# Copyright 2006 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -45,57 +45,73 @@ class TestFillHint(TestCase):
         """Add closed interval into a gap without fill"""
         self.t("track 20160709T050000Z - 20160709T060000Z one")
         self.t("track 20160709T090000Z - 20160709T100000Z three")
+
         code, out, err = self.t("track 20160709T070000Z - 20160709T080000Z two")
+
         self.assertNotIn('Backfilled to ', out)
         self.assertNotIn('Filled to ', out)
 
         j = self.t.export()
+
         self.assertEqual(len(j), 3)
-        self.assertEqual(j[0]['start'], '20160709T050000Z')
-        self.assertEqual(j[0]['end'],   '20160709T060000Z')
-        self.assertEqual(j[0]['tags'][0], 'one')
-        self.assertEqual(j[1]['start'], '20160709T070000Z')
-        self.assertEqual(j[1]['end'],   '20160709T080000Z')
-        self.assertEqual(j[1]['tags'][0], 'two')
-        self.assertEqual(j[2]['start'], '20160709T090000Z')
-        self.assertEqual(j[2]['end'],   '20160709T100000Z')
-        self.assertEqual(j[2]['tags'][0], 'three')
+        self.assertClosedInterval(j[0],
+                                  expectedStart="20160709T050000Z",
+                                  expectedEnd="20160709T060000Z",
+                                  expectedTags=["one"])
+        self.assertClosedInterval(j[1],
+                                  expectedStart="20160709T070000Z",
+                                  expectedEnd="20160709T080000Z",
+                                  expectedTags=["two"])
+        self.assertClosedInterval(j[2],
+                                  expectedStart="20160709T090000Z",
+                                  expectedEnd="20160709T100000Z",
+                                  expectedTags=["three"])
 
     def test_filled_track_in_gap(self):
         """Add closed interval into a gap with fill"""
         self.t("track 20160709T050000Z - 20160709T060000Z one")
         self.t("track 20160709T090000Z - 20160709T100000Z three")
+
         code, out, err = self.t("track 20160709T070000Z - 20160709T080000Z two :fill")
+
         self.assertIn('Backfilled to ', out)
         self.assertIn('Filled to ', out)
 
         j = self.t.export()
+
         self.assertEqual(len(j), 3)
-        self.assertEqual(j[0]['start'], '20160709T050000Z')
-        self.assertEqual(j[0]['end'],   '20160709T060000Z')
-        self.assertEqual(j[0]['tags'][0], 'one')
-        self.assertEqual(j[1]['start'], '20160709T060000Z')
-        self.assertEqual(j[1]['end'],   '20160709T090000Z')
-        self.assertEqual(j[1]['tags'][0], 'two')
-        self.assertEqual(j[2]['start'], '20160709T090000Z')
-        self.assertEqual(j[2]['end'],   '20160709T100000Z')
-        self.assertEqual(j[2]['tags'][0], 'three')
+        self.assertClosedInterval(j[0],
+                                  expectedStart="20160709T050000Z",
+                                  expectedEnd="20160709T060000Z",
+                                  expectedTags=["one"])
+        self.assertClosedInterval(j[1],
+                                  expectedStart="20160709T060000Z",
+                                  expectedEnd="20160709T090000Z",
+                                  expectedTags=["two"])
+        self.assertClosedInterval(j[2],
+                                  expectedStart="20160709T090000Z",
+                                  expectedEnd="20160709T100000Z",
+                                  expectedTags=["three"])
 
     def test_filled_start(self):
         """Add an open interval with fill"""
         self.t("track 20160710T100000Z - 20160710T110000Z one")
+
         code, out, err = self.t("start 20160710T113000Z two :fill")
+
         self.assertIn('Backfilled to ', out)
         self.assertNotIn('Filled to ', out)
 
         j = self.t.export()
+
         self.assertEqual(len(j), 2)
-        self.assertEqual(j[0]['start'], '20160710T100000Z')
-        self.assertEqual(j[0]['end'],   '20160710T110000Z')
-        self.assertEqual(j[0]['tags'][0], 'one')
-        self.assertEqual(j[1]['start'], '20160710T110000Z')
-        self.assertTrue('end' not in j[1])
-        self.assertEqual(j[1]['tags'][0], 'two')
+        self.assertClosedInterval(j[0],
+                                  expectedStart="20160710T100000Z",
+                                  expectedEnd="20160710T110000Z",
+                                  expectedTags=["one"])
+        self.assertOpenInterval(j[1],
+                                expectedStart="20160710T110000Z",
+                                expectedTags=["two"])
 
 
 class TestFillCommand(TestCase):
@@ -120,13 +136,18 @@ class TestFillCommand(TestCase):
         """TI-75: The :fill hint not properly detecting the last interval"""
         self.t("track 20170805T0100 - 20170805T0200 tag1")
         self.t("track 20170805T0200 - 20170805T0300 tag2")
+
         # Gap 0300 - 0400
+
         self.t("start 20170805T0400 tag3")
+
         code, out, err = self.t("summary :ids")
+
         self.tap(out)
         self.tap(err)
 
         code, out, err = self.t("track :fill 20170805T0300 - 20170805T0330 tag4")
+
         self.tap(out)
         self.tap(err)
 
