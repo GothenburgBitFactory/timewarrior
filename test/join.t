@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# Copyright 2006 - 2018, Paul Beckingham, Federico Hernandez.
+# Copyright 2006 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -45,18 +45,17 @@ class TestJoin(TestCase):
         """Split a closed interval"""
         self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00 foo")
         self.t("track 2016-01-01T01:00:00 - 2016-01-01T02:00:00 foo")
+
         code, out, err = self.t("join @1 @2")
+
         self.assertIn('Joined @1 and @2', out)
 
         j = self.t.export()
+
         self.assertEqual(len(j), 1)
-        self.assertTrue('start' in j[0])
-        self.assertTrue('end' in j[0])
-        self.assertTrue('tags' in j[0])
-        self.assertEqual(j[0]['tags'][0], 'foo')
+        self.assertClosedInterval(j[0], expectedTags=["foo"])
 
-
-# TODO Add :adjust tests.
+    # TODO Add :adjust tests.
 
 
 if __name__ == "__main__":
