@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# Copyright 2006 - 2018, Paul Beckingham, Federico Hernandez.
+# Copyright 2006 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,8 @@ import os
 import sys
 import unittest
 
+from datetime import time
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -55,13 +57,8 @@ class TestGaps(TestCase):
 
     def test_single_unobstructed_interval_with_exclusions(self):
         """Add one interval, with exclusions"""
-        self.t.config("exclusions.monday",    "<9:00 >18:00")
-        self.t.config("exclusions.tuesday",   "<9:00 >18:00")
-        self.t.config("exclusions.wednesday", "<9:00 >18:00")
-        self.t.config("exclusions.thursday",  "<9:00 >18:00")
-        self.t.config("exclusions.friday",    "<9:00 >18:00")
-        self.t.config("exclusions.saturday",  "<9:00 >18:00")
-        self.t.config("exclusions.sunday",    "<9:00 >18:00")
+        self.t.configure_exclusions(time(18, 0, 0), time(9, 0, 0))
+
         self.t("track 20160527T100000 - 20160527T140000 foo")
 
         code, out, err = self.t("gaps 2016-05-27 - 2016-05-28")
