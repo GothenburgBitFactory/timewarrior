@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# Copyright 2006 - 2018, Paul Beckingham, Federico Hernandez.
+# Copyright 2006 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -46,28 +46,28 @@ class TestMove(TestCase):
     def test_move_closed_forwards(self):
         """Move a closed interval forwards in time"""
         self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00 foo")
+
         code, out, err = self.t("move @1 2016-01-01T02:00:00")
+
         self.assertIn('Moved @1 to 2016-01-01T02:00:00', out)
 
         j = self.t.export()
+
         self.assertEqual(len(j), 1)
-        self.assertTrue('start' in j[0])
-        self.assertTrue('end' in j[0])
-        self.assertTrue('tags' in j[0])
-        self.assertEqual(j[0]['tags'][0], 'foo')
+        self.assertClosedInterval(j[0], expectedTags=["foo"])
 
     def test_move_closed_backwards(self):
         """Move a closed interval backwards in time"""
         self.t("track 2016-01-01T04:00:00 - 2016-01-01T05:00:00 foo")
+
         code, out, err = self.t("move @1 2016-01-01T03:00:00")
+
         self.assertIn('Moved @1 to 2016-01-01T03:00:00', out)
 
         j = self.t.export()
+
         self.assertEqual(len(j), 1)
-        self.assertTrue('start' in j[0])
-        self.assertTrue('end' in j[0])
-        self.assertTrue('tags' in j[0])
-        self.assertEqual(j[0]['tags'][0], 'foo')
+        self.assertClosedInterval(j[0], expectedTags=["foo"])
 
     def test_move_open_backwards_to_specific_time(self):
         """Move an open interval backwards to specific time."""
@@ -78,11 +78,9 @@ class TestMove(TestCase):
         self.assertRegexpMatches(out, "Moved @1 to {:%Y-%m-%dT%H}:01:23".format(one_hour_before))
 
         j = self.t.export()
+
         self.assertEqual(len(j), 1)
-        self.assertTrue('start' in j[0])
-        self.assertTrue('end' not in j[0])
-        self.assertTrue('tags' in j[0])
-        self.assertEqual(j[0]['tags'][0], 'foo')
+        self.assertOpenInterval(j[0], expectedTags=["foo"])
 
     def test_move_open_backwards(self):
         """Move an open interval backwards in time"""
@@ -91,45 +89,42 @@ class TestMove(TestCase):
         self.assertRegexpMatches(out, 'Moved @1 to \d\d\d\d-\d\d-\d\dT00:00:00')
 
         j = self.t.export()
+
         self.assertEqual(len(j), 1)
-        self.assertTrue('start' in j[0])
-        self.assertTrue('end' not in j[0])
-        self.assertTrue('tags' in j[0])
-        self.assertEqual(j[0]['tags'][0], 'foo')
+        self.assertOpenInterval(j[0], expectedTags=["foo"])
 
     def test_move_open_forwards(self):
         """Move an open interval forwards in time"""
         self.t("start yesterday foo")
+
         code, out, err = self.t("move @1 today")
+
         self.assertRegexpMatches(out, 'Moved @1 to \d\d\d\d-\d\d-\d\dT00:00:00')
 
         j = self.t.export()
         self.assertEqual(len(j), 1)
-        self.assertTrue('start' in j[0])
-        self.assertTrue('end' not in j[0])
-        self.assertTrue('tags' in j[0])
-        self.assertEqual(j[0]['tags'][0], 'foo')
+        self.assertOpenInterval(j[0], expectedTags=["foo"])
 
     def test_move_interval_over_another_with_adjust(self):
         """Move an interval over another with :adjust"""
+        self.t("track 20170301T110000Z - 20170301T140000Z foo")
+        self.t("track 20170301T150000Z - 20170301T160000Z bar")
 
-        code, out, err = self.t("track 20170301T110000Z - 20170301T140000Z foo")
-        code, out, err = self.t("track 20170301T150000Z - 20170301T160000Z foo")
-
-        # Move the interval.
         code, out, err = self.t("move @1 20170301T133000Z :adjust")
-        # Display is in local time zone so we can't match time exactly.
+
         self.assertRegexpMatches(out, 'Moved @1 to 2017-03-01T\d\d:\d\d:\d\d\n')
 
-        # There should now be an interval starting
-        # at 13:30.
-        starts = [str(x['start']) for x in self.t.export()]
-        self.assertIn('20170301T133000Z', starts)
+        j = self.t.export()
 
-        # There should no longer be an interval ending at
-        # 14:00 as that should have been adjusted.
-        ends = [str(x['end']) for x in self.t.export()]
-        self.assertNotIn('20170301T140000Z', ends)
+        self.assertEquals(len(j), 2)
+        self.assertClosedInterval(j[0],
+                                  expectedStart="20170301T110000Z",
+                                  expectedEnd="20170301T133000Z",
+                                  expectedTags=["foo"])
+        self.assertClosedInterval(j[1],
+                                  expectedStart="20170301T133000Z",
+                                  expectedEnd="20170301T143000Z",
+                                  expectedTags=["bar"])
 
     def test_move_synthetic_interval_into_exclusion(self):
         """Move a synthetic interval into exclusion"""
@@ -160,15 +155,15 @@ class TestMove(TestCase):
         j = self.t.export()
 
         self.assertEqual(len(j), 2)
-        self.assertTrue('start' in j[0])
-        self.assertEqual(j[0]['start'], '{:%Y%m%dT%H}5000Z'.format(now_utc-timedelta(hours=5)), 'start time of lengthened interval does not match')
-        self.assertTrue('end' in j[0])
-        self.assertEqual(j[0]['end'], '{:%Y%m%dT%H}0500Z'.format(now_utc - timedelta(hours=4)), 'end time of lengthened interval does not match')
-        self.assertFalse('tags' in j[0])
-        self.assertTrue('start' in j[1])
-        self.assertEqual(j[1]['start'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=3)), 'start time of unmodified interval does not match')
-        self.assertFalse('end' in j[1])
-        self.assertFalse('tags' in j[1])
+        self.assertClosedInterval(j[0],
+                                  expectedStart="{:%Y%m%dT%H}5000Z".format(now_utc - timedelta(hours=5)),
+                                  expectedEnd="{:%Y%m%dT%H}0500Z".format(now_utc - timedelta(hours=4)),
+                                  expectedTags=[],
+                                  description="moved interval")
+        self.assertOpenInterval(j[1],
+                                expectedStart="{:%Y%m%dT%H}0000Z".format(now_utc - timedelta(hours=3)),
+                                expectedTags=[],
+                                description="unmodified interval")
 
     def test_move_synthetic_interval_away_from_exclusion(self):
         """Move a synthetic interval away from exclusion"""
@@ -199,18 +194,17 @@ class TestMove(TestCase):
         j = self.t.export()
 
         self.assertEqual(len(j), 2)
-        self.assertTrue('start' in j[0])
-        self.assertEqual(j[0]['start'], '{:%Y%m%dT%H}4000Z'.format(now_utc - timedelta(hours=5)), 'start time of lengthened interval does not match')
-        self.assertTrue('end' in j[0])
-        self.assertEqual(j[0]['end'], '{:%Y%m%dT%H}5500Z'.format(now_utc - timedelta(hours=5)), 'end time of lengthened interval does not match')
-        self.assertFalse('tags' in j[0])
-        self.assertTrue('start' in j[1])
-        self.assertEqual(j[1]['start'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=3)), 'start time of unmodified interval does not match')
-        self.assertFalse('end' in j[1])
-        self.assertFalse('tags' in j[1])
+        self.assertClosedInterval(j[0],
+                                  expectedStart="{:%Y%m%dT%H}4000Z".format(now_utc - timedelta(hours=5)),
+                                  expectedEnd="{:%Y%m%dT%H}5500Z".format(now_utc - timedelta(hours=5)),
+                                  expectedTags=[],
+                                  description="moved interval")
+        self.assertOpenInterval(j[1],
+                                expectedStart="{:%Y%m%dT%H}0000Z".format(now_utc - timedelta(hours=3)),
+                                expectedTags=[],
+                                description="unmodified interval")
 
-
-# TODO Add :adjust tests.
+    # TODO Add :adjust tests.
 
 
 if __name__ == "__main__":
