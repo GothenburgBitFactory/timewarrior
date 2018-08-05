@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# Copyright 2006 - 2018, Paul Beckingham, Federico Hernandez.
+# Copyright 2006 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -64,38 +64,30 @@ class TestLengthen(TestCase):
         four_hours_before = now - timedelta(hours=4)
         five_hours_before = now - timedelta(hours=5)
 
-        if four_hours_before.day < three_hours_before.day:
-            exclusion = "<{:%H}:00 >{:%H}:00".format(three_hours_before, four_hours_before)
-        else:
-            exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
 
-        self.t.config("exclusions.sunday", exclusion)
-        self.t.config("exclusions.monday", exclusion)
-        self.t.config("exclusions.tuesday", exclusion)
-        self.t.config("exclusions.wednesday", exclusion)
-        self.t.config("exclusions.thursday", exclusion)
-        self.t.config("exclusions.friday", exclusion)
-        self.t.config("exclusions.saturday", exclusion)
+        self.t.configure_exclusions(four_hours_before.time(), three_hours_before.time())
 
-        self.t("start {:%Y-%m-%dT%H}:45:00".format(five_hours_before))
+        self.t("start {:%Y-%m-%dT%H:%M:%S}".format(five_hours_before))
 
         self.t("lengthen @2 5min")
 
         j = self.t.export()
 
         self.assertEqual(len(j), 2)
-        self.assertTrue('start' in j[0])
-        self.assertEqual(j[0]['start'], '{:%Y%m%dT%H}4500Z'.format(now_utc-timedelta(hours=5)), 'start time of lengthened interval does not match')
-        self.assertTrue('end' in j[0])
-        self.assertEqual(j[0]['end'], '{:%Y%m%dT%H}0500Z'.format(now_utc - timedelta(hours=4)), 'end time of lengthened interval does not match')
-        self.assertFalse('tags' in j[0])
-        self.assertTrue('start' in j[1])
-        self.assertEqual(j[1]['start'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=3)), 'start time of unmodified interval does not match')
-        self.assertFalse('end' in j[1])
-        self.assertFalse('tags' in j[1])
+        self.assertClosedInterval(j[0],
+                                  expectedStart="{:%Y%m%dT%H%M%S}Z".format(five_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H%M%S}Z".format(four_hours_before_utc + timedelta(minutes=5)),
+                                  expectedTags=[],
+                                  description="lengthened interval")
+        self.assertOpenInterval(j[1],
+                                expectedStart="{:%Y%m%dT%H%M%S}Z".format(three_hours_before_utc),
+                                expectedTags=[],
+                                description="unmodified interval")
 
-
-# TODO Add :adjust tests.
+    # TODO Add :adjust tests.
 
 
 if __name__ == "__main__":
