@@ -310,16 +310,16 @@ unsigned int Database::getDatafile (int year, int month)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// The input Datarange has a start and end, for example:
+// The input Daterange has a start and end, for example:
 //
 //   2016-02-20 to 2016-04-15
 //
-// Given the monthly storage scheme, split the Datarange into a vector of
-// segmented Dataranges:
+// Given the monthly storage scheme, split the Daterange into a vector of
+// segmented Dateranges:
 //
-//   2016-02-20 to 2016-03-01
+//   2016-02-01 to 2016-03-01
 //   2016-03-01 to 2016-04-01
-//   2016-04-01 to 2016-05-15
+//   2016-04-01 to 2016-05-01
 //
 std::vector <Range> Database::segmentRange (const Range& range)
 {
