@@ -126,7 +126,7 @@ int CmdSummary (
 
       // Intersect track with day.
       auto today = day_range.intersect (track.range);
-      if (track.range.is_open () && day <= Datetime ())
+      if (track.range.is_open () && day <= Datetime () && today.end > Datetime ())
         today.end = Datetime ();
 
       std::string tags = join(", ", track.tags());
