@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# Copyright 2006 - 2018, Paul Beckingham, Federico Hernandez.
+# Copyright 2006 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -46,13 +46,17 @@ class TestShorten(TestCase):
     def test_shorten_closed_interval(self):
         """Shorten a closed interval"""
         self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00 foo")
+
         code, out, err = self.t("shorten @1 10mins")
+
         self.assertIn('Shortened @1 by 0:10:00', out)
 
     def test_shorten_open_interval(self):
         """Shorten an open interval"""
         self.t("start 30mins ago foo")
+
         code, out, err = self.t.runError("shorten @1 10mins")
+
         self.assertIn('Cannot shorten open interval @1', err)
 
     def test_shorten_interval_moved_into_exclusion(self):
@@ -100,18 +104,17 @@ class TestShorten(TestCase):
         j = self.t.export()
 
         self.assertEqual(len(j), 2)
-        self.assertTrue('start' in j[0])
-        self.assertEqual(j[0]['start'], '{:%Y%m%dT%H}4500Z'.format(now_utc - timedelta(hours=5)), 'start time of lengthened interval does not match')
-        self.assertTrue('end' in j[0])
-        self.assertEqual(j[0]['end'], '{:%Y%m%dT%H}5500Z'.format(now_utc - timedelta(hours=5)), 'end time of lengthened interval does not match')
-        self.assertFalse('tags' in j[0])
-        self.assertTrue('start' in j[1])
-        self.assertEqual(j[1]['start'], '{:%Y%m%dT%H}0000Z'.format(now_utc - timedelta(hours=3)), 'start time of unmodified interval does not match')
-        self.assertFalse('end' in j[1])
-        self.assertFalse('tags' in j[1])
+        self.assertClosedInterval(j[0],
+                                  expectedStart="{:%Y%m%dT%H}4500Z".format(now_utc - timedelta(hours=5)),
+                                  expectedEnd="{:%Y%m%dT%H}5500Z".format(now_utc - timedelta(hours=5)),
+                                  expectedTags=[])
+        self.assertOpenInterval(j[1],
+                                expectedStart="{:%Y%m%dT%H}0000Z".format(now_utc - timedelta(hours=3)),
+                                expectedTags=[])
+
+    # TODO Add :adjust tests.
 
 
-# TODO Add :adjust tests.
 class TestBug6(TestCase):
     def setUp(self):
         """Executed before each test in the class"""
@@ -124,7 +127,9 @@ class TestBug6(TestCase):
            an assert is triggered, and should be an error instead.
         """
         self.t("track 2016-06-08T07:30:00 - 2016-06-08T07:35:00 foo")
+
         code, out, err = self.t.runError("shorten @1 10mins")
+
         self.assertIn('Cannot shorten interval @1 by 0:10:00 because it is only 0:05:00 in length.', err)
 
 
