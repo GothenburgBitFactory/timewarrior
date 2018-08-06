@@ -36,7 +36,7 @@ int CmdHelpUsage (const Extensions& extensions)
   std::cout << '\n'
             << "Usage: timew [--version]\n"
             << "       timew cancel\n"
-            << "       timew config [<name> [<value | '']]\n"
+            << "       timew config [<name> [<value> | '']]\n"
             << "       timew continue [@<id>] [<date>|<interval>]\n"
             << "       timew day [<interval>] [<tag> ...]\n"
             << "       timew delete @<id> [@<id> ...]\n"
