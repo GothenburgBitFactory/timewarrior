@@ -12,3 +12,4 @@ _CPack_Packages
 CPackConfig.cmake
 CPackSourceConfig.cmake
 *swp
+*.pyc
