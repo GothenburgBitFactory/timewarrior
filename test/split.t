@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# Copyright 2006 - 2018, Paul Beckingham, Federico Hernandez.
+# Copyright 2006 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -48,16 +48,10 @@ class TestSplit(TestCase):
         self.assertIn('Split @1', out)
 
         j = self.t.export()
-        self.assertEqual(len(j), 2)
-        self.assertTrue('start' in j[0])
-        self.assertTrue('end' in j[0])
-        self.assertTrue('tags' in j[0])
-        self.assertEqual(j[0]['tags'][0], 'foo')
 
-        self.assertTrue('start' in j[1])
-        self.assertTrue('end' in j[1])
-        self.assertTrue('tags' in j[1])
-        self.assertEqual(j[1]['tags'][0], 'foo')
+        self.assertEqual(len(j), 2)
+        self.assertClosedInterval(j[0], expectedTags=["foo"])
+        self.assertClosedInterval(j[1], expectedTags=["foo"])
 
         self.assertEqual(j[0]['end'], j[1]['start'])
 
@@ -68,21 +62,14 @@ class TestSplit(TestCase):
         self.assertIn('Split @1', out)
 
         j = self.t.export()
-        self.assertEqual(len(j), 2)
-        self.assertTrue('start' in j[0])
-        self.assertTrue('end' in j[0])
-        self.assertTrue('tags' in j[0])
-        self.assertEqual(j[0]['tags'][0], 'foo')
 
-        self.assertTrue('start' in j[1])
-        self.assertTrue('end' not in j[1])
-        self.assertTrue('tags' in j[1])
-        self.assertEqual(j[1]['tags'][0], 'foo')
+        self.assertEqual(len(j), 2)
+        self.assertClosedInterval(j[0], expectedTags=["foo"])
+        self.assertOpenInterval(j[1], expectedTags=["foo"])
 
         self.assertEqual(j[0]['end'], j[1]['start'])
 
-
-# TODO Add :adjust tests.
+    # TODO Add :adjust tests.
 
 
 if __name__ == "__main__":
