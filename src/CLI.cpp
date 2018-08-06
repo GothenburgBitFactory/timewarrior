@@ -412,7 +412,8 @@ void CLI::identifyIds ()
       int digits;
       if (pig.skipLiteral ("@")  &&
           pig.getDigits (digits) &&
-          pig.eos ())
+          pig.eos ()             &&
+          digits > 0)
       {
         a.tag ("ID");
         a.attribute ("value", digits);

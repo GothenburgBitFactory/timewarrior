@@ -48,6 +48,10 @@ class TestIds(TestCase):
         self.assertIn(' @1 ', out)
         self.assertIn(' @2 ', out)
 
+    def test_should_fail_on_zero_id(self):
+        code, out, err = self.t.runError("delete @0")
+        self.assertIn("IDs must be specified.", err)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
