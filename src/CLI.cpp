@@ -412,9 +412,11 @@ void CLI::identifyIds ()
       int digits;
       if (pig.skipLiteral ("@")  &&
           pig.getDigits (digits) &&
-          pig.eos ()             &&
-          digits > 0)
+          pig.eos ())
       {
+        if (digits <= 0)
+          throw format ("'@{1}' is not a valid ID.", digits);
+
         a.tag ("ID");
         a.attribute ("value", digits);
       }
