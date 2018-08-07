@@ -50,7 +50,7 @@ class TestIds(TestCase):
 
     def test_should_fail_on_zero_id(self):
         code, out, err = self.t.runError("delete @0")
-        self.assertIn("IDs must be specified.", err)
+        self.assertIn("'@0' is not a valid ID.", err)
 
 
 if __name__ == "__main__":
