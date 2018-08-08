@@ -10,10 +10,14 @@
           (thanks to Antanas B.)
 - #111    Some tests fail depending on the time of day
           (thanks to chronitis)
+- #113    summary does not display correctly open intervals spanning day border
+          (thanks to janikrabe)
 - #135    Task at month end not getting displayed
           (thanks to towo)
 - #138    Entering an escaped quote in a tag name causes incorrect JSON to be generated
           (thanks to bognolo)
+- #157    CLI: Ensure IDs are non-zero
+          (thanks to janikrabe)
 - Fixed error from totals.py while timer is active
           (thanks to davisdude)
 
