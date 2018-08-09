@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# Copyright 2006 - 2018, Paul Beckingham, Federico Hernandez.
+# Copyright 2006 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -45,8 +45,13 @@ class TestTag(TestCase):
 
     def test_add_tag_to_open_interval(self):
         """Add a tag to an open interval"""
-        self.t("start 30min ago")
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z".format(one_hour_before_utc))
+
         code, out, err = self.t("tag @1 foo")
+
         self.assertIn("Added foo to @1", out)
 
         j = self.t.export()
@@ -54,9 +59,15 @@ class TestTag(TestCase):
 
     def test_should_use_default_on_missing_id_and_active_time_tracking(self):
         """Use open interval when adding tags with missing id and active time tracking"""
-        self.t("track yesterday for 1hour foo")
-        self.t("start 30min ago bar")
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z foo".format(two_hours_before_utc, one_hour_before_utc))
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z bar".format(one_hour_before_utc))
+
         code, out, err = self.t("tag baz")
+
         self.assertIn("Added baz to @1", out)
 
         j = self.t.export()
@@ -66,24 +77,40 @@ class TestTag(TestCase):
     def test_should_fail_on_missing_id_and_empty_database(self):
         """Adding tag with missing id on empty database is an error"""
         code, out, err = self.t.runError("tag foo")
+
         self.assertIn("There is no active time tracking.", err)
 
     def test_should_fail_on_missing_id_and_inactive_time_tracking(self):
         """Adding tag with missing id on inactive time tracking is an error"""
-        self.t("track yesterday for 1hour")
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z".format(one_hour_before_utc, now_utc))
+
         code, out, err = self.t.runError("tag foo")
+
         self.assertIn("At least one ID must be specified.", err)
 
     def test_should_fail_on_no_tags(self):
         """Calling command 'tag' without tags is an error"""
-        self.t("track yesterday for 1hour")
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z".format(one_hour_before_utc, now_utc))
+
         code, out, err = self.t.runError("tag @1")
+
         self.assertIn("At least one tag must be specified.", err)
 
     def test_add_tag_to_closed_interval(self):
         """Add a tag to an closed interval"""
-        self.t("track yesterday for 1hour")
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z".format(one_hour_before_utc, now_utc))
+
         code, out, err = self.t("tag @1 foo")
+
         self.assertIn("Added foo to @1", out)
 
         j = self.t.export()
@@ -91,8 +118,13 @@ class TestTag(TestCase):
 
     def test_add_tags_to_open_interval(self):
         """Add tags to an open interval"""
-        self.t("start 30min ago")
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z".format(one_hour_before_utc))
+
         code, out, err = self.t("tag @1 foo bar")
+
         self.assertIn("Added foo bar to @1", out)
 
         j = self.t.export()
@@ -100,8 +132,13 @@ class TestTag(TestCase):
 
     def test_add_tags_to_closed_interval(self):
         """Add tags to an closed interval"""
-        self.t("track yesterday for 1hour")
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z".format(one_hour_before_utc, now_utc))
+
         code, out, err = self.t("tag @1 foo bar")
+
         self.assertIn("Added foo bar to @1", out)
 
         j = self.t.export()
@@ -109,9 +146,15 @@ class TestTag(TestCase):
 
     def test_add_tag_to_multiple_intervals(self):
         """Add a tag to multiple intervals"""
-        self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00 one")
-        self.t("track 2016-01-01T01:00:00 - 2016-01-01T02:00:00 two")
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z one".format(two_hours_before_utc, one_hour_before_utc))
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z two".format(one_hour_before_utc, now_utc))
+
         code, out, err = self.t("tag @1 @2 foo")
+
         self.assertIn("Added foo to @1\nAdded foo to @2", out)
 
         j = self.t.export()
@@ -120,9 +163,15 @@ class TestTag(TestCase):
 
     def test_add_tags_to_multiple_intervals(self):
         """Add tags to multiple intervals"""
-        self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00 one")
-        self.t("track 2016-01-01T01:00:00 - 2016-01-01T02:00:00 two")
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z one".format(two_hours_before_utc, one_hour_before_utc))
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z two".format(one_hour_before_utc, now_utc))
+
         code, out, err = self.t("tag @1 @2 foo bar")
+
         self.assertIn('Added foo bar to @1\nAdded foo bar to @2', out)
 
         j = self.t.export()
@@ -132,44 +181,38 @@ class TestTag(TestCase):
     def test_tag_synthetic_interval(self):
         """Tag a synthetic interval."""
         now = datetime.now()
-        now_utc = now.utcnow()
 
         three_hours_before = now - timedelta(hours=3)
         four_hours_before = now - timedelta(hours=4)
-        five_hours_before = now - timedelta(hours=5)
 
-        if four_hours_before.day < three_hours_before.day:
-            exclusion = "<{:%H}:00 >{:%H}:00".format(three_hours_before, four_hours_before)
-        else:
-            exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
+        now_utc = now.utcnow()
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
 
-        self.t.config("exclusions.friday", exclusion)
-        self.t.config("exclusions.thursday", exclusion)
-        self.t.config("exclusions.wednesday", exclusion)
-        self.t.config("exclusions.tuesday", exclusion)
-        self.t.config("exclusions.monday", exclusion)
-        self.t.config("exclusions.sunday", exclusion)
-        self.t.config("exclusions.saturday", exclusion)
+        self.t.configure_exclusions((four_hours_before.time(), three_hours_before.time()))
 
-        self.t("start {:%Y-%m-%dT%H}:45:00 foo".format(five_hours_before))
-
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc))
         self.t("tag @2 bar")
 
         j = self.t.export()
 
         self.assertEqual(len(j), 2)
         self.assertClosedInterval(j[0],
-                                  expectedStart="{:%Y%m%dT%H}4500Z".format(now_utc - timedelta(hours=5)),
-                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(now_utc - timedelta(hours=4)),
+                                  expectedStart="{:%Y%m%dT%H%M%S}Z".format(five_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H%M%S}Z".format(four_hours_before_utc),
                                   expectedTags=["bar", "foo"],
                                   description="modified interval")
         self.assertOpenInterval(j[1],
-                                expectedStart="{:%Y%m%dT%H}0000Z".format(now_utc - timedelta(hours=3)),
+                                expectedStart="{:%Y%m%dT%H%M%S}Z".format(three_hours_before_utc),
                                 expectedTags=["foo"],
                                 description="unmodified interval")
 
     def test_tag_with_identical_ids(self):
-        self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00")
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z".format(one_hour_before_utc, now_utc))
         self.t("tag @1 @1 foo")
 
         j = self.t.export()
