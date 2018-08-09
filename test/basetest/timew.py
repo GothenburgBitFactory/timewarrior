@@ -80,14 +80,34 @@ class Timew(object):
         cmd = (self.timew, ":yes", "config", var, value)
         return run_cmd_wait(cmd, env=self.env, input="y\n")
 
-    def configure_exclusions(self, start, end):
-        if isinstance(start, datetime.time) and isinstance(end, datetime.time):
-            if start > end:
-                exclusion = "<{:%H:%M:%S} >{:%H:%M:%S}".format(end, start)
-            else:
-                exclusion = "{:%H:%M:%S}-{:%H:%M:%S}".format(start, end)
+    @staticmethod
+    def _create_exclusion_interval(interval):
+        if not isinstance(interval, tuple):
+            raise TypeError("Please specify interval(s) as a tuple or a list of tuples")
+
+        if interval[0] is not None and not isinstance(interval[0], datetime.time):
+            raise TypeError("Start date must be a datetime.time but is {}".format(type(interval[0])))
+
+        if interval[1] is not None and not isinstance(interval[1], datetime.time):
+            raise TypeError("End date must be a datetime.time but is {}".format(type(interval[1])))
+
+        if interval[0] is None:
+            return "<{:%H:%M:%S}".format(interval[1])
+
+        if interval[1] is None:
+            return ">{:%H:%M:%S}".format(interval[0])
+
+        if interval[0] > interval[1]:
+            return "<{:%H:%M:%S} >{:%H:%M:%S}".format(interval[1], interval[0])
+
+        return "{:%H:%M:%S}-{:%H:%M:%S}".format(interval[0], interval[1])
+
+    def configure_exclusions(self, intervals):
+        if isinstance(intervals, list):
+            exclusion = " ".join([self._create_exclusion_interval(interval) for interval in intervals])
+
         else:
-            exclusion = "{}-{}".format(start, end)
+            exclusion = self._create_exclusion_interval(intervals)
 
         self.config("exclusions.monday", exclusion)
         self.config("exclusions.tuesday", exclusion)

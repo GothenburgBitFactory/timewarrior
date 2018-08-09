@@ -57,7 +57,7 @@ class TestGaps(TestCase):
 
     def test_single_unobstructed_interval_with_exclusions(self):
         """Add one interval, with exclusions"""
-        self.t.configure_exclusions(time(18, 0, 0), time(9, 0, 0))
+        self.t.configure_exclusions((time(18, 0, 0), time(9, 0, 0)))
 
         self.t("track 20160527T100000 - 20160527T140000 foo")
 

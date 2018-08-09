@@ -68,7 +68,7 @@ class TestLengthen(TestCase):
         four_hours_before_utc = now_utc - timedelta(hours=4)
         five_hours_before_utc = now_utc - timedelta(hours=5)
 
-        self.t.configure_exclusions(four_hours_before.time(), three_hours_before.time())
+        self.t.configure_exclusions((four_hours_before.time(), three_hours_before.time()))
 
         self.t("start {:%Y-%m-%dT%H:%M:%S}".format(five_hours_before))
 

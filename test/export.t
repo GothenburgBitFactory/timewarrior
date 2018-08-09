@@ -30,7 +30,7 @@ import os
 import sys
 import unittest
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -64,11 +64,11 @@ class TestExport(TestCase):
 
     def test_changing_exclusion_does_not_change_flattened_intervals(self):
         """Changing exclusions does not change flattened intervals"""
-        self.t.configure_exclusions("12:22:44", "13:32:23")
+        self.t.configure_exclusions((time(12, 22, 44), time(13, 32, 23)))
 
         self.t("track 20160101T102255Z - 20160101T154422Z foo")
 
-        self.t.configure_exclusions("12:44:22", "13:23:32")
+        self.t.configure_exclusions((time(12, 44, 22), time(13, 23, 32)))
 
         self.t("track 20160102T102255Z - 20160102T154422Z bar")
 
@@ -106,7 +106,7 @@ class TestExport(TestCase):
         four_hours_before_utc = now_utc - timedelta(hours=4)
         five_hours_before_utc = now_utc - timedelta(hours=5)
 
-        self.t.configure_exclusions(four_hours_before.time(), three_hours_before.time())
+        self.t.configure_exclusions((four_hours_before.time(), three_hours_before.time()))
 
         self.t("start {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc))
 
@@ -122,7 +122,7 @@ class TestExport(TestCase):
                                 expectedStart="{:%Y%m%dT%H%M%S}Z".format(three_hours_before_utc),
                                 expectedTags=["foo"])
 
-        self.t.configure_exclusions(three_hours_before.time(), two_hours_before.time())
+        self.t.configure_exclusions((three_hours_before.time(), two_hours_before.time()))
 
         j = self.t.export()
 
