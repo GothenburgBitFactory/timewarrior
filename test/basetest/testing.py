@@ -78,8 +78,14 @@ class TestCase(BaseTestCase):
 
     def assertIntervalValue(self, interval, key, expected, description, message):
         actual = interval[key]
-        self.assertEqual(actual,
-                         expected,
-                         message.format(key, description, expected, actual))
+
+        if isinstance(actual, list):
+            self.assertItemsEqual(actual,
+                                  expected,
+                                  message.format(key, description, expected, actual))
+        else:
+            self.assertEqual(actual,
+                             expected,
+                             message.format(key, description, expected, actual))
 
 # vim: ai sts=4 et sw=4
