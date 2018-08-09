@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# Copyright 2006 - 2018, Paul Beckingham, Federico Hernandez.
+# Copyright 2006 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,8 @@ import os
 import sys
 import unittest
 
+from datetime import datetime, timedelta
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -44,23 +46,30 @@ class TestTags(TestCase):
     def test_trivial_tags(self):
         """Test trivial tags"""
         code, out, err = self.t("tags")
+
         self.assertIn('No data found.', out)
 
     def test_tags_listed(self):
         """Test the two tags used are both listed"""
-        self.t("track 20160101T0100 - 20160101T1000 foo")
-        self.t("track 20160101T1000 - 20160101T1100 bar")
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+        two_hour_before_utc = now_utc - timedelta(hours=2)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z foo".format(two_hour_before_utc, one_hour_before_utc))
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z bar".format(one_hour_before_utc, now_utc))
+
         code, out, err = self.t("tags")
+
         self.assertIn('foo', out)
         self.assertIn('bar', out)
 
     def test_tags_filtered(self):
         """Test that tags command filtering excludes tags that are outside the filter range"""
         self.t("track 20160101T0100 - 20160101T1000 foo")
-        # self.t("track 9am - 11am bar")
-        # code, out, err = self.t("tags :week")
         self.t("track 20160104T0100 - 20160104T1000 bar")
+
         code, out, err = self.t("tags 2016-01-02 - 2016-01-06")
+
         self.assertNotIn('foo', out)
         self.assertIn('bar', out)
 
