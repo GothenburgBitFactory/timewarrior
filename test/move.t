@@ -129,78 +129,60 @@ class TestMove(TestCase):
     def test_move_synthetic_interval_into_exclusion(self):
         """Move a synthetic interval into exclusion"""
         now = datetime.now()
-        now_utc = now.utcnow()
-
         three_hours_before = now - timedelta(hours=3)
         four_hours_before = now - timedelta(hours=4)
-        five_hours_before = now - timedelta(hours=5)
 
-        if four_hours_before.day < three_hours_before.day:
-            exclusion = "<{:%H}:00 >{:%H}:00".format(three_hours_before, four_hours_before)
-        else:
-            exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
+        now_utc = now.utcnow()
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
 
-        self.t.config("exclusions.friday", exclusion)
-        self.t.config("exclusions.thursday", exclusion)
-        self.t.config("exclusions.wednesday", exclusion)
-        self.t.config("exclusions.tuesday", exclusion)
-        self.t.config("exclusions.monday", exclusion)
-        self.t.config("exclusions.sunday", exclusion)
-        self.t.config("exclusions.saturday", exclusion)
+        self.t.configure_exclusions((four_hours_before.time(), three_hours_before.time()))
 
-        self.t("start {:%Y-%m-%dT%H}:45:00".format(five_hours_before))
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc))
 
-        self.t("move @2 {:%Y-%m-%dT%H}:50:00".format(five_hours_before))
+        self.t("move @2 {:%Y-%m-%dT%H:%M:%S}Z".format(five_hours_before_utc + timedelta(minutes=20)))
 
         j = self.t.export()
 
         self.assertEqual(len(j), 2)
         self.assertClosedInterval(j[0],
-                                  expectedStart="{:%Y%m%dT%H}5000Z".format(now_utc - timedelta(hours=5)),
-                                  expectedEnd="{:%Y%m%dT%H}0500Z".format(now_utc - timedelta(hours=4)),
+                                  expectedStart=five_hours_before_utc + timedelta(minutes=20),
+                                  expectedEnd=four_hours_before_utc + timedelta(minutes=20),
                                   expectedTags=[],
                                   description="moved interval")
         self.assertOpenInterval(j[1],
-                                expectedStart="{:%Y%m%dT%H}0000Z".format(now_utc - timedelta(hours=3)),
+                                expectedStart=three_hours_before_utc,
                                 expectedTags=[],
                                 description="unmodified interval")
 
     def test_move_synthetic_interval_away_from_exclusion(self):
         """Move a synthetic interval away from exclusion"""
         now = datetime.now()
-        now_utc = now.utcnow()
-
         three_hours_before = now - timedelta(hours=3)
         four_hours_before = now - timedelta(hours=4)
-        five_hours_before = now - timedelta(hours=5)
 
-        if four_hours_before.day < three_hours_before.day:
-            exclusion = "<{:%H}:00 >{:%H}:00".format(three_hours_before, four_hours_before)
-        else:
-            exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
+        now_utc = now.utcnow()
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
 
-        self.t.config("exclusions.friday", exclusion)
-        self.t.config("exclusions.thursday", exclusion)
-        self.t.config("exclusions.wednesday", exclusion)
-        self.t.config("exclusions.tuesday", exclusion)
-        self.t.config("exclusions.monday", exclusion)
-        self.t.config("exclusions.sunday", exclusion)
-        self.t.config("exclusions.saturday", exclusion)
+        self.t.configure_exclusions((four_hours_before.time(), three_hours_before.time()))
 
-        self.t("start {:%Y-%m-%dT%H}:45:00".format(five_hours_before))
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc))
 
-        self.t("move @2 {:%Y-%m-%dT%H}:40:00".format(five_hours_before))
+        self.t("move @2 {:%Y-%m-%dT%H:%M:%S}Z".format(five_hours_before_utc - timedelta(minutes=20)))
 
         j = self.t.export()
 
         self.assertEqual(len(j), 2)
         self.assertClosedInterval(j[0],
-                                  expectedStart="{:%Y%m%dT%H}4000Z".format(now_utc - timedelta(hours=5)),
-                                  expectedEnd="{:%Y%m%dT%H}5500Z".format(now_utc - timedelta(hours=5)),
+                                  expectedStart=five_hours_before_utc - timedelta(minutes=20),
+                                  expectedEnd=four_hours_before_utc - timedelta(minutes=20),
                                   expectedTags=[],
                                   description="moved interval")
         self.assertOpenInterval(j[1],
-                                expectedStart="{:%Y%m%dT%H}0000Z".format(now_utc - timedelta(hours=3)),
+                                expectedStart=three_hours_before_utc,
                                 expectedTags=[],
                                 description="unmodified interval")
 
