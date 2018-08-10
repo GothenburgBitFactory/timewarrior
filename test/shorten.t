@@ -30,7 +30,7 @@ import os
 import sys
 import unittest
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -61,43 +61,28 @@ class TestShorten(TestCase):
 
     def test_shorten_interval_moved_into_exclusion(self):
         """Shorten an interval moved to span an exclusion."""
-        self.t.config("exclusions.friday", "<7:30 12:00-13:00 >16:30")
-        self.t.config("exclusions.thursday", "<7:30 12:00-13:00 >16:30")
-        self.t.config("exclusions.wednesday", "<7:30 12:00-13:00 >16:30")
-        self.t.config("exclusions.tuesday", "<7:30 12:00-13:00 >16:30")
-        self.t.config("exclusions.monday", "<7:30 12:00-13:00 >16:30")
-        self.t.config("exclusions.sunday", "<7:30 12:00-13:00 >16:30")
-        self.t.config("exclusions.saturday", "<7:30 12:00-13:00 >16:30")
+        self.t.configure_exclusions([(time(16, 30, 0), time(7, 30, 0)),
+                                     (time(12, 0, 0), time(13, 0, 0))])
 
         self.t('track 20170308T140000 - 20170308T161500')
 
-        # self.t("shorten @1 5min") # This would work.
         self.t("move @1 20170308T113000")
         self.t("shorten @1 5min")  # Does not work.
 
     def test_shorten_synthetic_interval(self):
         """Shorten a synthetic interval."""
         now = datetime.now()
-        now_utc = now.utcnow()
-
         three_hours_before = now - timedelta(hours=3)
         four_hours_before = now - timedelta(hours=4)
-        five_hours_before = now - timedelta(hours=5)
 
-        if four_hours_before.day < three_hours_before.day:
-            exclusion = "<{:%H}:00 >{:%H}:00".format(three_hours_before, four_hours_before)
-        else:
-            exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
+        now_utc = now.utcnow()
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
 
-        self.t.config("exclusions.sunday", exclusion)
-        self.t.config("exclusions.monday", exclusion)
-        self.t.config("exclusions.tuesday", exclusion)
-        self.t.config("exclusions.wednesday", exclusion)
-        self.t.config("exclusions.thursday", exclusion)
-        self.t.config("exclusions.friday", exclusion)
-        self.t.config("exclusions.saturday", exclusion)
+        self.t.configure_exclusions((four_hours_before.time(), three_hours_before.time()))
 
-        self.t("start {:%Y-%m-%dT%H}:45:00".format(five_hours_before))
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z".format(five_hours_before_utc))
 
         self.t("shorten @2 5min")
 
@@ -105,11 +90,11 @@ class TestShorten(TestCase):
 
         self.assertEqual(len(j), 2)
         self.assertClosedInterval(j[0],
-                                  expectedStart="{:%Y%m%dT%H}4500Z".format(now_utc - timedelta(hours=5)),
-                                  expectedEnd="{:%Y%m%dT%H}5500Z".format(now_utc - timedelta(hours=5)),
+                                  expectedStart="{:%Y%m%dT%H%M%S}Z".format(five_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H%M%S}Z".format(four_hours_before_utc - timedelta(minutes=5)),
                                   expectedTags=[])
         self.assertOpenInterval(j[1],
-                                expectedStart="{:%Y%m%dT%H}0000Z".format(now_utc - timedelta(hours=3)),
+                                expectedStart="{:%Y%m%dT%H%M%S}Z".format(three_hours_before_utc),
                                 expectedTags=[])
 
     # TODO Add :adjust tests.
