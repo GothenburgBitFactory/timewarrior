@@ -30,7 +30,7 @@ import os
 import sys
 import unittest
 
-from datetime import time
+from datetime import datetime, timedelta, time
 
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -191,6 +191,34 @@ class TestStart(TestCase):
         self.assertClosedInterval(j[1], expectedTags=["foo"])
         self.assertIn('1150Z', j[1]['start'])
         self.assertIn('4422Z', j[1]['end'])
+
+    def test_start_with_new_tag(self):
+        """Call 'start' with new tag"""
+        now_utc = datetime.now().utcnow()
+
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S} - {:%Y-%m-%dT%H:%M:%S} foo".format(two_hours_before_utc, one_hour_before_utc))
+        code, out, err = self.t("start {:%Y-%m-%dT%H:%M:%S} bar".format(now_utc))
+
+        self.assertIn("Note: 'bar' is a new tag", out)
+        self.assertIn("Tracking bar", out)
+
+    def test_start_with_previous_tag(self):
+        """Call 'start' with previous tag"""
+        now_utc = datetime.now().utcnow()
+
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S} - {:%Y-%m-%dT%H:%M:%S} bar".format(three_hours_before_utc, two_hours_before_utc))
+        self.t("track {:%Y-%m-%dT%H:%M:%S} - {:%Y-%m-%dT%H:%M:%S} foo".format(two_hours_before_utc, one_hour_before_utc))
+        code, out, err = self.t("start {:%Y-%m-%dT%H:%M:%S} bar".format(now_utc))
+
+        self.assertNotIn("Note: 'bar' is a new tag", out)
+        self.assertIn("Tracking bar", out)
 
 
 if __name__ == "__main__":

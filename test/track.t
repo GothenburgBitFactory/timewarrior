@@ -99,6 +99,32 @@ class TestTrack(TestCase):
 
         self.assertTrue(len(j) > 0)
 
+    def test_track_with_new_tag(self):
+        """Call 'track' with new tag"""
+        now_utc = datetime.now().utcnow()
+
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S} - {:%Y-%m-%dT%H:%M:%S} foo".format(two_hours_before_utc, one_hour_before_utc))
+        code, out, err = self.t("track {:%Y-%m-%dT%H:%M:%S} - {:%Y-%m-%dT%H:%M:%S} bar".format(one_hour_before_utc, now_utc))
+
+        self.assertIn("Note: 'bar' is a new tag", out)
+        self.assertIn("Recorded bar", out)
+
+    def test_track_with_previous_tag(self):
+        """Call 'track' with previous tag"""
+        now_utc = datetime.now().utcnow()
+
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S} - {:%Y-%m-%dT%H:%M:%S} bar".format(two_hours_before_utc, one_hour_before_utc))
+        code, out, err = self.t("track {:%Y-%m-%dT%H:%M:%S} - {:%Y-%m-%dT%H:%M:%S} bar".format(one_hour_before_utc, now_utc))
+
+        self.assertNotIn("Note: 'bar' is a new tag", out)
+        self.assertIn("Recorded bar", out)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
