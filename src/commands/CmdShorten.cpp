@@ -75,7 +75,7 @@ int CmdShorten (
       // Update database.
       database.deleteInterval (latest);
       for (auto& interval : flatten (modified, exclusions))
-        database.addInterval (interval);
+        database.addInterval (interval, rules.getBoolean ("verbose"));
 
       dirty = false;
     }
@@ -99,7 +99,7 @@ int CmdShorten (
 
     i.range.end -= dur.toTime_t ();
     validate (cli, rules, database, i);
-    database.addInterval (i);
+    database.addInterval (i, rules.getBoolean ("verbose"));
 
     if (rules.getBoolean ("verbose"))
       std::cout << "Shortened @" << id << " by " << dur.formatHours () << '\n';

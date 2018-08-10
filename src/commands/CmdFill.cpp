@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -62,7 +62,7 @@ int CmdFill (
     autoFill (rules, database, to);
     validate (cli, rules, database, to);
     std::cout << "# to " << to.dump () << "\n";
-    database.addInterval (to);
+    database.addInterval (to, rules.getBoolean ("verbose"));
 
     // Note: Feedback generated inside autoFill().
   }

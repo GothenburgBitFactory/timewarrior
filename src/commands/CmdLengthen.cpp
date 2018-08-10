@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -77,7 +77,7 @@ int CmdLengthen (
       // Update database.
       database.deleteInterval (latest);
       for (auto& interval : flatten (modified, exclusions))
-        database.addInterval (interval);
+        database.addInterval (interval, rules.getBoolean ("verbose"));
 
       dirty = false;
     }
@@ -98,7 +98,7 @@ int CmdLengthen (
     Duration dur (delta);
     i.range.end += dur.toTime_t ();
     validate (cli, rules, database, i);
-    database.addInterval (i);
+    database.addInterval (i, rules.getBoolean ("verbose"));
 
     if (rules.getBoolean ("verbose"))
       std::cout << "Lengthened @" << id << " by " << dur.formatHours () << '\n';

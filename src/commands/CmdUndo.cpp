@@ -34,7 +34,7 @@ static void undoIntervalAction(UndoAction& action, Database& database)
   Interval before = Interval::fromJson (action.getBefore ());
   Interval after = Interval::fromJson (action.getAfter ());
 
-  database.modifyInterval (after, before);
+  database.modifyInterval (after, before, false);
 }
 
 static void undoConfigAction (UndoAction& action, Rules &rules, Database& database)

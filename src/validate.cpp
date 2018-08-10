@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2016, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2016, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -120,14 +120,14 @@ static void autoAdjust (
         // start date of new interval within old interval
         Interval modified {overlap};
         modified.range.end = interval.range.start;
-        database.modifyInterval (overlap, modified);
+        database.modifyInterval (overlap, modified, rules.getBoolean ("verbose"));
       }
       else if (!start_within_overlap && end_within_overlap)
       {
         // end date of new interval within old interval
         Interval modified {overlap};
         modified.range.start = interval.range.end;
-        database.modifyInterval (overlap, modified);
+        database.modifyInterval (overlap, modified, rules.getBoolean ("verbose"));
       }
       else if (!start_within_overlap && !end_within_overlap)
       {
@@ -149,12 +149,12 @@ static void autoAdjust (
         }
         else
         {
-          database.modifyInterval (overlap, split1);
+          database.modifyInterval (overlap, split1, rules.getBoolean ("verbose"));
         }
 
         if (! split2.range.is_empty ())
         {
-          database.addInterval (split2);
+          database.addInterval (split2, rules.getBoolean ("verbose"));
         }
       }
     }

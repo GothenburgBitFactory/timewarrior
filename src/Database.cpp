@@ -102,13 +102,13 @@ std::vector <std::string> Database::allLines ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Database::addInterval (const Interval& interval)
+void Database::addInterval (const Interval& interval, bool verbose)
 {
   auto tags = interval.tags ();
 
   for (auto& tag : tags)
   {
-    if (_tagInfoDatabase.incrementTag (tag) == -1)
+    if (_tagInfoDatabase.incrementTag (tag) == -1 && verbose)
     {
       std::cout << "Note: '" << quoteIfNeeded (tag) << "' is a new tag." << std::endl;
     }
@@ -178,7 +178,7 @@ void Database::deleteInterval (const Interval& interval)
 // Datafile, then add it back to the right Datafile. This is because
 // modification may involve changing the start date, which could mean the
 // Interval belongs in a different file.
-void Database::modifyInterval (const Interval& from, const Interval& to)
+void Database::modifyInterval (const Interval& from, const Interval& to, bool verbose)
 {
   if (!from.empty ())
   {
@@ -187,7 +187,7 @@ void Database::modifyInterval (const Interval& from, const Interval& to)
 
   if (!to.empty ())
   {
-    addInterval (to);
+    addInterval (to, verbose);
   }
 }
 
