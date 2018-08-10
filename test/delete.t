@@ -82,28 +82,16 @@ class TestDelete(TestCase):
     def test_delete_open_interval_spanning_exclusion(self):
         """Delete an open interval that spans over an exclusion"""
         now = datetime.now()
-        now_utc = now.utcnow()
-
         three_hours_before = now - timedelta(hours=3)
         four_hours_before = now - timedelta(hours=4)
 
+        now_utc = now.utcnow()
         four_hours_before_utc = now_utc - timedelta(hours=4)
         five_hours_before_utc = now_utc - timedelta(hours=5)
 
-        if four_hours_before.day < three_hours_before.day:
-            exclusion = "<{:%H}:00 >{:%H}:00".format(three_hours_before, four_hours_before)
-        else:
-            exclusion = "{:%H}:00-{:%H}:00".format(four_hours_before, three_hours_before)
+        self.t.configure_exclusions([(four_hours_before.time(), three_hours_before.time())])
 
-        self.t.config("exclusions.sunday", exclusion)
-        self.t.config("exclusions.monday", exclusion)
-        self.t.config("exclusions.tuesday", exclusion)
-        self.t.config("exclusions.wednesday", exclusion)
-        self.t.config("exclusions.thursday", exclusion)
-        self.t.config("exclusions.friday", exclusion)
-        self.t.config("exclusions.saturday", exclusion)
-
-        self.t("start {:%Y-%m-%dT%H}:00:00Z foo".format(five_hours_before_utc))
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc))
 
         # Delete the open interval.
         code, out, err = self.t("delete @1")  # self.t("delete @1 :debug")
@@ -114,8 +102,8 @@ class TestDelete(TestCase):
 
         self.assertEqual(len(j), 1)
         self.assertClosedInterval(j[0],
-                                  expectedStart='{:%Y%m%dT%H}0000Z'.format(five_hours_before_utc),
-                                  expectedEnd='{:%Y%m%dT%H}0000Z'.format(four_hours_before_utc),
+                                  expectedStart='{:%Y%m%dT%H%M%S}Z'.format(five_hours_before_utc),
+                                  expectedEnd='{:%Y%m%dT%H%M%S}Z'.format(four_hours_before_utc),
                                   expectedTags=['foo'],
                                   description='remaining interval')
 
