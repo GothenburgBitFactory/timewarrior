@@ -172,7 +172,7 @@ class TestTag(TestCase):
 
         code, out, err = self.t("tag @1 @2 foo bar")
 
-        self.assertIn('Added foo bar to @1\nAdded foo bar to @2', out)
+        self.assertIn("Added foo bar to @1\nAdded foo bar to @2", out)
 
         j = self.t.export()
         self.assertClosedInterval(j[0], expectedTags=["bar", "foo", "one"])
@@ -181,7 +181,6 @@ class TestTag(TestCase):
     def test_tag_synthetic_interval(self):
         """Tag a synthetic interval."""
         now = datetime.now()
-
         three_hours_before = now - timedelta(hours=3)
         four_hours_before = now - timedelta(hours=4)
 
@@ -191,8 +190,8 @@ class TestTag(TestCase):
         five_hours_before_utc = now_utc - timedelta(hours=5)
 
         self.t.configure_exclusions((four_hours_before.time(), three_hours_before.time()))
-
         self.t("start {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc))
+
         self.t("tag @2 bar")
 
         j = self.t.export()
@@ -209,6 +208,7 @@ class TestTag(TestCase):
                                 description="unmodified interval")
 
     def test_tag_with_identical_ids(self):
+        """Call 'tag' with identical ids"""
         now_utc = datetime.now().utcnow()
         one_hour_before_utc = now_utc - timedelta(hours=1)
 
@@ -219,6 +219,34 @@ class TestTag(TestCase):
 
         self.assertEquals(len(j), 1)
         self.assertClosedInterval(j[0], expectedTags=["foo"])
+
+    def test_tag_with_new_tag(self):
+        """Call 'tag' with new tag"""
+        now_utc = datetime.now().utcnow()
+
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S} - {:%Y-%m-%dT%H:%M:%S} foo".format(two_hours_before_utc, one_hour_before_utc))
+        code, out, err = self.t("tag @1 bar")
+
+        self.assertIn("Note: 'bar' is a new tag", out)
+        self.assertIn("Added bar to @1", out)
+
+    def test_tag_with_previous_tag(self):
+        """Call 'tag' with previous tag"""
+        now_utc = datetime.now().utcnow()
+
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S} - {:%Y-%m-%dT%H:%M:%S} bar".format(three_hours_before_utc, two_hours_before_utc))
+        self.t("track {:%Y-%m-%dT%H:%M:%S} - {:%Y-%m-%dT%H:%M:%S} foo".format(two_hours_before_utc, one_hour_before_utc))
+        code, out, err = self.t("tag @1 bar")
+
+        self.assertNotIn("Note: 'bar' is a new tag", out)
+        self.assertIn("Added bar to @1", out)
 
 
 if __name__ == "__main__":
