@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -77,7 +77,7 @@ int CmdJoin (
   database.deleteInterval (second);
 
   validate (cli, rules, database, combined);
-  database.addInterval (combined);
+  database.addInterval (combined, rules.getBoolean ("verbose"));
 
   database.endTransaction ();
 

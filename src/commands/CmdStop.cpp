@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -78,7 +78,7 @@ int CmdStop (
 
   for (auto& interval : flatten (modified, getAllExclusions (rules, modified.range)))
   {
-    database.addInterval (interval);
+    database.addInterval (interval, rules.getBoolean ("verbose"));
 
     if (rules.getBoolean ("verbose"))
       std::cout << intervalSummarize (database, rules, interval);
@@ -103,7 +103,7 @@ int CmdStop (
     modified.range.start = modified.range.end;
     modified.range.end = {0};
     validate (cli, rules, database, modified);
-    database.addInterval (modified);
+    database.addInterval (modified, rules.getBoolean ("verbose"));
     if (rules.getBoolean ("verbose"))
       std::cout << '\n' << intervalSummarize (database, rules, modified);
   }

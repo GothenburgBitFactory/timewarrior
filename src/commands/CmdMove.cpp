@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -80,7 +80,7 @@ int CmdMove (
     // Update database.
     database.deleteInterval (latest);
     for (auto& interval : flatten (modified, exclusions))
-      database.addInterval (interval);
+      database.addInterval (interval, rules.getBoolean ("verbose"));
   }
 
   // Move start time.
@@ -107,7 +107,7 @@ int CmdMove (
   database.deleteInterval (tracked[tracked.size () - id]);
 
   validate (cli, rules, database, i);
-  database.addInterval (i);
+  database.addInterval (i, rules.getBoolean ("verbose"));
 
   database.endTransaction ();
 

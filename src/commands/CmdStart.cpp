@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -66,7 +66,7 @@ int CmdStart (
 
     for (auto& interval : flatten (modified, getAllExclusions (rules, modified.range)))
     {
-      database.addInterval (interval);
+      database.addInterval (interval, rules.getBoolean ("verbose"));
 
       if (rules.getBoolean ("verbose"))
         std::cout << intervalSummarize (database, rules, interval);
@@ -85,7 +85,7 @@ int CmdStart (
 
   // Update database. An open interval does not need to be flattened.
   validate (cli, rules, database, now);
-  database.addInterval (now);
+  database.addInterval (now, rules.getBoolean ("verbose"));
 
   if (rules.getBoolean ("verbose"))
     std::cout << intervalSummarize (database, rules, now);

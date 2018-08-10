@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2016, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2016, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -46,9 +46,9 @@ public:
   std::string lastLine ();
   std::vector <std::string> allLines ();
 
-  void addInterval (const Interval&);
+  void addInterval (const Interval&, bool verbose);
   void deleteInterval (const Interval&);
-  void modifyInterval (const Interval&, const Interval&);
+  void modifyInterval (const Interval&, const Interval &, bool verbose);
 
   void startTransaction ();
   void endTransaction ();

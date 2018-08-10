@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -77,10 +77,10 @@ int CmdSplit (
     database.deleteInterval (tracked[tracked.size () - id]);
 
     validate (cli, rules, database, first);
-    database.addInterval (first);
+    database.addInterval (first, rules.getBoolean ("verbose"));
 
     validate (cli, rules, database, second);
-    database.addInterval (second);
+    database.addInterval (second, rules.getBoolean ("verbose"));
 
     if (rules.getBoolean ("verbose"))
       std::cout << "Split @" << id << '\n';

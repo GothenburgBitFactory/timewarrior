@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -98,7 +98,7 @@ int CmdContinue (
     database.deleteInterval (latest);
     for (auto& interval : flatten (modified, exclusions))
     {
-      database.addInterval (interval);
+      database.addInterval (interval, rules.getBoolean ("verbose"));
 
       if (rules.getBoolean ("verbose"))
         std::cout << '\n' << intervalSummarize (database, rules, interval);
@@ -110,7 +110,7 @@ int CmdContinue (
   to_copy.range.end = end_time;
 
   validate (cli, rules, database, to_copy);
-  database.addInterval (to_copy);
+  database.addInterval (to_copy, rules.getBoolean ("verbose"));
 
   database.endTransaction ();
 
