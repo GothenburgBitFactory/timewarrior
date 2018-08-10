@@ -18,6 +18,8 @@
           (thanks to bognolo)
 - #157    CLI: Ensure IDs are non-zero
           (thanks to janikrabe)
+- #167    Cannot shorten interval to zero length
+          (thanks to janikrabe)
 - Fixed error from totals.py while timer is active
           (thanks to davisdude)
 
