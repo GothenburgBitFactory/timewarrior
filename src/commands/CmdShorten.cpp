@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -92,7 +92,7 @@ int CmdShorten (
       throw format ("Cannot shorten open interval @{1}", id);
 
     Duration dur (delta);
-    if (dur >= (i.range.end - i.range.start))
+    if (dur > (i.range.end - i.range.start))
       throw format ("Cannot shorten interval @{1} by {2} because it is only {3} in length.", id, dur.formatHours (), Duration (i.range.end - i.range.start).formatHours ());
 
     database.deleteInterval (tracked[tracked.size () - id]);

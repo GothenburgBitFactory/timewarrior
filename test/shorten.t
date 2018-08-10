@@ -97,25 +97,26 @@ class TestShorten(TestCase):
                                 expectedStart="{:%Y%m%dT%H%M%S}Z".format(three_hours_before_utc),
                                 expectedTags=[])
 
-    # TODO Add :adjust tests.
-
-
-class TestBug6(TestCase):
-    def setUp(self):
-        """Executed before each test in the class"""
-        self.t = Timew()
-
     def test_over_shorten_closed_interval(self):
-        """TI-6: Exception after shortening task.
-
-           When an interval is shortened by an amount that exceeds it's length,
-           an assert is triggered, and should be an error instead.
-        """
+        """Over-shorten interval is an error"""
         self.t("track 2016-06-08T07:30:00 - 2016-06-08T07:35:00 foo")
 
         code, out, err = self.t.runError("shorten @1 10mins")
 
         self.assertIn('Cannot shorten interval @1 by 0:10:00 because it is only 0:05:00 in length.', err)
+
+    def test_shorten_closed_interval_to_zero(self):
+        """Shorten interval to zero"""
+        self.t("track 2016-06-08T07:30:00Z - 2016-06-08T07:35:00Z foo")
+
+        self.t("shorten @1 5mins")
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertClosedInterval(j[0],
+                                  expectedStart="20160608T073000Z",
+                                  expectedEnd="20160608T073000Z")
 
 
 if __name__ == "__main__":
