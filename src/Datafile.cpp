@@ -90,7 +90,7 @@ std::vector <std::string> Datafile::allLines ()
 void Datafile::addInterval (const Interval& interval)
 {
   // Note: end date might be zero.
-  assert (_range.overlap (interval.range));
+  assert (_range.segmentContains (interval.range));
 
   if (! _lines_loaded)
     load_lines ();
@@ -108,7 +108,7 @@ void Datafile::addInterval (const Interval& interval)
 void Datafile::deleteInterval (const Interval& interval)
 {
   // Note: end date might be zero.
-  assert (_range.overlap (interval.range));
+  assert (_range.segmentContains (interval.range));
 
   if (! _lines_loaded)
     load_lines ();
