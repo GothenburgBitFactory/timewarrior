@@ -343,9 +343,11 @@ std::vector <Range> subset (
   const std::vector <Range>& ranges)
 {
   std::vector <Range> all;
-  for (auto& r : ranges)
-    if (range.overlap (r))
+  for (auto& r : ranges) {
+    if (range.intersects (r)) {
       all.push_back (r);
+    }
+  }
 
   return all;
 }
@@ -356,9 +358,11 @@ std::vector <Interval> subset (
   const std::vector <Interval>& intervals)
 {
   std::vector <Interval> all;
-  for (auto& interval : intervals)
-    if (range.overlap (interval.range))
+  for (auto& interval : intervals) {
+    if (range.intersects (interval.range)) {
       all.push_back (interval);
+    }
+  }
 
   return all;
 }
@@ -549,12 +553,8 @@ Range outerRange (const std::vector <Interval>& intervals)
 bool matchesFilter (const Interval& interval, const Interval& filter)
 {
   if ((filter.range.start.toEpoch () == 0 &&
-       filter.range.end.toEpoch () == 0)
-
-      ||
-
-      ((interval.range.end.toEpoch () == 0 || interval.range.end   > filter.range.start) &&
-       (filter.range.end.toEpoch ()   == 0 || interval.range.start < filter.range.end)))
+       filter.range.end.toEpoch () == 0
+     ) || interval.range.intersects (filter.range))
   {
     for (auto& tag : filter.tags ())
       if (! interval.hasTag (tag))
@@ -608,7 +608,7 @@ std::vector <Interval> getTracked (
 
     if (! inclusions.empty ()) {
       auto latest = inclusions.back();
-      if (latest.range.is_open()) {;
+      if (latest.range.is_open()) {
         filter.range.end = 0;
       }
     }

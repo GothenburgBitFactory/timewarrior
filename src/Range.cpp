@@ -179,6 +179,41 @@ bool Range::encloses (const Range& other) const
   return false;
 }
 
+
+////////////////////////////////////////////////////////////////////////////////
+// This is a standard enclosure check, except that the other range
+// need not have an end time, even if this one does.
+//
+// Detect the following enclosure cases:
+//
+// this                     [--------)
+//   A                        [----)
+//   B                          [...
+//
+// this                     [...
+//   A                        [----)
+//   B                           [--------)
+//   C                                    [--------)
+//   D                         [...
+//   E                                 [...
+//
+bool Range::segmentContains (const Range& other) const
+{
+  if (is_started ()) {
+    if (is_ended ()) {
+      if (other.is_started () && other.start >= start) {
+        return ! other.is_ended () || other.end <= end;
+      }
+    } else {
+      if (other.is_started () && other.start >= start) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // Calculate the following intersection cases:
 //
@@ -216,7 +251,7 @@ Range Range::intersect (const Range& other) const
     if (is_ended ())
     {
       if (other.is_ended ())
-        result.end  = end < other.end ? end : other.end;
+        result.end = end < other.end ? end : other.end;
       else
         result.end = end;
     }
@@ -229,7 +264,26 @@ Range Range::intersect (const Range& other) const
     return result;
   }
 
+  // If there is an intersection but no overlap, we have a zero-width
+  // interval [p, p) and another interval [p, q), where q >= p.
+  if (intersects (other)) {
+    return Range {start, start};
+  }
+
   return Range {};
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool Range::intersects (const Range &other) const
+{
+  if (overlap (other)) {
+    return true;
+  }
+
+  // A half-closed zero-width interval [p, p) may have the same
+  // starting point as another interval without overlapping it.
+  // We consider p to be an element of a range [p, p).
+  return (is_started () && other.is_started () && start == other.start);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

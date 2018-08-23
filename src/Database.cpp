@@ -380,7 +380,10 @@ std::vector <Range> Database::segmentRange (const Range& range)
 
     // Capture date after incrementing month.
     Datetime segmentEnd (start_y, start_m, 1);
-    segments.push_back (Range (segmentStart, segmentEnd));
+    auto segment = Range (segmentStart, segmentEnd);
+    if (range.intersects (segment)) {
+      segments.push_back (segment);
+    }
   }
 
   return segments;
