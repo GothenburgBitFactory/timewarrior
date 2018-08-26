@@ -53,6 +53,13 @@ class TestResize(TestCase):
         code, out, err = self.t.runError("resize @1 10mins")
         self.assertIn('Cannot resize open interval @1', err)
 
+    def test_resize_full_month_interval(self):
+        """Resize an interval to cover a full month"""
+        self.t("track now - now")
+        self.t("resize @1 1month")
+        code, out, err = self.t("resize @1 1month")
+        self.assertIn('Resized @1 to 720:00:00', out)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
