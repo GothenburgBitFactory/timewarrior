@@ -193,6 +193,18 @@ W10 2017-03-11 Sat @3 FOO  10:00:00 11:00:00 1:00:00
                                                      6:00:00
 """, out)
 
+    def test_with_empty_interval_at_start_of_day(self):
+        """Summary should display empty intervals at midnight"""
+        self.t("track sod - sod")
+        code, out, err = self.t("summary :year")
+        self.assertRegexpMatches(out, """
+Wk  ?Date       Day Tags    ?Start      ?End    Time   Total
+[ -]+
+W\d{1,2} \d{4}-\d{2}-\d{2} .{3}       ?0:00:00 0:00:00 0:00:00 0:00:00
+
+[ ]+0:00:00
+""")
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
