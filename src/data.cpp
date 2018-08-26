@@ -595,9 +595,9 @@ std::vector <Interval> getTracked (
   auto inclusions = getAllInclusions (database);
 
   // Exclusions are only usable within a range, so if no filter range exists,
-  // determine the outermost range of the inclusions, ie:
+  // determine the infinite range starting at the first inclusion, i.e.:
   //
-  //   [earliest start, latest end)
+  //   [earliest start, infinity)
   //
   // Avoid assigning a zero-width range - leave it unstarted instead.
   if (! filter.range.is_started ())
@@ -606,12 +606,10 @@ std::vector <Interval> getTracked (
     if (outer.total ())
       filter.range = outer;
 
-    if (! inclusions.empty ()) {
-      auto latest = inclusions.back();
-      if (latest.range.is_open()) {
-        filter.range.end = 0;
-      }
-    }
+    // Use an infinite range instead of the last end date; this prevents
+    // issues when there is an empty range [q, q) at the end of a filter
+    // [p, q), in which case there is no overlap or intersection.
+    filter.range.end = 0;
   }
 
   std::vector <Interval> intervals = inclusions;
