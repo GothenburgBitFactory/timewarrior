@@ -48,6 +48,16 @@ class TestIds(TestCase):
         self.assertIn(' @1 ', out)
         self.assertIn(' @2 ', out)
 
+    def test_latest_interval_included_when_empty(self):
+      """Count IDs when the last interval is empty
+      Include the last interval in getTracked() even if it is a
+      zero-width interval and there are other, earlier intervals.
+      """
+      self.t("track 2018-01-01 - 2018-01-01")
+      self.t("track 2018-01-02 - 2018-01-02")
+      code, out, err = self.t("move @2 2018-01-03")
+      self.assertIn('Moved @2 to 2018-01-03T00:00:00', out)
+
     def test_should_fail_on_zero_id(self):
         code, out, err = self.t.runError("delete @0")
         self.assertIn("'@0' is not a valid ID.", err)
