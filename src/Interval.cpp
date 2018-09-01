@@ -73,7 +73,7 @@ void Interval::initialize (const std::string& line)
     {
       // Optional <tag> ...
       for (unsigned int i = 2 + offset; i < tokens.size (); ++i)
-        _tags.insert (tokens[i]);
+        tag (tokens[i]);
     }
 
     return;
@@ -105,7 +105,7 @@ std::set <std::string> Interval::tags () const
 ////////////////////////////////////////////////////////////////////////////////
 void Interval::tag (const std::string& tag)
 {
-  if (_tags.find (tag) == _tags.end ())
+  if (! tag.empty ())
     _tags.insert (tag);
 }
 
