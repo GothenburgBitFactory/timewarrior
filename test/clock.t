@@ -85,12 +85,10 @@ class TestClock(TestCase):
         code, out, err = self.t.runError("")
         self.assertIn("There is no active time tracking.", out)
 
-        code, out, err = self.t("start tag1 tag2")
+        code, out, err = self.t("start tag1 tag2 2h ago")
         self.assertIn("Tracking tag1 tag2\n", out)
 
-        sleep(1)
-
-        code, out, err = self.t("start tag3")
+        code, out, err = self.t("start tag3 1h ago")
         self.assertIn("Recorded tag1 tag2\n", out)
         self.assertIn("Tracking tag3\n", out)
 
@@ -102,10 +100,10 @@ class TestClock(TestCase):
 
     def test_start_subtract(self):
         """Verify that starting multiple tags and stopping one leaves an open interval"""
-        code, out, err = self.t("start tag1 tag2 tag3")
+        code, out, err = self.t("start tag1 tag2 tag3 2h ago")
         self.assertIn("Tracking tag1 tag2 tag3\n", out)
 
-        code, out, err = self.t("stop tag1")
+        code, out, err = self.t("stop tag1 1h ago")
         self.assertIn("Recorded tag1 tag2 tag3\n", out)
         self.assertIn("Tracking tag2 tag3\n", out)
 
