@@ -24,26 +24,34 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef INCLUDED_UNDOACTION
-#define INCLUDED_UNDOACTION
+#ifndef INCLUDED_JOURNAL
+#define INCLUDED_JOURNAL
 
+
+#include <vector>
 #include <string>
+#include <memory>
+#include <Transaction.h>
 
-class UndoAction
+class Journal
 {
 public:
-  UndoAction(std::string, std::string, std::string);
+  Journal() = default;
 
-  std::string getType() const;
-  std::string getBefore() const;
-  std::string getAfter() const;
+  void initialize(const std::string&);
 
-  std::string toString () const;
+  void startTransaction ();
+  void endTransaction ();
+  void recordConfigAction(const std::string&, const std::string&);
+  void recordIntervalAction(const std::string&, const std::string&);
+
+  Transaction popLastTransaction();
 
 private:
-  const std::string _type;
-  const std::string _before;
-  const std::string _after;
+  void recordUndoAction (const std::string &, const std::string &, const std::string &);
+
+  std::string _location {"~/.timewarrior/data/undo.data"};
+  std::shared_ptr <Transaction> _currentTransaction = nullptr;
 };
 
 #endif

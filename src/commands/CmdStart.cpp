@@ -32,7 +32,8 @@
 int CmdStart (
   const CLI& cli,
   Rules& rules,
-  Database& database)
+  Database& database,
+  Journal& journal)
 {
   // Add a new open interval, which may have a defined start time.
   auto filter = getFilter (cli);
@@ -44,7 +45,7 @@ int CmdStart (
 
   auto latest = getLatestInterval (database);
 
-  database.startTransaction ();
+  journal.startTransaction ();
 
   // If the latest interval is open, close it.
   if (latest.is_open ())
@@ -96,7 +97,7 @@ int CmdStart (
   if (rules.getBoolean ("verbose"))
     std::cout << intervalSummarize (database, rules, started);
 
-  database.endTransaction ();
+  journal.endTransaction ();
 
   return 0;
 }

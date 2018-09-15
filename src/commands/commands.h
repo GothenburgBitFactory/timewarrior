@@ -31,41 +31,42 @@
 #include <Rules.h>
 #include <Database.h>
 #include <Extensions.h>
+#include <Journal.h>
 
-int CmdAnnotate      (const CLI&, Rules&, Database&                   );
-int CmdCancel        (            Rules&, Database&                   );
-int CmdConfig        (const CLI&, Rules&, Database&                   );
-int CmdContinue      (const CLI&, Rules&, Database&                   );
-int CmdDefault       (            Rules&, Database&                   );
-int CmdDelete        (const CLI&, Rules&, Database&                   );
-int CmdDiagnostics   (            Rules&, Database&, const Extensions&);
-int CmdExport        (const CLI&, Rules&, Database&                   );
-int CmdExtensions    (            Rules&,            const Extensions&);
-int CmdFill          (const CLI&, Rules&, Database&                   );
-int CmdGaps          (const CLI&, Rules&, Database&                   );
-int CmdGet           (const CLI&, Rules&, Database&                   );
-int CmdHelpUsage     (                               const Extensions&);
-int CmdHelp          (const CLI&,                    const Extensions&);
-int CmdJoin          (const CLI&, Rules&, Database&                   );
-int CmdLengthen      (const CLI&, Rules&, Database&                   );
-int CmdModify        (const CLI&, Rules&, Database&                   );
-int CmdMove          (const CLI&, Rules&, Database&                   );
-int CmdReport        (const CLI&, Rules&, Database&, const Extensions&);
-int CmdResize        (const CLI&, Rules&, Database&                   );
-int CmdShorten       (const CLI&, Rules&, Database&                   );
-int CmdShow          (            Rules&                              );
-int CmdSplit         (const CLI&, Rules&, Database&                   );
-int CmdStart         (const CLI&, Rules&, Database&                   );
-int CmdStop          (const CLI&, Rules&, Database&                   );
-int CmdTag           (const CLI&, Rules&, Database&                   );
-int CmdTags          (const CLI&, Rules&, Database&                   );
-int CmdTrack         (const CLI&, Rules&, Database&                   );
-int CmdUndo          (            Rules&, Database&                   );
-int CmdUntag         (const CLI&, Rules&, Database&                   );
+int CmdAnnotate      (const CLI&, Rules&, Database&, Journal&                   );
+int CmdCancel        (            Rules&, Database&, Journal&                   );
+int CmdConfig        (const CLI&, Rules&,            Journal&                   );
+int CmdContinue      (const CLI&, Rules&, Database&, Journal&                   );
+int CmdDefault       (            Rules&, Database&                             );
+int CmdDelete        (const CLI&, Rules&, Database&, Journal&                   );
+int CmdDiagnostics   (            Rules&, Database&,           const Extensions&);
+int CmdExport        (const CLI&, Rules&, Database&                             );
+int CmdExtensions    (            Rules&,                      const Extensions&);
+int CmdFill          (const CLI&, Rules&, Database&, Journal&                   );
+int CmdGaps          (const CLI&, Rules&, Database&                             );
+int CmdGet           (const CLI&, Rules&, Database&                             );
+int CmdHelpUsage     (                                         const Extensions&);
+int CmdHelp          (const CLI&,                              const Extensions&);
+int CmdJoin          (const CLI&, Rules&, Database&, Journal&                   );
+int CmdLengthen      (const CLI&, Rules&, Database&, Journal&                   );
+int CmdModify        (const CLI&, Rules&, Database&, Journal&                   );
+int CmdMove          (const CLI&, Rules&, Database&, Journal&                   );
+int CmdReport        (const CLI&, Rules&, Database&,           const Extensions&);
+int CmdResize        (const CLI&, Rules&, Database&, Journal&                   );
+int CmdShorten       (const CLI&, Rules&, Database&, Journal&                   );
+int CmdShow          (            Rules&                                        );
+int CmdSplit         (const CLI&, Rules&, Database&, Journal&                   );
+int CmdStart         (const CLI&, Rules&, Database&, Journal&                   );
+int CmdStop          (const CLI&, Rules&, Database&, Journal&                   );
+int CmdTag           (const CLI&, Rules&, Database&, Journal&                   );
+int CmdTags          (const CLI&, Rules&, Database&                             );
+int CmdTrack         (const CLI&, Rules&, Database&, Journal&                   );
+int CmdUndo          (            Rules&, Database&, Journal&                   );
+int CmdUntag         (const CLI&, Rules&, Database&, Journal&                   );
 
-int CmdChartDay      (const CLI&, Rules&, Database&                   );
-int CmdChartWeek     (const CLI&, Rules&, Database&                   );
-int CmdChartMonth    (const CLI&, Rules&, Database&                   );
-int CmdSummary       (const CLI&, Rules&, Database&                   );
+int CmdChartDay      (const CLI&, Rules&, Database&                             );
+int CmdChartWeek     (const CLI&, Rules&, Database&                             );
+int CmdChartMonth    (const CLI&, Rules&, Database&                             );
+int CmdSummary       (const CLI&, Rules&, Database&                             );
 
 #endif

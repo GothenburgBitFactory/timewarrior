@@ -38,7 +38,7 @@ static void undoIntervalAction(UndoAction& action, Database& database)
   database.modifyInterval (after, before, false);
 }
 
-static void undoConfigAction (UndoAction& action, Rules &rules, Database& database)
+static void undoConfigAction (UndoAction& action, Rules &rules, Journal& journal)
 {
   const std::string& before = action.getBefore ();
 
@@ -47,7 +47,7 @@ static void undoConfigAction (UndoAction& action, Rules &rules, Database& databa
     auto pos = after.find (' ');
     std::string name = after.substr (0, pos);
 
-    Rules::unsetConfigVariable (database, rules, name, false);
+    Rules::unsetConfigVariable (journal, rules, name, false);
   }
   else
   {
@@ -55,14 +55,14 @@ static void undoConfigAction (UndoAction& action, Rules &rules, Database& databa
     std::string name = before.substr (0, pos-1);
     std::string value = before.substr (pos+1, before.length ());
 
-    Rules::setConfigVariable (database, rules, name, value, false);
+    Rules::setConfigVariable (journal, rules, name, value, false);
   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdUndo (Rules& rules, Database& database)
+int CmdUndo (Rules& rules, Database& database, Journal& journal)
 {
-  Transaction transaction = database.popLastTransaction ();
+  Transaction transaction = journal.popLastTransaction ();
 
   std::vector <UndoAction> actions = transaction.getActions ();
 
@@ -88,7 +88,7 @@ int CmdUndo (Rules& rules, Database& database)
       }
       else if (type == "config")
       {
-        undoConfigAction (action, rules, database);
+        undoConfigAction (action, rules, journal);
       }
       else
       {

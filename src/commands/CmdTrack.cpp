@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,8 @@
 int CmdTrack (
   const CLI& cli,
   Rules& rules,
-  Database& database)
+  Database& database,
+  Journal& journal)
 {
   auto filter = getFilter (cli);
 
@@ -40,9 +41,9 @@ int CmdTrack (
   // the 'track' command behave like 'start', so delegate to CmdStart.
   if (! filter.is_started () ||
       ! filter.is_ended ())
-    return CmdStart (cli, rules, database);
+    return CmdStart (cli, rules, database, journal);
 
-  database.startTransaction ();
+  journal.startTransaction ();
 
   // Validation must occur before flattening.
   validate (cli, rules, database, filter);
@@ -55,7 +56,7 @@ int CmdTrack (
       std::cout << intervalSummarize (database, rules, interval);
   }
 
-  database.endTransaction ();
+  journal.endTransaction ();
 
   return 0;
 }

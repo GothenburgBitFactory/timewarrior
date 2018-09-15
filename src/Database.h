@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2016, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016, 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -34,12 +34,13 @@
 #include <vector>
 #include <string>
 #include <TagInfoDatabase.h>
+#include <Journal.h>
 
 class Database
 {
 public:
   Database () = default;
-  void initialize (const std::string&);
+  void initialize (const std::string&, Journal& journal);
   void commit ();
   std::vector <std::string> files () const;
 
@@ -50,13 +51,6 @@ public:
   void deleteInterval (const Interval&);
   void modifyInterval (const Interval&, const Interval &, bool verbose);
 
-  void startTransaction ();
-  void endTransaction ();
-  void recordConfigAction(const std::string&, const std::string&);
-  void recordIntervalAction(const std::string&, const std::string&);
-
-  Transaction popLastTransaction ();
-
   std::string dump () const;
 
 private:
@@ -65,13 +59,11 @@ private:
   void initializeDatafiles ();
   void initializeTagDatabase ();
 
-  void recordUndoAction (const std::string &, const std::string &, const std::string &);
-
 private:
   std::string               _location {"~/.timewarrior/data"};
   std::vector <Datafile>    _files    {};
   TagInfoDatabase           _tagInfoDatabase {};
-  std::shared_ptr <Transaction> _currentTransaction = nullptr;
+  Journal*                  _journal {};
 };
 
 #endif

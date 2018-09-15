@@ -35,7 +35,8 @@
 int CmdAnnotate (
   const CLI& cli,
   Rules& rules,
-  Database& database)
+  Database& database,
+  Journal& journal)
 {
   std::set <int> ids = cli.getIds ();
   std::string annotation = cli.getAnnotation ();
@@ -52,7 +53,7 @@ int CmdAnnotate (
 
   bool dirty = true;
 
-  database.startTransaction ();
+  journal.startTransaction ();
 
   for (auto& id : ids)
   {
@@ -111,7 +112,7 @@ int CmdAnnotate (
     }
   }
 
-  database.endTransaction ();
+  journal.endTransaction ();
 
   return 0;
 }

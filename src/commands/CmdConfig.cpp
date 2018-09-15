@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,7 @@
 int CmdConfig (
   const CLI& cli,
   Rules& rules,
-  Database& database)
+  Journal& journal)
 {
   int rc = 0;
 
@@ -67,7 +67,7 @@ int CmdConfig (
 
   bool change = false;
 
-  database.startTransaction ();
+  journal.startTransaction ();
 
   // timew config name value
   // timew config name ""
@@ -84,7 +84,7 @@ int CmdConfig (
       value += words[i];
     }
 
-    change = Rules::setConfigVariable (database, rules, name, value, confirmation);
+    change = Rules::setConfigVariable (journal, rules, name, value, confirmation);
 
     if (!change)
     {
@@ -95,7 +95,7 @@ int CmdConfig (
   else
   {
     bool found = false;
-    rc = Rules::unsetConfigVariable (database, rules, name, confirmation);
+    rc = Rules::unsetConfigVariable (journal, rules, name, confirmation);
     if (rc == 0)
     {
       change = true;
@@ -112,7 +112,7 @@ int CmdConfig (
     }
   }
 
-  database.endTransaction ();
+  journal.endTransaction ();
 
   if (rules.getBoolean ("verbose"))
   {

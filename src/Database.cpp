@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016, 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,17 +26,16 @@
 
 #include <Database.h>
 #include <format.h>
-#include <iterator>
-#include <iomanip>
-#include <TransactionsFactory.h>
 #include <JSON.h>
 #include <iostream>
+#include <iomanip>
 #include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-void Database::initialize (const std::string& location)
+void Database::initialize (const std::string& location, Journal& journal)
 {
   _location = location;
+  _journal = &journal;
   initializeTagDatabase ();
 }
 
@@ -122,7 +121,7 @@ void Database::addInterval (const Interval& interval, bool verbose)
   // created on demand.
   auto df = getDatafile (interval.start.year (), interval.start.month ());
   _files[df].addInterval (interval);
-  recordIntervalAction ("", interval.json ());
+  _journal->recordIntervalAction ("", interval.json ());
 }
 
 void Database::deleteInterval (const Interval& interval)
@@ -139,8 +138,7 @@ void Database::deleteInterval (const Interval& interval)
   auto df = getDatafile (interval.start.year (), interval.start.month ());
 
   _files[df].deleteInterval (interval);
-
-  recordIntervalAction (interval.json (), "");
+  _journal->recordIntervalAction (interval.json (), "");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -159,115 +157,6 @@ void Database::modifyInterval (const Interval& from, const Interval& to, bool ve
   {
     addInterval (to, verbose);
   }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void Database::startTransaction ()
-{
-  if (_currentTransaction != nullptr)
-  {
-    throw "Subsequent call to start transaction";
-  }
-
-  _currentTransaction = std::make_shared <Transaction> ();
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void Database::endTransaction ()
-{
-  if (_currentTransaction == nullptr)
-  {
-    throw "Call to end non-existent transaction";
-  }
-
-  File undo (_location + "/undo.data");
-
-  if (undo.open ())
-  {
-    undo.append (_currentTransaction->toString());
-
-    undo.close ();
-    _currentTransaction.reset ();
-  }
-  else
-  {
-    throw format ("Unable to write the undo transaction to {1}", undo._data);
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// Record undoable actions. There are several types:
-//   interval    changes to stored intervals
-//   config      changes to configuration
-//
-// Actions are only recorded if a transaction is open
-//
-void Database::recordUndoAction (
-  const std::string &type,
-  const std::string &before,
-  const std::string &after)
-{
-  if (_currentTransaction == nullptr)
-  {
-    return;
-  }
-
-  _currentTransaction->addUndoAction (type, before, after);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void Database::recordConfigAction (
-  const std::string& before,
-  const std::string& after)
-{
-  recordUndoAction ("config", before, after);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void Database::recordIntervalAction (
-  const std::string& before,
-  const std::string& after)
-{
-  recordUndoAction ("interval", before, after);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-Transaction Database::popLastTransaction ()
-{
-  File undo (_location + "/undo.data");
-
-  std::vector <std::string> read_lines;
-  undo.read (read_lines);
-  undo.close ();
-
-  TransactionsFactory transactionsFactory;
-
-  for (auto& line: read_lines)
-  {
-    transactionsFactory.parseLine (line);
-  }
-
-  std::vector <Transaction> transactions = transactionsFactory.get ();
-
-  if (transactions.empty ())
-  {
-    return Transaction {};
-  }
-
-  Transaction last = transactions.back ();
-  transactions.pop_back ();
-
-  File::remove (undo._data);
-  undo.open ();
-
-  for (auto& transaction : transactions)
-  {
-    undo.append (transaction.toString ());
-  }
-
-  undo.close ();
-
-  return last;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

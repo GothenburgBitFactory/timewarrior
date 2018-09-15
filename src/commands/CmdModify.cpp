@@ -33,7 +33,8 @@
 int CmdModify (
   const CLI& cli,
   Rules& rules,
-  Database& database)
+  Database& database,
+  Journal& journal)
 {
   auto filter = getFilter (cli);
   std::set <int> ids = cli.getIds ();
@@ -84,13 +85,13 @@ int CmdModify (
   if (!interval.is_open () && (interval.start > interval.end))
     throw format ("Cannot modify interval @{1} where start is after end.", id);
   
-  database.startTransaction ();
+  journal.startTransaction ();
 
   database.deleteInterval (tracked[tracked.size() - id]);
   validate(cli, rules, database, interval);
   database.addInterval(interval, verbose);
 
-  database.endTransaction();
+  journal.endTransaction();
 
   return 0;
 }

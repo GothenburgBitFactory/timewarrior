@@ -1,0 +1,139 @@
+////////////////////////////////////////////////////////////////////////////////
+//
+// Copyright 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+//
+// https://www.opensource.org/licenses/mit-license.php
+//
+////////////////////////////////////////////////////////////////////////////////
+
+#include <FS.h>
+#include <format.h>
+#include <Journal.h>
+#include <TransactionsFactory.h>
+
+////////////////////////////////////////////////////////////////////////////////
+void Journal::initialize (const std::string& location)
+{
+  _location = location;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Journal::startTransaction ()
+{
+  if (_currentTransaction != nullptr)
+  {
+    throw "Subsequent call to start transaction";
+  }
+
+  _currentTransaction = std::make_shared <Transaction> ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Journal::endTransaction ()
+{
+  if (_currentTransaction == nullptr)
+  {
+    throw "Call to end non-existent transaction";
+  }
+
+  File undo (_location);
+
+  if (undo.open ())
+  {
+    undo.append (_currentTransaction->toString());
+
+    undo.close ();
+    _currentTransaction.reset ();
+  }
+  else
+  {
+    throw format ("Unable to write the undo transaction to {1}", undo._data);
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Journal::recordConfigAction (const std::string& before, const std::string& after)
+{
+  recordUndoAction ("config", before, after);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Journal::recordIntervalAction (const std::string&  before, const std::string&  after)
+{
+  recordUndoAction ("interval", before, after);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Record undoable actions. There are several types:
+//   interval    changes to stored intervals
+//   config      changes to configuration
+//
+// Actions are only recorded if a transaction is open
+//
+void Journal::recordUndoAction (
+  const std::string &type,
+  const std::string &before,
+  const std::string &after)
+{
+  if (_currentTransaction != nullptr)
+  {
+    _currentTransaction->addUndoAction (type, before, after);
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Transaction Journal::popLastTransaction ()
+{
+  File undo (_location);
+
+  std::vector <std::string> read_lines;
+  undo.read (read_lines);
+  undo.close ();
+
+  TransactionsFactory transactionsFactory;
+
+  for (auto& line: read_lines)
+  {
+    transactionsFactory.parseLine (line);
+  }
+
+  std::vector <Transaction> transactions = transactionsFactory.get ();
+
+  if (transactions.empty ())
+  {
+    return Transaction {};
+  }
+
+  Transaction last = transactions.back ();
+  transactions.pop_back ();
+
+  File::remove (undo._data);
+  undo.open ();
+
+  for (auto& transaction : transactions)
+  {
+    undo.append (transaction.toString ());
+  }
+
+  undo.close ();
+
+  return last;
+}

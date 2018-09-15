@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -33,7 +33,8 @@
 int CmdContinue (
   const CLI& cli,
   Rules& rules,
-  Database& database)
+  Database& database,
+  Journal& journal)
 {
   // Gather IDs and TAGs.
   std::set <int> ids = cli.getIds();
@@ -73,7 +74,7 @@ int CmdContinue (
   Datetime start_time;
   Datetime end_time;
 
-  database.startTransaction ();
+  journal.startTransaction ();
 
   if (filter.start.toEpoch () != 0)
   {
@@ -112,7 +113,7 @@ int CmdContinue (
   validate (cli, rules, database, to_copy);
   database.addInterval (to_copy, rules.getBoolean ("verbose"));
 
-  database.endTransaction ();
+  journal.endTransaction ();
 
   if (rules.getBoolean ("verbose"))
     std::cout << intervalSummarize (database, rules, to_copy);

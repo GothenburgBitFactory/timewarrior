@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2016 - 2019, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2019, Paul Beckingham, Federico Hernandez, Thomas Lauf.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -63,9 +63,9 @@ void validate (const CLI& cli, const Rules& rules, Database&, Interval&);
 // init.cpp
 bool lightweightVersionCheck (int, const char**);
 void initializeEntities (CLI&);
-void initializeDataAndRules (const CLI&, Database&, Rules&);
+void initializeDataJournalAndRules (const CLI&, Database&, Journal&, Rules&);
 void initializeExtensions (CLI&, const Rules&, Extensions&);
-int dispatchCommand (const CLI&, Database&, Rules&, const Extensions&);
+int dispatchCommand (const CLI&, Database&, Journal&, Rules&, const Extensions&);
 
 // helper.cpp
 Color intervalColor (const std::set <std::string>&, const std::map <std::string, Color>&);

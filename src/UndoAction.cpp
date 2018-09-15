@@ -25,35 +25,30 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <UndoAction.h>
+#include <utility>
 
-UndoAction::UndoAction (
-  const std::string& type,
-  const std::string& before,
-  const std::string& after)
-{
-  _type = type;
-  _before = before;
-  _after = after;
-}
+UndoAction::UndoAction (std::string type, std::string before, std::string after) :
+  _type (std::move (type)), _before (std::move (before)), _after (std::move (after))
+{}
 
-std::string UndoAction::toString ()
+std::string UndoAction::toString () const
 {
   return "  type: " + _type + "\n" +
          "  before: " + _before + "\n" +
          "  after: " + _after + "\n";
 }
 
-std::string UndoAction::getType ()
+std::string UndoAction::getType () const
 {
   return _type;
 }
 
-std::string UndoAction::getBefore ()
+std::string UndoAction::getBefore () const
 {
   return _before;
 }
 
-std::string UndoAction::getAfter ()
+std::string UndoAction::getAfter () const
 {
   return _after;
 }

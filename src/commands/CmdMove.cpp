@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,8 @@
 int CmdMove (
   const CLI& cli,
   Rules& rules,
-  Database& database)
+  Database& database,
+  Journal& journal)
 {
   // Gather ID and TAGs.
   std::set <int> ids = cli.getIds ();
@@ -51,7 +52,7 @@ int CmdMove (
     throw std::string ("ID must be specified. See 'timew help move'.");
   }
 
-  database.startTransaction ();
+  journal.startTransaction ();
 
   int id = *ids.begin ();
 
@@ -109,7 +110,7 @@ int CmdMove (
   validate (cli, rules, database, i);
   database.addInterval (i, rules.getBoolean ("verbose"));
 
-  database.endTransaction ();
+  journal.endTransaction ();
 
   if (rules.getBoolean ("verbose"))
     std::cout << "Moved @" << id << " to " << i.start.toISOLocalExtended () << '\n';

@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2016, 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +32,7 @@
 #include <vector>
 #include <string>
 #include <Database.h>
+#include <Journal.h>
 
 class Rules
 {
@@ -55,12 +56,12 @@ public:
 
   std::string dump () const;
 
-  static bool setConfigVariable (Database& database,
+  static bool setConfigVariable (Journal& journal,
                                  const Rules& rules,
                                  std::string name,
                                  std::string value,
                                  bool confirmation /* = false */);
-  static int unsetConfigVariable (Database& database,
+  static int unsetConfigVariable (Journal& journal,
                                   const Rules& rules,
                                   std::string name,
                                   bool confirmation /* = false */);

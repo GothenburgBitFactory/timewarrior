@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -34,7 +34,8 @@
 int CmdFill (
   const CLI& cli,
   Rules& rules,
-  Database& database)
+  Database& database,
+  Journal& journal)
 {
   std::set <int> ids = cli.getIds ();
 
@@ -46,7 +47,7 @@ int CmdFill (
   Interval filter;
   auto tracked = getTracked (database, rules, filter);
 
-  database.startTransaction ();
+  journal.startTransaction ();
 
   // Apply tags to ids.
   for (auto& id : ids)
@@ -67,7 +68,7 @@ int CmdFill (
     // Note: Feedback generated inside autoFill().
   }
 
-  database.endTransaction ();
+  journal.endTransaction ();
 
   return 0;
 }

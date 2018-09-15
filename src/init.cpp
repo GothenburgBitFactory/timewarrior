@@ -118,9 +118,10 @@ void initializeEntities (CLI& cli)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void initializeDataAndRules (
+void initializeDataJournalAndRules (
   const CLI& cli,
   Database& database,
+  Journal& journal,
   Rules& rules)
 {
   // Rose tint my world, make me safe from my trouble and pain.
@@ -215,8 +216,9 @@ void initializeDataAndRules (
     }
   }
 
+  journal.initialize (data._data + "/undo.data");
   // Initialize the database (no data read), but files are enumerated.
-  database.initialize (data._data);
+  database.initialize (data._data, journal);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -243,6 +245,7 @@ void initializeExtensions (
 int dispatchCommand (
   const CLI& cli,
   Database& database,
+  Journal& journal,
   Rules& rules,
   const Extensions& extensions)
 {
@@ -259,43 +262,43 @@ int dispatchCommand (
   {
     // These signatures are expected to be all different, therefore no
     // command to fn mapping.
-         if (command == "annotate")    status = CmdAnnotate      (cli, rules, database            );
-    else if (command == "cancel")      status = CmdCancel        (     rules, database            );
-    else if (command == "config")      status = CmdConfig        (cli, rules, database            );
-    else if (command == "continue")    status = CmdContinue      (cli, rules, database            );
-    else if (command == "day")         status = CmdChartDay      (cli, rules, database            );
-    else if (command == "delete")      status = CmdDelete        (cli, rules, database            );
-    else if (command == "diagnostics") status = CmdDiagnostics   (     rules, database, extensions);
-    else if (command == "export")      status = CmdExport        (cli, rules, database            );
-    else if (command == "extensions")  status = CmdExtensions    (     rules,           extensions);
+         if (command == "annotate")    status = CmdAnnotate      (cli, rules, database, journal            );
+    else if (command == "cancel")      status = CmdCancel        (     rules, database, journal            );
+    else if (command == "config")      status = CmdConfig        (cli, rules,           journal            );
+    else if (command == "continue")    status = CmdContinue      (cli, rules, database, journal            );
+    else if (command == "day")         status = CmdChartDay      (cli, rules, database                     );
+    else if (command == "delete")      status = CmdDelete        (cli, rules, database, journal            );
+    else if (command == "diagnostics") status = CmdDiagnostics   (     rules, database,          extensions);
+    else if (command == "export")      status = CmdExport        (cli, rules, database                     );
+    else if (command == "extensions")  status = CmdExtensions    (     rules,                    extensions);
 /*
-    else if (command == "fill")        status = CmdFill          (cli, rules, database            );
-*/
-    else if (command == "gaps")        status = CmdGaps          (cli, rules, database            );
-    else if (command == "get")         status = CmdGet           (cli, rules, database            );
+    else if (command == "fill")        status = CmdFill          (cli, rules, database, journal            );
+//*/
+    else if (command == "gaps")        status = CmdGaps          (cli, rules, database                     );
+    else if (command == "get")         status = CmdGet           (cli, rules, database                     );
     else if (command == "help" ||
              command == "--help" ||
-             command == "-h")          status = CmdHelp          (cli,                  extensions);
-    else if (command == "join")        status = CmdJoin          (cli, rules, database            );
-    else if (command == "lengthen")    status = CmdLengthen      (cli, rules, database            );
-    else if (command == "modify")      status = CmdModify        (cli, rules, database            );
-    else if (command == "month")       status = CmdChartMonth    (cli, rules, database            );
-    else if (command == "move")        status = CmdMove          (cli, rules, database            );
-    else if (command == "report")      status = CmdReport        (cli, rules, database, extensions);
-    else if (command == "resize")      status = CmdResize        (cli, rules, database            );
-    else if (command == "shorten")     status = CmdShorten       (cli, rules, database            );
-    else if (command == "show")        status = CmdShow          (     rules                      );
-    else if (command == "split")       status = CmdSplit         (cli, rules, database            );
-    else if (command == "start")       status = CmdStart         (cli, rules, database            );
-    else if (command == "stop")        status = CmdStop          (cli, rules, database            );
-    else if (command == "summary")     status = CmdSummary       (cli, rules, database            );
-    else if (command == "tag")         status = CmdTag           (cli, rules, database            );
-    else if (command == "tags")        status = CmdTags          (cli, rules, database            );
-    else if (command == "track")       status = CmdTrack         (cli, rules, database            );
-    else if (command == "undo")        status = CmdUndo          (     rules, database            );
-    else if (command == "untag")       status = CmdUntag         (cli, rules, database            );
-    else if (command == "week")        status = CmdChartWeek     (cli, rules, database            );
-    else                               status = CmdReport        (cli, rules, database, extensions);
+             command == "-h")          status = CmdHelp          (cli,                           extensions);
+    else if (command == "join")        status = CmdJoin          (cli, rules, database, journal            );
+    else if (command == "lengthen")    status = CmdLengthen      (cli, rules, database, journal            );
+    else if (command == "modify")      status = CmdModify        (cli, rules, database, journal            );
+    else if (command == "month")       status = CmdChartMonth    (cli, rules, database                     );
+    else if (command == "move")        status = CmdMove          (cli, rules, database, journal            );
+    else if (command == "report")      status = CmdReport        (cli, rules, database,          extensions);
+    else if (command == "resize")      status = CmdResize        (cli, rules, database, journal            );
+    else if (command == "shorten")     status = CmdShorten       (cli, rules, database, journal            );
+    else if (command == "show")        status = CmdShow          (     rules                               );
+    else if (command == "split")       status = CmdSplit         (cli, rules, database, journal            );
+    else if (command == "start")       status = CmdStart         (cli, rules, database, journal            );
+    else if (command == "stop")        status = CmdStop          (cli, rules, database, journal            );
+    else if (command == "summary")     status = CmdSummary       (cli, rules, database                     );
+    else if (command == "tag")         status = CmdTag           (cli, rules, database, journal            );
+    else if (command == "tags")        status = CmdTags          (cli, rules, database                     );
+    else if (command == "track")       status = CmdTrack         (cli, rules, database, journal            );
+    else if (command == "undo")        status = CmdUndo          (     rules, database, journal            );
+    else if (command == "untag")       status = CmdUntag         (cli, rules, database, journal            );
+    else if (command == "week")        status = CmdChartWeek     (cli, rules, database                     );
+    else                               status = CmdReport        (cli, rules, database,          extensions);
   }
   else
   {

@@ -500,7 +500,7 @@ std::string Rules::parseGroup (const std::vector <std::string>& tokens)
 // only sees the top-level settings. This has the desirable effect of adding as
 // an override any setting which resides in an imported file.
 bool Rules::setConfigVariable (
-  Database& database,
+  Journal& journal,
   const Rules& rules,
   std::string name,
   std::string value,
@@ -540,7 +540,7 @@ bool Rules::setConfigVariable (
           auto before = line;
           line = line.substr (0, pos) + name + " = " + value;
 
-          database.recordConfigAction (before, line);
+          journal.recordConfigAction (before, line);
 
           change = true;
         }
@@ -573,7 +573,7 @@ bool Rules::setConfigVariable (
             auto before = line;
             line = line.substr (0, pos) + leaf + " " + value;
 
-            database.recordConfigAction (before, line);
+            journal.recordConfigAction (before, line);
 
             change = true;
           }
@@ -596,7 +596,7 @@ bool Rules::setConfigVariable (
         // Add new line.
         lines.push_back (name + " = " + json::encode (value));
 
-        database.recordConfigAction ("", lines.back ());
+        journal.recordConfigAction ("", lines.back ());
 
         change = true;
       }
@@ -617,7 +617,7 @@ bool Rules::setConfigVariable (
       // Add new line.
       lines.push_back (name + " = " + json::encode (value));
 
-      database.recordConfigAction ("", lines.back ());
+      journal.recordConfigAction ("", lines.back ());
 
       change = true;
     }
@@ -637,7 +637,7 @@ bool Rules::setConfigVariable (
 //   1 - found and not removed
 //   2 - not found
 int Rules::unsetConfigVariable (
-  Database& database,
+  Journal& journal,
   const Rules& rules,
   std::string name,
   bool confirmation /* = false */)
@@ -667,7 +667,7 @@ int Rules::unsetConfigVariable (
       if (! confirmation ||
           confirm (format ("Are you sure you want to remove '{1}'?", name)))
       {
-        database.recordConfigAction (line, "");
+        journal.recordConfigAction (line, "");
 
         line = "";
         change = true;

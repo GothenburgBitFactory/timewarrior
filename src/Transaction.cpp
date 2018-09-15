@@ -24,7 +24,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <string>
 #include <Transaction.h>
 
 void Transaction::addUndoAction (
@@ -35,12 +34,12 @@ void Transaction::addUndoAction (
    _actions.emplace_back (type, before, after);
 }
 
-std::vector<UndoAction> Transaction::getActions ()
+std::vector<UndoAction> Transaction::getActions () const
 {
   return _actions;
 }
 
-std::string Transaction::toString ()
+std::string Transaction::toString () const
 {
   std::string output = "txn:\n";
 

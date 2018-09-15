@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2018, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,7 +31,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 int CmdCancel (
   Rules& rules,
-  Database& database)
+  Database& database,
+  Journal& journal)
 {
   // If there is an open interval, cancel it by deleting it..
   auto latest = getLatestInterval (database);
@@ -44,9 +45,9 @@ int CmdCancel (
     return 0;
   }
 
-  database.startTransaction ();
+  journal.startTransaction ();
   database.deleteInterval(latest);
-  database.endTransaction ();
+  journal.endTransaction ();
 
   if (rules.getBoolean ("verbose"))
     std::cout << "Canceled active time tracking.\n";

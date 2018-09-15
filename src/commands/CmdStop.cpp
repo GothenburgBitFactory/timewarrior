@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -44,7 +44,8 @@ template <class T> T setIntersect (
 int CmdStop (
   const CLI& cli,
   Rules& rules,
-  Database& database)
+  Database& database,
+  Journal& journal)
 {
   // Load the most recent interval.
   auto filter = getFilter (cli);
@@ -54,7 +55,7 @@ int CmdStop (
   if (! latest.is_open ())
     throw std::string ("There is no active time tracking.");
 
-  database.startTransaction ();
+  journal.startTransaction ();
 
   Interval modified {latest};
 
@@ -108,7 +109,7 @@ int CmdStop (
       std::cout << '\n' << intervalSummarize (database, rules, modified);
   }
 
-  database.endTransaction ();
+  journal.endTransaction ();
 
   return 0;
 }

@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2017 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,8 @@
 int CmdResize (
   const CLI& cli,
   Rules& rules,
-  Database& database)
+  Database& database,
+  Journal& journal)
 {
   std::set <int> ids = cli.getIds ();
 
@@ -51,7 +52,7 @@ int CmdResize (
       delta = arg.attribute ("raw");
   }
 
-  database.startTransaction ();
+  journal.startTransaction ();
 
   // Load the data.
   // Note: There is no filter.
@@ -79,7 +80,7 @@ int CmdResize (
       std::cout << "Resized @" << id << " to " << dur.formatHours () << '\n';
   }
 
-  database.endTransaction ();
+  journal.endTransaction ();
 
   return 0;
 }

@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,8 @@
 int CmdUntag (
   const CLI& cli,
   Rules& rules,
-  Database& database)
+  Database& database,
+  Journal& journal)
 {
   // Gather IDs and TAGs.
   std::set <int> ids = cli.getIds ();
@@ -46,7 +47,7 @@ int CmdUntag (
     throw std::string ("At least one tag must be specified. See 'timew help untag'.");
   }
 
-  database.startTransaction ();
+  journal.startTransaction ();
 
   // Load the data.
   // Note: There is no filter.
@@ -111,7 +112,7 @@ int CmdUntag (
     }
   }
 
-  database.endTransaction ();
+  journal.endTransaction ();
 
   return 0;
 }
