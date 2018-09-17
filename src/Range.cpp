@@ -102,7 +102,8 @@ bool Range::is_empty () const
 ////////////////////////////////////////////////////////////////////////////////
 bool Range::contains (const Datetime &datetime) const
 {
-  return start <= datetime && (! is_ended () || end >= datetime);
+  return (! is_started () || start <= datetime) &&
+         (! is_ended () || datetime < end);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -192,12 +193,23 @@ bool Range::startsWithin (const Range& other) const
     return !other.is_started ();
   }
 
-  if (other.is_started () && start < other.start)
+  return other.contains (start);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool Range::endsWithin (const Range& other) const
+{
+  if (other.is_empty ())
   {
     return false;
   }
 
-  return !other.is_ended () || start < other.end;
+  if (!is_ended ())
+  {
+    return !other.is_ended ();
+  }
+
+  return other.contains (end);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

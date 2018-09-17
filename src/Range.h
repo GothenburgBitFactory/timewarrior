@@ -52,6 +52,7 @@ public:
   bool overlap (const Range&) const;
   bool encloses (const Range&) const;
   bool startsWithin (const Range &) const;
+  bool endsWithin (const Range &) const;
   Range intersect (const Range&) const;
   bool intersects (const Range&) const;
   Range combine (const Range&) const;

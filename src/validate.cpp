@@ -116,8 +116,8 @@ static void autoAdjust (
     // implement overwrite resolution, i.e. the new interval overwrites existing intervals
     for (auto& overlap : overlaps)
     {
-      bool start_within_overlap = overlap.range.contains (interval.range.start);
-      bool end_within_overlap = interval.range.end != 0 && overlap.range.contains (interval.range.end);
+      bool start_within_overlap = interval.range.startsWithin (overlap.range);
+      bool end_within_overlap = interval.range.endsWithin (overlap.range);
 
       if (start_within_overlap && !end_within_overlap)
       {
