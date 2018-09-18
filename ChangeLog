@@ -5,6 +5,8 @@
           (thanks to lumbric)
 - #98     Command Injection Security Vulnerability in on-modify.timewarrior (TI-94)
           (thanks to Aaron Fields)
+- #101    timew assertion error on delete (TI-97)
+          (thanks to janikrabe)
 - #104    :lastquarter throws exception in first quarter (TI-100)
           (thanks to Andreas Poisel)
 - #105    Keeps tracking renamed and stopped task (TI-101)
@@ -19,9 +21,14 @@
           (thanks to bognolo)
 - #157    CLI: Ensure IDs are non-zero
           (thanks to janikrabe)
+- #165    CmdSummary does not show empty intervals at midnight
+          (thanks to janikrabe)
+- #166    getTracked behaves incorrectly when latest interval is empty
+          (thanks to janikrabe)
 - #167    Cannot shorten interval to zero length
           (thanks to janikrabe)
-- Fixed error from totals.py while timer is active
+- #174    Interval is split in two when it encloses month border
+-         Fixed error from totals.py while timer is active
           (thanks to davisdude)
 
 ------ current release ---------------------------
