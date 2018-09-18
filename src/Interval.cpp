@@ -216,10 +216,13 @@ Interval Interval::fromJson (std::string jsonString)
 
     json::array* tags = (json::array*) json->_data["tags"];
 
-    for (auto& tag : tags->_data)
+    if (tags != nullptr)
     {
-      auto* value = (json::string*) tag;
-      interval.tag(value->_data);
+      for (auto& tag : tags->_data)
+      {
+        auto* value = (json::string*) tag;
+        interval.tag(value->_data);
+      }
     }
 
     json::string* start = (json::string*) json->_data["start"];
