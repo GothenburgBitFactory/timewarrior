@@ -114,37 +114,13 @@ void Database::addInterval (const Interval& interval, bool verbose)
     }
   }
 
-  if (interval.range.is_open ())
-  {
-    // Get the index into _files for the appropriate Datafile, which may be
-    // created on demand.
-    auto df = getDatafile (interval.range.start.year (), interval.range.start.month ());
-    _files[df].addInterval (interval);
-    recordIntervalAction ("", interval.json ());
-  }
-  else
-  {
-    auto intervalRange = interval.range;
-    for (auto& segment : segmentRange (intervalRange))
-    {
-      // Get the index into _files for the appropriate Datafile, which may be
-      // created on demand.
-      auto df = getDatafile (segment.start.year (), segment.start.month ());
-
-      // Intersect the original interval range, and the segment.
-      Interval segmentedInterval (interval);
-      segmentedInterval.range = intervalRange.intersect (segment);
-      if (interval.range.is_open ())
-        segmentedInterval.range.end = Datetime (0);
-
-      _files[df].addInterval (segmentedInterval);
-
-      recordIntervalAction ("", segmentedInterval.json ());
-    }
-  }
+  // Get the index into _files for the appropriate Datafile, which may be
+  // created on demand.
+  auto df = getDatafile (interval.range.start.year (), interval.range.start.month ());
+  _files[df].addInterval (interval);
+  recordIntervalAction ("", interval.json ());
 }
 
-////////////////////////////////////////////////////////////////////////////////
 void Database::deleteInterval (const Interval& interval)
 {
   auto tags = interval.tags ();
@@ -154,23 +130,13 @@ void Database::deleteInterval (const Interval& interval)
     _tagInfoDatabase.decrementTag (tag);
   }
 
-  auto intervalRange = interval.range;
-  for (auto& segment : segmentRange (intervalRange))
-  {
-    // Get the index into _files for the appropriate Datafile, which may be
-    // created on demand.
-    auto df = getDatafile (segment.start.year (), segment.start.month ());
+  // Get the index into _files for the appropriate Datafile, which may be
+  // created on demand.
+  auto df = getDatafile (interval.range.start.year (), interval.range.start.month ());
 
-    // Intersect the original interval range, and the segment.
-    Interval segmentedInterval (interval);
-    segmentedInterval.range = intervalRange.intersect (segment);
-    if (! interval.range.is_ended ())
-      segmentedInterval.range.end = Datetime (0);
+  _files[df].deleteInterval (interval);
 
-    _files[df].deleteInterval (segmentedInterval);
-
-    recordIntervalAction (segmentedInterval.json (), "");
-  }
+  recordIntervalAction (interval.json (), "");
 }
 
 ////////////////////////////////////////////////////////////////////////////////

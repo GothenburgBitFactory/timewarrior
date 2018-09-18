@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2016, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -179,39 +179,25 @@ bool Range::encloses (const Range& other) const
   return false;
 }
 
-
 ////////////////////////////////////////////////////////////////////////////////
-// This is a standard enclosure check, except that the other range
-// need not have an end time, even if this one does.
-//
-// Detect the following enclosure cases:
-//
-// this                     [--------)
-//   A                        [----)
-//   B                          [...
-//
-// this                     [...
-//   A                        [----)
-//   B                           [--------)
-//   C                                    [--------)
-//   D                         [...
-//   E                                 [...
-//
-bool Range::segmentContains (const Range& other) const
+bool Range::startsWithin (const Range& other) const
 {
-  if (is_started ()) {
-    if (is_ended ()) {
-      if (other.is_started () && other.start >= start) {
-        return ! other.is_ended () || other.end <= end;
-      }
-    } else {
-      if (other.is_started () && other.start >= start) {
-        return true;
-      }
-    }
+  if (other.is_empty ())
+  {
+    return false;
   }
 
-  return false;
+  if (!is_started ())
+  {
+    return !other.is_started ();
+  }
+
+  if (other.is_started () && start < other.start)
+  {
+    return false;
+  }
+
+  return !other.is_ended () || start < other.end;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

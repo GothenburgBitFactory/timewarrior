@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2016, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -51,7 +51,7 @@ public:
 
   bool overlap (const Range&) const;
   bool encloses (const Range&) const;
-  bool segmentContains (const Range&) const;
+  bool startsWithin (const Range &) const;
   Range intersect (const Range&) const;
   bool intersects (const Range&) const;
   Range combine (const Range&) const;
@@ -63,6 +63,7 @@ public:
 public:
   Datetime start {0};
   Datetime end   {0};
+
 };
 
 #endif

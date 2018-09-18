@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2016, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -90,7 +90,7 @@ std::vector <std::string> Datafile::allLines ()
 void Datafile::addInterval (const Interval& interval)
 {
   // Note: end date might be zero.
-  assert (_range.segmentContains (interval.range));
+  assert (interval.range.startsWithin (_range));
 
   if (! _lines_loaded)
     load_lines ();
@@ -108,7 +108,7 @@ void Datafile::addInterval (const Interval& interval)
 void Datafile::deleteInterval (const Interval& interval)
 {
   // Note: end date might be zero.
-  assert (_range.segmentContains (interval.range));
+  assert (interval.range.startsWithin (_range));
 
   if (! _lines_loaded)
     load_lines ();
