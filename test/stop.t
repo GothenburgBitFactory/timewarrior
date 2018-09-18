@@ -188,6 +188,16 @@ class TestStop(TestCase):
         self.assertIn('1150Z', j[1]['start'])
         self.assertIn('4422Z', j[1]['end'])
 
+    def test_stop_tracking_of_interval_which_encloses_month_border(self):
+        """Stop tracking of an interval which encloses a month border"""
+        self.t("start 20180831T220000 foo")
+        self.t("stop 20180901T030000")
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertClosedInterval(j[0])
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

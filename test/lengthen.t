@@ -87,6 +87,16 @@ class TestLengthen(TestCase):
                                 expectedTags=[],
                                 description="unmodified interval")
 
+    def test_lengthen_an_interval_to_enclose_a_month_border(self):
+        """Lengthen an interval to enclose a month border"""
+        self.t("track 20180831T220000 - 20180831T230000 foo")
+        self.t("lengthen @1 4h")
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertClosedInterval(j[0])
+
     # TODO Add :adjust tests.
 
 

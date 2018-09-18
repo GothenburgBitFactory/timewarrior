@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# Copyright 2006 - 2018, Paul Beckingham, Federico Hernandez.
+# Copyright 2006 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -59,6 +59,16 @@ class TestResize(TestCase):
         self.t("resize @1 1month")
         code, out, err = self.t("resize @1 1month")
         self.assertIn('Resized @1 to 720:00:00', out)
+
+    def test_resize_interval_to_enclose_month_border(self):
+        """Resize an interval to enclose a month border"""
+        self.t("track 20180831T220000 - 20180831T230000 foo")
+        self.t("resize @1 3h")
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertClosedInterval(j[0])
 
 
 if __name__ == "__main__":

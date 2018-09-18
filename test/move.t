@@ -186,6 +186,16 @@ class TestMove(TestCase):
                                 expectedTags=[],
                                 description="unmodified interval")
 
+    def test_move_interval_to_enclose_a_month_border(self):
+        """Move an interval to enclose a month border"""
+        self.t("track 20180831T180000 - 20180831T230000 foo")
+        self.t("move @1 20180831T220000")
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertClosedInterval(j[0])
+
     # TODO Add :adjust tests.
 
 

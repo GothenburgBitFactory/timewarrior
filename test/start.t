@@ -220,6 +220,17 @@ class TestStart(TestCase):
         self.assertNotIn("Note: 'bar' is a new tag", out)
         self.assertIn("Tracking bar", out)
 
+    def test_start_tracking_of_interval_which_encloses_month_border(self):
+        """Start tracking after an interval which encloses a month border"""
+        self.t("start 20180831T220000 foo")
+        self.t("start 20180901T030000 bar")
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 2)
+        self.assertClosedInterval(j[0])
+        self.assertOpenInterval(j[1])
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

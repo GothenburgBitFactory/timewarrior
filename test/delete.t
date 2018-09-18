@@ -107,6 +107,15 @@ class TestDelete(TestCase):
                                   expectedTags=['foo'],
                                   description='remaining interval')
 
+    def test_delete_interval_which_encloses_month_border(self):
+        """Delete an interval which encloses a month border"""
+        self.t("track 20180831T220000 - 20180901T030000 foo")
+        self.t("delete @1")
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 0)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

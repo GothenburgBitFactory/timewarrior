@@ -125,6 +125,15 @@ class TestTrack(TestCase):
         self.assertNotIn("Note: 'bar' is a new tag", out)
         self.assertIn("Recorded bar", out)
 
+    def test_track_interval_which_encloses_month_border(self):
+        """Track an interval which encloses a month border"""
+        self.t("track 20180831T220000 - 20180901T030000 foo")
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertClosedInterval(j[0])
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
