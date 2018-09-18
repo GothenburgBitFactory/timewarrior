@@ -148,36 +148,9 @@ bool Range::overlap (const Range& other) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Detect the following enclosure cases:
-//
-// this                     [--------)
-//   C                        [----)
-//
-// this                     [...
-//   C                        [----)
-//   D                           [--------)
-//   E                                    [--------)
-//   H                         [...
-//   I                                 [...
-//
 bool Range::encloses (const Range& other) const
 {
-  if (is_started ())
-  {
-    if (is_ended ())
-    {
-      if (other.is_started () && other.start >= start &&
-          other.is_ended ()   && other.end   <= end)
-        return true;
-    }
-    else
-    {
-      if (other.is_started () && other.start >= start)
-        return true;
-    }
-  }
-
-  return false;
+  return other.startsWithin (*this) && other.endsWithin (*this);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
