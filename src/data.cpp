@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2016, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -429,7 +429,7 @@ std::vector <Range> merge (
   int merges = 0;
   for (unsigned int i = 0; i < sorted.size (); ++i)
   {
-    if (cursor && sorted[cursor - 1].overlap (sorted[i]))
+    if (cursor && sorted[cursor - 1].overlaps (sorted[i]))
     {
       sorted[cursor - 1] = sorted[cursor - 1].combine (sorted[i]);
       ++merges;
@@ -457,11 +457,11 @@ std::vector <Range> addRanges (
   std::vector <Range> results;
 
   for (auto& range : ranges)
-    if (limits.overlap (range))
+    if (limits.overlaps (range))
       results.push_back (range);
 
   for (auto& addition : additions)
-    if (limits.overlap (addition))
+    if (limits.overlaps (addition))
       results.push_back (addition);
 
   return results;

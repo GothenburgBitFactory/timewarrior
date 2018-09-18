@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2016, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -456,7 +456,7 @@ std::vector <Interval> getOverlaps (
 
   std::vector <Interval> overlaps;
   for (auto& track : tracked)
-    if (interval.range.overlap (track.range))
+    if (interval.range.overlaps (track.range))
       overlaps.push_back (track);
 
   return overlaps;

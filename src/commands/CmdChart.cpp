@@ -252,7 +252,7 @@ static void determineHourRange (
 
         for (auto& track : tracked)
         {
-          if (day_range.overlap (track.range))
+          if (day_range.overlaps (track.range))
           {
             Interval clipped = clip (track, day_range);
             if (track.range.is_open ())
@@ -475,7 +475,7 @@ static void renderExclusionBlocks (
 
     for (auto& exc : excluded)
     {
-      if (exc.overlap (r))
+      if (exc.overlaps (r))
       {
         // Determine which of the character blocks included.
         auto sub_hour = exc.intersect (r);
@@ -521,7 +521,7 @@ static void renderInterval (
 
   // Ignore any track that doesn't overlap with day.
   auto day_range = getFullDay (day);
-  if (! day_range.overlap (track.range) ||
+  if (!day_range.overlaps (track.range) ||
       (track.range.is_open () && day > now))
     return;
 
@@ -640,7 +640,7 @@ static std::string renderSummary (
   {
     time_t total_unavailable = 0;
     for (auto& exclusion : exclusions)
-      if (filter.range.overlap (exclusion))
+      if (filter.range.overlaps (exclusion))
         total_unavailable += filter.range.intersect (exclusion).total ();
 
     time_t total_worked = 0;
@@ -648,7 +648,7 @@ static std::string renderSummary (
     {
       for (auto& interval : tracked)
       {
-        if (filter.range.overlap (interval.range))
+        if (filter.range.overlaps (interval.range))
         {
           Interval clipped = clip (interval, filter.range);
           if (interval.range.is_open ())

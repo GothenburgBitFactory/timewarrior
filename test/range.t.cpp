@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -56,7 +56,7 @@ int main (int, char**)
   // this                     [--------)
   // A          [--------)
   // B                   [--------)
-  // C                          [----|
+  // C                          [----)
   // D                             [--------)
   // E                                      [--------)
   // F                      [-------------)
@@ -75,15 +75,15 @@ int main (int, char**)
   Range testH; testH.start = Datetime (2016, 6, 15);
   Range testI; testI.start = Datetime (2016, 7, 15);
 
-  t.notok (refClosed.overlap (testA), "Range: ! refClosed.overlap(testA)");
-  t.ok    (refClosed.overlap (testB), "Range:   refClosed.overlap(testB)");
-  t.ok    (refClosed.overlap (testC), "Range:   refClosed.overlap(testC)");
-  t.ok    (refClosed.overlap (testD), "Range:   refClosed.overlap(testD)");
-  t.notok (refClosed.overlap (testE), "Range: ! refClosed.overlap(testE)");
-  t.ok    (refClosed.overlap (testF), "Range:   refClosed.overlap(testF)");
-  t.ok    (refClosed.overlap (testG), "Range:   refClosed.overlap(testG)");
-  t.ok    (refClosed.overlap (testH), "Range:   refClosed.overlap(testH)");
-  t.notok (refClosed.overlap (testI), "Range: ! refClosed.overlap(testI)");
+  t.notok (refClosed.overlaps (testA), "Range: ! refClosed.overlaps(testA)");
+  t.ok    (refClosed.overlaps (testB), "Range:   refClosed.overlaps(testB)");
+  t.ok    (refClosed.overlaps (testC), "Range:   refClosed.overlaps(testC)");
+  t.ok    (refClosed.overlaps (testD), "Range:   refClosed.overlaps(testD)");
+  t.notok (refClosed.overlaps (testE), "Range: ! refClosed.overlaps(testE)");
+  t.ok    (refClosed.overlaps (testF), "Range:   refClosed.overlaps(testF)");
+  t.ok    (refClosed.overlaps (testG), "Range:   refClosed.overlaps(testG)");
+  t.ok    (refClosed.overlaps (testH), "Range:   refClosed.overlaps(testH)");
+  t.notok (refClosed.overlaps (testI), "Range: ! refClosed.overlaps(testI)");
 
   // this                     [...
   // A          [--------)
@@ -97,15 +97,15 @@ int main (int, char**)
   // I                                   [...
   Range refOpen (Datetime (2016, 6, 1), Datetime (0));
 
-  t.notok (refOpen.overlap (testA), "Range: ! refOpen.overlap(testA)");
-  t.ok    (refOpen.overlap (testB), "Range:   refOpen.overlap(testB)");
-  t.ok    (refOpen.overlap (testC), "Range:   refOpen.overlap(testC)");
-  t.ok    (refOpen.overlap (testD), "Range:   refOpen.overlap(testD)");
-  t.ok    (refOpen.overlap (testE), "Range:   refOpen.overlap(testE)");
-  t.ok    (refOpen.overlap (testF), "Range:   refOpen.overlap(testF)");
-  t.ok    (refOpen.overlap (testG), "Range:   refOpen.overlap(testG)");
-  t.ok    (refOpen.overlap (testH), "Range:   refOpen.overlap(testH)");
-  t.ok    (refOpen.overlap (testI), "Range:   refOpen.overlap(testI)");
+  t.notok (refOpen.overlaps (testA), "Range: ! refOpen.overlaps(testA)");
+  t.ok    (refOpen.overlaps (testB), "Range:   refOpen.overlaps(testB)");
+  t.ok    (refOpen.overlaps (testC), "Range:   refOpen.overlaps(testC)");
+  t.ok    (refOpen.overlaps (testD), "Range:   refOpen.overlaps(testD)");
+  t.ok    (refOpen.overlaps (testE), "Range:   refOpen.overlaps(testE)");
+  t.ok    (refOpen.overlaps (testF), "Range:   refOpen.overlaps(testF)");
+  t.ok    (refOpen.overlaps (testG), "Range:   refOpen.overlaps(testG)");
+  t.ok    (refOpen.overlaps (testH), "Range:   refOpen.overlaps(testH)");
+  t.ok    (refOpen.overlaps (testI), "Range:   refOpen.overlaps(testI)");
 
   // this                     [--------)
   // A          [--------)
@@ -245,7 +245,7 @@ int main (int, char**)
   // Adjacent ranges.
   Range left  (Datetime ("20160425T110000"), Datetime ("20160425T120000"));
   Range right (Datetime ("20160425T120000"), Datetime ("20160425T130000"));
-  t.notok (left.overlap (right), "Range: left (11am - 12pm) does not overlap with right (12pm - 1pm)");
+  t.notok (left.overlaps (right), "Range: left (11am - 12pm) does not overlaps with right (12pm - 1pm)");
 
   auto intersection = left.intersect (right);
   t.ok (intersection.start.toEpoch () == 0, "Range: adjacent ranges do not intersect");

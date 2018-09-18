@@ -131,7 +131,7 @@ bool Range::contains (const Datetime &datetime) const
 //   H                         [...
 //   I                                 [...
 //
-bool Range::overlap (const Range& other) const
+bool Range::overlaps (const Range &other) const
 {
   if (! is_started () || ! other.is_started ())
     return false;
@@ -202,7 +202,7 @@ bool Range::endsWithin (const Range& other) const
 //
 Range Range::intersect (const Range& other) const
 {
-  if (overlap (other))
+  if (overlaps (other))
   {
     // Intersection is choosing the later of the two starts, and the earlier of
     // the two ends, provided the two ranges overlap.
@@ -237,7 +237,7 @@ Range Range::intersect (const Range& other) const
 ////////////////////////////////////////////////////////////////////////////////
 bool Range::intersects (const Range &other) const
 {
-  if (overlap (other)) {
+  if (overlaps (other)) {
     return true;
   }
 
@@ -313,7 +313,7 @@ std::vector <Range> Range::subtract (const Range& other) const
 {
   std::vector <Range> results;
 
-  if (overlap (other))
+  if (overlaps (other))
   {
     if (start < other.start)
     {

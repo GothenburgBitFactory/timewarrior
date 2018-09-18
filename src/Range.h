@@ -49,7 +49,7 @@ public:
 
   bool contains (const Datetime&) const;
 
-  bool overlap (const Range&) const;
+  bool overlaps (const Range &) const;
   bool encloses (const Range&) const;
   bool startsWithin (const Range &) const;
   bool endsWithin (const Range &) const;

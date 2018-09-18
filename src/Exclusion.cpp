@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2016, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -113,7 +113,7 @@ std::vector <Range> Exclusion::ranges (const Range& range) const
     Datetime end (start);
     ++end;
     Range all_day (start, end);
-    if (range.overlap (all_day))
+    if (range.overlaps (all_day))
       results.push_back (all_day);
   }
 
@@ -140,7 +140,7 @@ std::vector <Range> Exclusion::ranges (const Range& range) const
         for (unsigned int block = 2; block < _tokens.size (); ++block)
         {
           auto r = rangeFromTimeBlock (_tokens[block], start, end);
-          if (myRange.overlap (r))
+          if (myRange.overlaps (r))
             results.push_back (r);
         }
       }
