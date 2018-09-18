@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2016, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -98,13 +98,17 @@ static void autoAdjust (
   Interval& interval)
 {
   auto overlaps = getOverlaps (database, rules, interval);
-  debug ("Input         " + interval.dump ());
-  debug ("Overlaps with");
-  for (auto& overlap : overlaps)
-    debug ("              " + overlap.dump ());
 
   if (! overlaps.empty ())
   {
+    debug ("Input         " + interval.dump ());
+    debug ("Overlaps with");
+
+    for (auto& overlap : overlaps)
+    {
+      debug ("              " + overlap.dump ());
+    }
+
     if (! adjust)
       throw std::string("You cannot overlap intervals. Correct the start/end "
                           "time, or specify the :adjust hint.");
