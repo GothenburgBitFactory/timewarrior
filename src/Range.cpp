@@ -161,11 +161,6 @@ bool Range::startsWithin (const Range& other) const
     return false;
   }
 
-  if (!is_started ())
-  {
-    return !other.is_started ();
-  }
-
   return other.start == start || other.contains (start);
 }
 
@@ -175,11 +170,6 @@ bool Range::endsWithin (const Range& other) const
   if (other.is_empty ())
   {
     return false;
-  }
-
-  if (!is_ended ())
-  {
-    return !other.is_ended ();
   }
 
   return other.end == end || other.contains (end);
