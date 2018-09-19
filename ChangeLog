@@ -30,6 +30,7 @@
 - #174    Interval is split in two when it encloses month border
 -         Fixed error from totals.py while timer is active
           (thanks to davisdude)
+-         Refactoring of Interval and Range
 
 ------ current release ---------------------------
 
