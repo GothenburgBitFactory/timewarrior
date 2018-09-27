@@ -63,6 +63,7 @@ int CmdHelpUsage (const Extensions& extensions)
             << "       timew tag @<id> [@<id> ...] <tag> [<tag> ...]\n"
             << "       timew tags [<interval>] [<tag> ...]\n"
             << "       timew track <interval> [<tag> ...]\n"
+            << "       timew undo\n"
             << "       timew untag @<id> [@<id> ...] <tag> [<tag> ...]\n"
             << "       timew week [<interval>] [<tag> ...]\n"
             << '\n';
@@ -900,6 +901,21 @@ int CmdHelp (
                 << "same as the 'start' command.\n"
                 << '\n';
 
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "undo")
+    {
+      std::cout << '\n'
+                << "Syntax: timew undo\n"
+                << '\n'
+                << "The 'undo' command is used to revert the action of Timewarrior commands. Only\n"
+                << "commands affecting intervals or Timewarrior configuration can be reverted.\n"
+                << "Timewarrior keeps a journal of changes to the interval database and Timewarrior\n"
+                << "configuration. A call to 'undo' removes the last entry in the journal and\n"
+                << "restores the previous state. As long as there are entries in the journal, you\n"
+                << "can revert the respective action. The 'undo' command itself cannot be undone!"
+                << '\n';
+    }
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
     else if (words[0] == "untag")
