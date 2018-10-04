@@ -13,3 +13,10 @@ Timewarrior keeps a journal of changes to the interval database and Timewarrior 
 A call to 'undo' removes the last entry in the journal and restores the previous state.
 As long as there are entries in the journal, you can revert the respective action.
 The 'undo' command itself cannot be undone!
+
+.SH EXAMPLES
+Undo an interval modification:
+.
+  $ timew split @1
+  $ timew undo
+.
