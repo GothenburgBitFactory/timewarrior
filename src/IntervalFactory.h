@@ -33,8 +33,8 @@
 class IntervalFactory
 {
 public:
-  static Interval fromSerialization (const std::string &line);
-  static Interval fromJson (std::string jsonString);
+  static Interval fromSerialization (const std::string& line);
+  static Interval fromJson (const std::string& jsonString);
 };
 
 #endif

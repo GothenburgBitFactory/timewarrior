@@ -32,7 +32,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Syntax:
 //   'inc' [ <iso> [ '-' <iso> ]] [ '#' <tag> [ <tag> ... ]]
-Interval IntervalFactory::fromSerialization (const std::string &line)
+Interval IntervalFactory::fromSerialization (const std::string& line)
 {
   Lexer lexer (line);
   std::vector <std::string> tokens;
@@ -45,8 +45,7 @@ Interval IntervalFactory::fromSerialization (const std::string &line)
   }
 
   // Minimal requirement 'inc'.
-  if (!tokens.empty () &&
-      tokens[0] == "inc")
+  if (!tokens.empty () && tokens[0] == "inc")
   {
     Interval interval = Interval ();
 
@@ -85,7 +84,7 @@ Interval IntervalFactory::fromSerialization (const std::string &line)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Interval IntervalFactory::fromJson (std::string jsonString)
+Interval IntervalFactory::fromJson (const std::string& jsonString)
 {
   Interval interval = Interval ();
 
