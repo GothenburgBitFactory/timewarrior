@@ -11,6 +11,7 @@ set (timew_SRCS CLI.cpp        CLI.h
                 Exclusion.cpp  Exclusion.h
                 Extensions.cpp Extensions.h
                 Interval.cpp   Interval.h
+                IntervalFactory.cpp IntervalFactory.h
                 Range.cpp      Range.h
                 Rules.cpp      Rules.h
                 TagInfo.cpp    TagInfo.h

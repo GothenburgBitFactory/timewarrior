@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@
 
 #include <cmake.h>
 #include <Interval.h>
+#include <IntervalFactory.h>
 #include <test.h>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -82,83 +83,83 @@ int main (int, char**)
 
   // Round-trip parsing.
   Interval i4;
-  i4.initialize (        "inc");
+  i4 = IntervalFactory::fromSerialization ("inc");
   t.is (i4.serialize (), "inc",
              "Round-trip 'inc'");
 
   Interval i5;
-  i5.initialize (        "inc # foo");
+  i5 = IntervalFactory::fromSerialization ("inc # foo");
   t.is (i5.serialize (), "inc # foo",
              "Round-trip 'inc # foo'");
 
   Interval i6;
-  i6.initialize (        "inc # bar foo");
+  i6 = IntervalFactory::fromSerialization ("inc # bar foo");
   t.is (i6.serialize (), "inc # bar foo",
              "Round-trip 'inc # bar foo'");
 
   Interval i7;
-  i7.initialize (        "inc 19700101T000001Z");
+  i7 = IntervalFactory::fromSerialization ("inc 19700101T000001Z");
   t.is (i7.serialize (), "inc 19700101T000001Z",
              "Round-trip 'inc 19700101T000001Z'");
 
   Interval i8;
-  i8.initialize (        "inc 19700101T000001Z - 19700101T000002Z");
+  i8 = IntervalFactory::fromSerialization ("inc 19700101T000001Z - 19700101T000002Z");
   t.is (i8.serialize (), "inc 19700101T000001Z - 19700101T000002Z",
              "Round-trip 'inc 19700101T000001Z - 19700101T000002Z'");
 
   Interval i9;
-  i9.initialize (        "inc 19700101T000001Z # bar foo");
+  i9 = IntervalFactory::fromSerialization ("inc 19700101T000001Z # bar foo");
   t.is (i9.serialize (), "inc 19700101T000001Z # bar foo",
              "Round-trip 'inc 19700101T000001Z # bar foo'");
 
   Interval i10;
-  i10.initialize (        "inc 19700101T000001Z - 19700101T000002Z # bar foo");
+  i10 = IntervalFactory::fromSerialization ("inc 19700101T000001Z - 19700101T000002Z # bar foo");
   t.is (i10.serialize (), "inc 19700101T000001Z - 19700101T000002Z # bar foo",
               "Round-trip 'inc 19700101T000001Z - 19700101T000002Z # bar foo'");
 
   Interval i11;
-  i11.initialize (        "inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo");
+  i11 = IntervalFactory::fromSerialization ("inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo");
   t.is (i11.serialize (), "inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo",
               "Round-trip 'inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo'");
 
   // std::string json () const;
   Interval i12;
-  i12.initialize (   "inc");
+  i12 = IntervalFactory::fromSerialization ("inc");
   t.is (i12.json (), "{}",
                "JSON '{}'");
 
   Interval i13;
-  i13.initialize (   "inc # foo");
+  i13 = IntervalFactory::fromSerialization ("inc # foo");
   t.is (i13.json (), "{\"tags\":[\"foo\"]}",
                "JSON '{\"tags\":[\"foo\"]}'");
 
   Interval i14;
-  i14.initialize (   "inc # bar foo");
+  i14 = IntervalFactory::fromSerialization ("inc # bar foo");
   t.is (i14.json (), "{\"tags\":[\"bar\",\"foo\"]}",
                "JSON '{\"tags\":[\"bar\",\"foo\"]}'");
 
   Interval i15;
-  i15.initialize (   "inc 19700101T000001Z");
+  i15 = IntervalFactory::fromSerialization ("inc 19700101T000001Z");
   t.is (i15.json (), "{\"start\":\"19700101T000001Z\"}",
                "JSON '{\"start\":\"19700101T000001Z\"}'");
 
   Interval i16;
-  i16.initialize (   "inc 19700101T000001Z - 19700101T000002Z");
+  i16 = IntervalFactory::fromSerialization ("inc 19700101T000001Z - 19700101T000002Z");
   t.is (i16.json (), "{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\"}",
                "JSON '{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\"}'");
 
   Interval i17;
-  i17.initialize (   "inc 19700101T000001Z # bar foo");
+  i17 = IntervalFactory::fromSerialization ("inc 19700101T000001Z # bar foo");
   t.is (i17.json (), "{\"start\":\"19700101T000001Z\",\"tags\":[\"bar\",\"foo\"]}",
                "JSON '{\"start\":\"19700101T000001Z\",\"tags\":[\"bar\",\"foo\"]}'");
 
   Interval i18;
-  i18.initialize (   "inc 19700101T000001Z - 19700101T000002Z # bar foo");
+  i18 = IntervalFactory::fromSerialization ("inc 19700101T000001Z - 19700101T000002Z # bar foo");
   t.is (i18.json (), "{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"bar\",\"foo\"]}",
                "JSON '{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"bar\",\"foo\"]}'");
 
   Interval i19;
-  i19.initialize (   "inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo");
+  i19 = IntervalFactory::fromSerialization ("inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo");
   t.is (i19.json (), "{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"Trans-Europe Express\",\"bar\",\"foo\"]}",
                "JSON '{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"Trans-Europe Express\",\"bar\",\"foo\"]}'");
 

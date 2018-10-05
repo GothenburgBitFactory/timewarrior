@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016, 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -28,11 +28,12 @@
 #include <timew.h>
 #include <iostream>
 #include <format.h>
+#include <IntervalFactory.h>
 
 static void undoIntervalAction(UndoAction& action, Database& database)
 {
-  Interval before = Interval::fromJson (action.getBefore ());
-  Interval after = Interval::fromJson (action.getAfter ());
+  Interval before = IntervalFactory::fromJson (action.getBefore ());
+  Interval after = IntervalFactory::fromJson (action.getAfter ());
 
   database.modifyInterval (after, before, false);
 }

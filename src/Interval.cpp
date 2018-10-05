@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2016, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -31,56 +31,6 @@
 #include <Lexer.h>
 #include <sstream>
 #include <JSON.h>
-
-////////////////////////////////////////////////////////////////////////////////
-// Syntax:
-//   'inc' [ <iso> [ '-' <iso> ]] [ '#' <tag> [ <tag> ... ]]
-void Interval::initialize (const std::string& line)
-{
-  Lexer lexer (line);
-  std::vector <std::string> tokens;
-  std::string token;
-  Lexer::Type type;
-  while (lexer.token (token, type))
-    tokens.push_back (Lexer::dequote (token));
-
-  // Minimal requirement 'inc'.
-  if (!tokens.empty () &&
-      tokens[0] == "inc")
-  {
-    unsigned int offset = 0;
-
-    // Optional <iso>
-    if (tokens.size () > 1 &&
-        tokens[1].length () == 16)
-    {
-      start = Datetime (tokens[1]);
-      offset = 1;
-
-      // Optional '-' <iso>
-      if (tokens.size () > 3 &&
-          tokens[2] == "-"   &&
-          tokens[3].length () == 16)
-      {
-        end = Datetime (tokens[3]);
-        offset = 3;
-      }
-    }
-
-    // Optional '#' <tag>
-    if (tokens.size () > 2 + offset &&
-        tokens[1 + offset] == "#")
-    {
-      // Optional <tag> ...
-      for (unsigned int i = 2 + offset; i < tokens.size (); ++i)
-        _tags.insert (tokens[i]);
-    }
-
-    return;
-  }
-
-  throw format ("Unrecognizable line '{1}'.", line);
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 bool Interval::empty () const
@@ -218,32 +168,5 @@ void Interval::setRange (const Datetime& start, const Datetime& end)
   this->end = end;
 }
 
-Interval Interval::fromJson (std::string jsonString)
-{
-  Interval interval = Interval ();
-
-  if (!jsonString.empty ())
-  {
-    auto* json = (json::object*) json::parse (jsonString);
-
-    json::array* tags = (json::array*) json->_data["tags"];
-
-    if (tags != nullptr)
-    {
-      for (auto& tag : tags->_data)
-      {
-        auto* value = (json::string*) tag;
-        interval.tag(value->_data);
-      }
-    }
-
-    json::string* start = (json::string*) json->_data["start"];
-    interval.start = Datetime(start->_data);
-    json::string* end = (json::string*) json->_data["end"];
-    interval.end = (end != nullptr) ? Datetime(end->_data) : 0;
-  }
-
-  return interval;
-}
 
 ////////////////////////////////////////////////////////////////////////////////

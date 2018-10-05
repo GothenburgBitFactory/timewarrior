@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,38 +24,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef INCLUDED_INTERVAL
-#define INCLUDED_INTERVAL
+#ifndef INCLUDED_INTERVALFACTORY
+#define INCLUDED_INTERVALFACTORY
 
-#include <Range.h>
-#include <set>
+#include <Interval.h>
 #include <string>
 
-class Interval : public Range
+class IntervalFactory
 {
 public:
-  Interval () = default;
-  bool empty () const;
-
-  bool hasTag (const std::string&) const;
-  std::set <std::string> tags () const;
-  void tag (const std::string&);
-  void untag (const std::string&);
-
-  void setRange (const Range& range);
-  void setRange (const Datetime& start, const Datetime& end);
-
-  std::string serialize () const;
-  std::string json () const;
-  std::string dump () const;
-
-public:
-  int                    id        {0};
-  bool                   synthetic {false};
-  std::string            annotation {};
-
-private:
-  std::set <std::string> _tags  {};
+  static Interval fromSerialization (const std::string &line);
+  static Interval fromJson (std::string jsonString);
 };
 
 #endif

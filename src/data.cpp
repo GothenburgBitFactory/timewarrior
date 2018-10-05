@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -32,6 +32,7 @@
 #include <timew.h>
 #include <algorithm>
 #include <iostream>
+#include "IntervalFactory.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // A filter is just another interval, containing start, end and tags.
@@ -316,8 +317,7 @@ std::vector <Interval> getAllInclusions (Database& database)
   std::vector <Interval> all;
   for (auto& line : database.allLines ())
   {
-    Interval i;
-    i.initialize (line);
+    Interval i = IntervalFactory::fromSerialization (line);
     all.push_back (i);
   }
 
@@ -675,14 +675,14 @@ Interval getLatestInterval (Database& database)
     //                     ^ 20
     if (line.find (" - ") != 20)
     {
-      i.initialize (line);
+      i = IntervalFactory::fromSerialization (line);
       return i;
     }
   }
 
   auto lastLine = database.lastLine ();
   if (! lastLine.empty ())
-    i.initialize (lastLine);
+    i = IntervalFactory::fromSerialization (lastLine);
 
   return i;
 }

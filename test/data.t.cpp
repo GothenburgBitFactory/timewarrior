@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@
 
 #include <timew.h>
 #include <test.h>
+#include <src/IntervalFactory.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 void test_flatten (
@@ -36,7 +37,7 @@ void test_flatten (
   const std::vector <std::string>& output)
 {
   Interval i;
-  i.initialize (input);
+  i = IntervalFactory::fromSerialization (input);
 
   auto results = flatten (i, exclusions);
 
@@ -44,7 +45,7 @@ void test_flatten (
   for (unsigned int i = 0; i < std::min (output.size (), results.size ()); ++i)
   {
     Interval tmp;
-    tmp.initialize (output[i]);
+    tmp = IntervalFactory::fromSerialization (output[i]);
 
     t.is (tmp.start.toISO (), results[i].start.toISO (), "flatten: " + label + " start matches");
     t.is (tmp.end.toISO (),   results[i].end.toISO (),   "flatten: " + label + " end matches");
