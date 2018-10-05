@@ -105,7 +105,7 @@ Interval IntervalFactory::fromJson (std::string jsonString)
     }
 
     json::string* start = (json::string*) json->_data["start"];
-    interval.start = Datetime(start->_data);
+    interval.start = (start != nullptr) ? Datetime(start->_data) : 0;
     json::string* end = (json::string*) json->_data["end"];
     interval.end = (end != nullptr) ? Datetime(end->_data) : 0;
   }
