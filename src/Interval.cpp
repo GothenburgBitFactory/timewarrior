@@ -158,8 +158,7 @@ std::string Interval::dump () const
 
 void Interval::setRange (const Range& range)
 {
-  start = range.start;
-  end = range.end;
+  setRange (range.start, range.end);
 }
 
 void Interval::setRange (const Datetime& start, const Datetime& end)
