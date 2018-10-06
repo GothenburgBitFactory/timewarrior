@@ -45,6 +45,9 @@ public:
   void setRange (const Range& range);
   void setRange (const Datetime& start, const Datetime& end);
 
+  void setAnnotation(const std::string& annotation);
+  std::string getAnnotation();
+
   std::string serialize () const;
   std::string json () const;
   std::string dump () const;

@@ -69,12 +69,30 @@ Interval IntervalFactory::fromSerialization (const std::string& line)
     }
 
     // Optional '#' <tag>
-    if (tokens.size () > 2 + offset &&
-        tokens[1 + offset] == "#")
+    if (tokens.size () > 2 + offset && tokens[1 + offset] == "#")
     {
       // Optional <tag> ...
-      for (unsigned int i = 2 + offset; i < tokens.size (); ++i)
-        interval.tag (tokens[i]);
+      auto index = 2 + offset;
+
+      while (index < tokens.size () && tokens[index] != "#")
+      {
+        interval.tag (tokens[index]);
+        index++;
+      }
+
+      // Optional '#' <annotation>
+      if (index < tokens.size () && tokens[index] == "#")
+      {
+        std::string annotation;
+
+        // Optional <annotation> ...
+        for (unsigned int i = index + 1; i < tokens.size (); ++i)
+        {
+          annotation += (i > index +1 ? " " : "") + tokens[i];
+        }
+
+        interval.setAnnotation (annotation);
+      }
     }
 
     return interval;
@@ -102,6 +120,9 @@ Interval IntervalFactory::fromJson (const std::string& jsonString)
         interval.tag(value->_data);
       }
     }
+
+    json::string* annotation = (json::string*) json->_data["annotation"];
+    interval.annotation = (annotation != nullptr) ? annotation->_data : "";
 
     json::string* start = (json::string*) json->_data["start"];
     interval.start = (start != nullptr) ? Datetime(start->_data) : 0;

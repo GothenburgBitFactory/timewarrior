@@ -32,7 +32,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (48);
+  UnitTest t (64);
 
   // bool is_started () const;
   // bool is_ended () const;
@@ -69,17 +69,28 @@ int main (int, char**)
 
   // std::string serialize () const;
   Interval i3;
-  t.is (i3.serialize (), "inc", "Interval().serialize -> 'inc'");
+  t.is (i3.serialize (), "inc", "Interval.serialize -> 'inc'");
+  i3.setAnnotation ("this is an annotation");
+  t.is (i3.serialize (), "inc # # this is an annotation", "Interval.serialize -> 'inc # # this is an annotation");
+  i3.setAnnotation ("");
   i3.tag ("foo");
-  t.is (i3.serialize (), "inc # foo", "Interval().serialize -> 'inc # foo'");
+  t.is (i3.serialize (), "inc # foo", "Interval.serialize -> 'inc # foo'");
+  i3.setAnnotation ("this is an annotation");
+  t.is (i3.serialize (), "inc # foo # this is an annotation", "Interval.serialize -> 'inc # foo # this is an annotation");
+  i3.setAnnotation ("");
   i3.tag ("bar");
-  t.is (i3.serialize (), "inc # bar foo", "Interval().serialize -> 'inc # bar foo'");
+  t.is (i3.serialize (), "inc # bar foo", "Interval.serialize -> 'inc # bar foo'");
   i3.start = Datetime(1);
-  t.is (i3.serialize (), "inc 19700101T000001Z # bar foo", "Interval(Datetime(1)).serialize -> 'inc 19700101T000001Z # bar foo'");
+  t.is (i3.serialize (), "inc 19700101T000001Z # bar foo", "Interval.serialize -> 'inc 19700101T000001Z # bar foo'");
+  i3.setAnnotation ("this is an annotation");
+  t.is (i3.serialize (), "inc 19700101T000001Z # bar foo # this is an annotation", "Interval.serialize -> 'inc 19700101T000001Z # bar foo # this is an annotation");
+  i3.setAnnotation ("");
   i3.end = Datetime(2);
-  t.is (i3.serialize (), "inc 19700101T000001Z - 19700101T000002Z # bar foo", "Interval(Datetime(1)).serialize -> 'inc 19700101T000001Z - 19700101T000002Z # bar foo'");
+  t.is (i3.serialize (), "inc 19700101T000001Z - 19700101T000002Z # bar foo", "Interval.serialize -> 'inc 19700101T000001Z - 19700101T000002Z # bar foo'");
   i3.tag ("Trans-Europe Express");
-  t.is (i3.serialize (), "inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo", "Interval(Datetime(1)).serialize -> 'inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo'");
+  t.is (i3.serialize (), "inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo", "Interval.serialize -> 'inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo'");
+  i3.setAnnotation ("this is an annotation");
+  t.is (i3.serialize (), "inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo # this is an annotation", "Interval.serialize -> 'inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo' # this is an annotation");
 
   // Round-trip parsing.
   Interval i4;
@@ -131,6 +142,14 @@ int main (int, char**)
                                             "inc",
                                 "Round-trip 'inc'");
 
+  Interval i12a;
+  i12a = IntervalFactory::fromSerialization ("inc # # this is an annotation");
+  t.is (i12a.json (), "{\"annotation\":\"this is an annotation\"}",
+                "JSON '{\"annotation\":\"this is an annotation\"}'");
+  t.is (IntervalFactory::fromJson (i12a.json ()).serialize (),
+                                             "inc # # this is an annotation",
+                                 "Round-trip 'inc # # this is an annotation'");
+
   Interval i13;
   i13 = IntervalFactory::fromSerialization ("inc # foo");
   t.is (i13.json (), "{\"tags\":[\"foo\"]}",
@@ -138,6 +157,15 @@ int main (int, char**)
   t.is (IntervalFactory::fromJson (i13.json ()).serialize (),
                                             "inc # foo",
                                 "Round-trip 'inc # foo'");
+
+  Interval i13a;
+  i13a = IntervalFactory::fromSerialization ("inc # foo # this is an annotation");
+  t.is (i13a.json (), "{\"tags\":[\"foo\"],\"annotation\":\"this is an annotation\"}",
+                "JSON '{\"tags\":[\"foo\"],\"annotation\":\"this is an annotation\"}'");
+  t.is (IntervalFactory::fromJson (i13a.json ()).serialize (),
+                                            "inc # foo # this is an annotation",
+                                "Round-trip 'inc # foo # this is an annotation'");
+
   Interval i14;
   i14 = IntervalFactory::fromSerialization ("inc # bar foo");
   t.is (i14.json (), "{\"tags\":[\"bar\",\"foo\"]}",
@@ -145,6 +173,15 @@ int main (int, char**)
   t.is (IntervalFactory::fromJson (i14.json ()).serialize (),
                                             "inc # bar foo",
                                 "Round-trip 'inc # bar foo'");
+
+  Interval i14a;
+  i14a = IntervalFactory::fromSerialization ("inc # bar foo # this is an annotation");
+  t.is (i14a.json (), "{\"tags\":[\"bar\",\"foo\"],\"annotation\":\"this is an annotation\"}",
+                "JSON '{\"tags\":[\"bar\",\"foo\"],\"annotation\":\"this is an annotation\"}'");
+  t.is (IntervalFactory::fromJson (i14a.json ()).serialize (),
+                                            "inc # bar foo # this is an annotation",
+                                "Round-trip 'inc # bar foo # this is an annotation'");
+
   Interval i15;
   i15 = IntervalFactory::fromSerialization ("inc 19700101T000001Z");
   t.is (i15.json (), "{\"start\":\"19700101T000001Z\"}",
@@ -152,6 +189,15 @@ int main (int, char**)
   t.is (IntervalFactory::fromJson (i15.json ()).serialize (),
                                             "inc 19700101T000001Z",
                                 "Round-trip 'inc 19700101T000001Z'");
+
+  Interval i15a;
+  i15a = IntervalFactory::fromSerialization ("inc 19700101T000001Z # # this is an annotation");
+  t.is (i15a.json (), "{\"start\":\"19700101T000001Z\",\"annotation\":\"this is an annotation\"}",
+                "JSON '{\"start\":\"19700101T000001Z\",\"annotation\":\"this is an annotation\"}'");
+  t.is (IntervalFactory::fromJson (i15a.json ()).serialize (),
+                                             "inc 19700101T000001Z # # this is an annotation",
+                                 "Round-trip 'inc 19700101T000001Z # # this is an annotation'");
+
   Interval i16;
   i16 = IntervalFactory::fromSerialization ("inc 19700101T000001Z - 19700101T000002Z");
   t.is (i16.json (), "{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\"}",
@@ -159,6 +205,15 @@ int main (int, char**)
   t.is (IntervalFactory::fromJson (i16.json ()).serialize (),
                                             "inc 19700101T000001Z - 19700101T000002Z",
                                 "Round-trip 'inc 19700101T000001Z - 19700101T000002Z'");
+
+  Interval i16a;
+  i16a = IntervalFactory::fromSerialization ("inc 19700101T000001Z - 19700101T000002Z # # this is an annotation");
+  t.is (i16a.json (), "{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"annotation\":\"this is an annotation\"}",
+                "JSON '{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"annotation\":\"this is an annotation\"}'");
+  t.is (IntervalFactory::fromJson (i16a.json ()).serialize (),
+                                             "inc 19700101T000001Z - 19700101T000002Z # # this is an annotation",
+                                 "Round-trip 'inc 19700101T000001Z - 19700101T000002Z # # this is an annotation'");
+
   Interval i17;
   i17 = IntervalFactory::fromSerialization ("inc 19700101T000001Z # bar foo");
   t.is (i17.json (), "{\"start\":\"19700101T000001Z\",\"tags\":[\"bar\",\"foo\"]}",
@@ -166,6 +221,7 @@ int main (int, char**)
   t.is (IntervalFactory::fromJson (i17.json ()).serialize (),
                                             "inc 19700101T000001Z # bar foo",
                                 "Round-trip 'inc 19700101T000001Z # bar foo'");
+
   Interval i18;
   i18 = IntervalFactory::fromSerialization ("inc 19700101T000001Z - 19700101T000002Z # bar foo");
   t.is (i18.json (), "{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"bar\",\"foo\"]}",
@@ -173,6 +229,15 @@ int main (int, char**)
   t.is (IntervalFactory::fromJson (i18.json ()).serialize (),
                                             "inc 19700101T000001Z - 19700101T000002Z # bar foo",
                                 "Round-trip 'inc 19700101T000001Z - 19700101T000002Z # bar foo'");
+
+  Interval i18a;
+  i18a = IntervalFactory::fromSerialization ("inc 19700101T000001Z - 19700101T000002Z # bar foo # this is an annotation");
+  t.is (i18a.json (), "{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"bar\",\"foo\"],\"annotation\":\"this is an annotation\"}",
+               "JSON '{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"bar\",\"foo\"],\"annotation\":\"this is an annotation\"}'");
+  t.is (IntervalFactory::fromJson (i18a.json ()).serialize (),
+                                            "inc 19700101T000001Z - 19700101T000002Z # bar foo # this is an annotation",
+                                "Round-trip 'inc 19700101T000001Z - 19700101T000002Z # bar foo # this is an annotation'");
+
   Interval i19;
   i19 = IntervalFactory::fromSerialization ("inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo");
   t.is (i19.json (), "{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"Trans-Europe Express\",\"bar\",\"foo\"]}",
@@ -196,7 +261,9 @@ int main (int, char**)
   Interval i22;
   i22.tag ("foo_bar");
   t.is (i22.serialize (), "inc # \"foo_bar\"", "Interval().serialize -> 'inc # \"foo_bar\"'");
-  
+
+
+
   return 0;
 }
 

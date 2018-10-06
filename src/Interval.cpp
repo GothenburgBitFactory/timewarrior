@@ -31,6 +31,8 @@
 #include <Lexer.h>
 #include <sstream>
 #include <JSON.h>
+#include "Interval.h"
+
 
 ////////////////////////////////////////////////////////////////////////////////
 bool Interval::empty () const
@@ -84,6 +86,12 @@ std::string Interval::serialize () const
       out << ' ' << quoteIfNeeded (tag);
   }
 
+  if (! annotation.empty ())
+  {
+    out << (_tags.empty () ? " #" : "")
+        << " # " << annotation;
+  }
+
   return out.str ();
 }
 
@@ -121,6 +129,16 @@ std::string Interval::json () const
     out << "\"tags\":["
         << tags
         << ']';
+  }
+
+  if (!annotation.empty ())
+  {
+    if (start.toEpoch () || end.toEpoch () || !_tags.empty ())
+    {
+      out << ',';
+    }
+
+    out << "\"annotation\":\"" << annotation << "\"";
   }
 
   out << "}";
@@ -167,5 +185,16 @@ void Interval::setRange (const Datetime& start, const Datetime& end)
   this->end = end;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+void Interval::setAnnotation (const std::string& annotation)
+{
+  this->annotation = annotation;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string Interval::getAnnotation ()
+{
+  return annotation;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
