@@ -49,6 +49,7 @@ bool lightweightVersionCheck (int argc, const char** argv)
 void initializeEntities (CLI& cli)
 {
   // Command entities.
+  cli.entity ("command", "annotate");
   cli.entity ("command", "cancel");
   cli.entity ("command", "config");
   cli.entity ("command", "continue");
@@ -255,7 +256,8 @@ int dispatchCommand (
   {
     // These signatures are expected to be all different, therefore no
     // command to fn mapping.
-         if (command == "cancel")      status = CmdCancel        (     rules, database            );
+         if (command == "annotate")    status = CmdAnnotate      (cli, rules, database            );
+    else if (command == "cancel")      status = CmdCancel        (     rules, database            );
     else if (command == "config")      status = CmdConfig        (cli, rules, database            );
     else if (command == "continue")    status = CmdContinue      (cli, rules, database            );
     else if (command == "day")         status = CmdChartDay      (cli, rules, database            );

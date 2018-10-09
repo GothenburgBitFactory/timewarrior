@@ -32,6 +32,7 @@
 #include <Database.h>
 #include <Extensions.h>
 
+int CmdAnnotate      (const CLI&, Rules&, Database&                   );
 int CmdCancel        (            Rules&, Database&                   );
 int CmdConfig        (const CLI&, Rules&, Database&                   );
 int CmdContinue      (const CLI&, Rules&, Database&                   );

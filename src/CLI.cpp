@@ -556,3 +556,20 @@ std::vector<std::string> CLI::getTags () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::string CLI::getAnnotation () const
+{
+  std::string annotation;
+
+  for (auto& arg : _args)
+  {
+    if (arg.hasTag ("TAG"))
+    {
+      annotation = (arg.attribute ("raw"));
+    }
+
+  }
+
+  return annotation;
+}
+
+////////////////////////////////////////////////////////////////////////////////

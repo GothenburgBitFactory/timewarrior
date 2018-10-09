@@ -5,7 +5,8 @@ include_directories (${CMAKE_SOURCE_DIR}
                      ${CMAKE_SOURCE_DIR}/src/libshared/src
                      ${TIMEW_INCLUDE_DIRS})
 
-set (commands_SRCS CmdCancel.cpp
+set (commands_SRCS CmdAnnotate.cpp
+                   CmdCancel.cpp
                    CmdChart.cpp
                    CmdConfig.cpp
                    CmdContinue.cpp

@@ -67,6 +67,7 @@ public:
   std::string getCommand () const;
   std::set <int> getIds () const;
   std::vector<std::string> getTags () const;
+  std::string getAnnotation() const;
   std::string dump (const std::string& title = "CLI Parser") const;
 
 private:
