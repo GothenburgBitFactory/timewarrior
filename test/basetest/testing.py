@@ -17,6 +17,7 @@ class TestCase(BaseTestCase):
     def assertOpenInterval(self, interval,
                            expectedStart=None,
                            expectedTags=None,
+                           expectedAnnotation=None,
                            description="interval"):
         self.assertKeyExists(interval, "start", description, "{} does not contain a start date")
         self.assertKeyNotExists(interval, "end", description, "{} does contain an end date")
@@ -25,12 +26,14 @@ class TestCase(BaseTestCase):
                                    expectedStart=expectedStart,
                                    expectedEnd=None,
                                    expectedTags=expectedTags,
+                                   expectedAnnotation=expectedAnnotation,
                                    description=description)
 
     def assertClosedInterval(self, interval,
                              expectedStart=None,
                              expectedEnd=None,
                              expectedTags=None,
+                             expectedAnnotation=None,
                              description="interval"):
         self.assertKeyExists(interval, "start", description, "{} does not contain a start date")
         self.assertKeyExists(interval, "end", description, "{} does not contain an end date")
@@ -39,12 +42,14 @@ class TestCase(BaseTestCase):
                                    expectedStart=expectedStart,
                                    expectedEnd=expectedEnd,
                                    expectedTags=expectedTags,
+                                   expectedAnnotation=expectedAnnotation,
                                    description=description)
 
     def assertInterval(self, interval,
                        expectedStart=None,
                        expectedEnd=None,
                        expectedTags=None,
+                       expectedAnnotation=None,
                        description="interval"):
         if expectedStart:
             self.assertIntervalTimestamp(interval, "start", expectedStart, description)
@@ -57,6 +62,13 @@ class TestCase(BaseTestCase):
             self.assertIntervalValue(interval,
                                      "tags",
                                      expectedTags,
+                                     description,
+                                     "{} of {} do not match (expected: {}, actual: {})")
+        if expectedAnnotation:
+            self.assertKeyExists(interval, "annotation", description, "{} is not annotated")
+            self.assertIntervalValue(interval,
+                                     "annotation",
+                                     expectedAnnotation,
                                      description,
                                      "{} of {} do not match (expected: {}, actual: {})")
 
