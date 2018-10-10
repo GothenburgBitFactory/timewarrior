@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -93,6 +93,7 @@ void initializeEntities (CLI& cli)
   cli.entity ("hint", ":debug");
   cli.entity ("hint", ":fill");
   cli.entity ("hint", ":ids");
+  cli.entity ("hint", ":annotations");
   cli.entity ("hint", ":lastmonth");
   cli.entity ("hint", ":lastquarter");
   cli.entity ("hint", ":lastweek");
