@@ -40,6 +40,11 @@ int CmdAnnotate (
   std::set <int> ids = cli.getIds ();
   std::string annotation = cli.getAnnotation ();
 
+  if (annotation.empty ())
+  {
+    throw std::string ("No annotation string given. See 'timew help annotate'.");
+  }
+
   // Load the data.
   // Note: There is no filter.
   Interval filter;
