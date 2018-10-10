@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -94,6 +94,7 @@ int CmdSummary (
     table.add ("ID");
 
   table.add ("Tags");
+  table.add ("Annotation");
   table.add ("Start", false);
   table.add ("End", false);
   table.add ("Time", false);
@@ -130,27 +131,32 @@ int CmdSummary (
         today.end = Datetime ();
 
       std::string tags = join(", ", track.tags());
+      auto annotation = track.getAnnotation ();
+
+      if (annotation.length () > 15)
+        annotation = annotation.substr (0, 12) + "...";
 
       if (ids)
         table.set (row, 3, format ("@{1}", track.id), colorID);
 
       table.set (row, (ids ? 4 : 3), tags);
-      table.set (row, (ids ? 5 : 4), today.start.toString ("h:N:S"));
-      table.set (row, (ids ? 6 : 5), (track.is_open () ? "-" : today.end.toString ("h:N:S")));
-      table.set (row, (ids ? 7 : 6), Duration (today.total ()).formatHours ());
+      table.set (row, (ids ? 5 : 4), annotation);
+      table.set (row, (ids ? 6 : 5), today.start.toString ("h:N:S"));
+      table.set (row, (ids ? 7 : 6), (track.is_open () ? "-" : today.end.toString ("h:N:S")));
+      table.set (row, (ids ? 8 : 7), Duration (today.total ()).formatHours ());
 
       daily_total += today.total ();
     }
 
     if (row != -1)
-      table.set (row, (ids ? 8 : 7), Duration (daily_total).formatHours ());
+      table.set (row, (ids ? 9 : 8), Duration (daily_total).formatHours ());
 
     grand_total += daily_total;
   }
 
   // Add the total.
-  table.set (table.addRow (), (ids ? 8 : 7), " ", Color ("underline"));
-  table.set (table.addRow (), (ids ? 8 : 7), Duration (grand_total).formatHours ());
+  table.set (table.addRow (), (ids ? 9 : 8), " ", Color ("underline"));
+  table.set (table.addRow (), (ids ? 9 : 8), Duration (grand_total).formatHours ());
 
   std::cout << '\n'
             << table.render ()
