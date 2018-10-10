@@ -35,6 +35,7 @@ int CmdHelpUsage (const Extensions& extensions)
   // TODO Align the arg types?
   std::cout << '\n'
             << "Usage: timew [--version]\n"
+            << "       timew annotate @<id> [@<id> ...] <annotation>\n"
             << "       timew cancel\n"
             << "       timew config [<name> [<value> | '']]\n"
             << "       timew continue [@<id>] [<date>|<interval>]\n"
@@ -126,7 +127,30 @@ int CmdHelp (
   {
     // Ruler                 1         2         3         4         5         6         7         8
     //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
-    if (words[0] == "cancel")
+    if (words[0] == "annotate")
+      std::cout << '\n'
+                << "Syntax: timew annotate @<id> [@<id> ...] <annotation>\n"
+                << '\n'
+                << "The 'annotate' command is used to add an annotation to an interval. Using the 'summary'\n"
+                << "command, and specifying the ':ids' hint shows interval IDs. Using the right ID,\n"
+                << "you can identify an interval to annotate. For example, show the IDs:\n"
+                << '\n'
+                << "  $ timew summary :week :ids\n"
+                << '\n'
+                << "Then having selected '@2' as the interval you wish to annotate:\n"
+                << '\n'
+                << "  $ timew annotate @2 'lorem ipsum'\n"
+                << '\n'
+                << "Note that you can annotate multiple intervals with the same annotation:\n"
+                << '\n'
+                << "  $ timew annotate @2 @10 @23 'lorem ipsum dolor sit amet...'\n"
+                << '\n'
+                << "See also 'tag'.\n"
+                << '\n';
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "cancel")
       std::cout << '\n'
                 << "Syntax: timew cancel\n"
                 << '\n'
