@@ -43,6 +43,31 @@ class TestUndo(TestCase):
         """Executed before each test in the class"""
         self.t = Timew()
 
+    def test_undo_annotate(self):
+        """Test undo of command 'annotate'"""
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+
+        self.t("track {:%Y%m%dT%H%M%SZ} - {:%Y%m%dT%H%M%SZ} foo".format(two_hours_before_utc, one_hour_before_utc))
+        self.t("annotate @1 \"lorem ipsum\"")
+
+        j = self.t.export()
+        self.assertEqual(len(j), 1, msg="Expected 1 interval before, got {}".format(len(j)))
+        self.assertClosedInterval(j[0],
+                                  expectedStart=two_hours_before_utc,
+                                  expectedEnd=one_hour_before_utc,
+                                  expectedAnnotation="lorem ipsum")
+
+        self.t("undo")
+
+        j = self.t.export()
+        self.assertEqual(len(j), 1, msg="Expected 1 interval afterwards, got {}".format(len(j)))
+        self.assertClosedInterval(j[0],
+                                  expectedStart=two_hours_before_utc,
+                                  expectedEnd=one_hour_before_utc,
+                                  expectedAnnotation="")
+
     def test_undo_cancel(self):
         """Test undo of command 'cancel'"""
         one_hour_before_utc = datetime.now().utcnow() - timedelta(hours=1)
