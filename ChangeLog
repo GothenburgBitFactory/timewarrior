@@ -31,6 +31,7 @@
 - #167    Cannot shorten interval to zero length
           (thanks to janikrabe)
 - #174    Interval is split in two when it encloses month border
+- #183    Hyphen in annotation gets padded with spaces
 -         Fixed error from totals.py while timer is active
           (thanks to davisdude)
 -         Refactoring of Interval and Range

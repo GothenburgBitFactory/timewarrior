@@ -89,7 +89,7 @@ std::string Interval::serialize () const
   if (! annotation.empty ())
   {
     out << (_tags.empty () ? " #" : "")
-        << " # " << annotation;
+        << " # \"" << annotation << "\"";
   }
 
   return out.str ();
