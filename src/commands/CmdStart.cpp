@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +36,12 @@ int CmdStart (
 {
   // Add a new open interval, which may have a defined start time.
   auto filter = getFilter (cli);
+
+  auto now = Datetime ();
+
+  if (filter.start > now)
+    throw std::string ("Time tracking cannot be set in the future.");
+
   auto latest = getLatestInterval (database);
 
   database.startTransaction ();
@@ -74,21 +80,21 @@ int CmdStart (
   }
 
   // Now add the new open interval.
-  Interval now;
+  Interval started;
   if (filter.start.toEpoch () != 0)
-    now.start = filter.start;
+    started.start = filter.start;
   else
-    now.start = Datetime ();
+    started.start = Datetime ();
 
   for (auto& tag : filter.tags ())
-    now.tag (tag);
+    started.tag (tag);
 
   // Update database. An open interval does not need to be flattened.
-  validate (cli, rules, database, now);
-  database.addInterval (now, rules.getBoolean ("verbose"));
+  validate (cli, rules, database, started);
+  database.addInterval (started, rules.getBoolean ("verbose"));
 
   if (rules.getBoolean ("verbose"))
-    std::cout << intervalSummarize (database, rules, now);
+    std::cout << intervalSummarize (database, rules, started);
 
   database.endTransaction ();
 

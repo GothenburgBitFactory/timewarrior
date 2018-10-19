@@ -3,6 +3,7 @@
 - #9      Add an 'undo' command (TI-1)
 - #21     Add/Remove tag to/from current activity (TI-13)
           (thanks to lumbric)
+- #62     `timew track` with future interval records nothing or incomplete interval (TI-57)
 - #68     Add annotations to time intervals (TI-63)
 - #77     Support non-tag interval data storage (TI-72)
           (thanks to Tomas Babej)
@@ -22,6 +23,8 @@
           (thanks to towo)
 - #138    Entering an escaped quote in a tag name causes incorrect JSON to be generated
           (thanks to bognolo)
+- #142    allow setting end of task in future
+          (thanks to sclo)
 - #157    CLI: Ensure IDs are non-zero
           (thanks to janikrabe)
 - #165    CmdSummary does not show empty intervals at midnight

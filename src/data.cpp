@@ -214,9 +214,6 @@ Interval getFilter (const CLI& cli)
     throw std::string ("Unrecognized date range: '") + join (" ", args) + "'.";
   }
 
-  if (filter.start > now)
-    throw std::string ("Time tracking cannot be set in the future.");
-
   if (filter.end != 0 && filter.start > filter.end)
     throw std::string ("The end of a date range must be after the start.");
 
@@ -386,24 +383,7 @@ std::vector <Interval> flatten (
     Interval chunk {interval};
     chunk.setRange (result);
 
-    // Only historical data is included.
-    if (chunk.start <= now)
-    {
-      // Closed chunk ranges in the future need to be adjusted.
-      if (! chunk.is_open ()  &&
-          chunk.end > now)
-      {
-        // If the interval is open, so must be chunk.
-        if (interval.is_open ())
-          chunk.end = {0};
-
-        // Otherwise truncate to now.
-        else
-          chunk.end = now;
-      }
-
-      all.push_back (chunk);
-    }
+    all.push_back (chunk);
   }
 
   return all;
@@ -568,7 +548,7 @@ bool matchesFilter (const Interval& interval, const Interval& filter)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Take an interval and clip it to the
+// Take an interval and clip it to the range
 Interval clip (const Interval& interval, const Range& range)
 {
   if (! range.is_started () ||
