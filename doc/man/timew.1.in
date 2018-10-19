@@ -38,6 +38,11 @@ Timewarrior supports many commands.
 Alphabetically:
 .
 .TP
+.BR timew-annotate (1)
+.RS
+Add annotation to intervals
+.RE
+.TP
 .BR timew-cancel (1)
 .RS
 Cancel time tracking
@@ -166,6 +171,11 @@ Display a list of tags
 .BR timew-track (1)
 .RS
 Add intervals to the database
+.RE
+.TP
+.BR timew-undo (1)
+.RS
+Undo Timewarrior commands
 .RE
 .TP
 .BR timew-untag (1)
