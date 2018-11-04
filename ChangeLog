@@ -23,6 +23,8 @@
           (thanks to towo)
 - #138    Entering an escaped quote in a tag name causes incorrect JSON to be generated
           (thanks to bognolo)
+- #139    month 1st responds with "Time tracking cannot be set in the future"
+          (thanks to ddombrowsky, triclops200)
 - #142    allow setting end of task in future
           (thanks to sclo)
 - #157    CLI: Ensure IDs are non-zero
