@@ -34,6 +34,7 @@ class Range
 {
 public:
   Range () = default;
+  virtual ~Range() = default;
   Range (const Datetime&, const Datetime&);
   bool operator== (const Range&) const;
   bool operator!= (const Range&) const;
