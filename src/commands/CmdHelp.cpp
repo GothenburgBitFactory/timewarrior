@@ -52,6 +52,7 @@ int CmdHelpUsage (const Extensions& extensions)
             << "       timew help [<command> | interval | hints | date | duration]\n"
             << "       timew join @<id> @<id>\n"
             << "       timew lengthen @<id> [@<id> ...] <duration>\n"
+            << "       timew modify (start|end) @<id> <date>\n"
             << "       timew month [<interval>] [<tag> ...]\n"
             << "       timew move @<id> <date>\n"
             << "       timew [report] <report> [<interval>] [<tag> ...]\n"
@@ -690,7 +691,27 @@ int CmdHelp (
                 << '\n'
                 << "  $ timew lengthen @2 @10 @23 1hour\n"
                 << '\n'
-                << "See also 'summary', 'tag', 'untag', 'shorten'.\n"
+                << "See also 'summary', 'tag', 'untag', 'shorten', 'modify'.\n"
+                << '\n';
+
+    // Ruler                 1         2         3         4         5         6         7         8
+    //              12345678901234567890123456789012345678901234567890123456789012345678901234567890
+    else if (words[0] == "modify")
+      std::cout << '\n'
+                << "Syntax: timew modify (start|end) @<id> <date>\n"
+                << '\n'
+                << "The 'modify' command is used to change the start or end date of a closed\n"
+                << "interval. Using the 'summary' command, and specifying the ':ids' hint shows\n"
+                << "interval IDs. Using the right ID, you can identify an interval to modify. For\n"
+                << "example, show the IDs:\n"
+                << '\n'
+                << "  $ timew summary :week :ids\n"
+                << '\n'
+                << "Then having selected '@2' as the interval you wish to modify:\n"
+                << '\n'
+                << "  $ timew modify end @2 2018-10-10T17:10:00\n"
+                << '\n'
+                << "See also 'summary', 'lengthen', 'shorten', 'move'.\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
@@ -736,7 +757,7 @@ int CmdHelp (
                 << '\n'
                 << "  $ timew move @2 9am\n"
                 << '\n'
-                << "See also 'summary', 'tag', 'untag', 'lengthen', 'shorten'.\n"
+                << "See also 'summary', 'tag', 'untag', 'lengthen', 'shorten', 'modify'.\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
@@ -776,7 +797,7 @@ int CmdHelp (
                 << '\n'
                 << "  $ timew shorten @2 @10 @23 1hour\n"
                 << '\n'
-                << "See also 'summary', 'tag', 'untag', 'lengthen'.\n"
+                << "See also 'summary', 'tag', 'untag', 'lengthen', 'modify'.\n"
                 << '\n';
 
     // Ruler                 1         2         3         4         5         6         7         8
