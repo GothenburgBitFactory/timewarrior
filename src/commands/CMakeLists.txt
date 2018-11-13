@@ -21,6 +21,7 @@ set (commands_SRCS CmdAnnotate.cpp
                    CmdHelp.cpp
                    CmdJoin.cpp
                    CmdLengthen.cpp
+                   CmdModify.cpp
                    CmdMove.cpp
                    CmdReport.cpp
                    CmdResize.cpp
