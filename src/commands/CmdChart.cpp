@@ -129,15 +129,19 @@ int renderChart (
   int last_hour  = 23;
   determineHourRange (type, rules, filter, tracked, first_hour, last_hour);
 
+  auto indent = std::string (getIndentSize (type, rules), ' ');
+
   // Render the axis.
   std::cout << '\n';
   if (rules.get ("reports." + type + ".axis") != "internal")
+  {
     renderAxis (type,
                 rules,
                 palette,
-                std::string (getIndentSize (type, rules), ' '),
+                indent,
                 first_hour,
                 last_hour);
+  }
 
   // For rendering labels on edge detection.
   Datetime previous {0};
@@ -147,7 +151,6 @@ int renderChart (
   bool ids   = findHint (cli, ":ids");
 
   // Determine how much space is occupied by the left-margin labels.
-  auto indent = getIndentSize (type, rules);
 
   auto cell = rules.getInteger ("reports." + type + ".cell");
   if (cell < 1)
@@ -201,7 +204,7 @@ int renderChart (
     if (lines.size () > 1)
       for (unsigned int i = 1; i < lines.size (); ++i)
         std::cout << "\n"
-                  << std::string (indent, ' ')
+                  << indent
                   << lines[i].str ();
 
     std::cout << renderTotal (type, rules, work)
@@ -213,7 +216,7 @@ int renderChart (
 
   std::cout << renderSubTotal (type, rules, first_hour, last_hour, total_work)
             << renderHolidays (type, rules, filter)
-            << renderSummary (type, rules, std::string (indent, ' '), filter, exclusions, tracked, blank);
+            << renderSummary (type, rules, indent, filter, exclusions, tracked, blank);
 
   return 0;
 }
