@@ -37,12 +37,12 @@
 
 int                renderChart           (const CLI&, const std::string&, Interval&, Rules&, Database&);
 static void        determineHourRange    (const std::string&, const Rules&, const Interval&, const std::vector <Interval>&, int&, int&);
-static void        renderAxis            (const std::string&, const Rules&, Palette&, const std::string&, int, int);
+static void        renderAxis            (const std::string&, const Rules&, bool, const std::string&, int, int);
 static std::string renderMonth           (const std::string&, const Rules&, const Datetime&, const Datetime&);
 static std::string renderDayName         (const std::string&, const Rules&, Datetime&, Color&, Color&);
 static std::string renderTotal           (const std::string&, const Rules&, time_t);
 static std::string renderSubTotal        (const std::string&, const Rules&, int, int, time_t);
-static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, Palette&, const Datetime&, int, int, const std::vector <Range>&);
+static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, bool, const Datetime&, int, int, const std::vector <Range>&);
 static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, std::map <std::string, Color>&, int, time_t&, bool);
        std::string renderHolidays        (const std::string&, const Rules&, const Interval&);
 static std::string renderSummary         (const std::string&, const Rules&, const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
@@ -121,8 +121,10 @@ int renderChart (
   // Map tags to colors.
   auto palette = createPalette (rules);
   auto tag_colors = createTagColorMap (rules, palette, tracked);
-  Color colorToday (palette.enabled ? rules.get ("theme.colors.today") : "");
-  Color colorHoliday (palette.enabled ? rules.get ("theme.colors.holiday") : "");
+  auto with_colors = rules.getBoolean ("color");
+  
+  Color colorToday (with_colors ? rules.get ("theme.colors.today") : "");
+  Color colorHoliday (with_colors ? rules.get ("theme.colors.holiday") : "");
 
   // Determine hours shown.
   int first_hour = 0;
@@ -137,7 +139,7 @@ int renderChart (
   {
     renderAxis (type,
                 rules,
-                palette,
+                with_colors,
                 indent,
                 first_hour,
                 last_hour);
@@ -181,7 +183,7 @@ int renderChart (
     for (int i = 0; i < num_lines; ++i)
       lines[i].add (std::string (total_width, ' '), 0, Color ());
 
-    renderExclusionBlocks (type, rules, lines, palette, day, first_hour, last_hour, exclusions);
+    renderExclusionBlocks (type, rules, lines, with_colors, day, first_hour, last_hour, exclusions);
 
     time_t work = 0;
     if (! blank)
@@ -295,7 +297,7 @@ static void determineHourRange (
 static void renderAxis (
   const std::string& type,
   const Rules& rules,
-  Palette& palette,
+  const bool with_colors,
   const std::string& indent,
   int first_hour,
   int last_hour)
@@ -308,8 +310,8 @@ static void renderAxis (
 
   auto spacing = rules.getInteger ("reports." + type + ".spacing");
   auto showTotal = rules.getBoolean ("reports." + type + ".totals");
-  Color colorLabel (palette.enabled ? rules.get ("theme.colors.label") : "");
-  Color colorToday (palette.enabled ? rules.get ("theme.colors.today") : "");
+  Color colorLabel (with_colors ? rules.get ("theme.colors.label") : "");
+  Color colorToday (with_colors ? rules.get ("theme.colors.today") : "");
 
   auto current_hour = Datetime ().hour ();
 
@@ -448,7 +450,7 @@ static void renderExclusionBlocks (
   const std::string& type,
   const Rules& rules,
   std::vector <Composite>& lines,
-  Palette& palette,
+  const bool with_colors,
   const Datetime& day,
   int first_hour,
   int last_hour,
@@ -462,8 +464,8 @@ static void renderExclusionBlocks (
 
   auto spacing = rules.getInteger ("reports." + type + ".spacing");
   auto axis = rules.get ("reports." + type + ".axis");
-  Color colorExc (palette.enabled ? rules.get ("theme.colors.exclusion") : "");
-  Color colorLabel (palette.enabled ? rules.get ("theme.colors.label") : "");
+  Color colorExc (with_colors ? rules.get ("theme.colors.exclusion") : "");
+  Color colorLabel (with_colors ? rules.get ("theme.colors.label") : "");
 
   // Render the exclusion blocks.
   for (int hour = first_hour; hour <= last_hour; hour++)
