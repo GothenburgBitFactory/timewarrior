@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# parse options/arguments
+until [ -z "${1}" ] ; do
+  case "${1}" in
+    --minute)
+      shift
+      minutes="${minutes} ${1}"
+      ;;
+    --hour)
+      shift
+      hours="${hours} ${1}"
+      ;;
+    --day)
+      shift
+      days="${days} ${1}"
+      ;;
+    -*)
+      echo "Unknown option '${1}'"
+      exit 1
+      ;;
+    *)
+      tests="${tests} ${1}"
+      ;;
+  esac
+  shift
+done
+
+for day in ${days-$(date --rfc-3339=date)} ; do
+  for minute in ${minutes-$(echo "0$(rand -M 60)" | sed "s|.\+\(..\)\$|\1|g")} ; do
+    for hour in ${hours-$(seq -w 0 23)} ; do
+      date="${day}T${hour}:${minute}"
+      for single_test in ${tests} ; do
+        echo "Running test ${single_test} at ${date}"
+        faketime ${date} ${single_test}
+        if [ $? -ne 0 ] ; then
+          echo "Test ${single_test} broke at ${date}!"
+          break 2
+        fi
+      done
+    done
+  done
+done

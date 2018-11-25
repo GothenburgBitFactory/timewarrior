@@ -1,0 +1,23 @@
+#!/bin/bash
+
+current_branch=$(git symbolic-ref HEAD 2>/dev/null) || { echo "you are on a unnamed branch" ; exit 1 ; }
+current_branch=${current_branch##refs/heads/}
+
+git diff-index --quiet HEAD -- || { echo "you have unstaged changes" ; exit 1 ; }
+
+branches=$(git for-each-ref --format='%(refname:short)' refs/heads/)
+
+echo "We are currently on ${current_branch}"
+
+for branch in ${branches}; do
+  if [[ ${branch%%/*} == 'feature' || ${branch} =~ TI-[0-9]+ ]] ; then
+    git checkout ${branch}
+    git rebase 1.1.0 || break 
+  else
+    echo "skipping branch ${branch}"
+    continue
+  fi
+done
+
+git checkout ${current_branch}
+

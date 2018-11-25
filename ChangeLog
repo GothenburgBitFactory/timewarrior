@@ -37,6 +37,8 @@
           (thanks to janikrabe)
 - #174    Interval is split in two when it encloses month border
 - #183    Hyphen in annotation gets padded with spaces
+- #189    segfault on timew get dom.active.tag.0
+          (thanks to Valodim)
 -         Fixed error from totals.py while timer is active
           (thanks to davisdude)
 -         Refactoring of Interval and Range
