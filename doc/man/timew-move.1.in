@@ -23,6 +23,7 @@ Then having selected '@2' as the interval you wish to move:
 .
 .SH "SEE ALSO"
 .BR timew-lengthen (1),
+.BR timew-modify (1),
 .BR timew-resize (1),
 .BR timew-shorten (1),
 .BR timew-summary (1),

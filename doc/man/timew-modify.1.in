@@ -1,0 +1,35 @@
+.TH timew-modify 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+.
+.SH NAME
+timew-modify \- change start or end date of an interval
+.
+.SH SYNOPSIS
+.B timew modify (
+.I start
+|
+.I end
+) 
+.I <id>
+.I <date>
+.
+.SH DESCRIPTION
+The 'modify' command is used to change the start or end date of an interval.
+Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
+Using the right ID, you can identify an interval to modify.
+.
+.SH EXAMPLES
+For example, show the IDs:
+.
+  $ timew summary :week :ids
+.
+.PP
+Then having selected '@3' as the interval you wish to modify:
+.
+  $ timew modify end @3 2018-02-03T17:00:00
+.
+.SH "SEE ALSO"
+.BR timew-lengthen (1),
+.BR timew-move (1),
+.BR timew-resize (1)
+.BR timew-shorten (1),
+.BR timew-summary (1)
