@@ -28,6 +28,7 @@ Note that you can lengthen multiple intervals,:
   $ timew lengthen @2 @10 @23 1hour
 .
 .SH "SEE ALSO"
+.BR timew-modify (1),
 .BR timew-resize (1),
 .BR timew-shorten (1),
 .BR timew-summary (1),

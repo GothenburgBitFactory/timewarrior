@@ -25,6 +25,7 @@ The ':ids' hint adds an 'ID' column to the summary report output for interval mo
 .SH "SEE ALSO"
 .BR timew-day (1),
 .BR timew-lengthen (1),
+.BR timew-modify (1),
 .BR timew-month (1),
 .BR timew-shorten (1),
 .BR timew-tag (1),

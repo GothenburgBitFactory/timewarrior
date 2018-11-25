@@ -98,6 +98,11 @@ Join intervals
 Lengthen intervals
 .RE
 .TP
+.BR timew-modify (1)
+.RS
+Change start or end time of an interval
+.RE
+.TP
 .BR timew-month (1)
 .RS
 Display month chart
