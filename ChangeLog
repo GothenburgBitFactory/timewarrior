@@ -19,6 +19,8 @@
           (thanks to chronitis)
 - #113    summary does not display correctly open intervals spanning day border
           (thanks to janikrabe)
+- #131    Introduce 'modify' to adjust historical records to fixed date/time
+          (thanks to sruffell)
 - #135    Task at month end not getting displayed
           (thanks to towo)
 - #138    Entering an escaped quote in a tag name causes incorrect JSON to be generated
