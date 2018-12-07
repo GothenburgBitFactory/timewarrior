@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -46,6 +46,8 @@ static void        renderExclusionBlocks (const std::string&, const Rules&, std:
 static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, std::map <std::string, Color>&, int, time_t&, bool);
        std::string renderHolidays        (const std::string&, const Rules&, const Interval&);
 static std::string renderSummary         (const std::string&, const Rules&, const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
+
+unsigned long getIndentSize (const std::string &type, const Rules &rules);
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdChartDay (
@@ -133,11 +135,7 @@ int renderChart (
     renderAxis (type,
                 rules,
                 palette,
-                std::string ((rules.getBoolean ("reports." + type + ".month")   ? 4 : 0) +
-                             (rules.getBoolean ("reports." + type + ".week")    ? 4 : 0) +
-                             (rules.getBoolean ("reports." + type + ".day")     ? 3 : 0) +
-                             (rules.getBoolean ("reports." + type + ".weekday") ? 4 : 0),
-                             ' '),
+                std::string (getIndentSize (type, rules), ' '),
                 first_hour,
                 last_hour);
 
@@ -149,10 +147,7 @@ int renderChart (
   bool ids   = findHint (cli, ":ids");
 
   // Determine how much space is occupied by the left-margin labels.
-  int indent = (rules.getBoolean ("reports." + type + ".month")   ? 4 : 0) +
-               (rules.getBoolean ("reports." + type + ".week")    ? 4 : 0) +
-               (rules.getBoolean ("reports." + type + ".day")     ? 3 : 0) +
-               (rules.getBoolean ("reports." + type + ".weekday") ? 4 : 0);
+  auto indent = getIndentSize (type, rules);
 
   auto cell = rules.getInteger ("reports." + type + ".cell");
   if (cell < 1)
@@ -221,6 +216,14 @@ int renderChart (
             << renderSummary (type, rules, std::string (indent, ' '), filter, exclusions, tracked, blank);
 
   return 0;
+}
+
+unsigned long getIndentSize (const std::string &type, const Rules &rules)
+{
+  return (rules.getBoolean ("reports." + type + ".month")   ? 4 : 0) +
+         (rules.getBoolean ("reports." + type + ".week")    ? 4 : 0) +
+         (rules.getBoolean ("reports." + type + ".day")     ? 3 : 0) +
+         (rules.getBoolean ("reports." + type + ".weekday") ? 4 : 0);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
