@@ -6,4 +6,5 @@ helper.t
 interval.t
 range.t
 rules.t
+TagInfoDatabase.t
 util.t
