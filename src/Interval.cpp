@@ -75,14 +75,33 @@ const std::set <std::string>& Interval::tags () const
 ////////////////////////////////////////////////////////////////////////////////
 void Interval::tag (const std::string& tag)
 {
-  if (_tags.find (tag) == _tags.end ())
-    _tags.insert (tag);
+  _tags.insert (tag);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Interval::tag (const std::set<std::string>& tags)
+{
+  _tags.insert (tags.begin (), tags.end ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Interval::untag (const std::string& tag)
 {
   _tags.erase (tag);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Interval::untag (const std::set <std::string>& tags)
+{
+  std::set<std::string> updated;
+
+  std::set_difference (
+    _tags.begin (), _tags.end (),
+    tags.begin (), tags.end (),
+    std::inserter (updated, updated.end ())
+  );
+
+  _tags = updated;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

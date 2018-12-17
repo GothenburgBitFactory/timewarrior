@@ -103,10 +103,7 @@ int CmdTag (
   {
     Interval modified {interval};
 
-    for (auto& tag : tags)
-    {
-      modified.tag (tag);
-    }
+    modified.tag (tags);
 
     database.modifyInterval (interval, modified, verbose);
 

@@ -70,7 +70,7 @@ public:
   bool getComplementaryHint (const std::string&, bool) const;
   bool getHint(const std::string&, bool) const;
   std::set <int> getIds () const;
-  std::set<std::string> getTags () const;
+  std::set <std::string> getTags () const;
   std::string getAnnotation() const;
   Duration getDuration() const;
   std::vector<std::string> getDomReferences () const;

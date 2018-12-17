@@ -103,10 +103,7 @@ int CmdUntag (
   {
     Interval modified {interval};
 
-    for (auto& tag : tags)
-    {
-      modified.untag (tag);
-    }
+    modified.untag (tags);
 
     database.modifyInterval (interval, modified, verbose);
 
