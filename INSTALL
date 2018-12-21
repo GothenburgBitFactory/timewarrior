@@ -1,12 +1,9 @@
-Installation Instructions
--------------------------
+# Installation Instructions
 
-Please follow the instructions below to build and install Timewarrior from
-source.
+Please follow the instructions below to build and install Timewarrior from source.
 
 
-Dependencies
-------------
+# Dependencies
 
 In order to build Timewarrior, you will need:
 
@@ -18,140 +15,118 @@ You will need a C++ compiler that supports full C++11, which includes:
   - clang 3.4 (released 2014-01-02)
 
 
-Basic Installation
-------------------
+# Basic Installation
 
 Briefly, these shell commands will unpack, build and install Timewarrior:
 
-  $ tar xzf timew-X.Y.Z.tar.gz                  [1]
-  $ cd timew-X.Y.Z                              [2]
-  $ cmake .                                     [3]
-  $ make                                        [4]
-  $ sudo make install                           [5]
-  $ cd .. ; rm -r timew-X.Y.Z                   [6]
+    $ tar xzf timew-X.Y.Z.tar.gz                  [1]
+    $ cd timew-X.Y.Z                              [2]
+    $ cmake .                                     [3]
+    $ make                                        [4]
+    $ sudo make install                           [5]
+    $ cd .. ; rm -r timew-X.Y.Z                   [6]
 
 These commands are explained below:
 
-  1. Unpacks the source tarball.  This creates the directory timew-X.Y.Z,
-     containing all the code.
+  1. Unpacks the source tarball.
+     This creates the directory timew-X.Y.Z, containing all the code.
 
   2. Change directory to the root of the distribution.
 
-  3. Invokes CMake to scan for dependencies and machine-specific details, then
-     generate the makefiles.  This may take a minute.
+  3. Invokes CMake to scan for dependencies and machine-specific details, then generate the makefiles.
+     This may take a minute.
 
-  4. Builds Timewarrior.  This may take a minute.
+  4. Builds Timewarrior.
+     This may take a minute.
 
   5. Installs the program, documentation and other data files.
 
   6. Removes the temporary directory.
 
 
-Build and configurations options
---------------------------------
+# Build and configurations options
 
-You can customize the configuration run with cmake variables. This will modify
-the installation process:
+You can customize the configuration run with cmake variables.
+This will modify the installation process:
 
-To change the installation directory you use the following configuration
-variable:
+To change the installation directory you use the following configuration variable:
 
-  $ cmake -DCMAKE_INSTALL_PREFIX=<path-to-installation-dir> .
+    $ cmake -DCMAKE_INSTALL_PREFIX=<path-to-installation-dir> .
 
-cmake configuration variables are applied with the -D option and consist of a
-<name> and a <value>:
+cmake configuration variables are applied with the -D option and consist of a <name> and a <value>:
 
-  $ cmake -D<name>=<value> .
+    $ cmake -D<name>=<value> .
 
-Four more variables can customize the installation process. The following table
-lists them and their defaults plus the CMAKE_INSTALL_PREFIX:
+Four more variables can customize the installation process.
+The following table lists them and their defaults plus the `CMAKE_INSTALL_PREFIX`:
 
-  CMAKE_INSTALL_PREFIX   /usr/local
-  TIMEW_BINDIR           bin
-  TIMEW_DOCDIR           share/doc/timew
-  TIMEW_RCDIR            share/doc/timew/rc
-  TIMEW_MAN1DIR          share/man/man1
-  TIMEW_MAN5DIR          share/man/man5
+    CMAKE_INSTALL_PREFIX   /usr/local
+    TIMEW_BINDIR           bin
+    TIMEW_DOCDIR           share/doc/timew
+    TIMEW_RCDIR            share/doc/timew/rc
+    TIMEW_MAN1DIR          share/man/man1
+    TIMEW_MAN5DIR          share/man/man5
 
-The corresponding TIMEW_* variables will be combined with CMAKE_INSTALL_PREFIX to
-get absolute installation directories:
+The corresponding `TIMEW_*` variables will be combined with `CMAKE_INSTALL_PREFIX` to get absolute installation directories:
 
-  CMAKE_INSTALL_PREFIX/TIMEW_BINDIR   /usr/local/bin
-  CMAKE_INSTALL_PREFIX/TIMEW_DOCDIR   /usr/local/share/doc/timew
-  CMAKE_INSTALL_PREFIX/TIMEW_RCDIR    /usr/local/share/doc/timew/rc
-  CMAKE_INSTALL_PREFIX/TIMEW_MAN1DIR  /usr/local/share/man/man1
-  CMAKE_INSTALL_PREFIX/TIMEW_MAN5DIR  /usr/local/share/man/man5
+    CMAKE_INSTALL_PREFIX/TIMEW_BINDIR   /usr/local/bin
+    CMAKE_INSTALL_PREFIX/TIMEW_DOCDIR   /usr/local/share/doc/timew
+    CMAKE_INSTALL_PREFIX/TIMEW_RCDIR    /usr/local/share/doc/timew/rc
+    CMAKE_INSTALL_PREFIX/TIMEW_MAN1DIR  /usr/local/share/man/man1
+    CMAKE_INSTALL_PREFIX/TIMEW_MAN5DIR  /usr/local/share/man/man5
 
 
-Updating Timewarrior build
---------------------------
+# Updating Timewarrior build
 
-This section concerns itself with the description of the procedure needed to
-update the local Timewarrior build from the 'timew' git repository.
+This section concerns itself with the description of the procedure needed to update the local Timewarrior build from the 'timew' git repository.
 
-To update the local Timewarrior build, you need to update the git repository,
-including the 'src/libshared' submodule. To do that, run:
+To update the local Timewarrior build, you need to update the git repository, including the `src/libshared` submodule.
+To do that, run:
 
-  $ git pull --recurse-submodules
-  $ git submodule update
+    $ git pull --recurse-submodules
+    $ git submodule update
 
-At this point you have the fully updated sources at your disposal and you can
-update your local build following the regular build instructions:
+At this point you have the fully updated sources at your disposal and you can update your local build following the regular build instructions:
 
-  $ cmake .
-  $ make
-  $ sudo make install
+    $ cmake .
+    $ make
+    $ sudo make install
 
 
-Uninstallation
---------------
+# Uninstallation
 
-There is no uninstall option in CMake makefiles. This is a manual process.
+There is no uninstall option in CMake makefiles.
+This is a manual process.
 
-To uninstall Timewarrior, remove the files listed in the install_manifest.txt
-file that was generated when you built Timewarrior.
-
-
-Timewarrior Build Notes
------------------------
-
-Timewarrior has dependencies that are detected by CMake in almost all cases, but
-there are situations and operating systems that mean you will need to offer a
-little help.
-
-If Timewarrior will not build on your system, first take a look at the Operating
-System notes below.  If this doesn't help, then go to the Troubleshooting
-section, which includes instructions on how to contact us for help.
+To uninstall Timewarrior, remove the files listed in the `install_manifest.txt` file that was generated when you built Timewarrior.
 
 
-Operating System Notes
-----------------------
+# Timewarrior Build Notes
 
-Cygwin
-  If 'make install' fails when writing to the /usr/local/share/ directory,
-  this may be because your current login doesn't have permission to write
-  to the Windows directory containing your Cygwin installation. Either
-  login to Windows as an Administrator and try the 'make install' process
-  again, or reinstall Cygwin under your normal Windows login.
+Timewarrior has dependencies that are detected by CMake in almost all cases, but there are situations and operating systems that mean you will need to offer a little help.
+
+If Timewarrior will not build on your system, first take a look at the Operating System notes below.
+If this doesn't help, then go to the Troubleshooting section, which includes instructions on how to contact us for help.
 
 
-Troubleshooting
----------------
+# Operating System Notes
 
-If you've recently made changes to dependencies (by reinstalling them, for
-example) be sure to rerun 'cmake .' before trying to execute 'make' again.
+## Cygwin
 
-CMake will run and locate all the necessary pieces for the build, and create
-a Makefile.  There may be errors and warnings when running CMake, or there
-may be compiler errors and warnings when running 'make'.  Sometimes you will run
-CMake with no reported problems, and the build will fail later.  This is
-almost always because CMake is mistaken about some assumption.
+If `make install` fails when writing to the `/usr/local/share/` directory, this may be because your current login doesn't have permission to write to the Windows directory containing your Cygwin installation.
 
-If a build does not succeed, please send the contents of the 'CMakeCache.txt'
-and 'CMakeFiles/CMakeOutput.log' files to support@gothenburgbitfactory.org.
+Either login to Windows as an Administrator and try the `make install` process again, or reinstall Cygwin under your normal Windows login.
 
-If CMake runs but Timewarrior does not build, please send the contents of the
-above files as well as a transcript from the build, which is not written to a
-file and must be captured from the terminal.
 
----
+# Troubleshooting
+
+If you've recently made changes to dependencies (by reinstalling them, for example) be sure to rerun `cmake .` before trying to execute `make` again.
+
+CMake will run and locate all the necessary pieces for the build, and create a Makefile.
+There may be errors and warnings when running CMake, or there may be compiler errors and warnings when running `make`.
+Sometimes you will run CMake with no reported problems, and the build will fail later.
+This is almost always because CMake is mistaken about some assumption.
+
+If a build does not succeed, please send the contents of the `CMakeCache.txt` and `CMakeFiles/CMakeOutput.log` files to `support@gothenburgbitfactory.org`. 
+
+If CMake runs but Timewarrior does not build, please send the contents of the above files as well as a transcript from the build, which is not written to a file and must be captured from the terminal.

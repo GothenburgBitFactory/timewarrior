@@ -1,24 +1,21 @@
-Timewarrior Holiday Files
-=========================
+# Timewarrior Holiday Files
 
-The holiday files were created using https://holidata.net data by the 'refresh'
-script. This data can be updated using these commands:
+The holiday files were created using https://holidata.net data by the 'refresh' script.
+This data can be updated using these commands:
 
-  $ ./refresh
+    $ ./refresh
 
 If you need another locale (for example sv-SE), do this:
 
-  $ ./refresh --locale sv-SE
+    $ ./refresh --locale sv-SE
 
 If you need a specific locale region, do this:
 
-  $ ./refresh --locale de-CH --region Bern
+    $ ./refresh --locale de-CH --region Bern
 
-By default, the current and next year are updated. If the locale is not
-supported by holidata.net, or there is no data (yet) for the locale for this
-year and next year, you will see an error.
+By default, the current and next year are updated.
+If the locale is not supported by holidata.net, or there is no data (yet) for the locale for this year and next year, you will see an error.
 
 To specify a set of years to update, do this:
 
-  $ ./refresh --locale en-US --year 2015 2016 2017
-
+    $ ./refresh --locale en-US --year 2015 2016 2017

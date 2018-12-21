@@ -1,56 +1,47 @@
-Timewarrior Color Themes
-========================
+# Timewarrior Color Themes
 
 The theme files define colors that Timewarrior uses in various situations.
-There are several themes provided with Timewarrior, and you use a theme by
-importing it into your configuration file. Edit this file:
+There are several themes provided with Timewarrior, and you use a theme by importing it into your configuration file.
+Edit this file:
 
-  ~/.timewarrior/timewarrior.cfg
+    ~/.timewarrior/timewarrior.cfg
 
 And add the import line, which looks like this:
 
-  import /path/to/theme/dark.theme
+    import /path/to/theme/dark.theme
 
 You can find more themes online at ...
 
-  TODO URL needed
+TODO URL needed
 
 
-Create Your Own
----------------
+## Create Your Own
 
-It is easy to create your own Timewarrior color theme. The simplest approach is
-to copy an existing theme and then modify the colors.
+It is easy to create your own Timewarrior color theme.
+The simplest approach is to copy an existing theme and then modify the colors.
 
-There is no minimum requirement for a theme - it doesn't need to define any
-colors, but that isn't really the point of a theme. Ideally define a description
-which is shown in the 'diagnostics' command output:
+There is no minimum requirement for a theme - it doesn't need to define any colors, but that isn't really the point of a theme.
+Ideally define a description which is shown in the 'diagnostics' command output:
 
-  theme.description         Description of the theme.
+    theme.description         Description of the theme.
 
-The individual color settings are all used by Taskwarrior, and providing a
-color for each of these is best. If no color is provided for a setting, then no
-color is used, a default does not apply. Color settings include:
+The individual color settings are all used by Taskwarrior, and providing a color for each of these is best.
+If no color is provided for a setting, then no color is used, a default does not apply.
+Color settings include:
 
-  theme.colors.exclusion    Used to color excluded time in reports
-  theme.colors.today        Used to highlight today on reports that show dates
-  theme.colors.label        Used for non-critical labels in reports
+    theme.colors.exclusion    Used to color excluded time in reports
+    theme.colors.today        Used to highlight today on reports that show dates
+    theme.colors.label        Used for non-critical labels in reports
 
-The color palette is used to automatically color tagged time in reports. When
-creating a color theme, the palette should be larger rather than smaller. It is
-recommended that you provide at least 16 colors, otherwise Timewarrior cycles
-through them and you'll see repetitions.
+The color palette is used to automatically color tagged time in reports.
+When creating a color theme, the palette should be larger rather than smaller.
+It is recommended that you provide at least 16 colors, otherwise Timewarrior cycles through them and you'll see repetitions.
 
+## Share Your Theme
 
-Share Your Theme
-----------------
+Having created a color theme, share it in the spirit of Open Source.
+Make it available for download, or alternatively send it to us at:
 
-Having created a color theme, share it in the spirit of Open Source. Make it
-available for download, or alternatively send it to us at:
+    support@gothenburgbitfactory.org
 
-  support@gothenburgbitfactory.org
-
-We will list (and attribute) your theme on the Timewarrior support pages, where
-you will find other themes and extensions.
-
----
+We will list (and attribute) your theme on the Timewarrior support pages, where you will find other themes and extensions.

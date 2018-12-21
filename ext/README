@@ -1,18 +1,15 @@
-Timewarrior Extensions
-======================
+# Timewarrior Extensions
 
-debug.py
-  This is a debug extension that simply echoes back everything it sees in its
-  input. It's useful for debugging to see how the command line affects what an
-  extension sees. This will likely be removed before release.
+## debug.py
+  This is a debug extension that simply echoes back everything it sees in its input.
+  It's useful for debugging to see how the command line affects what an extension sees.
+  This will likely be removed before release.
 
-on-modify.timewarrior
+## on-modify.timewarrior
   This is a Taskwarrior hook script that will integrate Timewarrior.
 
-csv.py
-  This extension exports the data in CSV format, with a variable number of tag
-  fields.
+## csv.py
+  This extension exports the data in CSV format, with a variable number of tag fields.
 
-totals.py
+## totals.py
   Sample extension report that shows totals by tag.
-
