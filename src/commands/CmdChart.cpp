@@ -44,7 +44,7 @@ static std::string renderTotal           (const std::string&, const Rules&, time
 static std::string renderSubTotal        (const std::string&, const Rules&, int, int, time_t);
 static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, bool, const Datetime&, int, int, const std::vector <Range>&);
 static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, std::map <std::string, Color>&, int, time_t&, bool);
-       std::string renderHolidays        (const Rules &rules, const Interval &filter);
+       std::string renderHolidays        (const Rules&, const Interval&, const std::vector<std::string>&);
 static std::string renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
 
 unsigned long getIndentSize (const std::string &type, const Rules &rules);
@@ -219,7 +219,7 @@ int renderChart (
   const auto with_holidays = rules.getBoolean ("reports." + type + ".holidays");
 
   std::cout << renderSubTotal (type, rules, first_hour, last_hour, total_work)
-            << (with_holidays ? renderHolidays (rules, filter) : "")
+            << (with_holidays ? renderHolidays (rules, filter, rules.all ("holidays.")) : "")
             << (with_summary ? renderSummary (indent, filter, exclusions, tracked, blank) : "");
 
   return 0;
@@ -603,10 +603,10 @@ static void renderInterval (
 ////////////////////////////////////////////////////////////////////////////////
 std::string renderHolidays (
   const Rules& rules,
-  const Interval& filter)
+  const Interval& filter,
+  const std::vector <std::string>& holidays)
 {
   std::stringstream out;
-  auto holidays = rules.all ("holidays.");
 
   for (auto& entry : holidays)
   {
