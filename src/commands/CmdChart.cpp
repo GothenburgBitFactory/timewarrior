@@ -417,10 +417,7 @@ static std::string renderSubTotal (
   std::stringstream out;
   if (rules.getBoolean ("reports." + type + ".totals"))
   {
-    int indent = (rules.getBoolean ("reports." + type + ".month")   ? 4 : 0) +
-                 (rules.getBoolean ("reports." + type + ".week")    ? 4 : 0) +
-                 (rules.getBoolean ("reports." + type + ".day")     ? 3 : 0) +
-                 (rules.getBoolean ("reports." + type + ".weekday") ? 4 : 0);
+    auto indent = getIndentSize (type, rules);
     int spacing = rules.getInteger ("reports." + type + ".spacing");
 
     auto cell = rules.getInteger ("reports." + type + ".cell");
