@@ -33,7 +33,7 @@
 #include <iostream>
 
 // Implemented in CmdChart.cpp.
-std::string renderHolidays (const std::string&, const Rules&, const Interval&);
+std::string renderHolidays (const Rules &rules, const Interval &filter);
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdSummary (
@@ -177,9 +177,11 @@ int CmdSummary (
   table.set (table.addRow (), (ids ? 8 : 7) + offset, " ", Color ("underline"));
   table.set (table.addRow (), (ids ? 8 : 7) + offset, Duration (grand_total).formatHours ());
 
+  const auto with_holidays = rules.getBoolean ("reports.summary.holidays");
+
   std::cout << '\n'
             << table.render ()
-            << renderHolidays ("summary", rules, filter)
+            << (with_holidays ? renderHolidays (rules, filter) : "")
             << '\n';
 
   return 0;

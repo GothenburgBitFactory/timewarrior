@@ -44,7 +44,7 @@ static std::string renderTotal           (const std::string&, const Rules&, time
 static std::string renderSubTotal        (const std::string&, const Rules&, int, int, time_t);
 static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, bool, const Datetime&, int, int, const std::vector <Range>&);
 static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, std::map <std::string, Color>&, int, time_t&, bool);
-       std::string renderHolidays        (const std::string&, const Rules&, const Interval&);
+       std::string renderHolidays        (const Rules &rules, const Interval &filter);
 static std::string renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
 
 unsigned long getIndentSize (const std::string &type, const Rules &rules);
@@ -216,8 +216,10 @@ int renderChart (
   }
 
   const auto with_summary = rules.getBoolean ("reports." + type + ".summary");
+  const auto with_holidays = rules.getBoolean ("reports." + type + ".holidays");
+
   std::cout << renderSubTotal (type, rules, first_hour, last_hour, total_work)
-            << renderHolidays (type, rules, filter)
+            << (with_holidays ? renderHolidays (rules, filter) : "")
             << (with_summary ? renderSummary (indent, filter, exclusions, tracked, blank) : "");
 
   return 0;
@@ -600,32 +602,32 @@ static void renderInterval (
 
 ////////////////////////////////////////////////////////////////////////////////
 std::string renderHolidays (
-  const std::string& type,
   const Rules& rules,
   const Interval& filter)
 {
   std::stringstream out;
-  if (rules.getBoolean ("reports." + type + ".holidays"))
+  auto holidays = rules.all ("holidays.");
+
+  for (auto& entry : holidays)
   {
-    for (auto& entry : rules.all ("holidays."))
+    auto first_dot = entry.find ('.');
+    auto last_dot = entry.rfind ('.');
+
+    if (last_dot != std::string::npos)
     {
-      auto first_dot = entry.find ('.');
-      auto last_dot = entry.rfind ('.');
-      if (last_dot != std::string::npos)
+      auto date = entry.substr (last_dot + 1);
+      std::replace (date.begin (), date.end (), '_', '-');
+      Datetime holiday (date);
+
+      if (holiday >= filter.start &&
+          holiday <= filter.end)
       {
-        auto date = entry.substr (last_dot + 1);
-        std::replace (date.begin (), date.end (), '_', '-');
-        Datetime holiday (date);
-        if (holiday >= filter.start &&
-            holiday <= filter.end)
-        {
-          out << Datetime (date).toString ("Y-M-D")
-              << " ["
-              << entry.substr (first_dot + 1, last_dot - first_dot - 1)
-              << "] "
-              << rules.get (entry)
-              << '\n';
-        }
+        out << Datetime (date).toString ("Y-M-D")
+            << " ["
+            << entry.substr (first_dot + 1, last_dot - first_dot - 1)
+            << "] "
+            << rules.get (entry)
+            << '\n';
       }
     }
   }
