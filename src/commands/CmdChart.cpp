@@ -217,8 +217,9 @@ int renderChart (
 
   const auto with_summary = rules.getBoolean ("reports." + type + ".summary");
   const auto with_holidays = rules.getBoolean ("reports." + type + ".holidays");
+  const auto with_totals = rules.getBoolean ("reports." + type + ".totals");
 
-  std::cout << renderSubTotal (type, rules, first_hour, last_hour, total_work)
+  std::cout << (with_totals ? renderSubTotal (type, rules, first_hour, last_hour, total_work) : "")
             << (with_holidays ? renderHolidays (rules, filter, rules.all ("holidays.")) : "")
             << (with_summary ? renderSummary (indent, filter, exclusions, tracked, blank) : "");
 
@@ -415,31 +416,28 @@ static std::string renderSubTotal (
   time_t total_work)
 {
   std::stringstream out;
-  if (rules.getBoolean ("reports." + type + ".totals"))
-  {
-    auto indent = getIndentSize (type, rules);
-    int spacing = rules.getInteger ("reports." + type + ".spacing");
+  auto indent = getIndentSize (type, rules);
+  int spacing = rules.getInteger ("reports." + type + ".spacing");
 
-    auto cell = rules.getInteger ("reports." + type + ".cell");
-    if (cell < 1)
-      throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
+  auto cell = rules.getInteger ("reports." + type + ".cell");
+  if (cell < 1)
+    throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
 
-    auto chars_per_hour = 60 / cell;
+  auto chars_per_hour = 60 / cell;
 
-    std::string pad (indent + ((last_hour - first_hour + 1) * (chars_per_hour + spacing)) + 1, ' ');
+  std::string pad (indent + ((last_hour - first_hour + 1) * (chars_per_hour + spacing)) + 1, ' ');
 
-    int hours = total_work / 3600;
-    int minutes = (total_work % 3600) / 60;
+  int hours = total_work / 3600;
+  int minutes = (total_work % 3600) / 60;
 
-    out << pad
-        << Color ("underline").colorize ("      ")
-        << '\n'
-        << pad
-        << std::setw (3) << std::setfill (' ') << hours
-        << ':'
-        << std::setw (2) << std::setfill ('0') << minutes
-        << '\n';
-  }
+  out << pad
+      << Color ("underline").colorize ("      ")
+      << '\n'
+      << pad
+      << std::setw (3) << std::setfill (' ') << hours
+      << ':'
+      << std::setw (2) << std::setfill ('0') << minutes
+      << '\n';
 
   return out.str ();
 }
