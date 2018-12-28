@@ -38,7 +38,7 @@
 int                renderChart           (const CLI&, const std::string&, Interval&, Rules&, Database&);
 static std::pair<int, int> determineHourRange (const std::string&, const Rules&, const Interval&, const std::vector <Interval>&);
 static void        renderAxis            (const std::string&, const Rules&, bool, const std::string&, int, int);
-static std::string renderMonth           (const std::string&, const Rules&, const Datetime&, const Datetime&);
+static std::string renderMonthAndWeek    (const std::string&, const Rules&, const Datetime&, const Datetime&);
 static std::string renderDayName         (const std::string&, const Rules&, Datetime&, Color&, Color&);
 static std::string renderTotal           (const std::string&, const Rules&, time_t);
 static std::string renderSubTotal        (const std::string&, const Rules&, int, int, time_t);
@@ -195,7 +195,7 @@ int renderChart (
       }
     }
 
-    auto labelMonth = renderMonth (type, rules, previous, day);
+    auto labelMonth = renderMonthAndWeek (type, rules, previous, day);
     auto labelDay   = renderDayName (type, rules, day, colorToday, colorHoliday);
 
     std::cout << labelMonth
@@ -343,22 +343,26 @@ static void renderAxis (
 
 ////////////////////////////////////////////////////////////////////////////////
 // Includes trailing separator space.
-static std::string renderMonth (
-  const std::string& type,
-  const Rules& rules,
-  const Datetime& previous,
-  const Datetime& day)
+static std::string renderMonthAndWeek (
+  const std::string &type,
+  const Rules &rules,
+  const Datetime &previous,
+  const Datetime &day)
 {
-  auto showMonth = rules.getBoolean ("reports." + type + ".month");
-  auto showWeek  = rules.getBoolean ("reports." + type + ".week");
+  auto with_month = rules.getBoolean ("reports." + type + ".month");
+  auto with_week  = rules.getBoolean ("reports." + type + ".week");
+
+  const auto show_month = previous.month () != day.month ();
+  const auto show_week = previous.week () != day.week ();
 
   std::stringstream out;
-  if (showMonth)
-    out << (previous.month () != day.month () ? day.monthNameShort (day.month ()) : "   ")
+
+  if (with_month)
+    out << (show_month ? Datetime::monthNameShort (day.month ()) : "   ")
         << ' ';
 
-  if (showWeek)
-    out << (previous.week () != day.week () ? leftJustify (format ("W{1}", day.week ()), 3) : "   ")
+  if (with_week)
+    out << (show_week ? leftJustify (format ("W{1}", day.week ()), 3) : "   ")
         << ' ';
 
   return out.str ();
@@ -385,7 +389,7 @@ static std::string renderDayName (
 
   std::stringstream out;
   if (showWeekday)
-    out << color.colorize (day.dayNameShort (day.dayOfWeek ()))
+    out << color.colorize (Datetime::dayNameShort (day.dayOfWeek ()))
         << ' ';
 
   if (showDay)
