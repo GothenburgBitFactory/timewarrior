@@ -482,14 +482,15 @@ static void renderExclusionBlocks (
   int last_hour,
   const std::vector <Range>& excluded)
 {
-  auto cell = rules.getInteger ("reports." + type + ".cell");
-  if (cell < 1)
+  auto minutes_per_char = rules.getInteger ("reports." + type + ".cell");
+  if (minutes_per_char < 1)
     throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
 
-  auto chars_per_hour = 60 / cell;
+  auto chars_per_hour = 60 / minutes_per_char;
 
   auto spacing = rules.getInteger ("reports." + type + ".spacing");
   auto axis_type = rules.get ("reports." + type + ".axis");
+  const auto cell_width = chars_per_hour + spacing;
   Color colorExc (with_colors ? rules.get ("theme.colors.exclusion") : "");
   Color colorLabel (with_colors ? rules.get ("theme.colors.label") : "");
 
@@ -503,7 +504,7 @@ static void renderExclusionBlocks (
     if (axis_type == "internal")
     {
       auto label = format ("{1}", hour);
-      int offset = (hour - first_hour) * (chars_per_hour + spacing);
+      int offset = (hour - first_hour) * cell_width;
       lines[0].add (label, offset, colorLabel);
     }
 
@@ -513,10 +514,10 @@ static void renderExclusionBlocks (
       {
         // Determine which of the character blocks included.
         auto sub_hour = exc.intersect (r);
-        auto start_block = quantizeToNMinutes (sub_hour.start.minute (), cell) / cell;
-        auto end_block   = quantizeToNMinutes (sub_hour.end.minute () == 0 ? 60 : sub_hour.end.minute (), cell) / cell;
+        auto start_block = quantizeToNMinutes (sub_hour.start.minute (), minutes_per_char) / minutes_per_char;
+        auto end_block   = quantizeToNMinutes (sub_hour.end.minute () == 0 ? 60 : sub_hour.end.minute (), minutes_per_char) / minutes_per_char;
 
-        int offset = (hour - first_hour) * (chars_per_hour + spacing) + start_block;
+        int offset = (hour - first_hour) * cell_width + start_block;
         int width = end_block - start_block;
         std::string block (width, ' ');
 
