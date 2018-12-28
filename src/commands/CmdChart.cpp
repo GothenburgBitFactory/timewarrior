@@ -43,7 +43,7 @@ static std::string renderWeek            (const Datetime&, const Datetime&);
 static std::string renderWeekday         (const Rules&, Datetime&, Color&, Color&);
 static std::string renderDay             (const Rules&, Datetime&, Color&, Color&);
 static std::string renderTotal           (time_t);
-static std::string renderSubTotal        (time_t, const unsigned long);
+static std::string renderSubTotal        (time_t, unsigned long);
 static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, bool, const Datetime&, int, int, const std::vector <Range>&);
 static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, std::map <std::string, Color>&, int, time_t&, bool);
        std::string renderHolidays        (const Rules&, const Interval&, const std::vector<std::string>&);
