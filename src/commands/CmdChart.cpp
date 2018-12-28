@@ -37,7 +37,7 @@
 
 int                renderChart           (const CLI&, const std::string&, Interval&, Rules&, Database&);
 static std::pair <int, int> determineHourRange (const Interval&, const std::vector <Interval>&);
-static void        renderAxis            (const std::string&, int, int, bool, const Color&, const Color&, int);
+static std::string renderAxis            (const std::string&, int, int, bool, const Color&, const Color&, int);
 static std::string renderMonth           (const Datetime&, const Datetime&);
 static std::string renderWeek            (const Datetime&, const Datetime&);
 static std::string renderWeekday         (const Rules&, Datetime&, Color&, Color&);
@@ -178,7 +178,7 @@ int renderChart (
 
   if (axis_type != "internal")
   {
-    renderAxis (
+    std::cout << renderAxis (
       indent,
       first_hour,
       last_hour,
@@ -320,7 +320,7 @@ static std::pair <int, int> determineHourRange (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-static void renderAxis (
+static std::string renderAxis (
   const std::string& indent,
   int first_hour,
   int last_hour,
@@ -329,27 +329,29 @@ static void renderAxis (
   const Color& colorToday,
   const int cell_size)
 {
+  std::stringstream out;
   auto current_hour = Datetime ().hour ();
 
-  std::cout << indent;
+  out << indent;
   for (int hour = first_hour; hour <= last_hour; hour++)
   {
     if (hour == current_hour)
     {
-      std::cout << colorToday.colorize (leftJustify (hour, cell_size));
+      out << colorToday.colorize (leftJustify (hour, cell_size));
     }
     else
     {
-      std::cout << colorLabel.colorize (leftJustify (hour, cell_size));
+      out << colorLabel.colorize (leftJustify (hour, cell_size));
     }
   }
 
   if (with_totals)
   {
-    std::cout << "  " << colorLabel.colorize ("Total");
+    out << "  " << colorLabel.colorize ("Total");
   }
 
-  std::cout << '\n';
+  out << '\n';
+  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
