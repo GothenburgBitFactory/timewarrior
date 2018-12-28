@@ -166,8 +166,12 @@ int renderChart (
   if (num_lines < 1)
     throw format ("Invalid value for 'reports.{1}.lines': '{2}'", type, rules.get ("reports." + type + ".lines"));
 
+  auto color_today = Color (with_colors ? rules.get ("theme.colors.today") : "");
+  auto color_label = Color (with_colors ? rules.get ("theme.colors.label") : "");
+
   const auto chars_per_hour = 60 / minutes_per_char;
-  const auto padding_size = indent_size + ((last_hour - first_hour + 1) * (chars_per_hour + spacing)) + 1;
+  const auto cell_size = chars_per_hour + spacing;
+  const auto padding_size = indent_size + ((last_hour - first_hour + 1) * (cell_size)) + 1;
 
   auto axis_type = rules.get ("reports." + type + ".axis");
 
@@ -176,11 +180,6 @@ int renderChart (
 
   if (axis_type != "internal")
   {
-    auto color_today = Color (with_colors ? rules.get ("theme.colors.today") : "");
-    auto color_label = Color (with_colors ? rules.get ("theme.colors.label") : "");
-
-    const auto cell_size = chars_per_hour + spacing;
-
     renderAxis (
       indent,
       first_hour,
