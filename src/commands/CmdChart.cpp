@@ -305,28 +305,38 @@ static void renderAxis (
   int first_hour,
   int last_hour)
 {
-  auto cell = rules.getInteger ("reports." + type + ".cell");
-  if (cell < 1)
-    throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
-
-  auto chars_per_hour = 60 / cell;
+  auto current_hour = Datetime ().hour ();
 
   auto spacing = rules.getInteger ("reports." + type + ".spacing");
   auto showTotal = rules.getBoolean ("reports." + type + ".totals");
   Color colorLabel (with_colors ? rules.get ("theme.colors.label") : "");
   Color colorToday (with_colors ? rules.get ("theme.colors.today") : "");
+  auto cell = rules.getInteger ("reports." + type + ".cell");
 
-  auto current_hour = Datetime ().hour ();
+  if (cell < 1)
+  {
+    throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
+  }
+
+  auto chars_per_hour = 60 / cell;
 
   std::cout << indent;
   for (int hour = first_hour; hour <= last_hour; hour++)
+  {
     if (hour == current_hour)
+    {
       std::cout << colorToday.colorize (leftJustify (hour, chars_per_hour + spacing));
+    }
     else
+    {
       std::cout << colorLabel.colorize (leftJustify (hour, chars_per_hour + spacing));
+    }
+  }
 
   if (showTotal)
+  {
     std::cout << "  " << colorLabel.colorize ("Total");
+  }
 
   std::cout << '\n';
 }
