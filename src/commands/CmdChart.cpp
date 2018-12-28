@@ -322,17 +322,17 @@ static void renderAxis (
   auto current_hour = Datetime ().hour ();
 
   auto spacing = rules.getInteger ("reports." + type + ".spacing");
-  auto showTotal = rules.getBoolean ("reports." + type + ".totals");
+  auto with_totals = rules.getBoolean ("reports." + type + ".totals");
   Color colorLabel (with_colors ? rules.get ("theme.colors.label") : "");
   Color colorToday (with_colors ? rules.get ("theme.colors.today") : "");
-  auto cell = rules.getInteger ("reports." + type + ".cell");
+  auto minutes_per_char = rules.getInteger ("reports." + type + ".cell");
 
-  if (cell < 1)
+  if (minutes_per_char < 1)
   {
     throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
   }
 
-  auto chars_per_hour = 60 / cell;
+  auto chars_per_hour = 60 / minutes_per_char;
 
   std::cout << indent;
   for (int hour = first_hour; hour <= last_hour; hour++)
@@ -347,7 +347,7 @@ static void renderAxis (
     }
   }
 
-  if (showTotal)
+  if (with_totals)
   {
     std::cout << "  " << colorLabel.colorize ("Total");
   }
