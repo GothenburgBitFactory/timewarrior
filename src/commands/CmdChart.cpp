@@ -37,7 +37,7 @@
 
 int                renderChart           (const CLI&, const std::string&, Interval&, Rules&, Database&);
 static std::pair<int, int> determineHourRange (const std::string&, const Rules&, const Interval&, const std::vector <Interval>&);
-static void        renderAxis            (const std::string&, const Rules&, bool, const std::string&, int, int);
+static void        renderAxis            (const std::string&, int, int, bool, const Color&, const Color&, int);
 static std::string renderMonth           (const Datetime&, const Datetime&);
 static std::string renderWeek            (const Datetime&, const Datetime&);
 static std::string renderWeekday         (const Rules&, Datetime&, Color&, Color&);
@@ -170,12 +170,19 @@ int renderChart (
 
   if (axis_type != "internal")
   {
-    renderAxis (type,
-                rules,
-                with_colors,
-                indent,
-                first_hour,
-                last_hour);
+    auto color_today = Color (with_colors ? rules.get ("theme.colors.today") : "");
+    auto color_label = Color (with_colors ? rules.get ("theme.colors.label") : "");
+
+    const auto cell_size = chars_per_hour + spacing;
+
+    renderAxis (
+      indent,
+      first_hour,
+      last_hour,
+      with_totals,
+      color_label,
+      color_today,
+      cell_size);
   }
 
   // For rendering labels on edge detection.
@@ -312,29 +319,15 @@ static std::pair <int, int> determineHourRange (
 
 ////////////////////////////////////////////////////////////////////////////////
 static void renderAxis (
-  const std::string& type,
-  const Rules& rules,
-  const bool with_colors,
   const std::string& indent,
   int first_hour,
-  int last_hour)
+  int last_hour,
+  bool with_totals,
+  const Color& colorLabel,
+  const Color& colorToday,
+  const int cell_size)
 {
   auto current_hour = Datetime ().hour ();
-
-  auto with_totals = rules.getBoolean ("reports." + type + ".totals");
-  Color colorLabel (with_colors ? rules.get ("theme.colors.label") : "");
-  Color colorToday (with_colors ? rules.get ("theme.colors.today") : "");
-
-  auto spacing = rules.getInteger ("reports." + type + ".spacing");
-  auto minutes_per_char = rules.getInteger ("reports." + type + ".cell");
-
-  if (minutes_per_char < 1)
-  {
-    throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
-  }
-
-  auto chars_per_hour = 60 / minutes_per_char;
-  const auto cell_size = chars_per_hour + spacing;
 
   std::cout << indent;
   for (int hour = first_hour; hour <= last_hour; hour++)
