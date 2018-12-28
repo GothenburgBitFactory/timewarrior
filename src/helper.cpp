@@ -398,11 +398,15 @@ int quantizeToNMinutes (const int minutes, const int N)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Check rules to see if day is a holiday.
-bool dayIsHoliday (const Rules& rules, const Datetime& day)
+bool dayIsHoliday (const Datetime& day, const std::vector <std::string>& holidays)
 {
-  for (auto& holiday : rules.all ("holidays."))
+  for (auto& holiday : holidays)
+  {
     if (day.sameDay (Datetime (holiday.substr (holiday.length () - 10), "Y_M_D")))
+    {
       return true;
+    }
+  }
 
   return false;
 }

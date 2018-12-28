@@ -389,14 +389,19 @@ static std::string renderWeekday (
   Color& colorToday,
   Color& colorHoliday)
 {
+  auto holidays = rules.all ("holidays.");
   Color color;
+
   if (day.sameDay (Datetime ()))
   {
     color = colorToday;
   }
-  else if (dayIsHoliday (rules, day))
+  else
   {
-    color = colorHoliday;
+    if (dayIsHoliday (day, holidays))
+    {
+      color = colorHoliday;
+    }
   }
 
   std::stringstream out;
@@ -413,19 +418,22 @@ static std::string renderDay (
   Color& colorToday,
   Color& colorHoliday)
 {
+  auto holidays = rules.all ("holidays.");
   Color color;
 
   if (day.sameDay (Datetime ()))
   {
     color = colorToday;
   }
-  else if (dayIsHoliday (rules, day))
+  else
   {
-    color = colorHoliday;
+    if (dayIsHoliday (day, holidays))
+    {
+      color = colorHoliday;
+    }
   }
 
   std::stringstream out;
-
   out << color.colorize (rightJustify (day.day (), 2))
       << ' ';
 
