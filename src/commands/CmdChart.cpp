@@ -125,8 +125,9 @@ int renderChart (
   auto tag_colors = createTagColorMap (rules, palette, tracked);
   auto with_colors = rules.getBoolean ("color");
   
-  Color colorToday (with_colors ? rules.get ("theme.colors.today") : "");
-  Color colorHoliday (with_colors ? rules.get ("theme.colors.holiday") : "");
+  Color color_today (with_colors ? rules.get ("theme.colors.today") : "");
+  Color color_holiday (with_colors ? rules.get ("theme.colors.holiday") : "");
+  Color color_label (with_colors ? rules.get ("theme.colors.label") : "");
 
   const auto not_full_day = rules.get ("reports." + type + ".hours") == "auto";
 
@@ -164,10 +165,7 @@ int renderChart (
   const auto num_lines = rules.getInteger ("reports." + type + ".lines", 1);
 
   if (num_lines < 1)
-    throw format ("Invalid value for 'reports.{1}.lines': '{2}'", type, rules.get ("reports." + type + ".lines"));
-
-  auto color_today = Color (with_colors ? rules.get ("theme.colors.today") : "");
-  auto color_label = Color (with_colors ? rules.get ("theme.colors.label") : "");
+    throw format ("Invalid value for 'reports.{1}.lines': '{2}'", type, num_lines);
 
   const auto chars_per_hour = 60 / minutes_per_char;
   const auto cell_size = chars_per_hour + spacing;
@@ -193,9 +191,9 @@ int renderChart (
   // For rendering labels on edge detection.
   Datetime previous {0};
 
-
   // Each day is rendered separately.
   time_t total_work = 0;
+
   for (Datetime day = filter.start; day < filter.end; day++)
   {
     // Render the exclusion blocks.
@@ -222,8 +220,8 @@ int renderChart (
 
     auto labelMonth   = with_month ? renderMonth (previous, day) : "";
     auto labelWeek    = with_week ? renderWeek (previous, day) : "";
-    auto labelWeekday = with_weekday ? renderWeekday (rules, day, colorToday, colorHoliday) : "";
-    auto labelDay     = with_day ? renderDay (rules, day, colorToday, colorHoliday) : "";
+    auto labelWeekday = with_weekday ? renderWeekday (rules, day, color_today, color_holiday) : "";
+    auto labelDay     = with_day ? renderDay (rules, day, color_today, color_holiday) : "";
 
     std::cout << labelMonth
               << labelWeek
