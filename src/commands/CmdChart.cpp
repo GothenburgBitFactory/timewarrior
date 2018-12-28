@@ -43,7 +43,7 @@ static std::string renderWeek            (const Datetime&, const Datetime&);
 static std::string renderWeekday         (const Rules&, Datetime&, Color&, Color&);
 static std::string renderDay             (const Rules&, Datetime&, Color&, Color&);
 static std::string renderTotal           (time_t);
-static std::string renderSubTotal        (int, int, time_t, unsigned long, const int, const int);
+static std::string renderSubTotal        (time_t, const unsigned long);
 static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, bool, const Datetime&, int, int, const std::vector <Range>&);
 static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, std::map <std::string, Color>&, int, time_t&, bool);
        std::string renderHolidays        (const Rules&, const Interval&, const std::vector<std::string>&);
@@ -238,8 +238,9 @@ int renderChart (
     throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
 
   const auto spacing = rules.getInteger ("reports." + type + ".spacing");
+  const auto padding_size = indent_size + ((last_hour - first_hour + 1) * (chars_per_hour + spacing)) + 1;
 
-  std::cout << (with_totals ? renderSubTotal (first_hour, last_hour, total_work, indent_size, spacing, minutes_per_char) : "")
+  std::cout << (with_totals ? renderSubTotal (total_work, padding_size) : "")
             << (with_holidays ? renderHolidays (rules, filter, rules.all ("holidays.")) : "")
             << (with_summary ? renderSummary (indent, filter, exclusions, tracked, blank) : "");
 
@@ -461,18 +462,11 @@ static std::string renderTotal (time_t work)
 
 ////////////////////////////////////////////////////////////////////////////////
 static std::string renderSubTotal (
-  int first_hour,
-  int last_hour,
   time_t total_work,
-  const unsigned long indent_size,
-  const int spacing,
-  const int minutes_per_char)
+  const unsigned long padding_size)
 {
   std::stringstream out;
 
-  auto chars_per_hour = 60 / minutes_per_char;
-
-  const auto padding_size = indent_size + ((last_hour - first_hour + 1) * (chars_per_hour + spacing)) + 1;
   std::string pad (padding_size, ' ');
 
   int hours = total_work / 3600;
