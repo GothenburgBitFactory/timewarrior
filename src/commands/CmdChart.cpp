@@ -38,7 +38,7 @@
 int                renderChart           (const CLI&, const std::string&, Interval&, Rules&, Database&);
 static std::pair<int, int> determineHourRange (const std::string&, const Rules&, const Interval&, const std::vector <Interval>&);
 static void        renderAxis            (const std::string&, const Rules&, bool, const std::string&, int, int);
-static std::string renderMonth           (const std::string&, const Rules&, const Datetime&, const Datetime&);
+static std::string renderMonth           (const Datetime &previous, const Datetime &day);
 static std::string renderWeek            (const std::string&, const Rules&, const Datetime&, const Datetime&);
 static std::string renderDayName         (const std::string&, const Rules&, Datetime&, Color&, Color&);
 static std::string renderTotal           (const std::string&, const Rules&, time_t);
@@ -196,7 +196,9 @@ int renderChart (
       }
     }
 
-    auto labelMonth = renderMonth (type, rules, previous, day);
+    const auto with_month = rules.getBoolean ("reports." + type + ".month");
+
+    auto labelMonth = with_month ? renderMonth (previous, day) : "";
     auto labelWeek  = renderWeek (type, rules, previous, day);
     auto labelDay   = renderDayName (type, rules, day, colorToday, colorHoliday);
 
@@ -345,21 +347,14 @@ static void renderAxis (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-static std::string renderMonth (
-  const std::string &type,
-  const Rules &rules,
-  const Datetime &previous,
-  const Datetime &day)
+static std::string renderMonth (const Datetime &previous, const Datetime &day)
 {
-  auto with_month = rules.getBoolean ("reports." + type + ".month");
-
   const auto show_month = previous.month () != day.month ();
 
   std::stringstream out;
 
-  if (with_month)
-    out << (show_month ? Datetime::monthNameShort (day.month ()) : "   ")
-        << ' ';
+  out << (show_month ? Datetime::monthNameShort (day.month ()) : "   ")
+      << ' ';
 
   return out.str ();
 }
