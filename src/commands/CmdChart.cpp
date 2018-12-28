@@ -321,10 +321,11 @@ static void renderAxis (
 {
   auto current_hour = Datetime ().hour ();
 
-  auto spacing = rules.getInteger ("reports." + type + ".spacing");
   auto with_totals = rules.getBoolean ("reports." + type + ".totals");
   Color colorLabel (with_colors ? rules.get ("theme.colors.label") : "");
   Color colorToday (with_colors ? rules.get ("theme.colors.today") : "");
+
+  auto spacing = rules.getInteger ("reports." + type + ".spacing");
   auto minutes_per_char = rules.getInteger ("reports." + type + ".cell");
 
   if (minutes_per_char < 1)
@@ -333,17 +334,18 @@ static void renderAxis (
   }
 
   auto chars_per_hour = 60 / minutes_per_char;
+  const auto cell_size = chars_per_hour + spacing;
 
   std::cout << indent;
   for (int hour = first_hour; hour <= last_hour; hour++)
   {
     if (hour == current_hour)
     {
-      std::cout << colorToday.colorize (leftJustify (hour, chars_per_hour + spacing));
+      std::cout << colorToday.colorize (leftJustify (hour, cell_size));
     }
     else
     {
-      std::cout << colorLabel.colorize (leftJustify (hour, chars_per_hour + spacing));
+      std::cout << colorLabel.colorize (leftJustify (hour, cell_size));
     }
   }
 
