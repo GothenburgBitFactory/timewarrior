@@ -536,9 +536,10 @@ static void renderInterval (
 
   // Ignore any track that doesn't overlap with day.
   auto day_range = getFullDay (day);
-  if (! day_range.overlaps (track) ||
-      (track.is_open () && day > now))
+  if (! day_range.overlaps (track) || (track.is_open () && day > now))
+  {
     return;
+  }
 
   // If the track is open and day is today, then closed the track now, otherwise
   // it will be rendered until midnight.
@@ -546,16 +547,22 @@ static void renderInterval (
   if (track.is_open ())
   {
     if (day_range.start.sameDay (now))
+    {
       clipped.end = now;
+    }
     else
+    {
       clipped.end = day_range.end;
+    }
   }
 
   auto start_mins = (clipped.start.hour () - first_hour) * 60 + clipped.start.minute ();
   auto end_mins   = (clipped.end.hour ()   - first_hour) * 60 + clipped.end.minute ();
 
   if (clipped.end.hour () == 0)
+  {
     end_mins += (clipped.end.day() + (clipped.end.month () - clipped.start.month () - 1) * clipped.start.day ()) * 24 * 60;
+  }
 
   work = clipped.total ();
 
@@ -573,12 +580,16 @@ static void renderInterval (
     // Properly format the tags within the space.
     std::string label;
     if (ids)
+    {
       label = format ("@{1}", track.id);
+    }
 
     for (auto& tag : track.tags ())
     {
       if (! label.empty ())
+      {
         label += ' ';
+      }
 
       label += tag;
     }
@@ -592,15 +603,20 @@ static void renderInterval (
       for (unsigned int i = 0; i < lines.size (); ++i)
       {
         if (i < text_lines.size ())
+        {
           lines[i].add (leftJustify (text_lines[i], width), start_offset, colorTrack);
+        }
         else
+        {
           lines[i].add (std::string (width, ' '), start_offset, colorTrack);
+        }
       }
 
-      // An open interval gets a "..." in the bottom right corner, or
-      // whatever fits.
+      // An open interval gets a "+" in the bottom right corner
       if (track.is_open ())
+      {
         lines.back ().add ("+", start_offset + width - 1, colorTrack);
+      }
     }
   }
 }
