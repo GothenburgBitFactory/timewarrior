@@ -37,7 +37,7 @@
 
 int                renderChart           (const CLI&, const std::string&, Interval&, Rules&, Database&);
 static std::pair <int, int> determineHourRange (const Interval&, const std::vector <Interval>&);
-static std::string renderAxis            (const std::string&, int, int, bool, const Color&, const Color&, int);
+static std::string renderAxis            (int, int, const Color&, const Color&, int, bool);
 static std::string renderMonth           (const Datetime&, const Datetime&);
 static std::string renderWeek            (const Datetime&, const Datetime&);
 static std::string renderWeekday         (const Rules&, Datetime&, Color&, Color&);
@@ -178,14 +178,14 @@ int renderChart (
 
   if (axis_type != "internal")
   {
-    std::cout << renderAxis (
-      indent,
-      first_hour,
-      last_hour,
-      with_totals,
-      color_label,
-      color_today,
-      cell_size);
+    std::cout << indent
+              << renderAxis (
+                first_hour,
+                last_hour,
+                color_label,
+                color_today,
+                cell_size,
+                with_totals);
   }
 
   // For rendering labels on edge detection.
@@ -321,18 +321,16 @@ static std::pair <int, int> determineHourRange (
 
 ////////////////////////////////////////////////////////////////////////////////
 static std::string renderAxis (
-  const std::string& indent,
-  int first_hour,
-  int last_hour,
-  bool with_totals,
-  const Color& colorLabel,
-  const Color& colorToday,
-  const int cell_size)
+  const int first_hour,
+  const int last_hour,
+  const Color &colorLabel,
+  const Color &colorToday,
+  const int cell_size,
+  const bool with_totals)
 {
   std::stringstream out;
   auto current_hour = Datetime ().hour ();
 
-  out << indent;
   for (int hour = first_hour; hour <= last_hour; hour++)
   {
     if (hour == current_hour)
@@ -351,6 +349,7 @@ static std::string renderAxis (
   }
 
   out << '\n';
+
   return out.str ();
 }
 
