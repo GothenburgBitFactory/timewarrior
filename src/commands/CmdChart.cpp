@@ -36,7 +36,7 @@
 #include <cassert>
 
 int                renderChart           (const CLI&, const std::string&, Interval&, Rules&, Database&);
-static std::pair<int, int> determineHourRange (const std::string&, const Rules&, const Interval&, const std::vector <Interval>&);
+static std::pair <int, int> determineHourRange (const Interval&, const std::vector <Interval>&);
 static void        renderAxis            (const std::string&, int, int, bool, const Color&, const Color&, int);
 static std::string renderMonth           (const Datetime&, const Datetime&);
 static std::string renderWeek            (const Datetime&, const Datetime&);
@@ -128,11 +128,17 @@ int renderChart (
   Color colorToday (with_colors ? rules.get ("theme.colors.today") : "");
   Color colorHoliday (with_colors ? rules.get ("theme.colors.holiday") : "");
 
+  const auto not_full_day = rules.get ("reports." + type + ".hours") == "auto";
+
   // Determine hours shown.
-  auto hour_range = determineHourRange (type, rules, filter, tracked);
+  auto hour_range = not_full_day
+    ? determineHourRange (filter, tracked)
+    : std::make_pair (0, 23);
 
   int first_hour = hour_range.first;
   int last_hour = hour_range.second;
+
+  debug (format ("Day range is from {1}:00 - {2}:00", first_hour, last_hour));
 
   const auto indent_size = getIndentSize (type, rules);
   auto indent = std::string (indent_size, ' ');
@@ -259,8 +265,6 @@ unsigned long getIndentSize (const std::string &type, const Rules &rules)
 // Scan all tracked intervals, looking for the earliest and latest hour into
 // which an interval extends.
 static std::pair <int, int> determineHourRange (
-  const std::string& type,
-  const Rules& rules,
   const Interval& filter,
   const std::vector <Interval>& tracked)
 {
@@ -268,51 +272,52 @@ static std::pair <int, int> determineHourRange (
   auto first_hour = 0;
   auto last_hour = 23;
 
-  if (rules.get ("reports." + type + ".hours") == "auto")
+  // If there is no data,
+  // show the whole day.
+  if (! tracked.empty ())
   {
-    // If there is no data, show the whole day.
-    if (! tracked.empty ())
+    // Get the extreme time range for the filtered data.
+    first_hour = 23;
+    last_hour  = 0;
+
+    for (Datetime day = filter.start; day < filter.end; day++)
     {
-      // Get the extreme time range for the filtered data.
-      first_hour = 23;
-      last_hour  = 0;
-      for (Datetime day = filter.start; day < filter.end; day++)
+      auto day_range = getFullDay (day);
+
+      for (auto& track : tracked)
       {
-        auto day_range = getFullDay (day);
-
-        for (auto& track : tracked)
+        if (day_range.overlaps (track))
         {
-          if (day_range.overlaps (track))
+          Interval clipped = clip (track, day_range);
+          if (track.is_open ())
           {
-            Interval clipped = clip (track, day_range);
-            if (track.is_open ())
-              clipped.end = Datetime ();
+            clipped.end = Datetime ();
+          }
 
-            if (clipped.start.hour () < first_hour)
-              first_hour = clipped.start.hour ();
+          if (clipped.start.hour () < first_hour)
+          {
+            first_hour = clipped.start.hour ();
+          }
 
-            if (! clipped.is_open () &&
-                clipped.end.hour () > last_hour)
-              last_hour = clipped.end.hour ();
+          if (! clipped.is_open () && clipped.end.hour () > last_hour)
+          {
+            last_hour = clipped.end.hour ();
           }
         }
       }
+    }
 
-      if (first_hour == 23 &&
-          last_hour == 0)
-      {
-        first_hour = Datetime ().hour ();
-        last_hour = std::min (first_hour + 1, 23);
-      }
-      else
-      {
-        first_hour = std::max (first_hour - 1, 0);
-        last_hour  = std::min (last_hour + 1, 23);
-      }
+    if (first_hour == 23 && last_hour == 0)
+    {
+      first_hour = Datetime ().hour ();
+      last_hour = std::min (first_hour + 1, 23);
+    }
+    else
+    {
+      first_hour = std::max (first_hour - 1, 0);
+      last_hour  = std::min (last_hour + 1, 23);
     }
   }
-
-  debug (format ("Day range is from {1}:00 - {2}:00", first_hour, last_hour));
 
   return std::make_pair (first_hour, last_hour);
 }
