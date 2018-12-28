@@ -137,9 +137,36 @@ int renderChart (
   const auto indent_size = getIndentSize (type, rules);
   auto indent = std::string (indent_size, ' ');
 
+  // Is the :blank hint being used?
+  bool blank = findHint (cli, ":blank");
+  bool ids   = findHint (cli, ":ids");
+
+  const auto with_summary = rules.getBoolean ("reports." + type + ".summary");
+  const auto with_holidays = rules.getBoolean ("reports." + type + ".holidays");
+  const auto with_totals = rules.getBoolean ("reports." + type + ".totals");
+  const auto with_month = rules.getBoolean ("reports." + type + ".month");
+  const auto with_week = rules.getBoolean ("reports." + type + ".week");
+  const auto with_day = rules.getBoolean ("reports." + type + ".day");
+  const auto with_weekday = rules.getBoolean ("reports." + type + ".weekday");
+
+  // Determine how much space is occupied by the left-margin labels.
+  const auto minutes_per_char = rules.getInteger ("reports." + type + ".cell");
+  if (minutes_per_char < 1)
+    throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
+
+  const auto spacing = rules.getInteger ("reports." + type + ".spacing", 1);
+  const auto num_lines = rules.getInteger ("reports." + type + ".lines", 1);
+
+  if (num_lines < 1)
+    throw format ("Invalid value for 'reports.{1}.lines': '{2}'", type, rules.get ("reports." + type + ".lines"));
+
+  const auto chars_per_hour = 60 / minutes_per_char;
+  const auto padding_size = indent_size + ((last_hour - first_hour + 1) * (chars_per_hour + spacing)) + 1;
+
+  auto axis_type = rules.get ("reports." + type + ".axis");
+
   // Render the axis.
   std::cout << '\n';
-  auto axis_type = rules.get ("reports." + type + ".axis");
 
   if (axis_type != "internal")
   {
@@ -154,29 +181,12 @@ int renderChart (
   // For rendering labels on edge detection.
   Datetime previous {0};
 
-  // Is the :blank hint being used?
-  bool blank = findHint (cli, ":blank");
-  bool ids   = findHint (cli, ":ids");
-
-  // Determine how much space is occupied by the left-margin labels.
-
-  auto cell = rules.getInteger ("reports." + type + ".cell", 15);
-  if (cell < 1)
-    throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
-
-  auto chars_per_hour = 60 / cell;
 
   // Each day is rendered separately.
   time_t total_work = 0;
   for (Datetime day = filter.start; day < filter.end; day++)
   {
     // Render the exclusion blocks.
-    auto num_lines = rules.getInteger ("reports." + type + ".lines", 1);
-
-    if (num_lines < 1)
-      throw format ("Invalid value for 'reports.{1}.lines': '{2}'", type, rules.get ("reports." + type + ".lines"));
-
-    auto spacing = rules.getInteger ("reports." + type + ".spacing", 1);
 
     // Add an empty string with no color, to reserve width, so this function
     // can simply concatenate to lines[i].str ().
@@ -198,11 +208,6 @@ int renderChart (
       }
     }
 
-    const auto with_month = rules.getBoolean ("reports." + type + ".month");
-    const auto with_week = rules.getBoolean ("reports." + type + ".week");
-    const auto with_day = rules.getBoolean ("reports." + type + ".day");
-    const auto with_weekday = rules.getBoolean ("reports." + type + ".weekday");
-
     auto labelMonth   = with_month ? renderMonth (previous, day) : "";
     auto labelWeek    = with_week ? renderWeek (previous, day) : "";
     auto labelWeekday = with_weekday ? renderWeekday (rules, day, colorToday, colorHoliday) : "";
@@ -220,25 +225,12 @@ int renderChart (
                   << indent
                   << lines[i].str ();
 
-    const auto with_totals = rules.getBoolean ("reports." + type + ".totals");
-
     std::cout << (with_totals ? renderTotal (work) : "")
               << '\n';
 
     previous = day;
     total_work += work;
   }
-
-  const auto with_summary = rules.getBoolean ("reports." + type + ".summary");
-  const auto with_holidays = rules.getBoolean ("reports." + type + ".holidays");
-  const auto with_totals = rules.getBoolean ("reports." + type + ".totals");
-
-  const auto minutes_per_char = rules.getInteger ("reports." + type + ".cell");
-  if (minutes_per_char < 1)
-    throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
-
-  const auto spacing = rules.getInteger ("reports." + type + ".spacing");
-  const auto padding_size = indent_size + ((last_hour - first_hour + 1) * (chars_per_hour + spacing)) + 1;
 
   std::cout << (with_totals ? renderSubTotal (total_work, padding_size) : "")
             << (with_holidays ? renderHolidays (rules, filter, rules.all ("holidays.")) : "")
