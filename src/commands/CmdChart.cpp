@@ -237,6 +237,7 @@ int renderChart (
   return 0;
 }
 
+////////////////////////////////////////////////////////////////////////////////
 unsigned long getIndentSize (const std::string &type, const Rules &rules)
 {
   return (rules.getBoolean ("reports." + type + ".month")   ? 4 : 0) +
