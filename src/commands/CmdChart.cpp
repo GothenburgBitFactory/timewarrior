@@ -200,7 +200,7 @@ int renderChart (
 
     // Add an empty string with no color, to reserve width, so this function
     // can simply concatenate to lines[i].str ().
-    int total_width = (last_hour - first_hour + 1) * (chars_per_hour + spacing) - 1;
+    int total_width = (last_hour - first_hour + 1) * (cell_size) - 1;
     std::vector <Composite> lines (num_lines);
     for (int i = 0; i < num_lines; ++i)
       lines[i].add (std::string (total_width, ' '), 0, Color ());
