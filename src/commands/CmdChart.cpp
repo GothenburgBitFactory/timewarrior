@@ -155,7 +155,7 @@ int renderChart (
 
   // Determine how much space is occupied by the left-margin labels.
 
-  auto cell = rules.getInteger ("reports." + type + ".cell");
+  auto cell = rules.getInteger ("reports." + type + ".cell", 15);
   if (cell < 1)
     throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
 
@@ -166,16 +166,12 @@ int renderChart (
   for (Datetime day = filter.start; day < filter.end; day++)
   {
     // Render the exclusion blocks.
-    int num_lines = 1;
-    if (rules.has ("reports." + type + ".lines"))
-      num_lines = rules.getInteger ("reports." + type + ".lines", num_lines);
+    auto num_lines = rules.getInteger ("reports." + type + ".lines", 1);
 
     if (num_lines < 1)
       throw format ("Invalid value for 'reports.{1}.lines': '{2}'", type, rules.get ("reports." + type + ".lines"));
 
-    int spacing = 1;
-    if (rules.has ("reports." + type + ".spacing"))
-      spacing = rules.getInteger ("reports." + type + ".spacing");
+    auto spacing = rules.getInteger ("reports." + type + ".spacing", 1);
 
     // Add an empty string with no color, to reserve width, so this function
     // can simply concatenate to lines[i].str ().
