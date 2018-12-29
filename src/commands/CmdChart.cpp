@@ -560,8 +560,8 @@ static void renderInterval (
   bool ids)
 {
   Datetime now;
-  auto cell = rules.getInteger ("reports." + type + ".cell");
-  if (cell < 1)
+  auto minutes_per_char = rules.getInteger ("reports." + type + ".cell");
+  if (minutes_per_char < 1)
     throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
   auto spacing = rules.getInteger ("reports." + type + ".spacing");
 
@@ -597,8 +597,8 @@ static void renderInterval (
 
   work = clipped.total ();
 
-  auto start_block = quantizeToNMinutes (start_mins, cell) / cell;
-  auto end_block   = quantizeToNMinutes (end_mins == start_mins ? start_mins + 60 : end_mins, cell) / cell;
+  auto start_block = quantizeToNMinutes (start_mins, minutes_per_char) / minutes_per_char;
+  auto end_block   = quantizeToNMinutes (end_mins == start_mins ? start_mins + 60 : end_mins, minutes_per_char) / minutes_per_char;
 
   int start_offset = start_block + (spacing * (start_mins / 60));
   int end_offset   = end_block   + (spacing * (end_mins   / 60));
