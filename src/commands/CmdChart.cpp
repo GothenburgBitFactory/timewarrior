@@ -45,7 +45,7 @@ static std::string renderDay             (Datetime&, const std::vector<std::stri
 static std::string renderTotal           (time_t);
 static std::string renderSubTotal        (time_t, unsigned long);
 static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, bool, const Datetime&, int, int, const std::vector <Range>&);
-static void        renderInterval        (const std::string&, const Rules&, std::vector <Composite>&, const Datetime&, const Interval&, std::map <std::string, Color>&, int, time_t&, bool);
+static void        renderInterval        (const Rules&, std::vector<Composite>&, const Datetime&, const Interval&, std::map<std::string, Color>&, int, time_t&, bool, int, int);
        std::string renderHolidays        (const Rules&, const Interval&, const std::vector<std::string>&);
 static std::string renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
 
@@ -215,7 +215,7 @@ int renderChart (
       for (auto& track : tracked)
       {
         time_t interval_work = 0;
-        renderInterval (type, rules, lines, day, track, tag_colors, first_hour, interval_work, ids);
+        renderInterval (rules, lines, day, track, tag_colors, first_hour, interval_work, ids, minutes_per_char, spacing);
         work += interval_work;
       }
     }
@@ -549,7 +549,6 @@ static void renderExclusionBlocks (
 
 ////////////////////////////////////////////////////////////////////////////////
 static void renderInterval (
-  const std::string& type,
   const Rules& rules,
   std::vector <Composite>& lines,
   const Datetime& day,
@@ -557,13 +556,11 @@ static void renderInterval (
   std::map <std::string, Color>& tag_colors,
   int first_hour,
   time_t& work,
-  bool ids)
+  bool ids,
+  const int minutes_per_char,
+  const int spacing)
 {
   Datetime now;
-  auto minutes_per_char = rules.getInteger ("reports." + type + ".cell");
-  if (minutes_per_char < 1)
-    throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
-  auto spacing = rules.getInteger ("reports." + type + ".spacing");
 
   // Ignore any track that doesn't overlap with day.
   auto day_range = getFullDay (day);
