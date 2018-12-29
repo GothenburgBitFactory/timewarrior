@@ -44,7 +44,7 @@ static std::string renderWeekday         (Datetime&, const std::vector<std::stri
 static std::string renderDay             (Datetime&, const std::vector<std::string>&, Color&, Color&);
 static std::string renderTotal           (time_t);
 static std::string renderSubTotal        (time_t, unsigned long);
-static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, bool, const Datetime&, int, int, const std::vector <Range>&);
+static void        renderExclusionBlocks (std::vector<Composite>&, const Datetime&, int, int, const std::vector<Range>&, int, int, const std::string&, const Color&, const Color&);
 static void        renderInterval        (const Rules&, std::vector<Composite>&, const Datetime&, const Interval&, std::map<std::string, Color>&, int, time_t&, bool, int, int);
        std::string renderHolidays        (const Rules&, const Interval&, const std::vector<std::string>&);
 static std::string renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
@@ -128,6 +128,7 @@ int renderChart (
   Color color_today (with_colors ? rules.get ("theme.colors.today") : "");
   Color color_holiday (with_colors ? rules.get ("theme.colors.holiday") : "");
   Color color_label (with_colors ? rules.get ("theme.colors.label") : "");
+  Color color_exclusion (with_colors ? rules.get ("theme.colors.exclusion") : "");
 
   const auto not_full_day = rules.get ("reports." + type + ".hours") == "auto";
 
@@ -207,7 +208,7 @@ int renderChart (
     for (int i = 0; i < num_lines; ++i)
       lines[i].add (std::string (total_width, ' '), 0, Color ());
 
-    renderExclusionBlocks (type, rules, lines, with_colors, day, first_hour, last_hour, exclusions);
+    renderExclusionBlocks (lines, day, first_hour, last_hour, exclusions, minutes_per_char, spacing, axis_type, color_exclusion, color_label);
 
     time_t work = 0;
     if (! blank)
@@ -482,28 +483,20 @@ static std::string renderSubTotal (
   return out.str ();
 }
 
-////////////////////////////////////////////////////////////////////////////////
 static void renderExclusionBlocks (
-  const std::string& type,
-  const Rules& rules,
   std::vector <Composite>& lines,
-  const bool with_colors,
   const Datetime& day,
   int first_hour,
   int last_hour,
-  const std::vector <Range>& excluded)
+  const std::vector<Range>& excluded,
+  const int minutes_per_char,
+  const int spacing,
+  const std::string& axis_type,
+  const Color& color_exclusion,
+  const Color& color_label)
 {
-  auto minutes_per_char = rules.getInteger ("reports." + type + ".cell");
-  if (minutes_per_char < 1)
-    throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
-
-  auto chars_per_hour = 60 / minutes_per_char;
-
-  auto spacing = rules.getInteger ("reports." + type + ".spacing");
-  auto axis_type = rules.get ("reports." + type + ".axis");
+  const auto chars_per_hour = 60 / minutes_per_char;
   const auto cell_width = chars_per_hour + spacing;
-  Color colorExc (with_colors ? rules.get ("theme.colors.exclusion") : "");
-  Color colorLabel (with_colors ? rules.get ("theme.colors.label") : "");
 
   // Render the exclusion blocks.
   for (int hour = first_hour; hour <= last_hour; hour++)
@@ -516,7 +509,7 @@ static void renderExclusionBlocks (
     {
       auto label = format ("{1}", hour);
       int offset = (hour - first_hour) * cell_width;
-      lines[0].add (label, offset, colorLabel);
+      lines[0].add (label, offset, color_label);
     }
 
     for (auto& exc : excluded)
@@ -533,14 +526,14 @@ static void renderExclusionBlocks (
         std::string block (width, ' ');
 
         for (auto& line : lines)
-          line.add (block, offset, colorExc);
+          line.add (block, offset, color_exclusion);
 
         if (axis_type == "internal")
         {
           auto label = format ("{1}", hour);
           if (start_block == 0 &&
               width >= static_cast <int> (label.length ()))
-            lines[0].add (label, offset, colorExc);
+            lines[0].add (label, offset, color_exclusion);
         }
       }
     }
