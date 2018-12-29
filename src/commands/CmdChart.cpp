@@ -40,8 +40,8 @@ static std::pair <int, int> determineHourRange (const Interval&, const std::vect
 static std::string renderAxis            (int, int, const Color&, const Color&, int, bool);
 static std::string renderMonth           (const Datetime&, const Datetime&);
 static std::string renderWeek            (const Datetime&, const Datetime&);
-static std::string renderWeekday         (const Rules&, Datetime&, Color&, Color&);
-static std::string renderDay             (const Rules&, Datetime&, Color&, Color&);
+static std::string renderWeekday         (Datetime&, const std::vector<std::string>&, Color&, Color&);
+static std::string renderDay             (Datetime&, const std::vector<std::string>&, Color&, Color&);
 static std::string renderTotal           (time_t);
 static std::string renderSubTotal        (time_t, unsigned long);
 static void        renderExclusionBlocks (const std::string&, const Rules&, std::vector <Composite>&, bool, const Datetime&, int, int, const std::vector <Range>&);
@@ -131,6 +131,8 @@ int renderChart (
 
   const auto not_full_day = rules.get ("reports." + type + ".hours") == "auto";
 
+  auto holidays = rules.all ("holidays.");
+
   // Determine hours shown.
   auto hour_range = not_full_day
     ? determineHourRange (filter, tracked)
@@ -217,11 +219,11 @@ int renderChart (
         work += interval_work;
       }
     }
-
+    
     auto labelMonth   = with_month ? renderMonth (previous, day) : "";
     auto labelWeek    = with_week ? renderWeek (previous, day) : "";
-    auto labelWeekday = with_weekday ? renderWeekday (rules, day, color_today, color_holiday) : "";
-    auto labelDay     = with_day ? renderDay (rules, day, color_today, color_holiday) : "";
+    auto labelWeekday = with_weekday ? renderWeekday (day, holidays, color_today, color_holiday) : "";
+    auto labelDay     = with_day ? renderDay (day, holidays, color_today, color_holiday) : "";
 
     std::cout << labelMonth
               << labelWeek
@@ -243,7 +245,7 @@ int renderChart (
   }
 
   std::cout << (with_totals ? renderSubTotal (total_work, padding_size) : "")
-            << (with_holidays ? renderHolidays (rules, filter, rules.all ("holidays.")) : "")
+            << (with_holidays ? renderHolidays (rules, filter, holidays) : "")
             << (with_summary ? renderSummary (indent, filter, exclusions, tracked, blank) : "");
 
   return 0;
@@ -384,12 +386,11 @@ static std::string renderWeek (const Datetime &previous, const Datetime &day)
 // Today should be highlighted.
 // Includes trailing separator space.
 static std::string renderWeekday (
-  const Rules& rules,
   Datetime& day,
+  const std::vector <std::string>& holidays,
   Color& colorToday,
   Color& colorHoliday)
 {
-  auto holidays = rules.all ("holidays.");
   Color color;
 
   if (day.sameDay (Datetime ()))
@@ -413,12 +414,11 @@ static std::string renderWeekday (
 
 ////////////////////////////////////////////////////////////////////////////////
 static std::string renderDay (
-  const Rules& rules,
   Datetime& day,
+  const std::vector <std::string>& holidays,
   Color& colorToday,
   Color& colorHoliday)
 {
-  auto holidays = rules.all ("holidays.");
   Color color;
 
   if (day.sameDay (Datetime ()))
