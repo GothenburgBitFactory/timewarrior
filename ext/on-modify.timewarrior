@@ -30,7 +30,6 @@ from __future__ import print_function
 import sys
 import json
 import subprocess
-import shlex
 
 # Hook should extract all of the following for use as Timewarrior tags:
 #   UUID
@@ -54,7 +53,7 @@ def extract_timew_tags_from(json_obj):
     if 'tags' in json_obj:
         tags.extend(json_obj['tags'])
 
-    return ' '.join(['"{0}"'.format(tag) for tag in tags]).encode('utf-8').strip()
+    return tags
 
 start_or_stop = ''
 
@@ -69,7 +68,7 @@ elif 'start' not in new and 'start' in old:
 if start_or_stop:
     combined = extract_timew_tags_from(new)
 
-    subprocess.call(shlex.split('timew {0} {1} :yes'.format(start_or_stop, combined)))
+    subprocess.call(['timew', start_or_stop] + combined + [':yes'])
 
 # Modifications to task other than start/stop
 elif 'start' in new and 'start' in old:
@@ -77,5 +76,5 @@ elif 'start' in new and 'start' in old:
     new_combined = extract_timew_tags_from(new)
 
     if old_combined != new_combined:
-        subprocess.call(shlex.split('timew untag @1 {0} :yes'.format(old_combined)))
-        subprocess.call(shlex.split('timew tag @1 {0} :yes'.format(new_combined)))
+        subprocess.call(['timew', 'untag', '@1'] + old_combined + [':yes'])
+        subprocess.call(['timew', 'tag', '@1'] + new_combined + [':yes'])
