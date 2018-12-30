@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2015 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -374,9 +374,13 @@ std::map <std::string, Color> createTagColorMap (
     {
       std::string custom = "tags." + tag + ".color";
       if (rules.has (custom))
+      {
         mapping[tag] = Color (rules.get (custom));
+      }
       else if (mapping.find (tag) == mapping.end ())
+      {
         mapping[tag] = palette.next ();
+      }
     }
   }
 
