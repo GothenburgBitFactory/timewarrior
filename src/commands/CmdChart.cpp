@@ -40,8 +40,8 @@ static std::pair <int, int> determineHourRange (const Interval&, const std::vect
 static std::string renderAxis            (int, int, const Color&, const Color&, int, bool);
 static std::string renderMonth           (const Datetime&, const Datetime&);
 static std::string renderWeek            (const Datetime&, const Datetime&);
-static std::string renderWeekday         (Datetime&, const std::vector<std::string>&, Color&, Color&);
-static std::string renderDay             (Datetime&, const std::vector<std::string>&, Color&, Color&);
+static std::string renderWeekday         (Datetime&, const Color&);
+static std::string renderDay             (Datetime&, const Color&);
 static std::string renderTotal           (time_t);
 static std::string renderSubTotal        (time_t, unsigned long);
 static void        renderExclusionBlocks (std::vector<Composite>&, const Datetime&, int, int, const std::vector<Range>&, int, int, const std::string&, const Color&, const Color&);
@@ -50,6 +50,8 @@ static void        renderInterval        (const Rules&, std::vector<Composite>&,
 static std::string renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
 
 unsigned long getIndentSize (const std::string &type, const Rules &rules);
+
+Color getDayColor (const Datetime&, const std::vector <std::string>&, const Color&, const Color&);
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdChartDay (
@@ -220,11 +222,13 @@ int renderChart (
         work += interval_work;
       }
     }
-    
+
+    auto color_day = getDayColor (day, holidays, color_today, color_holiday);
+
     auto labelMonth   = with_month ? renderMonth (previous, day) : "";
     auto labelWeek    = with_week ? renderWeek (previous, day) : "";
-    auto labelWeekday = with_weekday ? renderWeekday (day, holidays, color_today, color_holiday) : "";
-    auto labelDay     = with_day ? renderDay (day, holidays, color_today, color_holiday) : "";
+    auto labelWeekday = with_weekday ? renderWeekday (day, color_day) : "";
+    auto labelDay     = with_day ? renderDay (day, color_day) : "";
 
     std::cout << labelMonth
               << labelWeek
@@ -386,27 +390,10 @@ static std::string renderWeek (const Datetime &previous, const Datetime &day)
 ////////////////////////////////////////////////////////////////////////////////
 // Today should be highlighted.
 // Includes trailing separator space.
-static std::string renderWeekday (
-  Datetime& day,
-  const std::vector <std::string>& holidays,
-  Color& colorToday,
-  Color& colorHoliday)
+static std::string renderWeekday (Datetime& day, const Color& color)
 {
-  Color color;
-
-  if (day.sameDay (Datetime ()))
-  {
-    color = colorToday;
-  }
-  else
-  {
-    if (dayIsHoliday (day, holidays))
-    {
-      color = colorHoliday;
-    }
-  }
-
   std::stringstream out;
+
   out << color.colorize (Datetime::dayNameShort (day.dayOfWeek ()))
       << ' ';
 
@@ -414,11 +401,22 @@ static std::string renderWeekday (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-static std::string renderDay (
-  Datetime& day,
+static std::string renderDay (Datetime& day, const Color& color)
+{
+  std::stringstream out;
+
+  out << color.colorize (rightJustify (day.day (), 2))
+      << ' ';
+
+  return out.str ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Color getDayColor (
+  const Datetime& day,
   const std::vector <std::string>& holidays,
-  Color& colorToday,
-  Color& colorHoliday)
+  const Color& colorToday,
+  const Color& colorHoliday)
 {
   Color color;
 
@@ -434,11 +432,7 @@ static std::string renderDay (
     }
   }
 
-  std::stringstream out;
-  out << color.colorize (rightJustify (day.day (), 2))
-      << ' ';
-
-  return out.str ();
+  return color;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
