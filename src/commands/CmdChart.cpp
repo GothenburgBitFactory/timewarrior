@@ -51,7 +51,7 @@ static std::string renderSummary         (const std::string&, const Interval&, c
 
 unsigned long getIndentSize (const std::string &type, const Rules &rules);
 
-Color getDayColor (const Datetime&, const std::vector <std::string>&, const Color&, const Color&);
+Color getDayColor (const Datetime&, const Datetime&, const std::vector<std::string>&, const Color&, const Color&);
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdChartDay (
@@ -223,7 +223,8 @@ int renderChart (
       }
     }
 
-    auto color_day = getDayColor (day, holidays, color_today, color_holiday);
+    auto now = Datetime ();
+    auto color_day = getDayColor (day, now, holidays, color_today, color_holiday);
 
     auto labelMonth   = with_month ? renderMonth (previous, day) : "";
     auto labelWeek    = with_week ? renderWeek (previous, day) : "";
@@ -414,25 +415,22 @@ static std::string renderDay (Datetime& day, const Color& color)
 ////////////////////////////////////////////////////////////////////////////////
 Color getDayColor (
   const Datetime& day,
+  const Datetime& now,
   const std::vector <std::string>& holidays,
   const Color& colorToday,
   const Color& colorHoliday)
 {
-  Color color;
-
-  if (day.sameDay (Datetime ()))
+  if (day.sameDay (now))
   {
-    color = colorToday;
+    return colorToday;
   }
-  else
+  
+  if (dayIsHoliday (day, holidays))
   {
-    if (dayIsHoliday (day, holidays))
-    {
-      color = colorHoliday;
-    }
+    return colorHoliday;
   }
 
-  return color;
+  return Color {};
 }
 
 ////////////////////////////////////////////////////////////////////////////////
