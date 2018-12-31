@@ -33,7 +33,8 @@
 #include <iostream>
 
 // Implemented in CmdChart.cpp.
-std::string renderHolidays (const Rules&, const Interval&, const std::vector <std::string>&);
+std::map <Datetime, std::string> createHolidayMap (Rules&, Interval&);
+std::string renderHolidays (const std::map <Datetime, std::string>&);
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdSummary (
@@ -181,7 +182,7 @@ int CmdSummary (
 
   std::cout << '\n'
             << table.render ()
-            << (with_holidays ? renderHolidays (rules, filter, rules.all ("holidays.")) : "")
+            << (with_holidays ? renderHolidays (createHolidayMap (rules, filter)) : "")
             << '\n';
 
   return 0;

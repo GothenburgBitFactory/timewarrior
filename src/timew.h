@@ -76,7 +76,7 @@ std::string jsonFromIntervals (const std::vector <Interval>&);
 Palette createPalette (const Rules&);
 std::map <std::string, Color> createTagColorMap (const Rules&, Palette&, const std::vector <Interval>&);
 int quantizeToNMinutes (int, int);
-bool dayIsHoliday (const Datetime&, const std::vector <std::string>&);
+
 bool findHint (const CLI&, const std::string&);
 std::string minimalDelta (const Datetime&, const Datetime&);
 std::vector <Interval> getOverlaps (Database&, const Rules&, const Interval&);

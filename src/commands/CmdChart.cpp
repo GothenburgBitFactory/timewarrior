@@ -46,12 +46,14 @@ static std::string renderTotal           (time_t);
 static std::string renderSubTotal        (time_t, unsigned long);
 static void        renderExclusionBlocks (std::vector<Composite>&, const Datetime&, int, int, const std::vector<Range>&, int, int, const std::string&, const Color&, const Color&);
 static void        renderInterval        (const Rules&, std::vector<Composite>&, const Datetime&, const Interval&, std::map<std::string, Color>&, int, time_t&, bool, int, int);
-       std::string renderHolidays        (const Rules&, const Interval&, const std::vector<std::string>&);
+std::string renderHolidays        (const std::map <Datetime, std::string>&);
 static std::string renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
 
 unsigned long getIndentSize (const std::string &type, const Rules &rules);
 
-Color getDayColor (const Datetime&, const Datetime&, const std::vector<std::string>&, const Color&, const Color&);
+std::map <Datetime, std::string> createHolidayMap (Rules&, Interval&);
+
+static Color getDayColor (const Datetime&, const Datetime&, const std::map <Datetime, std::string>&, const Color&, const Color&);
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdChartDay (
@@ -134,7 +136,7 @@ int renderChart (
 
   const auto not_full_day = rules.get ("reports." + type + ".hours") == "auto";
 
-  auto holidays = rules.all ("holidays.");
+  const auto holidays = createHolidayMap (rules, filter);
 
   // Determine hours shown.
   auto hour_range = not_full_day
@@ -251,10 +253,43 @@ int renderChart (
   }
 
   std::cout << (with_totals ? renderSubTotal (total_work, padding_size) : "")
-            << (with_holidays ? renderHolidays (rules, filter, holidays) : "")
+            << (with_holidays ? renderHolidays (holidays) : "")
             << (with_summary ? renderSummary (indent, filter, exclusions, tracked, blank) : "");
 
   return 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::map <Datetime, std::string> createHolidayMap (Rules &rules, Interval &filter)
+{
+  std::map <Datetime, std::string> mapping;
+  auto holidays = rules.all ("holidays.");
+
+  for (auto &entry : holidays)
+  {
+    auto first_dot = entry.find ('.');
+    auto last_dot = entry.rfind ('.');
+
+    if (last_dot != std::string::npos)
+    {
+      auto date = entry.substr (last_dot + 1);
+      std::replace (date.begin (), date.end (), '_', '-');
+      Datetime holiday (date);
+
+      if (holiday >= filter.start && holiday <= filter.end)
+      {
+        std::stringstream out;
+        out << " ["
+            << entry.substr (first_dot + 1, last_dot - first_dot - 1)
+            << "] "
+            << rules.get (entry);
+          auto locale = entry.substr (first_dot + 1, last_dot - first_dot - 1);
+        mapping[holiday] = out.str (); 
+      }
+    }
+  }
+
+  return mapping;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -416,7 +451,7 @@ static std::string renderDay (Datetime& day, const Color& color)
 Color getDayColor (
   const Datetime& day,
   const Datetime& now,
-  const std::vector <std::string>& holidays,
+  const std::map <Datetime, std::string>& holidays,
   const Color& colorToday,
   const Color& colorHoliday)
 {
@@ -424,10 +459,13 @@ Color getDayColor (
   {
     return colorToday;
   }
-  
-  if (dayIsHoliday (day, holidays))
+
+  for (auto& entry : holidays)
   {
-    return colorHoliday;
+    if (day.sameDay (entry.first))
+    {
+      return colorHoliday;
+    }
   }
 
   return Color {};
@@ -635,35 +673,16 @@ static void renderInterval (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string renderHolidays (
-  const Rules& rules,
-  const Interval& filter,
-  const std::vector <std::string>& holidays)
+std::string renderHolidays (const std::map <Datetime, std::string>& holidays)
 {
   std::stringstream out;
 
   for (auto& entry : holidays)
   {
-    auto first_dot = entry.find ('.');
-    auto last_dot = entry.rfind ('.');
-
-    if (last_dot != std::string::npos)
-    {
-      auto date = entry.substr (last_dot + 1);
-      std::replace (date.begin (), date.end (), '_', '-');
-      Datetime holiday (date);
-
-      if (holiday >= filter.start &&
-          holiday <= filter.end)
-      {
-        out << Datetime (date).toString ("Y-M-D")
-            << " ["
-            << entry.substr (first_dot + 1, last_dot - first_dot - 1)
-            << "] "
-            << rules.get (entry)
-            << '\n';
-      }
-    }
+    out << entry.first.toString ("Y-M-D")
+        << " "
+        << entry.second
+        << '\n';
   }
 
   return out.str ();
