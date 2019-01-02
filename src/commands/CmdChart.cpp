@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2019, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -45,8 +45,8 @@ static std::string renderDay             (Datetime&, const Color&);
 static std::string renderTotal           (time_t);
 static std::string renderSubTotal        (time_t, unsigned long);
 static void        renderExclusionBlocks (std::vector<Composite>&, const Datetime&, int, int, const std::vector<Range>&, int, int, const std::string&, const Color&, const Color&);
-static void        renderInterval        (const Rules&, std::vector<Composite>&, const Datetime&, const Interval&, std::map<std::string, Color>&, int, time_t&, bool, int, int);
-std::string renderHolidays        (const std::map <Datetime, std::string>&);
+static void        renderInterval        (std::vector<Composite>&, const Datetime&, const Interval&, std::map<std::string, Color>&, int, time_t&, bool, int, int);
+       std::string renderHolidays        (const std::map <Datetime, std::string>&);
 static std::string renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
 
 unsigned long getIndentSize (const std::string &type, const Rules &rules);
@@ -220,7 +220,7 @@ int renderChart (
       for (auto& track : tracked)
       {
         time_t interval_work = 0;
-        renderInterval (rules, lines, day, track, tag_colors, first_hour, interval_work, ids, minutes_per_char, spacing);
+        renderInterval (lines, day, track, tag_colors, first_hour, interval_work, ids, minutes_per_char, spacing);
         work += interval_work;
       }
     }
@@ -572,7 +572,6 @@ static void renderExclusionBlocks (
 
 ////////////////////////////////////////////////////////////////////////////////
 static void renderInterval (
-  const Rules& rules,
   std::vector <Composite>& lines,
   const Datetime& day,
   const Interval& track,
@@ -626,7 +625,7 @@ static void renderInterval (
   if (end_offset > start_offset)
   {
     // Determine color of interval.
-    Color colorTrack = intervalColor (track, rules, tag_colors);
+    Color colorTrack = intervalColor (track.tags (), tag_colors);
 
     // Properly format the tags within the space.
     std::string label;

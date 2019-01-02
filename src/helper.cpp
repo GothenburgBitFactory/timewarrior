@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2019, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -39,27 +39,20 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Select a color to represent the interval.
 Color intervalColor (
-  const Interval& interval,
-  const Rules& rules,
+  const std::set <std::string>& tags,
   std::map <std::string, Color>& tag_colors)
 {
-  Color c;
-  std::string first_tag;
-  for (auto& tag : interval.tags ())
+  if (tags.empty ())
   {
-    if (first_tag.empty ())
-      first_tag = tag;
-
-    std::string name = std::string ("tags.") + tag + ".color";
-    if (rules.has (name))
-      c.blend (Color (rules.get (name)));
+    return tag_colors[""];
   }
 
-  if (c.nontrivial ())
-    return c;
+  Color c;
 
-  if (! interval.tags ().empty ())
-    return tag_colors[first_tag];
+  for (auto& tag : tags)
+  {
+      c.blend (tag_colors[tag]);
+  }
 
   return c;
 }
@@ -368,6 +361,10 @@ std::map <std::string, Color> createTagColorMap (
   const std::vector <Interval>& intervals)
 {
   std::map <std::string, Color> mapping;
+
+  // Add a color for intervals without tags
+  mapping[""] = palette.next ();
+
   for (auto& interval : intervals)
   {
     for (auto& tag : interval.tags ())
