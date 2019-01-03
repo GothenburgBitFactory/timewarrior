@@ -21,7 +21,7 @@ RUN git submodule update
 RUN source scl_source enable devtoolset-7; cmake -DCMAKE_BUILD_TYPE=debug .
 RUN source scl_source enable devtoolset-7; make -j2
 RUN source scl_source enable devtoolset-7; make install
-RUN task --version
+RUN timew --version
 
 # Setup tests
 WORKDIR /root/code/test/
