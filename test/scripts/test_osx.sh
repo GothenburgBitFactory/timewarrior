@@ -9,7 +9,7 @@ git submodule update
 cmake -DCMAKE_BUILD_TYPE=debug .
 make -j2
 make install
-task --version
+timew --version
 
 pushd test
 make
