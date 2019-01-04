@@ -62,8 +62,8 @@ int CmdJoin (
 
   database.startTransaction ();
 
-  auto first_id  = std::min (*ids.begin (), *ids.end ());
-  auto second_id = std::max (*ids.begin (), *ids.end ());
+  auto first_id  = *ids.begin ();
+  auto second_id = *ids.rbegin ();
 
   Interval first  = tracked[tracked.size () - first_id];
   Interval second = tracked[tracked.size () - second_id];
