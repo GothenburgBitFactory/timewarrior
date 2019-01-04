@@ -372,8 +372,10 @@ void Database::initializeTagDatabase ()
   {
     auto key = pair.first;
     auto* value = (json::object*) pair.second;
-    auto* number = (json::number*) value->_data["count"];
-
+    auto iter = value->_data.find ("count");
+    if (iter == value->_data.end ())
+      throw format ("Failed to find \"count\" member for tag \"{1}\" in tags database. Database corrupted?", key);
+    auto number = static_cast<json::number *> (iter->second);
     _tagInfoDatabase.add (key, TagInfo {(unsigned int) number->_dvalue});
   }
 }
