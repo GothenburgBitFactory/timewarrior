@@ -1,8 +1,15 @@
 FROM ubuntu:16.04
 
+ENV DEBIAN_FRONTEND noninteractive
+
 RUN apt-get update
 RUN apt-get install -y build-essential cmake git uuid-dev libgnutls28-dev libfaketime
 RUN apt-get install -y python
+
+RUN apt-get install -y tzdata
+RUN ln -s /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+RUN dpkg-reconfigure --frontend noninteractive tzdata
+
 RUN apt-get install -y python-dateutil
 
 # Setup language environment
