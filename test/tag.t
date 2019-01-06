@@ -248,6 +248,13 @@ class TestTag(TestCase):
         self.assertNotIn("Note: 'bar' is a new tag", out)
         self.assertIn("Added bar to @1", out)
 
+    def test_tag_with_percent_sign(self):
+        """Call 'tag' with an embedded percent sign"""
+        code, out, err = self.t("start 'ta%g'")
+        self.assertIn("Note: '\"ta%g\"' is a new tag", out)
+        self.t("stop")
+        self.t("delete @1")
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
