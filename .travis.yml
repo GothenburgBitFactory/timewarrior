@@ -12,7 +12,7 @@ matrix:
       services: docker
     - name: "Fedora 29"
       os: linux
-      env: CONTAINER=fedora28
+      env: CONTAINER=fedora29
       services: docker
     - name: "Debian Stable"
       os: linux
