@@ -3,6 +3,8 @@ FROM opensuse/leap:15
 RUN zypper install -y python awk coreutils git gcc gcc-c++ cmake make libgnutls-devel libuuid-devel libfaketime
 RUN zypper install -y python-dateutil
 
+RUN ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+
 # Setup language environment
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
