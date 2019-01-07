@@ -4,7 +4,7 @@ RUN dnf update -y
 RUN dnf install python git gcc gcc-c++ cmake make gnutls-devel libuuid-devel libfaketime -y
 RUN dnf install python-dateutil -y
 
-RUN which timedatectl
+RUN ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 
 # Setup language environment
 ENV LC_ALL en_US.UTF-8
