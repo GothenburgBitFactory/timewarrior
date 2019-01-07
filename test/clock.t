@@ -30,6 +30,8 @@ import os
 import sys
 import unittest
 
+from time import sleep
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -86,6 +88,8 @@ class TestClock(TestCase):
         code, out, err = self.t("start tag1 tag2")
         self.assertIn("Tracking tag1 tag2\n", out)
 
+        sleep(1)
+
         code, out, err = self.t("start tag3")
         self.assertIn("Recorded tag1 tag2\n", out)
         self.assertIn("Tracking tag3\n", out)
@@ -93,8 +97,8 @@ class TestClock(TestCase):
         j = self.t.export()
 
         self.assertEquals(len(j), 2)
-        self.assertClosedInterval(j[1], expectedTags=["tag1", "tag2"])
-        self.assertOpenInterval(j[0], expectedTags=["tag3"])
+        self.assertClosedInterval(j[0], expectedTags=["tag1", "tag2"])
+        self.assertOpenInterval(j[1], expectedTags=["tag3"])
 
     def test_start_subtract(self):
         """Verify that starting multiple tags and stopping one leaves an open interval"""
