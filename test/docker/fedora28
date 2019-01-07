@@ -4,7 +4,7 @@ RUN dnf update -y
 RUN dnf install python git gcc gcc-c++ cmake make gnutls-devel libuuid-devel libfaketime -y
 RUN dnf install python-dateutil -y
 
-RUN timedatectl
+RUN which timedatectl
 
 # Setup language environment
 ENV LC_ALL en_US.UTF-8
