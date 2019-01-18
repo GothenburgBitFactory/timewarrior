@@ -131,12 +131,13 @@ class TestExport(TestCase):
         j = self.t.export()
 
         self.assertEqual(len(j), 2)
-
         self.assertClosedInterval(j[0],
+                                  description="interval before exclusion (before change)",
                                   expectedStart="{:%Y%m%dT%H%M%S}Z".format(five_hours_before_utc),
                                   expectedEnd="{:%Y%m%dT%H%M%S}Z".format(four_hours_before_utc),
                                   expectedTags=["foo"])
         self.assertOpenInterval(j[1],
+                                description="interval after exclusion (before change)",
                                 expectedStart="{:%Y%m%dT%H%M%S}Z".format(three_hours_before_utc),
                                 expectedTags=["foo"])
 
@@ -146,10 +147,12 @@ class TestExport(TestCase):
 
         self.assertEqual(len(j), 2)
         self.assertClosedInterval(j[0],
+                                  description="interval before exclusion (after change)",
                                   expectedStart="{:%Y%m%dT%H%M%S}Z".format(five_hours_before_utc),
                                   expectedEnd="{:%Y%m%dT%H%M%S}Z".format(three_hours_before_utc),
                                   expectedTags=["foo"])
         self.assertOpenInterval(j[1],
+                                description="interval after exclusion (after change)",
                                 expectedStart="{:%Y%m%dT%H%M%S}Z".format(two_hours_before_utc),
                                 expectedTags=["foo"])
 
