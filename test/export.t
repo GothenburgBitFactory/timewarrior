@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# Copyright 2006 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+# Copyright 2016 - 2019, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -64,33 +64,51 @@ class TestExport(TestCase):
 
     def test_changing_exclusion_does_not_change_flattened_intervals(self):
         """Changing exclusions does not change flattened intervals"""
-        self.t.configure_exclusions((time(12, 22, 44), time(13, 32, 23)))
+        now = datetime.now()
+        now_utc = now.utcnow()
 
-        self.t("track 20160101T102255Z - 20160101T154422Z foo")
+        two_hours_before = now - timedelta(hours=2)
+        three_hours_before = now - timedelta(hours=3)
+        four_hours_before = now - timedelta(hours=4)
 
-        self.t.configure_exclusions((time(12, 44, 22), time(13, 23, 32)))
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
 
-        self.t("track 20160102T102255Z - 20160102T154422Z bar")
+        self.t.configure_exclusions((four_hours_before.time(), three_hours_before.time()))
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc, one_hour_before_utc))
 
         j = self.t.export()
 
-        self.assertEqual(len(j), 4)
+        self.assertEqual(len(j), 2)
         self.assertClosedInterval(j[0],
-                                  expectedStart="20160101T102255Z",
-                                  expectedEnd="20160101T112244Z",
+                                  description="interval before exclusion (before change)",
+                                  expectedStart="{:%Y%m%dT%H%M%S}Z".format(five_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H%M%S}Z".format(four_hours_before_utc),
                                   expectedTags=["foo"])
         self.assertClosedInterval(j[1],
-                                  expectedStart="20160101T123223Z",
-                                  expectedEnd="20160101T154422Z",
+                                  description="interval after exclusion (before change)",
+                                  expectedStart="{:%Y%m%dT%H%M%S}Z".format(three_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H%M%S}Z".format(one_hour_before_utc),
                                   expectedTags=["foo"])
-        self.assertClosedInterval(j[2],
-                                  expectedStart="20160102T102255Z",
-                                  expectedEnd="20160102T114422Z",
-                                  expectedTags=["bar"])
-        self.assertClosedInterval(j[3],
-                                  expectedStart="20160102T122332Z",
-                                  expectedEnd="20160102T154422Z",
-                                  expectedTags=["bar"])
+
+        self.t.configure_exclusions((three_hours_before.time(), two_hours_before.time()))
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 2)
+        self.assertClosedInterval(j[0],
+                                  description="interval before exclusion (after change)",
+                                  expectedStart="{:%Y%m%dT%H%M%S}Z".format(five_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H%M%S}Z".format(four_hours_before_utc),
+                                  expectedTags=["foo"])
+        self.assertClosedInterval(j[1],
+                                  description="interval after exclusion (after change)",
+                                  expectedStart="{:%Y%m%dT%H%M%S}Z".format(three_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H%M%S}Z".format(one_hour_before_utc),
+                                  expectedTags=["foo"])
 
     def test_changing_exclusion_does_change_open_interval(self):
         """Changing exclusions does change open interval"""
