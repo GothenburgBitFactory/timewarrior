@@ -69,10 +69,15 @@ int CmdJoin (
   Interval second = tracked[tracked.size () - second_id];
 
   // TODO Require confirmation if intervals are not consecutive.
-  // TODO Require confirmation if tags don't match.
 
   auto combined = second;
   combined.end = first.end;
+
+  for (auto& tag: first.tags ())
+  {
+    combined.tag (tag);
+  }
+
   database.deleteInterval (first);
   database.deleteInterval (second);
 

@@ -66,7 +66,7 @@ class TestJoin(TestCase):
         self.assertClosedInterval(j[0],
                                   expectedStart="{:%Y%m%dT%H%M%S}Z".format(five_hours_before_utc),
                                   expectedEnd="{:%Y%m%dT%H%M%S}Z".format(one_hour_before_utc),
-                                  expectedTags=["foo"])
+                                  expectedTags=["foo", "bar"])
 
     def test_join_closed_and_open_interval(self):
         """Join closed and open interval"""
@@ -90,7 +90,7 @@ class TestJoin(TestCase):
         self.assertEqual(len(j), 1)
         self.assertOpenInterval(j[0],
                                 expectedStart="{:%Y%m%dT%H%M%S}Z".format(five_hours_before_utc),
-                                expectedTags=["foo"])
+                                expectedTags=["foo", "bar"])
 
 
 if __name__ == "__main__":
