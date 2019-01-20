@@ -30,6 +30,8 @@ import os
 import sys
 import unittest
 
+from datetime import datetime, timedelta, time
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -42,9 +44,17 @@ class TestJoin(TestCase):
         self.t = Timew()
 
     def test_join_closed_intervals(self):
-        """Split a closed interval"""
-        self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00 foo")
-        self.t("track 2016-01-01T01:00:00 - 2016-01-01T02:00:00 foo")
+        """Join two closed intervals"""
+        now = datetime.now()
+        now_utc = now.utcnow()
+
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc, four_hours_before_utc))
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z bar".format(two_hours_before_utc, one_hour_before_utc))
 
         code, out, err = self.t("join @1 @2")
 
@@ -53,7 +63,10 @@ class TestJoin(TestCase):
         j = self.t.export()
 
         self.assertEqual(len(j), 1)
-        self.assertClosedInterval(j[0], expectedTags=["foo"])
+        self.assertClosedInterval(j[0],
+                                  expectedStart="{:%Y%m%dT%H%M%S}Z".format(five_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H%M%S}Z".format(one_hour_before_utc),
+                                  expectedTags=["foo"])
 
     # TODO Add :adjust tests.
 
