@@ -68,7 +68,29 @@ class TestJoin(TestCase):
                                   expectedEnd="{:%Y%m%dT%H%M%S}Z".format(one_hour_before_utc),
                                   expectedTags=["foo"])
 
-    # TODO Add :adjust tests.
+    def test_join_closed_and_open_interval(self):
+        """Join closed and open interval"""
+        now = datetime.now()
+        now_utc = now.utcnow()
+
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc, four_hours_before_utc))
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z bar".format(two_hours_before_utc, one_hour_before_utc))
+
+        code, out, err = self.t("join @1 @2")
+
+        self.assertIn('Joined @1 and @2', out)
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertOpenInterval(j[0],
+                                expectedStart="{:%Y%m%dT%H%M%S}Z".format(five_hours_before_utc),
+                                expectedTags=["foo"])
 
 
 if __name__ == "__main__":
