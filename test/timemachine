@@ -35,7 +35,7 @@ for day in ${days-$(date --rfc-3339=date)} ; do
       date="${day}T${hour}:${minute}"
       for single_test in ${tests} ; do
         echo "Running test ${single_test} at ${date}"
-        faketime "@${date}" "${single_test}"
+        faketime "${date}" "${single_test}"
         if [[ $? -ne 0 ]] ; then
           echo "Test ${single_test} broke at ${date}!"
           [[ ${fail_at_end-0} -ne 0 ]] || break 2
