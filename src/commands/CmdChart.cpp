@@ -49,7 +49,7 @@ static void        renderInterval        (std::vector<Composite>&, const Datetim
        std::string renderHolidays        (const std::map <Datetime, std::string>&);
 static std::string renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
 
-unsigned long getIndentSize (const std::string &type, const Rules &rules);
+unsigned long getIndentSize (bool, bool, bool, bool);
 
 std::map <Datetime, std::string> createHolidayMap (Rules&, Interval&);
 
@@ -148,9 +148,6 @@ int renderChart (
 
   debug (format ("Day range is from {1}:00 - {2}:00", first_hour, last_hour));
 
-  const auto indent_size = getIndentSize (type, rules);
-  auto indent = std::string (indent_size, ' ');
-
   // Is the :blank hint being used?
   bool blank = findHint (cli, ":blank");
   bool ids   = findHint (cli, ":ids");
@@ -165,6 +162,7 @@ int renderChart (
 
   // Determine how much space is occupied by the left-margin labels.
   const auto minutes_per_char = rules.getInteger ("reports." + type + ".cell");
+
   if (minutes_per_char < 1)
     throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
 
@@ -173,6 +171,9 @@ int renderChart (
 
   if (num_lines < 1)
     throw format ("Invalid value for 'reports.{1}.lines': '{2}'", type, num_lines);
+
+  const auto indent_size = getIndentSize (with_month, with_week, with_day, with_weekday);
+  const auto indent = std::string (indent_size, ' ');
 
   const auto chars_per_hour = 60 / minutes_per_char;
   const auto cell_size = chars_per_hour + spacing;
@@ -293,12 +294,16 @@ std::map <Datetime, std::string> createHolidayMap (Rules &rules, Interval &filte
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-unsigned long getIndentSize (const std::string &type, const Rules &rules)
+unsigned long getIndentSize (
+  const bool with_month,
+  const bool with_week,
+  const bool with_day,
+  const bool with_weekday)
 {
-  return (rules.getBoolean ("reports." + type + ".month")   ? 4 : 0) +
-         (rules.getBoolean ("reports." + type + ".week")    ? 4 : 0) +
-         (rules.getBoolean ("reports." + type + ".day")     ? 3 : 0) +
-         (rules.getBoolean ("reports." + type + ".weekday") ? 4 : 0);
+  return (with_month ? 4 : 0) +
+         (with_week ? 4 : 0) +
+         (with_day ? 3 : 0) +
+         (with_weekday ? 4 : 0);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
