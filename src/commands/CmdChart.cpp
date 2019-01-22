@@ -44,7 +44,7 @@ static std::string renderWeekday         (Datetime&, const Color&);
 static std::string renderDay             (Datetime&, const Color&);
 static std::string renderTotal           (time_t);
 static std::string renderSubTotal        (time_t, unsigned long);
-static void        renderExclusionBlocks (std::vector<Composite>&, const Datetime&, int, int, const std::vector<Range>&, int, int, const std::string&, const Color&, const Color&);
+static void        renderExclusionBlocks (std::vector<Composite>&, const Datetime&, int, int, const std::vector<Range>&, int, int, const Color&, const Color&, bool);
 static void        renderInterval        (std::vector<Composite>&, const Datetime&, const Interval&, std::map<std::string, Color>&, int, time_t&, bool, int, int);
        std::string renderHolidays        (const std::map <Datetime, std::string>&);
 static std::string renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
@@ -180,11 +180,12 @@ int renderChart (
   const auto padding_size = indent_size + ((last_hour - first_hour + 1) * (cell_size)) + 1;
 
   auto axis_type = rules.get ("reports." + type + ".axis");
+  const auto with_internal_axis = axis_type == "internal";
 
-  // Render the axis.
   std::cout << '\n';
 
-  if (axis_type != "internal")
+  // Render the axis.
+  if (!with_internal_axis)
   {
     std::cout << indent
               << renderAxis (
@@ -213,7 +214,7 @@ int renderChart (
     for (int i = 0; i < num_lines; ++i)
       lines[i].add (std::string (total_width, ' '), 0, Color ());
 
-    renderExclusionBlocks (lines, day, first_hour, last_hour, exclusions, minutes_per_char, spacing, axis_type, color_exclusion, color_label);
+    renderExclusionBlocks (lines, day, first_hour, last_hour, exclusions, minutes_per_char, spacing, color_exclusion, color_label, with_internal_axis);
 
     time_t work = 0;
     if (! blank)
@@ -523,12 +524,12 @@ static void renderExclusionBlocks (
   const Datetime& day,
   int first_hour,
   int last_hour,
-  const std::vector<Range>& excluded,
+  const std::vector <Range>& excluded,
   const int minutes_per_char,
   const int spacing,
-  const std::string& axis_type,
   const Color& color_exclusion,
-  const Color& color_label)
+  const Color& color_label,
+  const bool with_internal_axis)
 {
   const auto chars_per_hour = 60 / minutes_per_char;
   const auto cell_width = chars_per_hour + spacing;
@@ -540,7 +541,7 @@ static void renderExclusionBlocks (
     Range r (Datetime (day.year (), day.month (), day.day (), hour, 0, 0),
              Datetime (day.year (), day.month (), day.day (), hour + 1, 0, 0));
 
-    if (axis_type == "internal")
+    if (with_internal_axis)
     {
       auto label = format ("{1}", hour);
       int offset = (hour - first_hour) * cell_width;
@@ -563,7 +564,7 @@ static void renderExclusionBlocks (
         for (auto& line : lines)
           line.add (block, offset, color_exclusion);
 
-        if (axis_type == "internal")
+        if (with_internal_axis)
         {
           auto label = format ("{1}", hour);
           if (start_block == 0 &&
