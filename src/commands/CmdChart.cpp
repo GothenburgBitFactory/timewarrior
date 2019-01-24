@@ -43,7 +43,7 @@ static std::string renderWeek            (const Datetime&, const Datetime&);
 static std::string renderWeekday         (Datetime&, const Color&);
 static std::string renderDay             (Datetime&, const Color&);
 static std::string renderTotal           (time_t);
-static std::string renderSubTotal        (time_t, unsigned long);
+static std::string renderSubTotal        (time_t, const std::string&);
 static void        renderExclusionBlocks (std::vector<Composite>&, const Datetime&, int, int, const std::vector<Range>&, int, int, const Color&, const Color&, bool);
 static void        renderInterval        (std::vector<Composite>&, const Datetime&, const Interval&, const std::map<std::string, Color>&, int, time_t&, bool, int, int);
        std::string renderHolidays        (const std::map <Datetime, std::string>&);
@@ -284,7 +284,7 @@ void render (
     total_work += work;
   }
 
-  std::cout << (with_totals ? renderSubTotal (total_work, padding_size) : "")
+  std::cout << (with_totals ? renderSubTotal (total_work, std::string (padding_size, ' ')) : "")
             << (with_holidays ? renderHolidays (holidays) : "")
             << (with_summary ? renderSummary (indent, filter, exclusions, tracked, show_intervals) : "");
 }
@@ -526,19 +526,17 @@ static std::string renderTotal (time_t work)
 ////////////////////////////////////////////////////////////////////////////////
 static std::string renderSubTotal (
   time_t total_work,
-  const unsigned long padding_size)
+  const std::string& padding)
 {
   std::stringstream out;
-
-  std::string pad (padding_size, ' ');
 
   int hours = total_work / 3600;
   int minutes = (total_work % 3600) / 60;
 
-  out << pad
+  out << padding
       << Color ("underline").colorize ("      ")
       << '\n'
-      << pad
+      << padding
       << std::setw (3) << std::setfill (' ') << hours
       << ':'
       << std::setw (2) << std::setfill ('0') << minutes
