@@ -40,18 +40,18 @@
 // Select a color to represent the interval.
 Color intervalColor (
   const std::set <std::string>& tags,
-  std::map <std::string, Color>& tag_colors)
+  const std::map <std::string, Color>& tag_colors)
 {
   if (tags.empty ())
   {
-    return tag_colors[""];
+    return tag_colors.at ("");
   }
 
   Color c;
 
   for (auto& tag : tags)
   {
-      c.blend (tag_colors[tag]);
+      c.blend (tag_colors.at (tag));
   }
 
   return c;

@@ -45,8 +45,11 @@ static std::string renderDay             (Datetime&, const Color&);
 static std::string renderTotal           (time_t);
 static std::string renderSubTotal        (time_t, unsigned long);
 static void        renderExclusionBlocks (std::vector<Composite>&, const Datetime&, int, int, const std::vector<Range>&, int, int, const Color&, const Color&, bool);
-static void        renderInterval        (std::vector<Composite>&, const Datetime&, const Interval&, std::map<std::string, Color>&, int, time_t&, bool, int, int);
+static void        renderInterval        (std::vector<Composite>&, const Datetime&, const Interval&, const std::map<std::string, Color>&, int, time_t&, bool, int, int);
        std::string renderHolidays        (const std::map <Datetime, std::string>&);
+
+static void        render                (const Interval&, const std::vector <Interval>&, const std::vector <Range>&, const std::map <Datetime, std::string>&, const std::map <std::string, Color>&, const Color&, const Color&, const Color&, const Color&, bool, bool, bool, bool, bool,bool, bool, bool, bool, bool, bool, int, int, int);
+
 static std::string renderSummary         (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
 
 unsigned long getIndentSize (bool, bool, bool, bool);
@@ -123,34 +126,22 @@ int renderChart (
   // Load the data.
   auto exclusions = getAllExclusions (rules, filter);
   auto tracked    = getTracked (database, rules, filter);
+  const auto holidays = createHolidayMap (rules, filter);
 
   // Map tags to colors.
   auto palette = createPalette (rules);
   auto tag_colors = createTagColorMap (rules, palette, tracked);
   auto with_colors = rules.getBoolean ("color");
-  
+
   Color color_today (with_colors ? rules.get ("theme.colors.today") : "");
   Color color_holiday (with_colors ? rules.get ("theme.colors.holiday") : "");
   Color color_label (with_colors ? rules.get ("theme.colors.label") : "");
   Color color_exclusion (with_colors ? rules.get ("theme.colors.exclusion") : "");
 
-  const auto not_full_day = rules.get ("reports." + type + ".hours") == "auto";
+  const auto determine_hour_range = rules.get ("reports." + type + ".hours") == "auto";
 
-  const auto holidays = createHolidayMap (rules, filter);
-
-  // Determine hours shown.
-  auto hour_range = not_full_day
-    ? determineHourRange (filter, tracked)
-    : std::make_pair (0, 23);
-
-  int first_hour = hour_range.first;
-  int last_hour = hour_range.second;
-
-  debug (format ("Day range is from {1}:00 - {2}:00", first_hour, last_hour));
-
-  // Is the :blank hint being used?
-  bool blank = findHint (cli, ":blank");
-  bool ids   = findHint (cli, ":ids");
+  const bool show_intervals = findHint (cli, ":blank");
+  const bool with_ids = findHint (cli, ":ids");
 
   const auto with_summary = rules.getBoolean ("reports." + type + ".summary");
   const auto with_holidays = rules.getBoolean ("reports." + type + ".holidays");
@@ -160,7 +151,6 @@ int renderChart (
   const auto with_day = rules.getBoolean ("reports." + type + ".day");
   const auto with_weekday = rules.getBoolean ("reports." + type + ".weekday");
 
-  // Determine how much space is occupied by the left-margin labels.
   const auto minutes_per_char = rules.getInteger ("reports." + type + ".cell");
 
   if (minutes_per_char < 1)
@@ -172,15 +162,55 @@ int renderChart (
   if (num_lines < 1)
     throw format ("Invalid value for 'reports.{1}.lines': '{2}'", type, num_lines);
 
-  const auto indent_size = getIndentSize (with_month, with_week, with_day, with_weekday);
-  const auto indent = std::string (indent_size, ' ');
+  auto axis_type = rules.get ("reports." + type + ".axis");
+  const auto with_internal_axis = axis_type == "internal";
+
+  render (filter, tracked, exclusions, holidays, tag_colors, color_today, color_holiday, color_label, color_exclusion, show_intervals, determine_hour_range, with_ids, with_summary, with_holidays, with_totals, with_month, with_week, with_day, with_weekday, with_internal_axis, minutes_per_char, spacing, num_lines);
+
+  return 0;
+}
+
+void render (
+  const Interval& filter,
+  const std::vector <Interval>& tracked,
+  const std::vector <Range>& exclusions,
+  const std::map <Datetime, std::string>& holidays,
+  const std::map <std::string, Color>& tag_colors,
+  const Color& color_today,
+  const Color& color_holiday,
+  const Color& color_label,
+  const Color& color_exclusion,
+  const bool show_intervals,
+  const bool determine_hour_range,
+  const bool with_ids,
+  const bool with_summary,
+  const bool with_holidays,
+  const bool with_totals,
+  const bool with_month,
+  const bool with_week,
+  const bool with_day,
+  const bool with_weekday,
+  const bool with_internal_axis,
+  const int minutes_per_char,
+  const int spacing,
+  const int num_lines)
+{
+  // Determine hours shown.
+  auto hour_range = determine_hour_range
+                    ? determineHourRange (filter, tracked)
+                    : std::make_pair (0, 23);
+
+  int first_hour = hour_range.first;
+  int last_hour = hour_range.second;
+
+  debug (format ("Day range is from {1}:00 - {2}:00", first_hour, last_hour));
 
   const auto chars_per_hour = 60 / minutes_per_char;
   const auto cell_size = chars_per_hour + spacing;
-  const auto padding_size = indent_size + ((last_hour - first_hour + 1) * (cell_size)) + 1;
 
-  auto axis_type = rules.get ("reports." + type + ".axis");
-  const auto with_internal_axis = axis_type == "internal";
+  const auto indent_size = getIndentSize (with_month, with_week, with_day, with_weekday);
+  const auto indent = std::string (indent_size, ' ');
+  const auto padding_size = indent_size + ((last_hour - first_hour + 1) * (cell_size)) + 1;
 
   std::cout << '\n';
 
@@ -217,12 +247,12 @@ int renderChart (
     renderExclusionBlocks (lines, day, first_hour, last_hour, exclusions, minutes_per_char, spacing, color_exclusion, color_label, with_internal_axis);
 
     time_t work = 0;
-    if (! blank)
+    if (! show_intervals)
     {
       for (auto& track : tracked)
       {
         time_t interval_work = 0;
-        renderInterval (lines, day, track, tag_colors, first_hour, interval_work, ids, minutes_per_char, spacing);
+        renderInterval (lines, day, track, tag_colors, first_hour, interval_work, with_ids, minutes_per_char, spacing);
         work += interval_work;
       }
     }
@@ -256,9 +286,7 @@ int renderChart (
 
   std::cout << (with_totals ? renderSubTotal (total_work, padding_size) : "")
             << (with_holidays ? renderHolidays (holidays) : "")
-            << (with_summary ? renderSummary (indent, filter, exclusions, tracked, blank) : "");
-
-  return 0;
+            << (with_summary ? renderSummary (indent, filter, exclusions, tracked, show_intervals) : "");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -286,7 +314,7 @@ std::map <Datetime, std::string> createHolidayMap (Rules &rules, Interval &filte
             << "] "
             << rules.get (entry);
           auto locale = entry.substr (first_dot + 1, last_dot - first_dot - 1);
-        mapping[holiday] = out.str (); 
+        mapping[holiday] = out.str ();
       }
     }
   }
@@ -581,10 +609,10 @@ static void renderInterval (
   std::vector <Composite>& lines,
   const Datetime& day,
   const Interval& track,
-  std::map <std::string, Color>& tag_colors,
-  int first_hour,
+  const std::map <std::string, Color>& tag_colors,
+  const int first_hour,
   time_t& work,
-  bool ids,
+  const bool with_ids,
   const int minutes_per_char,
   const int spacing)
 {
@@ -635,7 +663,7 @@ static void renderInterval (
 
     // Properly format the tags within the space.
     std::string label;
-    if (ids)
+    if (with_ids)
     {
       label = format ("@{1}", track.id);
     }
