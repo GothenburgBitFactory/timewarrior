@@ -189,3 +189,19 @@ int CmdSummary (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::string renderHolidays (const std::map<Datetime, std::string> &holidays)
+{
+  std::stringstream out;
+
+  for (auto &entry : holidays)
+  {
+    out << entry.first.toString ("Y-M-D")
+        << " "
+        << entry.second
+        << '\n';
+  }
+
+  return out.str ();
+}
+
+////////////////////////////////////////////////////////////////////////////////

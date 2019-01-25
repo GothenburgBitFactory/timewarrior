@@ -6,6 +6,7 @@ include_directories (${CMAKE_SOURCE_DIR}
                      ${TIMEW_INCLUDE_DIRS})
 
 set (timew_SRCS CLI.cpp        CLI.h
+                Chart.cpp      Chart.h
                 Database.cpp   Database.h
                 Datafile.cpp   Datafile.h
                 Exclusion.cpp  Exclusion.h
