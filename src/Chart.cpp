@@ -36,7 +36,7 @@
 #include <timew.h>
 #include <Chart.h>
 
-void Chart::render (
+std::string Chart::render (
   const Interval &filter,
   const std::vector<Interval> &tracked,
   const std::vector<Range> &exclusions,
@@ -78,19 +78,21 @@ void Chart::render (
   const auto indent = std::string (indent_size, ' ');
   const auto padding_size = indent_size + ((last_hour - first_hour + 1) * (cell_size)) + 1;
 
-  std::cout << '\n';
+  std::stringstream out;
+
+  out << '\n';
 
   // Render the axis.
   if (!with_internal_axis)
   {
-    std::cout << indent
-              << Chart::renderAxis (
-                first_hour,
-                last_hour,
-                color_label,
-                color_today,
-                cell_size,
-                with_totals);
+    out << indent
+        << Chart::renderAxis (
+          first_hour,
+          last_hour,
+          color_label,
+          color_today,
+          cell_size,
+          with_totals);
   }
 
   // For rendering labels on edge detection.
@@ -135,32 +137,34 @@ void Chart::render (
     auto labelWeekday = with_weekday ? Chart::renderWeekday (day, color_day) : "";
     auto labelDay = with_day ? Chart::renderDay (day, color_day) : "";
 
-    std::cout << labelMonth
-              << labelWeek
-              << labelWeekday
-              << labelDay
-              << lines[0].str ();
+    out << labelMonth
+        << labelWeek
+        << labelWeekday
+        << labelDay
+        << lines[0].str ();
 
     if (lines.size () > 1)
     {
       for (unsigned int i = 1; i < lines.size (); ++i)
       {
-        std::cout << "\n"
-                  << indent
-                  << lines[i].str ();
+        out << "\n"
+            << indent
+            << lines[i].str ();
       }
     }
 
-    std::cout << (with_totals ? Chart::renderTotal (work) : "")
-              << '\n';
+    out << (with_totals ? Chart::renderTotal (work) : "")
+        << '\n';
 
     previous = day;
     total_work += work;
   }
 
-  std::cout << (with_totals ? Chart::renderSubTotal (total_work, std::string (padding_size, ' ')) : "")
-            << (with_holidays ? Chart::renderHolidays (holidays) : "")
-            << (with_summary ? Chart::renderSummary (indent, filter, exclusions, tracked, show_intervals) : "");
+  out << (with_totals ? Chart::renderSubTotal (total_work, std::string (padding_size, ' ')) : "")
+      << (with_holidays ? Chart::renderHolidays (holidays) : "")
+      << (with_summary ? Chart::renderSummary (indent, filter, exclusions, tracked, show_intervals) : "");
+
+  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
