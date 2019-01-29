@@ -86,7 +86,7 @@ std::string Chart::render (
   if (!with_internal_axis)
   {
     out << indent
-        << Chart::renderAxis (
+        << renderAxis (
           first_hour,
           last_hour,
           color_label,
@@ -114,7 +114,7 @@ std::string Chart::render (
       lines[i].add (std::string (total_width, ' '), 0, Color ());
     }
 
-    Chart::renderExclusionBlocks (lines, day, first_hour, last_hour, exclusions, minutes_per_char, spacing,
+    renderExclusionBlocks (lines, day, first_hour, last_hour, exclusions, minutes_per_char, spacing,
                                   color_exclusion, color_label, with_internal_axis);
 
     time_t work = 0;
@@ -123,7 +123,7 @@ std::string Chart::render (
       for (auto &track : tracked)
       {
         time_t interval_work = 0;
-        Chart::renderInterval (lines, day, track, tag_colors, first_hour, interval_work, with_ids, minutes_per_char,
+        renderInterval (lines, day, track, tag_colors, first_hour, interval_work, with_ids, minutes_per_char,
                                spacing);
         work += interval_work;
       }
@@ -132,10 +132,10 @@ std::string Chart::render (
     auto now = Datetime ();
     auto color_day = getDayColor (day, now, holidays, color_today, color_holiday);
 
-    auto labelMonth = with_month ? Chart::renderMonth (previous, day) : "";
-    auto labelWeek = with_week ? Chart::renderWeek (previous, day) : "";
-    auto labelWeekday = with_weekday ? Chart::renderWeekday (day, color_day) : "";
-    auto labelDay = with_day ? Chart::renderDay (day, color_day) : "";
+    auto labelMonth = with_month ? renderMonth (previous, day) : "";
+    auto labelWeek = with_week ? renderWeek (previous, day) : "";
+    auto labelWeekday = with_weekday ? renderWeekday (day, color_day) : "";
+    auto labelDay = with_day ? renderDay (day, color_day) : "";
 
     out << labelMonth
         << labelWeek
@@ -153,16 +153,16 @@ std::string Chart::render (
       }
     }
 
-    out << (with_totals ? Chart::renderTotal (work) : "")
+    out << (with_totals ? renderTotal (work) : "")
         << '\n';
 
     previous = day;
     total_work += work;
   }
 
-  out << (with_totals ? Chart::renderSubTotal (total_work, std::string (padding_size, ' ')) : "")
-      << (with_holidays ? Chart::renderHolidays (holidays) : "")
-      << (with_summary ? Chart::renderSummary (indent, filter, exclusions, tracked, show_intervals) : "");
+  out << (with_totals ? renderSubTotal (total_work, std::string (padding_size, ' ')) : "")
+      << (with_holidays ? renderHolidays (holidays) : "")
+      << (with_summary ? renderSummary (indent, filter, exclusions, tracked, show_intervals) : "");
 
   return out.str ();
 }

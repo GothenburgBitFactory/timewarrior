@@ -36,35 +36,35 @@ class Chart
 public:
   Chart() = default;
 
-  static std::string render (const Interval&, const std::vector <Interval>&, const std::vector <Range>&, const std::map <Datetime, std::string>&, const std::map <std::string, Color>&, const Color&, const Color&, const Color&, const Color&, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, int, int, int);
+  std::string render (const Interval&, const std::vector <Interval>&, const std::vector <Range>&, const std::map <Datetime, std::string>&, const std::map <std::string, Color>&, const Color&, const Color&, const Color&, const Color&, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, int, int, int);
 
-  static unsigned long getIndentSize (bool, bool, bool, bool);
+  unsigned long getIndentSize (bool, bool, bool, bool);
 
-  static std::pair <int, int> determineHourRange (const Interval&, const std::vector <Interval>&);
+  std::pair <int, int> determineHourRange (const Interval&, const std::vector <Interval>&);
 
-  static std::string renderAxis (int, int, const Color&, const Color&, int, bool);
+  std::string renderAxis (int, int, const Color&, const Color&, int, bool);
 
-  static std::string renderMonth (const Datetime&, const Datetime&);
+  std::string renderMonth (const Datetime&, const Datetime&);
 
-  static std::string renderWeek (const Datetime&, const Datetime&);
+  std::string renderWeek (const Datetime&, const Datetime&);
 
-  static std::string renderWeekday (Datetime&, const Color&);
+  std::string renderWeekday (Datetime&, const Color&);
 
-  static std::string renderDay (Datetime&, const Color&);
+  std::string renderDay (Datetime&, const Color&);
 
-  static Color getDayColor (const Datetime&, const Datetime&, const std::map <Datetime, std::string>&, const Color&, const Color&);
+  Color getDayColor (const Datetime&, const Datetime&, const std::map <Datetime, std::string>&, const Color&, const Color&);
 
-  static std::string renderTotal (time_t);
+  std::string renderTotal (time_t);
 
-  static std::string renderSubTotal (time_t, const std::string&);
+  std::string renderSubTotal (time_t, const std::string&);
 
-  static void renderExclusionBlocks (std::vector<Composite>&, const Datetime&, int, int, const std::vector<Range>&, int, int, const Color&, const Color&, bool);
+  void renderExclusionBlocks (std::vector<Composite>&, const Datetime&, int, int, const std::vector<Range>&, int, int, const Color&, const Color&, bool);
 
-  static void renderInterval (std::vector<Composite>&, const Datetime&, const Interval&, const std::map<std::string, Color>&, int, time_t&, bool, int, int);
+  void renderInterval (std::vector<Composite>&, const Datetime&, const Interval&, const std::map<std::string, Color>&, int, time_t&, bool, int, int);
 
-  static std::string renderHolidays (const std::map <Datetime, std::string>&);
+  std::string renderHolidays (const std::map <Datetime, std::string>&);
 
-  static std::string renderSummary (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
+  std::string renderSummary (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
 };
 
 #endif
