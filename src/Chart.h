@@ -38,6 +38,7 @@ public:
 
   std::string render (const Interval&, const std::vector <Interval>&, const std::vector <Range>&, const std::map <Datetime, std::string>&, const std::map <std::string, Color>&, const Color&, const Color&, const Color&, const Color&, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, int, int, int);
 
+private:
   unsigned long getIndentSize (bool, bool, bool, bool);
 
   std::pair <int, int> determineHourRange (const Interval&, const std::vector <Interval>&);
