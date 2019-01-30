@@ -82,7 +82,7 @@ std::string Chart::render (
   const auto chars_per_hour = 60 / minutes_per_char;
   const auto cell_size = chars_per_hour + spacing;
 
-  const auto indent_size = getIndentSize (with_label_month, with_label_week, with_label_day, with_label_weekday);
+  const auto indent_size = getIndentSize ();
   const auto indent = std::string (indent_size, ' ');
   const auto padding_size = indent_size + ((last_hour - first_hour + 1) * (cell_size)) + 1;
 
@@ -176,16 +176,12 @@ std::string Chart::render (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-unsigned long Chart::getIndentSize (
-  const bool with_month,
-  const bool with_week,
-  const bool with_day,
-  const bool with_weekday)
+unsigned long Chart::getIndentSize ()
 {
-  return (with_month ? 4 : 0) +
-         (with_week ? 4 : 0) +
-         (with_day ? 3 : 0) +
-         (with_weekday ? 4 : 0);
+  return (with_label_month ? 4 : 0) +
+         (with_label_week ? 4 : 0) +
+         (with_label_day ? 3 : 0) +
+         (with_label_weekday ? 4 : 0);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
