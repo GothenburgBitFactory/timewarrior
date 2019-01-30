@@ -36,6 +36,18 @@
 #include <timew.h>
 #include <Chart.h>
 
+////////////////////////////////////////////////////////////////////////////////
+Chart::Chart (
+  const bool with_label_month,
+  const bool with_label_week,
+  const bool with_label_weekday,
+  const bool with_label_day) :
+  with_label_month(with_label_month),
+  with_label_week(with_label_week),
+  with_label_weekday(with_label_weekday),
+  with_label_day(with_label_day)
+{ }
+
 std::string Chart::render (
   const Interval &filter,
   const std::vector<Interval> &tracked,
@@ -52,10 +64,6 @@ std::string Chart::render (
   const bool with_summary,
   const bool with_holidays,
   const bool with_totals,
-  const bool with_month,
-  const bool with_week,
-  const bool with_day,
-  const bool with_weekday,
   const bool with_internal_axis,
   const int minutes_per_char,
   const int spacing,
@@ -74,7 +82,7 @@ std::string Chart::render (
   const auto chars_per_hour = 60 / minutes_per_char;
   const auto cell_size = chars_per_hour + spacing;
 
-  const auto indent_size = getIndentSize (with_month, with_week, with_day, with_weekday);
+  const auto indent_size = getIndentSize (with_label_month, with_label_week, with_label_day, with_label_weekday);
   const auto indent = std::string (indent_size, ' ');
   const auto padding_size = indent_size + ((last_hour - first_hour + 1) * (cell_size)) + 1;
 
@@ -132,10 +140,10 @@ std::string Chart::render (
     auto now = Datetime ();
     auto color_day = getDayColor (day, now, holidays, color_today, color_holiday);
 
-    auto labelMonth = with_month ? renderMonth (previous, day) : "";
-    auto labelWeek = with_week ? renderWeek (previous, day) : "";
-    auto labelWeekday = with_weekday ? renderWeekday (day, color_day) : "";
-    auto labelDay = with_day ? renderDay (day, color_day) : "";
+    auto labelMonth = with_label_month ? renderMonth (previous, day) : "";
+    auto labelWeek = with_label_week ? renderWeek (previous, day) : "";
+    auto labelWeekday = with_label_weekday ? renderWeekday (day, color_day) : "";
+    auto labelDay = with_label_day ? renderDay (day, color_day) : "";
 
     out << labelMonth
         << labelWeek

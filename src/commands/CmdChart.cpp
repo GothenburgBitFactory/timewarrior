@@ -145,9 +145,9 @@ int renderChart (
   auto axis_type = rules.get ("reports." + type + ".axis");
   const auto with_internal_axis = axis_type == "internal";
 
-  Chart chart;
+  Chart chart(with_month, with_week, with_weekday, with_day);
 
-  std::cout << chart.render (filter, tracked, exclusions, holidays, tag_colors, color_today, color_holiday, color_label, color_exclusion, show_intervals, determine_hour_range, with_ids, with_summary, with_holidays, with_totals, with_month, with_week, with_day, with_weekday, with_internal_axis, minutes_per_char, spacing, num_lines);
+  std::cout << chart.render (filter, tracked, exclusions, holidays, tag_colors, color_today, color_holiday, color_label, color_exclusion, show_intervals, determine_hour_range, with_ids, with_summary, with_holidays, with_totals, with_internal_axis, minutes_per_char, spacing, num_lines);
 
   return 0;
 }

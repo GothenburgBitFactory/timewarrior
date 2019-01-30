@@ -34,9 +34,9 @@
 class Chart
 {
 public:
-  Chart() = default;
+  Chart(bool, bool, bool, bool);
 
-  std::string render (const Interval&, const std::vector <Interval>&, const std::vector <Range>&, const std::map <Datetime, std::string>&, const std::map <std::string, Color>&, const Color&, const Color&, const Color&, const Color&, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, bool, int, int, int);
+  std::string render (const Interval&, const std::vector <Interval>&, const std::vector <Range>&, const std::map <Datetime, std::string>&, const std::map <std::string, Color>&, const Color&, const Color&, const Color&, const Color&, bool, bool, bool, bool, bool, bool, bool, int, int, int);
 
 private:
   unsigned long getIndentSize (bool, bool, bool, bool);
@@ -66,6 +66,11 @@ private:
   std::string renderHolidays (const std::map <Datetime, std::string>&);
 
   std::string renderSummary (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
+
+  const bool with_label_month;
+  const bool with_label_week;
+  const bool with_label_weekday;
+  const bool with_label_day;
 };
 
 #endif
