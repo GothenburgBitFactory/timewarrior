@@ -363,10 +363,10 @@ std::string Chart::renderTotal (time_t work)
   {
     int hours = work / 3600;
     int minutes = (work % 3600) / 60;
-    std::cout << " "
-              << std::setw (3) << std::setfill (' ') << hours
-              << ':'
-              << std::setw (2) << std::setfill ('0') << minutes;
+    out << " "
+        << std::setw (3) << std::setfill (' ') << hours
+        << ':'
+        << std::setw (2) << std::setfill ('0') << minutes;
   }
 
   return out.str ();
