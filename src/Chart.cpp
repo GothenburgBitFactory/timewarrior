@@ -83,8 +83,9 @@ std::string Chart::render (
   const auto cell_size = chars_per_hour + spacing;
 
   const auto indent_size = getIndentSize ();
+  const auto total_width = (last_hour - first_hour + 1) * (cell_size) - 1;
+  const auto padding_size = indent_size + total_width + 2;
   const auto indent = std::string (indent_size, ' ');
-  const auto padding_size = indent_size + ((last_hour - first_hour + 1) * (cell_size)) + 1;
 
   std::stringstream out;
 
@@ -115,7 +116,6 @@ std::string Chart::render (
 
     // Add an empty string with no color, to reserve width, so this function
     // can simply concatenate to lines[i].str ().
-    int total_width = (last_hour - first_hour + 1) * (cell_size) - 1;
     std::vector<Composite> lines (num_lines);
     for (int i = 0; i < num_lines; ++i)
     {
