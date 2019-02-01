@@ -271,7 +271,7 @@ std::string Chart::renderAxis (
 
   if (with_totals)
   {
-    out << " " << colorLabel.colorize ("Total");
+    out << "  " << colorLabel.colorize ("Total");
   }
 
   out << '\n';
@@ -286,7 +286,7 @@ std::string Chart::renderMonth (const Datetime &previous, const Datetime &day)
 
   std::stringstream out;
 
-  out << (show_month ? Datetime::monthNameShort (day.month ()) : " ")
+  out << (show_month ? Datetime::monthNameShort (day.month ()) : "   ")
       << ' ';
 
   return out.str ();
@@ -300,7 +300,7 @@ std::string Chart::renderWeek (const Datetime &previous, const Datetime &day)
 
   std::stringstream out;
 
-  out << (show_week ? leftJustify (format ("W{1}", day.week ()), 3) : " ")
+  out << (show_week ? leftJustify (format ("W{1}", day.week ()), 3) : "   ")
       << ' ';
 
   return out.str ();
@@ -383,7 +383,7 @@ std::string Chart::renderSubTotal (
   int minutes = (total_work % 3600) / 60;
 
   out << padding
-      << Color ("underline").colorize ("     ")
+      << Color ("underline").colorize ("      ")
       << '\n'
       << padding
       << std::setw (3) << std::setfill (' ') << hours
