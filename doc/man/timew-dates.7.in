@@ -91,5 +91,7 @@ Examples:
   monday
   august
 .br
-See also 'duration', 'hints'.
 .
+.SH "SEE ALSO"
+.BR timew-durations (7),
+.BR timew-hints (7)
