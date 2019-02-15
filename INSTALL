@@ -66,6 +66,7 @@ The following table lists them and their defaults plus the `CMAKE_INSTALL_PREFIX
     TIMEW_RCDIR            share/doc/timew/rc
     TIMEW_MAN1DIR          share/man/man1
     TIMEW_MAN5DIR          share/man/man5
+    TIMEW_MAN7DIR          share/man/man7
 
 The corresponding `TIMEW_*` variables will be combined with `CMAKE_INSTALL_PREFIX` to get absolute installation directories:
 
@@ -74,6 +75,7 @@ The corresponding `TIMEW_*` variables will be combined with `CMAKE_INSTALL_PREFI
     CMAKE_INSTALL_PREFIX/TIMEW_RCDIR    /usr/local/share/doc/timew/rc
     CMAKE_INSTALL_PREFIX/TIMEW_MAN1DIR  /usr/local/share/man/man1
     CMAKE_INSTALL_PREFIX/TIMEW_MAN5DIR  /usr/local/share/man/man5
+    CMAKE_INSTALL_PREFIX/TIMEW_MAN7DIR  /usr/local/share/man/man7
 
 
 # Updating Timewarrior build
