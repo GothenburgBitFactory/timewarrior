@@ -1,6 +1,7 @@
 1.2.0 () -
 - #2      Generate a warning when a new tag is used on the command line
 - #9      Add an 'undo' command (TI-1)
+- #11     The month report shows multi-days current task truncated (TI-3)
 - #21     Add/Remove tag to/from current activity (TI-13)
           (thanks to lumbric)
 - #62     `timew track` with future interval records nothing or incomplete interval (TI-57)
@@ -44,6 +45,7 @@
 -         Fixed error from totals.py while timer is active
           (thanks to davisdude)
 -         Refactoring of Interval and Range
+-         Refactoring of CmdChart
 -         Let command join merge tags of given intervals
 
 ------ current release ---------------------------
