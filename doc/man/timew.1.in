@@ -219,3 +219,11 @@ You can contact the project by emailing <support@gothenburgbitfactory.org>
 .SH "REPORTING BUGS"
 .TP
 Bugs in Timewarrior may be reported to the issue-tracker at <https://github.com/GothenburgBitFactory/timewarrior/issues>
+.
+.SH "SEE ALSO"
+.BR timew-config (7),
+.BR timew-dates (7),
+.BR timew-dom (7),
+.BR timew-duration (7),
+.BR timew-hints (7),
+.BR timew-intervals (7)
