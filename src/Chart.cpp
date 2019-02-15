@@ -83,8 +83,8 @@ std::string Chart::render (
   const auto cell_size = chars_per_hour + spacing;
 
   const auto indent_size = getIndentSize ();
-  const auto total_width = (last_hour - first_hour + 1) * (cell_size) - 1;
-  const auto padding_size = indent_size + total_width + 2;
+  const auto total_width = (last_hour - first_hour + 1) * (cell_size);
+  const auto padding_size = indent_size + total_width + 1;
   const auto indent = std::string (indent_size, ' ');
 
   std::stringstream out;
