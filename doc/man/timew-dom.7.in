@@ -27,4 +27,3 @@ Supported DOM references are:
   dom.tracked.1.json        Tracked Nth, interval as JSON
 .
   dom.rc.<name>             Configuration setting
-.

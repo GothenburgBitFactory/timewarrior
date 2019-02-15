@@ -57,4 +57,3 @@ Examples:
 .br
 Note that the year, quarter and month terms are imprecise, being defined as 365d, 91d and 30d respectively.
 For precision use the other terms.
-.
