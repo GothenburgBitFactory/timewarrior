@@ -1,4 +1,11 @@
-.SH DATES
+.TH timew-dates 7 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+.
+.SH NAME
+timew-dates \- date formats supported by Timewarrior
+.
+.SH SYNOPSIS
+.
+.SH DESCRIPTION
 Timewarrior supports the following date formats based on ISO-8601:
 .
   <extended-date> [T <extended-time>]   Extended date, optional extended time

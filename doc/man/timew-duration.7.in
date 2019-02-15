@@ -1,4 +1,11 @@
-.SH DURATIONS
+.TH timew-durations 7 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+.
+.SH NAME
+timew-durations \- duration formats supported by Timewarrior
+.
+.SH SYNOPSIS
+.
+.SH DESCRIPTION
 Timewarrior supports the following duration formats based on ISO-8601:
 .
   'P' [nn 'Y'] [nn 'M'] [nn 'D'] ['T' [nn 'H'] [nn 'M'] [nn 'S']]

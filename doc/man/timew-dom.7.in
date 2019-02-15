@@ -1,4 +1,11 @@
-.SH DOM
+.TH timew-dom 7 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+.
+.SH NAME
+timew-dom \- Timewarrior DOM
+.
+.SH SYNOPSIS
+.
+.SH DESCRIPTION
 Supported DOM references are:
 .
   dom.tag.count             Count of all tags

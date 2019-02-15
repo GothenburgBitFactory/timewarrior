@@ -1,4 +1,10 @@
-``.SH INTERVAL
+.TH timew-intervals 7 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+.
+.SH NAME
+timew-intervals \- date and time ranges supported by Timewarrior
+.SH SYNOPSIS
+.
+.SH DESCRIPTION
 An interval defines a block of time that is tracked.
 The syntax for specifying an interval is flexible, and may be one of:
 .

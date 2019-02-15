@@ -1,4 +1,11 @@
-.SH HINTS
+.TH timew-hints 7 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+.
+.SH NAME
+timew-hints \- Timewarrior hints
+.
+.SH SYNOPSIS
+.
+.SH DESCRIPTION
 Timewarrior supports hints, which are single-word command line features that start with a colon like this:
 .
   :week
