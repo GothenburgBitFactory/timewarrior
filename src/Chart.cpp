@@ -131,8 +131,7 @@ std::string Chart::render (
       for (auto &track : tracked)
       {
         time_t interval_work = 0;
-        renderInterval (lines, day, track, tag_colors, first_hour, interval_work, with_ids, minutes_per_char,
-                               spacing);
+        renderInterval (lines, day, track, tag_colors, first_hour, interval_work, with_ids, minutes_per_char, spacing);
         work += interval_work;
       }
     }
@@ -498,15 +497,13 @@ void Chart::renderInterval (
 
   if (clipped.end.hour () == 0)
   {
-    end_mins +=
-      (clipped.end.day () + (clipped.end.month () - clipped.start.month () - 1) * clipped.start.day ()) * 24 * 60;
+    end_mins += (clipped.end.day () + (clipped.end.month () - clipped.start.month () - 1) * clipped.start.day ()) * 24 * 60;
   }
 
   work = clipped.total ();
 
   auto start_block = quantizeToNMinutes (start_mins, minutes_per_char) / minutes_per_char;
-  auto end_block =
-    quantizeToNMinutes (end_mins == start_mins ? start_mins + 60 : end_mins, minutes_per_char) / minutes_per_char;
+  auto end_block = quantizeToNMinutes (end_mins == start_mins ? start_mins + 60 : end_mins, minutes_per_char) / minutes_per_char;
 
   int start_offset = start_block + (spacing * (start_mins / 60));
   int end_offset = end_block + (spacing * (end_mins / 60));
