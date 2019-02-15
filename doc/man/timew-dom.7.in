@@ -1,0 +1,23 @@
+.SH DOM
+Supported DOM references are:
+.
+  dom.tag.count             Count of all tags
+  dom.tag.1                 Nth tag used
+.
+  dom.active                '1' if there is active tracking, otherwise '0'
+  dom.active.tag.count      Count of active tags
+  dom.active.tag.1          Active Nth tag
+  dom.active.start          Active start timestamp (ISO Extended local date)
+  dom.active.duration       Active elapsed (ISO Period)
+  dom.active.json           Active interval as JSON
+.
+  dom.tracked.count         Count of tracked intervals
+  dom.tracked.1.tag.count   Count of active tags
+  dom.tracked.1.tag.1       Tracked Nth, Nth tag
+  dom.tracked.1.start       Tracked Nth, start time
+  dom.tracked.1.end         Tracked Nth, end time, blank if closed
+  dom.tracked.1.duration    Tracked Nth, elapsed
+  dom.tracked.1.json        Tracked Nth, interval as JSON
+.
+  dom.rc.<name>             Configuration setting
+.
