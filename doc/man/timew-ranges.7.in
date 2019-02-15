@@ -1,7 +1,7 @@
-.TH timew-intervals 7 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+.TH timew-ranges 7 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
 .
 .SH NAME
-timew-intervals \- date and time ranges supported by Timewarrior
+timew-ranges \- date and time ranges supported by Timewarrior
 .SH SYNOPSIS
 .
 .SH DESCRIPTION
