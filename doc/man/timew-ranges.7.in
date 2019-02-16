@@ -1,7 +1,8 @@
-.TH timew-ranges 7 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+.TH timew-ranges 7 "${PACKAGE_DATE}" "${PACKAGE_STRING}" "User Manuals"
 .
 .SH NAME
 timew-ranges \- date and time ranges supported by Timewarrior
+.
 .SH SYNOPSIS
 .
 .SH DESCRIPTION

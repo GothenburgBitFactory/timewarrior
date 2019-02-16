@@ -1,4 +1,4 @@
-.TH timew-gaps 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+.TH timew-gaps 1 "${PACKAGE_DATE}" "${PACKAGE_STRING}" "User Manuals"
 .
 .SH NAME
 timew-gaps \- display time tracking gaps

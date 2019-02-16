@@ -1,4 +1,4 @@
-.TH timew-diagnostics 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+.TH timew-diagnostics 1 "${PACKAGE_DATE}" "${PACKAGE_STRING}" "User Manuals"
 .
 .SH NAME
 timew-diagnostics \- show diagnostic information

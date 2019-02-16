@@ -1,4 +1,4 @@
-.TH timew-summary 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+.TH timew-summary 1 "${PACKAGE_DATE}" "${PACKAGE_STRING}" "User Manuals"
 .
 .SH NAME
 timew-summary \- display a time-tracking summary

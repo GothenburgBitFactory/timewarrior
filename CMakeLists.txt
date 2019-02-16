@@ -26,6 +26,7 @@ set (PACKAGE_NAME "${PACKAGE}")
 set (PACKAGE_TARNAME "${PACKAGE}")
 set (PACKAGE_VERSION "${VERSION}")
 set (PACKAGE_STRING "${PACKAGE} ${VERSION}")
+string (TIMESTAMP PACKAGE_DATE "%Y-%m-%d")
 
 if (FREEBSD OR DRAGONFLY)
 SET (TIMEW_MAN1DIR man/man1 CACHE STRING "Installation directory for man pages, section 1")

@@ -1,10 +1,10 @@
-.TH timew-config 7 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+.TH timew-config 7 "${PACKAGE_DATE}" "${PACKAGE_STRING}" "User Manuals"
 .
 .SH NAME
 timew-config \- Timewarrior configuration file an override options
 .
 .SH SYNOPSIS
-.B timew rc.<name>=<value> <command>
+.BI "timew rc." <name> = "<value> <command>"
 .
 .SH DESCRIPTION
 Timewarrior stores its configuration in a file in the user's home directory:

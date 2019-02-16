@@ -1,4 +1,4 @@
-.TH timew-modify 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+.TH timew-modify 1 "${PACKAGE_DATE}" "${PACKAGE_STRING}" "User Manuals"
 .
 .SH NAME
 timew-modify \- change start or end date of an interval
@@ -25,7 +25,7 @@ For example, show the IDs:
 .PP
 Then having selected '@3' as the interval you wish to modify:
 .
-  $ timew modify end @3 2018-02-03T17:00:00
+  $ timew modify end @3 "${PACKAGE_DATE}"T17:00:00
 .
 .SH "SEE ALSO"
 .BR timew-lengthen (1),

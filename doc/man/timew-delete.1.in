@@ -1,4 +1,4 @@
-.TH timew-delete 1 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+.TH timew-delete 1 "${PACKAGE_DATE}" "${PACKAGE_STRING}" "User Manuals"
 .
 .SH NAME
 timew-delete \- delete intervals

@@ -1,4 +1,4 @@
-.TH timew-dates 7 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+.TH timew-dates 7 "${PACKAGE_DATE}" "${PACKAGE_STRING}" "User Manuals"
 .
 .SH NAME
 timew-dates \- date formats supported by Timewarrior

@@ -1,4 +1,4 @@
-.TH timew-hints 7 2018-02-03 "${PACKAGE_STRING}" "User Manuals"
+.TH timew-hints 7 "${PACKAGE_DATE}" "${PACKAGE_STRING}" "User Manuals"
 .
 .SH NAME
 timew-hints \- Timewarrior hints
