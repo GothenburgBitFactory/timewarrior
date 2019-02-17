@@ -7,138 +7,177 @@ timew-config \- Timewarrior configuration file an override options
 .BI "timew rc." <name> = "<value> <command>"
 .
 .SH DESCRIPTION
-Timewarrior stores its configuration in a file in the user's home directory:
-~/.timewarrior/timewarrior.cfg.
-.
+Timewarrior stores its configuration in the user's home directory in
+.I ~/.timewarrior/timewarrior.cfg.
 This file contains a mix of rules and configuration settings.
-Note that the environment variable $TIMEWARRIORDB can be set to override this location.
+Note that the TIMEWARRIORDB environment variable can be set to override this location.
 .
 The values 'true', '1', 'y', 'yes' and 'on' are all equivalent and enable a setting.
 Any other value means disable the setting.
 .
 Default values may be overridden by timewarrior.cfg values, which may in turn be overridden on the command line using:
-.
-  rc.<name>=<value>
-.
+.BI rc. <name> = <value>
+.PP
 For example, to turn off verbose mode:
-.
-  rc.verbose=0
-.
+.RS
+rc.verbose=0
+.RE
+.PP
 Note that hints can also do this (:quiet).
 .
+.SH "GENERAL CONFIGURATION"
 .TP
-.B confirmation = yes
+.B confirmation
+.RS
 Determines whether harmful operations require interactive confirmation.
-May be overridden by the ':yes' hint.
-Default value is 'yes'.
-.
-.TP
-.B debug = off
-Determines whether diagnostic debugging information is shown.
-Useful for troubleshooting, but not for general use.
-Default value is 'off'.
-.
-.TP
-.B debug.indicator = >>
-The debug output prefix string.
-Default value is '>>'.
-.
-.TP
-.B reports.<type>.cell = 15
 .br
+May be overridden by the ':yes' hint.
+.br
+Default value is 'yes'.
+.RE
+.TP
+.B verbose
+.RS
+Determines whether Timewarrior generates feedback.
+.br
+May be overridden by the ':quiet' hint.
+.br
+Default value is 'yes'.
+.RE
+.TP
+.B debug
+.RS
+Determines whether diagnostic debugging information is shown.
+.br
+Useful for troubleshooting, but not for general use.
+.br
+Default value is 'off'.
+.RE
+.TP
+.B debug.indicator
+.RS
+The debug output prefix string.
+.br
+Default value is '>>'.
+.RE
+.SH "CHART CONFIGURATION"
+.TP
+.B reports.<type>.cell
+.RS
 Determines how many minutes are represented by a single character cell, for the charts.
 A value of '15' means that an hour is represented by 60/15, or 4 character cells.
 Suitable values are the divisors of 60 (30, 20, 15, 12, ...).
 The value must be greater than '0'.
+.br
 Default value is '15'.
-Type is one of 'month', 'week', 'day'.
-.
-.TP
-.B reports.<type>.day = yes
 .br
+Type is one of 'month', 'week', 'day'.
+.RE
+.TP
+.B reports.<type>.day
+.RS
 Determines whether the current day of the month is shown at left margin.
-Default value is 'yes'.
-Type is one of 'month', 'week', 'day'.
-.
-.TP
-.B reports.<type>.holidays = yes
 .br
+Default value is 'yes'.
+.br
+Type is one of 'month', 'week', 'day'.
+.RE
+.TP
+.B reports.<type>.holidays
+.RS
 Determines whether relevant holidays are shown beneath the report.
+.br
 Default value is 'yes'.
+.br
 Type is one of 'month', 'week', 'day', 'summary'.
-.
+.RE
 .TP
-.B reports.<type>.hours = all
-.br
+.B reports.<type>.hours
+.RS
 Determines how the <type> report shows all the hours in a day ('all'), or is limited to only hours where data is tracked ('auto').
+.br
 Default value is 'all'.
-Type is one of 'month', 'week', 'day'.
-.
-.TP
-.B reports.<type>.lines = 1
 .br
+Type is one of 'month', 'week', 'day'.
+.RE
+.TP
+.B reports.<type>.lines
+.RS
 Determines how many lines are used to render each day on the <type> report.
+.br
 Default value is '1'.
-Type is one of 'month', 'week', 'day'.
-.
-.TP
-.B reports.<type>.month = yes
 .br
+Type is one of 'month', 'week', 'day'.
+.RE
+.TP
+.B reports.<type>.month
+.RS
 Determines whether the current month is shown at left margin.
+.br
 Default value is 'yes'.
+.br
 Type is one of 'month', 'week', 'day'.
-.
+.RE
 .TP
-.B reports.<type>.range = <range hint>
-.br
+.B reports.<type>.range
+.RS
 For reports that show a range of data, this setting will override the default value.
-The value should be a range hint, see 'hints'
-Type is one of 'gaps', 'day', 'week', 'month'.
-.
-.TP
-.B reports.<type>.spacing = 1
+The value should be a range hint, see
+.BR timew-hints (7).
 .br
+Type is one of 'gaps', 'day', 'week', 'month'.
+.RE
+.TP
+.B reports.<type>.spacing
+.RS
 Specifies how many spaces are inserted between the hours in the <type> report exclusions.
 A value of '0' yields a more compact report.
+.br
 Default value is '1'.
-Type is one of 'month', 'week', 'day'.
-.
-.TP
-.B reports.<type>.axis = external
 .br
+Type is one of 'month', 'week', 'day'.
+.RE
+.TP
+.B reports.<type>.axis
+.RS
 The value 'internal' puts the hour markers (time line at the top) inside the exclusion blocks, 'external' puts the hour markers in a separate line; additional values might be defined in the future.
+.br
 Default is 'internal' for the day report and 'external' for other reports.
-.
-.TP
-.B reports.<type>.summary = on
 .br
+.RE
+.TP
+.B reports.<type>.summary
+.RS
 Determines whether the hours summary is shown.
-Default value is 'on'.
-Type is one of 'month', 'week', 'day'.
-.
-.TP
-.B reports.<type>.totals = on
 .br
+Default value is 'on'.
+.br
+Type is one of 'month', 'week', 'day'.
+.RE
+.TP
+.B reports.<type>.totals
+.RS
 Determines whether the time totals are shown for each day on the report.
+.br
 Default value is 'on'.
-Type is one of 'month', 'week', 'day'.
-.
-.TP
-.B reports.<type>.week = yes
 .br
+Type is one of 'month', 'week', 'day'.
+.RE
+.TP
+.B reports.<type>.week
+.RS
 Determines whether the current week number is shown at left margin.
-Default value is 'yes'.
-Type is one of 'month', 'week', 'day'.
-.
-.TP
-.B reports.<type>.weekday = yes
 .br
-Determines whether the current weekday is shown at left margin.
 Default value is 'yes'.
+.br
 Type is one of 'month', 'week', 'day'.
-.
+.RE
 .TP
-.B verbose = yes
-Determines whether Timewarrior generates feedback.
-May be overridden by the ':quiet' hint.
+.B reports.<type>.weekday
+.RS
+Determines whether the current weekday is shown at left margin.
+.br
 Default value is 'yes'.
+.br
+Type is one of 'month', 'week', 'day'.
+.RE
