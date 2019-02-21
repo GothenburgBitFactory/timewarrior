@@ -22,6 +22,15 @@ Accepts date ranges and tags for filtering, or shortcut hints:
 .
 The ':ids' hint adds an 'ID' column to the summary report output for interval modification.
 .
+.SH CONFIGURATION
+.TP
+.B reports.summary.holidays
+.RS
+Determines whether relevant holidays are shown beneath the report.
+.br
+Default value is 'yes'.
+.RE
+.
 .SH "SEE ALSO"
 .BR timew-day (1),
 .BR timew-lengthen (1),
