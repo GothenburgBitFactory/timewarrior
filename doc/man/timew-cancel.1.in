@@ -10,23 +10,32 @@ timew-cancel \- cancel time tracking
 If there is an open interval, it is abandoned.
 .
 .SH EXAMPLES
-.TP Cancel with active time tracking
-.
+.TP
+.B Cancel with active time tracking
+.RS
+.br
 $ timew start
+.br
 ...
+.br
 $ timew cancel
-.
+.br
 Canceled active time tracking.
-
+.RE
+.
 This deletes the open interval.
-.
-Cancel with no active time tracking
-.
+.TP
+.B Cancel with no active time tracking
+.RS
+.br
 ...
+.br
 $ timew stop
+.br
 $ timew cancel
+.br
 There is no active time tracking.
-.
+.RE
 Cancel has no effect, only a warning is printed.
 .
 .SH "SEE ALSO"

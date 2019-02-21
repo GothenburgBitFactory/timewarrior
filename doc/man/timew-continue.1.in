@@ -20,11 +20,13 @@ Resumes tracking of closed intervals.
 .
 .SH EXAMPLES
 For example:
-.
-  $ timew track 9am - 10am tag1 tag2
-  $ timew track 11am - 1pm tag3
-  $ timew continue @2
-.
+.RS
+$ timew track 9am - 10am tag1 tag2
+.br
+$ timew track 11am - 1pm tag3
+.br
+$ timew continue @2
+.RE
 The 'continue' command creates a new interval, starting now, and using the tags 'tag1' and 'tag2'.
 Using the 'summary' command and specifying the ':ids' hint shows interval IDs.
 This command is a convenient way to resume work without re-entering the tags.

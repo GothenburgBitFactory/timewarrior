@@ -16,16 +16,17 @@ Using the right ID, you can identify an interval to lengthen.
 .
 .SH EXAMPLES
 For example, show the IDs:
-.
-  $ timew summary :week :ids
-.
+.RS
+$ timew summary :week :ids
+.RE
 Then having selected '@2' as the interval you wish to lengthen:
-.
-  $ timew lengthen @2 10mins
-.
+.RS
+$ timew lengthen @2 10mins
+.RE
 Note that you can lengthen multiple intervals,:
-.
-  $ timew lengthen @2 @10 @23 1hour
+.RS
+$ timew lengthen @2 @10 @23 1hour
+.RE
 .
 .SH "SEE ALSO"
 .BR timew-modify (1),

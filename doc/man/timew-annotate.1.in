@@ -19,30 +19,31 @@ Using the right ID, you can identify an interval to annotate.
 .
 .SH EXAMPLES
 For example, show the IDs:
-.
-  $ timew summary :week :ids
-.
+.RS
+$ timew summary :week :ids
+.RE
 Then having selected '@2' as the interval you wish to annotate:
-.
-  $ timew annotate @2 'Lorem ipsum...'
-.
+.RS
+$ timew annotate @2 'Lorem ipsum...'
+.RE
 Note that you can annotate multiple intervals with the same annotation:
-.
-  $ timew annotate @2 @10 @23 'Lorem ipsum dolor sit amet...'
-.
+.RS
+$ timew annotate @2 @10 @23 'Lorem ipsum dolor sit amet...'
+.RE
 If there is active time tracking, you can omit the ID when you want to add annotations to the current open interval:
-.
-  $ timew start foo
-  $ timew annotate bar
-.
+.RS
+$ timew start foo
+.br
+$ timew annotate bar
+.RE
 This results in the current interval having annotations 'foo' and 'bar'.
 .
 SH BUGS
 Currently the annotation command picks the last token from the command line and uses it as annotation.
 I.e. using no quotes in an annotation command like
-.
-  $ timew annotate @1 lorem ipsum dolor
-.
+.RS
+$ timew annotate @1 lorem ipsum dolor
+.RE
 will result in interval @1 having only 'dolor' as its annotation.
 .
 .SH "SEE ALSO"

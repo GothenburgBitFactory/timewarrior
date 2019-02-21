@@ -22,12 +22,18 @@ The help command shows detailed descriptions and examples of commands, interval 
 .
 .SH EXAMPLES
 For example:
-.
-  $ timew help
-  $ timew help start
-  $ timew help hints
-  $ timew help interval
-  $ timew help date
-  $ timew help duration
-  $ timew help dom
-.
+.RS
+$ timew help
+.br
+$ timew help start
+.br
+$ timew help hints
+.br
+$ timew help interval
+.br
+$ timew help date
+.br
+$ timew help duration
+.br
+$ timew help dom
+.RE

@@ -19,25 +19,30 @@ Allows setting and removing configuration values, as an alternative to directly 
 .
 .SH EXAMPLES
 For example:
-.
-  $ timew config verbose yes
-  $ timew config verbose ''
-  $ timew config verbose
-.
+.RS
+$ timew config verbose yes
+.br
+$ timew config verbose ''
+.br
+$ timew config verbose
+.RE
 The first command sets 'verbose' to 'yes'.
 The second sets it to a blank value which overrides the default value.
 The third example deletes the 'verbose' setting.
 .
 When modifying configuration in this way, interactive confirmation will be sought.
 To override this confirmation, use the ':yes' hint, which means you intend to answer 'yes' to the confirmation questions:
-.
-  $ timew config verbose '' :yes
-.
+.RS
+$ timew config verbose '' :yes
+.RE
 If no arguments are provided, all configuration settings are shown:
-.
-  $ timew config
-  verbose = yes
-  ...
+.RS
+$ timew config
+.br
+verbose = yes
+.br
+...
+.RE
 .
 .SH "SEE ALSO"
 .BR timew-hints (1),

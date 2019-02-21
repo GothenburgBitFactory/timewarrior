@@ -17,10 +17,11 @@ Perhaps you forgot to record time, or are just filling in old entries.
 .
 .SH EXAMPLES
 For example:
-.
-  $ timew track :yesterday 'Training Course'
-  $ timew track 9am - 11am 'Staff Meeting'
-.
+.RS
+$ timew track :yesterday 'Training Course'
+.br
+$ timew track 9am - 11am 'Staff Meeting'
+.RE
 Note that the track command expects a closed interval (start and end time), when recording.
 If a closed interval is not provided, the 'track' command behaves the same as the 'start' command.
 .

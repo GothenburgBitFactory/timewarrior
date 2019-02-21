@@ -14,12 +14,13 @@ Using the correct IDs, you can identify an intervals to join.
 .
 .SH EXAMPLES
 For example, show the IDs:
-.
-  $ timew summary :week :ids
-.
+.RS
+$ timew summary :week :ids
+.RE
 Then having selected '@1' and '@2' as the intervals you wish to join:
-.
-  $ timew join @1 @2
+.RS
+$ timew join @1 @2
+.RE
 .
 .SH "SEE ALSO"
 .BR timew-lengthen (1),

@@ -13,10 +13,10 @@ Validates the DOM reference, then obtains the value and displays it.
 .
 .SH EXAMPLES
 For example:
-.
-  $ timew get dom.active
-  1
-.
+.RS
+$ timew get dom.active
+1
+.RE
 It is an error to reference an interval or tag that does not exist.
 .
 .SH "SEE ALSO"

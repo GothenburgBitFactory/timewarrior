@@ -19,15 +19,18 @@ If no tags are specified, all tracking stops.
 .
 .SH EXAMPLES
 For example:
-.
-  $ timew start tag1 tag2
-  ...
-  $ timew stop tag1
-.
+.RS
+$ timew start tag1 tag2
+.br
+...
+.br
+$ timew stop tag1
+.RE
 Initially time is tracked for both 'tag1' and 'tag2', then 'tag1' tracking is stopped, leaving tag2 active.
 To stop all tracking:
-.
-  $ timew stop
+.RS
+$ timew stop
+.RE
 .
 .SH "SEE ALSO"
 .BR timew-cancel (1),

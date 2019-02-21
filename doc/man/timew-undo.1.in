@@ -16,7 +16,8 @@ The 'undo' command itself cannot be undone!
 
 .SH EXAMPLES
 Undo an interval modification:
-.
-  $ timew split @1
-  $ timew undo
-.
+.RS
+$ timew split @1
+.br
+$ timew undo
+.RE

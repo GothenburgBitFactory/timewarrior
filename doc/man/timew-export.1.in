@@ -17,6 +17,6 @@ Supports filtering.
 .
 .SH EXAMPLES
 For example:
-.
-  $ timew export from 2016-01-01 for 3wks tag1
-.
+.RS
+$ timew export from 2016-01-01 for 3wks tag1
+.RE

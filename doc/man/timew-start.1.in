@@ -18,13 +18,13 @@ If a tag contains multiple words, therefore containing spaces, use quotes to sur
 .
 .SH EXAMPLES
 For example, this command specifies two tags ('weekend' and 'Home & Garden'), the second of which requires quotes.
-.
-  $ timew start weekend 'Home & Garden'
-.
+.RS
+$ timew start weekend 'Home & Garden'
+.RE
 An optional date may be specified to indicate the intended start of the tracked time:
-.
-  $ timew start 8am weekend 'Home & Garden'
-.
+.RS
+$ timew start 8am weekend 'Home & Garden'
+.RE
 If there is a previous open interval, it will be closed at the given start time.
 .
 Quotes are harmless if used unnecessarily.

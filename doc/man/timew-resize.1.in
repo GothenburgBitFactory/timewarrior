@@ -16,16 +16,17 @@ Using the right ID, you can identify an interval to resize.
 .
 .SH EXAMPLES
 For example, show the IDs:
-.
-  $ timew summary :week :ids
-.
+.RS
+$ timew summary :week :ids
+.RE
 Then having selected '@3' as the interval you wish to resize:
-.
-  $ timew resize @3 15mins
-.
+.RS
+$ timew resize @3 15mins
+.RE
 Note that you can resize multiple intervals,:
-.
-  $ timew resize @3 @1 @13 1hour
+.RS
+$ timew resize @3 @1 @13 1hour
+.RE
 .
 .SH "SEE ALSO"
 .BR timew-lengthen (1),

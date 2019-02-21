@@ -19,13 +19,14 @@ Using the right ID, you can identify an interval to modify.
 .
 .SH EXAMPLES
 For example, show the IDs:
-.
-  $ timew summary :week :ids
-.
+.RS
+$ timew summary :week :ids
+.RE
 .PP
 Then having selected '@3' as the interval you wish to modify:
-.
-  $ timew modify end @3 "${PACKAGE_DATE}"T17:00:00
+.RS
+$ timew modify end @3 "${PACKAGE_DATE}"T17:00:00
+.RE
 .
 .SH "SEE ALSO"
 .BR timew-lengthen (1),

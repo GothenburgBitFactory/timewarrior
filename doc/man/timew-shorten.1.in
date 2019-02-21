@@ -16,16 +16,18 @@ Using the right ID, you can identify an interval to shorten.
 .
 .SH EXAMPLES
 For example, show the IDs:
-.
-  $ timew summary :week :ids
-.
+.RS
+$ timew summary :week :ids
+.RE
+.br
 Then having selected '@2' as the interval you wish to shorten:
-.
-  $ timew shorten @2 10mins
-.
+.RS
+$ timew shorten @2 10mins
+.RE
 Note that you can shorten multiple intervals,:
-.
-  $ timew shorten @2 @10 @23 1hour
+.RS
+$ timew shorten @2 @10 @23 1hour
+.RE
 .
 .SH "SEE ALSO"
 .BR timew-lengthen (1),

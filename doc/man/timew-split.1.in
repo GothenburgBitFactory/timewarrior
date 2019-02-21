@@ -15,12 +15,13 @@ Using the right ID, you can identify an interval to split.
 .
 .SH EXAMPLES
 For example, show the IDs:
-.
-  $ timew summary :week :ids
-.
+.RS
+$ timew summary :week :ids
+.RE
 Then having selected '@2' as the interval you wish to split:
-.
-  $ timew split @2
+.RS
+$ timew split @2
+.RE
 .
 .SH "SEE ALSO"
 .BR timew-join (1),
