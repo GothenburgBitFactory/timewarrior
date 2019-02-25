@@ -38,7 +38,7 @@ $ timew annotate bar
 .RE
 This results in the current interval having annotations 'foo' and 'bar'.
 .
-SH BUGS
+.SH BUGS
 Currently the annotation command picks the last token from the command line and uses it as annotation.
 I.e. using no quotes in an annotation command like
 .RS
