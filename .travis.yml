@@ -34,7 +34,7 @@ matrix:
       os: linux
       env: CONTAINER=opensuse1500
       services: docker
-    - name: "Archlinux 2018.01.01"
+    - name: "Archlinux"
       os: linux
       env: CONTAINER=archlinux
       services: docker
