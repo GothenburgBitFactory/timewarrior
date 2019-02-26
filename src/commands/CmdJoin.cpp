@@ -43,7 +43,9 @@ int CmdJoin (
 
   // Only 2 IDs allowed in a join.
   if (ids.size () != 2)
+  {
     throw std::string ("Two IDs must be specified. See 'timew help join'.");
+  }
 
   // Load the data.
   // Note: There is no filter.
@@ -87,7 +89,9 @@ int CmdJoin (
   database.endTransaction ();
 
   if (rules.getBoolean ("verbose"))
+  {
     std::cout << "Joined @" << first_id << " and @" << second_id << '\n';
+  }
 
   return 0;
 }

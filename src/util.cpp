@@ -55,7 +55,9 @@ std::string escape (const std::string& input, int c)
 std::string quoteIfNeeded (const std::string& input)
 {
   if (input[0] == '"' || input[0] == '\'')
+  {
     return input;
+  }
 
   auto quote = input.find ('"');
   auto space = input.find (' ');
@@ -64,13 +66,19 @@ std::string quoteIfNeeded (const std::string& input)
   if (quote == std::string::npos &&
       space == std::string::npos &&
       op    == std::string::npos)
+  {
     return input;
+  }
 
   std::string output;
   if (quote != std::string::npos)
+  {
     output = escape (input, '"');
+  }
   else
+  {
     output = input;
+  }
 
   return std::string ("\"") + output + "\"";
 }

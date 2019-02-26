@@ -56,7 +56,9 @@ std::vector <std::string> Database::files () const
 {
   std::vector <std::string> all;
   for (auto& file : _files)
+  {
     all.push_back (file.name ());
+  }
 
   return all;
 }
@@ -75,7 +77,9 @@ std::string Database::lastLine ()
   {
     auto line = ri->lastLine ();
     if (! line.empty ())
+    {
       return line;
+    }
   }
 
   return "";
@@ -272,7 +276,9 @@ std::string Database::dump () const
   std::stringstream out;
   out << "Database\n";
   for (auto& df : _files)
+  {
     out << df.dump ();
+  }
 
   return out.str ();
 }
@@ -292,8 +298,12 @@ unsigned int Database::getDatafile (int year, int month)
 
   // If the datafile is already initialized, return.
   for (unsigned int i = 0; i < _files.size (); ++i)
+  {
     if (_files[i].name () == basename)
+    {
       return i;
+    }
+  }
 
   // Create the Datafile.
   Datafile df;
@@ -325,7 +335,9 @@ std::vector <Range> Database::segmentRange (const Range& range)
 
   auto end = range.end;
   if (end.toEpoch () == 0)
+  {
     end = Datetime ();
+  }
 
   auto end_y = end.year ();
   auto end_m = end.month ();
@@ -374,7 +386,9 @@ void Database::initializeTagDatabase ()
     auto* value = (json::object*) pair.second;
     auto iter = value->_data.find ("count");
     if (iter == value->_data.end ())
+    {
       throw format ("Failed to find \"count\" member for tag \"{1}\" in tags database. Database corrupted?", key);
+    }
     auto number = static_cast<json::number *> (iter->second);
     _tagInfoDatabase.add (key, TagInfo {(unsigned int) number->_dvalue});
   }
