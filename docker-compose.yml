@@ -67,7 +67,7 @@ services:
   test-arch180101:
     build:
         context: .
-        dockerfile: test/docker/arch180101
+        dockerfile: test/docker/archlinux
     network_mode: "host"
     security_opt:
       - label=type:container_runtime_t

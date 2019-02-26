@@ -36,7 +36,7 @@ matrix:
       services: docker
     - name: "Archlinux 2018.01.01"
       os: linux
-      env: CONTAINER=arch180101
+      env: CONTAINER=archlinux
       services: docker
     - name: "Mac OS X 10.13"
       os: osx

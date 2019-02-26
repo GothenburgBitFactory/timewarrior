@@ -1,4 +1,4 @@
-FROM base/archlinux:2018.01.01
+FROM archlinux/base
 
 RUN pacman -Sy --noconfirm archlinux-keyring
 RUN pacman -Syyu --noconfirm
