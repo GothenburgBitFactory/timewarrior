@@ -389,7 +389,7 @@ void Database::initializeTagDatabase ()
     {
       throw format ("Failed to find \"count\" member for tag \"{1}\" in tags database. Database corrupted?", key);
     }
-    auto number = static_cast<json::number *> (iter->second);
+    auto number = dynamic_cast<json::number *> (iter->second);
     _tagInfoDatabase.add (key, TagInfo {(unsigned int) number->_dvalue});
   }
 }
