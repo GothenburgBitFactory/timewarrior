@@ -42,6 +42,8 @@
 - #183    Hyphen in annotation gets padded with spaces
 - #189    segfault on timew get dom.active.tag.0
           (thanks to Valodim)
+- #198    Problem with `%` symbol in tag
+          (thanks to sruffel, AlexLov)
 -         Fixed error from totals.py while timer is active
           (thanks to davisdude)
 -         Refactoring of Interval and Range
