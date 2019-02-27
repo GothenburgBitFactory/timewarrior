@@ -64,7 +64,7 @@ services:
     security_opt:
       - label=type:container_runtime_t
     tty: true
-  test-arch180101:
+  test-archlinux:
     build:
         context: .
         dockerfile: test/docker/archlinux
