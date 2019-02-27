@@ -225,7 +225,7 @@ class TestUndo(TestCase):
         self.assertClosedInterval(j[0],
                                   expectedStart=four_hours_before_utc,
                                   expectedEnd=one_hour_before_utc,
-                                  expectedTags=["bar"],
+                                  expectedTags=["bar", "foo"],
                                   description="joined interval")
 
         self.t("undo")
