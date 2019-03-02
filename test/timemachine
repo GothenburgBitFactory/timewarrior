@@ -1,6 +1,6 @@
 #!/bin/bash
 
-function current_date()
+function default_dates()
 {
   case "${OSTYPE}" in
     darwin*)
@@ -45,9 +45,9 @@ until [[ -z "${1}" ]] ; do
       shift
       hours="${hours} ${1}"
       ;;
-    --day)
+    --date)
       shift
-      days="${days} ${1}"
+      dates="${dates} ${1}"
       ;;
     --fail-at-end)
       fail_at_end=1
@@ -63,15 +63,15 @@ until [[ -z "${1}" ]] ; do
   shift
 done
 
-for day in ${days-$( current_date )} ; do
+for date in ${dates-$( default_dates )} ; do
   for minute in ${minutes-$( default_minutes )} ; do
     for hour in ${hours-$( default_hours )} ; do
-      date="${day}T${hour}:${minute}"
+      date_time="${date}T${hour}:${minute}"
       for single_test in ${tests} ; do
-        echo "Running test ${single_test} at ${date}"
-        faketime "${date}" "${single_test}"
+        echo "Running test ${single_test} at ${date_time}"
+        faketime "${date_time}" "${single_test}"
         if [[ $? -ne 0 ]] ; then
-          echo "Test ${single_test} broke at ${date}!"
+          echo "Test ${single_test} broke at ${date_time}!"
           [[ ${fail_at_end-0} -ne 0 ]] || break 2
         fi
       done
