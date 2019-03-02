@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if ! command -v faketime >/dev/null 2>&1 ; then
+  echo "timemachine requires libfaketime to be installed!"
+  exit 1
+fi
+
 # parse options/arguments
 until [[ -z "${1}" ]] ; do
   case "${1}" in
