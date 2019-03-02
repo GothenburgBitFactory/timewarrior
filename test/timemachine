@@ -1,5 +1,10 @@
 #!/bin/bash
 
+function current_date()
+{
+      date --rfc-3339=date
+}
+
 function random_minute()
 {
       echo "0$( rand -M 60 )" | sed "s|.\+\(..\)\$|\1|g"
@@ -44,7 +49,7 @@ until [[ -z "${1}" ]] ; do
   shift
 done
 
-for day in ${days-$(date --rfc-3339=date)} ; do
+for day in ${days-$( current_date )} ; do
   for minute in ${minutes-$( random_minute )} ; do
     for hour in ${hours-$( default_hours )} ; do
       date="${day}T${hour}:${minute}"
