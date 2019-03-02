@@ -2,12 +2,26 @@
 
 function current_date()
 {
+  case "${OSTYPE}" in
+    darwin*)
+      date "+%Y-%m-%d"
+      ;;
+    *)
       date --rfc-3339=date
+      ;;
+  esac
 }
 
 function random_minute()
 {
+  case "${OSTYPE}" in
+    darwin*)
+      echo "0$( jot 1 0 59 )" | sed "s|.\+\(..\)\$|\1|g"
+      ;;
+    *)
       echo "0$( rand -M 60 )" | sed "s|.\+\(..\)\$|\1|g"
+      ;;
+  esac
 }
 
 function default_hours()
