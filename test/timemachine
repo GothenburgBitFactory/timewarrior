@@ -12,7 +12,7 @@ function current_date()
   esac
 }
 
-function random_minute()
+function default_minutes()
 {
   case "${OSTYPE}" in
     darwin*)
@@ -64,7 +64,7 @@ until [[ -z "${1}" ]] ; do
 done
 
 for day in ${days-$( current_date )} ; do
-  for minute in ${minutes-$( random_minute )} ; do
+  for minute in ${minutes-$( default_minutes )} ; do
     for hour in ${hours-$( default_hours )} ; do
       date="${day}T${hour}:${minute}"
       for single_test in ${tests} ; do
