@@ -16,7 +16,7 @@ function random_minute()
 {
   case "${OSTYPE}" in
     darwin*)
-      echo "0$( jot 1 0 59 )" | sed "s|.\+\(..\)\$|\1|g"
+      echo "0$( jot -r 1 0 59 )" | sed "s|.\+\(..\)\$|\1|g"
       ;;
     *)
       echo "0$( rand -M 60 )" | sed "s|.\+\(..\)\$|\1|g"
