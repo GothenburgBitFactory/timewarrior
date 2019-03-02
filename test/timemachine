@@ -1,5 +1,10 @@
 #!/bin/bash
 
+function random_minute()
+{
+      echo "0$( rand -M 60 )" | sed "s|.\+\(..\)\$|\1|g"
+}
+
 function default_hours()
 {
   seq -w 0 23
@@ -40,7 +45,7 @@ until [[ -z "${1}" ]] ; do
 done
 
 for day in ${days-$(date --rfc-3339=date)} ; do
-  for minute in ${minutes-$(echo "0$(rand -M 60)" | sed "s|.\+\(..\)\$|\1|g")} ; do
+  for minute in ${minutes-$( random_minute )} ; do
     for hour in ${hours-$( default_hours )} ; do
       date="${day}T${hour}:${minute}"
       for single_test in ${tests} ; do
