@@ -30,11 +30,12 @@
 #include <Composite.h>
 #include <Interval.h>
 #include <map>
+#include "ChartConfig.h"
 
 class Chart
 {
 public:
-  Chart(bool, bool, bool, bool);
+  explicit Chart (ChartConfig configuration);
 
   std::string render (const Interval&, const std::vector <Interval>&, const std::vector <Range>&, const std::map <Datetime, std::string>&, const std::map <std::string, Color>&, const Color&, const Color&, const Color&, const Color&, bool, bool, bool, bool, bool, bool, bool, int, int, int);
 

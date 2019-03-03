@@ -27,6 +27,7 @@
 #include <Duration.h>
 #include <Range.h>
 #include <Chart.h>
+#include <ChartConfig.h>
 #include <commands.h>
 #include <timew.h>
 #include <shared.h>
@@ -145,7 +146,13 @@ int renderChart (
   auto axis_type = rules.get ("reports." + type + ".axis");
   const auto with_internal_axis = axis_type == "internal";
 
-  Chart chart(with_month, with_week, with_weekday, with_day);
+  ChartConfig configuration {};
+  configuration.with_label_month = with_month;
+  configuration.with_label_week = with_week;
+  configuration.with_label_weekday = with_weekday;
+  configuration.with_label_day = with_day;
+
+  Chart chart (configuration);
 
   std::cout << chart.render (filter, tracked, exclusions, holidays, tag_colors, color_today, color_holiday, color_label, color_exclusion, show_intervals, determine_hour_range, with_ids, with_summary, with_holidays, with_totals, with_internal_axis, minutes_per_char, spacing, num_lines);
 

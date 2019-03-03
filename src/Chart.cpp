@@ -37,15 +37,11 @@
 #include <Chart.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-Chart::Chart (
-  const bool with_label_month,
-  const bool with_label_week,
-  const bool with_label_weekday,
-  const bool with_label_day) :
-  with_label_month(with_label_month),
-  with_label_week(with_label_week),
-  with_label_weekday(with_label_weekday),
-  with_label_day(with_label_day)
+Chart::Chart (ChartConfig configuration) :
+  with_label_month(configuration.with_label_month),
+  with_label_week(configuration.with_label_week),
+  with_label_weekday(configuration.with_label_weekday),
+  with_label_day(configuration.with_label_day)
 { }
 
 std::string Chart::render (
