@@ -119,42 +119,35 @@ int renderChart (
   Color color_label (with_colors ? rules.get ("theme.colors.label") : "");
   Color color_exclusion (with_colors ? rules.get ("theme.colors.exclusion") : "");
 
-  const auto determine_hour_range = rules.get ("reports." + type + ".hours") == "auto";
-
-  const bool show_intervals = findHint (cli, ":blank");
-  const bool with_ids = findHint (cli, ":ids");
-
-  const auto with_summary = rules.getBoolean ("reports." + type + ".summary");
-  const auto with_holidays = rules.getBoolean ("reports." + type + ".holidays");
-  const auto with_totals = rules.getBoolean ("reports." + type + ".totals");
-  const auto with_month = rules.getBoolean ("reports." + type + ".month");
-  const auto with_week = rules.getBoolean ("reports." + type + ".week");
-  const auto with_day = rules.getBoolean ("reports." + type + ".day");
-  const auto with_weekday = rules.getBoolean ("reports." + type + ".weekday");
-
   const auto minutes_per_char = rules.getInteger ("reports." + type + ".cell");
 
   if (minutes_per_char < 1)
     throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
 
-  const auto spacing = rules.getInteger ("reports." + type + ".spacing", 1);
   const auto num_lines = rules.getInteger ("reports." + type + ".lines", 1);
 
   if (num_lines < 1)
     throw format ("Invalid value for 'reports.{1}.lines': '{2}'", type, num_lines);
 
-  auto axis_type = rules.get ("reports." + type + ".axis");
-  const auto with_internal_axis = axis_type == "internal";
-
   ChartConfig configuration {};
-  configuration.with_label_month = with_month;
-  configuration.with_label_week = with_week;
-  configuration.with_label_weekday = with_weekday;
-  configuration.with_label_day = with_day;
+  configuration.with_label_month = rules.getBoolean ("reports." + type + ".month");
+  configuration.with_label_week = rules.getBoolean ("reports." + type + ".week");
+  configuration.with_label_weekday = rules.getBoolean ("reports." + type + ".weekday");
+  configuration.with_label_day = rules.getBoolean ("reports." + type + ".day");
+  configuration.with_ids = findHint (cli, ":ids");
+  configuration.with_summary = rules.getBoolean ("reports." + type + ".summary");
+  configuration.with_holidays = rules.getBoolean ("reports." + type + ".holidays");
+  configuration.with_totals = rules.getBoolean ("reports." + type + ".totals");
+  configuration.with_internal_axis = rules.get ("reports." + type + ".axis") == "internal";
+  configuration.show_intervals = findHint (cli, ":blank");
+  configuration.determine_hour_range = rules.get ("reports." + type + ".hours") == "auto";
+  configuration.minutes_per_char = minutes_per_char;
+  configuration.spacing = rules.getInteger ("reports." + type + ".spacing", 1);
+  configuration.num_lines = num_lines;
 
   Chart chart (configuration);
 
-  std::cout << chart.render (filter, tracked, exclusions, holidays, tag_colors, color_today, color_holiday, color_label, color_exclusion, show_intervals, determine_hour_range, with_ids, with_summary, with_holidays, with_totals, with_internal_axis, minutes_per_char, spacing, num_lines);
+  std::cout << chart.render (filter, tracked, exclusions, holidays, tag_colors, color_today, color_holiday, color_label, color_exclusion);
 
   return 0;
 }
@@ -183,7 +176,7 @@ std::map <Datetime, std::string> createHolidayMap (Rules &rules, Interval &filte
             << entry.substr (first_dot + 1, last_dot - first_dot - 1)
             << "] "
             << rules.get (entry);
-          auto locale = entry.substr (first_dot + 1, last_dot - first_dot - 1);
+        auto locale = entry.substr (first_dot + 1, last_dot - first_dot - 1);
         mapping[holiday] = out.str ();
       }
     }

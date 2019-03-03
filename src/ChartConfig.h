@@ -34,6 +34,16 @@ public:
   bool with_label_week;
   bool with_label_weekday;
   bool with_label_day;
+  bool with_ids;
+  bool with_summary;
+  bool with_holidays;
+  bool with_totals;
+  bool with_internal_axis;
+  bool show_intervals;
+  bool determine_hour_range;
+  int minutes_per_char;
+  int spacing;
+  int num_lines;
 };
 
 #endif

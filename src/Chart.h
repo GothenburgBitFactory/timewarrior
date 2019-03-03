@@ -37,14 +37,14 @@ class Chart
 public:
   explicit Chart (ChartConfig configuration);
 
-  std::string render (const Interval&, const std::vector <Interval>&, const std::vector <Range>&, const std::map <Datetime, std::string>&, const std::map <std::string, Color>&, const Color&, const Color&, const Color&, const Color&, bool, bool, bool, bool, bool, bool, bool, int, int, int);
+  std::string render (const Interval&, const std::vector <Interval>&, const std::vector <Range>&, const std::map <Datetime, std::string>&, const std::map <std::string, Color>&, const Color&, const Color&, const Color&, const Color&);
 
 private:
   unsigned long getIndentSize ();
 
   std::pair <int, int> determineHourRange (const Interval&, const std::vector <Interval>&);
 
-  std::string renderAxis (int, int, const Color&, const Color&, int, bool);
+  std::string renderAxis (int, int, const Color&, const Color&, int);
 
   std::string renderMonth (const Datetime&, const Datetime&);
 
@@ -60,18 +60,28 @@ private:
 
   std::string renderSubTotal (time_t, const std::string&);
 
-  void renderExclusionBlocks (std::vector<Composite>&, const Datetime&, int, int, const std::vector<Range>&, int, int, const Color&, const Color&, bool);
+  void renderExclusionBlocks (std::vector<Composite>&, const Datetime&, int, int, const std::vector<Range>&, const Color&, const Color&);
 
-  void renderInterval (std::vector<Composite>&, const Datetime&, const Interval&, const std::map<std::string, Color>&, int, time_t&, bool, int, int);
+  void renderInterval (std::vector<Composite>&, const Datetime&, const Interval&, const std::map<std::string, Color>&, int, time_t&);
 
   std::string renderHolidays (const std::map <Datetime, std::string>&);
 
-  std::string renderSummary (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&, bool);
+  std::string renderSummary (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&);
 
   const bool with_label_month;
   const bool with_label_week;
   const bool with_label_weekday;
   const bool with_label_day;
+  const bool with_ids;
+  const bool with_summary;
+  const bool with_holidays;
+  const bool with_totals;
+  const bool with_internal_axis;
+  const bool show_intervals;
+  const bool determine_hour_range;
+  const int minutes_per_char;
+  const int spacing;
+  const int num_lines;
 };
 
 #endif

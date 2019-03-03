@@ -41,7 +41,17 @@ Chart::Chart (ChartConfig configuration) :
   with_label_month(configuration.with_label_month),
   with_label_week(configuration.with_label_week),
   with_label_weekday(configuration.with_label_weekday),
-  with_label_day(configuration.with_label_day)
+  with_label_day(configuration.with_label_day),
+  with_ids(configuration.with_ids),
+  with_summary(configuration.with_summary),
+  with_holidays(configuration.with_holidays),
+  with_totals(configuration.with_totals),
+  with_internal_axis(configuration.with_internal_axis),
+  show_intervals(configuration.show_intervals),
+  determine_hour_range(configuration.determine_hour_range),
+  minutes_per_char(configuration.minutes_per_char),
+  spacing(configuration.spacing),
+  num_lines(configuration.num_lines)
 { }
 
 std::string Chart::render (
@@ -53,17 +63,7 @@ std::string Chart::render (
   const Color &color_today,
   const Color &color_holiday,
   const Color &color_label,
-  const Color &color_exclusion,
-  const bool show_intervals,
-  const bool determine_hour_range,
-  const bool with_ids,
-  const bool with_summary,
-  const bool with_holidays,
-  const bool with_totals,
-  const bool with_internal_axis,
-  const int minutes_per_char,
-  const int spacing,
-  const int num_lines)
+  const Color &color_exclusion)
 {
   // Determine hours shown.
   auto hour_range = determine_hour_range
@@ -96,8 +96,7 @@ std::string Chart::render (
           last_hour,
           color_label,
           color_today,
-          cell_size,
-          with_totals);
+          cell_size);
   }
 
   // For rendering labels on edge detection.
@@ -118,8 +117,7 @@ std::string Chart::render (
       lines[i].add (std::string (total_width, ' '), 0, Color ());
     }
 
-    renderExclusionBlocks (lines, day, first_hour, last_hour, exclusions, minutes_per_char, spacing,
-                                  color_exclusion, color_label, with_internal_axis);
+    renderExclusionBlocks (lines, day, first_hour, last_hour, exclusions, color_exclusion, color_label);
 
     time_t work = 0;
     if (!show_intervals)
@@ -127,7 +125,7 @@ std::string Chart::render (
       for (auto &track : tracked)
       {
         time_t interval_work = 0;
-        renderInterval (lines, day, track, tag_colors, first_hour, interval_work, with_ids, minutes_per_char, spacing);
+        renderInterval (lines, day, track, tag_colors, first_hour, interval_work);
         work += interval_work;
       }
     }
@@ -165,7 +163,7 @@ std::string Chart::render (
 
   out << (with_totals ? renderSubTotal (total_work, std::string (padding_size, ' ')) : "")
       << (with_holidays ? renderHolidays (holidays) : "")
-      << (with_summary ? renderSummary (indent, filter, exclusions, tracked, show_intervals) : "");
+      << (with_summary ? renderSummary (indent, filter, exclusions, tracked) : "");
 
   return out.str ();
 }
@@ -246,8 +244,7 @@ std::string Chart::renderAxis (
   const int last_hour,
   const Color &colorLabel,
   const Color &colorToday,
-  const int cell_size,
-  const bool with_totals)
+  const int cell_size)
 {
   std::stringstream out;
   auto current_hour = Datetime ().hour ();
@@ -395,11 +392,8 @@ void Chart::renderExclusionBlocks (
   int first_hour,
   int last_hour,
   const std::vector<Range> &excluded,
-  const int minutes_per_char,
-  const int spacing,
   const Color &color_exclusion,
-  const Color &color_label,
-  const bool with_internal_axis)
+  const Color &color_label)
 {
   const auto chars_per_hour = 60 / minutes_per_char;
   const auto cell_width = chars_per_hour + spacing;
@@ -459,10 +453,7 @@ void Chart::renderInterval (
   const Interval &track,
   const std::map<std::string, Color> &tag_colors,
   const int first_hour,
-  time_t &work,
-  const bool with_ids,
-  const int minutes_per_char,
-  const int spacing)
+  time_t &work)
 {
   Datetime now;
 
@@ -575,8 +566,7 @@ std::string Chart::renderSummary (
   const std::string &indent,
   const Interval &filter,
   const std::vector<Range> &exclusions,
-  const std::vector<Interval> &tracked,
-  bool blank)
+  const std::vector<Interval> &tracked)
 {
   std::stringstream out;
   time_t total_unavailable = 0;
@@ -591,7 +581,7 @@ std::string Chart::renderSummary (
 
   time_t total_worked = 0;
 
-  if (!blank)
+  if (!show_intervals)
   {
     for (auto &interval : tracked)
     {
