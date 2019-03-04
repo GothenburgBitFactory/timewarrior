@@ -44,6 +44,11 @@ public:
   int minutes_per_char;
   int spacing;
   int num_lines;
+  Color color_today;
+  Color color_holiday;
+  Color color_label;
+  Color color_exclusion;
+  std::map<std::string, Color> tag_colors;
 };
 
 #endif

@@ -111,13 +111,7 @@ int renderChart (
 
   // Map tags to colors.
   auto palette = createPalette (rules);
-  auto tag_colors = createTagColorMap (rules, palette, tracked);
   auto with_colors = rules.getBoolean ("color");
-
-  Color color_today (with_colors ? rules.get ("theme.colors.today") : "");
-  Color color_holiday (with_colors ? rules.get ("theme.colors.holiday") : "");
-  Color color_label (with_colors ? rules.get ("theme.colors.label") : "");
-  Color color_exclusion (with_colors ? rules.get ("theme.colors.exclusion") : "");
 
   const auto minutes_per_char = rules.getInteger ("reports." + type + ".cell");
 
@@ -144,10 +138,15 @@ int renderChart (
   configuration.minutes_per_char = minutes_per_char;
   configuration.spacing = rules.getInteger ("reports." + type + ".spacing", 1);
   configuration.num_lines = num_lines;
+  configuration.color_today = (with_colors ? Color (rules.get ("theme.colors.today")) : Color (""));
+  configuration.color_holiday = (with_colors ? Color (rules.get ("theme.colors.holiday")) : Color (""));
+  configuration.color_label = (with_colors ? Color (rules.get ("theme.colors.label")) : Color (""));
+  configuration.color_exclusion = (with_colors ? Color (rules.get ("theme.colors.exclusion")) : Color (""));
+  configuration.tag_colors = createTagColorMap (rules, palette, tracked);
 
   Chart chart (configuration);
 
-  std::cout << chart.render (filter, tracked, exclusions, holidays, tag_colors, color_today, color_holiday, color_label, color_exclusion);
+  std::cout << chart.render (filter, tracked, exclusions, holidays);
 
   return 0;
 }

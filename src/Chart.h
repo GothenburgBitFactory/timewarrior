@@ -37,7 +37,7 @@ class Chart
 public:
   explicit Chart (ChartConfig configuration);
 
-  std::string render (const Interval&, const std::vector <Interval>&, const std::vector <Range>&, const std::map <Datetime, std::string>&, const std::map <std::string, Color>&, const Color&, const Color&, const Color&, const Color&);
+  std::string render (const Interval&, const std::vector <Interval>&, const std::vector <Range>&, const std::map <Datetime, std::string>&);
 
 private:
   unsigned long getIndentSize ();
@@ -62,7 +62,7 @@ private:
 
   void renderExclusionBlocks (std::vector<Composite>&, const Datetime&, int, int, const std::vector<Range>&, const Color&, const Color&);
 
-  void renderInterval (std::vector<Composite>&, const Datetime&, const Interval&, const std::map<std::string, Color>&, int, time_t&);
+  void renderInterval (std::vector<Composite>&, const Datetime&, const Interval&, int, time_t&);
 
   std::string renderHolidays (const std::map <Datetime, std::string>&);
 
@@ -82,6 +82,11 @@ private:
   const int minutes_per_char;
   const int spacing;
   const int num_lines;
+  const Color color_today;
+  const Color color_holiday;
+  const Color color_label;
+  const Color color_exclusion;
+  const std::map<std::string, Color> tag_colors;
 };
 
 #endif

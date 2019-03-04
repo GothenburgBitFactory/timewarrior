@@ -51,19 +51,19 @@ Chart::Chart (ChartConfig configuration) :
   determine_hour_range(configuration.determine_hour_range),
   minutes_per_char(configuration.minutes_per_char),
   spacing(configuration.spacing),
-  num_lines(configuration.num_lines)
+  num_lines(configuration.num_lines),
+  color_today(configuration.color_today),
+  color_holiday(configuration.color_holiday),
+  color_label(configuration.color_label),
+  color_exclusion(configuration.color_exclusion),
+  tag_colors(configuration.tag_colors)
 { }
 
 std::string Chart::render (
   const Interval &filter,
   const std::vector<Interval> &tracked,
   const std::vector<Range> &exclusions,
-  const std::map<Datetime, std::string> &holidays,
-  const std::map<std::string, Color> &tag_colors,
-  const Color &color_today,
-  const Color &color_holiday,
-  const Color &color_label,
-  const Color &color_exclusion)
+  const std::map<Datetime, std::string> &holidays)
 {
   // Determine hours shown.
   auto hour_range = determine_hour_range
@@ -125,7 +125,7 @@ std::string Chart::render (
       for (auto &track : tracked)
       {
         time_t interval_work = 0;
-        renderInterval (lines, day, track, tag_colors, first_hour, interval_work);
+        renderInterval (lines, day, track, first_hour, interval_work);
         work += interval_work;
       }
     }
@@ -451,7 +451,6 @@ void Chart::renderInterval (
   std::vector<Composite> &lines,
   const Datetime &day,
   const Interval &track,
-  const std::map<std::string, Color> &tag_colors,
   const int first_hour,
   time_t &work)
 {
