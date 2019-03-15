@@ -40,33 +40,24 @@ public:
   std::string render (const Interval&, const std::vector <Interval>&, const std::vector <Range>&, const std::map <Datetime, std::string>&);
 
 private:
+  std::string renderAxis (int, int, const Color&, const Color&, int);
+  std::string renderDay (Datetime&, const Color&);
+  std::string renderHolidays (const std::map <Datetime, std::string>&);
+  std::string renderMonth (const Datetime&, const Datetime&);
+  std::string renderSubTotal (time_t, const std::string&);
+  std::string renderSummary (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&);
+  std::string renderTotal (time_t);
+  std::string renderWeek (const Datetime&, const Datetime&);
+  std::string renderWeekday (Datetime&, const Color&);
+
+  void renderExclusionBlocks (std::vector<Composite>&, const Datetime&, int, int, const std::vector<Range>&, const Color&, const Color&);
+  void renderInterval (std::vector<Composite>&, const Datetime&, const Interval&, int, time_t&);
+
   unsigned long getIndentSize ();
 
   std::pair <int, int> determineHourRange (const Interval&, const std::vector <Interval>&);
 
-  std::string renderAxis (int, int, const Color&, const Color&, int);
-
-  std::string renderMonth (const Datetime&, const Datetime&);
-
-  std::string renderWeek (const Datetime&, const Datetime&);
-
-  std::string renderWeekday (Datetime&, const Color&);
-
-  std::string renderDay (Datetime&, const Color&);
-
   Color getDayColor (const Datetime&, const Datetime&, const std::map <Datetime, std::string>&, const Color&, const Color&);
-
-  std::string renderTotal (time_t);
-
-  std::string renderSubTotal (time_t, const std::string&);
-
-  void renderExclusionBlocks (std::vector<Composite>&, const Datetime&, int, int, const std::vector<Range>&, const Color&, const Color&);
-
-  void renderInterval (std::vector<Composite>&, const Datetime&, const Interval&, int, time_t&);
-
-  std::string renderHolidays (const std::map <Datetime, std::string>&);
-
-  std::string renderSummary (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&);
 
   const bool with_label_month;
   const bool with_label_week;
