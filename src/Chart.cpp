@@ -131,7 +131,7 @@ std::string Chart::render (
     }
 
     auto now = Datetime ();
-    auto color_day = getDayColor (day, now, holidays, color_today, color_holiday);
+    auto color_day = getDayColor (day, now, holidays);
 
     auto labelMonth = with_label_month ? renderMonth (previous, day) : "";
     auto labelWeek = with_label_week ? renderWeek (previous, day) : "";
@@ -326,24 +326,22 @@ std::string Chart::renderDay (Datetime &day, const Color &color)
 Color Chart::getDayColor (
   const Datetime &day,
   const Datetime &now,
-  const std::map<Datetime, std::string> &holidays,
-  const Color &colorToday,
-  const Color &colorHoliday)
+  const std::map <Datetime, std::string> &holidays)
 {
   if (day.sameDay (now))
   {
-    return colorToday;
+    return color_today;
   }
 
   for (auto &entry : holidays)
   {
     if (day.sameDay (entry.first))
     {
-      return colorHoliday;
+      return color_holiday;
     }
   }
 
-  return Color{};
+  return Color {};
 }
 
 ////////////////////////////////////////////////////////////////////////////////
