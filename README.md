@@ -54,7 +54,7 @@ The `make install` command may not require `sudo` depending on your choice of in
 There is extensive online documentation.
 You'll find all the details at [taskwarrior.org/docs/timewarrior](https://taskwarrior.org/docs/timewarrior).
 
-There you will find documentaion, downloads, news and more.
+There you will find the documentation, downloads, news and more.
 
 ## Contributing
 
