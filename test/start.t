@@ -54,16 +54,26 @@ class TestStart(TestCase):
 
     def test_timed_start_past(self):
         """Test timed start past"""
-        self.t("start 00:00am")
+        now_utc = datetime.now().utcnow()
+
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z FOO".format(one_hour_before_utc))
 
         j = self.t.export()
 
         self.assertEqual(len(j), 1)
-        self.assertOpenInterval(j[0])
+        self.assertOpenInterval(j[0],
+                                expectedStart=one_hour_before_utc,
+                                expectedTags=["FOO"])
 
     def test_timed_start_future(self):
         """Test timed start future"""
-        code, out, err = self.t.runError("start 11:59pm")
+        now_utc = datetime.now().utcnow()
+
+        one_hour_after_utc = now_utc + timedelta(hours=1)
+
+        code, out, err = self.t.runError("start {:%Y-%m-%dT%H:%M:%S}Z FOO".format(one_hour_after_utc))
 
         self.assertIn("Time tracking cannot be set in the future.", err)
 
