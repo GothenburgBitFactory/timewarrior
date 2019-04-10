@@ -35,7 +35,7 @@
 class Chart
 {
 public:
-  explicit Chart (ChartConfig configuration);
+  explicit Chart (const ChartConfig& configuration);
 
   std::string render (const Interval&, const std::vector <Interval>&, const std::vector <Range>&, const std::map <Datetime, std::string>&);
 

@@ -37,7 +37,7 @@
 #include <Chart.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-Chart::Chart (ChartConfig configuration) :
+Chart::Chart (const ChartConfig& configuration) :
   reference_datetime(configuration.reference_datetime),
   with_label_month(configuration.with_label_month),
   with_label_week(configuration.with_label_week),
