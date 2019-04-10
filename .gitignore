@@ -1,4 +1,4 @@
-CMakeFiles
+CMakeFiles/
 CMakeCache.txt
 CPack*
 Makefile
@@ -6,10 +6,6 @@ cmake.h
 commit.h
 cmake_install.cmake
 install_manifest.txt
-libshared-prefix
-patches
-_CPack_Packages
-CPackConfig.cmake
-CPackSourceConfig.cmake
-*swp
+*.swp
 *.pyc
+*.cbp

@@ -1,7 +1,7 @@
 timew
 lex
 *.a
-CMakeFiles
+CMakeFiles/
 Makefile
 cmake_install.cmake
 lr0
