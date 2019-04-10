@@ -30,6 +30,7 @@
 class ChartConfig
 {
 public:
+  Datetime reference_datetime;
   bool with_label_month;
   bool with_label_week;
   bool with_label_weekday;

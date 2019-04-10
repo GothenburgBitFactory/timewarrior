@@ -38,6 +38,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 Chart::Chart (ChartConfig configuration) :
+  reference_datetime(configuration.reference_datetime),
   with_label_month(configuration.with_label_month),
   with_label_week(configuration.with_label_week),
   with_label_weekday(configuration.with_label_weekday),
@@ -130,8 +131,7 @@ std::string Chart::render (
       }
     }
 
-    auto now = Datetime ();
-    auto color_day = getDayColor (day, now, holidays);
+    auto color_day = getDayColor (day, holidays);
 
     auto labelMonth = with_label_month ? renderMonth (previous, day) : "";
     auto labelWeek = with_label_week ? renderWeek (previous, day) : "";
@@ -207,7 +207,7 @@ std::pair<int, int> Chart::determineHourRange (
           Interval clipped = clip (track, day_range);
           if (track.is_open ())
           {
-            clipped.end = Datetime ();
+            clipped.end = reference_datetime;
           }
 
           if (clipped.start.hour () < first_hour)
@@ -225,7 +225,7 @@ std::pair<int, int> Chart::determineHourRange (
 
     if (first_hour == 23 && last_hour == 0)
     {
-      first_hour = Datetime ().hour ();
+      first_hour = reference_datetime.hour ();
       last_hour = std::min (first_hour + 1, 23);
     }
     else
@@ -247,7 +247,7 @@ std::string Chart::renderAxis (
   const int cell_size)
 {
   std::stringstream out;
-  auto current_hour = Datetime ().hour ();
+  auto current_hour = reference_datetime.hour ();
 
   for (int hour = first_hour; hour <= last_hour; hour++)
   {
@@ -325,10 +325,9 @@ std::string Chart::renderDay (Datetime &day, const Color &color)
 ////////////////////////////////////////////////////////////////////////////////
 Color Chart::getDayColor (
   const Datetime &day,
-  const Datetime &now,
   const std::map <Datetime, std::string> &holidays)
 {
-  if (day.sameDay (now))
+  if (day.sameDay (reference_datetime))
   {
     return color_today;
   }
@@ -452,11 +451,9 @@ void Chart::renderInterval (
   const int first_hour,
   time_t &work)
 {
-  Datetime now;
-
   // Ignore any track that doesn't overlap with day.
   auto day_range = getFullDay (day);
-  if (!day_range.overlaps (track) || (track.is_open () && day > now))
+  if (!day_range.overlaps (track) || (track.is_open () && day > reference_datetime))
   {
     return;
   }
@@ -466,9 +463,9 @@ void Chart::renderInterval (
   Interval clipped = clip (track, day_range);
   if (track.is_open ())
   {
-    if (day_range.start.sameDay (now))
+    if (day_range.start.sameDay (reference_datetime))
     {
-      clipped.end = now;
+      clipped.end = reference_datetime;
     }
     else
     {
@@ -587,7 +584,7 @@ std::string Chart::renderSummary (
         Interval clipped = clip (interval, filter);
         if (interval.is_open ())
         {
-          clipped.end = Datetime ();
+          clipped.end = reference_datetime;
         }
 
         total_worked += clipped.total ();

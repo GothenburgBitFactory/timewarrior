@@ -124,6 +124,7 @@ int renderChart (
     throw format ("Invalid value for 'reports.{1}.lines': '{2}'", type, num_lines);
 
   ChartConfig configuration {};
+  configuration.reference_datetime = Datetime ();
   configuration.with_label_month = rules.getBoolean ("reports." + type + ".month");
   configuration.with_label_week = rules.getBoolean ("reports." + type + ".week");
   configuration.with_label_weekday = rules.getBoolean ("reports." + type + ".weekday");

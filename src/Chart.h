@@ -57,8 +57,9 @@ private:
 
   std::pair <int, int> determineHourRange (const Interval&, const std::vector <Interval>&);
 
-  Color getDayColor (const Datetime &, const Datetime &, const std::map<Datetime, std::string> &);
+  Color getDayColor (const Datetime&, const std::map <Datetime, std::string>&);
 
+  const Datetime reference_datetime;
   const bool with_label_month;
   const bool with_label_week;
   const bool with_label_weekday;
