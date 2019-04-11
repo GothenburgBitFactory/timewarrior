@@ -40,7 +40,7 @@ public:
   std::string render (const Interval&, const std::vector <Interval>&, const std::vector <Range>&, const std::map <Datetime, std::string>&);
 
 private:
-  std::string renderAxis (int, int, const Color&, const Color&, int);
+  std::string renderAxis (int, int, const Color&, const Color&);
   std::string renderDay (Datetime&, const Color&);
   std::string renderHolidays (const std::map <Datetime, std::string>&);
   std::string renderMonth (const Datetime&, const Datetime&);
@@ -79,6 +79,7 @@ private:
   const Color color_label;
   const Color color_exclusion;
   const std::map<std::string, Color> tag_colors;
+  const int cell_width;
 };
 
 #endif

@@ -57,7 +57,8 @@ Chart::Chart (const ChartConfig& configuration) :
   color_holiday(configuration.color_holiday),
   color_label(configuration.color_label),
   color_exclusion(configuration.color_exclusion),
-  tag_colors(configuration.tag_colors)
+  tag_colors(configuration.tag_colors),
+  cell_width(60 / minutes_per_char + spacing)
 { }
 
 std::string Chart::render (
@@ -76,11 +77,8 @@ std::string Chart::render (
 
   debug (format ("Day range is from {1}:00 - {2}:00", first_hour, last_hour));
 
-  const auto chars_per_hour = 60 / minutes_per_char;
-  const auto cell_size = chars_per_hour + spacing;
-
   const auto indent_size = getIndentSize ();
-  const auto total_width = (last_hour - first_hour + 1) * (cell_size);
+  const auto total_width = (last_hour - first_hour + 1) * (cell_width);
   const auto padding_size = indent_size + total_width + 1;
   const auto indent = std::string (indent_size, ' ');
 
@@ -96,8 +94,7 @@ std::string Chart::render (
           first_hour,
           last_hour,
           color_label,
-          color_today,
-          cell_size);
+          color_today);
   }
 
   // For rendering labels on edge detection.
@@ -243,8 +240,7 @@ std::string Chart::renderAxis (
   const int first_hour,
   const int last_hour,
   const Color &colorLabel,
-  const Color &colorToday,
-  const int cell_size)
+  const Color &colorToday)
 {
   std::stringstream out;
   auto current_hour = reference_datetime.hour ();
@@ -253,11 +249,11 @@ std::string Chart::renderAxis (
   {
     if (hour == current_hour)
     {
-      out << colorToday.colorize (leftJustify (hour, cell_size));
+      out << colorToday.colorize (leftJustify (hour, cell_width));
     }
     else
     {
-      out << colorLabel.colorize (leftJustify (hour, cell_size));
+      out << colorLabel.colorize (leftJustify (hour, cell_width));
     }
   }
 
@@ -392,9 +388,6 @@ void Chart::renderExclusionBlocks (
   const Color &color_exclusion,
   const Color &color_label)
 {
-  const auto chars_per_hour = 60 / minutes_per_char;
-  const auto cell_width = chars_per_hour + spacing;
-
   // Render the exclusion blocks.
   for (int hour = first_hour; hour <= last_hour; hour++)
   {
