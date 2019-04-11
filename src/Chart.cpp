@@ -89,12 +89,7 @@ std::string Chart::render (
   // Render the axis.
   if (!with_internal_axis)
   {
-    out << indent
-        << renderAxis (
-          first_hour,
-          last_hour,
-          color_label,
-          color_today);
+    out << indent << renderAxis (first_hour, last_hour);
   }
 
   // For rendering labels on edge detection.
@@ -115,7 +110,7 @@ std::string Chart::render (
       lines[i].add (std::string (total_width, ' '), 0, Color ());
     }
 
-    renderExclusionBlocks (lines, day, first_hour, last_hour, exclusions, color_exclusion, color_label);
+    renderExclusionBlocks (lines, day, first_hour, last_hour, exclusions);
 
     time_t work = 0;
     if (!show_intervals)
@@ -236,11 +231,7 @@ std::pair<int, int> Chart::determineHourRange (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string Chart::renderAxis (
-  const int first_hour,
-  const int last_hour,
-  const Color &colorLabel,
-  const Color &colorToday)
+std::string Chart::renderAxis (const int first_hour, const int last_hour)
 {
   std::stringstream out;
   auto current_hour = reference_datetime.hour ();
@@ -249,17 +240,17 @@ std::string Chart::renderAxis (
   {
     if (hour == current_hour)
     {
-      out << colorToday.colorize (leftJustify (hour, cell_width));
+      out << color_today.colorize (leftJustify (hour, cell_width));
     }
     else
     {
-      out << colorLabel.colorize (leftJustify (hour, cell_width));
+      out << color_label.colorize (leftJustify (hour, cell_width));
     }
   }
 
   if (with_totals)
   {
-    out << "  " << colorLabel.colorize ("Total");
+    out << "  " << color_label.colorize ("Total");
   }
 
   out << '\n';
@@ -384,9 +375,7 @@ void Chart::renderExclusionBlocks (
   const Datetime &day,
   int first_hour,
   int last_hour,
-  const std::vector<Range> &excluded,
-  const Color &color_exclusion,
-  const Color &color_label)
+  const std::vector <Range>& excluded)
 {
   // Render the exclusion blocks.
   for (int hour = first_hour; hour <= last_hour; hour++)
@@ -409,9 +398,7 @@ void Chart::renderExclusionBlocks (
         // Determine which of the character blocks included.
         auto sub_hour = exc.intersect (r);
         auto start_block = quantizeToNMinutes (sub_hour.start.minute (), minutes_per_char) / minutes_per_char;
-        auto end_block =
-          quantizeToNMinutes (sub_hour.end.minute () == 0 ? 60 : sub_hour.end.minute (), minutes_per_char) /
-          minutes_per_char;
+        auto end_block = quantizeToNMinutes (sub_hour.end.minute () == 0 ? 60 : sub_hour.end.minute (), minutes_per_char) / minutes_per_char;
 
         int offset = (hour - first_hour) * cell_width + start_block;
         int width = end_block - start_block;

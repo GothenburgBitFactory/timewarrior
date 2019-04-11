@@ -40,7 +40,7 @@ public:
   std::string render (const Interval&, const std::vector <Interval>&, const std::vector <Range>&, const std::map <Datetime, std::string>&);
 
 private:
-  std::string renderAxis (int, int, const Color&, const Color&);
+  std::string renderAxis (int, int);
   std::string renderDay (Datetime&, const Color&);
   std::string renderHolidays (const std::map <Datetime, std::string>&);
   std::string renderMonth (const Datetime&, const Datetime&);
@@ -50,7 +50,7 @@ private:
   std::string renderWeek (const Datetime&, const Datetime&);
   std::string renderWeekday (Datetime&, const Color&);
 
-  void renderExclusionBlocks (std::vector<Composite>&, const Datetime&, int, int, const std::vector<Range>&, const Color&, const Color&);
+  void renderExclusionBlocks (std::vector <Composite>&, const Datetime&, int, int, const std::vector <Range>&);
   void renderInterval (std::vector<Composite>&, const Datetime&, const Interval&, int, time_t&);
 
   unsigned long getIndentSize ();
