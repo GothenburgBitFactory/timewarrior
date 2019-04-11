@@ -232,7 +232,7 @@ std::pair<int, int> Chart::determineHourRange (
   else
   {
     first_hour = std::max (first_hour - 1, 0);
-    last_hour = std::min (last_hour + 1, 23);
+    last_hour = std::min (last_hour, 23);
   }
 
   return std::make_pair (first_hour, last_hour);
