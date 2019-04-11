@@ -209,8 +209,8 @@ class TestStart(TestCase):
         two_hours_before_utc = now_utc - timedelta(hours=2)
         one_hour_before_utc = now_utc - timedelta(hours=1)
 
-        self.t("track {:%Y-%m-%dT%H:%M:%S} - {:%Y-%m-%dT%H:%M:%S} foo".format(two_hours_before_utc, one_hour_before_utc))
-        code, out, err = self.t("start {:%Y-%m-%dT%H:%M:%S} bar".format(now_utc))
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z foo".format(two_hours_before_utc, one_hour_before_utc))
+        code, out, err = self.t("start {:%Y-%m-%dT%H:%M:%S}Z bar".format(now_utc))
 
         self.assertIn("Note: 'bar' is a new tag", out)
         self.assertIn("Tracking bar", out)
@@ -223,9 +223,9 @@ class TestStart(TestCase):
         two_hours_before_utc = now_utc - timedelta(hours=2)
         one_hour_before_utc = now_utc - timedelta(hours=1)
 
-        self.t("track {:%Y-%m-%dT%H:%M:%S} - {:%Y-%m-%dT%H:%M:%S} bar".format(three_hours_before_utc, two_hours_before_utc))
-        self.t("track {:%Y-%m-%dT%H:%M:%S} - {:%Y-%m-%dT%H:%M:%S} foo".format(two_hours_before_utc, one_hour_before_utc))
-        code, out, err = self.t("start {:%Y-%m-%dT%H:%M:%S} bar".format(now_utc))
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z bar".format(three_hours_before_utc, two_hours_before_utc))
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z foo".format(two_hours_before_utc, one_hour_before_utc))
+        code, out, err = self.t("start {:%Y-%m-%dT%H:%M:%S}Z bar".format(now_utc))
 
         self.assertNotIn("Note: 'bar' is a new tag", out)
         self.assertIn("Tracking bar", out)
