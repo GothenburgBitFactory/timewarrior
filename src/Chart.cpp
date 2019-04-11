@@ -184,55 +184,52 @@ std::pair<int, int> Chart::determineHourRange (
   const Interval &filter,
   const std::vector<Interval> &tracked)
 {
-  // Default to the full day.
-  auto first_hour = 0;
-  auto last_hour = 23;
-
-  // If there is no data,
-  // show the whole day.
-  if (!tracked.empty ())
+  // If there is no data, show the whole day.
+  if (tracked.empty ())
   {
-    // Get the extreme time range for the filtered data.
-    first_hour = 23;
-    last_hour = 0;
+    return std::make_pair (0, 23);
+  }
 
-    for (Datetime day = filter.start; day < filter.end; day++)
+  // Get the extreme time range for the filtered data.
+  auto first_hour = 23;
+  auto last_hour = 0;
+
+  for (Datetime day = filter.start; day < filter.end; day++)
+  {
+    auto day_range = getFullDay (day);
+
+    for (auto &track : tracked)
     {
-      auto day_range = getFullDay (day);
-
-      for (auto &track : tracked)
+      if (day_range.overlaps (track))
       {
-        if (day_range.overlaps (track))
+        Interval clipped = clip (track, day_range);
+        if (track.is_open ())
         {
-          Interval clipped = clip (track, day_range);
-          if (track.is_open ())
-          {
-            clipped.end = reference_datetime;
-          }
+          clipped.end = reference_datetime;
+        }
 
-          if (clipped.start.hour () < first_hour)
-          {
-            first_hour = clipped.start.hour ();
-          }
+        if (clipped.start.hour () < first_hour)
+        {
+          first_hour = clipped.start.hour ();
+        }
 
-          if (!clipped.is_open () && clipped.end.hour () > last_hour)
-          {
-            last_hour = clipped.end.hour ();
-          }
+        if (!clipped.is_open () && clipped.end.hour () > last_hour)
+        {
+          last_hour = clipped.end.hour ();
         }
       }
     }
+  }
 
-    if (first_hour == 23 && last_hour == 0)
-    {
-      first_hour = reference_datetime.hour ();
-      last_hour = std::min (first_hour + 1, 23);
-    }
-    else
-    {
-      first_hour = std::max (first_hour - 1, 0);
-      last_hour = std::min (last_hour + 1, 23);
-    }
+  if (first_hour == 23 && last_hour == 0)
+  {
+    first_hour = reference_datetime.hour ();
+    last_hour = std::min (first_hour + 1, 23);
+  }
+  else
+  {
+    first_hour = std::max (first_hour - 1, 0);
+    last_hour = std::min (last_hour + 1, 23);
   }
 
   return std::make_pair (first_hour, last_hour);
