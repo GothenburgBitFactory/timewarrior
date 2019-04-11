@@ -58,6 +58,7 @@ private:
   std::pair <int, int> determineHourRange (const Interval&, const std::vector <Interval>&);
 
   Color getDayColor (const Datetime&, const std::map <Datetime, std::string>&);
+  Color getHourColor (int) const;
 
   const Datetime reference_datetime;
   const bool with_label_month;
@@ -79,7 +80,9 @@ private:
   const Color color_label;
   const Color color_exclusion;
   const std::map<std::string, Color> tag_colors;
+
   const int cell_width;
+  const int reference_hour;
 };
 
 #endif

@@ -58,7 +58,8 @@ Chart::Chart (const ChartConfig& configuration) :
   color_label(configuration.color_label),
   color_exclusion(configuration.color_exclusion),
   tag_colors(configuration.tag_colors),
-  cell_width(60 / minutes_per_char + spacing)
+  cell_width(60 / minutes_per_char + spacing),
+  reference_hour(reference_datetime.hour ())
 { }
 
 std::string Chart::render (
@@ -218,7 +219,7 @@ std::pair<int, int> Chart::determineHourRange (
 
   if (first_hour == 23 && last_hour == 0)
   {
-    first_hour = reference_datetime.hour ();
+    first_hour = reference_hour;
     last_hour = std::min (first_hour + 1, 23);
   }
   else
@@ -234,18 +235,11 @@ std::pair<int, int> Chart::determineHourRange (
 std::string Chart::renderAxis (const int first_hour, const int last_hour)
 {
   std::stringstream out;
-  auto current_hour = reference_datetime.hour ();
 
   for (int hour = first_hour; hour <= last_hour; hour++)
   {
-    if (hour == current_hour)
-    {
-      out << color_today.colorize (leftJustify (hour, cell_width));
-    }
-    else
-    {
-      out << color_label.colorize (leftJustify (hour, cell_width));
-    }
+    auto color = getHourColor (hour);
+    out << color.colorize (leftJustify (hour, cell_width));
   }
 
   if (with_totals)
@@ -328,6 +322,12 @@ Color Chart::getDayColor (
   }
 
   return Color {};
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Color Chart::getHourColor (int hour) const
+{
+  return hour == reference_hour ? color_today : color_label;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
