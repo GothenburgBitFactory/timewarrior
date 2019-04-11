@@ -1,5 +1,7 @@
 # Timewarrior
 
+[![Build Status](https://travis-ci.org/GothenburgBitFactory/timewarrior.svg?branch=dev)](https://travis-ci.org/GothenburgBitFactory/timewarrior)
+
 Thank you for taking a look at Timewarrior!
 
 Timewarrior is a time tracking utility that offers simple stopwatch features as well as sophisticated calendar-based backfill, along with flexible reporting.
