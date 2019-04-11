@@ -200,13 +200,16 @@ std::pair<int, int> Chart::determineHourRange (
 
     for (auto &track : tracked)
     {
-      if (day_range.overlaps (track))
+      Interval test {track};
+
+      if (test.is_open ())
       {
-        Interval clipped = clip (track, day_range);
-        if (track.is_open ())
-        {
-          clipped.end = reference_datetime;
-        }
+        test.end = reference_datetime;
+      }
+
+      if (day_range.overlaps (test))
+      {
+        Interval clipped = clip (test, day_range);
 
         if (clipped.start.hour () < first_hour)
         {
