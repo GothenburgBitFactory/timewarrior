@@ -16,6 +16,8 @@
           (thanks to Andreas Poisel)
 - #105    Keeps tracking renamed and stopped task (TI-101)
           (thanks to Antanas B.)
+- #107    Fix autorange in chart (TI-103)
+          (thanks to Fabian Pflug)
 - #111    Some tests fail depending on the time of day
           (thanks to chronitis)
 - #113    summary does not display correctly open intervals spanning day border
