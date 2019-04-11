@@ -601,9 +601,12 @@ std::vector <Interval> getTracked (
 
     if (latest.is_open ())
     {
-      // Get the set of expanded exclusions that overlap the range defined by the
-      // timeline.
-      auto exclusions = getAllExclusions (rules, filter);
+      // Get the set of expanded exclusions that overlap the range defined by the open interval.
+      Interval exclusion_range {};
+      exclusion_range.start = latest.start;
+      exclusion_range.end = Datetime();
+
+      auto exclusions = getAllExclusions (rules, exclusion_range);
       if (! exclusions.empty ())
       {
         intervals.pop_back ();
