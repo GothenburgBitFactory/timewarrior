@@ -47,12 +47,10 @@ int CmdChartDay (
 {
   // Create a filter, and if empty, choose the current day.
   auto filter = getFilter (cli);
+
   if (! filter.is_started ())
   {
-    if (rules.has ("reports.day.range"))
-      expandIntervalHint (rules.get ("reports.day.range"), filter);
-    else
-      filter.setRange (Datetime ("today"), Datetime ("tomorrow"));
+    expandIntervalHint (rules.get ("reports.day.range", ":day"), filter);
   }
 
   return renderChart (cli, "day", filter, rules, database);
@@ -66,12 +64,10 @@ int CmdChartWeek (
 {
   // Create a filter, and if empty, choose the current week.
   auto filter = getFilter (cli);
+
   if (! filter.is_started ())
   {
-    if (rules.has ("reports.week.range"))
-      expandIntervalHint (rules.get ("reports.week.range"), filter);
-    else
-      filter.setRange (Datetime ("sow"), Datetime ("eow"));
+    expandIntervalHint (rules.get ("reports.week.range", ":week"), filter);
   }
 
   return renderChart (cli, "week", filter, rules, database);
@@ -85,12 +81,10 @@ int CmdChartMonth (
 {
   // Create a filter, and if empty, choose the current month.
   auto filter = getFilter (cli);
+
   if (! filter.is_started ())
   {
-    if (rules.has ("reports.month.range"))
-      expandIntervalHint (rules.get ("reports.month.range"), filter);
-    else
-      filter.setRange (Datetime ("som"), Datetime ("eom"));
+    expandIntervalHint (rules.get ("reports.month.range", ":month"), filter);
   }
 
   return renderChart (cli, "month", filter, rules, database);

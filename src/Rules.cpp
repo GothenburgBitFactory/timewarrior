@@ -141,13 +141,16 @@ bool Rules::has (const std::string& key) const
 
 ////////////////////////////////////////////////////////////////////////////////
 // Return the configuration value given the specified key.
-std::string Rules::get (const std::string& key) const
+std::string Rules::get (const std::string &key, const std::string &defaultValue) const
 {
   auto found = _settings.find (key);
-  if (found != _settings.end ())
-    return found->second;
 
-  return "";
+  if (found != _settings.end ())
+  {
+    return found->second;
+  }
+
+  return defaultValue;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

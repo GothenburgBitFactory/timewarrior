@@ -41,7 +41,7 @@ public:
   std::string file () const;
 
   bool        has        (const std::string&) const;
-  std::string get        (const std::string&) const;
+  std::string get (const std::string &key, const std::string &defaultValue = "") const;
   int         getInteger (const std::string&, int defaultValue = 0) const;
   double      getReal    (const std::string&) const;
   bool        getBoolean (const std::string&) const;
@@ -78,6 +78,7 @@ private:
   std::string                         _original_file {};
   std::map <std::string, std::string> _settings      {};
   std::vector <std::string>           _rule_types    {"tags", "reports", "theme", "holidays", "exclusions"};
+
 };
 
 #endif
