@@ -266,7 +266,6 @@ std::string Chart::renderMonth (const Datetime &previous, const Datetime &day)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Includes trailing separator space.
 std::string Chart::renderWeek (const Datetime &previous, const Datetime &day)
 {
   const auto show_week = previous.week () != day.week ();
@@ -280,8 +279,6 @@ std::string Chart::renderWeek (const Datetime &previous, const Datetime &day)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Today should be highlighted.
-// Includes trailing separator space.
 std::string Chart::renderWeekday (Datetime &day, const Color &color)
 {
   std::stringstream out;
