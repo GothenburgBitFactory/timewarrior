@@ -372,14 +372,14 @@ void Chart::renderExclusionBlocks (
   const Datetime &day,
   int first_hour,
   int last_hour,
-  const std::vector <Range>& excluded)
+  const std::vector <Range>& exclusions)
 {
   // Render the exclusion blocks.
   for (int hour = first_hour; hour <= last_hour; hour++)
   {
     // Construct a range representing a single 'hour', of 'day'.
-    Range r (Datetime (day.year (), day.month (), day.day (), hour, 0, 0),
-             Datetime (day.year (), day.month (), day.day (), hour + 1, 0, 0));
+    Range hour_range (Datetime (day.year (), day.month (), day.day (), hour, 0, 0),
+                      Datetime (day.year (), day.month (), day.day (), hour + 1, 0, 0));
 
     if (with_internal_axis)
     {
@@ -388,12 +388,12 @@ void Chart::renderExclusionBlocks (
       lines[0].add (label, offset, color_label);
     }
 
-    for (auto &exc : excluded)
+    for (auto& exclusion : exclusions)
     {
-      if (exc.overlaps (r))
+      if (exclusion.overlaps (hour_range))
       {
         // Determine which of the character blocks included.
-        auto sub_hour = exc.intersect (r);
+        auto sub_hour = exclusion.intersect (hour_range);
         auto start_block = quantizeToNMinutes (sub_hour.start.minute (), minutes_per_char) / minutes_per_char;
         auto end_block = quantizeToNMinutes (sub_hour.end.minute () == 0 ? 60 : sub_hour.end.minute (), minutes_per_char) / minutes_per_char;
 
