@@ -30,15 +30,13 @@ import os
 import sys
 import unittest
 
-from datetime import datetime, timedelta, time
-
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from basetest import Timew, TestCase
 
 
-class TestStart(TestCase):
+class TestHelp(TestCase):
     def setUp(self):
         """Executed before each test in the class"""
         self.t = Timew()
@@ -57,6 +55,12 @@ class TestStart(TestCase):
         """timew help with unknown argument should show error message"""
         code, out, err = self.t("help bogus")
         self.assertRegexpMatches(out, r"No help available for 'bogus'")
+
+    def test_command_with_help_long_option_should_show_help_page(self):
+        """timew command with --help should show help page"""
+        code, out1, err1 = self.t("help track")
+        code, out2, err2 = self.t("track --help")
+        self.assertEquals(out1, out2)
 
 
 if __name__ == "__main__":

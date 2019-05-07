@@ -445,6 +445,23 @@ void CLI::canonicalizeNames ()
       alreadyFoundCmd = true;
     }
 
+    // 'timew <command> --help' should be treated the same as 'timew help
+    // <command>'. Therefore, "--help" on the command line should always
+    // become the command.
+    else if (alreadyFoundCmd && (raw == "--help"))
+    {
+      for (auto& b : _args) {
+        if (b.hasTag("CMD"))
+        {
+          b.unTag("CMD");
+          break;
+        }
+      }
+
+      a.tag ("CMD");
+      a.attribute("canonical", canonical);
+    }
+
     // Hints.
     else if (exactMatch ("hint", raw) ||
              canonicalize (canonical, "hint", raw))
