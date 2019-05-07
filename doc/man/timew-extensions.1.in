@@ -1,7 +1,7 @@
 .TH timew-extensions 1 "${PACKAGE_DATE}" "${PACKAGE_STRING}" "User Manuals"
 .
 .SH NAME
-timew-extension \- list available extensions
+timew-extensions \- list available extensions
 .
 .SH SYNOPSIS
 .B timew extensions
