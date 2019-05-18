@@ -46,6 +46,8 @@
           (thanks to Valodim)
 - #198    Problem with `%` symbol in tag
           (thanks to sruffel, AlexLov)
+- #212    --help should show help, not considered to be a tag
+          (thanks to sruffel)
 -         Fixed error from totals.py while timer is active
           (thanks to davisdude)
 -         Refactoring of Interval and Range
