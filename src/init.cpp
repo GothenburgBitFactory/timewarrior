@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2016 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2019, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -62,6 +62,7 @@ void initializeEntities (CLI& cli)
   cli.entity ("command", "get");
   cli.entity ("command", "help");
   cli.entity ("command", "--help");
+  cli.entity ("command", "-h");
   cli.entity ("command", "join");
   cli.entity ("command", "lengthen");
   cli.entity ("command", "modify");
@@ -273,7 +274,8 @@ int dispatchCommand (
     else if (command == "gaps")        status = CmdGaps          (cli, rules, database            );
     else if (command == "get")         status = CmdGet           (cli, rules, database            );
     else if (command == "help" ||
-             command == "--help")      status = CmdHelp          (cli,                  extensions);
+             command == "--help" ||
+             command == "-h")          status = CmdHelp          (cli,                  extensions);
     else if (command == "join")        status = CmdJoin          (cli, rules, database            );
     else if (command == "lengthen")    status = CmdLengthen      (cli, rules, database            );
     else if (command == "modify")      status = CmdModify        (cli, rules, database            );

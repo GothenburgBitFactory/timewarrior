@@ -46,6 +46,18 @@ class TestHelp(TestCase):
         code, out, err = self.t("help")
         self.assertRegexpMatches(out, r"Usage: timew [--version]")
 
+    def test_help_long_option_should_print_usage(self):
+        """timew --help should print usage"""
+        code, out1, err1 = self.t("help")
+        code, out2, err2 = self.t("--help")
+        self.assertEquals(out1, out2)
+
+    def test_help_short_option_should_print_usage(self):
+        """timew -h should print usage"""
+        code, out1, err1 = self.t("help")
+        code, out2, err2 = self.t("-h")
+        self.assertEquals(out1, out2)
+
     def test_help_with_command_should_show_help_page(self):
         """timew help with command should show help page"""
         code, out, err = self.t("help start")
@@ -60,6 +72,12 @@ class TestHelp(TestCase):
         """timew command with --help should show help page"""
         code, out1, err1 = self.t("help track")
         code, out2, err2 = self.t("track --help")
+        self.assertEquals(out1, out2)
+
+    def test_command_with_help_short_option_should_show_help_page(self):
+        """timew command with -h should show help page"""
+        code, out1, err1 = self.t("help track")
+        code, out2, err2 = self.t("track -h")
         self.assertEquals(out1, out2)
 
 
