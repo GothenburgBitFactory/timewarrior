@@ -111,7 +111,7 @@ static void autoAdjust (
 
     if (! adjust)
       throw std::string("You cannot overlap intervals. Correct the start/end "
-                          "time, or specify the :adjust hint.");
+                        "time, or specify the :adjust hint.");
 
     // implement overwrite resolution, i.e. the new interval overwrites existing intervals
     for (auto& overlap : overlaps)
