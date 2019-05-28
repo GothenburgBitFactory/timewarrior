@@ -30,6 +30,8 @@ import os
 import sys
 import unittest
 
+from datetime import datetime, timedelta
+
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -41,38 +43,66 @@ class TestChart(TestCase):
         """Executed before each test in the class"""
         self.t = Timew()
 
+    def test_empty(self):
+        """Chart should print warning if no data in range"""
+        code, out, err = self.t("day")
+        self.assertIn("No filtered data found in the range", out)
+
+    def test_empty_with_exclusions(self):
+        """Chart should print warning if no data in range and exclusions and time specified"""
+        self.t.config("exclusions.days.monday", "off")
+        self.t.config("exclusions.days.tuesday", "off")
+        self.t.config("exclusions.days.wednesday", "off")
+        self.t.config("exclusions.days.thursday", "off")
+        self.t.config("exclusions.days.friday", "off")
+        self.t.config("exclusions.days.saturday", "off")
+        self.t.config("exclusions.days.sunday", "off")
+
+        now = datetime.now()
+        three_hours_before = now - timedelta(hours=3)
+
+        code, out, err = self.t("day {:%H:%M:%S}".format(three_hours_before.time()))
+
+        self.assertIn("No filtered data found in the range", out)
+
     def test_chart_day_with_invalid_config_for_lines(self):
         """Chart should report error on invalid value for 'reports.day.lines'"""
+        self.t("track for 1h")
         code, out, err = self.t.runError("day rc.reports.day.lines=foobar")
 
         self.assertIn("Invalid integer value for 'reports.day.lines': 'foobar'", err)
 
     def test_chart_day_with_invalid_config_for_cell(self):
         """Chart should report error on invalid value for 'reports.day.cell'"""
+        self.t("track for 1h")
         code, out, err = self.t.runError("day rc.reports.day.cell=foobar")
 
         self.assertIn("Invalid integer value for 'reports.day.cell': 'foobar'", err)
 
     def test_chart_week_with_invalid_config_for_lines(self):
         """Chart should report error on invalid value for 'reports.week.lines'"""
+        self.t("track for 1h")
         code, out, err = self.t.runError("week rc.reports.week.lines=foobar")
 
         self.assertIn("Invalid integer value for 'reports.week.lines': 'foobar'", err)
 
     def test_chart_week_with_invalid_config_for_cell(self):
         """Chart should report error on invalid value for 'reports.week.cell'"""
+        self.t("track for 1h")
         code, out, err = self.t.runError("week rc.reports.week.cell=foobar")
 
         self.assertIn("Invalid integer value for 'reports.week.cell': 'foobar'", err)
 
     def test_chart_month_with_invalid_config_for_lines(self):
         """Chart should report error on invalid value for 'reports.month.lines'"""
+        self.t("track for 1h")
         code, out, err = self.t.runError("month rc.reports.month.lines=foobar")
 
         self.assertIn("Invalid integer value for 'reports.month.lines': 'foobar'", err)
 
     def test_chart_month_with_invalid_config_for_cell(self):
         """Chart should report error on invalid value for 'reports.month.cell'"""
+        self.t("track for 1h")
         code, out, err = self.t.runError("month rc.reports.month.cell=foobar")
 
         self.assertIn("Invalid integer value for 'reports.month.cell': 'foobar'", err)
@@ -133,23 +163,6 @@ class TestChart(TestCase):
        Tracked         0:30:00
        Available      23:30:00
        Total          24:00:00
-
-""", out)
-
-    def test_chart_day_with_interval_over_day_border(self):
-        self.t(
-            "track 2016-01-15T23:00:00 - 2016-01-16T01:00:00 XOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXOXO")
-
-        code, out, err = self.t("day 2016-01-15 - 2016-01-17")
-        self.assertIn("""\
-\nFri 15 0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   21   22   XOXOX\
-\n                                                                                                                          OXOXO\
-\nSat 16 XOXOX1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20   21   22   23  \
-\n       OXOXO                                                                                                                  \
-\n
-       Tracked         2:00:00
-       Available      46:00:00
-       Total          48:00:00
 
 """, out)
 

@@ -99,8 +99,33 @@ int renderChart (
   Database& database)
 {
   // Load the data.
-  auto exclusions = getAllExclusions (rules, filter);
-  auto tracked    = getTracked (database, rules, filter);
+  const auto tracked = getTracked (database, rules, filter);
+
+  if (tracked.empty ())
+  {
+    if (rules.getBoolean ("verbose"))
+    {
+      std::cout << "No filtered data found";
+
+      if (filter.is_started ())
+      {
+        std::cout << " in the range " << filter.start.toISOLocalExtended ();
+        if (filter.is_ended ())
+          std::cout << " - " << filter.end.toISOLocalExtended ();
+      }
+
+      if (! filter.tags ().empty ())
+      {
+        std::cout << " tagged with " << joinQuotedIfNeeded (", ", filter.tags ());
+      }
+
+      std::cout << ".\n";
+    }
+
+    return 0;
+  }
+
+  const auto exclusions = getAllExclusions (rules, filter);
   const auto holidays = createHolidayMap (rules, filter);
 
   // Map tags to colors.
