@@ -375,22 +375,41 @@ void Database::initializeTagDatabase ()
 
   if (!File::read (_location + "/tags.data", content))
   {
-    return;
-  }
+    auto intervals = getAllInclusions (*this);
 
-  auto* json = (json::object*) json::parse (content);
-
-  for (auto& pair : json->_data)
-  {
-    auto key = pair.first;
-    auto* value = (json::object*) pair.second;
-    auto iter = value->_data.find ("count");
-    if (iter == value->_data.end ())
+    if (intervals.empty ())
     {
-      throw format ("Failed to find \"count\" member for tag \"{1}\" in tags database. Database corrupted?", key);
+      return;
     }
-    auto number = dynamic_cast<json::number *> (iter->second);
-    _tagInfoDatabase.add (key, TagInfo {(unsigned int) number->_dvalue});
+
+    std::cout << "Tag info database does not exist. Recreating from interval data..." << std::endl  ;
+
+    for (auto& interval : intervals)
+    {
+      for (auto& tag : interval.tags ())
+      {
+        _tagInfoDatabase.incrementTag (tag);
+      }
+    }
+  }
+  else
+  {
+    auto *json = (json::object *) json::parse (content);
+
+    for (auto &pair : json->_data)
+    {
+      auto key = pair.first;
+      auto *value = (json::object *) pair.second;
+      auto iter = value->_data.find ("count");
+
+      if (iter == value->_data.end ())
+      {
+        throw format ("Failed to find \"count\" member for tag \"{1}\" in tags database. Database corrupted?", key);
+      }
+
+      auto number = dynamic_cast<json::number *> (iter->second);
+      _tagInfoDatabase.add (key, TagInfo{(unsigned int) number->_dvalue});
+    }
   }
 }
 

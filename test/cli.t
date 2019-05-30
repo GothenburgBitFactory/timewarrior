@@ -30,6 +30,9 @@ import os
 import shutil
 import sys
 import unittest
+import json
+
+from datetime import datetime, timedelta
 
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -52,6 +55,37 @@ class TestCLI(TestCase):
 
         assert os.path.isdir(self.t.env["TIMEWARRIORDB"])
         assert os.path.exists(self.t.env["TIMEWARRIORDB"])
+        assert os.path.exists(os.path.join(self.t.env["TIMEWARRIORDB"], "data"))
+        assert os.path.exists(os.path.join(self.t.env["TIMEWARRIORDB"], "data", "tags.data"))
+        assert not os.path.exists(os.path.join(self.t.env["TIMEWARRIORDB"], "data", "undo.data"))
+
+    def test_tag_database_is_recreated(self):
+        """Verify that calling 'timew' recreates tag database"""
+        now_utc = datetime.now().utcnow()
+
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S} - {:%Y-%m-%dT%H:%M:%S} FOO".format(four_hours_before_utc, three_hours_before_utc))
+        self.t("track {:%Y-%m-%dT%H:%M:%S} - {:%Y-%m-%dT%H:%M:%S} BAR".format(three_hours_before_utc, two_hours_before_utc))
+        self.t("track {:%Y-%m-%dT%H:%M:%S} - {:%Y-%m-%dT%H:%M:%S} FOO".format(two_hours_before_utc, one_hour_before_utc))
+
+        os.remove(os.path.join(self.t.env["TIMEWARRIORDB"], "data", "tags.data"))
+
+        assert not os.path.exists(os.path.join(self.t.env["TIMEWARRIORDB"], "data", "tags.data"))
+
+        self.t.runError("")
+
+        assert os.path.exists(os.path.join(self.t.env["TIMEWARRIORDB"], "data", "tags.data"))
+
+        with open(os.path.join(self.t.env["TIMEWARRIORDB"], "data", "tags.data")) as f:
+            data = json.load(f)
+            self.assertIn("FOO", data)
+            self.assertEqual(data["FOO"]["count"], 2)
+            self.assertIn("BAR", data)
+            self.assertEqual(data["BAR"]["count"], 1)
 
     def test_TimeWarrior_without_command_without_active_time_tracking(self):
         """Call 'timew' without active time tracking"""
