@@ -30,7 +30,6 @@ import json
 import subprocess
 import shlex
 
-# For issue #216 and generally sounds like a good idea
 from __future__ import print_function
 
 # Hook should extract all of the following for use as Timewarrior tags:
