@@ -44,6 +44,8 @@
 - #183    Hyphen in annotation gets padded with spaces
 - #189    segfault on timew get dom.active.tag.0
           (thanks to Valodim)
+- #191    `timew day` aborts when exclusions are configured and a time is specified
+          (thanks to OddBloke)
 - #198    Problem with `%` symbol in tag
           (thanks to sruffel, AlexLov)
 - #212    --help should show help, not considered to be a tag
