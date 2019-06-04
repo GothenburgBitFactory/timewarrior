@@ -50,6 +50,8 @@
           (thanks to sruffel, AlexLov)
 - #212    --help should show help, not considered to be a tag
           (thanks to sruffel)
+- #216    on-modify.timewarrior assumes python is python 3
+          (thanks to somospocos, quazgar)
 -         Fixed error from totals.py while timer is active
           (thanks to davisdude)
 -         Refactoring of Interval and Range
