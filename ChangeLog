@@ -52,6 +52,8 @@
           (thanks to sruffel)
 - #216    on-modify.timewarrior assumes python is python 3
           (thanks to somospocos, quazgar)
+- #228    Using those date aliases don't function as intended
+          (thanks to RainbowSwirls)
 -         Fixed error from totals.py while timer is active
           (thanks to davisdude)
 -         Refactoring of Interval and Range
