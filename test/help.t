@@ -58,15 +58,15 @@ class TestHelp(TestCase):
         code, out2, err2 = self.t("-h")
         self.assertEquals(out1, out2)
 
-    def test_help_with_command_should_show_help_page(self):
-        """timew help with command should show help page"""
+    def test_help_with_command_should_show_man_page(self):
+        """timew help with command should show man page"""
         code, out, err = self.t("help start")
-        self.assertRegexpMatches(out, r"Syntax: timew start \[<date>\] \[<tag> ...\]")
+        self.assertRegexpMatches(out, r"timew-start\(1\)\s+User Manuals\s+timew-start\(1\)")
 
     def test_help_with_unknown_argument_should_show_error_message(self):
         """timew help with unknown argument should show error message"""
         code, out, err = self.t("help bogus")
-        self.assertRegexpMatches(out, r"No help available for 'bogus'")
+        self.assertRegexpMatches(err, r"No manual entry for timew-bogus")
 
     def test_command_with_help_long_option_should_show_help_page(self):
         """timew command with --help should show help page"""
