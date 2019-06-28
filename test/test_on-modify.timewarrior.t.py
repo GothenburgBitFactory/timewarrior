@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python2
 ###############################################################################
 #
 # Copyright 2006 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
