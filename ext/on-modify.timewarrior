@@ -48,6 +48,9 @@ def extract_timew_tags_from(json_obj):
     # Extract attributes for use as tags.
     tags = [json_obj['description']]
 
+    if 'jiraid' in json_obj:
+        tags.append(json_obj['jiraid'])
+        
     if 'project' in json_obj:
         tags.append(json_obj['project'])
 
