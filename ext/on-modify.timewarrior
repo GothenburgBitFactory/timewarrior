@@ -54,6 +54,9 @@ def extract_timew_tags_from(json_obj):
     if 'tags' in json_obj:
         tags.extend(json_obj['tags'])
 
+    if 'annotations' in json_obj:
+        tags.append(json_obj['annotations'][-1]['description'])
+
     return ' '.join(['"{0}"'.format(tag) for tag in tags]).encode('utf-8').strip()
 
 start_or_stop = ''
