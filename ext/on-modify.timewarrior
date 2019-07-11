@@ -40,8 +40,8 @@ from __future__ import print_function
 #   UDAs
 
 # Make no changes to the task, simply observe.
-old = json.loads(sys.stdin.readline())
-new = json.loads(sys.stdin.readline())
+old = json.loads(sys.stdin.buffer.readline().decode("utf-8", errors="replace"))
+new = json.loads(sys.stdin.buffer.readline().decode("utf-8", errors="replace"))
 print(json.dumps(new))
 
 def extract_timew_tags_from(json_obj):
