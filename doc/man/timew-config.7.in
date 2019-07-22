@@ -1,7 +1,7 @@
 .TH timew-config 7 "${PACKAGE_DATE}" "${PACKAGE_STRING}" "User Manuals"
 .
 .SH NAME
-timew-config \- Timewarrior configuration file an override options
+timew-config \- Timewarrior configuration file and override options
 .
 .SH SYNOPSIS
 .BI "timew rc." <name> = "<value> <command>"
