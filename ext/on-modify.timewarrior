@@ -25,12 +25,12 @@
 #
 ###############################################################################
 
+from __future__ import print_function
 import sys
 import json
 import subprocess
 import shlex
 
-from __future__ import print_function
 
 # Hook should extract all of the following for use as Timewarrior tags:
 #   UUID
