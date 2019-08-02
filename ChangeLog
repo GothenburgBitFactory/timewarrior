@@ -54,6 +54,8 @@
           (thanks to somospocos, quazgar)
 - #228    Using those date aliases don't function as intended
           (thanks to RainbowSwirls)
+- #240    Core dump when specifying a start time in the past
+          (thanks to OddBloke)
 -         Fixed error from totals.py while timer is active
           (thanks to davisdude)
 -         Refactoring of Interval and Range
