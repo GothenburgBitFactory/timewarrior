@@ -41,6 +41,7 @@ int CmdContinue (
 
   // Gather IDs and TAGs.
   std::set <int> ids = cli.getIds();
+  auto tags = cli.getTags();
 
   if (ids.size() > 1)
   {
@@ -64,6 +65,34 @@ int CmdContinue (
 
     assert (intervals.size () == 1);
     to_copy = intervals.front ();
+  }
+  else if (!tags.empty())
+  {
+    // Load the data.
+    // Note: There is no filter.
+    Interval filter;
+    auto tracked = getTracked (database, rules, filter);
+
+    for (int i = tracked.size() -1; i >= 0; --i)
+    {
+      bool allTagsFound = true;
+      for (unsigned int t = 0; t < tags.size(); ++t)
+      {
+        if (!tracked[i].hasTag(tags[t]))
+        {
+            allTagsFound = false;
+          break;
+        }
+      }
+      if (allTagsFound)
+      {
+        to_copy = tracked[i];
+        break;
+      }
+    }
+
+    if (to_copy.empty())
+      throw format ("Tags '{1}' do not correspond to any tracking.", joinQuotedIfNeeded (", ", tags));
   }
   else
   {

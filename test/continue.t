@@ -109,6 +109,58 @@ class TestContinue(TestCase):
         self.assertIn("Recorded BAR\n", out)
         self.assertIn("Tracking FOO\n", out)
 
+    def test_continue_with_multiple_tags(self):
+        """Verify that 'continue' with multiple tags works"""
+        code, out, err = self.t("start FOO BAR 2h ago")
+        self.assertIn("Tracking BAR FOO\n", out)
+
+        code, out, err = self.t("start BAR 1h ago")
+        self.assertIn("Tracking BAR\n", out)
+
+        code, out, err = self.t("start FOO 30min ago")
+        self.assertIn("Tracking FOO\n", out)
+
+        code, out, err = self.t("continue FOO BAR")
+        self.assertIn("Recorded FOO\n", out)
+        self.assertIn("Tracking BAR FOO\n", out)
+
+    def test_continue_with_invalid_tag(self):
+        """Verify that 'continue' with invalid tag is an error"""
+        code, out, err = self.t("start FOO 1h ago")
+        self.assertIn("Tracking FOO\n", out)
+
+        code, out, err = self.t("stop 30min ago")
+        self.assertIn("Recorded FOO\n", out)
+
+        code, out, err = self.t.runError("continue BAR")
+        self.assertIn("Tags 'BAR' do not correspond to any tracking.\n", err)
+
+    def test_continue_with_tag_without_active_tracking(self):
+        """Verify that continuing a specified interval works"""
+        code, out, err = self.t("start FOO 1h ago")
+        self.assertIn("Tracking FOO\n", out)
+
+        code, out, err = self.t("start BAR 30min ago")
+        self.assertIn("Tracking BAR\n", out)
+
+        code, out, err = self.t("stop 15min ago")
+        self.assertIn("Recorded BAR\n", out)
+
+        code, out, err = self.t("continue FOO")
+        self.assertIn("Tracking FOO\n", out)
+
+    def test_continue_with_tag_with_active_tracking(self):
+        """Verify that continuing a specified interval stops active tracking"""
+        code, out, err = self.t("start FOO 1h ago")
+        self.assertIn("Tracking FOO\n", out)
+
+        code, out, err = self.t("start BAR 30min ago")
+        self.assertIn("Tracking BAR\n", out)
+
+        code, out, err = self.t("continue FOO")
+        self.assertIn("Recorded BAR\n", out)
+        self.assertIn("Tracking FOO\n", out)
+
     def test_continue_with_id_and_date(self):
         """Verify that continuing a specified interval with date continues at given date"""
         now_utc = datetime.now().utcnow()
