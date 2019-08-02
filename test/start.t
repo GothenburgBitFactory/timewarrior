@@ -96,6 +96,22 @@ class TestStart(TestCase):
         self.assertIn("Tracking bar", out)
         self.assertIn("Ended              01:00:00", out)
 
+    def test_start_with_start_date_earlier_than_open_interval(self):
+        """Test start with start date earlier than open interval"""
+        self.t("start FOO")
+
+        code, out, err = self.t.runError("start BAR 1h ago")
+
+        self.assertIn("The end of a date range must be after the start.", err)
+
+    def test_start_with_start_date_earlier_than_closed_interval(self):
+        """Test start with start date earlier than closed interval"""
+        self.t("track FOO 1h before now")
+
+        code, out, err = self.t.runError("start BAR 2h ago")
+
+        self.assertIn("You cannot overlap intervals. Correct the start/end time, or specify the :adjust hint.", err)
+
     def test_start_with_more_tags_than_current_tracking(self):
         """Test 'start' with more tags than current tracking should start new tracking"""
         self.t("start 1h ago foo")

@@ -35,7 +35,6 @@ int CmdStart (
   Database& database,
   Journal& journal)
 {
-  // Add a new open interval, which may have a defined start time.
   auto filter = getFilter (cli);
 
   auto now = Datetime ();
@@ -63,9 +62,18 @@ int CmdStart (
     // Stop it, at the given start time, if applicable.
     Interval modified {latest};
     if (filter.start.toEpoch () != 0)
+    {
+      if (modified.start >= filter.start)
+      {
+        throw std::string ("The end of a date range must be after the start.");
+      }
+
       modified.end = filter.start;
+    }
     else
+    {
       modified.end = Datetime ();
+    }
 
     // Update database.
     database.deleteInterval (latest);
