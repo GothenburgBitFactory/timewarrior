@@ -8,6 +8,7 @@
 - #68     Add annotations to time intervals (TI-63)
 - #77     Support non-tag interval data storage (TI-72)
           (thanks to Tomas Babej)
+- #96     Include Bash completion for timewarrior (TI-92)
 - #98     Command Injection Security Vulnerability in on-modify.timewarrior (TI-94)
           (thanks to Aaron Fields)
 - #101    timew assertion error on delete (TI-97)
