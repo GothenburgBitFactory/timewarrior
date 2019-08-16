@@ -46,6 +46,7 @@ class TestOnModifyHookScript(TestCase):
                                             'PATH': '../src:' + os.environ['PATH'],
                                             'TIMEWARRIORDB': self.t.datadir
                                         },
+                                        shell=True,
                                         stdin=subprocess.PIPE,
                                         stdout=subprocess.PIPE,
                                         stderr=subprocess.PIPE)
