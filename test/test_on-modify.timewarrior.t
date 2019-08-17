@@ -122,6 +122,7 @@ class TestOnModifyHookScript(TestCase):
 
         self.assertRegexpMatches(out, """\
 Removed dummy from @1
+Note: 'foo' is a new tag.
 Added foo to @1
 \{"status": "pending", "uuid": "3422d76c-c087-4ecd-9c62-1246b078e534", "modified": "20180317T092629Z", "start": "20180317T092629Z", "entry": "20180317T092629Z", "description": "foo"\}
 """)
@@ -138,6 +139,9 @@ Added foo to @1
 
         self.assertRegexpMatches(out, """\
 Removed dummy tag1 tag2 from @1
+Note: 'dummy' is a new tag.
+Note: 'tag3' is a new tag.
+Note: 'tag4' is a new tag.
 Added dummy tag3 tag4 to @1
 \{"status": "pending", "uuid": "3422d76c-c087-4ecd-9c62-1246b078e534", "tags": \["tag3", "tag4"\], "modified": "20180317T092629Z", "start": "20180317T092629Z", "entry": "20180317T092629Z", "description": "dummy"\}
 """)
@@ -154,6 +158,8 @@ Added dummy tag3 tag4 to @1
 
         self.assertRegexpMatches(out, """\
 Removed dummy proj1 from @1
+Note: 'dummy' is a new tag.
+Note: 'proj2' is a new tag.
 Added dummy proj2 to @1
 \{"status": "pending", "uuid": "3422d76c-c087-4ecd-9c62-1246b078e534", "modified": "20180317T092629Z", "project": "proj2", "start": "20180317T092629Z", "entry": "20180317T092629Z", "description": "dummy"\}
 """)
