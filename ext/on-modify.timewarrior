@@ -67,7 +67,7 @@ if 'start' in new and 'start' not in old:
     start_or_stop = 'start'
 
 # Stopped task.
-elif 'start' not in new and 'start' in old:
+elif ('start' not in new or 'end' in new) and 'start' in old:
     start_or_stop = 'stop'
 
 if start_or_stop:
