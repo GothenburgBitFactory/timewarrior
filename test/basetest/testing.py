@@ -63,14 +63,14 @@ class TestCase(BaseTestCase):
                                      "tags",
                                      expectedTags,
                                      description,
-                                     "{} of {} do not match (expected: {}, actual: {})")
+                                     "{} of {} do not match (expected: '{}', actual: '{}')")
         if expectedAnnotation:
             self.assertKeyExists(interval, "annotation", description, "{} is not annotated")
             self.assertIntervalValue(interval,
                                      "annotation",
                                      expectedAnnotation,
                                      description,
-                                     "{} of {} do not match (expected: {}, actual: {})")
+                                     "{} of {} do not match (expected: '{}', actual: '{}')")
 
     def assertKeyExists(self, interval, key, description, message):
         self.assertTrue(key in interval, message.format(description))
@@ -86,7 +86,7 @@ class TestCase(BaseTestCase):
                                  key,
                                  expected,
                                  description,
-                                 "{} time of {} does not match (expected: {}, actual: {})")
+                                 "{} time of {} does not match (expected: '{}', actual: '{}')")
 
     def assertIntervalValue(self, interval, key, expected, description, message):
         actual = interval[key]
