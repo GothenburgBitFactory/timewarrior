@@ -48,7 +48,8 @@ old = json.loads(input_stream.readline().decode("utf-8", errors="replace"))
 new = json.loads(input_stream.readline().decode("utf-8", errors="replace"))
 print(json.dumps(new))
 
-def extract_timew_tags_from(json_obj):
+
+def extract_tags_from(json_obj):
     # Extract attributes for use as tags.
     tags = [json_obj['description']]
 
@@ -59,6 +60,7 @@ def extract_timew_tags_from(json_obj):
         tags.extend(json_obj['tags'])
 
     return tags
+
 
 start_or_stop = ''
 
@@ -71,15 +73,15 @@ elif ('start' not in new or 'end' in new) and 'start' in old:
     start_or_stop = 'stop'
 
 if start_or_stop:
-    combined = extract_timew_tags_from(new)
+    tags = extract_tags_from(new)
 
-    subprocess.call(['timew', start_or_stop] + combined + [':yes'])
+    subprocess.call(['timew', start_or_stop] + tags + [':yes'])
 
 # Modifications to task other than start/stop
 elif 'start' in new and 'start' in old:
-    old_combined = extract_timew_tags_from(old)
-    new_combined = extract_timew_tags_from(new)
+    old_tags = extract_tags_from(old)
+    new_tags = extract_tags_from(new)
 
-    if old_combined != new_combined:
-        subprocess.call(['timew', 'untag', '@1'] + old_combined + [':yes'])
-        subprocess.call(['timew', 'tag', '@1'] + new_combined + [':yes'])
+    if old_tags != new_tags:
+        subprocess.call(['timew', 'untag', '@1'] + old_tags + [':yes'])
+        subprocess.call(['timew', 'tag', '@1'] + new_tags + [':yes'])
