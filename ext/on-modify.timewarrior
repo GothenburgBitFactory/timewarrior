@@ -62,6 +62,14 @@ def extract_tags_from(json_obj):
     return tags
 
 
+def extract_annotation_from(json_obj):
+
+    if 'annotations' not in json_obj:
+        return '\'\''
+
+    return json_obj['annotations'][0]['description']
+
+
 start_or_stop = ''
 
 # Started task.
@@ -85,3 +93,9 @@ elif 'start' in new and 'start' in old:
     if old_tags != new_tags:
         subprocess.call(['timew', 'untag', '@1'] + old_tags + [':yes'])
         subprocess.call(['timew', 'tag', '@1'] + new_tags + [':yes'])
+
+    old_annotation = extract_annotation_from(old)
+    new_annotation = extract_annotation_from(new)
+
+    if old_annotation != new_annotation:
+        subprocess.call(['timew', 'annotate', '@1', new_annotation])
