@@ -38,9 +38,14 @@ import subprocess
 #   Description
 #   UDAs
 
+try:
+    input_stream = sys.stdin.buffer
+except AttributeError:
+    input_stream = sys.stdin
+
 # Make no changes to the task, simply observe.
-old = json.loads(sys.stdin.buffer.readline().decode("utf-8", errors="replace"))
-new = json.loads(sys.stdin.buffer.readline().decode("utf-8", errors="replace"))
+old = json.loads(input_stream.readline().decode("utf-8", errors="replace"))
+new = json.loads(input_stream.readline().decode("utf-8", errors="replace"))
 print(json.dumps(new))
 
 def extract_timew_tags_from(json_obj):
