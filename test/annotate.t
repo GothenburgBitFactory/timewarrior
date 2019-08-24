@@ -91,16 +91,19 @@ class TestAnnotate(TestCase):
 
         self.assertIn("At least one ID must be specified.", err)
 
-    def test_should_fail_on_no_annotation(self):
-        """Calling command 'annotate' without annotation is an error"""
+    def test_remove_annotation_from_interval(self):
+        """Calling 'annotate' without annotation removes annotation"""
         now_utc = datetime.now().utcnow()
         one_hour_before_utc = now_utc - timedelta(hours=1)
 
         self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z".format(one_hour_before_utc, now_utc))
 
-        code, out, err = self.t.runError("annotate @1")
+        code, out, err = self.t("annotate @1")
 
-        self.assertIn("No annotation string given.", err)
+        self.assertIn("Removed annotation from @1", out)
+
+        j = self.t.export()
+        self.assertClosedInterval(j[0], expectedAnnotation="")
 
     def test_add_annotation_to_closed_interval(self):
         """Add an annotation to a closed interval"""

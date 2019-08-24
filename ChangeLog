@@ -57,6 +57,7 @@
           (thanks to RainbowSwirls)
 - #240    Core dump when specifying a start time in the past
           (thanks to OddBloke)
+- #247    Remove annotation from interval
 -         Fixed error from totals.py while timer is active
           (thanks to davisdude)
 -         Refactoring of Interval and Range

@@ -41,11 +41,6 @@ int CmdAnnotate (
   std::set <int> ids = cli.getIds ();
   std::string annotation = cli.getAnnotation ();
 
-  if (annotation.empty ())
-  {
-    throw std::string ("No annotation string given. See 'timew help annotate'.");
-  }
-
   // Load the data.
   // Note: There is no filter.
   Interval filter;
@@ -108,7 +103,14 @@ int CmdAnnotate (
 
     if (rules.getBoolean ("verbose"))
     {
-      std::cout << "Annotated @" << id << " with \"" << annotation << "\"" << std::endl;
+      if (annotation.empty ())
+      {
+        std::cout << "Removed annotation from @" << id << std::endl;
+      }
+      else
+      {
+        std::cout << "Annotated @" << id << " with \"" << annotation << "\"" << std::endl;
+      }
     }
   }
 
