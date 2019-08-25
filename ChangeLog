@@ -53,8 +53,14 @@
           (thanks to sruffel)
 - #216    on-modify.timewarrior assumes python is python 3
           (thanks to somospocos, quazgar)
+- #200    Fix on-modify.timewarrior hook for tasks with multi line description
+          (thanks to Dennis Schridde)
 - #228    Using those date aliases don't function as intended
           (thanks to RainbowSwirls)
+- #232    on-modify.timewarrior: Fix "from __future__ imports must occur at the beginning of the file"
+          (thanks to Dennis Schridde)
+- #237    on-modify.timewarrior: Deal with non-UTF-8 characters in input data from taskwarrior
+          (thanks to Dennis Schridde)
 - #240    Core dump when specifying a start time in the past
           (thanks to OddBloke)
 - #247    Remove annotation from interval
