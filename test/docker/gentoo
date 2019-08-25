@@ -4,7 +4,7 @@ FROM gentoo/portage:latest as portage
 # image is based on stage3-x86
 FROM gentoo/stage3-x86:latest
 
-RUN [ -e /var/lib/docker/ ] && ls /var/lib/docker/
+RUN [ -e /var/lib/docker/ ] && ls -la /var/lib/docker/ || true
 RUN ls -la
 
 # copy the entire portage volume in
