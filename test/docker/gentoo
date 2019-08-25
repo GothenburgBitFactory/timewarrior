@@ -4,6 +4,9 @@ FROM gentoo/portage:latest as portage
 # image is based on stage3-x86
 FROM gentoo/stage3-x86:latest
 
+RUN [ -e /var/lib/docker/ ] && ls /var/lib/docker/
+RUN ls -la
+
 # copy the entire portage volume in
 COPY --from=portage /usr/portage /usr/portage
 
