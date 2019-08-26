@@ -3,7 +3,7 @@ FROM ubuntu:18.04
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update
-RUN apt-get install -y build-essential cmake git uuid-dev libgnutls28-dev libfaketime man
+RUN apt-get install -y build-essential cmake git uuid-dev libgnutls28-dev libfaketime man locales
 RUN apt-get install -y python
 
 RUN apt-get install -y tzdata
@@ -16,6 +16,7 @@ RUN dpkg-reconfigure -f noninteractive tzdata
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
+RUN locale-gen "en_US.UTF-8"
 
 # Setup timewarrior
 ADD . /root/code/
