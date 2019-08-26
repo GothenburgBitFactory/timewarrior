@@ -8,6 +8,7 @@ RUN pacman -S --noconfirm make gcc
 # Setup language environment
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
+ENV MAN_DISABLE_SECCOMP 1
 
 # Setup timewarrior
 ADD . /root/code/
