@@ -61,6 +61,7 @@ class TestHelp(TestCase):
     def test_help_with_command_should_show_man_page(self):
         """timew help with command should show man page"""
         code, out, err = self.t("help start")
+        self.assertEquals(err, "")
         self.assertRegexpMatches(out, r"timew-start\(1\)\s+User Manuals\s+timew-start\(1\)")
 
     def test_help_with_unknown_argument_should_show_error_message(self):
