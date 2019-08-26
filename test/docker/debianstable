@@ -13,9 +13,10 @@ RUN ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 # Setup language environment
-ENV LC_ALL en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US.UTF-8
+RUN echo "LC_ALL=en_US.UTF-8" >> /etc/environment
+RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+RUN echo "LANG=en_US.UTF-8" > /etc/locale.conf
+RUN locale-gen en_US.UTF-8
 
 # Setup timewarrior
 ADD . /root/code/
