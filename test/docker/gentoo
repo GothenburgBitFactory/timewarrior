@@ -2,7 +2,7 @@
 FROM gentoo/stage3-x86:latest
 
 # copy the entire portage volume in
-COPY --from=gentoo/portage:latest /usr/portage /usr/portage
+COPY --from=gentoo/portage:latest /var/db/repos/gentoo /var/db/repos/gentoo
 
 RUN (CNT=60 ; while [[ ${CNT} -ne 0 ]] ; do echo "RUNNING (${CNT})" ; sleep 60 ; ((CNT--)) ; done ) & emerge -qv sys-libs/readline:0 net-libs/gnutls:0= sys-apps/util-linux dev-util/cmake sys-devel/make dev-vcs/git sys-libs/libfaketime sys-apps/man ; kill %1
 
