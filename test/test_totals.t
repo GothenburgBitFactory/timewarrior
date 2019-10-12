@@ -89,6 +89,39 @@ class TestTotals(TestCase):
             ],
             out)
 
+    def test_totals_with_time_delta_larger_than_24_hours(self):
+        """totals extension should print report for time delta larger than 24 hours"""
+        now = datetime.datetime.now()
+        two_days_before = now - datetime.timedelta(days=2)
+
+        now_utc = now.utcnow()
+        two_days_before_utc = now_utc - datetime.timedelta(days=2)
+
+        input_stream = [
+            'color: off\n',
+            'debug: on\n',
+            'temp.report.start: {:%Y%m%dT%H%M%S}Z\n'.format(two_days_before_utc),
+            'temp.report.end: {:%Y%m%dT%H%M%S}Z\n'.format(now_utc),
+            '\n',
+            '[{{"start":"{:%Y%m%dT%H%M%S}Z","end":"{:%Y%m%dT%H%M%S}Z","tags":["foo"]}}]'.format(two_days_before_utc, now_utc)
+        ]
+
+        out = calculate_totals(input_stream)
+
+        self.assertEqual(
+            [
+                '',
+                'Total by Tag, for {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}'.format(two_days_before, now),
+                '',
+                'Tag        Total',
+                '----- ----------',
+                'foo     48:00:00',
+                '      ----------',
+                'Total   48:00:00',
+                '',
+            ],
+            out)
+
     def test_totals_with_emtpy_range(self):
         """totals extension should report error on emtpy range"""
         now = datetime.datetime.now()

@@ -133,13 +133,15 @@ def calculate_totals(input_stream):
     # Compose table rows.
     grand_total = 0
     for tag in sorted(totals):
-        formatted = format_seconds(totals[tag].seconds)
-        grand_total += totals[tag].seconds
+        seconds = int(totals[tag].total_seconds())
+        formatted = format_seconds(seconds)
+        grand_total += seconds
         output.append("{:{width}} {:10}".format(tag, formatted, width=max_width))
 
     if untagged is not None:
-        formatted = format_seconds(untagged.seconds)
-        grand_total += untagged.seconds
+        seconds = int(untagged.total_seconds())
+        formatted = format_seconds(seconds)
+        grand_total += seconds
         output.append("{:{width}} {:10}".format("", formatted, width=max_width))
 
     # Compose total.
