@@ -69,8 +69,8 @@ for date in ${dates-$( default_dates )} ; do
       date_time="${date}T${hour}:${minute}"
       for single_test in ${tests} ; do
         echo "Running test ${single_test} at ${date_time}"
-        faketime "${date_time}" "${single_test}"
-        if [[ $? -ne 0 ]] ; then
+
+        if ! faketime "${date_time}" "${single_test}" ; then
           echo "Test ${single_test} broke at ${date_time}!"
           [[ ${fail_at_end-0} -ne 0 ]] || break 2
         fi
