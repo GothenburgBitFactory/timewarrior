@@ -41,9 +41,17 @@ until [[ -z "${1}" ]] ; do
       shift
       minutes="${minutes} ${1}"
       ;;
+    --minutes)
+      shift
+      minutes="${1}"
+      ;;
     --hour)
       shift
       hours="${hours} ${1}"
+      ;;
+    --hours)
+      shift
+      hours="${1}"
       ;;
     --date)
       shift
@@ -64,8 +72,8 @@ until [[ -z "${1}" ]] ; do
 done
 
 for date in ${dates-$( default_dates )} ; do
-  for minute in ${minutes-$( default_minutes )} ; do
-    for hour in ${hours-$( default_hours )} ; do
+  for hour in ${hours-$( default_hours )} ; do
+    for minute in ${minutes-$( default_minutes )} ; do
       date_time="${date}T${hour}:${minute}"
       for single_test in ${tests} ; do
         echo "Running test ${single_test} at ${date_time}"
