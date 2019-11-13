@@ -29,6 +29,7 @@
 #include <JSON.h>
 #include <iostream>
 #include <iomanip>
+#include <shared.h>
 #include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -287,7 +288,7 @@ void Database::initializeTagDatabase ()
 
     for (auto &pair : json->_data)
     {
-      auto key = pair.first;
+      auto key = str_replace (pair.first, "\\\"", "\"");
       auto *value = (json::object *) pair.second;
       auto iter = value->_data.find ("count");
 
