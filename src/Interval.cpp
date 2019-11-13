@@ -89,7 +89,7 @@ std::string Interval::serialize () const
   if (! annotation.empty ())
   {
     out << (_tags.empty () ? " #" : "")
-        << " # \"" << annotation << "\"";
+        << " # \"" << escape (annotation, '"') << "\"";
   }
 
   return out.str ();
@@ -138,7 +138,7 @@ std::string Interval::json () const
       out << ',';
     }
 
-    out << "\"annotation\":\"" << annotation << "\"";
+    out << "\"annotation\":\"" << escape (annotation, '"') << "\"";
   }
 
   out << "}";

@@ -178,6 +178,18 @@ class TestAnnotate(TestCase):
         self.assertEquals(len(j), 1)
         self.assertClosedInterval(j[0], expectedAnnotation="foo")
 
+    def test_annotate_with_embedded_quotes(self):
+        """Call 'annotate' with embedded quotes"""
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z".format(one_hour_before_utc, now_utc))
+        self.t("annotate @1 'bar \"foo\" bar'")
+
+        j = self.t.export()
+
+        self.assertEquals(len(j), 1)
+        self.assertClosedInterval(j[0], expectedAnnotation='bar "foo" bar')
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
