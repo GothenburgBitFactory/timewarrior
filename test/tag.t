@@ -255,6 +255,13 @@ class TestTag(TestCase):
         self.t("stop")
         self.t("delete @1")
 
+    def test_tag_with_double_quote(self):
+        """Call 'tag' with an embedded double quote sign"""
+        code, out, err = self.t("start 'this is a \"test\"'")
+        self.assertIn("Note: '\"this is a \\\"test\\\"\"' is a new tag", out)
+        self.t("stop")
+        self.t("delete @1")
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
