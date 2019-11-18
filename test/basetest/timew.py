@@ -72,6 +72,12 @@ class Timew(object):
         # As well as TIMEWARRIORDB
         self.env["TIMEWARRIORDB"] = self.datadir
 
+        # As well as MANPATH, so that the help tests can find the
+        # uninstalled man pages
+        parts = self.timew.split(os.path.sep)[0:-2]
+        parts.append("doc")
+        self.env["MANPATH"] = os.path.sep.join(parts)
+
     def config(self, var, value):
         """Run setup `var` as `value` in timew config"""
         # Add -- to avoid misinterpretation of - in things like UUIDs
