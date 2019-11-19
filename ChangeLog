@@ -64,6 +64,10 @@
 - #240    Core dump when specifying a start time in the past
           (thanks to OddBloke)
 - #247    Remove annotation from interval
+- #254    Quotes in annotations are not escaped
+          (thanks to sruffell)
+- #262    Allow tests to use manpages in source tree
+          (thanks to sruffell)
 -         Fixed error from totals.py while timer is active
           (thanks to davisdude)
 -         Refactoring of Interval and Range
