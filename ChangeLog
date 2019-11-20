@@ -66,6 +66,8 @@
 - #247    Remove annotation from interval
 - #254    Quotes in annotations are not escaped
           (thanks to sruffell)
+- #260    Tests with synthetic interval fail when test intervals cross day border
+          (thanks to sruffel)
 - #262    Allow tests to use manpages in source tree
           (thanks to sruffell)
 -         Fixed error from totals.py while timer is active
