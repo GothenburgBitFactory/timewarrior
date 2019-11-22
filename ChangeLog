@@ -1,4 +1,7 @@
-1.2.0 () -
+------ current release ---------------------------
+
+1.2.0 (2019-11-22) -
+
 - #2      Generate a warning when a new tag is used on the command line
 - #9      Add an 'undo' command (TI-1)
 - #11     The month report shows multi-days current task truncated (TI-3)
@@ -95,7 +98,7 @@
 -         Refactoring of CmdChart
 -         Let command join merge tags of given intervals
 
------- current release ---------------------------
+------ old releases ------------------------------
 
 1.1.1 (2018-02-03) ef26ebd6fec8472d4b91644806f48b546bb35747
 
@@ -103,8 +106,6 @@
           (thanks to A M)
 - TI-102  Exclusions stopped working
           (thanks to Christian Decker)
-
------- old release -------------------------------
 
 1.1.0 (2018-01-13) 836bc41014018ab333e6ea73412ee09d015beb4e
 
