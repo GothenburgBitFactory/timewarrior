@@ -12,8 +12,8 @@ make -j2
 make install
 timew --version
 
-pushd test
+pushd test || exit
 make
 ./run_all -v
-cat all.log | grep 'not ok'
+grep 'not ok' all.log
 ./problems

@@ -38,8 +38,13 @@ matrix:
       os: linux
       env: CONTAINER=archlinux
       services: docker
-    - name: "Mac OS X 10.13"
+    - name: "macOS 10.13"
       os: osx
+      osx_image: xcode9.4
+      env: CONTAINER=osx
+    - name: "macOS 10.14"
+      os: osx
+      osx_image: xcode10.3
       env: CONTAINER=osx
 install:
   # Build the docker container
