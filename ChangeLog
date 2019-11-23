@@ -1,6 +1,6 @@
 ------ current release ---------------------------
 
-1.2.0 (2019-11-22) -
+1.2.0 (2019-11-22) 1d271508a27b9d8a5211ae5b01c7a0583ff690fd
 
 - #2      Generate a warning when a new tag is used on the command line
 - #9      Add an 'undo' command (TI-1)
