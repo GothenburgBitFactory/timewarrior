@@ -28,6 +28,7 @@
 #include <Database.h>
 #include <format.h>
 #include <JSON.h>
+#include <IntervalFactory.h>
 #include <iostream>
 #include <iomanip>
 #include <shared.h>
@@ -443,17 +444,17 @@ void Database::initializeTagDatabase ()
 
   if (!File::read (_location + "/tags.data", content))
   {
-    auto intervals = getAllInclusions (*this);
-
-    if (intervals.empty ())
-    {
+    auto it = rbegin ();
+    auto end = rend ();
+    
+    if (it == end)
       return;
-    }
 
     std::cout << "Tag info database does not exist. Recreating from interval data..." << std::endl  ;
 
-    for (auto& interval : intervals)
+    for (; it != end; ++it)
     {
+      Interval interval = IntervalFactory::fromSerialization (*it);
       for (auto& tag : interval.tags ())
       {
         _tagInfoDatabase.incrementTag (tag);
