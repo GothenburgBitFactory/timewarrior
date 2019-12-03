@@ -24,6 +24,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <deque>
+
+#include <cassert>
 #include <cmake.h>
 #include <shared.h>
 #include <format.h>
@@ -324,6 +327,19 @@ std::vector <Interval> getAllInclusions (Database& database)
 ////////////////////////////////////////////////////////////////////////////////
 std::vector <Interval> subset (
   const Interval& filter,
+  const std::deque <Interval>& intervals)
+{
+  std::vector <Interval> all;
+  for (auto& interval : intervals)
+    if (matchesFilter (interval, filter))
+      all.push_back (interval);
+
+  return all;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::vector <Interval> subset (
+  const Interval& filter,
   const std::vector <Interval>& intervals)
 {
   std::vector <Interval> all;
@@ -573,8 +589,6 @@ std::vector <Interval> getTracked (
   const Rules& rules,
   Interval& filter)
 {
-  auto inclusions = getAllInclusions (database);
-
   // Exclusions are only usable within a range, so if no filter range exists,
   // determine the infinite range starting at the first inclusion, i.e.:
   //
@@ -583,9 +597,12 @@ std::vector <Interval> getTracked (
   // Avoid assigning a zero-width range - leave it unstarted instead.
   if (! filter.is_started ())
   {
-    auto outer = outerRange (inclusions);
-    if (outer.total ())
-      filter.setRange (outer);
+    auto begin = database.begin ();
+    auto end = database.end ();
+    if (begin != end) 
+    {
+      filter.start = IntervalFactory::fromSerialization (*begin).start;
+    }
 
     // Use an infinite range instead of the last end date; this prevents
     // issues when there is an empty range [q, q) at the end of a filter
@@ -593,11 +610,35 @@ std::vector <Interval> getTracked (
     filter.end = 0;
   }
 
-  std::vector <Interval> intervals = inclusions;
+  int id_skip = 0;
+  std::deque <Interval> intervals;
+
+  auto it = database.rbegin ();
+  auto end = database.rend ();
+  for (; it != end; ++it)
+  {
+    Interval interval = IntervalFactory::fromSerialization(*it);
+
+    // Since we are moving backwards, and the intervals are in sorted order,
+    // if the filter is after the interval, we know there will be no more
+    // matches
+    if (matchesFilter (interval, filter))
+    {
+      intervals.push_front (interval);
+    }
+    else if (interval.start.toEpoch () >= filter.start.toEpoch ())
+    {
+      ++id_skip;
+    } 
+    else
+    {
+      break;
+    }
+  }
 
   if (! intervals.empty ())
   {
-    auto latest = inclusions.back ();
+    auto latest = intervals.back ();
 
     if (latest.is_open ())
     {
@@ -625,7 +666,7 @@ std::vector <Interval> getTracked (
 
   // Assign an ID to each interval.
   for (unsigned int i = 0; i < intervals.size (); ++i)
-    intervals[i].id = intervals.size () - i;
+    intervals[i].id = intervals.size () - i + id_skip;
 
   debug (format ("Loaded {1} tracked intervals", intervals.size ()));
   return subset (filter, intervals);
