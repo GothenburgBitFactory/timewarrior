@@ -693,17 +693,6 @@ std::vector <Range> getUntracked (
 Interval getLatestInterval (Database& database)
 {
   Interval i;
-  for (auto& line : database.allLines ())
-  {
-    // inc YYYYMMDDTHHMMSSZ - YYYYMMDDTHHMMSSZ # ...
-    //                     ^ 20
-    if (line.find (" - ") != 20)
-    {
-      i = IntervalFactory::fromSerialization (line);
-      return i;
-    }
-  }
-
   auto lastLine = database.lastLine ();
   if (! lastLine.empty ())
     i = IntervalFactory::fromSerialization (lastLine);
