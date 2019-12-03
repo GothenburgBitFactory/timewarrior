@@ -486,31 +486,6 @@ std::vector <Range> subtractRanges (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// From a set of intervals, find the earliest start and the latest end, and
-// return these in a Range.
-Range outerRange (const std::vector <Interval>& intervals)
-{
-  Range outer;
-  for (auto& interval : intervals)
-  {
-    if (interval.start < outer.start || outer.start.toEpoch () == 0)
-      outer.start = interval.start;
-
-    // Deliberately mixed start/end.
-    if (interval.start > outer.end)
-      outer.end = interval.start;
-
-    if (interval.end > outer.end)
-      outer.end = interval.end;
-
-    if (! interval.is_ended ())
-      outer.end = Datetime ();
-  }
-
-  return outer;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 // An interval matches a filter interval if the start/end overlaps, and all
 // filter interval tags are found in the interval.
 //
