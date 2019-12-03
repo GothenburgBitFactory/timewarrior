@@ -35,6 +35,7 @@ class Interval : public Range
 {
 public:
   Interval () = default;
+  Interval (const Datetime& start, const Datetime& end) : Range (start, end) {}
   bool empty () const;
 
   bool hasTag (const std::string&) const;

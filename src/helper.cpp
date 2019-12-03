@@ -446,7 +446,8 @@ std::vector <Interval> getOverlaps (
   const Rules& rules,
   const Interval& interval)
 {
-  Interval range_filter;
+  Interval range_filter {interval.start, interval.end};
+
   auto tracked = getTracked (database, rules, range_filter);
 
   std::vector <Interval> overlaps;
