@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+
 ###############################################################################
 #
 # Copyright 2016 - 2019, Thomas Lauf, Paul Beckingham, Federico Hernandez.
@@ -185,5 +185,3 @@ if __name__ == "__main__":
     from simpletap import TAPTestRunner
 
     unittest.main(testRunner=TAPTestRunner())
-
-# vim: ai sts=4 et sw=4 ft=python

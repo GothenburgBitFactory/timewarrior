@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import signal
 
 sig_names = dict((k, v) for v, k in reversed(sorted(signal.__dict__.items()))
@@ -51,5 +50,3 @@ class TimeoutWaitingFor(object):
 class StreamsAreMerged(object):
     def __repr__(self):
         return "*** Streams are merged, STDERR is not available ***"
-
-# vim: ai sts=4 et sw=4

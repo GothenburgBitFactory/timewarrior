@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from __future__ import print_function, division
 
 
@@ -36,5 +34,3 @@ class MetaTest(type):
             dct[func.__name__] = func
 
         return super(MetaTest, meta).__new__(meta, classname, bases, dct)
-
-# vim: ai sts=4 et sw=4

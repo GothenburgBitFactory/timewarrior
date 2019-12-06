@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import atexit
 import datetime
 import json
@@ -263,5 +261,3 @@ class Timew(object):
         if faketime is not None:
             # Use advanced time format
             self._command = [cmd, "-f", faketime] + self._command
-
-# vim: ai sts=4 et sw=4

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import sys
 import unittest
 import datetime
@@ -99,5 +97,3 @@ class TestCase(BaseTestCase):
             self.assertEqual(actual,
                              expected,
                              message.format(key, description, expected, actual))
-
-# vim: ai sts=4 et sw=4

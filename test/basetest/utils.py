@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from __future__ import division
 
 import atexit
@@ -378,5 +377,3 @@ def mkstemp_exec(data):
     os.chmod(name, 0o755)
 
     return name
-
-# vim: ai sts=4 et sw=4
