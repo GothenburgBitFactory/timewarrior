@@ -58,7 +58,7 @@ class TestClock(TestCase):
 
         j = self.t.export()
 
-        self.assertEquals(len(j), 1)
+        self.assertEqual(len(j), 1)
         self.assertOpenInterval(j[0], expectedTags=["tag1", "tag2"])
 
     def test_start_stop(self):
@@ -74,7 +74,7 @@ class TestClock(TestCase):
 
         j = self.t.export()
 
-        self.assertEquals(len(j), 1)
+        self.assertEqual(len(j), 1)
         self.assertClosedInterval(j[0], expectedTags=["tag1", "tag2"])
 
         code, out, err = self.t.runError("")
@@ -94,7 +94,7 @@ class TestClock(TestCase):
 
         j = self.t.export()
 
-        self.assertEquals(len(j), 2)
+        self.assertEqual(len(j), 2)
         self.assertClosedInterval(j[0], expectedTags=["tag1", "tag2"])
         self.assertOpenInterval(j[1], expectedTags=["tag3"])
 

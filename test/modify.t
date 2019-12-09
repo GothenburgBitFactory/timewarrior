@@ -60,7 +60,7 @@ class TestModify(TestCase):
         code, out, err = self.t("modify start @1 {:%Y-%m-%dT%H:%M:%S}Z".format(one_hour_before_utc))
 
         j = self.t.export()
-        self.assertEquals(len(j), 1)
+        self.assertEqual(len(j), 1)
         self.assertOpenInterval(j[0],
             expectedStart="{:%Y%m%dT%H%M%S}Z".format(one_hour_before_utc))
 
@@ -96,7 +96,7 @@ class TestModify(TestCase):
         code, out, err = self.t("modify end @2 {:%Y-%m-%dT%H:%M:%S}Z".format(now_utc - timedelta(hours=2)))
 
         j = self.t.export()
-        self.assertEquals(len(j), 2)
+        self.assertEqual(len(j), 2)
         self.assertClosedInterval(j[0],
             expectedStart="{:%Y%m%dT%H%M%S}Z".format(now_utc - timedelta(hours=3)),
             expectedEnd="{:%Y%m%dT%H%M%S}Z".format(now_utc - timedelta(hours=2)))
@@ -137,7 +137,7 @@ class TestModify(TestCase):
         code, out, err = self.t("modify start @2 {:%Y-%m-%dT%H:%M:%S}Z".format(now_utc - timedelta(hours=2)))
 
         j = self.t.export()
-        self.assertEquals(len(j), 2)
+        self.assertEqual(len(j), 2)
         self.assertClosedInterval(j[0],
             expectedStart="{:%Y%m%dT%H%M%S}Z".format(now_utc - timedelta(hours=2)),
             expectedEnd="{:%Y%m%dT%H%M%S}Z".format(now_utc - timedelta(hours=1)))

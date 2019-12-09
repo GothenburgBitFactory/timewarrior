@@ -216,7 +216,7 @@ class TestUntag(TestCase):
 
         j = self.t.export()
 
-        self.assertEquals(len(j), 1)
+        self.assertEqual(len(j), 1)
         self.assertClosedInterval(j[0], expectedTags=["bar"])
 
 

@@ -175,7 +175,7 @@ class TestAnnotate(TestCase):
 
         j = self.t.export()
 
-        self.assertEquals(len(j), 1)
+        self.assertEqual(len(j), 1)
         self.assertClosedInterval(j[0], expectedAnnotation="foo")
 
     def test_annotate_with_embedded_quotes(self):
@@ -188,7 +188,7 @@ class TestAnnotate(TestCase):
 
         j = self.t.export()
 
-        self.assertEquals(len(j), 1)
+        self.assertEqual(len(j), 1)
         self.assertClosedInterval(j[0], expectedAnnotation='bar "foo" bar')
 
 if __name__ == "__main__":

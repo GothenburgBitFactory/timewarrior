@@ -116,7 +116,7 @@ class TestMove(TestCase):
 
         j = self.t.export()
 
-        self.assertEquals(len(j), 2)
+        self.assertEqual(len(j), 2)
         self.assertClosedInterval(j[0],
                                   expectedStart="20170301T110000Z",
                                   expectedEnd="20170301T133000Z",

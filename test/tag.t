@@ -217,7 +217,7 @@ class TestTag(TestCase):
 
         j = self.t.export()
 
-        self.assertEquals(len(j), 1)
+        self.assertEqual(len(j), 1)
         self.assertClosedInterval(j[0], expectedTags=["foo"])
 
     def test_tag_with_new_tag(self):
