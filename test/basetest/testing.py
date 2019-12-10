@@ -90,9 +90,11 @@ class TestCase(BaseTestCase):
         actual = interval[key]
 
         if isinstance(actual, list):
-            self.assertItemsEqual(actual,
-                                  expected,
-                                  message.format(key, description, expected, actual))
+            actual.sort()
+            expected.sort()
+            self.assertSequenceEqual(actual,
+                                     expected,
+                                     message.format(key, description, expected, actual))
         else:
             self.assertEqual(actual,
                              expected,
