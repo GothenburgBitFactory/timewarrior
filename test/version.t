@@ -43,7 +43,7 @@ class TestVersion(TestCase):
     def test_version_option(self):
         """Verify that  'timew --version' returns something valid"""
         code, out, err = self.t("--version")
-        self.assertRegexpMatches(out, r'^\d\.\d+\.\d+(\.\w+)?$')
+        self.assertRegex(out, r'^\d\.\d+\.\d+(\.\w+)?$')
 
 
 if __name__ == "__main__":

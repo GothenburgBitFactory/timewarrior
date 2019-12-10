@@ -44,7 +44,7 @@ class TestHelp(TestCase):
     def test_help_without_command_should_print_usage(self):
         """timew help without command should print usage"""
         code, out, err = self.t("help")
-        self.assertRegexpMatches(out, r"Usage: timew [--version]")
+        self.assertRegex(out, r"Usage: timew [--version]")
 
     def test_help_long_option_should_print_usage(self):
         """timew --help should print usage"""
@@ -64,12 +64,12 @@ class TestHelp(TestCase):
         # Some versions of man have bug that displays following on stderr:
         #         doc/man1/timew-shorten.1.in: ignoring bogus filename
         # Just check that stdout is correct here.
-        self.assertRegexpMatches(out, r"timew-start\(1\)\s+User Manuals\s+timew-start\(1\)")
+        self.assertRegex(out, r"timew-start\(1\)\s+User Manuals\s+timew-start\(1\)")
 
     def test_help_with_unknown_argument_should_show_error_message(self):
         """timew help with unknown argument should show error message"""
         code, out, err = self.t("help bogus")
-        self.assertRegexpMatches(err, r"No manual entry for timew-bogus")
+        self.assertRegex(err, r"No manual entry for timew-bogus")
 
     def test_command_with_help_long_option_should_show_help_page(self):
         """timew command with --help should show help page"""

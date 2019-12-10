@@ -46,14 +46,14 @@ class TestGaps(TestCase):
     def test_trivial_gaps(self):
         """Test trivial track"""
         code, out, err = self.t("gaps")
-        self.assertRegexpMatches(out, r'\s{30}24:00:00')
+        self.assertRegex(out, r'\s{30}24:00:00')
 
     def test_single_unobstructed_interval(self):
         """Add one interval and export it as-is"""
         self.t("track 20160527T080000 - 20160527T200000 foo")
 
         code, out, err = self.t("gaps 2016-05-27 - 2016-05-28")
-        self.assertRegexpMatches(out, r'\s{30}12:00:00')
+        self.assertRegex(out, r'\s{30}12:00:00')
 
     def test_single_unobstructed_interval_with_exclusions(self):
         """Add one interval, with exclusions"""
@@ -62,7 +62,7 @@ class TestGaps(TestCase):
         self.t("track 20160527T100000 - 20160527T140000 foo")
 
         code, out, err = self.t("gaps 2016-05-27 - 2016-05-28")
-        self.assertRegexpMatches(out, r'\s{30}5:00:00')
+        self.assertRegex(out, r'\s{30}5:00:00')
 
 
 if __name__ == "__main__":

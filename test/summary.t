@@ -58,7 +58,7 @@ class TestSummary(TestCase):
 
         code, out, err = self.t("summary :ids {:%Y-%m-%d} - {:%Y-%m-%d}".format(yesterday, tomorrow))
 
-        self.assertRegexpMatches(out, """
+        self.assertRegex(out, """
 Wk  ?Date       Day ID Tags    ?Start      ?End    Time   Total
 [ -]+
 W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2}(
@@ -77,7 +77,7 @@ W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2
 
         code, out, err = self.t("summary :ids {:%Y-%m-%d} - {:%Y-%m-%d}".format(yesterday, tomorrow))
 
-        self.assertRegexpMatches(out, """
+        self.assertRegex(out, """
 Wk  ?Date       Day ID Tags    ?Start End    Time   Total
 [ -]+
 W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2}[ ]+- \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2}(
@@ -197,7 +197,7 @@ W10 2017-03-11 Sat @3 FOO  10:00:00 11:00:00 1:00:00
         """Summary should display empty intervals at midnight"""
         self.t("track sod - sod")
         code, out, err = self.t("summary :year")
-        self.assertRegexpMatches(out, """
+        self.assertRegex(out, """
 Wk  ?Date       Day Tags    ?Start      ?End    Time   Total
 [ -]+
 W\d{1,2} \d{4}-\d{2}-\d{2} .{3}       ?0:00:00 0:00:00 0:00:00 0:00:00

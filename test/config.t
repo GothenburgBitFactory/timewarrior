@@ -52,7 +52,7 @@ class TestConfig(TestCase):
     def test_set_new_name_new_value(self):
         """Test setting a new name, new value"""
         code, out, err = self.t("config name value :yes")
-        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        self.assertRegex(out, r'^Config file .+ modified\.$')
 
         code, out, err = self.t("config")
         self.assertIn("name = value", out)
@@ -66,7 +66,7 @@ class TestConfig(TestCase):
     def test_set_new_name_same_value(self):
         """Test setting a new name, same value"""
         code, out, err = self.t("config name value :yes")
-        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        self.assertRegex(out, r'^Config file .+ modified\.$')
         code, out, err = self.t("config")
         self.assertIn("name = value", out)
 
@@ -77,7 +77,7 @@ class TestConfig(TestCase):
     def test_set_new_name_blank_value(self):
         """Test setting a new name, blank value"""
         code, out, err = self.t("config name '' :yes")
-        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        self.assertRegex(out, r'^Config file .+ modified\.$')
 
         code, out, err = self.t("config")
         self.assertIn("name = ", out)
@@ -85,10 +85,10 @@ class TestConfig(TestCase):
     def test_unset_new_name(self):
         """Test unsetting a new name, no value"""
         code, out, err = self.t("config name value :yes")
-        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        self.assertRegex(out, r'^Config file .+ modified\.$')
 
         code, out, err = self.t("config name :yes")
-        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        self.assertRegex(out, r'^Config file .+ modified\.$')
 
         code, out, err = self.t("config")
         self.assertNotIn("name = ", out)
@@ -96,7 +96,7 @@ class TestConfig(TestCase):
     def test_set_new_hierarchical_name_new_value(self):
         """Test setting a new hierarchical name, new value"""
         code, out, err = self.t("config foo.bar.baz value :yes")
-        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        self.assertRegex(out, r'^Config file .+ modified\.$')
 
         code, out, err = self.t("config")
         self.assertIn("baz = value", out)
@@ -104,7 +104,7 @@ class TestConfig(TestCase):
     def test_set_new_hierarchical_name_same_value(self):
         """Test setting a new hierarchical name, same value"""
         code, out, err = self.t("config foo.bar.baz value :yes")
-        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        self.assertRegex(out, r'^Config file .+ modified\.$')
         code, out, err = self.t("config")
         self.assertIn("baz = value", out)
 
@@ -115,7 +115,7 @@ class TestConfig(TestCase):
     def test_set_new_hierarchical_name_blank_value(self):
         """Test setting a new hierarchical name, blank value"""
         code, out, err = self.t("config foo.bar.baz '' :yes")
-        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        self.assertRegex(out, r'^Config file .+ modified\.$')
 
         code, out, err = self.t("config")
         self.assertIn("baz = ", out)
@@ -123,10 +123,10 @@ class TestConfig(TestCase):
     def test_unset_new_hierarchical_name(self):
         """Test unsetting a new hierarchical name, no value"""
         code, out, err = self.t("config foo.bar.baz value :yes")
-        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        self.assertRegex(out, r'^Config file .+ modified\.$')
 
         code, out, err = self.t("config foo.bar.baz :yes")
-        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        self.assertRegex(out, r'^Config file .+ modified\.$')
 
         code, out, err = self.t("config")
         self.assertNotIn("baz = ", out)
@@ -134,7 +134,7 @@ class TestConfig(TestCase):
     def test_set_known_name(self):
         """Test setting a known name, new value"""
         code, out, err = self.t("config debug value :yes")
-        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        self.assertRegex(out, r'^Config file .+ modified\.$')
 
         code, out, err = self.t("config")
         self.assertIn("debug = value", out)
@@ -142,7 +142,7 @@ class TestConfig(TestCase):
     def test_set_known_name_same_value(self):
         """Test setting a known name, same value"""
         code, out, err = self.t("config debug value :yes")
-        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        self.assertRegex(out, r'^Config file .+ modified\.$')
         code, out, err = self.t("config")
         self.assertIn("debug = value", out)
 
@@ -153,7 +153,7 @@ class TestConfig(TestCase):
     def test_set_known_name_blank_value(self):
         """Test setting a known name, blank value"""
         code, out, err = self.t("config debug '' :yes")
-        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        self.assertRegex(out, r'^Config file .+ modified\.$')
 
         code, out, err = self.t("config")
         self.assertIn("debug = ", out)
@@ -161,19 +161,19 @@ class TestConfig(TestCase):
     def test_unset_known_name(self):
         """Test unsetting a known name"""
         code, out, err = self.t.runError("config debug :yes")
-        self.assertRegexpMatches(err, r"No entry named 'debug' found\.\n$")
+        self.assertRegex(err, r"No entry named 'debug' found\.\n$")
 
     def test_reset_known_name(self):
         """Test setting a known name"""
         code, out, err = self.t("config debug foo :yes")
 
         code, out, err = self.t("config debug :yes")
-        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        self.assertRegex(out, r'^Config file .+ modified\.$')
 
     def test_set_known_hierarchical_name(self):
         """Test setting a known hierarchical name, new value"""
         code, out, err = self.t("config reports.day.month value :yes")
-        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        self.assertRegex(out, r'^Config file .+ modified\.$')
 
         code, out, err = self.t("config")
         self.assertIn("month = value", out)
@@ -181,7 +181,7 @@ class TestConfig(TestCase):
     def test_set_known_hierarchical_name_same_value(self):
         """Test setting a known hierarchical name, same value"""
         code, out, err = self.t("config reports.day.month value :yes")
-        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        self.assertRegex(out, r'^Config file .+ modified\.$')
         code, out, err = self.t("config")
         self.assertIn("month = value", out)
 
@@ -192,7 +192,7 @@ class TestConfig(TestCase):
     def test_set_known_hierarchical_name_blank_value(self):
         """Test setting a known hierarchical name, blank value"""
         code, out, err = self.t("config reports.day.month '' :yes")
-        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        self.assertRegex(out, r'^Config file .+ modified\.$')
 
         code, out, err = self.t("config")
         self.assertIn("month = ", out)
@@ -200,14 +200,14 @@ class TestConfig(TestCase):
     def test_unset_known_hierarchical_name(self):
         """Test unsetting a known hierarchical name"""
         code, out, err = self.t.runError("config reports.day.month :yes")
-        self.assertRegexpMatches(err, r"^No entry named 'reports.day.month' found\.\n$")
+        self.assertRegex(err, r"^No entry named 'reports.day.month' found\.\n$")
 
     def test_reset_known_hierarchical_name(self):
         """Test resetting a known hierarchical name"""
         code, out, err = self.t("config reports.day.month foo :yes")
 
         code, out, err = self.t("config reports.day.month :yes")
-        self.assertRegexpMatches(out, r'^Config file .+ modified\.$')
+        self.assertRegex(out, r'^Config file .+ modified\.$')
 
     def test_number_to_date_upgrade(self):
         """Test that an integer remains an integer"""

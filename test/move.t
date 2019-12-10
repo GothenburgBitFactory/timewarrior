@@ -75,7 +75,7 @@ class TestMove(TestCase):
 
         self.t("start 5mins ago foo")
         code, out, err = self.t("move @1 {:%Y-%m-%dT%H}:01:23".format(one_hour_before))
-        self.assertRegexpMatches(out, "Moved @1 to {:%Y-%m-%dT%H}:01:23".format(one_hour_before))
+        self.assertRegex(out, "Moved @1 to {:%Y-%m-%dT%H}:01:23".format(one_hour_before))
 
         j = self.t.export()
 
@@ -86,7 +86,7 @@ class TestMove(TestCase):
         """Move an open interval backwards in time"""
         self.t("start 5mins ago foo")
         code, out, err = self.t("move @1 today")
-        self.assertRegexpMatches(out, 'Moved @1 to \d\d\d\d-\d\d-\d\dT00:00:00')
+        self.assertRegex(out, 'Moved @1 to \d\d\d\d-\d\d-\d\dT00:00:00')
 
         j = self.t.export()
 
@@ -99,7 +99,7 @@ class TestMove(TestCase):
 
         code, out, err = self.t("move @1 today")
 
-        self.assertRegexpMatches(out, 'Moved @1 to \d\d\d\d-\d\d-\d\dT00:00:00')
+        self.assertRegex(out, 'Moved @1 to \d\d\d\d-\d\d-\d\dT00:00:00')
 
         j = self.t.export()
         self.assertEqual(len(j), 1)
@@ -112,7 +112,7 @@ class TestMove(TestCase):
 
         code, out, err = self.t("move @1 20170301T133000Z :adjust")
 
-        self.assertRegexpMatches(out, 'Moved @1 to 2017-03-01T\d\d:\d\d:\d\d\n')
+        self.assertRegex(out, 'Moved @1 to 2017-03-01T\d\d:\d\d:\d\d\n')
 
         j = self.t.export()
 

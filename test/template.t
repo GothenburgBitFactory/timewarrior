@@ -50,7 +50,7 @@ from basetest import Timew, TestCase
 #     self.assertIn(substring, text)
 #     self.assertNotIn(substring, text
 #     self.assertRaises(e)
-#     self.assertRegexpMatches(text, pattern)
+#     self.assertRegex(text, pattern)
 #     self.assertNotRegexpMatches(text, pattern)
 #     self.tap("")
 

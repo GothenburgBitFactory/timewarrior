@@ -122,7 +122,7 @@ class TestDOM(TestCase):
         """Test dom.active.start with active track"""
         self.t("start one two")
         code, out, err = self.t("get dom.active.start")
-        self.assertRegexpMatches(out, r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}')
+        self.assertRegex(out, r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}')
 
     def test_dom_active_duration_inactive(self):
         """Test dom.active.duration with no active track"""
@@ -133,7 +133,7 @@ class TestDOM(TestCase):
         """Test dom.active.duration with active track"""
         self.t("start one two")
         code, out, err = self.t("get dom.active.duration")
-        self.assertRegexpMatches(out, r'PT\d+S')
+        self.assertRegex(out, r'PT\d+S')
 
     def test_dom_active_json_inactive(self):
         """Test dom.active.json without an active interval"""
@@ -144,7 +144,7 @@ class TestDOM(TestCase):
         """Test dom.active.json with an active interval"""
         self.t("start foo")
         code, out, err = self.t("get dom.active.json")
-        self.assertRegexpMatches(out, r'{"start":"\d{8}T\d{6}Z","tags":\["foo"\]}')
+        self.assertRegex(out, r'{"start":"\d{8}T\d{6}Z","tags":\["foo"\]}')
 
     def test_dom_tracked_count_none(self):
         """Test dom.active without an active interval"""
@@ -196,7 +196,7 @@ class TestDOMTracked(TestCase):
     def test_dom_tracked_N_start_active(self):
         """Test dom.tracked.N.start with active track"""
         code, out, err = self.t("get dom.tracked.1.start")
-        self.assertRegexpMatches(out, r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}')
+        self.assertRegex(out, r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}')
 
     def test_dom_tracked_N_end_invalid(self):
         """Test dom.tracked.N.end with no active track"""
@@ -206,7 +206,7 @@ class TestDOMTracked(TestCase):
     def test_dom_tracked_N_end_inactive(self):
         """Test dom.tracked.N.end with active track"""
         code, out, err = self.t("get dom.tracked.2.end")
-        self.assertRegexpMatches(out, r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}')
+        self.assertRegex(out, r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}')
 
     def test_dom_tracked_N_end_active(self):
         """Test dom.tracked.N.end with active track"""
@@ -216,22 +216,22 @@ class TestDOMTracked(TestCase):
     def test_dom_tracked_N_duration_inactive(self):
         """Test dom.tracked.N.duration of closed track"""
         code, out, err = self.t("get dom.tracked.2.duration")
-        self.assertRegexpMatches(out, r'P1D')
+        self.assertRegex(out, r'P1D')
 
     def test_dom_tracked_N_duration_active(self):
         """Test dom.tracked.N.duration with open track"""
         code, out, err = self.t("get dom.tracked.1.duration")
-        self.assertRegexpMatches(out, r'PT\d+S')
+        self.assertRegex(out, r'PT\d+S')
 
     def test_dom_tracked_N_json_inactive(self):
         """Test dom.tracked.N.json of closed track"""
         code, out, err = self.t("get dom.tracked.2.json")
-        self.assertRegexpMatches(out, r'{"start":"\d{8}T\d{6}Z","end":"\d{8}T\d{6}Z","tags":\["one","two"\]}')
+        self.assertRegex(out, r'{"start":"\d{8}T\d{6}Z","end":"\d{8}T\d{6}Z","tags":\["one","two"\]}')
 
     def test_dom_tracked_N_json_active(self):
         """Test dom.tracked.N.json of open track"""
         code, out, err = self.t("get dom.tracked.1.json")
-        self.assertRegexpMatches(out, r'{"start":"\d{8}T\d{6}Z"}')
+        self.assertRegex(out, r'{"start":"\d{8}T\d{6}Z"}')
 
 
 class TestDOMRC(TestCase):
