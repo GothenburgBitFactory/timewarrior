@@ -211,7 +211,7 @@ class TestConfig(TestCase):
 
     def test_number_to_date_upgrade(self):
         """Test that an integer remains an integer"""
-        code, out, err = self.t("config number 5", input="yes\n")
+        code, out, err = self.t("config number 5", input=b"yes\n")
         self.assertIn(" with a value of '5'?", out)
 
 
