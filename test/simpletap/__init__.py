@@ -215,8 +215,7 @@ class TAPTestResult(unittest.result.TestResult):
 
 
 class TAPTestRunner(unittest.runner.TextTestRunner):
-    """A test runner that displays results using the Test Anything Protocol
-    syntax.
+    """A test runner that displays results using the Test Anything Protocol syntax.
 
     Inherits from TextTestRunner the default runner.
     """
