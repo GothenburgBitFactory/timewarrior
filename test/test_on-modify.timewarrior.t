@@ -1,4 +1,5 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
+
 ###############################################################################
 #
 # Copyright 2006 - 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
