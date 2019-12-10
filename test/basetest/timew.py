@@ -7,7 +7,6 @@ import shutil
 import tempfile
 import unittest
 
-from .compat import STRING_TYPE
 from .exceptions import CommandError
 from .utils import run_cmd_wait, run_cmd_wait_nofail, which, timew_binary_location, DEFAULT_EXTENSION_PATH
 
@@ -148,7 +147,7 @@ class Timew(object):
         argument. The string is literally the same as if written in the shell.
         """
         # Enable nicer-looking calls by allowing plain strings
-        if isinstance(args, STRING_TYPE):
+        if isinstance(args, str):
             args = shlex.split(args)
 
         return args
