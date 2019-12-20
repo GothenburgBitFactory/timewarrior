@@ -12,7 +12,9 @@ RUN yum install -y \
         python36 \
         python36-dateutil
 
-RUN source scl_source enable devtoolset-7; gcc --version; cmake3 --version
+RUN echo "#!/bin/bash" >> /etc/profile.d/enable_env.sh ; \
+    echo "source scl_source enable devtoolset-7" >> /etc/profile.d/enable_env.sh ;
+
 RUN ln -s /usr/bin/cmake3 /usr/bin/cmake
 RUN ln -sf /usr/bin/python3 /usr/bin/python
 
@@ -27,13 +29,12 @@ WORKDIR /root/code/
 RUN git clean -dfx
 RUN git submodule init
 RUN git submodule update
-RUN source scl_source enable devtoolset-7; cmake -DCMAKE_BUILD_TYPE=debug .
-RUN source scl_source enable devtoolset-7; make -j2
-RUN source scl_source enable devtoolset-7; make install
-RUN timew --version
+RUN cmake -DCMAKE_BUILD_TYPE=debug .
+RUN make -j2
+RUN make install
 
 # Setup tests
+RUN make test -j2 || true
 WORKDIR /root/code/test/
-RUN source scl_source enable devtoolset-7; make
 
 CMD ["bash", "-c", "cat all.log | grep 'not ok' ; ./problems ; echo timew $( timew --version ) ; python --version ; cmake --version ; gcc --version"]
