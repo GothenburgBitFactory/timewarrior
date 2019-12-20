@@ -1,8 +1,8 @@
 FROM fedora:28
 
 RUN dnf update -y
-RUN dnf install python git gcc gcc-c++ cmake make gnutls-devel libuuid-devel libfaketime man -y
-RUN dnf install python-dateutil -y
+RUN dnf install -y python3 python3-dateutil git gcc gcc-c++ cmake make gnutls-devel libuuid-devel libfaketime man
+RUN alternatives --install /usr/bin/python python /usr/bin/python3 10
 
 RUN ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 

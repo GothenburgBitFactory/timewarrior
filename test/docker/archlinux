@@ -2,7 +2,7 @@ FROM archlinux/base
 
 RUN pacman -Sy --noconfirm archlinux-keyring
 RUN pacman -Syyu --noconfirm
-RUN pacman -S --noconfirm gnutls util-linux bash-completion cmake python python2 python2-dateutil git libfaketime man-db groff
+RUN pacman -S --noconfirm gnutls util-linux bash-completion cmake python python-dateutil git libfaketime man-db groff
 RUN pacman -S --noconfirm make gcc
 
 # Setup language environment

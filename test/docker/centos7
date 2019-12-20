@@ -7,6 +7,7 @@ RUN yum install which cmake3 devtoolset-7-gcc* -y
 RUN yum install python-dateutil -y
 RUN source scl_source enable devtoolset-7; gcc --version; cmake3 --version
 RUN ln -s /usr/bin/cmake3 /usr/bin/cmake
+RUN ln -sf /usr/bin/python3 /usr/bin/python
 
 # Setup language environment
 ENV LC_ALL en_US.UTF-8
