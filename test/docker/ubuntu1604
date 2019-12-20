@@ -13,12 +13,11 @@ RUN apt-get install -y \
             python3-dateutil \
             tzdata
 
+# Setup environment
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
-
 RUN ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime
 RUN dpkg-reconfigure -f noninteractive tzdata
 
-# Setup language environment
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8

@@ -11,10 +11,9 @@ RUN zypper install -y \
            python3-dateutil
 
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
-
 ENV TZ=Europe/Berlin
 
-# Setup language environment
+# Setup environment
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8

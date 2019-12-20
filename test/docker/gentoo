@@ -16,7 +16,7 @@ RUN (CNT=60 ; while [[ ${CNT} -ne 0 ]] ; do echo "RUNNING (${CNT})" ; sleep 60 ;
            sys-apps/util-linux ; \
     kill %1
 
-# Setup language environment
+# Setup environment
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
