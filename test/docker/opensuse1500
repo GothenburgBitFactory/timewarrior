@@ -1,6 +1,20 @@
 FROM opensuse/leap:15
 
-RUN zypper install -y python3 python3-dateutil awk coreutils git gcc gcc-c++ cmake make libgnutls-devel libuuid-devel libfaketime man
+RUN zypper install -y \
+           python3 \
+           python3-dateutil \
+           awk \
+           coreutils \
+           git \
+           gcc \
+           gcc-c++ \
+           cmake \
+           make \
+           libgnutls-devel \
+           libuuid-devel \
+           libfaketime \
+           man
+
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 
 ENV TZ=Europe/Berlin

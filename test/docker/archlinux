@@ -1,9 +1,20 @@
 FROM archlinux/base
 
 RUN pacman -Sy --noconfirm archlinux-keyring
-RUN pacman -Syyu --noconfirm
-RUN pacman -S --noconfirm gnutls util-linux bash-completion cmake python python-dateutil git libfaketime man-db groff
-RUN pacman -S --noconfirm make gcc
+RUN pacman -Syu --noconfirm
+RUN pacman -S --noconfirm \
+           gnutls \
+           util-linux \
+           bash-completion \
+           cmake \
+           python \
+           python-dateutil \
+           git \
+           libfaketime \
+           man-db \
+           groff \
+           make \
+           gcc
 
 # Setup language environment
 ENV LANG en_US.UTF-8
