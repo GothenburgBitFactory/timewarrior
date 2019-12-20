@@ -5,16 +5,15 @@ FROM gentoo/stage3-x86:latest
 COPY --from=gentoo/portage:latest /var/db/repos/gentoo /var/db/repos/gentoo
 
 RUN (CNT=60 ; while [[ ${CNT} -ne 0 ]] ; do echo "RUNNING (${CNT})" ; sleep 60 ; ((CNT--)) ; done ) & \
-    emerge -qv sys-libs/readline:0 \
-               net-libs/gnutls:0= \
-               sys-apps/util-linux \
-               dev-util/cmake \
-               dev-lang/python \
-               dev-python/python-dateutil \
-               sys-devel/make \
-               dev-vcs/git \
-               sys-libs/libfaketime \
-               sys-apps/man-db ; \
+    emerge -qv \
+           dev-util/cmake \
+           dev-vcs/git \
+           sys-devel/make \
+           sys-apps/man-db \
+           dev-lang/python \
+           dev-python/python-dateutil \
+           sys-libs/readline:0 \
+           sys-apps/util-linux ; \
     kill %1
 
 # Setup language environment

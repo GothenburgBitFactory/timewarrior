@@ -3,17 +3,12 @@ FROM centos:7
 RUN yum update -y
 RUN yum install -y epel-release centos-release-scl
 RUN yum install -y \
-        git \
-        gcc \
-        gcc-c++ \
-        make \
-        gnutls-devel \
-        libuuid-devel \
-        libfaketime \
-        man \
-        which \
         cmake3 \
         devtoolset-7-gcc* \
+        gcc-c++ \
+        git \
+        make \
+        man \
         python36 \
         python36-dateutil
 

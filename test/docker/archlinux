@@ -3,18 +3,13 @@ FROM archlinux/base
 RUN pacman -Sy --noconfirm archlinux-keyring
 RUN pacman -Syu --noconfirm
 RUN pacman -S --noconfirm \
-           gnutls \
-           util-linux \
-           bash-completion \
            cmake \
-           python \
-           python-dateutil \
+           gcc \
            git \
-           libfaketime \
-           man-db \
-           groff \
            make \
-           gcc
+           man-db \
+           python \
+           python-dateutil
 
 # Setup language environment
 ENV LANG en_US.UTF-8

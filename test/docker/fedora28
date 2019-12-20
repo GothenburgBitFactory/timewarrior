@@ -2,17 +2,13 @@ FROM fedora:28
 
 RUN dnf update -y
 RUN dnf install -y \
-        python3 \
-        python3-dateutil \
-        git \
-        gcc \
-        gcc-c++ \
         cmake \
+        gcc-c++ \
+        git \
         make \
-        gnutls-devel \
-        libuuid-devel \
-        libfaketime \
-        man
+        man \
+        python3 \
+        python3-dateutil
 
 RUN alternatives --install /usr/bin/python python /usr/bin/python3 10
 
