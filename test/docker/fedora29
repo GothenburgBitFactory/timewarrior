@@ -28,10 +28,8 @@ RUN git submodule update
 RUN cmake -DCMAKE_BUILD_TYPE=debug .
 RUN make -j2
 RUN make install
-RUN make -j2 test
-RUN timew --version
 
 # Setup tests
+RUN make -j2 test || true
 WORKDIR /root/code/test/
-
-CMD ["bash", "-c", "cat all.log | grep 'not ok' ; ./problems"]
+CMD ["bash", "-c", "./problems --summary ; cat all.log | grep 'not ok' ; ./problems ; echo timew $( timew --version ) ; python --version ; cmake --version ; gcc --version"]

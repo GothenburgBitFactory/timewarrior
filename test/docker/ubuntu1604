@@ -33,10 +33,9 @@ RUN git submodule update
 RUN cmake -DCMAKE_BUILD_TYPE=debug .
 RUN make -j2
 RUN make install
-RUN timew --version
 
 # Setup tests
 WORKDIR /root/code/test/
 RUN make
 
-CMD ["bash", "-c", "./run_all -v ; cat all.log | grep 'not ok' ; ./problems"]
+CMD ["bash", "-c", "./run_all -v ; cat all.log | grep 'not ok' ; ./problems ; echo timew $( timew --version ) ; python --version ; cmake --version ; gcc --version"]
