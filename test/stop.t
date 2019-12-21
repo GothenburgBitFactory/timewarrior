@@ -198,6 +198,19 @@ class TestStop(TestCase):
         self.assertEqual(len(j), 1)
         self.assertClosedInterval(j[0])
 
+    def test_stop_with_id(self):
+        """Stop does not work with with ids other than one"""
+        self.t("start 2h ago")
+        self.t("start 1h ago")
+        
+        code, out, err = self.t.runError("stop @1")
+        # If trying to stop an older interval, check that modify was suggested.
+        self.assertIn("modify", err)
+
+        code, out, err = self.t.runError("stop @2")
+        # If trying to stop an older interval, check that modify was suggested.
+        self.assertIn("modify", err)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
