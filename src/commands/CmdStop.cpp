@@ -50,10 +50,16 @@ int CmdStop (
   // Load the most recent interval.
   auto filter = getFilter (cli);
   auto latest = getLatestInterval (database);
+  std::set <int> ids = cli.getIds ();
 
   // Verify the interval is open.
   if (! latest.is_open ())
     throw std::string ("There is no active time tracking.");
+
+  // We either expect no ids, or we're operating on the most current.
+  if (! ids.empty ())
+    throw std::string ("The stop command works on the most recent open interval. "
+                       "Perhaps you want the modify command?.");
 
   journal.startTransaction ();
 
