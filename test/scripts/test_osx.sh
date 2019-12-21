@@ -1,8 +1,6 @@
 set -x
 
-brew install gnutls
 brew install cmake
-brew install libfaketime
 brew install python3
 python3 -m pip install python3-dateutil
 git clean -dfx
