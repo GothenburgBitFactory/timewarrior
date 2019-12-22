@@ -22,13 +22,12 @@ make install
 pushd test || exit
 make
 ./run_all -v
-grep 'not ok' all.log
 set +x
+grep 'not ok' all.log
 ./problems
 EXIT_CODE=$?
 echo "timew $( timew --version )"
 python --version
-python3 --version
 cmake --version
 clang --version
 exit ${EXIT_CODE}
