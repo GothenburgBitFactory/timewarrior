@@ -1,8 +1,13 @@
 set -x
 
 brew install cmake
-brew install python3
-python3 -m pip install python3-dateutil
+brew install pyenv
+
+pyenv install 3.8.0
+pyenv global 3.8.0
+eval "$( pyenv init - )"
+pip install python-dateutil
+
 git clean -dfx
 git submodule init
 git submodule update
@@ -14,6 +19,7 @@ pushd test || exit
 make
 ./run_all -v
 grep 'not ok' all.log
+set +x
 ./problems
 echo "timew $( timew --version )"
 python --version
