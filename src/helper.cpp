@@ -30,6 +30,7 @@
 #include <format.h>
 #include <Datetime.h>
 #include <Duration.h>
+#include <IntervalFactory.h>
 #include <sstream>
 #include <iomanip>
 #include <iostream>
@@ -85,13 +86,17 @@ std::string intervalSummarize (
     // in the most recent set of intervals for the same tags. This is the
     // acceptable definition of "the current task".
     time_t total_recorded = 0;
-    auto inclusions = getAllInclusions (database);
-    std::vector <Interval>::reverse_iterator i;
-    for (i = inclusions.rbegin (); i != inclusions.rend (); i++)
-      if (interval.tags () == i->tags ())
-        total_recorded += i->total ();
+
+    auto i = database.rbegin ();
+    auto end = database.rend ();
+    for (; i != end; ++i)
+    {
+      Interval current = IntervalFactory::fromSerialization (*i);
+      if (interval.tags () == current.tags ())
+        total_recorded += current.total ();
       else
         break;
+    }
 
     Duration total (total_recorded);
 
