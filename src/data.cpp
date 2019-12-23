@@ -315,7 +315,7 @@ std::vector <Range> getAllExclusions (
 std::vector <Interval> getAllInclusions (Database& database)
 {
   std::vector <Interval> all;
-  for (auto& line : database.allLines ())
+  for (auto& line : database)
   {
     Interval i = IntervalFactory::fromSerialization (line);
     all.push_back (i);

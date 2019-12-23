@@ -99,7 +99,6 @@ public:
   std::vector <std::string> files () const;
 
   std::string lastLine ();
-  std::vector <std::string> allLines ();
 
   void addInterval (const Interval&, bool verbose);
   void deleteInterval (const Interval&);
