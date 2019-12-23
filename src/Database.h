@@ -39,6 +39,60 @@
 class Database
 {
 public:
+
+  class iterator
+  {
+  private:
+    friend class Database;
+    typedef std::vector <Datafile>::iterator files_iterator;
+    typedef std::vector <std::string>::const_iterator lines_iterator;
+    typedef std::string value_type;
+
+    files_iterator files_it;
+    files_iterator files_end;
+
+    lines_iterator lines_it;
+    lines_iterator lines_end;
+
+    iterator (files_iterator fbegin, files_iterator fend);
+
+  public:
+    iterator& operator++ ();
+    iterator& operator++ (int);
+    iterator& operator-- ();
+    bool operator== (const iterator & other) const;
+    bool operator!= (const iterator & other) const;
+    const value_type& operator* () const;
+    const value_type* operator-> () const;
+  };
+
+  class reverse_iterator
+  {
+  private:
+    friend class Database;
+    typedef std::vector <Datafile>::reverse_iterator files_iterator;
+    typedef std::vector <std::string>::const_reverse_iterator lines_iterator;
+    typedef std::string value_type;
+
+    files_iterator files_it;
+    files_iterator files_end;
+
+    lines_iterator lines_it;
+    lines_iterator lines_end;
+
+    reverse_iterator(files_iterator fbegin, files_iterator fend);
+
+  public:
+    reverse_iterator& operator++ ();
+    reverse_iterator& operator++ (int);
+    reverse_iterator& operator-- ();
+    bool operator== (const reverse_iterator & other) const;
+    bool operator!= (const reverse_iterator & other) const;
+    const value_type& operator* () const;
+    const value_type* operator-> () const;
+  };
+
+public:
   Database () = default;
   void initialize (const std::string&, Journal& journal);
   void commit ();
@@ -52,6 +106,11 @@ public:
   void modifyInterval (const Interval&, const Interval &, bool verbose);
 
   std::string dump () const;
+
+  iterator begin ();
+  iterator end ();
+  reverse_iterator rbegin ();
+  reverse_iterator rend ();
 
 private:
   unsigned int getDatafile (int, int);
