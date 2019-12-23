@@ -77,7 +77,7 @@ std::string Datafile::lastLine ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <std::string> Datafile::allLines ()
+const std::vector <std::string>& Datafile::allLines ()
 {
   if (! _lines_loaded)
     load_lines ();
