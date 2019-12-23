@@ -41,7 +41,7 @@ public:
   std::string name () const;
 
   std::string lastLine ();
-  std::vector <std::string> allLines ();
+  const std::vector <std::string>& allLines ();
 
   void addInterval (const Interval&);
   void deleteInterval (const Interval&);
