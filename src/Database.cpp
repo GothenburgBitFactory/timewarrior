@@ -24,6 +24,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <cassert>
 #include <Database.h>
 #include <format.h>
 #include <JSON.h>
@@ -31,6 +32,191 @@
 #include <iomanip>
 #include <shared.h>
 #include <timew.h>
+
+////////////////////////////////////////////////////////////////////////////////
+Database::iterator::iterator (files_iterator fbegin, files_iterator fend) :
+          files_it(fbegin),
+          files_end(fend)
+{
+    if (files_end != files_it) {
+      auto &lines = files_it->allLines ();
+      lines_it = lines.begin ();
+      lines_end = lines.end ();
+      while ((lines_it == lines_end) && (files_it != files_end))
+        ++files_it;
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Database::iterator& Database::iterator::operator++()
+{
+  if (files_it != files_end)
+  {
+    if (lines_it != lines_end)
+    {
+      ++lines_it;
+
+      // If we are at the end of the current file, we will need to advance to
+      // the next file here. A file may be empty, which is why we need to wait
+      // until we are pointing at a valid line.
+      while ((lines_it == lines_end) && (files_it != files_end))
+      {
+        ++files_it;
+        if (files_it != files_end)
+        {
+          auto& lines = files_it->allLines ();
+          lines_it = lines.begin ();
+          lines_end = lines.end ();
+        }
+      }
+    }
+  }
+  return *this;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool Database::iterator::operator==(const iterator & other) const
+{
+  return (other.files_it == other.files_end) ?
+          files_it == files_end :
+         ((files_it == other.files_it) &&
+          (files_end == other.files_end) &&
+          (lines_it == other.lines_it) &&
+          (lines_end == other.lines_end));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool Database::iterator::operator!=(const iterator & other) const
+{
+  return ! (*this == other);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+const std::string& Database::iterator::operator*() const
+{
+  assert(lines_it != lines_end);
+  return *lines_it;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+const std::string* Database::iterator::operator->() const
+{
+  assert(lines_it != lines_end);
+  return &(*lines_it);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Database::reverse_iterator::reverse_iterator (files_iterator fbegin,
+                                              files_iterator fend) :
+          files_it(fbegin),
+          files_end(fend)
+{
+    if (files_end != files_it)
+    {
+      lines_it = files_it->allLines ().rbegin ();
+      lines_end = files_it->allLines ().rend ();
+      while ((lines_it == lines_end) && (files_it != files_end))
+        ++files_it;
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Database::reverse_iterator& Database::reverse_iterator::operator++()
+{
+  if (files_it != files_end)
+  {
+    if (lines_it != lines_end)
+    {
+      ++lines_it;
+
+      // If we are at the end of the current file, we will need to advance to
+      // the next file here. A file may be empty, which is why we need to wait
+      // until we are pointing at a valid line.
+      while ((lines_it == lines_end) && (files_it != files_end))
+      {
+        ++files_it;
+        if (files_it != files_end)
+        {
+          lines_it = files_it->allLines ().rbegin ();
+          lines_end = files_it->allLines ().rend ();
+        }
+      }
+    }
+  }
+  return *this;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool
+Database::reverse_iterator::operator==(const reverse_iterator & other) const
+{
+  return (other.files_it == other.files_end) ?
+          files_it == files_end :
+         ((files_it == other.files_it) &&
+          (files_end == other.files_end) &&
+          (lines_it == other.lines_it) &&
+          (lines_end == other.lines_end));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool
+Database::reverse_iterator::operator!=(const reverse_iterator & other) const
+{
+  return ! (*this == other);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+const std::string& Database::reverse_iterator::operator*() const
+{
+  assert (lines_it != lines_end);
+  return *lines_it;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+const std::string* Database::reverse_iterator::operator->() const
+{
+  return &operator*();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Database::iterator Database::begin ()
+{
+  if (_files.empty ())
+  {
+    initializeDatafiles ();
+  }
+
+  return iterator(_files.begin (), _files.end ());
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Database::iterator Database::end ()
+{
+  return iterator (_files.end (), _files.end ());
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+Database::reverse_iterator Database::rbegin ()
+{
+  if (_files.empty ())
+  {
+    initializeDatafiles ();
+  }
+
+  return reverse_iterator (_files.rbegin (), _files.rend ());
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Database::reverse_iterator Database::rend ()
+{
+  if (_files.empty ())
+  {
+    initializeDatafiles ();
+  }
+
+  return reverse_iterator (_files.rend (), _files.rend ());
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 void Database::initialize (const std::string& location, Journal& journal)
