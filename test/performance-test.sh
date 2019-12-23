@@ -2,9 +2,23 @@
 
 set -e
 
-THREE_HOURS_BEFORE=$( date -v "-3H" "+%Y%m%dT%H0000" )
-TWO_HOURS_BEFORE=$( date -v "-2H" "+%Y%m%dT%H0000" )
-ONE_HOUR_BEFORE=$( date -v "-1H" "+%Y%m%dT%H0000" )
+# Due to system integrity protection, macOS requires us to use a copy of date
+# if we want it to work with faketimea.
+DATE=$(command -v date)
+if [ $(uname -s) = "Darwin" ]; then
+    TEMP_DATE=$(mktemp)
+    cp $DATE $TEMP_DATE
+    chmod +x $TEMP_DATE
+    DATE=$TEMP_DATE
+    function cleanup {
+        rm -fr $DATE
+    }
+    trap cleanup EXIT
+fi
+
+THREE_HOURS_BEFORE=$( faketime '3 hours ago' ${DATE} "+%Y%m%dT%H0000" )
+TWO_HOURS_BEFORE=$( faketime '2 hours ago' ${DATE} "+%Y%m%dT%H0000" )
+ONE_HOUR_BEFORE=$( faketime '1 hours ago' ${DATE} "+%Y%m%dT%H0000" )
 
 TIMEW_BIN="${BASH_SOURCE[0]%/*}/../src/timew"
 
@@ -314,7 +328,7 @@ for timew_cmd in ${TIMEW_COMMANDS} ; do
 done
 
 for step in $( seq 0 20 ) ; do
-  YEAR_MONTH=$( date -v "-${step}m" "+%Y-%m" )
+  YEAR_MONTH=$( faketime "${step} months ago" ${DATE} "+%Y-%m" )
 
   if [[ "${step}" -gt 0 ]] ; then
     year=${YEAR_MONTH%-*}
