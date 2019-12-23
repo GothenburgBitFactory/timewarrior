@@ -265,26 +265,6 @@ std::string Database::lastLine ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <std::string> Database::allLines ()
-{
-  if (_files.empty ())
-  {
-    initializeDatafiles ();
-  }
-
-  std::vector <std::string> all;
-  for (auto& file : _files)
-  {
-    auto i = file.allLines ();
-    all.insert (all.end (),
-                std::make_move_iterator (i.begin ()),
-                std::make_move_iterator (i.end ()));
-  }
-
-  return all;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 void Database::addInterval (const Interval& interval, bool verbose)
 {
   auto tags = interval.tags ();
