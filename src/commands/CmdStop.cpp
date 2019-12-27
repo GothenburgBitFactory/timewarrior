@@ -54,7 +54,9 @@ int CmdStop (
 
   // Verify the interval is open.
   if (! latest.is_open ())
+  {
     throw std::string ("There is no active time tracking.");
+  }
 
   // We expect no ids
   if (! ids.empty ())
