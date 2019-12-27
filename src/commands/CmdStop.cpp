@@ -56,10 +56,12 @@ int CmdStop (
   if (! latest.is_open ())
     throw std::string ("There is no active time tracking.");
 
-  // We either expect no ids, or we're operating on the most current.
+  // We expect no ids
   if (! ids.empty ())
-    throw std::string ("The stop command works on the most recent open interval. "
+  {
+    throw std::string ("The stop command does not accept ids as it works on the most recent open interval only. "
                        "Perhaps you want the modify command?.");
+  }
 
   journal.startTransaction ();
 
