@@ -1,26 +1,18 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 
-from __future__ import print_function
+import argparse
+import codecs
+import glob
+import logging
 import os
 import sys
-import glob
-import argparse
-import logging
 import time
+from builtins import object
+from builtins import range
 from multiprocessing import cpu_count
-from threading import Thread
+from queue import Queue, Empty
 from subprocess import call, Popen, PIPE
-
-if sys.version_info > (3,):
-    import codecs
-
-try:
-    # python 2
-    from Queue import Queue, Empty
-except ImportError:
-    # python 3
-    from queue import Queue, Empty
+from threading import Thread
 
 TIMEOUT = .2
 
@@ -36,16 +28,14 @@ def run_test(testqueue, outqueue, threadname):
         log.info("Running test %s", test)
 
         try:
-            p = Popen(os.path.abspath(test), stdout=PIPE, stderr=PIPE,
-                      env=os.environ)
+            p = Popen(os.path.abspath(test), stdout=PIPE, stderr=PIPE, env=os.environ)
             out, err = p.communicate()
         except Exception as e:
             log.exception(e)
             # Premature end
             break
 
-        if sys.version_info > (3,):
-            out, err = out.decode('utf-8'), err.decode('utf-8')
+        out, err = out.decode('utf-8'), err.decode('utf-8')
 
         output = ("# {0}\n".format(os.path.basename(test)), out, err)
         log.debug("Collected output %s", output)
@@ -60,10 +50,7 @@ def run_test(testqueue, outqueue, threadname):
 class TestRunner(object):
     def __init__(self):
         self.threads = []
-        if sys.version_info > (3,):
-            self.tap = open(cmd_args.tapfile, 'w', errors='ignore')
-        else:
-            self.tap = open(cmd_args.tapfile, 'w')
+        self.tap = open(cmd_args.tapfile, 'w', errors='ignore')
 
         self._parallelq = Queue()
         self._serialq = Queue()
@@ -118,13 +105,13 @@ class TestRunner(object):
         if cmd_args.serial:
             return False
 
-        # This is a pretty weird way to do it, and not realiable.
+        # This is a pretty weird way to do it, and not reliable.
         # We are dealing with some binary tests though.
         with open(test, 'rb') as fh:
             header = fh.read(100).split(b"\n")
             if len(header) >= 2 and \
-                ((b"/usr/bin/env python" in header[0]) or \
-                (header[1][-14:] == b"bash_tap_tw.sh")):
+                    ((b"/usr/bin/env python" in header[0]) or
+                     (header[1][-14:] == b"bash_tap_tw.sh")):
                 return True
             else:
                 return False
@@ -187,21 +174,26 @@ class TestRunner(object):
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Run Taskwarrior tests")
-    parser.add_argument('--verbose', '-v', action="store_true",
+    parser.add_argument('--verbose',
+                        '-v',
+                        action="store_true",
                         help="Also send TAP output to stdout")
-    parser.add_argument('--logging', '-l', action="count",
+    parser.add_argument('--logging',
+                        '-l',
+                        action="count",
                         default=0,
                         help="Logging level. -lll is the highest level")
-    parser.add_argument('--serial', action="store_true",
+    parser.add_argument('--serial',
+                        action="store_true",
                         help="Do not run tests in parallel")
-    parser.add_argument('--tapfile', default="all.log",
+    parser.add_argument('--tapfile',
+                        default="all.log",
                         help="File to use for TAP output")
     return parser.parse_args()
 
 
 def main():
-    if sys.version_info > (3,):
-        sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
+    sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
 
     runner = TestRunner()
     runner.start()
@@ -235,5 +227,3 @@ if __name__ == "__main__":
     except Exception as e:
         log.exception(e)
         sys.exit(1)
-
-# vim: ai sts=4 et sw=4
