@@ -62,6 +62,7 @@ def update_locales(locales, regions, years):
             fh.write("  {}:\n".format(locale))
 
             for year in years:
+                holidays = dict()
                 url = holidata(locale, year)
                 print(url)
                 try:
@@ -73,7 +74,11 @@ def update_locales(locales, regions, years):
                             if not j['region'] or not regions or j['region'] in regions:
                                 day = j['date'].replace("-", "_")
                                 desc = j['description']
-                                fh.write("    {} = {}\n".format(day, desc))
+                                holidays[day] = desc
+
+                    for date, desc in holidays.items():
+                        fh.write("    {} = {}\n".format(date, desc))
+
                     fh.write('\n')
 
                 except HTTPError as e:
