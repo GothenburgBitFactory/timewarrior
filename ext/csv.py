@@ -24,4 +24,4 @@ for object in j:
         for tag in object['tags']:
             line += ',"%s"' % tag
 
-    print line
+    print(line)
