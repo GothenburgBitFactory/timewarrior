@@ -90,7 +90,7 @@ def main(args):
     else:
         # Enumerate all holiday files in the current directory.
         locales = []
-        re_holiday_file = re.compile(r"\/holidays.([a-z]{2}-[A-Z]{2}$)")
+        re_holiday_file = re.compile(r"/holidays.([a-z]{2}-[A-Z]{2}$)")
         for file in enumerate('.'):
             result = re_holiday_file.search(file)
             if result:
