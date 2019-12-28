@@ -73,8 +73,7 @@ def update_locales(locales, regions, years):
                             if j['region'] == '' or regions is None or len(regions) == 0 or j['region'] in regions:
                                 day = j['date'].replace("-", "_")
                                 desc = j['description']
-                                data = "    {} = {}\n".format(day, desc)
-                                fh.write(data)
+                                fh.write("    {} = {}\n".format(day, desc))
                     fh.write('\n')
 
                 except HTTPError as e:
