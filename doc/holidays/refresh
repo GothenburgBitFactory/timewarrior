@@ -26,51 +26,46 @@
 ###############################################################################
 
 import argparse
+import datetime
 import json
 import os
 import re
-import sys
-import time
-
-import datetime
-
-if sys.version_info >= (3, 0):
-    from urllib.request import urlopen
-    from urllib.error import HTTPError
-else:
-    from urllib2 import urlopen, HTTPError
+from urllib.error import HTTPError
+from urllib.request import urlopen
 
 
 def enumerate(path):
     if not os.path.exists(path):
-        raise Exception("Directory '%s' does not exist" % path)
+        raise Exception("Directory '{}' does not exist".format(path))
 
     found = []
     for path, dirs, files in os.walk(path, topdown=True, onerror=None, followlinks=False):
-        found.extend(map(lambda x: os.path.join(path, x), files))
+        found.extend([os.path.join(path, x) for x in files])
     return found
 
 
 def holidata(locale, year):
-    return "https://holidata.net/%s/%d.json" % (locale, year)
+    return "https://holidata.net/{}/{}.json".format(locale, year)
 
 
 def update_locales(locales, regions, years):
+    now = datetime.datetime.now()
+
     if not years:
-        years = [datetime.datetime.now().year, datetime.datetime.now().year + 1]
+        years = [now.year, now.year + 1]
 
     for locale in locales:
-        with open("holidays.%s" % locale, "w") as fh:
-            fh.write('# Holiday data provided by holidata.net\n')
-            fh.write('#   Generated ' + time.strftime('%Y-%m-%dT%H:%M:%S') + '\n\n')
-            fh.write('define holidays:\n')
-            fh.write('  ' + locale + ':\n')
+        with open("holidays.{}".format(locale), "w") as fh:
+            fh.write("# Holiday data provided by holidata.net\n")
+            fh.write("#   Generated {:%Y-%m-%dT%H:%M:%S}\n\n".format(now))
+            fh.write("define holidays:\n")
+            fh.write("  {}:\n".format(locale))
 
             for year in years:
                 url = holidata(locale, year)
                 print(url)
                 try:
-                    lines = urlopen(url).read().decode('utf-8')
+                    lines = urlopen(url).read().decode("utf-8")
 
                     for line in lines.split('\n'):
                         if line:
@@ -78,16 +73,13 @@ def update_locales(locales, regions, years):
                             if j['region'] == '' or regions is None or len(regions) == 0 or j['region'] in regions:
                                 day = j['date'].replace("-", "_")
                                 desc = j['description']
-                                data = '    %s = %s\n' % (day, desc)
-                                if sys.version_info >= (3, 0):
-                                    fh.write(data)
-                                else:
-                                    fh.write(data.encode('utf-8'))
+                                data = "    {} = {}\n".format(day, desc)
+                                fh.write(data)
                     fh.write('\n')
 
                 except HTTPError as e:
                     if e.code == 404:
-                        print("holidata.net does not have data for %s, for %d." % (locale, year))
+                        print("holidata.net does not have data for {}, for {}.".format(locale, year))
                     else:
                         print(e.code, e.read())
 
@@ -98,7 +90,7 @@ def main(args):
     else:
         # Enumerate all holiday files in the current directory.
         locales = []
-        re_holiday_file = re.compile("\/holidays.([a-z]{2}-[A-Z]{2}$)")
+        re_holiday_file = re.compile(r"\/holidays.([a-z]{2}-[A-Z]{2}$)")
         for file in enumerate('.'):
             result = re_holiday_file.search(file)
             if result:
