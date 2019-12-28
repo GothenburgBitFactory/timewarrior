@@ -1,21 +1,27 @@
 # Timewarrior Holiday Files
 
-The holiday files were created using https://holidata.net data by the 'refresh' script.
-This data can be updated using these commands:
+The holiday files were created by the `refresh` script using data from https://holidata.net.
+The holiday files can be updated using the command:
 
     $ ./refresh
 
-If you need another locale (for example sv-SE), do this:
+This updates all present holiday files with holiday data for the current and the following year (default).
+
+If you need another locale (for example `sv-SE`), do this:
 
     $ ./refresh --locale sv-SE
 
+This creates a file `holidays.sv-SE` containing holiday data for the current and following year.
+The id for the locale is composed from the [ISO 639-1 language code](https://en.wikipedia.org/wiki/ISO_639-1) and the [ISO 3166-1 alpha-2 country code](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2).
+
 If you need a specific locale region, do this:
 
-    $ ./refresh --locale de-CH --region Bern
+    $ ./refresh --locale de-CH --region BE
 
-By default, the current and next year are updated.
-If the locale is not supported by holidata.net, or there is no data (yet) for the locale for this year and next year, you will see an error.
+For regions use the corresponding [ISO 3166-2 code for principal subdivisions](https://en.wikipedia.org/wiki/ISO_3166-2).
 
 To specify a set of years to update, do this:
 
-    $ ./refresh --locale en-US --year 2015 2016 2017
+    $ ./refresh --locale en-US --year 2018 2019 2020
+
+If the locale is not yet supported by holidata.net, or there is no data available for the requested year, you will see an error.
