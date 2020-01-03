@@ -61,10 +61,13 @@ if __name__ == "__main__":
     ok = re.compile(r"^ok ", re.I)
     not_ok = re.compile(r"^not ok", re.I)
     comment = re.compile(r"^#")
-    plan = re.compile(r"^1..\d+\s*(?:#.*)?$")
+    plan = re.compile(r"^1..(\d+)\s*(?:#.*)?$")
 
     start = None
     stop = None
+    filename = None
+    expected_test_count = 0
+    need_plan = False
 
     with open(cmd_args.tapfile) as fh:
         for line in fh:
@@ -75,22 +78,39 @@ if __name__ == "__main__":
 
             match = file.match(line)
             if match:
+                if filename:
+                    if expected_test_count > 0:
+                        print(color("'{}' failed to run all tests.".format(filename), "red"), file=sys.stderr)
+                        errors[filename] += expected_test_count
+                    elif need_plan:
+                        print(color("'{}' failed to run any tests.".format(filename), "red"), file=sys.stderr)
+                        errors[filename] += 1
                 filename = match.group(1)
+                need_plan = True
+                continue
+
+            match = plan.match(line)
+            if match:
+                expected_test_count = int(match.group(1))
+                need_plan = False
                 continue
 
             match = expected_fail.match(line)
             if match:
                 expected[filename] += 1
+                expected_test_count -= 1
                 continue
 
             match = unexpected_pass.match(line)
             if match:
                 unexpected[filename] += 1
+                expected_test_count -= 1
                 continue
 
             match = skip.match(line)
             if match:
                 skipped[filename] += 1
+                expected_test_count -= 1
                 continue
 
             # It's important these come last, since they're subpatterns of the above
@@ -98,15 +118,13 @@ if __name__ == "__main__":
             match = ok.match(line)
             if match:
                 passed[filename] += 1
+                expected_test_count -= 1
                 continue
 
             match = not_ok.match(line)
             if match:
                 errors[filename] += 1
-                continue
-
-            match = plan.match(line)
-            if match:
+                expected_test_count -= 1
                 continue
 
             match = comment.match(line)
