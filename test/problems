@@ -76,34 +76,45 @@ if __name__ == "__main__":
             match = file.match(line)
             if match:
                 filename = match.group(1)
+                continue
 
-            elif expected_fail.match(line):
+            match = expected_fail.match(line)
+            if match:
                 expected[filename] += 1
+                continue
 
-            elif unexpected_pass.match(line):
+            match = unexpected_pass.match(line)
+            if match:
                 unexpected[filename] += 1
+                continue
 
-            elif skip.match(line):
+            match = skip.match(line)
+            if match:
                 skipped[filename] += 1
+                continue
 
             # It's important these come last, since they're subpatterns of the above
 
-            elif ok.match(line):
+            match = ok.match(line)
+            if match:
                 passed[filename] += 1
+                continue
 
-            elif not_ok.match(line):
+            match = not_ok.match(line)
+            if match:
                 errors[filename] += 1
+                continue
 
-            elif comment.match(line):
-                pass
+            match = plan.match(line)
+            if match:
+                continue
 
-            elif plan.match(line):
-                pass
+            match = comment.match(line)
+            if match:
+                continue
 
-            else:
-                # Uncomment if you want to see malformed things we caught as well...
-                # print(color("Malformed TAP (" + filename + "): " + line, "red"))
-                pass
+            # Uncomment if you want to see malformed things we caught as well...
+            # print(color("Malformed TAP (" + filename + "): " + line, "red"))
 
         # Last line contains the ending timestamp
         stop = float(timestamp.match(line).group(1))
