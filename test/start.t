@@ -139,7 +139,7 @@ class TestStart(TestCase):
         self.assertNotIn("Recorded bar foo", out)
 
     def test_single_interval_enclosing_exclusion(self):
-        """Add one interval that encloseѕ an exclusion, and is therefore flattened"""
+        """Add one interval that encloses an exclusion, and is therefore flattened"""
         self.t.configure_exclusions([(time(18, 5, 11), time(9, 11, 50)),
                                      (time(12, 22, 44), time(13, 32, 23))])
 

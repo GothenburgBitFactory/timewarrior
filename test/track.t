@@ -58,7 +58,7 @@ class TestTrack(TestCase):
         self.assertClosedInterval(j[0], expectedTags=["foo"])
 
     def test_single_interval_enclosing_exclusion(self):
-        """Add one interval that encloseѕ an exclusion, and is therefore flattened"""
+        """Add one interval that encloses an exclusion, and is therefore flattened"""
         self.t.configure_exclusions([(time(18, 0, 0), time(9, 0, 0)),
                                     (time(12, 0, 0), time(13, 0, 0))])
 
