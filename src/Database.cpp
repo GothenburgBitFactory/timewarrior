@@ -261,6 +261,12 @@ std::vector <std::string> Database::files () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::set <std::string> Database::tags () const
+{
+  return _tagInfoDatabase.tags ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Return most recent line from database 
 std::string Database::firstLine ()
 {

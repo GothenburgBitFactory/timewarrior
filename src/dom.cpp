@@ -177,11 +177,8 @@ bool domGet (
 
     else if (pig.skipLiteral ("tag."))
     {
-      // Generate a unique, ordered list of tags.
-      std::set <std::string> tags;
-      for (auto& interval : getAllInclusions (database))
-        for (auto& tag : interval.tags ())
-          tags.insert (tag);
+      // get unique, ordered list of tags.
+      std::set <std::string> tags = database.tags ();
 
       // dom.tag.count
       if (pig.skipLiteral ("count"))

@@ -97,6 +97,7 @@ public:
   void initialize (const std::string&, Journal& journal);
   void commit ();
   std::vector <std::string> files () const;
+  std::set <std::string> tags () const;
 
   std::string firstLine ();
 
