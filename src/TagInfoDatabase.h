@@ -27,6 +27,7 @@
 #ifndef INCLUDED_TAGINFODATABASE
 #define INCLUDED_TAGINFODATABASE
 
+#include <set>
 #include <string>
 #include <map>
 #include <TagInfo.h>
@@ -38,6 +39,8 @@ public:
   int decrementTag (const std::string&);
 
   void add (const std::string&, const TagInfo&);
+
+  std::set <std::string> tags () const;
 
   std::string toJson ();
 

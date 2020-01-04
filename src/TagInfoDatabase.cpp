@@ -75,6 +75,21 @@ void TagInfoDatabase::add (const std::string& tag, const TagInfo& tagInfo)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+// Return the current set of tag names
+//
+std::set <std::string> TagInfoDatabase::tags () const
+{
+  std::set <std::string> tags; 
+
+  for (auto& item : _tagInformation)
+  {
+    tags.insert (item.first);
+  }
+
+  return tags;
+}
+
+///////////////////////////////////////////////////////////////////////////////
 std::string TagInfoDatabase::toJson ()
 {
   std::stringstream json;
