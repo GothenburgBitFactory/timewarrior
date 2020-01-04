@@ -87,11 +87,9 @@ std::string intervalSummarize (
     // acceptable definition of "the current task".
     time_t total_recorded = 0;
 
-    auto i = database.rbegin ();
-    auto end = database.rend ();
-    for (; i != end; ++i)
+    for (auto& line : database)
     {
-      Interval current = IntervalFactory::fromSerialization (*i);
+      Interval current = IntervalFactory::fromSerialization (line);
       if (interval.tags () == current.tags ())
         total_recorded += current.total ();
       else

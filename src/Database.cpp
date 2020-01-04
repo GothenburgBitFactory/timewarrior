@@ -39,12 +39,15 @@ Database::iterator::iterator (files_iterator fbegin, files_iterator fend) :
           files_it(fbegin),
           files_end(fend)
 {
-    if (files_end != files_it) {
+    if (files_end != files_it)
+    {
       auto &lines = files_it->allLines ();
-      lines_it = lines.begin ();
-      lines_end = lines.end ();
+      lines_it = lines.rbegin ();
+      lines_end = lines.rend ();
       while ((lines_it == lines_end) && (files_it != files_end))
+      {
         ++files_it;
+      }
     }
 }
 
@@ -66,8 +69,8 @@ Database::iterator& Database::iterator::operator++()
         if (files_it != files_end)
         {
           auto& lines = files_it->allLines ();
-          lines_it = lines.begin ();
-          lines_end = lines.end ();
+          lines_it = lines.rbegin ();
+          lines_end = lines.rend ();
         }
       }
     }
@@ -114,10 +117,12 @@ Database::reverse_iterator::reverse_iterator (files_iterator fbegin,
 {
     if (files_end != files_it)
     {
-      lines_it = files_it->allLines ().rbegin ();
-      lines_end = files_it->allLines ().rend ();
+      lines_it = files_it->allLines ().begin ();
+      lines_end = files_it->allLines ().end ();
       while ((lines_it == lines_end) && (files_it != files_end))
+      {
         ++files_it;
+      }
     }
 }
 
@@ -138,8 +143,8 @@ Database::reverse_iterator& Database::reverse_iterator::operator++()
         ++files_it;
         if (files_it != files_end)
         {
-          lines_it = files_it->allLines ().rbegin ();
-          lines_end = files_it->allLines ().rend ();
+          lines_it = files_it->allLines ().begin ();
+          lines_end = files_it->allLines ().end ();
         }
       }
     }
@@ -187,13 +192,18 @@ Database::iterator Database::begin ()
     initializeDatafiles ();
   }
 
-  return iterator(_files.begin (), _files.end ());
+  return iterator (_files.rbegin (), _files.rend ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 Database::iterator Database::end ()
 {
-  return iterator (_files.end (), _files.end ());
+  if (_files.empty ())
+  {
+    initializeDatafiles ();
+  }
+
+  return iterator (_files.rend (), _files.rend ());
 }
 
 
@@ -205,7 +215,7 @@ Database::reverse_iterator Database::rbegin ()
     initializeDatafiles ();
   }
 
-  return reverse_iterator (_files.rbegin (), _files.rend ());
+  return reverse_iterator(_files.begin (), _files.end ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -216,7 +226,7 @@ Database::reverse_iterator Database::rend ()
     initializeDatafiles ();
   }
 
-  return reverse_iterator (_files.rend (), _files.rend ());
+  return reverse_iterator (_files.end (), _files.end ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -251,15 +261,16 @@ std::vector <std::string> Database::files () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Walk backwards through the files until an interval is found.
-std::string Database::lastLine ()
+// Return most recent line from database 
+std::string Database::firstLine ()
 {
-  auto it = rbegin ();
-  auto end = rend ();
-
-  while (it != end)
-    if (! it->empty ())
-      return *it;
+  for (auto& line : *this)
+  {
+    if (! line.empty ())
+    {
+      return line;
+    }
+  }
 
   return "";
 }
@@ -424,8 +435,8 @@ void Database::initializeTagDatabase ()
 
   if (!File::read (_location + "/tags.data", content))
   {
-    auto it = rbegin ();
-    auto end = rend ();
+    auto it = Database::begin ();
+    auto end = Database::end ();
     
     if (it == end)
       return;

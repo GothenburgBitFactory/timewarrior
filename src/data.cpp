@@ -315,10 +315,11 @@ std::vector <Range> getAllExclusions (
 std::vector <Interval> getAllInclusions (Database& database)
 {
   std::vector <Interval> all;
-  for (auto& line : database)
+  auto it = database.rbegin ();
+  auto end = database.rend ();
+  for ( ;it != end; ++it)
   {
-    Interval i = IntervalFactory::fromSerialization (line);
-    all.push_back (i);
+    all.push_back (IntervalFactory::fromSerialization (*it));
   }
 
   return all;
@@ -572,8 +573,8 @@ std::vector <Interval> getTracked (
   // Avoid assigning a zero-width range - leave it unstarted instead.
   if (! filter.is_started ())
   {
-    auto begin = database.begin ();
-    auto end = database.end ();
+    auto begin = database.rbegin ();
+    auto end = database.rend ();
     if (begin != end) 
     {
       filter.start = IntervalFactory::fromSerialization (*begin).start;
@@ -588,11 +589,9 @@ std::vector <Interval> getTracked (
   int id_skip = 0;
   std::deque <Interval> intervals;
 
-  auto it = database.rbegin ();
-  auto end = database.rend ();
-  for (; it != end; ++it)
+  for (auto& line : database)
   {
-    Interval interval = IntervalFactory::fromSerialization(*it);
+    Interval interval = IntervalFactory::fromSerialization(line);
 
     // Since we are moving backwards, and the intervals are in sorted order,
     // if the filter is after the interval, we know there will be no more
@@ -668,9 +667,9 @@ std::vector <Range> getUntracked (
 Interval getLatestInterval (Database& database)
 {
   Interval i;
-  auto lastLine = database.lastLine ();
-  if (! lastLine.empty ())
-    i = IntervalFactory::fromSerialization (lastLine);
+  auto firstLine = database.firstLine ();
+  if (! firstLine.empty ())
+    i = IntervalFactory::fromSerialization (firstLine);
 
   return i;
 }

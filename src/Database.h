@@ -44,8 +44,8 @@ public:
   {
   private:
     friend class Database;
-    typedef std::vector <Datafile>::iterator files_iterator;
-    typedef std::vector <std::string>::const_iterator lines_iterator;
+    typedef std::vector <Datafile>::reverse_iterator files_iterator;
+    typedef std::vector <std::string>::const_reverse_iterator lines_iterator;
     typedef std::string value_type;
 
     files_iterator files_it;
@@ -70,8 +70,8 @@ public:
   {
   private:
     friend class Database;
-    typedef std::vector <Datafile>::reverse_iterator files_iterator;
-    typedef std::vector <std::string>::const_reverse_iterator lines_iterator;
+    typedef std::vector <Datafile>::iterator files_iterator;
+    typedef std::vector <std::string>::const_iterator lines_iterator;
     typedef std::string value_type;
 
     files_iterator files_it;
@@ -98,7 +98,7 @@ public:
   void commit ();
   std::vector <std::string> files () const;
 
-  std::string lastLine ();
+  std::string firstLine ();
 
   void addInterval (const Interval&, bool verbose);
   void deleteInterval (const Interval&);
