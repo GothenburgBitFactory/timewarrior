@@ -434,6 +434,11 @@ std::vector <Range> Database::segmentRange (const Range& range)
   return segments;
 }
 
+bool Database::empty ()
+{
+  return Database::begin () == Database::end ();
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 void Database::initializeTagDatabase ()
 {
