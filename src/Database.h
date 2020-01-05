@@ -107,6 +107,7 @@ public:
 
   std::string dump () const;
 
+  bool empty ();
   iterator begin ();
   iterator end ();
   reverse_iterator rbegin ();
