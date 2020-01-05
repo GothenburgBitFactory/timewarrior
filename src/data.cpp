@@ -312,6 +312,111 @@ std::vector <Range> getAllExclusions (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void flattenDatabase (Database& database, const Rules& rules)
+{
+  auto latest = getLatestInterval (database);
+  if (latest.is_open ())
+  {
+    auto exclusions = getAllExclusions (rules, {latest.start, Datetime ()});
+    if (! exclusions.empty ())
+    {
+      Interval modified {latest};
+
+      // Update database.
+      database.deleteInterval (latest);
+      for (auto& interval : flatten (modified, exclusions))
+        database.addInterval (interval, rules.getBoolean ("verbose"));
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// This function will return synthetic intervals
+std::vector <Interval> getIntervalsByIds (
+  Database& database,
+  const Rules& rules,
+  const std::set <int>& ids)
+{
+  std::vector <Interval> intervals;
+  std::deque <Interval> synthetic;
+
+  int current_id = 0;
+  auto id_it = ids.begin ();
+  auto id_end = ids.end ();
+
+  auto it = database.begin ();
+  auto end = database.end ();
+
+  Interval latest;
+  if (it != end )
+  {
+    latest = IntervalFactory::fromSerialization (*it);
+  }
+
+  // If the latest interval is open, check for synthetic intervals
+  if (latest.is_open ())
+  {
+    auto exclusions = getAllExclusions (rules, {latest.start, Datetime ()});
+    if (! exclusions.empty ())
+    {
+        // We're converting the latest interval into synthetic intervals so we
+        // need to skip it
+        ++it;
+
+        for (auto& interval : flatten (latest, exclusions))
+        {
+          ++current_id;
+          interval.synthetic = true;
+          interval.id = current_id;
+          synthetic.push_front (interval);
+        }
+    }
+  }
+
+  intervals.reserve (ids.size ());
+
+  // First look for the ids in our set of synthetic intervals
+  for (auto& interval : synthetic)
+  {
+    if (id_it == id_end)
+      break;
+
+    if (interval.id == *id_it)
+    {
+      intervals.push_back (interval);
+      ++id_it;
+    }
+  }
+
+  current_id = synthetic.size ();
+
+  // We'll find remaining intervals from the database itself
+  for ( ; it != end; ++it)
+  {
+    ++current_id;
+
+    if (id_it == id_end)
+      break;
+
+    if (current_id == *id_it)
+    {
+      Interval interval = IntervalFactory::fromSerialization (*it);
+      interval.id = current_id;
+      intervals.push_back (interval);
+      ++id_it;
+    }
+  }
+
+  // We did not find all the ids we were looking for.
+  if (id_it != id_end)
+  {
+    throw format("ID '@{1}' does not correspond to any tracking.", *id_it);
+  }
+
+  return intervals;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 std::vector <Interval> subset (
   const Interval& filter,
   const std::deque <Interval>& intervals)
@@ -670,7 +775,9 @@ Interval getLatestInterval (Database& database)
   Interval i;
   auto firstLine = database.firstLine ();
   if (! firstLine.empty ())
+  {
     i = IntervalFactory::fromSerialization (firstLine);
+  }
 
   return i;
 }
