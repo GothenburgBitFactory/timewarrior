@@ -25,6 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <cassert>
 #include <commands.h>
 #include <format.h>
 #include <timew.h>
@@ -39,6 +40,7 @@ int CmdTag (
   Journal& journal)
 {
   // Gather IDs and TAGs.
+  const bool verbose = rules.getBoolean ("verbose");
   std::set <int> ids = cli.getIds ();
   std::vector<std::string> tags = cli.getTags ();
 
@@ -47,68 +49,43 @@ int CmdTag (
     throw std::string ("At least one tag must be specified. See 'timew help tag'.");
   }
 
-  // Load the data.
-  // Note: There is no filter.
-  Interval filter;
-  auto tracked = getTracked (database, rules, filter);
-
-  bool dirty = true;
-
   journal.startTransaction ();
 
-  for (auto& id : ids)
+  flattenDatabase (database, rules);
+  auto intervals = getIntervalsByIds (database, rules, ids);
+
+  if (intervals.empty ())
   {
-    if (id > static_cast <int> (tracked.size ()))
-      throw format ("ID '@{1}' does not correspond to any tracking.", id);
-
-    if (tracked[tracked.size() - id].synthetic && dirty)
-    {
-      auto latest = getLatestInterval(database);
-      auto exclusions = getAllExclusions (rules, filter);
-
-      Interval modified {latest};
-
-      // Update database.
-      database.deleteInterval (latest);
-      for (auto& interval : flatten (modified, exclusions))
-        database.addInterval (interval, rules.getBoolean ("verbose"));
-
-      dirty = false;
-    }
-  }
-
-  if (ids.empty ())
-  {
-    if (tracked.empty ())
+    if (database.empty ())
     {
       throw std::string ("There is no active time tracking.");
     }
 
-    if (!tracked.back ().is_open ())
+    auto latest = getLatestInterval (database);
+
+    if (!latest.is_open ())
     {
       throw std::string ("At least one ID must be specified. See 'timew help tag'.");
     }
 
-    ids.insert (1);
+    latest.id = 1;
+    intervals.push_back (latest);
   }
 
   // Apply tags to ids.
-  for (auto& id : ids)
+  for (const auto& interval : intervals)
   {
-    if (id > static_cast <int> (tracked.size ()))
-      throw format ("ID '@{1}' does not correspond to any tracking.", id);
-
-    Interval i = tracked[tracked.size () - id];
+    Interval modified {interval};
 
     for (auto& tag : tags)
-      i.tag (tag);
+      modified.tag (tag);
 
     //TODO validate (cli, rules, database, i);
-    database.modifyInterval (tracked[tracked.size () - id], i, rules.getBoolean ("verbose"));
+    database.modifyInterval (interval, modified, verbose);
 
-    if (rules.getBoolean ("verbose"))
+    if (verbose)
     {
-      std::cout << "Added " << joinQuotedIfNeeded (" ", tags) << " to @" << id << '\n';
+      std::cout << "Added " << joinQuotedIfNeeded (" ", tags) << " to @" << interval.id << '\n';
     }
   }
 
