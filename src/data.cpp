@@ -312,20 +312,6 @@ std::vector <Range> getAllExclusions (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> getAllInclusions (Database& database)
-{
-  std::vector <Interval> all;
-  auto it = database.rbegin ();
-  auto end = database.rend ();
-  for ( ;it != end; ++it)
-  {
-    all.push_back (IntervalFactory::fromSerialization (*it));
-  }
-
-  return all;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 std::vector <Interval> subset (
   const Interval& filter,
   const std::deque <Interval>& intervals)
