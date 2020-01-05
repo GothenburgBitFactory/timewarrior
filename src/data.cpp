@@ -653,9 +653,24 @@ std::vector <Range> getUntracked (
   const Rules& rules,
   Interval& filter)
 {
+  bool found_match = false;
   std::vector <Range> inclusion_ranges;
-  for (auto& i : subset (filter, getAllInclusions (database)))
-    inclusion_ranges.push_back (i);
+  for (auto& line : database)
+  {
+    Interval i = IntervalFactory::fromSerialization (line);
+    if (matchesFilter (i, filter))
+    {
+      inclusion_ranges.push_back (i);
+      found_match = true;
+    }
+    else if (found_match)
+    {
+      // If we already had a match, and now we do not, since the database is in
+      // order from most recent to oldest inclusion, we can be sure that there
+      // will not be any further matches.
+      break;
+    }
+  }
 
   auto available = subtractRanges ({filter}, getAllExclusions (rules, filter));
   auto untracked = subtractRanges (available, inclusion_ranges);
