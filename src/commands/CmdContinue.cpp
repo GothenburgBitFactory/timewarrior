@@ -28,6 +28,7 @@
 #include <format.h>
 #include <timew.h>
 #include <iostream>
+#include <cassert>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdContinue (
@@ -36,28 +37,29 @@ int CmdContinue (
   Database& database,
   Journal& journal)
 {
+  const bool verbose = rules.getBoolean ("verbose");
   // Gather IDs and TAGs.
   std::set <int> ids = cli.getIds();
 
   if (ids.size() > 1)
     throw std::string ("You can only specify one ID to continue.");
 
+  journal.startTransaction ();
+
+  flattenDatabase (database, rules);
+
   Interval to_copy;
   Interval latest = getLatestInterval (database);
 
   if (ids.size() == 1)
   {
-    // Load the data.
-    // Note: There is no filter.
-    Interval filter;
-    auto tracked = getTracked (database, rules, filter);
+    auto intervals = getIntervalsByIds (database, rules, ids);
 
-    auto id = *ids.begin ();
+    if (intervals.size () == 0)
+      throw format ("ID '@{1}' does not correspond to any tracking.", *ids.begin ());
 
-    if (id > static_cast <int> (tracked.size ()))
-      throw format ("ID '@{1}' does not correspond to any tracking.", id);
-
-    to_copy = tracked[tracked.size () - id];
+    assert (intervals.size () == 1);
+    to_copy = intervals.front ();
   }
   else
   {
@@ -74,8 +76,6 @@ int CmdContinue (
   Datetime start_time;
   Datetime end_time;
 
-  journal.startTransaction ();
-
   if (filter.start.toEpoch () != 0)
   {
     start_time = filter.start;
@@ -87,35 +87,25 @@ int CmdContinue (
     end_time = 0;
   }
 
-  if (latest.is_open ())
-  {
-    auto exclusions = getAllExclusions (rules, filter);
-
-    // Stop it, at the given start time, if applicable.
-    Interval modified {latest};
-    modified.end = start_time;
-
-    // Update database.
-    database.deleteInterval (latest);
-    for (auto& interval : flatten (modified, exclusions))
-    {
-      database.addInterval (interval, rules.getBoolean ("verbose"));
-
-      if (rules.getBoolean ("verbose"))
-        std::cout << '\n' << intervalSummarize (database, rules, interval);
-    }
-  }
-
   // Create an identical interval and update the DB.
   to_copy.start = start_time;
   to_copy.end = end_time;
 
+  if (latest.is_open ())
+  {
+    Interval modified {latest};
+    modified.end = start_time;
+    database.modifyInterval(latest, modified, verbose);
+    if (verbose)
+      std::cout << '\n' << intervalSummarize (database, rules, modified);
+  }
+
   validate (cli, rules, database, to_copy);
-  database.addInterval (to_copy, rules.getBoolean ("verbose"));
+  database.addInterval (to_copy, verbose);
 
   journal.endTransaction ();
 
-  if (rules.getBoolean ("verbose"))
+  if (verbose)
     std::cout << intervalSummarize (database, rules, to_copy);
 
   return 0;
