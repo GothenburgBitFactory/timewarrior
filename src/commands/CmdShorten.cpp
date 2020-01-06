@@ -39,6 +39,7 @@ int CmdShorten (
   Database& database,
   Journal& journal)
 {
+  const bool verbose = rules.getBoolean ("verbose");
   std::set <int> ids = cli.getIds ();
 
   if (ids.empty ())
@@ -54,56 +55,31 @@ int CmdShorten (
 
   journal.startTransaction ();
 
-  // Load the data.
-  // Note: There is no filter.
-  Interval filter;
-  auto tracked = getTracked (database, rules, filter);
-
-  bool dirty = true;
-
-  for (auto& id : ids)
-  {
-    if (id > static_cast <int> (tracked.size ()))
-      throw format ("ID '@{1}' does not correspond to any tracking.", id);
-
-    if (tracked[tracked.size() - id].synthetic && dirty)
-    {
-      auto latest = getLatestInterval(database);
-      auto exclusions = getAllExclusions (rules, filter);
-
-      Interval modified {latest};
-
-      // Update database.
-      database.deleteInterval (latest);
-      for (auto& interval : flatten (modified, exclusions))
-        database.addInterval (interval, rules.getBoolean ("verbose"));
-
-      dirty = false;
-    }
-  }
+  flattenDatabase (database, rules);
+  std::vector <Interval> intervals = getIntervalsByIds (database, rules, ids);
 
   // Shorten intervals specified by ids
-  for (auto& id : ids)
+  for (auto& interval : intervals)
   {
-    if (id > static_cast <int> (tracked.size ()))
-      throw format ("ID '@{1}' does not correspond to any tracking.", id);
-
-    Interval i = tracked[tracked.size () - id];
-    if (i.is_open ())
-      throw format ("Cannot shorten open interval @{1}", id);
+    if (interval.is_open ())
+      throw format ("Cannot shorten open interval @{1}", interval.id);
 
     Duration dur (delta);
-    if (dur > (i.end - i.start))
-      throw format ("Cannot shorten interval @{1} by {2} because it is only {3} in length.", id, dur.formatHours (), Duration (i.end - i.start).formatHours ());
+    if (dur > (interval.end - interval.start))
+    {
+      throw format ("Cannot shorten interval @{1} by {2} because it is only {3} in length.",
+                    interval.id, dur.formatHours (),
+                    Duration (interval.end - interval.start).formatHours ());
+    }
 
-    database.deleteInterval (tracked[tracked.size () - id]);
+    database.deleteInterval (interval);
 
-    i.end -= dur.toTime_t ();
-    validate (cli, rules, database, i);
-    database.addInterval (i, rules.getBoolean ("verbose"));
+    interval.end -= dur.toTime_t ();
+    validate (cli, rules, database, interval);
+    database.addInterval (interval, verbose);
 
-    if (rules.getBoolean ("verbose"))
-      std::cout << "Shortened @" << id << " by " << dur.formatHours () << '\n';
+    if (verbose)
+      std::cout << "Shortened @" << interval.id << " by " << dur.formatHours () << '\n';
   }
 
   journal.endTransaction ();
