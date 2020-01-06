@@ -39,6 +39,7 @@ int CmdResize (
   Database& database,
   Journal& journal)
 {
+  const bool verbose = rules.getBoolean ("verbose");
   std::set <int> ids = cli.getIds ();
 
   if (ids.empty ())
@@ -54,30 +55,25 @@ int CmdResize (
 
   journal.startTransaction ();
 
-  // Load the data.
-  // Note: There is no filter.
-  Interval filter;
-  auto tracked = getTracked (database, rules, filter);
+  std::vector <Interval> intervals = getIntervalsByIds (database, rules, ids);
 
   // Apply tags to ids.
-  for (auto& id : ids)
+  for (auto& interval : intervals)
   {
-    if (id > static_cast <int> (tracked.size ()))
-      throw format ("ID '@{1}' does not correspond to any tracking.", id);
-
-    Interval i = tracked[tracked.size () - id];
-    if (i.is_open ())
-      throw format ("Cannot resize open interval @{1}", id);
+    if (interval.is_open ())
+      throw format ("Cannot resize open interval @{1}", interval.id);
 
     Duration dur (delta);
-    database.deleteInterval (tracked[tracked.size () - id]);
+    database.deleteInterval (interval);
 
-    i.end = i.start + dur.toTime_t ();
-    validate (cli, rules, database, i);
-    database.addInterval (i, rules.getBoolean ("verbose"));
+    interval.end = interval.start + dur.toTime_t ();
+    validate (cli, rules, database, interval);
+    database.addInterval (interval, verbose);
 
-    if (rules.getBoolean ("verbose"))
-      std::cout << "Resized @" << id << " to " << dur.formatHours () << '\n';
+    if (verbose)
+    {
+      std::cout << "Resized @" << interval.id << " to " << dur.formatHours () << '\n';
+    }
   }
 
   journal.endTransaction ();
