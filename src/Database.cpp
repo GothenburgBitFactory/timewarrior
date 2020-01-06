@@ -284,8 +284,9 @@ std::string Database::firstLine ()
 ////////////////////////////////////////////////////////////////////////////////
 void Database::addInterval (const Interval& interval, bool verbose)
 {
-  auto tags = interval.tags ();
+  assert ( (interval.end == 0) || (interval.start <= interval.end));
 
+  auto tags = interval.tags ();
   for (auto& tag : tags)
   {
     if (_tagInfoDatabase.incrementTag (tag) == -1 && verbose)
