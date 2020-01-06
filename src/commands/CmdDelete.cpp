@@ -42,43 +42,17 @@ int CmdDelete (
   if (ids.empty ())
     throw std::string ("IDs must be specified. See 'timew help delete'.");
 
-  // Load the data.
-  // Note: There is no filter.
-  Interval filter;
-  auto tracked = getTracked (database, rules, filter);
-
   journal.startTransaction ();
 
-  bool dirty = true;
+  flattenDatabase (database, rules);
+  auto intervals = getIntervalsByIds (database, rules, ids);
 
-  for (auto& id : ids)
+  for (const auto& interval : intervals)
   {
-    if (id > static_cast <int> (tracked.size ()))
-      throw format ("ID '@{1}' does not correspond to any tracking.", id);
-
-    if (tracked[tracked.size() - id].synthetic && dirty)
-    {
-      auto latest = getLatestInterval(database);
-      auto exclusions = getAllExclusions (rules, filter);
-
-      Interval modified {latest};
-
-      // Update database.
-      database.deleteInterval (latest);
-      for (auto& interval : flatten (modified, exclusions))
-        database.addInterval (interval, rules.getBoolean ("verbose"));
-
-      dirty = false;
-    }
-  }
-
-  // Delete intervals by id
-  for (auto& id : ids)
-  {
-    database.deleteInterval (tracked[tracked.size () - id]);
+    database.deleteInterval (interval);
 
     if (rules.getBoolean ("verbose"))
-      std::cout << "Deleted @" << id << '\n';
+      std::cout << "Deleted @" << interval.id << '\n';
   }
 
   journal.endTransaction ();
