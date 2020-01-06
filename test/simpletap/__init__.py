@@ -145,7 +145,7 @@ class TAPTestResult(unittest.result.TestResult):
         trace = traceback.extract_tb(tb)
         for t in trace:
             # t = (filename, line_number, function_name, raw_line)
-            if t[2].startswith("test"):
+            if t[2].startswith("test_"):
                 trace_msg = " on file {0} line {1} in {2}: '{3}'".format(*t)
                 break
 
