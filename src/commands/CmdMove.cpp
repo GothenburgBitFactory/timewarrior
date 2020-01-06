@@ -40,6 +40,7 @@ int CmdMove (
   Journal& journal)
 {
   // Gather ID and TAGs.
+  const bool verbose = rules.getBoolean ("verbose");
   std::set <int> ids = cli.getIds ();
 
   if (ids.size() > 1)
@@ -63,57 +64,47 @@ int CmdMove (
       new_start = arg.attribute ("raw");
   }
 
-  // Load the data.
-  // Note: There is no filter.
-  Interval filter;
-  auto tracked = getTracked (database, rules, filter);
+  std::vector <Interval> intervals = getIntervalsByIds (database, rules, ids);
+  Interval interval = intervals.at (0);
 
-  if (id > static_cast <int> (tracked.size ()))
-    throw format ("ID '@{1}' does not correspond to any tracking.", id);
-
-  if (tracked[tracked.size() - id].synthetic)
+  if (interval.synthetic)
   {
-    auto latest = getLatestInterval(database);
-    auto exclusions = getAllExclusions (rules, filter);
-
-    Interval modified {latest};
-
-    // Update database.
-    database.deleteInterval (latest);
-    for (auto& interval : flatten (modified, exclusions))
-      database.addInterval (interval, rules.getBoolean ("verbose"));
+    flattenDatabase (database, rules);
+    intervals = getIntervalsByIds (database, rules, ids);
+    interval = intervals.at (0);
   }
 
   // Move start time.
-  Interval i = tracked[tracked.size () - id];
   Datetime start (new_start);
 
   // Changing the start date should also change the end date by the same
   // amount.
-  if (i.start < start)
+  if (interval.start < start)
   {
-    auto delta = start - i.start;
-    i.start = start;
-    if (! i.is_open ())
-      i.end += delta;
+    auto delta = start - interval.start;
+    interval.start = start;
+    if (! interval.is_open ())
+      interval.end += delta;
   }
   else
   {
-    auto delta = i.start - start;
-    i.start = start;
-    if (! i.is_open ())
-      i.end -= delta;
+    auto delta = interval.start - start;
+    interval.start = start;
+    if (! interval.is_open ())
+      interval.end -= delta;
   }
 
-  database.deleteInterval (tracked[tracked.size () - id]);
+  database.deleteInterval (intervals.at (0));
 
-  validate (cli, rules, database, i);
-  database.addInterval (i, rules.getBoolean ("verbose"));
+  validate (cli, rules, database, interval);
+  database.addInterval (interval, verbose);
 
   journal.endTransaction ();
 
-  if (rules.getBoolean ("verbose"))
-    std::cout << "Moved @" << id << " to " << i.start.toISOLocalExtended () << '\n';
+  if (verbose)
+  {
+    std::cout << "Moved @" << id << " to " << interval.start.toISOLocalExtended () << '\n';
+  }
 
   return 0;
 }
