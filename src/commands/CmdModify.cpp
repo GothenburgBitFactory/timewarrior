@@ -24,6 +24,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <cassert>
 #include <format.h>
 #include <commands.h>
 #include <timew.h>
@@ -58,38 +59,39 @@ int CmdModify (
   if (ids.size () > 1)
     throw std::string ("Only one ID may be specified. See 'timew help modify'.");
 
-  Interval empty_filter = Interval();
-  auto tracked = getTracked (database, rules, empty_filter);
-
   int id = *ids.begin();
-  if (id > static_cast <int> (tracked.size ()))
+
+  auto intervals = getIntervalsByIds (database, rules, ids);
+  if (intervals.size () == 0)
     throw format ("ID '@{1}' does not correspond to any tracking.", id);
 
-  Interval interval = tracked.at (tracked.size () - id);
+  assert (intervals.size () == 1);
   if (filter.start.toEpoch () == 0)
     throw std::string ("No updated time specified. See 'timew help modify'.");
 
+  const Interval interval = intervals.at (0);
+  Interval modified {interval};
   switch (op)
   {
   case MODIFY_START:
-    interval.start = filter.start;
+    modified.start = filter.start;
     break;
 
   case MODIFY_END:
     if (interval.is_open ())
       throw format ("Cannot modify end of open interval @{1}.", id);
-    interval.end = filter.start;
+    modified.end = filter.start;
     break;
   }
 
-  if (!interval.is_open () && (interval.start > interval.end))
+  if (!modified.is_open () && (modified.start > modified.end))
     throw format ("Cannot modify interval @{1} where start is after end.", id);
   
   journal.startTransaction ();
 
-  database.deleteInterval (tracked[tracked.size() - id]);
-  validate(cli, rules, database, interval);
-  database.addInterval(interval, verbose);
+  database.deleteInterval (interval);
+  validate(cli, rules, database, modified);
+  database.addInterval(modified, verbose);
 
   journal.endTransaction();
 
