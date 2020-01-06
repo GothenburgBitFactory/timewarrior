@@ -139,6 +139,7 @@ class TestAnnotate(TestCase):
     def test_annotate_synthetic_interval(self):
         """Annotate a synthetic interval."""
         now = datetime.now()
+        day_before = now - timedelta(days=1)
         three_hours_before = now - timedelta(hours=3)
         four_hours_before = now - timedelta(hours=4)
 
@@ -148,19 +149,25 @@ class TestAnnotate(TestCase):
         five_hours_before_utc = now_utc - timedelta(hours=5)
 
         self.t.configure_exclusions((four_hours_before.time(), three_hours_before.time()))
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z foo".format(day_before, day_before + timedelta(hours=1)))
         self.t("start {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc))
 
-        self.t("annotate @2 bar")
+        self.t("annotate @3 @2 bar")
 
         j = self.t.export()
 
-        self.assertEqual(len(j), 2)
+        self.assertEqual(len(j), 3)
         self.assertClosedInterval(j[0],
+                                  expectedStart="{:%Y%m%dT%H%M%S}Z".format(day_before),
+                                  expectedEnd="{:%Y%m%dT%H%M%S}Z".format(day_before + timedelta(hours=1)),
+                                  expectedAnnotation="bar",
+                                  description="modified interval")
+        self.assertClosedInterval(j[1],
                                   expectedStart="{:%Y%m%dT%H%M%S}Z".format(five_hours_before_utc),
                                   expectedEnd="{:%Y%m%dT%H%M%S}Z".format(four_hours_before_utc),
                                   expectedAnnotation="bar",
                                   description="modified interval")
-        self.assertOpenInterval(j[1],
+        self.assertOpenInterval(j[2],
                                 expectedStart="{:%Y%m%dT%H%M%S}Z".format(three_hours_before_utc),
                                 expectedAnnotation="",
                                 description="unmodified interval")
