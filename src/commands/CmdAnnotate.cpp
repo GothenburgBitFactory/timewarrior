@@ -38,78 +38,50 @@ int CmdAnnotate (
   Database& database,
   Journal& journal)
 {
+  const bool verbose = rules.getBoolean ("verbose");
   std::set <int> ids = cli.getIds ();
   std::string annotation = cli.getAnnotation ();
 
-  // Load the data.
-  // Note: There is no filter.
-  Interval filter;
-  auto tracked = getTracked (database, rules, filter);
-
-  bool dirty = true;
-
   journal.startTransaction ();
 
-  for (auto& id : ids)
+  flattenDatabase (database, rules);
+  auto intervals = getIntervalsByIds (database, rules, ids);
+
+  if (intervals.empty ())
   {
-    if (id > static_cast <int> (tracked.size ()))
-    {
-      throw format ("ID '@{1}' does not correspond to any tracking.", id);
-    }
-
-    if (tracked[tracked.size() - id].synthetic && dirty)
-    {
-      auto latest = getLatestInterval(database);
-      auto exclusions = getAllExclusions (rules, filter);
-
-      Interval modified {latest};
-
-      // Update database.
-      database.deleteInterval (latest);
-      for (auto& interval : flatten (modified, exclusions))
-        database.addInterval (interval, rules.getBoolean ("verbose"));
-
-      dirty = false;
-    }
-  }
-
-  if (ids.empty ())
-  {
-    if (tracked.empty ())
+    if (database.empty ())
     {
       throw std::string ("There is no active time tracking.");
     }
 
-    if (!tracked.back ().is_open ())
+    auto latest = getLatestInterval (database);
+    if (!latest.is_open ())
     {
       throw std::string ("At least one ID must be specified. See 'timew help annotate'.");
     }
 
-    ids.insert (1);
+    latest.id = 1;
+    intervals.push_back (latest);
   }
 
-  // Apply tags to ids.
-  for (auto& id : ids)
+  // Apply annotations to ids.
+  for (const auto& interval : intervals)
   {
-    if (id > static_cast <int> (tracked.size ()))
-    {
-      throw format ("ID '@{1}' does not correspond to any tracking.", id);
-    }
+    Interval modified {interval};
 
-    Interval i = tracked[tracked.size () - id];
-    i.setAnnotation (annotation);
+    modified.setAnnotation (annotation);
 
-    database.modifyInterval (tracked[tracked.size () - id], i, rules.getBoolean ("verbose"));
+    database.modifyInterval (interval, modified, verbose);
 
-    if (rules.getBoolean ("verbose"))
+    if (verbose)
     {
       if (annotation.empty ())
       {
-        std::cout << "Removed annotation from @" << id << std::endl;
+        std::cout << "Removed annotation from @" << modified.id << std::endl;
       }
       else
       {
-        std::cout << "Annotated @" << id << " with \"" << annotation << "\"" << std::endl;
+        std::cout << "Annotated @" << modified.id << " with \"" << annotation << "\"" << std::endl;
       }
     }
   }
