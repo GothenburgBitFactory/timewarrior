@@ -166,6 +166,85 @@ class TestModify(TestCase):
         code, out, err = self.t.runError("modify start @1 {:%Y-%m-%dT%H:%M:%S}Z".format(now_utc - timedelta(hours=2)))
         self.assertIn("You cannot overlap intervals", err)
 
+    def test_modify_move_start_of_synthetic_interval(self):
+        """Move the start time of synthetic interval forward."""
+
+        now = datetime.now().replace(second=0, microsecond=0, minute=0)
+        three_hours_before = now - timedelta(hours=3)
+        four_hours_before = now - timedelta(hours=4)
+
+        now_utc = now.utcnow().replace(second=0, microsecond=0, minute=0)
+        day_before = now_utc - timedelta(days=1)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+
+        self.t.configure_exclusions((four_hours_before.time(), three_hours_before.time()))
+
+        # Place a non-synthetic interval in the history
+        self.t("track from {:%Y-%m-%dT%H:%M:%S}Z for 30min bar".format(day_before))
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc))
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 3)
+        self.assertClosedInterval(j[0],
+                                  expectedStart=day_before,
+                                  expectedEnd=day_before + timedelta(minutes=30),
+                                  expectedTags=[],
+                                  description="unmodified interval")
+        self.assertClosedInterval(j[1],
+                                  expectedStart=five_hours_before_utc,
+                                  expectedEnd=four_hours_before_utc,
+                                  expectedTags=[],
+                                  description="unmodified interval")
+        self.assertOpenInterval(j[2],
+                                expectedStart=three_hours_before_utc,
+                                expectedTags=[],
+                                description="unmodified interval")
+
+        # First move the non-synthetic one
+        self.t("modify start @3 {:%Y-%m-%dT%H:%M:%S}Z".format(day_before - timedelta(minutes=30)))
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 3)
+        self.assertClosedInterval(j[0],
+                                  expectedStart=day_before - timedelta(minutes=30),
+                                  expectedEnd=day_before + timedelta(minutes=30),
+                                  expectedTags=[],
+                                  description="moved interval")
+        self.assertClosedInterval(j[1],
+                                  expectedStart=five_hours_before_utc,
+                                  expectedEnd=four_hours_before_utc,
+                                  expectedTags=[],
+                                  description="unmodified interval")
+        self.assertOpenInterval(j[2],
+                                expectedStart=three_hours_before_utc,
+                                expectedTags=[],
+                                description="unmodified interval")
+
+        # Then move the synthetic one
+        self.t("modify start @1 {:%Y-%m-%dT%H:%M:%S}Z".format(three_hours_before_utc + timedelta(minutes=10)))
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 3)
+        self.assertClosedInterval(j[0],
+                                  expectedStart=day_before - timedelta(minutes=30),
+                                  expectedEnd=day_before + timedelta(minutes=30),
+                                  expectedTags=[],
+                                  description="moved interval")
+        self.assertClosedInterval(j[1],
+                                  expectedStart=five_hours_before_utc,
+                                  expectedEnd=four_hours_before_utc,
+                                  expectedTags=[],
+                                  description="unmodified interval")
+        self.assertOpenInterval(j[2],
+                                expectedStart=three_hours_before_utc + timedelta(minutes=10),
+                                expectedTags=[],
+                                description="moved interval")
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
 

@@ -61,6 +61,7 @@ int CmdModify (
 
   int id = *ids.begin();
 
+  flattenDatabase (database, rules);
   auto intervals = getIntervalsByIds (database, rules, ids);
   if (intervals.size () == 0)
     throw format ("ID '@{1}' does not correspond to any tracking.", id);
