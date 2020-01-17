@@ -1,4 +1,7 @@
+- #269    Do not load entire database for all commands
+          (thanks to Shaun Ruffell)
 - #270    Stop with id should suggest modify command
+          (thanks to Shaun Ruffell)
 
 ------ current release ---------------------------
 
