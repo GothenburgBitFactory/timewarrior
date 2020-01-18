@@ -44,31 +44,47 @@ int CmdModify (
   bool verbose = rules.getBoolean ("verbose");
 
   if (words.empty())
+  {
     throw std::string ("Must specify start|end command to modify. See 'timew help modify'.");
+  }
 
   if (words.at (0) == "start")
+  {
     op = MODIFY_START;
+  }
   else if (words.at (0) == "end")
+  {
     op = MODIFY_END;
+  }
   else
+  {
     throw format ("Must specify start|end command to modify. See 'timew help modify'.", words.at (0));
+  }
 
   if (ids.empty ())
+  {
     throw std::string ("ID must be specified. See 'timew help modify'.");
+  }
 
   if (ids.size () > 1)
+  {
     throw std::string ("Only one ID may be specified. See 'timew help modify'.");
+  }
 
   int id = *ids.begin();
 
   flattenDatabase (database, rules);
   auto intervals = getIntervalsByIds (database, rules, ids);
   if (intervals.size () == 0)
+  {
     throw format ("ID '@{1}' does not correspond to any tracking.", id);
+  }
 
   assert (intervals.size () == 1);
   if (filter.start.toEpoch () == 0)
+  {
     throw std::string ("No updated time specified. See 'timew help modify'.");
+  }
 
   const Interval interval = intervals.at (0);
   Interval modified {interval};
@@ -80,13 +96,17 @@ int CmdModify (
 
   case MODIFY_END:
     if (interval.is_open ())
+    {
       throw format ("Cannot modify end of open interval @{1}.", id);
+    }
     modified.end = filter.start;
     break;
   }
 
   if (!modified.is_open () && (modified.start > modified.end))
+  {
     throw format ("Cannot modify interval @{1} where start is after end.", id);
+  }
   
   journal.startTransaction ();
 

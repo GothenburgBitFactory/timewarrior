@@ -40,7 +40,9 @@ int CmdDelete (
   std::set <int> ids = cli.getIds ();
 
   if (ids.empty ())
+  {
     throw std::string ("IDs must be specified. See 'timew help delete'.");
+  }
 
   journal.startTransaction ();
 
@@ -52,7 +54,9 @@ int CmdDelete (
     database.deleteInterval (interval);
 
     if (rules.getBoolean ("verbose"))
+    {
       std::cout << "Deleted @" << interval.id << '\n';
+    }
   }
 
   journal.endTransaction ();

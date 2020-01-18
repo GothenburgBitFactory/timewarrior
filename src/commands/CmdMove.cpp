@@ -61,7 +61,9 @@ int CmdMove (
   for (auto& arg : cli._args)
   {
     if (arg.hasTag ("FILTER") && arg._lextype == Lexer::Type::date)
+    {
       new_start = arg.attribute ("raw");
+    }
   }
 
   std::vector <Interval> intervals = getIntervalsByIds (database, rules, ids);
@@ -84,14 +86,18 @@ int CmdMove (
     auto delta = start - interval.start;
     interval.start = start;
     if (! interval.is_open ())
+    {
       interval.end += delta;
+    }
   }
   else
   {
     auto delta = interval.start - start;
     interval.start = start;
     if (! interval.is_open ())
+    {
       interval.end -= delta;
+    }
   }
 
   database.deleteInterval (intervals.at (0));

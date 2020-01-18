@@ -91,9 +91,13 @@ std::string intervalSummarize (
     {
       Interval current = IntervalFactory::fromSerialization (line);
       if (interval.tags () == current.tags ())
+      {
         total_recorded += current.total ();
+      }
       else
+      {
         break;
+      }
     }
 
     Duration total (total_recorded);
@@ -103,7 +107,9 @@ std::string intervalSummarize (
     for (auto& tag : interval.tags ())
     {
       if (! tags.empty ())
+      {
         tags += " ";
+      }
 
       tags += tagColor (rules, tag).colorize (quoteIfNeeded (tag));
     }

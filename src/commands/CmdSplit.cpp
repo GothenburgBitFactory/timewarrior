@@ -43,7 +43,9 @@ int CmdSplit (
   std::set <int> ids = cli.getIds ();
 
   if (ids.empty ())
+  {
     throw std::string ("IDs must be specified. See 'timew help split'.");
+  }
 
   journal.startTransaction ();
 
@@ -79,7 +81,9 @@ int CmdSplit (
     database.addInterval (second, verbose);
 
     if (verbose)
+    {
       std::cout << "Split @" << interval.id << '\n';
+    }
   }
 
   journal.endTransaction ();

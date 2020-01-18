@@ -43,14 +43,18 @@ int CmdShorten (
   std::set <int> ids = cli.getIds ();
 
   if (ids.empty ())
+  {
     throw std::string ("IDs must be specified. See 'timew help shorten'.");
+  }
 
   std::string delta;
   for (auto& arg : cli._args)
   {
     if (arg.hasTag ("FILTER") &&
         arg._lextype == Lexer::Type::duration)
+    {
       delta = arg.attribute ("raw");
+    }
   }
 
   journal.startTransaction ();
@@ -62,7 +66,9 @@ int CmdShorten (
   for (auto& interval : intervals)
   {
     if (interval.is_open ())
+    {
       throw format ("Cannot shorten open interval @{1}", interval.id);
+    }
 
     Duration dur (delta);
     if (dur > (interval.end - interval.start))
@@ -79,7 +85,9 @@ int CmdShorten (
     database.addInterval (interval, verbose);
 
     if (verbose)
+    {
       std::cout << "Shortened @" << interval.id << " by " << dur.formatHours () << '\n';
+    }
   }
 
   journal.endTransaction ();

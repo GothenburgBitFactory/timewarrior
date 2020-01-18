@@ -42,7 +42,9 @@ int CmdContinue (
   std::set <int> ids = cli.getIds();
 
   if (ids.size() > 1)
+  {
     throw std::string ("You can only specify one ID to continue.");
+  }
 
   journal.startTransaction ();
 
@@ -56,7 +58,9 @@ int CmdContinue (
     auto intervals = getIntervalsByIds (database, rules, ids);
 
     if (intervals.size () == 0)
+    {
       throw format ("ID '@{1}' does not correspond to any tracking.", *ids.begin ());
+    }
 
     assert (intervals.size () == 1);
     to_copy = intervals.front ();
@@ -64,10 +68,14 @@ int CmdContinue (
   else
   {
     if (latest.empty ())
+    {
       throw std::string ("There is no previous tracking to continue.");
+    }
 
     if (latest.is_open ())
+    {
       throw std::string ("There is already active tracking.");
+    }
 
     to_copy = latest;
   }
@@ -97,7 +105,9 @@ int CmdContinue (
     modified.end = start_time;
     database.modifyInterval(latest, modified, verbose);
     if (verbose)
+    {
       std::cout << '\n' << intervalSummarize (database, rules, modified);
+    }
   }
 
   validate (cli, rules, database, to_copy);
@@ -106,7 +116,9 @@ int CmdContinue (
   journal.endTransaction ();
 
   if (verbose)
+  {
     std::cout << intervalSummarize (database, rules, to_copy);
+  }
 
   return 0;
 }
