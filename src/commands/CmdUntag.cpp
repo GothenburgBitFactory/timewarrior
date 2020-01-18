@@ -45,7 +45,7 @@ int CmdUntag (
 
   if (tags.empty ())
   {
-    throw std::string ("At least one tag must be specified. See 'timew help tag'.");
+    throw std::string ("At least one tag must be specified. See 'timew help untag'.");
   }
 
   journal.startTransaction ();
@@ -71,7 +71,7 @@ int CmdUntag (
     intervals.push_back (latest);
   }
 
-  // Apply tags to ids.
+  // Remove tags from ids.
   for (const auto& interval : intervals)
   {
     Interval modified {interval};
