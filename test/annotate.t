@@ -191,6 +191,48 @@ class TestAnnotate(TestCase):
         self.assertEqual(len(j), 1)
         self.assertClosedInterval(j[0], expectedAnnotation='bar "foo" bar')
 
+    def test_annotate_synthetic_and_nonsynthetic_intervals(self):
+        """timew annotate should be able to work on both synthetic and non-synthetic intervals in the same invocation"""
+
+        now = datetime.now()
+        day_before = now - timedelta(days=1)
+        three_hours_before = now - timedelta(hours=3)
+        four_hours_before = now - timedelta(hours=4)
+
+        now_utc = now.utcnow()
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+
+        self.t.configure_exclusions((four_hours_before.time(), three_hours_before.time()))
+
+        # First, we'll add a closed interval that is outside the exclusion.
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z foo".format(day_before, day_before + timedelta(hours=1)))
+        # Next create an open interval that crosses the exclusion. This will
+        # result in the creation of synthetic intervals
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc))
+
+        # Annotate one of the synthetic and the non-synthetic interval
+        self.t("annotate @3 @2 bar")
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 3)
+        self.assertClosedInterval(j[0],
+                                  expectedStart="{:%Y%m%dT%H%M%S}Z".format(day_before),
+                                  expectedEnd="{:%Y%m%dT%H%M%S}Z".format(day_before + timedelta(hours=1)),
+                                  expectedAnnotation="bar",
+                                  description="modified interval")
+        self.assertClosedInterval(j[1],
+                                  expectedStart="{:%Y%m%dT%H%M%S}Z".format(five_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H%M%S}Z".format(four_hours_before_utc),
+                                  expectedAnnotation="bar",
+                                  description="modified interval")
+        self.assertOpenInterval(j[2],
+                                expectedStart="{:%Y%m%dT%H%M%S}Z".format(three_hours_before_utc),
+                                expectedAnnotation="",
+                                description="unmodified interval")
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
 
