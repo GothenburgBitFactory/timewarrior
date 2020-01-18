@@ -268,7 +268,7 @@ std::set <std::string> Database::tags () const
 
 ////////////////////////////////////////////////////////////////////////////////
 // Return most recent line from database 
-std::string Database::firstLine ()
+std::string Database::getLatestEntry ()
 {
   for (auto& line : *this)
   {

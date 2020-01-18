@@ -784,10 +784,10 @@ std::vector <Range> getUntracked (
 Interval getLatestInterval (Database& database)
 {
   Interval i;
-  auto firstLine = database.firstLine ();
-  if (! firstLine.empty ())
+  auto latestEntry = database.getLatestEntry ();
+  if (! latestEntry.empty ())
   {
-    i = IntervalFactory::fromSerialization (firstLine);
+    i = IntervalFactory::fromSerialization (latestEntry);
   }
 
   return i;

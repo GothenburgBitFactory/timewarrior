@@ -99,7 +99,7 @@ public:
   std::vector <std::string> files () const;
   std::set <std::string> tags () const;
 
-  std::string firstLine ();
+  std::string getLatestEntry ();
 
   void addInterval (const Interval&, bool verbose);
   void deleteInterval (const Interval&);
