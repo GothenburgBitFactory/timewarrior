@@ -26,7 +26,6 @@
 
 #include <deque>
 
-#include <cassert>
 #include <cmake.h>
 #include <shared.h>
 #include <format.h>
@@ -325,7 +324,9 @@ void flattenDatabase (Database& database, const Rules& rules)
       // Update database.
       database.deleteInterval (latest);
       for (auto& interval : flatten (modified, exclusions))
+      {
         database.addInterval (interval, rules.getBoolean ("verbose"));
+      }
     }
   }
 }
@@ -379,7 +380,9 @@ std::vector <Interval> getIntervalsByIds (
   for (auto& interval : synthetic)
   {
     if (id_it == id_end)
+    {
       break;
+    }
 
     if (interval.id == *id_it)
     {
@@ -396,7 +399,9 @@ std::vector <Interval> getIntervalsByIds (
     ++current_id;
 
     if (id_it == id_end)
+    {
       break;
+    }
 
     if (current_id == *id_it)
     {
@@ -423,8 +428,12 @@ std::vector <Interval> subset (
 {
   std::vector <Interval> all;
   for (auto& interval : intervals)
+  {
     if (matchesFilter (interval, filter))
+    {
       all.push_back (interval);
+    }
+  }
 
   return all;
 }
@@ -731,7 +740,9 @@ std::vector <Interval> getTracked (
 
   // Assign an ID to each interval.
   for (unsigned int i = 0; i < intervals.size (); ++i)
+  {
     intervals[i].id = intervals.size () - i + id_skip;
+  }
 
   debug (format ("Loaded {1} tracked intervals", intervals.size ()));
   return subset (filter, intervals);

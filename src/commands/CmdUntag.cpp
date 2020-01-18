@@ -77,7 +77,9 @@ int CmdUntag (
     Interval modified {interval};
 
     for (auto& tag : tags)
+    {
       modified.untag (tag);
+    }
 
     //TODO validate (cli, rules, database, i);
     database.modifyInterval (interval, modified, verbose);

@@ -78,7 +78,9 @@ int CmdTag (
     Interval modified {interval};
 
     for (auto& tag : tags)
+    {
       modified.tag (tag);
+    }
 
     //TODO validate (cli, rules, database, i);
     database.modifyInterval (interval, modified, verbose);

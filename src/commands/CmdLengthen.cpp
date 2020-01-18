@@ -44,7 +44,9 @@ int CmdLengthen (
   std::set <int> ids = cli.getIds ();
 
   if (ids.empty ())
+  {
     throw std::string ("IDs must be specified. See 'timew help lengthen'.");
+  }
 
   std::string delta;
 
@@ -52,7 +54,9 @@ int CmdLengthen (
   {
     if (arg.hasTag ("FILTER") &&
         arg._lextype == Lexer::Type::duration)
+    {
       delta = arg.attribute ("raw");
+    }
   }
 
   journal.startTransaction ();
@@ -64,7 +68,9 @@ int CmdLengthen (
   for (auto& interval : intervals)
   {
     if (interval.is_open ())
+    {
       throw format ("Cannot lengthen open interval @{1}", interval.id);
+    }
 
     database.deleteInterval (interval);
 

@@ -43,14 +43,18 @@ int CmdResize (
   std::set <int> ids = cli.getIds ();
 
   if (ids.empty ())
+  {
     throw std::string ("IDs must be specified. See 'timew help resize'.");
+  }
 
   std::string delta;
   for (auto& arg : cli._args)
   {
     if (arg.hasTag ("FILTER") &&
         arg._lextype == Lexer::Type::duration)
+    {
       delta = arg.attribute ("raw");
+    }
   }
 
   journal.startTransaction ();
@@ -61,7 +65,9 @@ int CmdResize (
   for (auto& interval : intervals)
   {
     if (interval.is_open ())
+    {
       throw format ("Cannot resize open interval @{1}", interval.id);
+    }
 
     Duration dur (delta);
     database.deleteInterval (interval);

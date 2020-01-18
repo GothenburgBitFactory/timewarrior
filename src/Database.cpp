@@ -451,7 +451,9 @@ void Database::initializeTagDatabase ()
     auto end = Database::end ();
     
     if (it == end)
+    {
       return;
+    }
 
     std::cout << "Tag info database does not exist. Recreating from interval data..." << std::endl  ;
 
