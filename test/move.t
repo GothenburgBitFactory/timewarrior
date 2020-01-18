@@ -133,70 +133,25 @@ class TestMove(TestCase):
         four_hours_before = now - timedelta(hours=4)
 
         now_utc = now.utcnow()
-        day_before = now_utc - timedelta(days=1)
         three_hours_before_utc = now_utc - timedelta(hours=3)
         four_hours_before_utc = now_utc - timedelta(hours=4)
         five_hours_before_utc = now_utc - timedelta(hours=5)
 
         self.t.configure_exclusions((four_hours_before.time(), three_hours_before.time()))
 
-        # Place a non-synthetic interval in the history
-        self.t("start {:%Y-%m-%dT%H:%M:%S}Z bar".format(day_before))
-        self.t("stop {:%Y-%m-%dT%H:%M:%S}Z".format(day_before + timedelta(minutes=30)))
-
         self.t("start {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc))
 
-        j = self.t.export()
-
-        self.assertEqual(len(j), 3)
-        self.assertClosedInterval(j[0],
-                                  expectedStart=day_before,
-                                  expectedEnd=day_before + timedelta(minutes=30),
-                                  expectedTags=[],
-                                  description="unmodified interval")
-        self.assertClosedInterval(j[1],
-                                  expectedStart=five_hours_before_utc,
-                                  expectedEnd=four_hours_before_utc,
-                                  expectedTags=[],
-                                  description="unmodified interval")
-        self.assertOpenInterval(j[2],
-                                expectedStart=three_hours_before_utc,
-                                expectedTags=[],
-                                description="unmodified interval")
-
-        # First move the non-synthetic one
-        self.t("move @3 {:%Y-%m-%dT%H:%M:%S}Z".format(day_before + timedelta(minutes=30)))
-
-        j = self.t.export()
-
-        self.assertEqual(len(j), 3)
-        self.assertClosedInterval(j[0],
-                                  expectedStart=day_before + timedelta(minutes=30),
-                                  expectedEnd=day_before + timedelta(hours=1),
-                                  expectedTags=[],
-                                  description="moved interval")
-        self.assertClosedInterval(j[1],
-                                  expectedStart=five_hours_before_utc,
-                                  expectedEnd=four_hours_before_utc,
-                                  expectedTags=[],
-                                  description="unmodified interval")
-        self.assertOpenInterval(j[2],
-                                expectedStart=three_hours_before_utc,
-                                expectedTags=[],
-                                description="unmodified interval")
-
-        # Then move the synthetic one
         self.t("move @2 {:%Y-%m-%dT%H:%M:%S}Z".format(five_hours_before_utc + timedelta(minutes=20)))
 
         j = self.t.export()
 
-        self.assertEqual(len(j), 3)
-        self.assertClosedInterval(j[1],
+        self.assertEqual(len(j), 2)
+        self.assertClosedInterval(j[0],
                                   expectedStart=five_hours_before_utc + timedelta(minutes=20),
                                   expectedEnd=four_hours_before_utc + timedelta(minutes=20),
                                   expectedTags=[],
                                   description="moved interval")
-        self.assertOpenInterval(j[2],
+        self.assertOpenInterval(j[1],
                                 expectedStart=three_hours_before_utc,
                                 expectedTags=[],
                                 description="unmodified interval")
