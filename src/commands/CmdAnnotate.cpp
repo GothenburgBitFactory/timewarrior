@@ -47,7 +47,7 @@ int CmdAnnotate (
   flattenDatabase (database, rules);
   auto intervals = getIntervalsByIds (database, rules, ids);
 
-  if (intervals.empty ())
+  if (ids.empty ())
   {
     if (database.empty ())
     {
