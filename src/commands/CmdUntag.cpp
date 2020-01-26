@@ -51,27 +51,29 @@ int CmdUntag (
   journal.startTransaction ();
 
   flattenDatabase (database, rules);
-  auto intervals = getIntervalsByIds (database, rules, ids);
+  std::vector <Interval> intervals;
 
-  if (intervals.empty ())
+  if (ids.empty ())
   {
-    if (database.empty ())
+    auto latest = getLatestInterval (database);
+
+    if (latest.empty ())
     {
       throw std::string ("There is no active time tracking.");
     }
-
-    auto latest = getLatestInterval (database);
-
-    if (!latest.is_open ())
+    else if (!latest.is_open ())
     {
-      throw std::string ("At least one ID must be specified. See 'timew help tag'.");
+      throw std::string ("At least one ID must be specified. See 'timew help untag'.");
     }
 
-    latest.id = 1;
     intervals.push_back (latest);
   }
+  else
+  {
+    intervals = getIntervalsByIds (database, rules, ids);
+  }
 
-  // Remove tags from ids.
+  // Remove tags from intervals.
   for (const auto& interval : intervals)
   {
     Interval modified {interval};
@@ -81,7 +83,6 @@ int CmdUntag (
       modified.untag (tag);
     }
 
-    //TODO validate (cli, rules, database, i);
     database.modifyInterval (interval, modified, verbose);
 
     if (verbose)

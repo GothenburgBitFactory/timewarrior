@@ -52,27 +52,29 @@ int CmdTag (
   journal.startTransaction ();
 
   flattenDatabase (database, rules);
-  auto intervals = getIntervalsByIds (database, rules, ids);
+  std::vector <Interval> intervals;
 
-  if (intervals.empty ())
+  if (ids.empty ())
   {
-    if (database.empty ())
+    auto latest = getLatestInterval (database);
+
+    if (latest.empty ())
     {
       throw std::string ("There is no active time tracking.");
     }
-
-    auto latest = getLatestInterval (database);
-
-    if (!latest.is_open ())
+    else if (!latest.is_open ())
     {
       throw std::string ("At least one ID must be specified. See 'timew help tag'.");
     }
 
-    latest.id = 1;
     intervals.push_back (latest);
   }
+  else
+  {
+    intervals = getIntervalsByIds (database, rules, ids);
+  }
 
-  // Apply tags to ids.
+  // Apply tags to intervals.
   for (const auto& interval : intervals)
   {
     Interval modified {interval};
@@ -82,7 +84,6 @@ int CmdTag (
       modified.tag (tag);
     }
 
-    //TODO validate (cli, rules, database, i);
     database.modifyInterval (interval, modified, verbose);
 
     if (verbose)
