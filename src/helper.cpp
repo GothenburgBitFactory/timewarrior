@@ -147,6 +147,7 @@ bool expandIntervalHint (
     {":yesterday",   {"yesterday", "today"}},
     {":day",         {"today",     "eod"}},
     {":week",        {"sow",       "eow"}},
+    {":fortnight",   {"sopw",      "eow"}},
     {":month",       {"som",       "eom"}},
     {":quarter",     {"soq",       "eoq"}},
     {":year",        {"soy",       "eoy"}},
