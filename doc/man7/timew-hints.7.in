@@ -37,6 +37,7 @@ Range hints provide convenient shortcuts to date ranges:
   :yesterday     The 24 hours of the previous day
   :day           The 24 hours of the current day
   :week          This week
+  :fortnight     This week and the one before
   :month         This month
   :quarter       This quarter
   :year          This year

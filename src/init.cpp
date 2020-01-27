@@ -105,6 +105,7 @@ void initializeEntities (CLI& cli)
   cli.entity ("hint", ":quarter");
   cli.entity ("hint", ":quiet");
   cli.entity ("hint", ":week");
+  cli.entity ("hint", ":fortnight");
   cli.entity ("hint", ":year");
   cli.entity ("hint", ":yes");
   cli.entity ("hint", ":yesterday");
