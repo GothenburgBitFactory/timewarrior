@@ -47,6 +47,12 @@ Database::iterator::iterator (files_iterator fbegin, files_iterator fend) :
       while ((lines_it == lines_end) && (files_it != files_end))
       {
         ++files_it;
+        if (files_it != files_end)
+        {
+          auto& lines = files_it->allLines ();
+          lines_it = lines.rbegin ();
+          lines_end = lines.rend ();
+        }
       }
     }
 }
@@ -122,6 +128,12 @@ Database::reverse_iterator::reverse_iterator (files_iterator fbegin,
       while ((lines_it == lines_end) && (files_it != files_end))
       {
         ++files_it;
+        if (files_it != files_end)
+        {
+          auto& lines = files_it->allLines ();
+          lines_it = lines.begin ();
+          lines_end = lines.end ();
+        }
       }
     }
 }
