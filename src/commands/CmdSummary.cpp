@@ -42,6 +42,8 @@ int CmdSummary (
   Rules& rules,
   Database& database)
 {
+  auto verbose = rules.getBoolean ("verbose");
+
   // Create a filter, and if empty, choose 'today'.
   auto filter = getFilter (cli);
   if (! filter.is_started ())
@@ -55,7 +57,7 @@ int CmdSummary (
 
   if (tracked.empty ())
   {
-    if (rules.getBoolean ("verbose"))
+    if (verbose)
     {
       std::cout << "No filtered data found";
 

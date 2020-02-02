@@ -37,11 +37,12 @@ int CmdModify (
   Database& database,
   Journal& journal)
 {
+  bool verbose = rules.getBoolean ("verbose");
+
   auto filter = getFilter (cli);
   std::set <int> ids = cli.getIds ();
   std::vector <std::string> words = cli.getWords ();
   enum { MODIFY_START, MODIFY_END } op = MODIFY_START;
-  bool verbose = rules.getBoolean ("verbose");
 
   if (words.empty())
   {

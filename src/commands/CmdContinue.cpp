@@ -38,6 +38,7 @@ int CmdContinue (
   Journal& journal)
 {
   const bool verbose = rules.getBoolean ("verbose");
+
   // Gather IDs and TAGs.
   std::set <int> ids = cli.getIds();
 

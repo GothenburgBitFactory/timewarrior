@@ -40,6 +40,7 @@ int CmdShorten (
   Journal& journal)
 {
   const bool verbose = rules.getBoolean ("verbose");
+
   std::set <int> ids = cli.getIds ();
 
   if (ids.empty ())

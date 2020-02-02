@@ -37,6 +37,8 @@ int CmdGaps (
   Rules& rules,
   Database& database)
 {
+  auto verbose = rules.getBoolean ("verbose");
+
   // If filter is empty, choose 'today'.
   auto filter = getFilter (cli);
   if (! filter.is_started ())
@@ -118,7 +120,7 @@ int CmdGaps (
   }
   else
   {
-    if (rules.getBoolean ("verbose"))
+    if (verbose)
       std::cout << "No gaps found.\n";
   }
 

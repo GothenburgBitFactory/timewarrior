@@ -39,6 +39,7 @@ int CmdAnnotate (
   Journal& journal)
 {
   const bool verbose = rules.getBoolean ("verbose");
+
   std::set <int> ids = cli.getIds ();
   std::string annotation = cli.getAnnotation ();
 

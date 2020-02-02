@@ -98,12 +98,14 @@ int renderChart (
   Rules& rules,
   Database& database)
 {
+  auto verbose = rules.getBoolean ("verbose");
+
   // Load the data.
   const auto tracked = getTracked (database, rules, filter);
 
   if (tracked.empty ())
   {
-    if (rules.getBoolean ("verbose"))
+    if (verbose)
     {
       std::cout << "No filtered data found";
 

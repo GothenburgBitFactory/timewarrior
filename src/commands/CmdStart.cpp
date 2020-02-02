@@ -35,6 +35,8 @@ int CmdStart (
   Database& database,
   Journal& journal)
 {
+  auto verbose = rules.getBoolean ("verbose");
+
   auto filter = getFilter (cli);
 
   auto now = Datetime ();
@@ -53,7 +55,7 @@ int CmdStart (
     // do nothing - the tags are already being tracked.
     if (latest.tags () == filter.tags ())
     {
-      if (rules.getBoolean ("verbose"))
+      if (verbose)
         std::cout << intervalSummarize (database, rules, latest);
 
       return 0;
@@ -81,9 +83,9 @@ int CmdStart (
 
     for (auto& interval : flatten (modified, getAllExclusions (rules, modified)))
     {
-      database.addInterval (interval, rules.getBoolean ("verbose"));
+      database.addInterval (interval, verbose);
 
-      if (rules.getBoolean ("verbose"))
+      if (verbose)
         std::cout << intervalSummarize (database, rules, interval);
     }
   }
@@ -100,9 +102,9 @@ int CmdStart (
 
   // Update database. An open interval does not need to be flattened.
   validate (cli, rules, database, started);
-  database.addInterval (started, rules.getBoolean ("verbose"));
+  database.addInterval (started, verbose);
 
-  if (rules.getBoolean ("verbose"))
+  if (verbose)
     std::cout << intervalSummarize (database, rules, started);
 
   journal.endTransaction ();

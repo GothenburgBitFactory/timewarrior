@@ -39,8 +39,9 @@ int CmdJoin (
   Database& database,
   Journal& journal)
 {
-  // Gather IDs and TAGs.
   const bool verbose = rules.getBoolean ("verbose");
+
+  // Gather IDs and TAGs.
   std::set <int> ids = cli.getIds ();
 
   // Only 2 IDs allowed in a join.

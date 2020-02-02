@@ -47,6 +47,8 @@ int CmdStop (
   Database& database,
   Journal& journal)
 {
+  auto verbose = rules.getBoolean ("verbose");
+
   // Load the most recent interval.
   auto filter = getFilter (cli);
   auto latest = getLatestInterval (database);
@@ -74,7 +76,9 @@ int CmdStop (
   if (filter.start.toEpoch () != 0)
   {
     if (modified.start >= filter.start)
+    {
       throw std::string ("The end of a date range must be after the start.");
+    }
 
     modified.end = filter.start;
   }
@@ -89,9 +93,9 @@ int CmdStop (
 
   for (auto& interval : flatten (modified, getAllExclusions (rules, modified)))
   {
-    database.addInterval (interval, rules.getBoolean ("verbose"));
+    database.addInterval (interval, verbose);
 
-    if (rules.getBoolean ("verbose"))
+    if (verbose)
       std::cout << intervalSummarize (database, rules, interval);
   }
 
@@ -114,8 +118,8 @@ int CmdStop (
     modified.start = modified.end;
     modified.end = {0};
     validate (cli, rules, database, modified);
-    database.addInterval (modified, rules.getBoolean ("verbose"));
-    if (rules.getBoolean ("verbose"))
+    database.addInterval (modified, verbose);
+    if (verbose)
       std::cout << '\n' << intervalSummarize (database, rules, modified);
   }
 

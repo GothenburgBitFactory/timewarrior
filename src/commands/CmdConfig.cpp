@@ -56,6 +56,8 @@ int CmdConfig (
     return CmdShow (rules);
   }
 
+  auto verbose = rules.getBoolean ("verbose");
+
   bool confirmation = rules.getBoolean ("confirmation");
   std::string name = words[0];
   std::string value;
@@ -114,7 +116,7 @@ int CmdConfig (
 
   journal.endTransaction ();
 
-  if (rules.getBoolean ("verbose"))
+  if (verbose)
   {
     if (change)
     {

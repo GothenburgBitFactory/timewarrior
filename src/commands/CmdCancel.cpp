@@ -34,12 +34,14 @@ int CmdCancel (
   Database& database,
   Journal& journal)
 {
+  auto verbose = rules.getBoolean ("verbose");
+
   // If there is an open interval, cancel it by deleting it..
   auto latest = getLatestInterval (database);
 
   if (!latest.is_open ())
   {
-    if (rules.getBoolean ("verbose"))
+    if (verbose)
       std::cout << "There is no active time tracking.\n";
 
     return 0;
@@ -49,7 +51,7 @@ int CmdCancel (
   database.deleteInterval(latest);
   journal.endTransaction ();
 
-  if (rules.getBoolean ("verbose"))
+  if (verbose)
     std::cout << "Canceled active time tracking.\n";
 
   return 0;
