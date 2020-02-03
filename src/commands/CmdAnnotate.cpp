@@ -43,28 +43,30 @@ int CmdAnnotate (
   std::string annotation = cli.getAnnotation ();
 
   journal.startTransaction ();
-
   flattenDatabase (database, rules);
-  auto intervals = getIntervalsByIds (database, rules, ids);
+  std::vector <Interval> intervals;
 
-  if (intervals.empty ())
+  if (ids.empty ())
   {
-    if (database.empty ())
+    auto latest = getLatestInterval (database);
+
+    if (latest.empty ())
     {
       throw std::string ("There is no active time tracking.");
     }
-
-    auto latest = getLatestInterval (database);
-    if (!latest.is_open ())
+    else if (!latest.is_open ())
     {
       throw std::string ("At least one ID must be specified. See 'timew help annotate'.");
     }
 
-    latest.id = 1;
     intervals.push_back (latest);
   }
+  else
+  {
+    intervals = getIntervalsByIds (database, rules, ids);
+  }
 
-  // Apply annotations to ids.
+  // Apply annotations to intervals.
   for (const auto& interval : intervals)
   {
     Interval modified {interval};

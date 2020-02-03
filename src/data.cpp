@@ -675,7 +675,7 @@ std::vector <Interval> getTracked (
   {
     auto begin = database.rbegin ();
     auto end = database.rend ();
-    if (begin != end) 
+    if (begin != end)
     {
       filter.start = IntervalFactory::fromSerialization (*begin).start;
     }
@@ -703,7 +703,7 @@ std::vector <Interval> getTracked (
     else if (interval.start.toEpoch () >= filter.start.toEpoch ())
     {
       ++id_skip;
-    } 
+    }
     else
     {
       break;
@@ -788,6 +788,7 @@ Interval getLatestInterval (Database& database)
   if (! latestEntry.empty ())
   {
     i = IntervalFactory::fromSerialization (latestEntry);
+    i.id = 1;
   }
 
   return i;
