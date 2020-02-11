@@ -99,16 +99,14 @@ std::string Interval::serialize () const
 std::string Interval::json () const
 {
   std::stringstream out;
-  out << '{';
+  out << "{\"id\":" << id;
 
-  if (is_started ())
-    out << "\"start\":\"" << start.toISO () << "\"";
+  if (is_started ()) {
+    out << ",\"start\":\"" << start.toISO () << "\"";
+  }
 
-  if (is_ended ())
-  {
-    if (is_started ())
-      out << ',';
-    out << "\"end\":\"" << end.toISO () << "\"";
+  if (is_ended ()) {
+    out << ",\"end\":\"" << end.toISO () << "\"";
   }
 
   if (! _tags.empty ())
