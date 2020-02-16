@@ -373,7 +373,7 @@ unsigned int Database::getDatafile (int year, int month)
        << std::setw (2) << std::setfill ('0') << month
        << ".data";
   auto name = file.str ();
-  auto basename = File (name).name ();
+  auto basename = Path (name).name ();
 
   // If the datafile is already initialized, return.
   for (unsigned int i = 0; i < _files.size (); ++i)
@@ -514,7 +514,7 @@ void Database::initializeDatafiles ()
     if (file[file.length () - 8] == '-' &&
         file.find (".data") == file.length () - 5)
     {
-      auto basename = File (file).name ();
+      auto basename = Path (file).name ();
       auto year  = strtol (basename.substr (0, 4).c_str (), NULL, 10);
       auto month = strtol (basename.substr (5, 2).c_str (), NULL, 10);
       getDatafile (year, month);

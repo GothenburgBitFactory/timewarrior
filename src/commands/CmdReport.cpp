@@ -31,6 +31,7 @@
 #include <timew.h>
 #include <iostream>
 #include <sstream>
+#include <FS.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Given a partial match for an extension script name, find the full patch of
@@ -42,23 +43,33 @@ static std::string findExtension (
   auto scripts = extensions.all ();
   std::vector <std::string> options;
   for (auto& script : scripts)
-    options.push_back (File (script).name ());
+  {
+    options.push_back (Path (script).name ());
+  }
 
   std::vector <std::string> matches;
   autoComplete (partial, options, matches);
 
   if (matches.empty ())
+  {
     throw format ("The report '{1}' is not recognized.", partial);
+  }
 
   if (matches.size () > 1)
+  {
     throw format ("The report '{1}' is ambiguous, and could mean one of: {2}",
                   partial,
                   join (", ", matches));
+  }
 
   // Now map matches[0] back to it's corresponding option.
   for (auto& script : scripts)
-    if (File (script).name () == matches[0])
+  {
+    if (Path (script).name () == matches[0])
+    {
       return script;
+    }
+  }
 
   return "";
 }
