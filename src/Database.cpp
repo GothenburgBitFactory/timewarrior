@@ -459,56 +459,76 @@ bool Database::empty ()
 ////////////////////////////////////////////////////////////////////////////////
 void Database::initializeTagDatabase ()
 {
+  _tagInfoDatabase = TagInfoDatabase ();
+  Path tags_path (_location + "/tags.data");
   std::string content;
+  const bool exists = tags_path.exists ();
 
-  if (!File::read (_location + "/tags.data", content))
+  if (exists && File::read (tags_path, content))
   {
-    // We always want the tag database file to exists.
-    _tagInfoDatabase = TagInfoDatabase();
-    AtomicFile::write (_location + "/tags.data", _tagInfoDatabase.toJson ());
-
-    auto it = Database::begin ();
-    auto end = Database::end ();
-    
-    if (it == end)
+    try
     {
+      json::object *json = dynamic_cast <json::object *>(json::parse (content));
+
+      if (content.empty () || (json == nullptr))
+      {
+          throw std::string ("Contents invalid.");
+      }
+
+      for (auto &pair : json->_data)
+      {
+        auto key = str_replace (pair.first, "\\\"", "\"");
+        auto *value = (json::object *) pair.second;
+        auto iter = value->_data.find ("count");
+
+        if (iter == value->_data.end ())
+        {
+          throw format ("Failed to find \"count\" member for tag \"{1}\" in tags database.", key);
+        }
+
+        auto number = dynamic_cast<json::number *> (iter->second);
+        _tagInfoDatabase.add (key, TagInfo{(unsigned int) number->_dvalue});
+      }
+
+      // Since we just loaded the database from the file, there we can clear the
+      // modified state so that we will not write it back out unless there is a
+      // new change.
+      _tagInfoDatabase.clear_modified ();
+
       return;
     }
-
-    std::cout << "Tag info database does not exist. Recreating from interval data..." << std::endl  ;
-
-    for (; it != end; ++it)
+    catch (const std::string& error)
     {
-      Interval interval = IntervalFactory::fromSerialization (*it);
-      for (auto& tag : interval.tags ())
-      {
-        _tagInfoDatabase.incrementTag (tag);
-      }
+      std::cerr << "Error parsing tags database: " << error << '\n';
     }
   }
-  else
+
+  // We always want the tag database file to exists.
+  _tagInfoDatabase = TagInfoDatabase();
+  AtomicFile::write (_location + "/tags.data", _tagInfoDatabase.toJson ());
+
+  auto it = Database::begin ();
+  auto end = Database::end ();
+  
+  if (it == end)
   {
-    auto *json = (json::object *) json::parse (content);
+    return;
+  }
 
-    for (auto &pair : json->_data)
+  if (!exists)
+  {
+    std::cout << "Tags database does not exist. ";
+  }
+  
+  std::cout << "Recreating from interval data..." << std::endl;
+
+  for (; it != end; ++it)
+  {
+    Interval interval = IntervalFactory::fromSerialization (*it);
+    for (auto& tag : interval.tags ())
     {
-      auto key = str_replace (pair.first, "\\\"", "\"");
-      auto *value = (json::object *) pair.second;
-      auto iter = value->_data.find ("count");
-
-      if (iter == value->_data.end ())
-      {
-        throw format ("Failed to find \"count\" member for tag \"{1}\" in tags database. Database corrupted?", key);
-      }
-
-      auto number = dynamic_cast<json::number *> (iter->second);
-      _tagInfoDatabase.add (key, TagInfo{(unsigned int) number->_dvalue});
+      _tagInfoDatabase.incrementTag (tag);
     }
-
-    // Since we just loaded the database from the file, there we can clear the
-    // modified state so that we will not write it back out unless there is a
-    // new change.
-    _tagInfoDatabase.clear_modified ();
   }
 }
 
