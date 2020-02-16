@@ -1,4 +1,5 @@
 all.log
+atomic
 data.t
 exclusion.t
 helper.t

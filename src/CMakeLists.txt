@@ -5,7 +5,8 @@ include_directories (${CMAKE_SOURCE_DIR}
                      ${CMAKE_SOURCE_DIR}/src/libshared/src
                      ${TIMEW_INCLUDE_DIRS})
 
-set (timew_SRCS CLI.cpp        CLI.h
+set (timew_SRCS AtomicFile.cpp AtomicFile.h
+                CLI.cpp        CLI.h
                 Chart.cpp      Chart.h
                                ChartConfig.h
                 Database.cpp   Database.h
