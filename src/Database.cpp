@@ -258,7 +258,10 @@ void Database::commit ()
     file.commit ();
   }
 
-  AtomicFile::write (_location + "/tags.data", _tagInfoDatabase.toJson ());
+  if (_tagInfoDatabase.is_modified ())
+  {
+    AtomicFile::write (_location + "/tags.data", _tagInfoDatabase.toJson ());
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -460,6 +463,10 @@ void Database::initializeTagDatabase ()
 
   if (!File::read (_location + "/tags.data", content))
   {
+    // We always want the tag database file to exists.
+    _tagInfoDatabase = TagInfoDatabase();
+    AtomicFile::write (_location + "/tags.data", _tagInfoDatabase.toJson ());
+
     auto it = Database::begin ();
     auto end = Database::end ();
     
@@ -497,6 +504,11 @@ void Database::initializeTagDatabase ()
       auto number = dynamic_cast<json::number *> (iter->second);
       _tagInfoDatabase.add (key, TagInfo{(unsigned int) number->_dvalue});
     }
+
+    // Since we just loaded the database from the file, there we can clear the
+    // modified state so that we will not write it back out unless there is a
+    // new change.
+    _tagInfoDatabase.clear_modified ();
   }
 }
 

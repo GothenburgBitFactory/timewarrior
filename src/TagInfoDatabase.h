@@ -44,8 +44,12 @@ public:
 
   std::string toJson ();
 
+  bool is_modified () const;
+  void clear_modified ();
+
 private:
   std::map <std::string, TagInfo> _tagInformation {};
+  bool _is_modified {false};
 };
 
 #endif
