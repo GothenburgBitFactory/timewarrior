@@ -28,6 +28,7 @@
 #include <commands.h>
 #include <iostream>
 #include <stdio.h>
+#include <FS.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdHelpUsage (const Extensions& extensions)
@@ -71,7 +72,9 @@ int CmdHelpUsage (const Extensions& extensions)
     std::cout << "Extensions (extensions do not provide help):\n";
 
     for (auto& ext : extensions.all ())
-      std::cout << "       " << File (ext).name () << '\n';
+    {
+      std::cout << "       " << Path (ext).name () << '\n';
+    }
 
     std::cout << '\n';
   }
