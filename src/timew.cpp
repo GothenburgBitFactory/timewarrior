@@ -25,6 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
+#include <AtomicFile.h>
 #include <CLI.h>
 #include <Database.h>
 #include <Rules.h>
@@ -96,6 +97,8 @@ int main (int argc, const char** argv)
 
     // Save any outstanding changes.
     database.commit ();
+
+    AtomicFile::finalize_all ();
   }
 
   catch (const std::string& error)

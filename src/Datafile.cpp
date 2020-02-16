@@ -32,11 +32,12 @@
 #include <sstream>
 #include <cassert>
 #include <stdlib.h>
+#include <AtomicFile.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 void Datafile::initialize (const std::string& name)
 {
-  _file = File (name);
+  _file = Path (name);
 
   // From the name, which is of the form YYYY-MM.data, extract the YYYY and MM.
   auto basename = _file.name ();
@@ -129,24 +130,25 @@ void Datafile::commit ()
   // The _dirty flag indicates that the file needs to be written.
   if (_dirty)
   {
-    if (_file.open ())
+    AtomicFile file (_file);
+    if (file.open ())
     {
-      _file.lock ();
-      _file.truncate ();
-      _file.append (std::string (""));   // Seek to EOF.
-
       // Sort the intervals by ascending start time.
       std::sort (_lines.begin (), _lines.end ());
 
       // Write out all the lines.
+      file.truncate ();
       for (auto& line : _lines)
-        _file.write_raw (line + '\n');
+      {
+        file.write_raw (line + '\n');
+      }
 
-      _file.close ();
       _dirty = false;
     }
     else
+    {
       throw format ("Could not write to data file {1}", _file._data);
+    }
   }
 }
 
@@ -168,21 +170,20 @@ std::string Datafile::dump () const
 ////////////////////////////////////////////////////////////////////////////////
 void Datafile::load_lines ()
 {
-  if (_file.open ())
+  AtomicFile file (_file);
+  if (file.open ())
   {
-    _file.lock ();
-
     // Load the data.
     std::vector <std::string> read_lines;
-    _file.read (read_lines);
-    _file.close ();
+    file.read (read_lines);
+    file.close ();
 
     // Append the lines that were read.
     for (auto& line : read_lines)
       _lines.push_back (line);
 
     _lines_loaded = true;
-    debug (format ("{1}: {2} intervals", _file.name (), read_lines.size ()));
+    debug (format ("{1}: {2} intervals", file.name (), read_lines.size ()));
   }
 }
 

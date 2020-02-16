@@ -33,6 +33,7 @@
 #include <iomanip>
 #include <shared.h>
 #include <timew.h>
+#include <AtomicFile.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 Database::iterator::iterator (files_iterator fbegin, files_iterator fend) :
@@ -257,7 +258,7 @@ void Database::commit ()
     file.commit ();
   }
 
-  File::write (_location + "/tags.data", _tagInfoDatabase.toJson ());
+  AtomicFile::write (_location + "/tags.data", _tagInfoDatabase.toJson ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
