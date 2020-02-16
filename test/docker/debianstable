@@ -37,4 +37,4 @@ RUN make install
 WORKDIR /root/code/test/
 RUN make
 
-CMD ["bash", "-c", "./run_all -v ; cat all.log | grep 'not ok' ; ./problems ; echo timew $( timew --version ) ; python --version ; cmake --version ; gcc --version"]
+CMD ["bash", "-c", "./run_all -v ; cat all.log | grep 'not ok' ; ./problems ; FAILED=$? ; echo timew $( timew --version ) ; python --version ; cmake --version ; gcc --version ; exit $FAILED"]

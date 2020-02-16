@@ -37,4 +37,4 @@ RUN make install
 RUN make test -j2 || true
 WORKDIR /root/code/test/
 
-CMD ["bash", "-c", "cat all.log | grep 'not ok' ; ./problems ; echo timew $( timew --version ) ; python --version ; cmake --version ; gcc --version"]
+CMD ["bash", "-c", "cat all.log | grep 'not ok' ; ./problems ; FAILED=$? ; echo timew $( timew --version ) ; python --version ; cmake --version ; gcc --version ; exit $FAILED"]
