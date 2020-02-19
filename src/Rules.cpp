@@ -112,7 +112,7 @@ void Rules::load (const std::string& file, int nest /* = 1 */)
 
   if (nest == 1)
   {
-    File originalFile (file);
+    Path originalFile (file);
     _original_file = originalFile._data;
 
     if (! originalFile.exists ())
