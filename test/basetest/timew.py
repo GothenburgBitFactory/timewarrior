@@ -81,7 +81,7 @@ class Timew(object):
         # TODO Revisit this decision as timew matures.
         # cmd = (self.timew, "config", "--", var, value)
         cmd = (self.timew, ":yes", "config", var, value)
-        return run_cmd_wait(cmd, env=self.env, input=bytes(b"y\n"))
+        return run_cmd_wait(cmd, env=self.env)
 
     @staticmethod
     def _create_exclusion_interval(interval):
@@ -123,7 +123,7 @@ class Timew(object):
     def del_config(self, var):
         """Remove `var` from timew config"""
         cmd = (self.timew, ":yes", "config", var)
-        return run_cmd_wait(cmd, env=self.env, input="y\n")
+        return run_cmd_wait(cmd, env=self.env)
 
     @property
     def timewrc_content(self):
