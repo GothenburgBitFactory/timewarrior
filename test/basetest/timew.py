@@ -79,9 +79,6 @@ class Timew(object):
 
     def config(self, var, value):
         """Run setup `var` as `value` in timew config"""
-        # Add -- to avoid misinterpretation of - in things like UUIDs
-        # TODO Revisit this decision as timew matures.
-        # cmd = (self.timew, "config", "--", var, value)
         cmd = (self.timew, ":yes", "config", var, value)
         return run_cmd_wait(cmd, env=self.env)
 
