@@ -172,16 +172,14 @@ def _get_output(arguments, timeout=None):
 
     # Process crashed or timed out for some reason
     if pid is None:
-        return _retrieve_output(t, output_timeout, outputq,
-                                "Program to start")
+        return _retrieve_output(t, output_timeout, outputq, "Program to start")
 
     # Wait for process to finish (normal execution)
     state = wait_process(pid, timeout)
 
     if state:
         # Process finished
-        return _retrieve_output(t, output_timeout, outputq,
-                                "Program thread to join")
+        return _retrieve_output(t, output_timeout, outputq, "Program thread to join")
 
     # If we reach this point we assume the process got stuck or timed out
     for sig in (signal.SIGABRT, signal.SIGTERM, signal.SIGKILL):
@@ -198,8 +196,7 @@ def _get_output(arguments, timeout=None):
 
         if state:
             # Process finished
-            return _retrieve_output(t, output_timeout, outputq,
-                                    "Program to die")
+            return _retrieve_output(t, output_timeout, outputq, "Program to die")
 
     # This should never happen but in case something goes really bad
     raise OSError("Program stopped responding and couldn't be killed")
