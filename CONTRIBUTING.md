@@ -145,7 +145,9 @@ To make a pull request you need to have a Github account.
        $ git commit -am '<issue>: <description>'
        ...
        $ git push origin feature_branch
-
+    
+    Furthermore, commits should be signed off according to the [DCO](DCO).
+    
 1. Create the pull request on Github.
 
 ## What happens next?
