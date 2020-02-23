@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+
 ###############################################################################
 #
 # Copyright 2016, 2018 - 2019, Thomas Lauf, Paul Beckingham, Federico Hernandez.
@@ -25,13 +26,14 @@
 #
 ###############################################################################
 
-import argparse
 import datetime
 import json
 import os
 import re
 from urllib.error import HTTPError
 from urllib.request import urlopen
+
+import argparse
 
 
 def enumerate(path):

@@ -1,7 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-import sys
 import json
+import sys
 
 # Skip the configuration settings.
 for line in sys.stdin:
