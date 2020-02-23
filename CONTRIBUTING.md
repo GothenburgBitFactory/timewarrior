@@ -201,7 +201,7 @@ To be a little more explicit, the common elements across the languages are:
 * With Python, follow PEP8 as much as possible
 * Surround operators and expression terms with a space
 * No cuddled braces
-* Stick to 80 columns where possible, although exceptions are fine
+* No need to stick slavishly to 80 characters per line, but do not make them overly long (rule of thumb: *One sentence/statement per line*)!
 * Class names are capitalized, variable names are not
 
 We target Python 3 so that our test suite runs on the broadest set of platforms.
