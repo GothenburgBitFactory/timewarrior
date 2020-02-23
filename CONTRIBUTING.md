@@ -204,8 +204,7 @@ To be a little more explicit, the common elements across the languages are:
 * Stick to 80 columns where possible, although exceptions are fine
 * Class names are capitalized, variable names are not
 
-We target Python 2.7 so that our test suite runs on the broadest set of platforms.
-This will likely change in the future and 2.7 will be dropped.
+We target Python 3 so that our test suite runs on the broadest set of platforms.
 
 We can safely target C++11 because all the default compilers on our supported platforms are ready.
 Feel free to use C++14 and C++17 provided that all build platforms support this.
