@@ -26,13 +26,67 @@
 
 #include <cmake.h>
 #include <commands.h>
+#include <algorithm>
+#include <cstring>
 #include <iostream>
 #include <stdio.h>
 #include <FS.h>
+#include <sstream>
+
+#include "additional-help.h"
+
+template <typename T>
+std::string join (const T& strings, size_t indent = 0, size_t max_width = 0)
+{
+  std::stringstream sstr;
+  auto it = std::begin (strings);
+  auto end = std::end (strings);
+  size_t cur = indent + 2; // account for added '{ ' 
+  std::string part;
+  const std::string sep (" | ");
+
+  while (it != end)
+  {
+    part = *it;
+    ++it;
+
+    // Make sure we leave room for closing " }" or " |"
+    if ((max_width > 0) && (cur + part.length () + sep.length ()) > max_width)
+    {
+      sstr << "\n" << std::string (indent + 1, ' ');
+      cur = indent + 1;
+      sstr << part;
+    }
+    else
+    {
+      sstr << part;
+    }
+    cur += part.length ();
+    
+    if (it != end)
+    {
+      sstr << sep;
+      cur += sep.length ();
+    }
+  }
+  return sstr.str ();
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdHelpUsage (const Extensions& extensions)
 {
+  std::vector <const char *> concepts;
+
+  // Any commands will take precedence when using `timew help` and therefore,
+  // we'll exclude any commands that are also concepts.
+  std::set_difference (std::begin (documented_concepts), std::end (documented_concepts),
+                       std::begin (documented_commands), std::end (documented_commands),
+                       std::back_inserter (concepts),
+                       [] (const char *a, const char *b) 
+                       {
+                         return std::strcmp (a, b) < 0;
+                       });
+
   std::cout << '\n'
             << "Usage: timew [--version]\n"
             << "       timew annotate @<id> [@<id> ...] <annotation>\n"
@@ -46,7 +100,7 @@ int CmdHelpUsage (const Extensions& extensions)
             << "       timew extensions\n"
             << "       timew gaps [<interval>] [<tag> ...]\n"
             << "       timew get <DOM> [<DOM> ...]\n"
-            << "       timew help [<command> | interval | hints | date | duration]\n"
+            << "       timew help [<command> | " << join (concepts) << "]\n"
             << "       timew join @<id> @<id>\n"
             << "       timew lengthen @<id> [@<id> ...] <duration>\n"
             << "       timew modify (start|end) @<id> <date>\n"
@@ -80,13 +134,13 @@ int CmdHelpUsage (const Extensions& extensions)
   }
 
   std::cout << "Additional help:\n"
-            << "       timew help <command>\n"
-            << "       timew help interval\n"
-            << "       timew help hints\n"
-            << "       timew help date\n"
-            << "       timew help duration\n"
-            << "       timew help dom\n"
-            << '\n'
+            << "       timew help <command>\n";
+  for (auto concept : concepts)
+  {
+    std::cout << "       timew help " << concept << '\n';
+  }
+
+  std::cout << '\n'
             << "Interval:\n"
             << "       [from] <date>\n"
             << "       [from] <date> to/- <date>\n"

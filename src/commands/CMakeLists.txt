@@ -5,6 +5,18 @@ include_directories (${CMAKE_SOURCE_DIR}
                      ${CMAKE_SOURCE_DIR}/src/libshared/src
                      ${TIMEW_INCLUDE_DIRS})
 
+set (ADDITIONAL_HELP_H "additional-help.h")
+
+ADD_CUSTOM_COMMAND (
+	OUTPUT ${ADDITIONAL_HELP_H}
+	COMMAND /bin/sh src/commands/generate-additional-help.sh >src/commands/${ADDITIONAL_HELP_H}
+	DEPENDS ${CMAKE_CURRENT_LIST_DIR}/generate-additional-help.sh
+	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+	COMMENT "Generating ${ADDITIONAL_HELP_H}")
+
+ADD_CUSTOM_TARGET (generate_additional_help
+	DEPENDS ${ADDITIONAL_HELP_H})
+
 set (commands_SRCS CmdAnnotate.cpp
                    CmdCancel.cpp
                    CmdChart.cpp
@@ -38,4 +50,4 @@ set (commands_SRCS CmdAnnotate.cpp
                    CmdUntag.cpp)
 
 add_library (commands STATIC ${commands_SRCS})
-
+add_dependencies (commands generate_additional_help)
