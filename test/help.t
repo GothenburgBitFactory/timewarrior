@@ -68,7 +68,7 @@ class TestHelp(TestCase):
 
     def test_help_with_unknown_argument_should_show_error_message(self):
         """timew help with unknown argument should show error message"""
-        code, out, err = self.t("help bogus")
+        code, out, err = self.t.runError("help bogus")
         self.assertRegex(err, r"No manual entry for timew-bogus")
 
     def test_command_with_help_long_option_should_show_help_page(self):
