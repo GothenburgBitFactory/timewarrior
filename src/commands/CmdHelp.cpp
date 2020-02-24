@@ -117,8 +117,8 @@ int CmdHelp (
   if (! words.empty ())
   {
     std::string man_command = "man timew-" + words[0];
-    system (man_command.c_str());
-    return 0;
+    int ret = system (man_command.c_str());
+    return (WIFEXITED (ret)) ? WEXITSTATUS (ret) : -1;
   }
 
   return CmdHelpUsage (extensions);
