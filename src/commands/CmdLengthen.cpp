@@ -49,16 +49,7 @@ int CmdLengthen (
     throw std::string ("IDs must be specified. See 'timew help lengthen'.");
   }
 
-  std::string delta;
-
-  for (auto& arg : cli._args)
-  {
-    if (arg.hasTag ("FILTER") &&
-        arg._lextype == Lexer::Type::duration)
-    {
-      delta = arg.attribute ("raw");
-    }
-  }
+  Duration dur = cli.getDuration ();
 
   journal.startTransaction ();
 
@@ -75,7 +66,6 @@ int CmdLengthen (
 
     database.deleteInterval (interval);
 
-    Duration dur (delta);
     interval.end += dur.toTime_t ();
     validate (cli, rules, database, interval);
     database.addInterval (interval, verbose);
