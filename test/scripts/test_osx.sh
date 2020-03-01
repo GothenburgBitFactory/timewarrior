@@ -21,8 +21,10 @@ make
 grep 'not ok' all.log
 set +x
 ./problems
+EXIT_CODE=$?
 echo "timew $( timew --version )"
 python --version
 python3 --version
 cmake --version
 clang --version
+exit ${EXIT_CODE}
