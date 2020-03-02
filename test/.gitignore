@@ -1,5 +1,5 @@
 all.log
-atomic
+AtomicFileTest
 data.t
 exclusion.t
 helper.t

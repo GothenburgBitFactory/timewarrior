@@ -26,7 +26,7 @@
 
 #include <sstream>
 #include <memory>
-#include <string.h>
+#include <string>
 #include <unistd.h>
 #include <iostream>
 #include <cstdlib>
