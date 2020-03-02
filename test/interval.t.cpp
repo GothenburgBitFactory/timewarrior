@@ -144,104 +144,104 @@ int main (int, char**)
 
   Interval i12a;
   i12a = IntervalFactory::fromSerialization ("inc # # \"this is an annotation\"");
-  t.is (i12a.json (), "{\"annotation\":\"this is an annotation\"}",
-                "JSON '{\"annotation\":\"this is an annotation\"}'");
+  t.is (i12a.json (), "{\"id\":0,\"annotation\":\"this is an annotation\"}",
+                "JSON '{\"id\":0,\"annotation\":\"this is an annotation\"}'");
   t.is (IntervalFactory::fromJson (i12a.json ()).serialize (),
                                              "inc # # \"this is an annotation\"",
                                  "Round-trip 'inc # # \"this is an annotation\"'");
 
   Interval i13;
   i13 = IntervalFactory::fromSerialization ("inc # foo");
-  t.is (i13.json (), "{\"tags\":[\"foo\"]}",
-               "JSON '{\"tags\":[\"foo\"]}'");
+  t.is (i13.json (), "{\"id\":0,\"tags\":[\"foo\"]}",
+               "JSON '{\"id\":0,\"tags\":[\"foo\"]}'");
   t.is (IntervalFactory::fromJson (i13.json ()).serialize (),
                                             "inc # foo",
                                 "Round-trip 'inc # foo'");
 
   Interval i13a;
   i13a = IntervalFactory::fromSerialization ("inc # foo # \"this is an annotation\"");
-  t.is (i13a.json (), "{\"tags\":[\"foo\"],\"annotation\":\"this is an annotation\"}",
-                "JSON '{\"tags\":[\"foo\"],\"annotation\":\"this is an annotation\"}'");
+  t.is (i13a.json (), "{\"id\":0,\"tags\":[\"foo\"],\"annotation\":\"this is an annotation\"}",
+                "JSON '{\"id\":0,\"tags\":[\"foo\"],\"annotation\":\"this is an annotation\"}'");
   t.is (IntervalFactory::fromJson (i13a.json ()).serialize (),
                                             "inc # foo # \"this is an annotation\"",
                                 "Round-trip 'inc # foo # \"this is an annotation\"'");
 
   Interval i14;
   i14 = IntervalFactory::fromSerialization ("inc # bar foo");
-  t.is (i14.json (), "{\"tags\":[\"bar\",\"foo\"]}",
-               "JSON '{\"tags\":[\"bar\",\"foo\"]}'");
+  t.is (i14.json (), "{\"id\":0,\"tags\":[\"bar\",\"foo\"]}",
+               "JSON '{\"id\":0,\"tags\":[\"bar\",\"foo\"]}'");
   t.is (IntervalFactory::fromJson (i14.json ()).serialize (),
                                             "inc # bar foo",
                                 "Round-trip 'inc # bar foo'");
 
   Interval i14a;
   i14a = IntervalFactory::fromSerialization ("inc # bar foo # \"this is an annotation\"");
-  t.is (i14a.json (), "{\"tags\":[\"bar\",\"foo\"],\"annotation\":\"this is an annotation\"}",
-                "JSON '{\"tags\":[\"bar\",\"foo\"],\"annotation\":\"this is an annotation\"}'");
+  t.is (i14a.json (), "{\"id\":0,\"tags\":[\"bar\",\"foo\"],\"annotation\":\"this is an annotation\"}",
+                "JSON '{\"id\":0,\"tags\":[\"bar\",\"foo\"],\"annotation\":\"this is an annotation\"}'");
   t.is (IntervalFactory::fromJson (i14a.json ()).serialize (),
                                             "inc # bar foo # \"this is an annotation\"",
                                 "Round-trip 'inc # bar foo # \"this is an annotation\"'");
 
   Interval i15;
   i15 = IntervalFactory::fromSerialization ("inc 19700101T000001Z");
-  t.is (i15.json (), "{\"start\":\"19700101T000001Z\"}",
-               "JSON '{\"start\":\"19700101T000001Z\"}'");
+  t.is (i15.json (), "{\"id\":0,\"start\":\"19700101T000001Z\"}",
+               "JSON '{\"id\":0,\"start\":\"19700101T000001Z\"}'");
   t.is (IntervalFactory::fromJson (i15.json ()).serialize (),
                                             "inc 19700101T000001Z",
                                 "Round-trip 'inc 19700101T000001Z'");
 
   Interval i15a;
   i15a = IntervalFactory::fromSerialization ("inc 19700101T000001Z # # \"this is an annotation\"");
-  t.is (i15a.json (), "{\"start\":\"19700101T000001Z\",\"annotation\":\"this is an annotation\"}",
-                "JSON '{\"start\":\"19700101T000001Z\",\"annotation\":\"this is an annotation\"}'");
+  t.is (i15a.json (), "{\"id\":0,\"start\":\"19700101T000001Z\",\"annotation\":\"this is an annotation\"}",
+                "JSON '{\"id\":0,\"start\":\"19700101T000001Z\",\"annotation\":\"this is an annotation\"}'");
   t.is (IntervalFactory::fromJson (i15a.json ()).serialize (),
                                              "inc 19700101T000001Z # # \"this is an annotation\"",
                                  "Round-trip 'inc 19700101T000001Z # # \"this is an annotation\"'");
 
   Interval i16;
   i16 = IntervalFactory::fromSerialization ("inc 19700101T000001Z - 19700101T000002Z");
-  t.is (i16.json (), "{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\"}",
-               "JSON '{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\"}'");
+  t.is (i16.json (), "{\"id\":0,\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\"}",
+               "JSON '{\"id\":0,\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\"}'");
   t.is (IntervalFactory::fromJson (i16.json ()).serialize (),
                                             "inc 19700101T000001Z - 19700101T000002Z",
                                 "Round-trip 'inc 19700101T000001Z - 19700101T000002Z'");
 
   Interval i16a;
   i16a = IntervalFactory::fromSerialization ("inc 19700101T000001Z - 19700101T000002Z # # \"this is an annotation\"");
-  t.is (i16a.json (), "{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"annotation\":\"this is an annotation\"}",
-                "JSON '{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"annotation\":\"this is an annotation\"}'");
+  t.is (i16a.json (), "{\"id\":0,\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"annotation\":\"this is an annotation\"}",
+                "JSON '{\"id\":0,\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"annotation\":\"this is an annotation\"}'");
   t.is (IntervalFactory::fromJson (i16a.json ()).serialize (),
                                              "inc 19700101T000001Z - 19700101T000002Z # # \"this is an annotation\"",
                                  "Round-trip 'inc 19700101T000001Z - 19700101T000002Z # # \"this is an annotation\"'");
 
   Interval i17;
   i17 = IntervalFactory::fromSerialization ("inc 19700101T000001Z # bar foo");
-  t.is (i17.json (), "{\"start\":\"19700101T000001Z\",\"tags\":[\"bar\",\"foo\"]}",
-               "JSON '{\"start\":\"19700101T000001Z\",\"tags\":[\"bar\",\"foo\"]}'");
+  t.is (i17.json (), "{\"id\":0,\"start\":\"19700101T000001Z\",\"tags\":[\"bar\",\"foo\"]}",
+               "JSON '{\"id\":0,\"start\":\"19700101T000001Z\",\"tags\":[\"bar\",\"foo\"]}'");
   t.is (IntervalFactory::fromJson (i17.json ()).serialize (),
                                             "inc 19700101T000001Z # bar foo",
                                 "Round-trip 'inc 19700101T000001Z # bar foo'");
 
   Interval i18;
   i18 = IntervalFactory::fromSerialization ("inc 19700101T000001Z - 19700101T000002Z # bar foo");
-  t.is (i18.json (), "{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"bar\",\"foo\"]}",
-               "JSON '{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"bar\",\"foo\"]}'");
+  t.is (i18.json (), "{\"id\":0,\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"bar\",\"foo\"]}",
+               "JSON '{\"id\":0,\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"bar\",\"foo\"]}'");
   t.is (IntervalFactory::fromJson (i18.json ()).serialize (),
                                             "inc 19700101T000001Z - 19700101T000002Z # bar foo",
                                 "Round-trip 'inc 19700101T000001Z - 19700101T000002Z # bar foo'");
 
   Interval i18a;
   i18a = IntervalFactory::fromSerialization ("inc 19700101T000001Z - 19700101T000002Z # bar foo # \"this is an annotation\"");
-  t.is (i18a.json (), "{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"bar\",\"foo\"],\"annotation\":\"this is an annotation\"}",
-               "JSON '{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"bar\",\"foo\"],\"annotation\":\"this is an annotation\"}'");
+  t.is (i18a.json (), "{\"id\":0,\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"bar\",\"foo\"],\"annotation\":\"this is an annotation\"}",
+               "JSON '{\"id\":0,\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"bar\",\"foo\"],\"annotation\":\"this is an annotation\"}'");
   t.is (IntervalFactory::fromJson (i18a.json ()).serialize (),
                                             "inc 19700101T000001Z - 19700101T000002Z # bar foo # \"this is an annotation\"",
                                 "Round-trip 'inc 19700101T000001Z - 19700101T000002Z # bar foo # \"this is an annotation\"'");
 
   Interval i19;
   i19 = IntervalFactory::fromSerialization ("inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo");
-  t.is (i19.json (), "{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"Trans-Europe Express\",\"bar\",\"foo\"]}",
-               "JSON '{\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"Trans-Europe Express\",\"bar\",\"foo\"]}'");
+  t.is (i19.json (), "{\"id\":0,\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"Trans-Europe Express\",\"bar\",\"foo\"]}",
+               "JSON '{\"id\":0,\"start\":\"19700101T000001Z\",\"end\":\"19700101T000002Z\",\"tags\":[\"Trans-Europe Express\",\"bar\",\"foo\"]}'");
   t.is (IntervalFactory::fromJson (i19.json ()).serialize (),
                                             "inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo",
                                 "Round-trip 'inc 19700101T000001Z - 19700101T000002Z # \"Trans-Europe Express\" bar foo");
@@ -254,8 +254,8 @@ int main (int, char**)
   Interval i21;
   i21.tag ("one-two");
   i21.tag ("three");
-  t.is (i21.json (), "{\"tags\":[\"one-two\",\"three\"]}",
-               "JSON '{\"tags\":[\"one-two\",\"three\"]}'");
+  t.is (i21.json (), "{\"id\":0,\"tags\":[\"one-two\",\"three\"]}",
+               "JSON '{\"id\":0,\"tags\":[\"one-two\",\"three\"]}'");
 
   // make sure that underscores are escaped
   Interval i22;

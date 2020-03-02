@@ -31,7 +31,7 @@
 #include <Lexer.h>
 #include <sstream>
 #include <JSON.h>
-#include "Interval.h"
+#include <Interval.h>
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -39,7 +39,8 @@ bool Interval::empty () const
 {
   return start.toEpoch () == 0 &&
          end.toEpoch ()   == 0 &&
-    _tags.empty ();
+         _tags.empty () &&
+         annotation.empty ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -99,48 +100,46 @@ std::string Interval::serialize () const
 std::string Interval::json () const
 {
   std::stringstream out;
-  out << "{\"id\":" << id;
+  out << "{";
 
-  if (is_started ()) {
-    out << ",\"start\":\"" << start.toISO () << "\"";
-  }
-
-  if (is_ended ()) {
-    out << ",\"end\":\"" << end.toISO () << "\"";
-  }
-
-  if (! _tags.empty ())
+  if (!empty ())
   {
-    std::string tags;
-    for (auto& tag : _tags)
-    {
-      if (tags[0])
-        tags += ',';
+    out << "\"id\":" << id;
 
-      tags += "\"" + escape (tag, '"') + "\"";
+    if (is_started ())
+    {
+      out << ",\"start\":\"" << start.toISO () << "\"";
     }
 
-    if (start.toEpoch () ||
-        end.toEpoch ())
-      out << ',';
-
-    out << "\"tags\":["
-        << tags
-        << ']';
-  }
-
-  if (!annotation.empty ())
-  {
-    if (start.toEpoch () || end.toEpoch () || !_tags.empty ())
+    if (is_ended ())
     {
-      out << ',';
+      out << ",\"end\":\"" << end.toISO () << "\"";
     }
 
-    out << "\"annotation\":\"" << escape (annotation, '"') << "\"";
-  }
+    if (!_tags.empty ())
+    {
+      std::string tags;
+      for (auto &tag : _tags)
+      {
+        if (tags[0])
+          tags += ',';
 
+        tags += "\"" + escape (tag, '"') + "\"";
+      }
+
+      out << ",\"tags\":["
+          << tags
+          << ']';
+    }
+
+    if (!annotation.empty ())
+    {
+      out << ",\"annotation\":\"" << escape (annotation, '"') << "\"";
+    }
+  }
   out << "}";
-  return out.str ();
+
+  return out.str();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
