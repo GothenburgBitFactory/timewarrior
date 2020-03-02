@@ -34,7 +34,7 @@
 #include <timew.h>
 #include <algorithm>
 #include <iostream>
-#include "IntervalFactory.h"
+#include <IntervalFactory.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // A filter is just another interval, containing start, end and tags.

@@ -29,7 +29,7 @@
 #include <iostream>
 #include <FS.h>
 #include <shared.h>
-#include "additional-help.h"
+#include <additional-help.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdHelpUsage (const Extensions& extensions)
