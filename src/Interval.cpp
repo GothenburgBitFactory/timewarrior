@@ -33,6 +33,25 @@
 #include <JSON.h>
 #include <Interval.h>
 
+////////////////////////////////////////////////////////////////////////////////
+bool Interval::operator== (const Interval& other) const
+{
+  if ((annotation == other.annotation) &&
+      (_tags == other._tags) &&
+      (synthetic == other.synthetic) &&
+      (id == other.id))
+  {
+    return Range::operator== (other);
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool Interval::operator!= (const Interval& other) const
+{
+  return ! operator== (other);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 bool Interval::empty () const
