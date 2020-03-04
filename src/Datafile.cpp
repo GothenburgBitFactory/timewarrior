@@ -33,6 +33,7 @@
 #include <cassert>
 #include <stdlib.h>
 #include <AtomicFile.h>
+#include <IntervalFactory.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 void Datafile::initialize (const std::string& name)
@@ -96,13 +97,29 @@ void Datafile::addInterval (const Interval& interval)
   if (! _lines_loaded)
     load_lines ();
 
-  // TODO if interval is not a duplicate
-  // TODO   insert interval.serialize into _lines
-  // TODO   _dirty = true;
+  const std::string serialization = interval.serialize ();
 
-  _lines.push_back (interval.serialize ());
-  debug (format ("{1}: Added {2}", _file.name (), _lines.back ()));
-  _dirty = true;
+  // Ensure that the IntervalFactory can properly parse the serialization before
+  // adding it to the database.
+  try
+  {
+    Interval test = IntervalFactory::fromSerialization (serialization);
+    test.id = interval.id;
+    if (interval != test)
+    {
+      throw (format ("Encode / decode check failed:\n  {1}\nis not equal to:\n  {2}",
+                     serialization, test.serialize ()));
+    }
+
+    _lines.push_back (serialization);
+    debug (format ("{1}: Added {2}", _file.name (), _lines.back ()));
+    _dirty = true;
+  }
+  catch (const std::string& error)
+  {
+    debug (format ("Datafile::addInterval() failed.\n{1}", error));
+    throw std::string ("Internal error. Failed encode / decode check.");
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
