@@ -137,6 +137,24 @@ W10 2017-03-09 Thu @4 Tag1 8:43:08 9:38:15 0:55:07 0:55:07
                                                    0:55:07
 """, out)
 
+    def test_non_contiguous_with_tag_filter(self):
+        """Summary should print data filtered by tag when tags are non-contiguous"""
+        self.t("track Tag1 2017-03-09T08:43:08 - 2017-03-09T09:38:15")
+        self.t("track Tag2 2017-03-09T11:38:39 - 2017-03-09T11:45:35")
+        self.t("track Tag1 Tag3 2017-03-09T11:46:21 - 2017-03-09T12:00:17")
+        self.t("track Tag2 Tag4 2017-03-09T12:01:49 - 2017-03-09T12:28:46")
+
+        code, out, err = self.t("summary 2017-03-09 Tag1 :ids")
+
+        self.assertIn("""
+Wk  Date       Day ID Tags          Start      End    Time   Total
+--- ---------- --- -- ---------- -------- -------- ------- -------
+W10 2017-03-09 Thu @4 Tag1        8:43:08  9:38:15 0:55:07
+                   @2 Tag1, Tag3 11:46:21 12:00:17 0:13:56 1:09:03
+
+                                                           1:09:03
+""", out)
+
     def test_with_day_gap(self):
         """Summary should skip days with no data"""
         self.t("track 2017-03-09T10:00:00 - 2017-03-09T11:00:00")
