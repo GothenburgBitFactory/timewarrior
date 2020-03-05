@@ -50,6 +50,7 @@ std::vector <Range>     merge             (const std::vector <Range>&);
 std::vector <Range>     addRanges         (const Range&, const std::vector <Range>&, const std::vector <Range>&);
 std::vector <Range>     subtractRanges    (const std::vector <Range>&, const std::vector <Range>&);
 Range                   outerRange        (const std::vector <Interval>&);
+bool                    matchesRange      (const Interval&, const Range&);
 bool                    matchesFilter     (const Interval&, const Interval&);
 Interval                clip              (const Interval&, const Range&);
 std::vector <Interval>  getTracked        (Database&, const Rules&, Interval&);
