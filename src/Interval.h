@@ -41,7 +41,7 @@ public:
 
   bool empty () const;
   bool hasTag (const std::string&) const;
-  std::set <std::string> tags () const;
+  const std::set <std::string>& tags () const;
   void tag (const std::string&);
   void untag (const std::string&);
 

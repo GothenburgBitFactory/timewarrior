@@ -69,7 +69,7 @@ bool Interval::hasTag (const std::string& tag) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::set <std::string> Interval::tags () const
+const std::set <std::string>& Interval::tags () const
 {
   return _tags;
 }
