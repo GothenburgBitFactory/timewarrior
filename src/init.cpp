@@ -186,9 +186,12 @@ void initializeDataJournalAndRules (
     data.create (0700);
 
   // Load the configuration data.
-  File configFile (dbLocation);
+  Path configFile (dbLocation);
   configFile += "timewarrior.cfg";
-  configFile.create (0600);
+  if (! configFile.exists ())
+  {
+    File (configFile).create (0600);
+  }
   rules.load (configFile._data);
 
   // This value is not written out to disk, as there would be no point. Having

@@ -36,6 +36,8 @@ int CmdDelete (
   Database& database,
   Journal& journal)
 {
+  auto verbose = rules.getBoolean ("verbose");
+
   // Gather IDs.
   std::set <int> ids = cli.getIds ();
 
@@ -53,7 +55,7 @@ int CmdDelete (
   {
     database.deleteInterval (interval);
 
-    if (rules.getBoolean ("verbose"))
+    if (verbose)
     {
       std::cout << "Deleted @" << interval.id << '\n';
     }

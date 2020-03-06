@@ -32,6 +32,7 @@
 #include <set>
 #include <vector>
 #include <map>
+#include <Duration.h>
 
 // Represents a single argument.
 class A2
@@ -68,6 +69,7 @@ public:
   std::set <int> getIds () const;
   std::vector<std::string> getTags () const;
   std::string getAnnotation() const;
+  Duration getDuration() const;
   std::string dump (const std::string& title = "CLI Parser") const;
 
 private:
@@ -86,4 +88,3 @@ public:
 };
 
 #endif
-

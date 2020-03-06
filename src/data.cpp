@@ -24,6 +24,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <algorithm>
 #include <deque>
 
 #include <cmake.h>
@@ -34,7 +35,7 @@
 #include <timew.h>
 #include <algorithm>
 #include <iostream>
-#include "IntervalFactory.h"
+#include <IntervalFactory.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // A filter is just another interval, containing start, end and tags.
@@ -587,6 +588,15 @@ std::vector <Range> subtractRanges (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// An interval matches a filter range if the start/end overlaps
+bool matchesRange (const Interval& interval, const Range& filter)
+{
+  return ((filter.start.toEpoch () == 0 &&
+           filter.end.toEpoch () == 0
+          ) || interval.intersects (filter));
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // An interval matches a filter interval if the start/end overlaps, and all
 // filter interval tags are found in the interval.
 //
@@ -625,14 +635,15 @@ std::vector <Range> subtractRanges (
 //
 bool matchesFilter (const Interval& interval, const Interval& filter)
 {
-  if ((filter.start.toEpoch () == 0 &&
-       filter.end.toEpoch () == 0
-     ) || interval.intersects (filter))
+  if (matchesRange (interval, filter))
   {
     for (auto& tag : filter.tags ())
+    {
       if (! interval.hasTag (tag))
+      {
         return false;
-
+      }
+    }
     return true;
   }
 
@@ -696,9 +707,9 @@ std::vector <Interval> getTracked (
     // Since we are moving backwards, and the intervals are in sorted order,
     // if the filter is after the interval, we know there will be no more
     // matches
-    if (matchesFilter (interval, filter))
+    if (matchesRange (interval, filter))
     {
-      intervals.push_front (interval);
+      intervals.push_front (std::move (interval));
     }
     else if (interval.start.toEpoch () >= filter.start.toEpoch ())
     {
@@ -738,14 +749,36 @@ std::vector <Interval> getTracked (
     }
   }
 
-  // Assign an ID to each interval.
+  // Assign an ID to each interval before we prune ones that do not have
+  // matching tags
   for (unsigned int i = 0; i < intervals.size (); ++i)
   {
     intervals[i].id = intervals.size () - i + id_skip;
   }
 
+  // Now prune the intervals without matching tags
+  if (filter.tags ().size () > 0)
+  {
+    auto cmp = [&filter] (const Interval& interval)
+               {
+                 for (const auto& tag : filter.tags ())
+                 {
+                   if (! interval.hasTag (tag))
+                   {
+                     return true;
+                   }
+                 }
+                 return false;
+               };
+
+    intervals.erase (std::remove_if (intervals.begin (), intervals.end (), cmp),
+                     intervals.end ());
+  }
+
   debug (format ("Loaded {1} tracked intervals", intervals.size ()));
-  return subset (filter, intervals);
+
+  return std::vector <Interval> (std::make_move_iterator (intervals.begin ()),
+                                 std::make_move_iterator (intervals.end ()));
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -31,15 +31,35 @@
 #include <Lexer.h>
 #include <sstream>
 #include <JSON.h>
-#include "Interval.h"
+#include <Interval.h>
 
+////////////////////////////////////////////////////////////////////////////////
+bool Interval::operator== (const Interval& other) const
+{
+  if ((annotation == other.annotation) &&
+      (_tags == other._tags) &&
+      (synthetic == other.synthetic) &&
+      (id == other.id))
+  {
+    return Range::operator== (other);
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool Interval::operator!= (const Interval& other) const
+{
+  return ! operator== (other);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 bool Interval::empty () const
 {
   return start.toEpoch () == 0 &&
          end.toEpoch ()   == 0 &&
-    _tags.empty ();
+         _tags.empty () &&
+         annotation.empty ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -49,7 +69,7 @@ bool Interval::hasTag (const std::string& tag) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::set <std::string> Interval::tags () const
+const std::set <std::string>& Interval::tags () const
 {
   return _tags;
 }
@@ -99,50 +119,46 @@ std::string Interval::serialize () const
 std::string Interval::json () const
 {
   std::stringstream out;
-  out << '{';
+  out << "{";
 
-  if (is_started ())
-    out << "\"start\":\"" << start.toISO () << "\"";
-
-  if (is_ended ())
+  if (!empty ())
   {
+    out << "\"id\":" << id;
+
     if (is_started ())
-      out << ',';
-    out << "\"end\":\"" << end.toISO () << "\"";
-  }
-
-  if (! _tags.empty ())
-  {
-    std::string tags;
-    for (auto& tag : _tags)
     {
-      if (tags[0])
-        tags += ',';
-
-      tags += "\"" + escape (tag, '"') + "\"";
+      out << ",\"start\":\"" << start.toISO () << "\"";
     }
 
-    if (start.toEpoch () ||
-        end.toEpoch ())
-      out << ',';
-
-    out << "\"tags\":["
-        << tags
-        << ']';
-  }
-
-  if (!annotation.empty ())
-  {
-    if (start.toEpoch () || end.toEpoch () || !_tags.empty ())
+    if (is_ended ())
     {
-      out << ',';
+      out << ",\"end\":\"" << end.toISO () << "\"";
     }
 
-    out << "\"annotation\":\"" << escape (annotation, '"') << "\"";
-  }
+    if (!_tags.empty ())
+    {
+      std::string tags;
+      for (auto &tag : _tags)
+      {
+        if (tags[0])
+          tags += ',';
 
+        tags += "\"" + escape (tag, '"') + "\"";
+      }
+
+      out << ",\"tags\":["
+          << tags
+          << ']';
+    }
+
+    if (!annotation.empty ())
+    {
+      out << ",\"annotation\":\"" << escape (annotation, '"') << "\"";
+    }
+  }
   out << "}";
-  return out.str ();
+
+  return out.str();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

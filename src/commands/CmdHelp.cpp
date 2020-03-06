@@ -24,10 +24,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cmake.h>
 #include <commands.h>
+#include <algorithm>
 #include <iostream>
-#include <stdio.h>
+#include <FS.h>
+#include <shared.h>
+#include <additional-help.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdHelpUsage (const Extensions& extensions)
@@ -45,7 +47,7 @@ int CmdHelpUsage (const Extensions& extensions)
             << "       timew extensions\n"
             << "       timew gaps [<interval>] [<tag> ...]\n"
             << "       timew get <DOM> [<DOM> ...]\n"
-            << "       timew help [<command> | interval | hints | date | duration]\n"
+            << "       timew help [<command> | " << join ( " | ", timew_help_concepts) << "]\n"
             << "       timew join @<id> @<id>\n"
             << "       timew lengthen @<id> [@<id> ...] <duration>\n"
             << "       timew modify (start|end) @<id> <date>\n"
@@ -71,19 +73,22 @@ int CmdHelpUsage (const Extensions& extensions)
     std::cout << "Extensions (extensions do not provide help):\n";
 
     for (auto& ext : extensions.all ())
-      std::cout << "       " << File (ext).name () << '\n';
+    {
+      std::cout << "       " << Path (ext).name () << '\n';
+    }
 
     std::cout << '\n';
   }
 
   std::cout << "Additional help:\n"
-            << "       timew help <command>\n"
-            << "       timew help interval\n"
-            << "       timew help hints\n"
-            << "       timew help date\n"
-            << "       timew help duration\n"
-            << "       timew help dom\n"
-            << '\n'
+            << "       timew help <command>\n";
+
+  for (auto& concept : timew_help_concepts)
+  {
+    std::cout << "       timew help " << concept << '\n';
+  }
+
+  std::cout << '\n'
             << "Interval:\n"
             << "       [from] <date>\n"
             << "       [from] <date> to/- <date>\n"
@@ -114,8 +119,8 @@ int CmdHelp (
   if (! words.empty ())
   {
     std::string man_command = "man timew-" + words[0];
-    system (man_command.c_str());
-    return 0;
+    int ret = system (man_command.c_str());
+    return (WIFEXITED (ret)) ? WEXITSTATUS (ret) : -1;
   }
 
   return CmdHelpUsage (extensions);

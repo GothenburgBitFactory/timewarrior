@@ -145,7 +145,9 @@ To make a pull request you need to have a Github account.
        $ git commit -am '<issue>: <description>'
        ...
        $ git push origin feature_branch
-
+    
+    Furthermore, commits should be signed off according to the [DCO](DCO).
+    
 1. Create the pull request on Github.
 
 ## What happens next?
@@ -199,11 +201,10 @@ To be a little more explicit, the common elements across the languages are:
 * With Python, follow PEP8 as much as possible
 * Surround operators and expression terms with a space
 * No cuddled braces
-* Stick to 80 columns where possible, although exceptions are fine
+* No need to stick slavishly to 80 characters per line, but do not make them overly long (rule of thumb: *One sentence/statement per line*)!
 * Class names are capitalized, variable names are not
 
-We target Python 2.7 so that our test suite runs on the broadest set of platforms.
-This will likely change in the future and 2.7 will be dropped.
+We target Python 3 so that our test suite runs on the broadest set of platforms.
 
 We can safely target C++11 because all the default compilers on our supported platforms are ready.
 Feel free to use C++14 and C++17 provided that all build platforms support this.

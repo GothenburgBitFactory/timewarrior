@@ -53,7 +53,7 @@ private:
   void load_lines ();
 
 private:
-  File                      _file         {};
+  Path                      _file         {};
   bool                      _dirty        {false};
   std::vector <std::string> _lines        {};
   bool                      _lines_loaded {false};

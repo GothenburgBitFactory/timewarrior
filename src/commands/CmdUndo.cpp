@@ -62,6 +62,8 @@ static void undoConfigAction (UndoAction& action, Rules &rules, Journal& journal
 ////////////////////////////////////////////////////////////////////////////////
 int CmdUndo (Rules& rules, Database& database, Journal& journal)
 {
+  auto verbose = rules.getBoolean ("verbose");
+
   Transaction transaction = journal.popLastTransaction ();
 
   std::vector <UndoAction> actions = transaction.getActions ();
@@ -69,7 +71,7 @@ int CmdUndo (Rules& rules, Database& database, Journal& journal)
   if (actions.empty ())
   {
     // No (more) undoing...
-    if (rules.getBoolean ("verbose"))
+    if (verbose)
     {
       std::cout << "Nothing to undo." << std::endl;
     }
@@ -96,7 +98,7 @@ int CmdUndo (Rules& rules, Database& database, Journal& journal)
       }
     }
 
-    if (rules.getBoolean ("verbose"))
+    if (verbose)
     {
       std::cout << "Undo" << std::endl;
     }

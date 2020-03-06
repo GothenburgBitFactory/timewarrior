@@ -33,6 +33,7 @@
 #include <iomanip>
 #include <shared.h>
 #include <timew.h>
+#include <AtomicFile.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 Database::iterator::iterator (files_iterator fbegin, files_iterator fend) :
@@ -257,7 +258,10 @@ void Database::commit ()
     file.commit ();
   }
 
-  File::write (_location + "/tags.data", _tagInfoDatabase.toJson ());
+  if (_tagInfoDatabase.is_modified ())
+  {
+    AtomicFile::write (_location + "/tags.data", _tagInfoDatabase.toJson ());
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -373,7 +377,7 @@ unsigned int Database::getDatafile (int year, int month)
        << std::setw (2) << std::setfill ('0') << month
        << ".data";
   auto name = file.str ();
-  auto basename = File (name).name ();
+  auto basename = Path (name).name ();
 
   // If the datafile is already initialized, return.
   for (unsigned int i = 0; i < _files.size (); ++i)
@@ -455,46 +459,75 @@ bool Database::empty ()
 ////////////////////////////////////////////////////////////////////////////////
 void Database::initializeTagDatabase ()
 {
+  _tagInfoDatabase = TagInfoDatabase ();
+  Path tags_path (_location + "/tags.data");
   std::string content;
+  const bool exists = tags_path.exists ();
 
-  if (!File::read (_location + "/tags.data", content))
+  if (exists && File::read (tags_path, content))
   {
-    auto it = Database::begin ();
-    auto end = Database::end ();
-    
-    if (it == end)
+    try
     {
+      json::object *json = dynamic_cast <json::object *>(json::parse (content));
+
+      if (content.empty () || (json == nullptr))
+      {
+          throw std::string ("Contents invalid.");
+      }
+
+      for (auto &pair : json->_data)
+      {
+        auto key = str_replace (pair.first, "\\\"", "\"");
+        auto *value = (json::object *) pair.second;
+        auto iter = value->_data.find ("count");
+
+        if (iter == value->_data.end ())
+        {
+          throw format ("Failed to find \"count\" member for tag \"{1}\" in tags database.", key);
+        }
+
+        auto number = dynamic_cast<json::number *> (iter->second);
+        _tagInfoDatabase.add (key, TagInfo{(unsigned int) number->_dvalue});
+      }
+
+      // Since we just loaded the database from the file, there we can clear the
+      // modified state so that we will not write it back out unless there is a
+      // new change.
+      _tagInfoDatabase.clear_modified ();
+
       return;
     }
-
-    std::cout << "Tag info database does not exist. Recreating from interval data..." << std::endl  ;
-
-    for (; it != end; ++it)
+    catch (const std::string& error)
     {
-      Interval interval = IntervalFactory::fromSerialization (*it);
-      for (auto& tag : interval.tags ())
-      {
-        _tagInfoDatabase.incrementTag (tag);
-      }
+      std::cerr << "Error parsing tags database: " << error << '\n';
     }
   }
-  else
+
+  // We always want the tag database file to exists.
+  _tagInfoDatabase = TagInfoDatabase();
+  AtomicFile::write (_location + "/tags.data", _tagInfoDatabase.toJson ());
+
+  auto it = Database::begin ();
+  auto end = Database::end ();
+  
+  if (it == end)
   {
-    auto *json = (json::object *) json::parse (content);
+    return;
+  }
 
-    for (auto &pair : json->_data)
+  if (!exists)
+  {
+    std::cout << "Tags database does not exist. ";
+  }
+  
+  std::cout << "Recreating from interval data..." << std::endl;
+
+  for (; it != end; ++it)
+  {
+    Interval interval = IntervalFactory::fromSerialization (*it);
+    for (auto& tag : interval.tags ())
     {
-      auto key = str_replace (pair.first, "\\\"", "\"");
-      auto *value = (json::object *) pair.second;
-      auto iter = value->_data.find ("count");
-
-      if (iter == value->_data.end ())
-      {
-        throw format ("Failed to find \"count\" member for tag \"{1}\" in tags database. Database corrupted?", key);
-      }
-
-      auto number = dynamic_cast<json::number *> (iter->second);
-      _tagInfoDatabase.add (key, TagInfo{(unsigned int) number->_dvalue});
+      _tagInfoDatabase.incrementTag (tag);
     }
   }
 }
@@ -514,7 +547,7 @@ void Database::initializeDatafiles ()
     if (file[file.length () - 8] == '-' &&
         file.find (".data") == file.length () - 5)
     {
-      auto basename = File (file).name ();
+      auto basename = Path (file).name ();
       auto year  = strtol (basename.substr (0, 4).c_str (), NULL, 10);
       auto month = strtol (basename.substr (5, 2).c_str (), NULL, 10);
       getDatafile (year, month);

@@ -24,7 +24,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <FS.h>
+#include <AtomicFile.h>
 #include <format.h>
 #include <Journal.h>
 #include <TransactionsFactory.h>
@@ -54,19 +54,9 @@ void Journal::endTransaction ()
     throw "Call to end non-existent transaction";
   }
 
-  File undo (_location);
+  AtomicFile::append (_location, _currentTransaction->toString ());
 
-  if (undo.open ())
-  {
-    undo.append (_currentTransaction->toString());
-
-    undo.close ();
-    _currentTransaction.reset ();
-  }
-  else
-  {
-    throw format ("Unable to write the undo transaction to {1}", undo._data);
-  }
+  _currentTransaction.reset ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -102,7 +92,7 @@ void Journal::recordUndoAction (
 ////////////////////////////////////////////////////////////////////////////////
 Transaction Journal::popLastTransaction ()
 {
-  File undo (_location);
+  AtomicFile undo (_location);
 
   std::vector <std::string> read_lines;
   undo.read (read_lines);
@@ -125,8 +115,8 @@ Transaction Journal::popLastTransaction ()
   Transaction last = transactions.back ();
   transactions.pop_back ();
 
-  File::remove (undo._data);
   undo.open ();
+  undo.truncate ();
 
   for (auto& transaction : transactions)
   {

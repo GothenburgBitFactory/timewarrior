@@ -12,7 +12,8 @@ from .utils import run_cmd_wait, run_cmd_wait_nofail, which, timew_binary_locati
 
 
 class Timew(object):
-    """Manage a Timewarrior instance
+    """
+    Manage a Timewarrior instance
 
     A temporary folder is used as data store of timewarrior.
 
@@ -21,7 +22,8 @@ class Timew(object):
     DEFAULT_TIMEW = timew_binary_location()
 
     def __init__(self, timew=DEFAULT_TIMEW):
-        """Initialize a timewarrior (client).
+        """
+        Initialize a timewarrior (client).
         The program runs in a temporary folder.
 
         :arg timew: Timewarrior binary to use as client (defaults: timew in PATH)
@@ -77,11 +79,8 @@ class Timew(object):
 
     def config(self, var, value):
         """Run setup `var` as `value` in timew config"""
-        # Add -- to avoid misinterpretation of - in things like UUIDs
-        # TODO Revisit this decision as timew matures.
-        # cmd = (self.timew, "config", "--", var, value)
         cmd = (self.timew, ":yes", "config", var, value)
-        return run_cmd_wait(cmd, env=self.env, input=bytes(b"y\n"))
+        return run_cmd_wait(cmd, env=self.env)
 
     @staticmethod
     def _create_exclusion_interval(interval):
@@ -123,7 +122,7 @@ class Timew(object):
     def del_config(self, var):
         """Remove `var` from timew config"""
         cmd = (self.timew, ":yes", "config", var)
-        return run_cmd_wait(cmd, env=self.env, input="y\n")
+        return run_cmd_wait(cmd, env=self.env)
 
     @property
     def timewrc_content(self):
@@ -143,8 +142,9 @@ class Timew(object):
 
     @staticmethod
     def _split_string_args_if_string(args):
-        """Helper function to parse and split into arguments a single string
-        argument. The string is literally the same as if written in the shell.
+        """
+        Helper function to parse and split into arguments a single string argument.
+        The string is literally the same as if written in the shell.
         """
         # Enable nicer-looking calls by allowing plain strings
         if isinstance(args, str):
@@ -153,7 +153,8 @@ class Timew(object):
         return args
 
     def runSuccess(self, args="", input=None, merge_streams=False, timeout=5):
-        """Invoke timew with given arguments and fail if exit code != 0
+        """
+        Invoke timew with given arguments and fail if exit code != 0
 
         Use runError if you want exit_code to be tested automatically and
         *not* fail if program finishes abnormally.
@@ -187,7 +188,8 @@ class Timew(object):
         return output
 
     def runError(self, args=(), input=None, merge_streams=False, timeout=5):
-        """Invoke timew with given arguments and fail if exit code == 0
+        """
+        Invoke timew with given arguments and fail if exit code == 0
 
         Use runSuccess if you want exit_code to be tested automatically and
         *fail* if program finishes abnormally.
@@ -245,8 +247,8 @@ class Timew(object):
                              "Create a new instance if you need a new client.")
 
     def faketime(self, faketime=None):
-        """Set a faketime using libfaketime that will affect the following
-        command calls.
+        """
+        Set a faketime using libfaketime that will affect the following command calls.
 
         If faketime is None, faketime settings will be disabled.
         """

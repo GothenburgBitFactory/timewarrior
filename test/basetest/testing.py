@@ -1,6 +1,6 @@
+import datetime
 import sys
 import unittest
-import datetime
 
 
 class BaseTestCase(unittest.TestCase):
@@ -13,6 +13,7 @@ class BaseTestCase(unittest.TestCase):
 
 class TestCase(BaseTestCase):
     def assertOpenInterval(self, interval,
+                           expectedId=None,
                            expectedStart=None,
                            expectedTags=None,
                            expectedAnnotation=None,
@@ -21,6 +22,7 @@ class TestCase(BaseTestCase):
         self.assertKeyNotExists(interval, "end", description, "{} does contain an end date")
 
         return self.assertInterval(interval,
+                                   expectedId=expectedId,
                                    expectedStart=expectedStart,
                                    expectedEnd=None,
                                    expectedTags=expectedTags,
@@ -28,6 +30,7 @@ class TestCase(BaseTestCase):
                                    description=description)
 
     def assertClosedInterval(self, interval,
+                             expectedId=None,
                              expectedStart=None,
                              expectedEnd=None,
                              expectedTags=None,
@@ -37,6 +40,7 @@ class TestCase(BaseTestCase):
         self.assertKeyExists(interval, "end", description, "{} does not contain an end date")
 
         return self.assertInterval(interval,
+                                   expectedId=expectedId,
                                    expectedStart=expectedStart,
                                    expectedEnd=expectedEnd,
                                    expectedTags=expectedTags,
@@ -44,11 +48,20 @@ class TestCase(BaseTestCase):
                                    description=description)
 
     def assertInterval(self, interval,
+                       expectedId=None,
                        expectedStart=None,
                        expectedEnd=None,
                        expectedTags=None,
                        expectedAnnotation=None,
                        description="interval"):
+        if expectedId is not None:
+            self.assertKeyExists(interval, "id", description, "{} does not contain an id")
+            self.assertIntervalValue(interval,
+                                     "id",
+                                     expectedId,
+                                     description,
+                                     "{} of {} do not match (expected: '{}', actual: '{}')")
+
         if expectedStart:
             self.assertIntervalTimestamp(interval, "start", expectedStart, description)
 
@@ -62,6 +75,7 @@ class TestCase(BaseTestCase):
                                      expectedTags,
                                      description,
                                      "{} of {} do not match (expected: '{}', actual: '{}')")
+
         if expectedAnnotation:
             self.assertKeyExists(interval, "annotation", description, "{} is not annotated")
             self.assertIntervalValue(interval,

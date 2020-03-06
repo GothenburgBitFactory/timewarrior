@@ -36,10 +36,12 @@ class Interval : public Range
 public:
   Interval () = default;
   Interval (const Datetime& start, const Datetime& end) : Range (start, end) {}
-  bool empty () const;
+  bool operator== (const Interval&) const;
+  bool operator!= (const Interval&) const;
 
+  bool empty () const;
   bool hasTag (const std::string&) const;
-  std::set <std::string> tags () const;
+  const std::set <std::string>& tags () const;
   void tag (const std::string&);
   void untag (const std::string&);
 

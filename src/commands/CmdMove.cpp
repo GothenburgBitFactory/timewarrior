@@ -39,8 +39,9 @@ int CmdMove (
   Database& database,
   Journal& journal)
 {
-  // Gather ID and TAGs.
   const bool verbose = rules.getBoolean ("verbose");
+
+  // Gather ID and TAGs.
   std::set <int> ids = cli.getIds ();
 
   if (ids.size() > 1)

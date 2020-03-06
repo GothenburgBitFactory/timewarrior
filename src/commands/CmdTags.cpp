@@ -38,6 +38,8 @@ int CmdTags (
   Rules& rules,
   Database& database)
 {
+  auto verbose = rules.getBoolean ("verbose");
+
   // Create a filter, with no default range.
   auto filter = getFilter (cli);
 
@@ -72,7 +74,7 @@ int CmdTags (
   }
   else
   {
-    if (rules.getBoolean ("verbose"))
+    if (verbose)
       std::cout << "No data found.\n";
   }
 

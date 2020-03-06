@@ -34,6 +34,7 @@
 #include <sstream>
 #include <algorithm>
 #include <set>
+#include <Duration.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 A2::A2 (const std::string& raw, Lexer::Type lextype)
@@ -586,6 +587,22 @@ std::string CLI::getAnnotation () const
   }
 
   return annotation;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Duration CLI::getDuration () const
+{
+  std::string delta;
+  for (auto& arg : _args)
+  {
+    if (arg.hasTag ("FILTER") &&
+        arg._lextype == Lexer::Type::duration)
+    {
+      delta = arg.attribute ("raw");
+    }
+  }
+  Duration dur (delta);
+  return dur;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -32,11 +32,13 @@
 #include <sstream>
 #include <cassert>
 #include <stdlib.h>
+#include <AtomicFile.h>
+#include <IntervalFactory.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 void Datafile::initialize (const std::string& name)
 {
-  _file = File (name);
+  _file = Path (name);
 
   // From the name, which is of the form YYYY-MM.data, extract the YYYY and MM.
   auto basename = _file.name ();
@@ -95,13 +97,29 @@ void Datafile::addInterval (const Interval& interval)
   if (! _lines_loaded)
     load_lines ();
 
-  // TODO if interval is not a duplicate
-  // TODO   insert interval.serialize into _lines
-  // TODO   _dirty = true;
+  const std::string serialization = interval.serialize ();
 
-  _lines.push_back (interval.serialize ());
-  debug (format ("{1}: Added {2}", _file.name (), _lines.back ()));
-  _dirty = true;
+  // Ensure that the IntervalFactory can properly parse the serialization before
+  // adding it to the database.
+  try
+  {
+    Interval test = IntervalFactory::fromSerialization (serialization);
+    test.id = interval.id;
+    if (interval != test)
+    {
+      throw (format ("Encode / decode check failed:\n  {1}\nis not equal to:\n  {2}",
+                     serialization, test.serialize ()));
+    }
+
+    _lines.push_back (serialization);
+    debug (format ("{1}: Added {2}", _file.name (), _lines.back ()));
+    _dirty = true;
+  }
+  catch (const std::string& error)
+  {
+    debug (format ("Datafile::addInterval() failed.\n{1}", error));
+    throw std::string ("Internal error. Failed encode / decode check.");
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -129,24 +147,25 @@ void Datafile::commit ()
   // The _dirty flag indicates that the file needs to be written.
   if (_dirty)
   {
-    if (_file.open ())
+    AtomicFile file (_file);
+    if (file.open ())
     {
-      _file.lock ();
-      _file.truncate ();
-      _file.append (std::string (""));   // Seek to EOF.
-
       // Sort the intervals by ascending start time.
       std::sort (_lines.begin (), _lines.end ());
 
       // Write out all the lines.
+      file.truncate ();
       for (auto& line : _lines)
-        _file.write_raw (line + '\n');
+      {
+        file.write_raw (line + '\n');
+      }
 
-      _file.close ();
       _dirty = false;
     }
     else
+    {
       throw format ("Could not write to data file {1}", _file._data);
+    }
   }
 }
 
@@ -168,21 +187,20 @@ std::string Datafile::dump () const
 ////////////////////////////////////////////////////////////////////////////////
 void Datafile::load_lines ()
 {
-  if (_file.open ())
+  AtomicFile file (_file);
+  if (file.open ())
   {
-    _file.lock ();
-
     // Load the data.
     std::vector <std::string> read_lines;
-    _file.read (read_lines);
-    _file.close ();
+    file.read (read_lines);
+    file.close ();
 
     // Append the lines that were read.
     for (auto& line : read_lines)
       _lines.push_back (line);
 
     _lines_loaded = true;
-    debug (format ("{1}: {2} intervals", _file.name (), read_lines.size ()));
+    debug (format ("{1}: {2} intervals", file.name (), read_lines.size ()));
   }
 }
 

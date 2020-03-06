@@ -2,16 +2,18 @@ FROM debian:testing
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
             cmake \
+            fiu-utils=1.00-* \
             g++ \
             git \
+            libfiu-dev=1.00-* \
             locales \
             man \
             python3 \
             python3-dateutil \
-            tzdata
+            tzdata \
+    && rm -fr /var/lib/apt/lists/*
 
 # Setup environment
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
@@ -37,4 +39,4 @@ RUN make install
 WORKDIR /root/code/test/
 RUN make
 
-CMD ["bash", "-c", "./run_all -v ; cat all.log | grep 'not ok' ; ./problems ; echo timew $( timew --version ) ; python --version ; cmake --version ; gcc --version"]
+CMD ["bash", "-c", "./run_all -v ; cat all.log | grep 'not ok' ; ./problems ; FAILED=$? ; echo timew $( timew --version ) ; python --version ; cmake --version ; gcc --version ; exit $FAILED"]

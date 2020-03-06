@@ -8,6 +8,8 @@ include (CXXSniffer)
 
 set (PROJECT_VERSION "1.2.0")
 
+string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
+
 message ("-- Looking for SHA1 references")
 if (EXISTS ${CMAKE_SOURCE_DIR}/.git/index)
   set (HAVE_COMMIT true)

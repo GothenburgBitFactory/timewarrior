@@ -34,6 +34,7 @@
 #include <cassert>
 #include <cerrno>
 #include <inttypes.h>
+#include <AtomicFile.h>
 #include <JSON.h>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -111,7 +112,7 @@ void Rules::load (const std::string& file, int nest /* = 1 */)
 
   if (nest == 1)
   {
-    File originalFile (file);
+    Path originalFile (file);
     _original_file = originalFile._data;
 
     if (! originalFile.exists ())
@@ -123,8 +124,17 @@ void Rules::load (const std::string& file, int nest /* = 1 */)
 
   // Read the file, then parse the contents.
   std::string contents;
-  if (File::read (file, contents) && contents.length ())
-    parse (contents, nest);
+  try
+  {
+    AtomicFile::read (file, contents);
+    if (contents.length ())
+    {
+      parse (contents, nest);
+    }
+  }
+  catch (...)
+  {
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -624,7 +634,9 @@ bool Rules::setConfigVariable (
   }
 
   if (change)
-    File::write (rules.file (), lines);
+  {
+    AtomicFile::write (rules.file (), lines);
+  }
 
   return change;
 }
@@ -648,7 +660,7 @@ int Rules::unsetConfigVariable (
 
   // Read config file as lines of text.
   std::vector <std::string> lines;
-  File::read (rules.file (), lines);
+  AtomicFile::read (rules.file (), lines);
 
   // If there is a non-comment line containing the entry in flattened form:
   //   a.b.c = value
@@ -703,7 +715,9 @@ int Rules::unsetConfigVariable (
   }
 
   if (change)
-    File::write (rules.file (), lines);
+  {
+    AtomicFile::write (rules.file (), lines);
+  }
 
   if (change && found)
     return 0;

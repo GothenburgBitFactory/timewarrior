@@ -6,6 +6,7 @@ brew install pyenv
 pyenv install 3.8.0
 pyenv global 3.8.0
 eval "$( pyenv init - )"
+Updpip install --upgrade pip
 pip install python-dateutil
 
 git clean -dfx
@@ -21,8 +22,10 @@ make
 grep 'not ok' all.log
 set +x
 ./problems
+EXIT_CODE=$?
 echo "timew $( timew --version )"
 python --version
 python3 --version
 cmake --version
 clang --version
+exit ${EXIT_CODE}

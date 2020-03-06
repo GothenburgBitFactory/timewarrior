@@ -37,6 +37,8 @@ int CmdFill (
   Database& database,
   Journal& journal)
 {
+  auto verbose = rules.getBoolean ("verbose");
+
   std::set <int> ids = cli.getIds ();
 
   if (ids.empty ())
@@ -63,7 +65,7 @@ int CmdFill (
     autoFill (rules, database, to);
     validate (cli, rules, database, to);
     std::cout << "# to " << to.dump () << "\n";
-    database.addInterval (to, rules.getBoolean ("verbose"));
+    database.addInterval (to, verbose);
 
     // Note: Feedback generated inside autoFill().
   }
