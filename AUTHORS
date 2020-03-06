@@ -5,6 +5,7 @@ The development of Timewarrior was made possible by the significant contribution
   Federico Hernandez (Contributing Author)
   Dirk Deimeke       (Technical Advisor)
   Tomas Babej        (Contributing Author)
+  Shaun Ruffel       (Contributing Author)
 
 The following submitted code, packages or analysis, and deserve special thanks:
 
@@ -30,9 +31,9 @@ The following submitted code, packages or analysis, and deserve special thanks:
   Aaron Fields
   vedharish
   janikrabe
-  sruffell
   Dennis Schridde
   quazgar
+  Johannes Hertenstein
 
 Thanks to the following, who submitted detailed bug reports and excellent suggestions:
 
@@ -82,3 +83,7 @@ Thanks to the following, who submitted detailed bug reports and excellent sugges
   quazgar
   RainbowSwirls
   bzed
+  Charlie Gorichanaz
+  Clément Hermann
+  Saulius Krasuckas
+  Tom Dörr
