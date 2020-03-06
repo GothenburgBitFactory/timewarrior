@@ -30,7 +30,7 @@ import os
 import sys
 import unittest
 
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta
 
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -179,6 +179,24 @@ class TestExport(TestCase):
 
         self.assertEqual(len(j), 1)
         self.assertClosedInterval(j[0], expectedTags=["tag with \"quote"])
+
+    def test_non_contiguous_with_tag_filter(self):
+        """Export with tag filter"""
+        self.t("track Tag1 2017-03-09T08:43:08 - 2017-03-09T09:38:15")
+        self.t("track Tag2 2017-03-09T11:38:39 - 2017-03-09T11:45:35")
+        self.t("track Tag1 Tag3 2017-03-09T11:46:21 - 2017-03-09T12:00:17")
+        self.t("track Tag2 Tag4 2017-03-09T12:01:49 - 2017-03-09T12:28:46")
+
+        j = self.t.export("Tag1")
+
+        self.assertEqual(len(j), 2)
+
+        self.assertClosedInterval(j[0],
+                                  expectedId=4,
+                                  expectedTags=["Tag1"])
+        self.assertClosedInterval(j[1],
+                                  expectedId=2,
+                                  expectedTags=["Tag1", "Tag3"])
 
 
 if __name__ == "__main__":
