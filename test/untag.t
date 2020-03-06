@@ -206,7 +206,18 @@ class TestUntag(TestCase):
                                 expectedTags=["bar", "foo"],
                                 description="unmodified interval")
 
+    def test_untag_with_identical_tags(self):
+        """Call 'untag' with identical tags"""
+        self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00 foo bar")
+        self.t("untag @1 foo foo")
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertEqual(j[0]['tags'], ['bar'])
+
     def test_untag_with_identical_ids(self):
+        """Call 'untag' with identical ids"""
         now_utc = datetime.now().utcnow()
         one_hour_before_utc = now_utc - timedelta(hours=1)
 

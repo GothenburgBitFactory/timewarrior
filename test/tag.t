@@ -207,12 +207,13 @@ class TestTag(TestCase):
                                 description="unmodified interval")
 
     def test_tag_with_identical_tags(self):
+        """Call 'tag' with identical tags"""
         self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00")
         self.t("tag @1 foo foo")
 
         j = self.t.export()
 
-        self.assertEquals(len(j), 1)
+        self.assertEqual(len(j), 1)
         self.assertEqual(j[0]['tags'], ['foo'])
 
     def test_tag_with_identical_ids(self):
@@ -279,15 +280,6 @@ class TestTag(TestCase):
 
         code, out, err = self.t.runError("tag @2 foo")
         self.assertIn("ID '@2' does not correspond to any tracking.", err)
-
-    def test_untag_with_identical_tags(self):
-        self.t("track 2016-01-01T00:00:00 - 2016-01-01T01:00:00 foo bar")
-        self.t("untag @1 foo foo")
-
-        j = self.t.export()
-
-        self.assertEquals(len(j), 1)
-        self.assertEqual(j[0]['tags'], ['bar'])
 
 
 if __name__ == "__main__":
