@@ -55,11 +55,13 @@ void autoFill (
     {
       interval.start = earlier->end;
         if (rules.getBoolean ("verbose"))
-        std::cout << "Backfilled "
-                  << (interval.id ? format ("@{1} ", interval.id) : "")
-                  << "to "
-                  << interval.start.toISOLocalExtended ()
-                  << "\n";
+        {
+          timew::cout << "Backfilled "
+                      << (interval.id ? format ("@{1} ", interval.id) : "")
+                      << "to "
+                      << interval.start.toISOLocalExtended ()
+                      << "\n";
+        }
       break;
     }
   }
@@ -73,11 +75,13 @@ void autoFill (
       {
         interval.end = later.start;
         if (rules.getBoolean ("verbose"))
-          std::cout << "Filled "
-                    << (interval.id ? format ("@{1} ", interval.id) : "")
-                    << "to "
-                    << interval.end.toISOLocalExtended ()
-                    << "\n";
+        {
+          timew::cout << "Filled "
+                      << (interval.id ? format ("@{1} ", interval.id) : "")
+                      << "to "
+                      << interval.end.toISOLocalExtended ()
+                      << "\n";
+        }
         break;
       }
     }

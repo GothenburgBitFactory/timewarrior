@@ -89,7 +89,7 @@ int CmdTag (
 
     if (verbose)
     {
-      std::cout << "Added " << joinQuotedIfNeeded (" ", tags) << " to @" << interval.id << '\n';
+      timew::cout << "Added " << joinQuotedIfNeeded (" ", tags) << " to @" << interval.id << '\n';
     }
   }
 

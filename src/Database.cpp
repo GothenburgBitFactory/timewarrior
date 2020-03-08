@@ -307,7 +307,7 @@ void Database::addInterval (const Interval& interval, bool verbose)
   {
     if (_tagInfoDatabase.incrementTag (tag) == -1 && verbose)
     {
-      std::cout << "Note: '" << quoteIfNeeded (tag) << "' is a new tag." << std::endl;
+      timew::cout << "Note: '" << quoteIfNeeded (tag) << "' is a new tag." << std::endl;
     }
   }
 
@@ -517,10 +517,10 @@ void Database::initializeTagDatabase ()
 
   if (!exists)
   {
-    std::cout << "Tags database does not exist. ";
+    timew::cout << "Tags database does not exist. ";
   }
   
-  std::cout << "Recreating from interval data..." << std::endl;
+  timew::cout << "Recreating from interval data..." << std::endl;
 
   for (; it != end; ++it)
   {

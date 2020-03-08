@@ -28,6 +28,13 @@
 #include <timew.h>
 #include <string>
 
+namespace timew
+{
+
+std::stringstream cout;
+
+};
+
 ////////////////////////////////////////////////////////////////////////////////
 // Escape all 'c' --> '\c'.
 std::string escape (const std::string& input, int c)

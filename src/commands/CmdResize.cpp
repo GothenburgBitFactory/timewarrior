@@ -70,7 +70,7 @@ int CmdResize (
 
     if (verbose)
     {
-      std::cout << "Resized @" << interval.id << " to " << dur.formatHours () << '\n';
+      timew::cout << "Resized @" << interval.id << " to " << dur.formatHours () << '\n';
     }
   }
 

@@ -101,21 +101,23 @@ int renderChart (
   {
     if (verbose)
     {
-      std::cout << "No filtered data found";
+      timew::cout << "No filtered data found";
 
       if (filter.is_started ())
       {
-        std::cout << " in the range " << filter.start.toISOLocalExtended ();
+        timew::cout << " in the range " << filter.start.toISOLocalExtended ();
         if (filter.is_ended ())
-          std::cout << " - " << filter.end.toISOLocalExtended ();
+        {
+          timew::cout << " - " << filter.end.toISOLocalExtended ();
+        }
       }
 
       if (! filter.tags ().empty ())
       {
-        std::cout << " tagged with " << joinQuotedIfNeeded (", ", filter.tags ());
+        timew::cout << " tagged with " << joinQuotedIfNeeded (", ", filter.tags ());
       }
 
-      std::cout << ".\n";
+      timew::cout << ".\n";
     }
 
     return 0;
@@ -162,7 +164,7 @@ int renderChart (
 
   Chart chart (configuration);
 
-  std::cout << chart.render (filter, tracked, exclusions, holidays);
+  timew::cout << chart.render (filter, tracked, exclusions, holidays);
 
   return 0;
 }

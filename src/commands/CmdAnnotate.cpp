@@ -80,11 +80,11 @@ int CmdAnnotate (
     {
       if (annotation.empty ())
       {
-        std::cout << "Removed annotation from @" << modified.id << std::endl;
+        timew::cout << "Removed annotation from @" << modified.id << std::endl;
       }
       else
       {
-        std::cout << "Annotated @" << modified.id << " with \"" << annotation << "\"" << std::endl;
+        timew::cout << "Annotated @" << modified.id << " with \"" << annotation << "\"" << std::endl;
       }
     }
   }

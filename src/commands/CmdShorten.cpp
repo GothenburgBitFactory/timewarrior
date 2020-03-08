@@ -78,7 +78,7 @@ int CmdShorten (
 
     if (verbose)
     {
-      std::cout << "Shortened @" << interval.id << " by " << dur.formatHours () << '\n';
+      timew::cout << "Shortened @" << interval.id << " by " << dur.formatHours () << '\n';
     }
   }
 

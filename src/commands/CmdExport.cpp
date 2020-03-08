@@ -35,7 +35,7 @@ int CmdExport (
   Database& database)
 {
   auto filter = cli.getFilter ();
-  std::cout << jsonFromIntervals (getTracked (database, rules, filter));
+  timew::cout << jsonFromIntervals (getTracked (database, rules, filter));
   return 0;
 }
 

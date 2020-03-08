@@ -83,7 +83,7 @@ int CmdSplit (
 
     if (verbose)
     {
-      std::cout << "Split @" << interval.id << '\n';
+      timew::cout << "Split @" << interval.id << '\n';
     }
   }
 

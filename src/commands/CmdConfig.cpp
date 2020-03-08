@@ -120,11 +120,11 @@ int CmdConfig (
   {
     if (change)
     {
-      std::cout << "Config file " << rules.file () << " modified.\n";
+      timew::cout << "Config file " << rules.file () << " modified.\n";
     }
     else
     {
-      std::cout << "No changes made.\n";
+      timew::cout << "No changes made.\n";
     }
   }
 

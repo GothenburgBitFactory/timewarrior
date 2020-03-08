@@ -65,7 +65,7 @@ int CmdDiagnostics (
   Database& database,
   const Extensions& extensions)
 {
-  std::stringstream out;
+  std::ostream& out = timew::cout;
   out << '\n'
       << PACKAGE_STRING
       << '\n';
@@ -220,7 +220,6 @@ int CmdDiagnostics (
     out << "               (None)\n";
 
   out << '\n';
-  std::cout << out.str ();
 
   return 0;
 }

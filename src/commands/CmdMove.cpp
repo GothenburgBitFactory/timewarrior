@@ -110,7 +110,7 @@ int CmdMove (
 
   if (verbose)
   {
-    std::cout << "Moved @" << id << " to " << interval.start.toISOLocalExtended () << '\n';
+    timew::cout << "Moved @" << id << " to " << interval.start.toISOLocalExtended () << '\n';
   }
 
   return 0;

@@ -50,7 +50,7 @@ int CmdGet (
     results.push_back (value);
   }
 
-  std::cout << join (" ", results) << '\n';
+  timew::cout << join (" ", results) << '\n';
   return 0;
 }
 

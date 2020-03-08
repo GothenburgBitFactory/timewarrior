@@ -42,7 +42,9 @@ int CmdCancel (
   if (!latest.is_open ())
   {
     if (verbose)
-      std::cout << "There is no active time tracking.\n";
+    {
+      timew::cout << "There is no active time tracking.\n";
+    }
 
     return 0;
   }
@@ -52,7 +54,9 @@ int CmdCancel (
   journal.endTransaction ();
 
   if (verbose)
-    std::cout << "Canceled active time tracking.\n";
+  {
+    timew::cout << "Canceled active time tracking.\n";
+  }
 
   return 0;
 }

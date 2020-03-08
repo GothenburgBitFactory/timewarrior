@@ -88,7 +88,7 @@ int CmdUntag (
 
     if (verbose)
     {
-      std::cout << "Removed " << joinQuotedIfNeeded (" ", tags) << " from @" << interval.id << '\n';
+      timew::cout << "Removed " << joinQuotedIfNeeded (" ", tags) << " from @" << interval.id << '\n';
     }
   }
 

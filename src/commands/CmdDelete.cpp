@@ -57,7 +57,7 @@ int CmdDelete (
 
     if (verbose)
     {
-      std::cout << "Deleted @" << interval.id << '\n';
+      timew::cout << "Deleted @" << interval.id << '\n';
     }
   }
 

@@ -96,7 +96,9 @@ int CmdStop (
     database.addInterval (interval, verbose);
 
     if (verbose)
-      std::cout << intervalSummarize (database, rules, interval);
+    {
+      timew::cout << intervalSummarize (database, rules, interval);
+    }
   }
 
   // If tags are specified, but are not a full set of tags, remove them
@@ -120,7 +122,9 @@ int CmdStop (
     validate (cli, rules, database, modified);
     database.addInterval (modified, verbose);
     if (verbose)
-      std::cout << '\n' << intervalSummarize (database, rules, modified);
+    {
+      timew::cout << '\n' << intervalSummarize (database, rules, modified);
+    }
   }
 
   journal.endTransaction ();

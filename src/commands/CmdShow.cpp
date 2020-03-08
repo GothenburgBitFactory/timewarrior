@@ -51,13 +51,15 @@ int CmdShow (Rules& rules)
       {
         if (previous.size () > 1 &&
             parts.size () == 1)
-          std::cout << '\n';
+        {
+          timew::cout << '\n';
+        }
 
-        std::cout << std::string (2 * (parts.size () - 1), ' ')
-                  << parts[i]
-                  << " = "
-                  << rules.get (name)
-                  << "\n";
+        timew::cout << std::string (2 * (parts.size () - 1), ' ')
+                    << parts[i]
+                    << " = "
+                    << rules.get (name)
+                    << "\n";
       }
       else
       {
@@ -66,14 +68,16 @@ int CmdShow (Rules& rules)
         {
           if (i == 0)
           {
-            std::cout << '\n';
+            timew::cout << '\n';
             if (rules.isRuleType (parts[0]))
-              std::cout << "define ";
+            {
+              timew::cout << "define ";
+            }
           }
 
-          std::cout << std::string (2 * i, ' ')
-                    << parts[i]
-                    << ":\n";
+          timew::cout << std::string (2 * i, ' ')
+                      << parts[i]
+                      << ":\n";
         }
       }
     }

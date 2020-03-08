@@ -114,14 +114,16 @@ int CmdGaps (
 
   if (table.rows () > 2)
   {
-    std::cout << '\n'
-              << table.render ()
-              << '\n';
+    timew::cout << '\n'
+                << table.render ()
+                << '\n';
   }
   else
   {
     if (verbose)
-      std::cout << "No gaps found.\n";
+    {
+      timew::cout << "No gaps found.\n";
+    }
   }
 
   return 0;

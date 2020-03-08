@@ -78,7 +78,7 @@ int CmdJoin (
 
   if (verbose)
   {
-    std::cout << "Joined @" << first.id << " and @" << second.id << '\n';
+    timew::cout << "Joined @" << first.id << " and @" << second.id << '\n';
   }
 
   return 0;

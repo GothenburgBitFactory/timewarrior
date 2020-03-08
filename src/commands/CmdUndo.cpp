@@ -73,7 +73,7 @@ int CmdUndo (Rules& rules, Database& database, Journal& journal)
     // No (more) undoing...
     if (verbose)
     {
-      std::cout << "Nothing to undo." << std::endl;
+      timew::cout << "Nothing to undo." << std::endl;
     }
   }
   else
@@ -100,7 +100,7 @@ int CmdUndo (Rules& rules, Database& database, Journal& journal)
 
     if (verbose)
     {
-      std::cout << "Undo" << std::endl;
+      timew::cout << "Undo" << std::endl;
     }
   }
 

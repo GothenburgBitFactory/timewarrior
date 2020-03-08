@@ -120,7 +120,7 @@ int CmdContinue (
 
   if (verbose)
   {
-    std::cout << intervalSummarize (database, rules, to_copy);
+    timew::cout << intervalSummarize (database, rules, to_copy);
   }
 
   return 0;

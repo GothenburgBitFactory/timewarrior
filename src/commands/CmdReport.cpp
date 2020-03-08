@@ -113,7 +113,9 @@ int CmdReport (
 
   // Display the output.
   for (auto& line : output)
-    std::cout << line << '\n';
+  {
+    timew::cout << line << '\n';
+  }
 
   return 0;
 }

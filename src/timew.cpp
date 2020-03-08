@@ -47,7 +47,10 @@ int main (int argc, const char** argv)
   // Lightweight version checking that doesn't require initialization or I/O.
   int status = 0;
   if (lightweightVersionCheck (argc, argv))
+  {
+    std::cout << timew::cout.rdbuf ();
     return status;
+  }
 
   try
   {
@@ -129,6 +132,12 @@ int main (int argc, const char** argv)
     << run_time.total_us () / 1000000.0
     << " sec\n";
   debug (s.str ());
+
+
+  if (status >= 0)
+  {
+    std::cout << timew::cout.rdbuf ();
+  }
 
   return status;
 }

@@ -27,6 +27,7 @@
 #include <commands.h>
 #include <Table.h>
 #include <iostream>
+#include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Enumerate all extensions.
@@ -62,12 +63,12 @@ int CmdExtensions (
   Directory extDir (rules.get ("temp.db"));
   extDir += "extensions";
 
-  std::cout << '\n'
-            << "Extensions located in:\n"
-            << "  " << extDir._data << '\n'
-            << '\n'
-            << t.render ()
-            << '\n';
+  timew::cout << '\n'
+              << "Extensions located in:\n"
+              << "  " << extDir._data << '\n'
+              << '\n'
+              << t.render ()
+              << '\n';
   return 0;
 }
 

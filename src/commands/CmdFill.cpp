@@ -58,13 +58,13 @@ int CmdFill (
       throw format ("ID '@{1}' does not correspond to any tracking.", id);
 
     Interval from = tracked[tracked.size () - id];
-    std::cout << "# from " << from.dump () << "\n";
+    timew::cout << "# from " << from.dump () << "\n";
     Interval to {from};
 
     database.deleteInterval (from);
     autoFill (rules, database, to);
     validate (cli, rules, database, to);
-    std::cout << "# to " << to.dump () << "\n";
+    timew::cout << "# to " << to.dump () << "\n";
     database.addInterval (to, verbose);
 
     // Note: Feedback generated inside autoFill().

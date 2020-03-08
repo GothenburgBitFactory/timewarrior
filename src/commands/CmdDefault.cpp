@@ -41,7 +41,7 @@ int CmdDefault (Rules& rules, Database& database)
   {
     if (verbose)
     {
-      std::cout << intervalSummarize (database, rules, interval);
+      timew::cout << intervalSummarize (database, rules, interval);
     }
 
     return 0;
@@ -49,23 +49,23 @@ int CmdDefault (Rules& rules, Database& database)
 
   if (rules.getBoolean ("temp.shiny"))
   {
-    std::cout << '\n'
-              << "Welcome to Timewarrior.\n"
-              << '\n'
-              << "There is built-in help:\n"
-              << "    timew help\n"
-              << "    timew help <command>\n"
-              << "    (and more)\n"
-              << '\n'
-              << "There is a fully-detailed man page:\n"
-              << "    man timew\n"
-              << '\n';
+    timew::cout << '\n'
+                << "Welcome to Timewarrior.\n"
+                << '\n'
+                << "There is built-in help:\n"
+                << "    timew help\n"
+                << "    timew help <command>\n"
+                << "    (and more)\n"
+                << '\n'
+                << "There is a fully-detailed man page:\n"
+                << "    man timew\n"
+                << '\n';
     return 0;
   }
 
   if (verbose)
   {
-    std::cout << "There is no active time tracking.\n";
+    timew::cout << "There is no active time tracking.\n";
   }
 
   return 1;

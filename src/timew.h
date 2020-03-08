@@ -27,6 +27,8 @@
 #ifndef INCLUDED_TIMEW
 #define INCLUDED_TIMEW
 
+#include <sstream>
+
 #include <CLI.h>
 #include <Database.h>
 #include <Rules.h>
@@ -35,6 +37,15 @@
 #include <Exclusion.h>
 #include <Palette.h>
 #include <Color.h>
+
+namespace timew
+{
+
+// This is a buffered cout that will only be displayed if there are not any
+// errors.
+extern std::stringstream cout;
+
+};
 
 // data.cpp
 std::vector <Range>     getHolidays       (const Rules&);

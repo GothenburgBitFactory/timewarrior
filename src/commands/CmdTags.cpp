@@ -68,14 +68,16 @@ int CmdTags (
       t.set (row, 1, rules.has (name) ? rules.get (name) : "-");
     }
 
-    std::cout << '\n'
-              << t.render ()
-              << '\n';
+    timew::cout << '\n'
+                << t.render ()
+                << '\n';
   }
   else
   {
     if (verbose)
-      std::cout << "No data found.\n";
+    {
+      timew::cout << "No data found.\n";
+    }
   }
 
   return 0;

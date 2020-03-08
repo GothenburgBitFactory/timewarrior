@@ -70,11 +70,13 @@ int Extensions::callExtension (
 {
   if (_debug)
   {
-    std::cout << "Extension: Calling " << script << '\n'
-              << "Extension: input";
+    timew::cout << "Extension: Calling " << script << '\n'
+                << "Extension: input";
 
     for (auto& i : input)
-      std::cout << "  " << i << '\n';
+    {
+      timew::cout << "  " << i << '\n';
+    }
   }
 
   auto inputStr = join ("\n", input);
@@ -107,7 +109,9 @@ int Extensions::callExtension (
   output = split (outputStr, '\n');
 
   if (_debug)
-    std::cout << "Extension: Completed with status " << status << '\n';
+  {
+    timew::cout << "Extension: Completed with status " << status << '\n';
+  }
 
   return status;
 }

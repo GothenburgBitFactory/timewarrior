@@ -72,7 +72,7 @@ int CmdLengthen (
 
     if (verbose)
     {
-      std::cout << "Lengthened @" << interval.id << " by " << dur.formatHours () << '\n';
+      timew::cout << "Lengthened @" << interval.id << " by " << dur.formatHours () << '\n';
     }
   }
 

@@ -35,7 +35,7 @@ int CmdTrack (
   Database& database,
   Journal& journal)
 {
-  auto boolean = rules.getBoolean ("verbose");
+  auto verbose = rules.getBoolean ("verbose");
 
   auto filter = cli.getFilter ();
 
@@ -52,10 +52,12 @@ int CmdTrack (
 
   for (auto& interval : flatten (filter, getAllExclusions (rules, filter)))
   {
-    database.addInterval (interval, boolean);
+    database.addInterval (interval, verbose);
 
-    if (boolean)
-      std::cout << intervalSummarize (database, rules, interval);
+    if (verbose)
+    {
+      timew::cout << intervalSummarize (database, rules, interval);
+    }
   }
 
   journal.endTransaction ();
