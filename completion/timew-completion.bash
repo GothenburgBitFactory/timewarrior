@@ -1,19 +1,17 @@
-#!/usr/bin/env bash
-#
 # Bash completion for TimeWarrior
 #
-# Copyright (C) 2017 - 2019  Thomas Lauf
+# Copyright (C) 2017 - 2020 Thomas Lauf
 #
 function __get_commands()
 {
-  echo "annotate cancel config continue day delete diagnostics export extensions gaps get help join lengthen modify month move report shorten show split start stop summary tag tags track undo untag week"
+  echo "annotate cancel config continue day delete diagnostics export extensions gaps get help join lengthen modify month move report resize shorten show split start stop summary tag tags track undo untag week"
 }
 
 function __get_subcommands()
 {
   case "${1}" in
     modify)
-      echo "end start"
+      echo -e "end start"
       ;;
     *)
       echo ""
@@ -23,22 +21,28 @@ function __get_subcommands()
 
 function __get_help_items()
 {
-  echo "$( __get_commands ) interval hints date duration dom"
+  echo -e "$( __get_commands ) interval hints date duration dom"
 }
 
 function __get_options()
 {
-  echo "--help --verbose --version"
+  echo -e "--help --verbose --version"
 }
 
 function __get_ids()
 {
-  seq -f "@%g" 1 "$( timew get dom.tracked.count )"
+  local count
+  count="$( timew get dom.tracked.count )"
+  if [[ "${count}" -eq "0" ]] ; then
+    echo ""
+  else
+    seq -f "@%g" 1 "${count}"
+  fi
 }
 
 function __get_tags()
 {
-  timew tags | awk '{if(NR>3)print $1}'
+  timew tags | tail -n +4 -- | sed -e "s|[[:space:]]*-$||"
 }
 
 function __get_extensions()
@@ -49,7 +53,7 @@ function __get_extensions()
 function __has_entered_id()
 {
   for word in "${COMP_WORDS[@]}" ; do
-    if [[ "${word}" =~ ^@ ]] ; then
+    if [[ "${word}" =~ ^@[0-9] ]] ; then
       return 0
     fi
   done
@@ -96,9 +100,31 @@ function __is_entering_id()
   fi
 }
 
+function __complete_tag()
+{
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  local line wordlist
+
+  declare -a wordlist
+  while IFS=$'\n' read -r line ; do
+    wordlist+=( "${line}" )
+  done <<< "$( __get_tags )"
+
+  declare -a completions
+  while read -r line ; do
+    completions+=( "${line}" )
+  done < <( compgen -W "$(printf '%q ' "${wordlist[@]}")" -- "${cur}" 2>/dev/null )
+
+  for completion in "${completions[@]}" ; do
+    COMPREPLY+=( "$(printf "%q" "${completion}")" )
+  done
+}
+
 function _timew()
 {
-  local cur first
+  local cur first wordlist
+
   COMPREPLY=()
   cur="${COMP_WORDS[COMP_CWORD]}"
   first="${COMP_WORDS[1]}"
@@ -107,11 +133,12 @@ function _timew()
     cancel|config|diagnostics|day|extensions|get|month|show|undo|week)
       wordlist=""
       ;;
-    annotate|continue|delete|join|lengthen|move|shorten|split)
+    annotate|continue|delete|join|lengthen|move|resize|shorten|split)
       wordlist=$( __get_ids )
       ;;
     export|gaps|start|stop|summary|tags|track)
-      wordlist=$( __get_tags )
+      __complete_tag
+      return
       ;;
     modify)
       if __has_entered_subcommand "${first}" ; then
@@ -124,7 +151,8 @@ function _timew()
       if __is_entering_id ; then
         wordlist=$( __get_ids )
       elif __has_entered_id ; then
-        wordlist=$( __get_tags )
+        __complete_tag
+        return
       else
         wordlist=$( __get_ids )
       fi
@@ -139,7 +167,7 @@ function _timew()
         wordlist=$( __get_help_items )
       fi
       ;;
-    --*)
+    -*)
       wordlist=$( __get_options )
       ;;
     *)
