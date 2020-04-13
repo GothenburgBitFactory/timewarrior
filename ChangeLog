@@ -3,6 +3,8 @@
 - #245    Performance Issues
           (thanks to Tom Dörr, Shaun Ruffell)
 - #259    Migrate to python 3 enhancement
+- #268    Minimum required gcc version to build timewarrior
+          (thanks to Joerg Kastning)
 - #269    Do not load entire database for all commands
           (thanks to Shaun Ruffell)
 - #270    Stop with id should suggest modify command
