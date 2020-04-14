@@ -361,8 +361,7 @@ std::vector <Interval> getIntervalsByIds (
     auto exclusions = getAllExclusions (rules, {latest.start, Datetime ()});
     if (! exclusions.empty ())
     {
-        // We're converting the latest interval into synthetic intervals so we
-        // need to skip it
+        // We're converting the latest interval into synthetic intervals so we need to skip it
         ++it;
 
         for (auto& interval : flatten (latest, exclusions))
@@ -567,8 +566,7 @@ std::vector <Range> addRanges (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Subtract a set of Ranges from another set of Ranges, all within a defined
-// range.
+// Subtract a set of Ranges from another set of Ranges, all within a defined range.
 std::vector <Range> subtractRanges (
   const std::vector <Range>& ranges,
   const std::vector <Range>& subtractions)
@@ -705,8 +703,7 @@ std::vector <Interval> getTracked (
     Interval interval = IntervalFactory::fromSerialization(line);
 
     // Since we are moving backwards, and the intervals are in sorted order,
-    // if the filter is after the interval, we know there will be no more
-    // matches
+    // if the filter is after the interval, we know there will be no more matches
     if (matchesRange (interval, filter))
     {
       intervals.push_front (std::move (interval));
@@ -749,8 +746,7 @@ std::vector <Interval> getTracked (
     }
   }
 
-  // Assign an ID to each interval before we prune ones that do not have
-  // matching tags
+  // Assign an ID to each interval before we prune ones that do not have matching tags
   for (unsigned int i = 0; i < intervals.size (); ++i)
   {
     intervals[i].id = intervals.size () - i + id_skip;
