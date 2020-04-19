@@ -1,24 +1,23 @@
+New Features in 1.3.0
 
-New Features in 1.2.0
+  - Performance improvements
+  - Switch to python 3
+  - New hint ':fortnight'
+  - Pass interval id to extensions
 
-  - Print warning when a new tag is entered (#2)
-  - Bash completion (#96)
-  - Show man pages with `--help` option
-
-New Commands in 1.2.0
-
-  - New command 'undo' (#9)
-  - New command 'annotate'
-
-New Configuration Options 1.2.0
+New Commands in 1.3.0
 
   - None
 
-Newly Deprecated Features in 1.2.0
+New Configuration Options 1.3.0
 
   - None
 
-Removed Features in 1.2.0
+Newly Deprecated Features in 1.3.0
+
+  - None
+
+Removed Features in 1.3.0
 
   - None
 
