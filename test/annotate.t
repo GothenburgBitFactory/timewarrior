@@ -2,7 +2,7 @@
 
 ###############################################################################
 #
-# Copyright 2018, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+# Copyright 2018 - 2020, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -27,10 +27,10 @@
 ###############################################################################
 
 import os
-import sys
 import unittest
-
 from datetime import datetime, timedelta
+
+import sys
 
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))

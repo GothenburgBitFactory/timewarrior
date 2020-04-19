@@ -2,7 +2,7 @@
 
 ###############################################################################
 #
-# Copyright 2015 - 2016, Paul Beckingham, Federico Hernandez.
+# Copyright 2016 - 2020, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -28,8 +28,8 @@
 
 import datetime
 import json
-import sys
 
+import sys
 from dateutil import tz
 
 DATEFORMAT = "%Y%m%dT%H%M%SZ"

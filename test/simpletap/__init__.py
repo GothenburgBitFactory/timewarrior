@@ -1,7 +1,7 @@
 ###############################################################################
 # timewarrior - a command line time tracker.
 #
-# Copyright 2006 - 2018, Paul Beckingham, Federico Hernandez.
+# Copyright 2016 - 2020, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -29,10 +29,11 @@
 
 import inspect
 import os
-import sys
 import traceback
 import unittest
 import warnings
+
+import sys
 
 
 def color(text, c):
