@@ -1,8 +1,8 @@
 - #155    Corrupts database when no disk space available
-          (thanks to Tom Dörr, Shaun Ruffell)
+          (thanks to Shaun Ruffell, Tom Dörr)
 - #245    Performance Issues
-          (thanks to Tom Dörr, Shaun Ruffell)
-- #259    Migrate to python 3 enhancement
+          (thanks to  Shaun Ruffell, Tom Dörr)
+- #259    Migrate to python 3
 - #268    Minimum required gcc version to build timewarrior
           (thanks to Joerg Kastning)
 - #269    Do not load entire database for all commands
@@ -15,14 +15,19 @@
           (thanks to Shaun Ruffell)
 - #278    New hint :fortnight added
           (thanks to quazgar)
+- #282    Database: Fix error when empty datafile is most recent / oldest
+          (Thanks to Shaun Ruffell)
+- #283    Use AtomicFile to commit files as a group
+          (Thanks to Shaun Ruffell)
 - #284    tags.data modification date updated when file is not modified
-          (thanks to Charlie Gorichanaz, Shaun Ruffell)
+          (thanks to Shaun Ruffell, Charlie Gorichanaz)
 - #285    Pass record id to extensions
           (thanks to Johannes Hertenstein)
 - #290    trying to track something that would be before epoch fails silently, corrupting database
-          (thanks to Clément Hermann, Shaun Ruffell)
+          (thanks to Shaun Ruffell, Clément Hermann)
 - #293    filtering by tag can produce wrong ids
-          (thanks to Saulius Krasuckas, Shaun Ruffell)
+          (thanks to Shaun Ruffell, Saulius Krasuckas)
+- #298    Add current version of bash-completion
 
 ------ current release ---------------------------
 
