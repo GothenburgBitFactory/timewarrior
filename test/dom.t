@@ -27,9 +27,10 @@
 ###############################################################################
 
 import os
+import sys
 import unittest
 
-import sys
+from datetime import datetime, timedelta
 
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -165,6 +166,36 @@ class TestDOMTracked(TestCase):
 
         code, out, err = self.t("get dom.tracked.count")
         self.assertEqual('2\n', out)
+
+    def test_dom_tracked_tags_with_emtpy_database(self):
+        """Test dom.tracked.tags with empty database"""
+        code, out, err = self.t("get dom.tracked.tags")
+        self.assertEqual("\n", out)
+
+    def test_dom_tracked_tags_with_no_tags(self):
+        """Test dom.tracked.tags with no tags"""
+        now_utc = datetime.now().utcnow()
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z".format(five_hours_before_utc, four_hours_before_utc))
+
+        code, out, err = self.t("get dom.tracked.tags")
+        self.assertEqual("\n", out)
+
+    def test_dom_tracked_tags_with_tags(self):
+        """Test dom.tracked.tags with tags"""
+        now_utc = datetime.now().utcnow()
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc, four_hours_before_utc))
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z bar".format(three_hours_before_utc, two_hours_before_utc))
+
+        code, out, err = self.t("get dom.tracked.tags")
+        self.assertEqual("bar foo \n", out)
 
     def test_dom_tracked_N_tag_count_zero(self):
         """Test dom.tracked.N.tag.count with zero tags"""

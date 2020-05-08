@@ -108,6 +108,29 @@ bool domGet (
       auto tracked = getTracked (database, rules, filter);
       int count = static_cast <int> (tracked.size ());
 
+      // dom.tracked.tags
+      if (pig.skipLiteral ("tags"))
+      {
+        std::set <std::string> tags;
+        for (const auto& interval : tracked)
+        {
+          for (const auto &tag : interval.tags ())
+          {
+            tags.insert (tag);
+          }
+        }
+
+        std::stringstream s;
+
+        for (const auto& tag : tags)
+        {
+          s << format ( "{1} ", tag );
+        }
+
+        value = s.str();
+        return true;
+      }
+
       // dom.tracked.count
       if (pig.skipLiteral ("count"))
       {
