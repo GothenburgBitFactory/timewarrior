@@ -154,83 +154,119 @@ class TestDOM(TestCase):
 
 
 class TestDOMTracked(TestCase):
-    @classmethod
-    def setUpClass(cls):
-        """Executed before each test in the class"""
-        cls.t = Timew()
-        cls.t("track :yesterday one two")    #2
-        cls.t("start")                       #1
-
     def setUp(self):
         """Executed before each test in the class"""
+        self.t = Timew()
 
     def test_dom_tracked_count_some(self):
         """Test dom.tracked.count with an active interval"""
+        self.t("track :yesterday one two")
+        self.t("start")
+
         code, out, err = self.t("get dom.tracked.count")
         self.assertEqual('2\n', out)
 
     def test_dom_tracked_N_tag_count_zero(self):
         """Test dom.tracked.N.tag.count with zero tags"""
+        self.t("track :yesterday one two")
+        self.t("start")
+
         code, out, err = self.t("get dom.tracked.1.tag.count")
         self.assertEqual('0\n', out)
 
     def test_dom_tracked_N_tag_count_two(self):
         """Test dom.tracked.N.tag.count with two tags"""
+        self.t("track :yesterday one two")
+        self.t("start")
+
         code, out, err = self.t("get dom.tracked.2.tag.count")
         self.assertEqual('2\n', out)
 
     def test_dom_tracked_N_tag_N_none(self):
         """Test dom.tracked.N.tag.N with no data"""
+        self.t("track :yesterday one two")
+        self.t("start")
+
         code, out, err = self.t.runError("get dom.tracked.1.tag.1")
         self.assertIn("DOM reference 'dom.tracked.1.tag.1' is not valid.", err)
 
     def test_dom_tracked_N_tag_N_two(self):
         """Test dom.tracked.N.tag.N with two tags"""
+        self.t("track :yesterday one two")
+        self.t("start")
+
         code, out, err = self.t("get dom.tracked.2.tag.2")
         self.assertEqual('two\n', out)
 
     def test_dom_tracked_N_start_inactive(self):
         """Test dom.tracked.N.start with no active track"""
+        self.t("track :yesterday one two")
+        self.t("start")
+
         code, out, err = self.t.runError("get dom.tracked.3.start")
         self.assertIn("DOM reference 'dom.tracked.3.start' is not valid.", err)
 
     def test_dom_tracked_N_start_active(self):
         """Test dom.tracked.N.start with active track"""
+        self.t("track :yesterday one two")
+        self.t("start")
+
         code, out, err = self.t("get dom.tracked.1.start")
         self.assertRegex(out, r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}')
 
     def test_dom_tracked_N_end_invalid(self):
         """Test dom.tracked.N.end with no active track"""
+        self.t("track :yesterday one two")
+        self.t("start")
+
         code, out, err = self.t.runError("get dom.tracked.3.end")
         self.assertIn("DOM reference 'dom.tracked.3.end' is not valid.", err)
 
     def test_dom_tracked_N_end_inactive(self):
         """Test dom.tracked.N.end with active track"""
+        self.t("track :yesterday one two")
+        self.t("start")
+
         code, out, err = self.t("get dom.tracked.2.end")
         self.assertRegex(out, r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}')
 
     def test_dom_tracked_N_end_active(self):
         """Test dom.tracked.N.end with active track"""
+        self.t("track :yesterday one two")
+        self.t("start")
+
         code, out, err = self.t("get dom.tracked.1.end")
         self.assertEqual('\n', out)
 
     def test_dom_tracked_N_duration_inactive(self):
         """Test dom.tracked.N.duration of closed track"""
+        self.t("track :yesterday one two")
+        self.t("start")
+
         code, out, err = self.t("get dom.tracked.2.duration")
         self.assertRegex(out, r'P1D')
 
     def test_dom_tracked_N_duration_active(self):
         """Test dom.tracked.N.duration with open track"""
+        self.t("track :yesterday one two")
+        self.t("start")
+
         code, out, err = self.t("get dom.tracked.1.duration")
         self.assertRegex(out, r'PT\d+S')
 
     def test_dom_tracked_N_json_inactive(self):
         """Test dom.tracked.N.json of closed track"""
+        self.t("track :yesterday one two")
+        self.t("start")
+
         code, out, err = self.t("get dom.tracked.2.json")
         self.assertRegex(out, r'{"id":2,"start":"\d{8}T\d{6}Z","end":"\d{8}T\d{6}Z","tags":\["one","two"\]}')
 
     def test_dom_tracked_N_json_active(self):
         """Test dom.tracked.N.json of open track"""
+        self.t("track :yesterday one two")
+        self.t("start")
+
         code, out, err = self.t("get dom.tracked.1.json")
         self.assertRegex(out, r'{"id":1,"start":"\d{8}T\d{6}Z"}')
 
