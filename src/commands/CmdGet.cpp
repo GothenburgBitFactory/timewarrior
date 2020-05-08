@@ -38,18 +38,15 @@ int CmdGet (
   Database& database)
 {
   std::vector <std::string> results;
-  for (auto& arg : cli._args)
-  {
-    if (arg.hasTag ("TAG") &&
-        arg.hasTag ("FILTER"))
-    {
-      std::string reference = arg.attribute ("raw");
-      std::string value;
-      if (! domGet (database, rules, reference, value))
-        throw format ("DOM reference '{1}' is not valid.", reference);
+  std::vector <std::string> references = cli.getDomReferences ();
 
-      results.push_back (value);
-    }
+  for (auto& reference : references)
+  {
+    std::string value;
+    if (! domGet (database, rules, reference, value))
+      throw format ("DOM reference '{1}' is not valid.", reference);
+
+    results.push_back (value);
   }
 
   std::cout << join (" ", results) << '\n';

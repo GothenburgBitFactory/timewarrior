@@ -606,3 +606,19 @@ Duration CLI::getDuration () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+
+std::vector <std::string> CLI::getDomReferences () const
+{
+  std::vector<std::string> references;
+
+  for (auto &arg : _args)
+  {
+    if (arg.hasTag ("TAG") &&
+        arg.hasTag ("FILTER"))
+    {
+      references.emplace_back (arg.attribute ("raw"));
+    }
+  }
+
+  return references;
+}

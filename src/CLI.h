@@ -70,6 +70,7 @@ public:
   std::vector<std::string> getTags () const;
   std::string getAnnotation() const;
   Duration getDuration() const;
+  std::vector<std::string> getDomReferences () const;
   std::string dump (const std::string& title = "CLI Parser") const;
 
 private:
