@@ -97,6 +97,6 @@ std::string joinQuotedIfNeeded(const std::string& glue, const std::set <std::str
 std::string joinQuotedIfNeeded(const std::string& glue, const std::vector <std::string>& array);
 
 // dom.cpp
-bool domGet (Database&, const Rules&, const std::string&, std::string&);
+bool domGet (Database&, Interval&, const Rules&, const std::string&, std::string&);
 
 #endif

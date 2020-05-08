@@ -40,10 +40,11 @@ int CmdGet (
   std::vector <std::string> results;
   std::vector <std::string> references = cli.getDomReferences ();
 
+  Interval filter;
   for (auto& reference : references)
   {
     std::string value;
-    if (! domGet (database, rules, reference, value))
+    if (! domGet (database, filter, rules, reference, value))
       throw format ("DOM reference '{1}' is not valid.", reference);
 
     results.push_back (value);

@@ -35,6 +35,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 bool domGet (
   Database& database,
+  Interval& filter,
   const Rules& rules,
   const std::string& reference,
   std::string& value)
@@ -104,7 +105,6 @@ bool domGet (
 
     else if (pig.skipLiteral ("tracked."))
     {
-      Interval filter;
       auto tracked = getTracked (database, rules, filter);
       int count = static_cast <int> (tracked.size ());
 
