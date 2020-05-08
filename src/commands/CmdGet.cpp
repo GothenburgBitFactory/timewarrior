@@ -39,8 +39,8 @@ int CmdGet (
 {
   std::vector <std::string> results;
   std::vector <std::string> references = cli.getDomReferences ();
+  Interval filter = cli.getFilter ();
 
-  Interval filter;
   for (auto& reference : references)
   {
     std::string value;
