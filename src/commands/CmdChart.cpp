@@ -46,7 +46,7 @@ int CmdChartDay (
   Database& database)
 {
   // Create a filter, and if empty, choose the current day.
-  auto filter = getFilter (cli);
+  auto filter = cli.getFilter ();
 
   if (! filter.is_started ())
   {
@@ -63,7 +63,7 @@ int CmdChartWeek (
   Database& database)
 {
   // Create a filter, and if empty, choose the current week.
-  auto filter = getFilter (cli);
+  auto filter = cli.getFilter ();
 
   if (! filter.is_started ())
   {
@@ -80,7 +80,7 @@ int CmdChartMonth (
   Database& database)
 {
   // Create a filter, and if empty, choose the current month.
-  auto filter = getFilter (cli);
+  auto filter = cli.getFilter ();
 
   if (! filter.is_started ())
   {

@@ -81,7 +81,7 @@ int CmdContinue (
     to_copy = latest;
   }
 
-  auto filter = getFilter (cli);
+  auto filter = cli.getFilter ();
   Datetime start_time;
   Datetime end_time;
 

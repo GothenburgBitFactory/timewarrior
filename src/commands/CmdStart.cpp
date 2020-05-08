@@ -37,7 +37,7 @@ int CmdStart (
 {
   auto verbose = rules.getBoolean ("verbose");
 
-  auto filter = getFilter (cli);
+  auto filter = cli.getFilter ();
 
   auto now = Datetime ();
 

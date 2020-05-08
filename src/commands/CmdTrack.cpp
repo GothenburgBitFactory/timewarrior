@@ -37,7 +37,7 @@ int CmdTrack (
 {
   auto boolean = rules.getBoolean ("verbose");
 
-  auto filter = getFilter (cli);
+  auto filter = cli.getFilter ();
 
   // If this is not a proper closed interval, then the user is trying to make
   // the 'track' command behave like 'start', so delegate to CmdStart.

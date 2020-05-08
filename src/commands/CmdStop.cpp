@@ -50,7 +50,7 @@ int CmdStop (
   auto verbose = rules.getBoolean ("verbose");
 
   // Load the most recent interval.
-  auto filter = getFilter (cli);
+  auto filter = cli.getFilter ();
   auto latest = getLatestInterval (database);
   std::set <int> ids = cli.getIds ();
 

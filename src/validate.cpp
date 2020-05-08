@@ -173,7 +173,7 @@ void validate (
   Interval& interval)
 {
   // Create a filter, and if empty, choose 'today'.
-  auto filter = getFilter (cli);
+  auto filter = cli.getFilter ();
   if (! filter.is_started ())
     filter.setRange (Datetime ("today"), Datetime ("tomorrow"));
 

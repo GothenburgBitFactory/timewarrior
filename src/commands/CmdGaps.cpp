@@ -40,7 +40,7 @@ int CmdGaps (
   auto verbose = rules.getBoolean ("verbose");
 
   // If filter is empty, choose 'today'.
-  auto filter = getFilter (cli);
+  auto filter = cli.getFilter ();
   if (! filter.is_started ())
   {
     if (rules.has ("reports.gaps.range"))

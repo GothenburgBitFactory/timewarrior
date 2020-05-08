@@ -41,7 +41,7 @@ int CmdTags (
   auto verbose = rules.getBoolean ("verbose");
 
   // Create a filter, with no default range.
-  auto filter = getFilter (cli);
+  auto filter = cli.getFilter ();
 
   // Generate a unique, ordered list of tags.
   std::set <std::string> tags;

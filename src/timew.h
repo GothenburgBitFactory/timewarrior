@@ -37,7 +37,6 @@
 #include <Color.h>
 
 // data.cpp
-Interval                getFilter         (const CLI&);
 std::vector <Range>     getHolidays       (const Rules&);
 std::vector <Range>     getAllExclusions  (const Rules&, const Range&);
 std::vector <Interval>  getIntervalsByIds (Database&, const Rules&, const std::set <int>&);

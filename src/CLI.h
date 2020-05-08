@@ -33,6 +33,7 @@
 #include <vector>
 #include <map>
 #include <Duration.h>
+#include "Interval.h"
 
 // Represents a single argument.
 class A2
@@ -71,6 +72,7 @@ public:
   std::string getAnnotation() const;
   Duration getDuration() const;
   std::vector<std::string> getDomReferences () const;
+  Interval getFilter () const;
   std::string dump (const std::string& title = "CLI Parser") const;
 
 private:

@@ -90,7 +90,7 @@ int CmdReport (
     throw std::string ("Specify which report to run.");
 
   // Compose Header info.
-  auto filter = getFilter (cli);
+  auto filter = cli.getFilter ();
   auto tracked = getTracked (database, rules, filter);
 
   rules.set ("temp.report.start", filter.start.toEpoch () > 0 ? filter.start.toISO () : "");
