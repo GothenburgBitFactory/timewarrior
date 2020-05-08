@@ -229,6 +229,54 @@ class TestDOMTracked(TestCase):
         code, out, err = self.t("get dom.tracked.tags foo")
         self.assertEqual("baz foo \n", out)
 
+    def test_dom_tracked_ids_with_emtpy_database(self):
+        """Test dom.tracked.ids with empty database"""
+        code, out, err = self.t("get dom.tracked.tags")
+        self.assertEqual("\n", out)
+
+    def test_dom_tracked_ids(self):
+        """Test dom.tracked.ids"""
+        now_utc = datetime.now().utcnow()
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z".format(five_hours_before_utc, four_hours_before_utc))
+
+        code, out, err = self.t("get dom.tracked.ids")
+        self.assertEqual("@1 \n", out)
+
+    def test_dom_tracked_ids_filtered_by_time(self):
+        """Test dom.tracked.ids filtered by time"""
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc, four_hours_before_utc))
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z bar".format(three_hours_before_utc, two_hours_before_utc))
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z baz".format(two_hours_before_utc, one_hour_before_utc))
+
+        code, out, err = self.t("get dom.tracked.ids {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z".format(five_hours_before_utc, two_hours_before_utc))
+        self.assertEqual("@3 @2 \n", out)
+
+    def test_dom_tracked_ids_filtered_by_tag(self):
+        """Test dom.tracked.ids filtered by tag"""
+        now_utc = datetime.now().utcnow()
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc, four_hours_before_utc))
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z bar".format(three_hours_before_utc, two_hours_before_utc))
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z foo baz".format(two_hours_before_utc, one_hour_before_utc))
+
+        code, out, err = self.t("get dom.tracked.ids foo")
+        self.assertEqual("@3 @1 \n", out)
+
     def test_dom_tracked_N_tag_count_zero(self):
         """Test dom.tracked.N.tag.count with zero tags"""
         self.t("track :yesterday one two")

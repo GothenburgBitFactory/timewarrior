@@ -133,6 +133,18 @@ bool domGet (
         return true;
       }
 
+      // dom.tracked.ids
+      if (pig.skipLiteral ("ids"))
+      {
+        std::stringstream s;
+        for (auto& interval : tracked)
+        {
+          s << format ( "@{1} ", interval.id );
+        }
+        value = s.str();
+        return true;
+      }
+
       // dom.tracked.count
       if (pig.skipLiteral ("count"))
       {
