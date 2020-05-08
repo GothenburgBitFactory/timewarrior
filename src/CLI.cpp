@@ -522,6 +522,10 @@ void CLI::identifyFilter ()
       a.tag ("KEYWORD");
     }
 
+    else if (raw.rfind("dom.",0) == 0)
+    {
+      a.tag ("DOM");
+    }
     else
     {
       a.tag ("FILTER");
@@ -614,8 +618,7 @@ std::vector <std::string> CLI::getDomReferences () const
 
   for (auto &arg : _args)
   {
-    if (arg.hasTag ("TAG") &&
-        arg.hasTag ("FILTER"))
+    if (arg.hasTag ("DOM"))
     {
       references.emplace_back (arg.attribute ("raw"));
     }
