@@ -24,11 +24,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <csignal>
 #include <stdio.h>
 #include <cassert>
 #include <iostream>
 #include <vector>
 #include <unistd.h>
+#include <timew.h>
 
 #include <format.h>
 #include <AtomicFile.h>
@@ -231,6 +233,7 @@ void AtomicFile::impl::finalize ()
 {
   if (is_temp_active && impl::allow_atomics)
   {
+    debug (format ("Moving '{1}' -> '{2}'", temp_file._data, real_file._data));
     if (std::rename (temp_file._data.c_str (), real_file._data.c_str ()))
     {
       throw format("Failed copying '{1}' to '{2}'. Database corruption possible.",
@@ -415,13 +418,23 @@ void AtomicFile::finalize_all ()
     file->close ();
   }
 
-  atomic_files_t new_atomic_files;
 
-  // Step 2: Rename the temp files to the *real* files
+  sigset_t new_mask;
+  sigset_t old_mask;
+  sigfillset (&new_mask);
+
+  // Step 2: Rename the temp files to the *real* file
+  sigprocmask (SIG_SETMASK, &new_mask, &old_mask);
   for (auto& file : impl::atomic_files)
   {
     file->finalize ();
+  }
+  sigprocmask (SIG_SETMASK, &old_mask, nullptr);
 
+  // Step 3: Cleanup any references
+  atomic_files_t new_atomic_files;
+  for (auto& file : impl::atomic_files)
+  {
     // Delete entry if we are holding the last reference
     if (file.use_count () > 1)
     {
