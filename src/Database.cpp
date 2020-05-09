@@ -468,7 +468,7 @@ void Database::initializeTagDatabase ()
   {
     try
     {
-      json::object *json = dynamic_cast <json::object *>(json::parse (content));
+      std::unique_ptr <json::object> json (dynamic_cast <json::object *>(json::parse (content)));
 
       if (content.empty () || (json == nullptr))
       {
