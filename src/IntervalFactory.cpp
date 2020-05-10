@@ -108,7 +108,7 @@ Interval IntervalFactory::fromJson (const std::string& jsonString)
 
   if (!jsonString.empty ())
   {
-    auto* json = (json::object*) json::parse (jsonString);
+    std::unique_ptr <json::object> json (dynamic_cast <json::object *> (json::parse (jsonString)));
 
     json::array* tags = (json::array*) json->_data["tags"];
 
