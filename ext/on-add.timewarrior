@@ -7,5 +7,7 @@ try:
 except AttributeError:
     input_stream = sys.stdin
 
-p = Popen(['./on-modify.timewarrior'], stdin=PIPE)
+path = sys.argv[0].rsplit("/", 1)[0]
+p = Popen([path + '/on-modify.timewarrior'], stdin=PIPE)
 p.communicate('{}\n'.encode() + sys.stdin.readline().encode())
+
