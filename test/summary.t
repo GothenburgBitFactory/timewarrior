@@ -223,6 +223,28 @@ W\d{1,2} \d{4}-\d{2}-\d{2} .{3}       ?0:00:00 0:00:00 0:00:00 0:00:00
 [ ]+0:00:00
 """)
 
+    def test_with_multiple_multi_day_tracks(self):
+        """Summary should display intervals that span multiple days"""
+        self.t("track sopy for 3d proja")
+        self.t("track sopm for 3d projb")
+
+        # The two intervals above should be displayed like below, with each one
+        # spanning three days
+
+        #    Date       Day ID Tags    Start     End     Time    Total
+        # -- ---------- --- -- ----- ------- ------- -------- --------
+        # W1 1980-01-01 Tue @2 proja 1:00:00 0:00:00 23:00:00 23:00:00
+        # W1 1980-01-02 Wed @2 proja 0:00:00 0:00:00 24:00:00 24:00:00
+        # W1 1980-01-03 Thu @2 proja 0:00:00 1:00:00  1:00:00  1:00:00
+        # W1 1990-01-01 Mon @1 projb 1:00:00 0:00:00 23:00:00 23:00:00
+        # W1 1990-01-02 Tue @1 projb 0:00:00 0:00:00 24:00:00 24:00:00
+        # W1 1990-01-03 Wed @1 projb 0:00:00 1:00:00  1:00:00  1:00:00
+        #
+        #                                                     96:00:00
+
+        code, out, err = self.t("summary :ids :all")
+        self.assertEqual(out.count('@2'), 3)
+        self.assertEqual(out.count('@1'), 3)
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
