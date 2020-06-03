@@ -40,9 +40,6 @@
 std::vector <Range>     getHolidays       (const Rules&);
 std::vector <Range>     getAllExclusions  (const Rules&, const Range&);
 std::vector <Interval>  getIntervalsByIds (Database&, const Rules&, const std::set <int>&);
-std::vector <Interval>  subset            (const Interval&, const std::vector <Interval>&);
-std::vector <Range>     subset            (const Range&, const std::vector <Range>&);
-std::vector <Interval>  subset            (const Range&, const std::vector <Interval>&);
 void                    flattenDatabase   (Database&, const Rules&);
 std::vector <Interval>  flatten           (const Interval&, const std::vector <Range>&);
 std::vector <Range>     merge             (const std::vector <Range>&);

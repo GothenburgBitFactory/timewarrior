@@ -236,67 +236,6 @@ std::vector <Interval> getIntervalsByIds (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> subset (
-  const Interval& filter,
-  const std::deque <Interval>& intervals)
-{
-  std::vector <Interval> all;
-  for (auto& interval : intervals)
-  {
-    if (matchesFilter (interval, filter))
-    {
-      all.push_back (interval);
-    }
-  }
-
-  return all;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> subset (
-  const Interval& filter,
-  const std::vector <Interval>& intervals)
-{
-  std::vector <Interval> all;
-  for (auto& interval : intervals)
-    if (matchesFilter (interval, filter))
-      all.push_back (interval);
-
-  return all;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-std::vector <Range> subset (
-  const Range& range,
-  const std::vector <Range>& ranges)
-{
-  std::vector <Range> all;
-  for (auto& r : ranges) {
-    if (range.intersects (r)) {
-      all.push_back (r);
-    }
-  }
-
-  return all;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> subset (
-  const Range& range,
-  const std::vector <Interval>& intervals)
-{
-  std::vector <Interval> all;
-  for (auto& interval : intervals) {
-    if (range.intersects (interval))
-    {
-      all.push_back (interval);
-    }
-  }
-
-  return all;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 std::vector <Interval> flatten (
   const Interval& interval,
   const std::vector <Range>& exclusions)
