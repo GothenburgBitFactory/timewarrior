@@ -141,7 +141,7 @@ Interval IntervalFactory::fromJson (const std::string& jsonString)
     }
 
     json::string* annotation = (json::string*) json->_data["annotation"];
-    interval.annotation = (annotation != nullptr) ? annotation->_data : "";
+    interval.setAnnotation ((annotation != nullptr) ? annotation->_data : "");
 
     json::string* start = (json::string*) json->_data["start"];
     interval.start = (start != nullptr) ? Datetime(start->_data) : 0;

@@ -208,7 +208,7 @@ void Interval::setAnnotation (const std::string& annotation)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string Interval::getAnnotation ()
+const std::string& Interval::getAnnotation () const
 {
   return annotation;
 }
