@@ -636,7 +636,7 @@ std::vector <std::string> CLI::getDomReferences () const
 //   <duration> ["before"|"after" <date>]
 //   <duration> "ago"
 //
-Interval CLI::getFilter () const
+Interval CLI::getFilter (const Range& default_range) const
 {
   // One instance, so we can directly compare.
   Datetime now;
@@ -708,8 +708,13 @@ Interval CLI::getFilter () const
     }
   }
 
+  if (args.empty ())
+  {
+    filter.setRange(default_range);
+  }
+
   // <date>
-  if (args.size () == 1 &&
+  else if (args.size () == 1 &&
       args[0] == "<date>")
   {
     filter.setRange ({Datetime (start), 0});

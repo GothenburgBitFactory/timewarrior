@@ -45,9 +45,7 @@ int CmdSummary (
   auto verbose = rules.getBoolean ("verbose");
 
   // Create a filter, and if empty, choose 'today'.
-  auto filter = cli.getFilter ();
-  if (! filter.is_started ())
-    filter.setRange (Datetime ("today"), Datetime ("tomorrow"));
+  auto filter = cli.getFilter (Range { Datetime ("today"), Datetime ("tomorrow") });
 
   if (! filter.is_ended())
     filter.end = filter.start + Duration("1d").toTime_t();

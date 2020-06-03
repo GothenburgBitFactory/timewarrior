@@ -72,7 +72,7 @@ public:
   std::string getAnnotation() const;
   Duration getDuration() const;
   std::vector<std::string> getDomReferences () const;
-  Interval getFilter () const;
+  Interval getFilter (const Range& = {}) const;
   std::string dump (const std::string& title = "CLI Parser") const;
 
 private:
