@@ -172,14 +172,11 @@ void validate (
   Database& database,
   Interval& interval)
 {
-  // Create a filter, and if empty, choose 'today'.
-  auto filter = cli.getFilter ();
-  if (! filter.is_started ())
-    filter.setRange (Datetime ("today"), Datetime ("tomorrow"));
-
   // All validation performed here.
   if (findHint (cli, ":fill"))
+  {
     autoFill (rules, database, interval);
+  }
 
   autoAdjust (findHint (cli, ":adjust"), rules, database, interval);
 }
