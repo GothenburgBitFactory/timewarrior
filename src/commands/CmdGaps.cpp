@@ -37,6 +37,7 @@ int CmdGaps (
   Rules& rules,
   Database& database)
 {
+  const Datetime NOW {};
   auto verbose = rules.getBoolean ("verbose");
 
   // If filter is empty, choose 'today'.
@@ -72,14 +73,33 @@ int CmdGaps (
   // Each day is rendered separately.
   time_t grand_total = 0;
   Datetime previous;
-  for (Datetime day = filter.start; day < filter.end; day++)
+  auto it = untracked.cbegin ();
+  auto end = untracked.cend ();
+  for (Datetime day = filter.start; day < filter.end; )
   {
     auto day_range = getFullDay (day);
     time_t daily_total = 0;
 
     int row = -1;
-    for (auto& gap : subset (day_range, untracked))
+    decltype (it) day_end;
+    std::tie (it, day_end) = intersects (it, end, day_range);
+    if (it == day_end)
     {
+      if (it == end)
+      {
+         // no more gaps to process
+         break;
+      }
+
+      // Advance day to one where we will have gaps.
+      day = day_end->start;
+      continue;
+    }
+
+    for (auto gap_it = it; gap_it != day_end; ++gap_it)
+    {
+      const Range& gap = *gap_it;
+
       row = table.addRow ();
 
       if (day != previous)
@@ -93,7 +113,9 @@ int CmdGaps (
       // Intersect track with day.
       auto today = day_range.intersect (gap);
       if (gap.is_open ())
-        today.end = Datetime ();
+      {
+        today.end = NOW;
+      }
 
       table.set (row, 3, today.start.toString ("h:N:S"));
       table.set (row, 4, (gap.is_open () ? "-" : today.end.toString ("h:N:S")));
@@ -106,6 +128,7 @@ int CmdGaps (
       table.set (row, 6, Duration (daily_total).formatHours ());
 
     grand_total += daily_total;
+    ++day;
   }
 
   // Add the total.

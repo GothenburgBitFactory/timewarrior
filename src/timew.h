@@ -98,4 +98,26 @@ std::string joinQuotedIfNeeded(const std::string& glue, const std::vector <std::
 // dom.cpp
 bool domGet (Database&, Interval&, const Rules&, const std::string&, std::string&);
 
+////////////////////////////////////////////////////////////////////////////////
+// Given a sorted collection of ranges, return a pair of iterators for all
+// elements that intersect the supplied day range. The end iterator will be the
+// first interval that does not intersect the range or the passed end
+//
+template <typename It>
+std::pair <It, It> intersects (It begin, It end, const Range& day_range)
+{
+  while (begin != end && ! day_range.intersects (*begin) && begin->start < day_range.start)
+  {
+    ++begin;
+  }
+
+  It iend = begin;
+  while (iend != end && day_range.intersects (*iend))
+  {
+    ++iend;
+  }
+
+  return std::pair<It, It> {begin, iend};
+}
+
 #endif

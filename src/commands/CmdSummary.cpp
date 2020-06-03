@@ -42,6 +42,7 @@ int CmdSummary (
   Rules& rules,
   Database& database)
 {
+  const Datetime NOW {};
   auto verbose = rules.getBoolean ("verbose");
 
   // Create a filter, and if empty, choose 'today'.
@@ -122,17 +123,43 @@ int CmdSummary (
   {
     filter.close ();
   }
-  for (Datetime day = filter.start; day < filter.end; day++)
+  auto it = tracked.cbegin ();
+  auto end = tracked.cend ();
+  for (Datetime day = filter.start; day < filter.end; )
   {
     auto day_range = getFullDay (day);
     time_t daily_total = 0;
 
+    debug (format ("Checking {1}", day_range.dump()));
     int row = -1;
-    for (auto& track : subset (day_range, tracked))
+
+    decltype(end) day_end;
+    std::tie (it, day_end) = intersects (it, end, day_range);
+    if (it == day_end)
     {
+      if (it == end)
+      {
+        // There are no more intervals to check in the collection intervals that
+        // span the filter range.
+        break;
+      }
+
+      // There were not any intervals that intersected with the current day.
+      // Jump the day forward to where there will be matching intervals or we're
+      // beyond the current filter range.
+      day = day_end->start;
+      continue;
+    }
+
+    for (auto day_it = it; day_it != day_end; ++day_it)
+    {
+      const Interval& track = *day_it;
+
       // Make sure the track only represents one day.
-      if ((track.is_open () && day > Datetime ()))
+      if ((track.is_open () && day > NOW))
+      {
         continue;
+      }
 
       row = table.addRow ();
 
@@ -146,8 +173,10 @@ int CmdSummary (
 
       // Intersect track with day.
       auto today = day_range.intersect (track);
-      if (track.is_open () && day <= Datetime () && today.end > Datetime ())
-        today.end = Datetime ();
+      if (track.is_open () && day <= NOW && today.end > NOW)
+      {
+        today.end = NOW;
+      }
 
       std::string tags = join(", ", track.tags());
 
@@ -163,7 +192,9 @@ int CmdSummary (
         auto annotation = track.getAnnotation ();
 
         if (annotation.length () > 15)
+        {
           annotation = annotation.substr (0, 12) + "...";
+        }
 
         table.set (row, (ids ? 5 : 4), annotation);
       }
@@ -176,9 +207,13 @@ int CmdSummary (
     }
 
     if (row != -1)
+    {
       table.set (row, (ids ? 8 : 7) + offset, Duration (daily_total).formatHours ());
+    }
 
     grand_total += daily_total;
+
+    ++day;
   }
 
   // Add the total.
