@@ -88,6 +88,7 @@ void initializeEntities (CLI& cli)
   cli.entity ("extension", "week");
 
   // Hint entities.
+  cli.entity ("hint", ":all");
   cli.entity ("hint", ":adjust");
   cli.entity ("hint", ":blank");
   cli.entity ("hint", ":color");

@@ -176,6 +176,14 @@ bool expandIntervalHint (
     return true;
   }
 
+  if (hint == ":all")
+  {
+    range.start = 0;
+    range.end = 0;
+
+    return true;
+  }
+
   // Some require math.
   if (hint == ":lastweek")
   {

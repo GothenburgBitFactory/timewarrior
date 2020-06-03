@@ -664,12 +664,19 @@ Interval CLI::getFilter (const Range& default_range) const
         Range range;
         if (expandIntervalHint (canonical, range))
         {
-          start = range.start.toISO ();
-          end   = range.end.toISO ();
+          if (range.is_empty ())
+          {
+            args.push_back ("<all>");
+          }
+          else
+          {
+            start = range.start.toISO ();
+            end   = range.end.toISO ();
 
-          args.push_back ("<date>");
-          args.push_back ("-");
-          args.push_back ("<date>");
+            args.push_back ("<date>");
+            args.push_back ("-");
+            args.push_back ("<date>");
+          }
         }
 
         // Hints that are not expandable to a date range are ignored.
@@ -805,6 +812,12 @@ Interval CLI::getFilter (const Range& default_range) const
            args[0] == "<duration>")
   {
     filter.setRange ({now - Duration (duration).toTime_t (), now});
+  }
+
+  // :all
+  else if (args.size () == 1 && args[0] == "<all>")
+  {
+    filter.setRange (0, 0);
   }
 
     // Unrecognized date range construct.
