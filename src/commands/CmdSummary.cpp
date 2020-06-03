@@ -47,8 +47,10 @@ int CmdSummary (
   // Create a filter, and if empty, choose 'today'.
   auto filter = cli.getFilter (Range { Datetime ("today"), Datetime ("tomorrow") });
 
-  if (! filter.is_ended())
+  if (filter.is_open ())
+  {
     filter.end = filter.start + Duration("1d").toTime_t();
+  }
 
   // Load the data.
   auto tracked = getTracked (database, rules, filter);
@@ -115,6 +117,11 @@ int CmdSummary (
   // Each day is rendered separately.
   time_t grand_total = 0;
   Datetime previous;
+
+  if (! filter.is_ended ())
+  {
+    filter.close ();
+  }
   for (Datetime day = filter.start; day < filter.end; day++)
   {
     auto day_range = getFullDay (day);
