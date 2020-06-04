@@ -40,16 +40,19 @@ int CmdContinue (
   const bool verbose = rules.getBoolean ("verbose");
 
   // Gather IDs and TAGs.
-  std::set <int> ids = cli.getIds();
-  auto filter = getFilter (cli);
+  std::set <int> ids = cli.getIds ();
+  auto filter = cli.getFilter ();
 
+  if (!ids.empty () && !filter.tags().empty ())
+  {
+    throw std::string ("You cannot specify both id and tags to continue an interval.");
+  }
   if (ids.size() > 1)
   {
     throw std::string ("You can only specify one ID to continue.");
   }
 
   journal.startTransaction ();
-
   flattenDatabase (database, rules);
 
   Interval to_copy;
@@ -58,7 +61,7 @@ int CmdContinue (
   {
     auto intervals = getIntervalsByIds (database, rules, ids);
 
-    if (intervals.size () == 0)
+    if (intervals.empty ())
     {
       throw format ("ID '@{1}' does not correspond to any tracking.", *ids.begin ());
     }
@@ -66,14 +69,18 @@ int CmdContinue (
     assert (intervals.size () == 1);
     to_copy = intervals.front ();
   }
-  else if (!filter.tags().empty())
+  else if (!filter.tags ().empty ())
   {
-    auto tracked = getTracked (database, rules, filter);
+    Interval tagFilter = {filter};
+    tagFilter.setRange (0, 0);
+    auto tracked = getTracked (database, rules, tagFilter);
 
     if (tracked.empty())
-      throw format ("Tags '{1}' do not correspond to any tracking.", joinQuotedIfNeeded (", ", filter.tags()));
+    {
+      throw format ("Tags '{1}' do not correspond to any tracking.", joinQuotedIfNeeded (", ", filter.tags ()));
+    }
 
-      to_copy = tracked[0];
+    to_copy = tracked.back();
   }
   else
   {
@@ -83,7 +90,6 @@ int CmdContinue (
     {
       throw std::string ("There is no previous tracking to continue.");
     }
-
     if (latest.is_open ())
     {
       throw std::string ("There is already active tracking.");

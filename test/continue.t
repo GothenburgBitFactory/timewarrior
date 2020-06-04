@@ -124,21 +124,6 @@ class TestContinue(TestCase):
         self.assertIn("Recorded FOO\n", out)
         self.assertIn("Tracking BAR FOO\n", out)
 
-    def test_continue_with_one_tag_and_intervals_with_multiple_tags(self):
-        """Verify that 'continue' with one tag works to specify a matching interval^"""
-        code, out, err = self.t("start meeting phone 2h ago")
-        self.assertIn("Tracking meeting phone\n", out)
-
-        code, out, err = self.t("start travel customer 1h ago")
-        self.assertIn("Tracking customer travel\n", out)
-
-        code, out, err = self.t("start training travel 30min ago")
-        self.assertIn("Tracking training travel\n", out)
-
-        code, out, err = self.t("continue customer")
-        self.assertIn("Recorded training travel\n", out)
-        self.assertIn("Tracking customer travel\n", out)
-
     def test_continue_with_invalid_tag(self):
         """Verify that 'continue' with invalid tag is an error"""
         code, out, err = self.t("start FOO 1h ago")
@@ -152,55 +137,175 @@ class TestContinue(TestCase):
 
     def test_continue_with_tag_without_active_tracking(self):
         """Verify that continuing a specified interval works"""
-        code, out, err = self.t("start FOO 1h ago")
-        self.assertIn("Tracking FOO\n", out)
+        now_utc = datetime.now().utcnow()
 
-        code, out, err = self.t("start BAR 30min ago")
-        self.assertIn("Tracking BAR\n", out)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
 
-        code, out, err = self.t("stop 15min ago")
-        self.assertIn("Recorded BAR\n", out)
+        self.t("track {:%Y-%m-%dT%H}:00Z - {:%Y-%m-%dT%H}:00Z BAR".format(five_hours_before_utc, four_hours_before_utc))
+        self.t("track {:%Y-%m-%dT%H}:00Z - {:%Y-%m-%dT%H}:00Z FOO BAR".format(four_hours_before_utc, three_hours_before_utc))
+        self.t("track {:%Y-%m-%dT%H}:00Z - {:%Y-%m-%dT%H}:00Z FOO BAZ".format(three_hours_before_utc, two_hours_before_utc))
 
-        code, out, err = self.t("continue FOO")
-        self.assertIn("Tracking FOO\n", out)
+        self.t("continue BAR {:%Y-%m-%dT%H}:00Z".format(now_utc))
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 4)
+        self.assertClosedInterval(j[0],
+                                  expectedStart="{:%Y%m%dT%H}0000Z".format(five_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(four_hours_before_utc),
+                                  expectedTags=["BAR"],
+                                  description="first interval")
+        self.assertClosedInterval(j[1],
+                                  expectedStart="{:%Y%m%dT%H}0000Z".format(four_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(three_hours_before_utc),
+                                  expectedTags=["BAR", "FOO"],
+                                  description="second interval")
+        self.assertClosedInterval(j[2],
+                                  expectedStart="{:%Y%m%dT%H}0000Z".format(three_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(two_hours_before_utc),
+                                  expectedTags=["BAZ", "FOO"],
+                                  description="third interval")
+        self.assertOpenInterval(j[3],
+                                expectedStart="{:%Y%m%dT%H}0000Z".format(now_utc),
+                                expectedTags=["BAR", "FOO"],
+                                description="continued interval")
 
     def test_continue_with_tag_with_active_tracking(self):
         """Verify that continuing a specified interval stops active tracking"""
-        code, out, err = self.t("start FOO 1h ago")
+        now_utc = datetime.now().utcnow()
+
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+
+        self.t("track {:%Y-%m-%dT%H}:00Z - {:%Y-%m-%dT%H}:00Z BAR".format(five_hours_before_utc, four_hours_before_utc))
+        self.t("track {:%Y-%m-%dT%H}:00Z - {:%Y-%m-%dT%H}:00Z FOO BAR".format(four_hours_before_utc, three_hours_before_utc))
+        self.t("track {:%Y-%m-%dT%H}:00Z - {:%Y-%m-%dT%H}:00Z FOO BAZ".format(three_hours_before_utc, two_hours_before_utc))
+        self.t("start {:%Y-%m-%dT%H}:00Z FOO".format(two_hours_before_utc))
+
+        self.t("continue BAR {:%Y-%m-%dT%H}:00Z".format(now_utc))
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 5)
+        self.assertClosedInterval(j[0],
+                                  expectedStart="{:%Y%m%dT%H}0000Z".format(five_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(four_hours_before_utc),
+                                  expectedTags=["BAR"],
+                                  description="first interval")
+        self.assertClosedInterval(j[1],
+                                  expectedStart="{:%Y%m%dT%H}0000Z".format(four_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(three_hours_before_utc),
+                                  expectedTags=["BAR", "FOO"],
+                                  description="second interval")
+        self.assertClosedInterval(j[2],
+                                  expectedStart="{:%Y%m%dT%H}0000Z".format(three_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(two_hours_before_utc),
+                                  expectedTags=["BAZ", "FOO"],
+                                  description="third interval")
+        self.assertClosedInterval(j[3],
+                                  expectedStart="{:%Y%m%dT%H}0000Z".format(two_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(now_utc),
+                                  expectedTags=["FOO"],
+                                  description="fourth interval")
+        self.assertOpenInterval(j[4],
+                                expectedStart="{:%Y%m%dT%H}0000Z".format(now_utc),
+                                expectedTags=["BAR", "FOO"],
+                                description="continued interval")
+
+    def test_continue_with_tag_and_date(self):
+        """Verify that continuing an interval specified by tag with date continues at given date"""
+        now_utc = datetime.now().utcnow()
+
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+
+        code, out, err = self.t("start FOO {:%Y-%m-%dT%H}:00:00Z".format(five_hours_before_utc))
         self.assertIn("Tracking FOO\n", out)
 
-        code, out, err = self.t("start BAR 30min ago")
+        code, out, err = self.t("stop {:%Y-%m-%dT%H}:00:00Z".format(four_hours_before_utc))
+        self.assertIn("Recorded FOO\n", out)
+
+        code, out, err = self.t("start BAR {:%Y-%m-%dT%H}:00:00Z".format(four_hours_before_utc))
         self.assertIn("Tracking BAR\n", out)
 
-        code, out, err = self.t("continue FOO")
+        code, out, err = self.t("stop {:%Y-%m-%dT%H}:00:00Z".format(three_hours_before_utc))
         self.assertIn("Recorded BAR\n", out)
+
+        self.t("continue FOO {:%Y-%m-%dT%H}:00:00Z".format(two_hours_before_utc))
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 3)
+        self.assertClosedInterval(j[0],
+                                  expectedStart="{:%Y%m%dT%H}0000Z".format(five_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(four_hours_before_utc),
+                                  expectedTags=["FOO"],
+                                  description="first interval")
+        self.assertClosedInterval(j[1],
+                                  expectedStart="{:%Y%m%dT%H}0000Z".format(four_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(three_hours_before_utc),
+                                  expectedTags=["BAR"],
+                                  description="second interval")
+        self.assertOpenInterval(j[2],
+                                expectedStart="{:%Y%m%dT%H}0000Z".format(two_hours_before_utc),
+                                expectedTags=["FOO"],
+                                description="continued interval")
+
+    def test_continue_with_tag_and_range(self):
+        """Verify that continue an interval specified by tag with a range adds a copy with same tags at given range"""
+        now_utc = datetime.now().utcnow()
+
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+
+        code, out, err = self.t("start FOO {:%Y-%m-%dT%H}:00:00Z".format(five_hours_before_utc))
         self.assertIn("Tracking FOO\n", out)
 
-    def test_continue_with_tag_with_active_tracking(self):
-        """Verify that continuing a specified interval stops active tracking"""
-        code, out, err = self.t("start FOO 1h ago")
-        self.assertIn("Tracking FOO\n", out)
+        code, out, err = self.t("stop {:%Y-%m-%dT%H}:00:00Z".format(four_hours_before_utc))
+        self.assertIn("Recorded FOO\n", out)
 
-        code, out, err = self.t("start BAR 30min ago")
+        code, out, err = self.t("start BAR {:%Y-%m-%dT%H}:00:00Z".format(four_hours_before_utc))
         self.assertIn("Tracking BAR\n", out)
 
-        code, out, err = self.t("continue FOO")
-        self.assertIn("Recorded BAR\n", out)
-        self.assertIn("Tracking FOO\n", out)
-
-    def test_continue_with_tag_and_id_continues_interval_with_id(self):
-        """Verify that continuing an interval by specifying its id and some tags works"""
-        code, out, err = self.t("start FOO 1h ago")
-        self.assertIn("Tracking FOO\n", out)
-
-        code, out, err = self.t("start BAR 30min ago")
-        self.assertIn("Tracking BAR\n", out)
-
-        code, out, err = self.t("stop 15min ago")
+        code, out, err = self.t("stop {:%Y-%m-%dT%H}:00:00Z".format(three_hours_before_utc))
         self.assertIn("Recorded BAR\n", out)
 
-        code, out, err = self.t("continue @2 FOO")
-        self.assertIn("Tracking FOO\n", out)
+        self.t("continue FOO {:%Y-%m-%dT%H}:00:00Z - {:%Y-%m-%dT%H}:00:00Z".format(two_hours_before_utc, one_hour_before_utc))
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 3)
+
+        self.assertClosedInterval(j[0],
+                                  expectedStart="{:%Y%m%dT%H}0000Z".format(five_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(four_hours_before_utc),
+                                  expectedTags=["FOO"],
+                                  description="first interval")
+        self.assertClosedInterval(j[1],
+                                  expectedStart="{:%Y%m%dT%H}0000Z".format(four_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(three_hours_before_utc),
+                                  expectedTags=["BAR"],
+                                  description="second interval")
+        self.assertClosedInterval(j[2],
+                                  expectedStart="{:%Y%m%dT%H}0000Z".format(two_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(one_hour_before_utc),
+                                  expectedTags=["FOO"],
+                                  description="added interval")
+
+    def test_continue_with_tag_and_id(self):
+        """Verify that continuing an interval by specifying id and tags is an error"""
+        code, out, err = self.t.runError("continue @2 FOO")
+        self.assertIn("You cannot specify both id and tags to continue an interval.\n", err)
 
     def test_continue_with_id_and_date(self):
         """Verify that continuing a specified interval with date continues at given date"""
