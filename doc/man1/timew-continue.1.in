@@ -7,29 +7,113 @@ timew-continue \- resume tracking of existing interval
 .B timew continue
 [
 .I <id>
+|
+.I <tag>
+.B ...
 ] [
-{
-.I <date>
+.I <datetime>
 |
 .I <range>
-}
 ]
 .
 .SH DESCRIPTION
-Resumes tracking of closed intervals.
+The 'continue' command is used to resume tracking specified by a closed interval.
+This command is a convenient way to resume work without re-entering the tags.
+.PP
+The interval to be resumed can be specified either by its id or by a set of tags.
+Specifying multiple ids or both ids and tags will result in an error.
+.PP
+When given a set of tags, the first interval matching it will be taken as a blueprint for the new interval.
+When given neither id nor tags, the first interval in the database is taken.
+.PP
+When no datetime or range given, the new interval is started at the current time.
 .
 .SH EXAMPLES
-For example:
-.RS
-$ timew track 9am - 10am tag1 tag2
-.br
-$ timew track 11am - 1pm tag3
-.br
-$ timew continue @2
-.RE
-The 'continue' command creates a new interval, starting now, and using the tags 'tag1' and 'tag2'.
 Using the 'summary' command and specifying the ':ids' hint shows interval IDs.
-This command is a convenient way to resume work without re-entering the tags.
+Consider the following intervals:
+.RS
+.sp
+$ src/timew summary :ids
+
+Wk  Date       Day ID Tags             Start      End    Time   Total
+.br
+W23 2020-06-04 Thu @4 BAR           13:00:00 14:00:00 1:00:00
+.br
+                   @3 BAR, FOO      14:00:00 15:00:00 1:00:00
+.br
+                   @2 BAR, BAZ, FOO 15:00:00 16:00:00 1:00:00
+.br
+                   @1 FOO           16:00:00 17:00:00 1:00:00 4:00:00
+.br
+
+.br
+                                                              4:00:00
+.br
+.RE
+.sp
+.TP
+Simple continue
+.RS
+.sp
+$ timew continue
+.RE
+.sp
+The 'continue' command creates a new open interval, starting now, with tag 'FOO'
+.TP
+Continue an interval via id:
+.RS
+.sp
+$ timew continue @3
+.RE
+.sp
+The 'continue' command creates a new open interval, starting now, with tags 'BAR' and 'FOO'.
+.TP
+Continue an interval via tag set:
+.RS
+.sp
+$ timew continue FOO BAR
+.RE
+.sp
+The 'continue' command creates a new open interval, starting now, with tags 'FOO', 'BAR', and 'BAZ'.
+.PP
+Note that the first matching interval (here '@2') is taken as a blueprint for the new interval, although '@3' would have been a perfect match for the given tag set.
+The command 'timew continue BAR' would have the same effect.
+This means that there is no way to continue '@4' via a tag set.
+.TP
+Continue an interval at a specific date & time:
+.RS
+.sp
+$ timew continue @4 19:00
+.B " (1)"
+.br
+$ timew continue FOO 19:00
+.B (2)
+.RE
+.sp
+The 'continue' command creates a new open interval
+.br
+.IP 1.
+with tag 'BAR' (as specified by '@4') and start time '19:00'.
+.br
+.IP 2.
+with tag 'FOO' (as specified by '@1') and start time '19:00'.
+.TP
+Continue an interval with a specific range:
+.RS
+.sp
+$ timew continue @4 19:00 - 20:00
+.B " (1)"
+.br
+$ timew continue FOO 19:00 - 20:00
+.B (2)
+.RE
+.sp
+The 'continue' command creates a new closed interval
+.IP 1.
+with tag 'BAR' (as specified by '@4'), start time '19:00', and end time '20:00'.
+.br
+.IP 2.
+with tag 'FOO' (as specified by '@1') and start time '19:00', and end time '20:00'.
 .
 .SH "SEE ALSO"
 .BR timew-cancel (1),
