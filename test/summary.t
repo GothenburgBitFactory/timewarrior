@@ -27,10 +27,9 @@
 ###############################################################################
 
 import os
+import sys
 import unittest
 from datetime import datetime, timedelta
-
-import sys
 
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -154,6 +153,29 @@ W10 2017-03-09 Thu @4 Tag1        8:43:08  9:38:15 0:55:07
 
                                                            1:09:03
 """, out)
+
+    def test_with_all_hint(self):
+        """Summary should work with :all hint"""
+        now = datetime.now()
+        yesterday = now - timedelta(days=1)
+        tomorrow = now + timedelta(days=1)
+
+        self.t("track {0:%Y-%m-%d}T10:00:00 - {0:%Y-%m-%d}T11:00:00 FOO".format(yesterday))
+        self.t("track {0:%Y-%m-%d}T10:00:00 - {0:%Y-%m-%d}T11:00:00 BAR".format(now))
+        self.t("track {0:%Y-%m-%d}T10:00:00 - {0:%Y-%m-%d}T11:00:00 BAZ".format(tomorrow))
+
+        code, out, err = self.t("summary :ids :all")
+
+        self.assertIn("""
+Wk  Date       Day ID Tags    Start      End    Time   Total
+--- ---------- --- -- ---- -------- -------- ------- -------
+W{3} {0:%Y-%m-%d} {0:%a} @3 FOO  10:00:00 11:00:00 1:00:00 1:00:00
+W{4} {1:%Y-%m-%d} {1:%a} @2 BAR  10:00:00 11:00:00 1:00:00 1:00:00
+W{5} {2:%Y-%m-%d} {2:%a} @1 BAZ  10:00:00 11:00:00 1:00:00 1:00:00
+
+                                                     3:00:00
+""".format(yesterday, now, tomorrow,
+           yesterday.isocalendar()[1], now.isocalendar()[1], tomorrow.isocalendar()[1]), out)
 
     def test_with_day_gap(self):
         """Summary should skip days with no data"""
