@@ -36,6 +36,7 @@
 #include <set>
 #include <Duration.h>
 #include <timew.h>
+#include "DatetimeParser.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 A2::A2 (const std::string& raw, Lexer::Type lextype)
@@ -724,7 +725,9 @@ Interval CLI::getFilter (const Range& default_range) const
   else if (args.size () == 1 &&
       args[0] == "<date>")
   {
-    filter.setRange ({Datetime (start), 0});
+    DatetimeParser dtp;
+    Range range = dtp.parse_range(start);
+    filter.setRange (range);
   }
 
     // from <date>
@@ -734,7 +737,6 @@ Interval CLI::getFilter (const Range& default_range) const
   {
     filter.setRange ({Datetime (start), 0});
   }
-
     // <date> to/- <date>
   else if (args.size () == 3                   &&
            args[0] == "<date>"                 &&

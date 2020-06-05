@@ -11,6 +11,7 @@ set (timew_SRCS AtomicFile.cpp AtomicFile.h
                                ChartConfig.h
                 Database.cpp   Database.h
                 Datafile.cpp   Datafile.h
+                DatetimeParser.cpp DatetimeParser.h
                 Exclusion.cpp  Exclusion.h
                 Extensions.cpp Extensions.h
                 Interval.cpp   Interval.h

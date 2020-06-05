@@ -177,6 +177,46 @@ W{5} {2:%Y-%m-%d} {2:%a} @1 BAZ  10:00:00 11:00:00 1:00:00 1:00:00
 """.format(yesterday, now, tomorrow,
            yesterday.isocalendar()[1], now.isocalendar()[1], tomorrow.isocalendar()[1]), out)
 
+    def test_with_named_date_yesterday(self):
+        """Summary should work with 'yesterday'"""
+        now = datetime.now()
+        yesterday = now - timedelta(days=1)
+        tomorrow = now + timedelta(days=1)
+
+        self.t("track {0:%Y-%m-%d}T10:00:00 - {0:%Y-%m-%d}T11:00:00 FOO".format(yesterday))
+        self.t("track {0:%Y-%m-%d}T10:00:00 - {0:%Y-%m-%d}T11:00:00 BAR".format(now))
+        self.t("track {0:%Y-%m-%d}T10:00:00 - {0:%Y-%m-%d}T11:00:00 BAZ".format(tomorrow))
+
+        code, out, err = self.t("summary :ids yesterday")
+
+        self.assertIn("""
+Wk  Date       Day ID Tags    Start      End    Time   Total
+--- ---------- --- -- ---- -------- -------- ------- -------
+W{1} {0:%Y-%m-%d} {0:%a} @3 FOO  10:00:00 11:00:00 1:00:00 1:00:00
+
+                                                     1:00:00
+""".format(yesterday, yesterday.isocalendar()[1]), out)
+
+    def test_with_named_date_today(self):
+        """Summary should work with 'today'"""
+        now = datetime.now()
+        yesterday = now - timedelta(days=1)
+        tomorrow = now + timedelta(days=1)
+
+        self.t("track {0:%Y-%m-%d}T10:00:00 - {0:%Y-%m-%d}T11:00:00 FOO".format(yesterday))
+        self.t("track {0:%Y-%m-%d}T10:00:00 - {0:%Y-%m-%d}T11:00:00 BAR".format(now))
+        self.t("track {0:%Y-%m-%d}T10:00:00 - {0:%Y-%m-%d}T11:00:00 BAZ".format(tomorrow))
+
+        code, out, err = self.t("summary :ids today")
+
+        self.assertIn("""
+Wk  Date       Day ID Tags    Start      End    Time   Total
+--- ---------- --- -- ---- -------- -------- ------- -------
+W{1} {0:%Y-%m-%d} {0:%a} @2 BAR  10:00:00 11:00:00 1:00:00 1:00:00
+
+                                                     1:00:00
+""".format(now, now.isocalendar()[1]), out)
+
     def test_with_day_gap(self):
         """Summary should skip days with no data"""
         self.t("track 2017-03-09T10:00:00 - 2017-03-09T11:00:00")
