@@ -68,7 +68,7 @@ void Journal::initialize (const std::string& location, int size)
     AtomicFile undo (_location);
     if (undo.exists () && undo.size () > 0)
     {
-      undo.truncate ();
+      undo.remove ();
     }
   }
 }
@@ -180,15 +180,23 @@ Transaction Journal::popLastTransaction ()
   Transaction last = transactions.back ();
   transactions.pop_back ();
 
-  undo.open ();
-  undo.truncate ();
-
-  for (auto& transaction : transactions)
+  if (transactions.empty ())
   {
-    undo.append (transaction.toString ());
+    undo.close ();
+    undo.remove ();
   }
+  else
+  {
+    undo.open ();
+    undo.truncate ();
 
-  undo.close ();
+    for (auto& transaction : transactions)
+    {
+      undo.append (transaction.toString ());
+    }
+
+    undo.close ();
+  }
 
   return last;
 }
