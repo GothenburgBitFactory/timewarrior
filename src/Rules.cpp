@@ -99,6 +99,9 @@ Rules::Rules ()
     {"theme.colors.today",       "white"},
     {"theme.colors.holiday",     "gray4"},
     {"theme.colors.label",       "gray4"},
+
+    // Options for the journal / undo file.
+    {"journal.size",             "-1"},
   };
 }
 
