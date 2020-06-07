@@ -26,6 +26,8 @@
 
 #include <csignal>
 #include <stdio.h>
+#include <string.h>
+#include <errno.h>
 #include <cassert>
 #include <iostream>
 #include <vector>
@@ -59,7 +61,9 @@ struct AtomicFile::impl
 
   bool open ();
   void close ();
+  size_t size () const;
   void truncate ();
+  void remove ();
   void read (std::string& content);
   void read (std::vector <std::string>& lines);
   void append (const std::string& content);
@@ -151,11 +155,38 @@ void AtomicFile::impl::close ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t AtomicFile::impl::size () const
+{
+  struct stat s;
+  const char *filename = (is_temp_active) ? temp_file._data.c_str () : real_file._data.c_str ();
+  if (stat (filename, &s))
+  {
+    throw format ("stat error {1}: {2}", errno, strerror (errno));
+  }
+  return s.st_size;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void AtomicFile::impl::truncate ()
 {
   try 
   {
     temp_file.truncate ();
+    is_temp_active = true;
+  }
+  catch (...)
+  {
+    allow_atomics = false;
+    throw;
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void AtomicFile::impl::remove ()
+{
+  try
+  {
+    temp_file.remove ();
     is_temp_active = true;
   }
   catch (...)
@@ -233,11 +264,19 @@ void AtomicFile::impl::finalize ()
 {
   if (is_temp_active && impl::allow_atomics)
   {
-    debug (format ("Moving '{1}' -> '{2}'", temp_file._data, real_file._data));
-    if (std::rename (temp_file._data.c_str (), real_file._data.c_str ()))
+    if (temp_file.exists ())
     {
-      throw format("Failed copying '{1}' to '{2}'. Database corruption possible.",
-                   temp_file._data, real_file._data);
+      debug (format ("Moving '{1}' -> '{2}'", temp_file._data, real_file._data));
+      if (std::rename (temp_file._data.c_str (), real_file._data.c_str ()))
+      {
+        throw format("Failed copying '{1}' to '{2}'. Database corruption possible.",
+            temp_file._data, real_file._data);
+      }
+    }
+    else
+    {
+      debug (format ("Removing '{1}'", real_file._data));
+      std::remove (real_file._data.c_str ());
     }
     is_temp_active = false;
   }
@@ -323,9 +362,21 @@ void AtomicFile::close ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+size_t AtomicFile::size () const
+{
+  return pimpl->size ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void AtomicFile::truncate ()
 {
   pimpl->truncate ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void AtomicFile::remove ()
+{
+  pimpl->remove ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

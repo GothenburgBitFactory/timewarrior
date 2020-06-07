@@ -24,6 +24,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <cassert>
 #include <sstream>
 #include <memory>
 #include <string>
@@ -451,18 +452,27 @@ int test (UnitTest& t)
     t.fail (test_name);
     t.diag (std::string ("Expected '" + expected + "' read '" + contents + "'"));
   }
+  AtomicFile::reset ();
 
   {
-    AtomicFile test ("test");
+    tempDir.clear ();
+    Path test("test");
+    AtomicFile file(test);
+    file.truncate ();
+    assert (! test.exists ());
+    AtomicFile::finalize_all ();
+    assert (test.exists ());
+    file.remove ();
+    t.is (test.exists (), true, "File not removed before finalize");
+    AtomicFile::finalize_all ();
+    t.is (test.exists (), false, "File is removed after finalize");
   }
-
-  AtomicFile::reset ();
   return 0;
 }
 
 int main (int, char**)
 {
-  UnitTest t (20);
+  UnitTest t (22);
   try
   {
     int ret = test (t);
