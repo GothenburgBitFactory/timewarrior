@@ -48,7 +48,9 @@ public:
 
   bool open ();
   void close ();
+  void remove ();
   void truncate ();
+  size_t size () const;
   void read (std::string& content);
   void read (std::vector <std::string>& lines);
   void append (const std::string& content);
