@@ -560,6 +560,87 @@ class TestUndo(TestCase):
                                   expectedEnd=one_hour_before_utc,
                                   expectedTags=["bar", "foo"])
 
+    def test_undo_journal_size_equals_one(self):
+        """Test undo only stores the last entry when journal.size == 1"""
+
+        self.t("config journal.size 1 :yes")
+        self.t("start 16h ago proja")
+        self.t("start 15h ago projb")
+        before = self.t.export()
+        self.t("start 14h ago projc")
+        self.t("undo")
+        # since we set the journal size to 1, these undos should not have any
+        # effect since we have already undone the one entry we saved
+        self.t("undo")
+        self.t("undo")
+        self.assertEqual(before, self.t.export())
+
+    def test_undo_journal_size_equals_two(self):
+        """Test undo only stores two entries when journal.size == 2"""
+        
+        self.t("config journal.size 2 :yes")
+        self.t("start 16h ago proja")
+        before_b = self.t.export()
+        self.t("start 15h ago projb")
+        before_c = self.t.export()
+        self.t("start 14h ago projc")
+        self.t("undo")
+        self.assertEqual(before_c, self.t.export())
+        self.t("undo")
+        self.t("undo") # This undo should not have any effect
+        self.assertEqual(before_b, self.t.export())
+
+    def test_undo_journal_size_equals_zero(self):
+        """Test undo does not save any entries when journal.size == 0"""
+
+        self.t("config journal.size 0 :yes")
+        before_a = self.t.export()
+        self.t("start 16h ago proja")
+        before_b = self.t.export()
+        self.t("start 15h ago projb")
+        before_c = self.t.export()
+        self.t("start 14h ago projc")
+        end = self.t.export()
+
+        # Check that any undo commands do not change the results of the export
+        self.t("undo")
+        self.assertEqual(end, self.t.export())
+        self.t("undo")
+        self.assertEqual(end, self.t.export())
+        self.t("undo")
+        self.assertEqual(end, self.t.export())
+
+    def test_undo_journal_size_unlimited(self):
+        """Test undo handles more than two entries when journal.size == -1 """
+
+        # This should error since 0 should be the default value
+        self.t.runError("config journal.size -1 :yes")
+        before_a = self.t.export()
+        self.t("start 16h ago proja")
+        before_b = self.t.export()
+        self.t("start 15h ago projb")
+        before_c = self.t.export()
+        self.t("start 14h ago projc")
+        self.t("undo")
+        self.assertEqual(before_c, self.t.export())
+        self.t("undo")
+        self.assertEqual(before_b, self.t.export())
+        self.t("undo")
+        self.assertEqual(before_a, self.t.export())
+
+    def test_undo_process_commands_when_disabled(self):
+        """Test that disabling the journal clears it."""
+
+        self.t("start 16h ago proja")
+        self.t("start 15h ago projb")
+        self.t("start 14h ago projc")
+        after_c = self.t.export ();
+        self.t("config journal.size 0 :yes")
+        after_config = self.t("config")
+        code, out, error = self.t("undo") # This change will not change the config or the entries
+        self.assertIn("Nothing", out)
+        self.assertEqual(after_config, self.t("config"))
+        self.assertEqual(after_c, self.t.export())
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
