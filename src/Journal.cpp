@@ -24,38 +24,110 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <cassert>
 #include <AtomicFile.h>
 #include <format.h>
 #include <Journal.h>
 #include <TransactionsFactory.h>
 
+#include <timew.h>
+
 ////////////////////////////////////////////////////////////////////////////////
-void Journal::initialize (const std::string& location)
+
+bool Journal::enabled () const
+{
+  return _size != 0;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+std::vector<Transaction> loadJournal (AtomicFile& undo)
+{
+  std::vector <std::string> read_lines;
+  undo.read (read_lines);
+  undo.close ();
+
+  TransactionsFactory transactionsFactory;
+
+  for (auto& line: read_lines)
+  {
+    transactionsFactory.parseLine (line);
+  }
+
+  return transactionsFactory.get ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void Journal::initialize (const std::string& location, int size)
 {
   _location = location;
+  _size = size;
+
+  if (! enabled ())
+  {
+    AtomicFile undo (_location);
+    if (undo.exists () && undo.size () > 0)
+    {
+      undo.truncate ();
+    }
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Journal::startTransaction ()
 {
-  if (_currentTransaction != nullptr)
+  if (enabled ())
   {
-    throw "Subsequent call to start transaction";
-  }
+    if (_currentTransaction != nullptr)
+    {
+      throw "Subsequent call to start transaction";
+    }
 
-  _currentTransaction = std::make_shared <Transaction> ();
+    _currentTransaction = std::make_shared <Transaction> ();
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 void Journal::endTransaction ()
 {
+  if (!enabled ())
+  {
+    assert (_currentTransaction == nullptr);
+    return;
+  }
+
   if (_currentTransaction == nullptr)
   {
     throw "Call to end non-existent transaction";
   }
 
-  AtomicFile::append (_location, _currentTransaction->toString ());
+  AtomicFile undo (_location);
 
+  if (_size > 1)
+  {
+    std::vector <Transaction> transactions = loadJournal (undo);
+
+    unsigned int toCopy = _size - 1;
+    auto it = transactions.cbegin ();
+    auto end = transactions.cend ();
+
+    if (transactions.size () > toCopy)
+    {
+      it += transactions.size () - toCopy;
+    }
+
+    undo.truncate ();
+    for (; it != end; ++it)
+    {
+      undo.append (it->toString ());
+    }
+  }
+  else if (_size == 1)
+  {
+    undo.truncate ();
+  }
+
+  undo.append (_currentTransaction->toString ());
   _currentTransaction.reset ();
 }
 
@@ -83,7 +155,7 @@ void Journal::recordUndoAction (
   const std::string &before,
   const std::string &after)
 {
-  if (_currentTransaction != nullptr)
+  if (enabled () && _currentTransaction != nullptr)
   {
     _currentTransaction->addUndoAction (type, before, after);
   }
@@ -92,20 +164,13 @@ void Journal::recordUndoAction (
 ////////////////////////////////////////////////////////////////////////////////
 Transaction Journal::popLastTransaction ()
 {
-  AtomicFile undo (_location);
-
-  std::vector <std::string> read_lines;
-  undo.read (read_lines);
-  undo.close ();
-
-  TransactionsFactory transactionsFactory;
-
-  for (auto& line: read_lines)
+  if (! enabled ())
   {
-    transactionsFactory.parseLine (line);
+    return Transaction {};
   }
 
-  std::vector <Transaction> transactions = transactionsFactory.get ();
+  AtomicFile undo (_location);
+  std::vector <Transaction> transactions = loadJournal (undo);
 
   if (transactions.empty ())
   {

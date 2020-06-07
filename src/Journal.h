@@ -40,12 +40,13 @@ public:
   Journal(const Journal&) = delete;
   Journal& operator= (const Journal&) = delete;
 
-  void initialize(const std::string&);
+  void initialize(const std::string&, int);
 
   void startTransaction ();
   void endTransaction ();
   void recordConfigAction(const std::string&, const std::string&);
   void recordIntervalAction(const std::string&, const std::string&);
+  bool enabled () const;
 
   Transaction popLastTransaction();
 
@@ -54,6 +55,7 @@ private:
 
   std::string _location {"~/.timewarrior/data/undo.data"};
   std::shared_ptr <Transaction> _currentTransaction = nullptr;
+  int _size {0};
 };
 
 #endif

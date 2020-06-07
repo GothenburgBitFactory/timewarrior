@@ -221,7 +221,7 @@ void initializeDataJournalAndRules (
     }
   }
 
-  journal.initialize (data._data + "/undo.data");
+  journal.initialize (data._data + "/undo.data", rules.getInteger ("journal.size"));
   // Initialize the database (no data read), but files are enumerated.
   database.initialize (data._data, journal);
 }
