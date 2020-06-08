@@ -257,6 +257,11 @@ class TestStart(TestCase):
         self.assertClosedInterval(j[0])
         self.assertOpenInterval(j[1])
 
+    def test_start_will_not_silently_fail_to_adjust_with_same_tags(self):
+        """Start will not silently fail when tags are the same and time is earlier"""
+        self.t("start 1h ago proja")
+        code, out, err = self.t.runError("start 2h ago proja")
+        self.assertIn("The end of a date range must be after the start.", err)
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

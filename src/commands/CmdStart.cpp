@@ -48,12 +48,17 @@ int CmdStart (
 
   journal.startTransaction ();
 
+  if (!filter.is_started ())
+  {
+    filter.start = now;
+  }
+
   // If the latest interval is open, close it.
   if (latest.is_open ())
   {
     // If the new interval tags match those of the currently open interval, then
     // do nothing - the tags are already being tracked.
-    if (latest.tags () == filter.tags ())
+    if (latest.encloses (filter) && latest.tags () == filter.tags ())
     {
       if (verbose)
         std::cout << intervalSummarize (database, rules, latest);
