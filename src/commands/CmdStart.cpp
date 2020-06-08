@@ -36,22 +36,24 @@ int CmdStart (
   Journal& journal)
 {
   auto verbose = rules.getBoolean ("verbose");
+  const Datetime now {};
 
-  auto filter = cli.getFilter ();
-
-  auto now = Datetime ();
+  auto filter = cli.getFilter ({now, 0});
 
   if (filter.start > now)
+  {
     throw std::string ("Time tracking cannot be set in the future.");
+  }
+  else if (!filter.is_started ())
+  {
+    // The :all hint provides a filter that is neither started nor ended, which
+    // the start command cannot handle and we do not want to auto start it now.
+    throw std::string ("Interval start must be specified");
+  }
 
   auto latest = getLatestInterval (database);
 
   journal.startTransaction ();
-
-  if (!filter.is_started ())
-  {
-    filter.start = now;
-  }
 
   // If the latest interval is open, close it.
   if (latest.is_open ())

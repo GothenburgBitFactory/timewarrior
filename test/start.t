@@ -263,6 +263,10 @@ class TestStart(TestCase):
         code, out, err = self.t.runError("start 2h ago proja")
         self.assertIn("The end of a date range must be after the start.", err)
 
+    def test_start_will_error_with_all_hint(self):
+        """Start will return an error when passed the :all hint"""
+        code, out, err = self.t.runError("start :all proja")
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
 
