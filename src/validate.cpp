@@ -97,70 +97,92 @@ static void autoAdjust (
   Database& database,
   Interval& interval)
 {
+  const bool verbose = rules.getBoolean ("verbose");
+
+  // We do not need the adjust flag set to "flatten" the database if the last
+  // interval is open and encloses the current interval that we're adding.
+  Interval latest = getLatestInterval (database);
+  if (interval.is_open () && latest.encloses (interval))
+  {
+    database.deleteInterval (latest);
+    latest.end = interval.start;
+    for (auto& interval : flatten (latest, getAllExclusions (rules, latest)))
+    {
+      database.addInterval (interval, verbose);
+      if (verbose)
+      {
+        std::cout << intervalSummarize (database, rules, interval);
+      }
+    }
+  }
+
   Interval overlaps_filter {interval.start, interval.end};
   auto overlaps = getTracked (database, rules, overlaps_filter);
 
-  if (! overlaps.empty ())
+  if (overlaps.empty ())
   {
-    debug ("Input         " + interval.dump ());
-    debug ("Overlaps with");
+    return;
+  }
 
-    for (auto& overlap : overlaps)
+  debug ("Input         " + interval.dump ());
+  debug ("Overlaps with");
+
+  for (auto& overlap : overlaps)
+  {
+    debug ("              " + overlap.dump ());
+  }
+
+  if (! adjust)
+  {
+    throw std::string("You cannot overlap intervals. Correct the start/end time, or specify the :adjust hint.");
+  }
+
+  // implement overwrite resolution, i.e. the new interval overwrites existing intervals
+  for (auto& overlap : overlaps)
+  {
+    bool start_within_overlap = interval.startsWithin (overlap);
+    bool end_within_overlap = interval.endsWithin (overlap);
+
+    if (start_within_overlap && !end_within_overlap)
     {
-      debug ("              " + overlap.dump ());
+      // start date of new interval within old interval
+      Interval modified {overlap};
+      modified.end = interval.start;
+      database.modifyInterval (overlap, modified, verbose);
     }
-
-    if (! adjust)
-      throw std::string("You cannot overlap intervals. Correct the start/end "
-                        "time, or specify the :adjust hint.");
-
-    // implement overwrite resolution, i.e. the new interval overwrites existing intervals
-    for (auto& overlap : overlaps)
+    else if (!start_within_overlap && end_within_overlap)
     {
-      bool start_within_overlap = interval.startsWithin (overlap);
-      bool end_within_overlap = interval.endsWithin (overlap);
+      // end date of new interval within old interval
+      Interval modified {overlap};
+      modified.start = interval.end;
+      database.modifyInterval (overlap, modified, verbose);
+    }
+    else if (!start_within_overlap && !end_within_overlap)
+    {
+      // new interval encloses old interval
+      database.deleteInterval (overlap);
+    }
+    else
+    {
+      // new interval enclosed by old interval
+      Interval split2 {overlap};
+      Interval split1 {overlap};
 
-      if (start_within_overlap && !end_within_overlap)
+      split1.end = interval.start;
+      split2.start = interval.end;
+
+      if (split1.is_empty ())
       {
-        // start date of new interval within old interval
-        Interval modified {overlap};
-        modified.end = interval.start;
-        database.modifyInterval (overlap, modified, rules.getBoolean ("verbose"));
-      }
-      else if (!start_within_overlap && end_within_overlap)
-      {
-        // end date of new interval within old interval
-        Interval modified {overlap};
-        modified.start = interval.end;
-        database.modifyInterval (overlap, modified, rules.getBoolean ("verbose"));
-      }
-      else if (!start_within_overlap && !end_within_overlap)
-      {
-        // new interval encloses old interval
         database.deleteInterval (overlap);
       }
       else
       {
-        // new interval enclosed by old interval
-        Interval split2 {overlap};
-        Interval split1 {overlap};
+        database.modifyInterval (overlap, split1, verbose);
+      }
 
-        split1.end = interval.start;
-        split2.start = interval.end;
-
-        if (split1.is_empty ())
-        {
-          database.deleteInterval (overlap);
-        }
-        else
-        {
-          database.modifyInterval (overlap, split1, rules.getBoolean ("verbose"));
-        }
-
-        if (! split2.is_empty ())
-        {
-          database.addInterval (split2, rules.getBoolean ("verbose"));
-        }
+      if (! split2.is_empty ())
+      {
+        database.addInterval (split2, verbose);
       }
     }
   }

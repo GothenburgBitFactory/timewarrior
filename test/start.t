@@ -102,7 +102,7 @@ class TestStart(TestCase):
 
         code, out, err = self.t.runError("start BAR 1h ago")
 
-        self.assertIn("The end of a date range must be after the start.", err)
+        self.assertIn("You cannot overlap intervals. Correct the start/end time, or specify the :adjust hint.", err)
 
     def test_start_with_start_date_earlier_than_closed_interval(self):
         """Test start with start date earlier than closed interval"""
@@ -261,11 +261,17 @@ class TestStart(TestCase):
         """Start will not silently fail when tags are the same and time is earlier"""
         self.t("start 1h ago proja")
         code, out, err = self.t.runError("start 2h ago proja")
-        self.assertIn("The end of a date range must be after the start.", err)
+        self.assertIn("You cannot overlap intervals. Correct the start/end time, or specify the :adjust hint", err)
 
     def test_start_will_error_with_all_hint(self):
         """Start will return an error when passed the :all hint"""
         code, out, err = self.t.runError("start :all proja")
+
+    def test_start_with_start_date_earlier_than_closed_interval_with_adjust(self):
+        """Start will honor the :adjust hint when overlapping an open interval"""
+        self.t("start 1h ago proja")
+        code, out, err = self.t("start 2h ago proja :adjust")
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
