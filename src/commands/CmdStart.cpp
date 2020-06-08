@@ -38,83 +38,47 @@ int CmdStart (
   auto verbose = rules.getBoolean ("verbose");
   const Datetime now {};
 
-  auto filter = cli.getFilter ({now, 0});
+  auto interval = cli.getFilter ({now, 0});
 
-  if (filter.start > now)
+  if (interval.start > now)
   {
     throw std::string ("Time tracking cannot be set in the future.");
   }
-  else if (!filter.is_started ())
+  else if (!interval.is_started ())
   {
     // The :all hint provides a filter that is neither started nor ended, which
     // the start command cannot handle and we do not want to auto start it now.
     throw std::string ("Interval start must be specified");
   }
+  else if (interval.is_ended ())
+  {
+    return CmdTrack (cli, rules, database, journal);
+  }
 
   auto latest = getLatestInterval (database);
-
-  journal.startTransaction ();
-
-  // If the latest interval is open, close it.
   if (latest.is_open ())
   {
     // If the new interval tags match those of the currently open interval, then
     // do nothing - the tags are already being tracked.
-    if (latest.encloses (filter) && latest.tags () == filter.tags ())
+    if (latest.encloses (interval) && latest.tags () == interval.tags ())
     {
       if (verbose)
-        std::cout << intervalSummarize (database, rules, latest);
-
-      return 0;
-    }
-
-    // Stop it, at the given start time, if applicable.
-    Interval modified {latest};
-    if (filter.start.toEpoch () != 0)
-    {
-      if (modified.start >= filter.start)
       {
-        throw std::string ("The end of a date range must be after the start.");
+        std::cout << intervalSummarize (database, rules, latest);
       }
-
-      modified.end = filter.start;
-    }
-    else
-    {
-      modified.end = Datetime ();
-    }
-
-    // Update database.
-    database.deleteInterval (latest);
-    validate (cli, rules, database, modified);
-
-    for (auto& interval : flatten (modified, getAllExclusions (rules, modified)))
-    {
-      database.addInterval (interval, verbose);
-
-      if (verbose)
-        std::cout << intervalSummarize (database, rules, interval);
+      return 0;
     }
   }
 
-  // Now add the new open interval.
-  Interval started;
-  if (filter.start.toEpoch () != 0)
-    started.start = filter.start;
-  else
-    started.start = Datetime ();
-
-  for (auto& tag : filter.tags ())
-    started.tag (tag);
-
-  // Update database. An open interval does not need to be flattened.
-  validate (cli, rules, database, started);
-  database.addInterval (started, verbose);
+  journal.startTransaction ();
+  validate (cli, rules, database, interval);
+  database.addInterval (interval, verbose);
+  journal.endTransaction ();
 
   if (verbose)
-    std::cout << intervalSummarize (database, rules, started);
-
-  journal.endTransaction ();
+  {
+    std::cout << intervalSummarize (database, rules, interval);
+  }
 
   return 0;
 }

@@ -99,6 +99,23 @@ static void autoAdjust (
 {
   const bool verbose = rules.getBoolean ("verbose");
 
+  // We do not need the adjust flag set to "flatten" the database if the last
+  // interval is open and encloses the current interval that we're adding.
+  Interval latest = getLatestInterval (database);
+  if (interval.is_open () && latest.encloses (interval))
+  {
+    database.deleteInterval (latest);
+    latest.end = interval.start;
+    for (auto& interval : flatten (latest, getAllExclusions (rules, latest)))
+    {
+      database.addInterval (interval, verbose);
+      if (verbose)
+      {
+        std::cout << intervalSummarize (database, rules, interval);
+      }
+    }
+  }
+
   Interval overlaps_filter {interval.start, interval.end};
   auto overlaps = getTracked (database, rules, overlaps_filter);
 
