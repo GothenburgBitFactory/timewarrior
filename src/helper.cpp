@@ -454,21 +454,3 @@ std::string minimalDelta (const Datetime& left, const Datetime& right)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> getOverlaps (
-  Database& database,
-  const Rules& rules,
-  const Interval& interval)
-{
-  Interval range_filter {interval.start, interval.end};
-
-  auto tracked = getTracked (database, rules, range_filter);
-
-  std::vector <Interval> overlaps;
-  for (auto& track : tracked)
-    if (interval.overlaps (track))
-      overlaps.push_back (track);
-
-  return overlaps;
-}
-
-////////////////////////////////////////////////////////////////////////////////

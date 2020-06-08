@@ -97,7 +97,8 @@ static void autoAdjust (
   Database& database,
   Interval& interval)
 {
-  auto overlaps = getOverlaps (database, rules, interval);
+  Interval overlaps_filter {interval.start, interval.end};
+  auto overlaps = getTracked (database, rules, overlaps_filter);
 
   if (! overlaps.empty ())
   {

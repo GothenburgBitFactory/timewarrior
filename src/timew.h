@@ -80,7 +80,6 @@ int quantizeToNMinutes (int, int);
 
 bool findHint (const CLI&, const std::string&);
 std::string minimalDelta (const Datetime&, const Datetime&);
-std::vector <Interval> getOverlaps (Database&, const Rules&, const Interval&);
 
 // log.cpp
 void enableDebugMode (bool);
