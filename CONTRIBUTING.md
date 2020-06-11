@@ -96,7 +96,7 @@ Extensions are standalone programs or scripts that consume Timewarrior data outp
 
 Extensions are the easiest way to contribute as you only need to adhere to the extension API, but are otherwise free in your choice of programming language and style. 
 
-Consult the [documentation](https://taskwarrior.org/docs/timewarrior/api.html) on how you can use the extension API.
+Consult the [documentation](https://timewarrior.net/docs/api.html) on how you can use the extension API.
 
 
 ### Tests, Bug-fixes and Features
