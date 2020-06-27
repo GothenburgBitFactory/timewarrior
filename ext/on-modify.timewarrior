@@ -64,39 +64,42 @@ def extract_tags(json_obj):
 def extract_annotation(json_obj):
     if 'annotations' not in json_obj:
         return '\'\''
-
     return json_obj['annotations'][0]['description']
 
 def extract_start(json_obj):
     return json_obj['start']
 
-# Check if the active task matches the one in timewarrior, otherwsie exit
-def check_tags(tags, action):
-    active_tag_count = int(subprocess.run(['timew', 'get', 'dom.active.tag.count'], capture_output=True, text=True).stdout)
+# Check that Timewarrior's interval has the given tags
+# Returns 0 if they don't match, 1 if they match and 2 if there is no active tracking
+def active_interval_has(tags):
+    out = subprocess.run(['timew', 'get', 'dom.active.tag.count'], capture_output=True, text=True).stdout
+    if not out:
+        return 2
+    active_tag_count = int(out)
     match = True
     if len(tags) != active_tag_count:
-        match = False
-    else:
-        for i in range(1, active_tag_count+1):
-            if subprocess.run(['timew', 'get', 'dom.active.tag.' + str(i)], capture_output=True, text=True).stdout[:-1] not in tags:
-                match = False
-    if not match:
-        print('Active timewarrior tags do not match modified task - Aborting ' + action)
-        sys.exit(0)
+        return 0
+    for i in range(1, active_tag_count+1):
+        if subprocess.run(['timew', 'get', 'dom.active.tag.' + str(i)], capture_output=True, text=True).stdout[:-1] not in tags:
+            return 0
+    return 1
 
 new_tags = extract_tags(new)
 old_tags = extract_tags(old)
+check = active_interval_has(old_tags)
+# Running
 if 'start' in new:
     start = extract_start(new)
+    
+    if not check:
+        sys.exit(0)
 
     # Started task.
-    if 'start' not in old:
-        subprocess.call(['timew', 'start', start] + new_tags + [':yes', ':adjust'])
+    if 'start' not in old or check == 2:
+        subprocess.call(['timew', 'start', start] + new_tags + [':yes'])
 
     # Task modified
     else:
-        check_tags(old_tags, 'modify')
-
         if old_tags != new_tags:
             subprocess.call(['timew', 'untag', '@1'] + old_tags + [':yes'])
             subprocess.call(['timew', 'tag', '@1'] + new_tags + [':yes'])
@@ -112,6 +115,6 @@ if 'start' in new:
 
 # Stopped task.
 elif 'start' in old:
-    check_tags(old_tags, 'stop')
-    subprocess.call(['timew', 'stop'] + new_tags + [':yes'])
+    if check == 1:
+        subprocess.call(['timew', 'stop'] + new_tags + [':yes'])
 
