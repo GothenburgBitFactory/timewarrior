@@ -488,27 +488,6 @@ std::vector <Interval> getTracked (
   const Rules& rules,
   Interval& filter)
 {
-  // Exclusions are only usable within a range, so if no filter range exists,
-  // determine the infinite range starting at the first inclusion, i.e.:
-  //
-  //   [earliest start, infinity)
-  //
-  // Avoid assigning a zero-width range - leave it unstarted instead.
-  if (! filter.is_started ())
-  {
-    auto begin = database.rbegin ();
-    auto end = database.rend ();
-    if (begin != end)
-    {
-      filter.start = IntervalFactory::fromSerialization (*begin).start;
-    }
-
-    // Use an infinite range instead of the last end date; this prevents
-    // issues when there is an empty range [q, q) at the end of a filter
-    // [p, q), in which case there is no overlap or intersection.
-    filter.end = 0;
-  }
-
   int id_skip = 0;
   std::deque <Interval> intervals;
 
