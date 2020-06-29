@@ -403,9 +403,7 @@ std::vector <Range> subtractRanges (
 // An interval matches a filter range if the start/end overlaps
 bool matchesRange (const Interval& interval, const Range& filter)
 {
-  return ((filter.start.toEpoch () == 0 &&
-           filter.end.toEpoch () == 0
-          ) || interval.intersects (filter));
+  return ((!filter.is_started() && !filter.is_ended()) || interval.intersects (filter));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
