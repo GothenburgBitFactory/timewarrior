@@ -108,7 +108,7 @@ std::string TagInfoDatabase::toJson ()
   std::stringstream json;
   bool first = true;
 
-  json << "{";
+  json << "{\n";
 
   for (auto& pair : _tagInformation)
   {
@@ -116,15 +116,15 @@ std::string TagInfoDatabase::toJson ()
 
     if (tagInfo.hasCount ())
     {
-      json << (first ? "" : ",")
-         << "\"" << escape(pair.first, '"') << "\":"
+      json << (first ? "" : ",\n")
+         << "  \"" << escape(pair.first, '"') << "\":"
          << tagInfo.toJson ();
 
       first = (first ? false : first);
     }
   }
 
-  json << "}";
+  json << "\n}";
 
   return json.str ();
 }
