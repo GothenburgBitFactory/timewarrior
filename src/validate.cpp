@@ -99,20 +99,26 @@ static void autoAdjust (
 {
   auto overlaps = getOverlaps (database, rules, interval);
 
-  if (! overlaps.empty ())
+  if (overlaps.empty ())
   {
-    debug ("Input         " + interval.dump ());
-    debug ("Overlaps with");
+    return;
+  }
 
-    for (auto& overlap : overlaps)
-    {
-      debug ("              " + overlap.dump ());
-    }
+  debug ("Input         " + interval.dump ());
+  debug ("Overlaps with");
 
-    if (! adjust)
-      throw std::string("You cannot overlap intervals. Correct the start/end "
-                        "time, or specify the :adjust hint.");
+  for (auto& overlap : overlaps)
+  {
+    debug ("              " + overlap.dump ());
+  }
 
+  if (! adjust)
+  {
+    throw std::string("You cannot overlap intervals. Correct the start/end "
+                      "time, or specify the :adjust hint.");
+  }
+  else
+  {
     // implement overwrite resolution, i.e. the new interval overwrites existing intervals
     for (auto& overlap : overlaps)
     {
