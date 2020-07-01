@@ -52,7 +52,6 @@ int CmdContinue (
   flattenDatabase (database, rules);
 
   Interval to_copy;
-  Interval latest = getLatestInterval (database);
 
   if (ids.size() == 1)
   {
@@ -68,6 +67,8 @@ int CmdContinue (
   }
   else
   {
+    Interval latest = getLatestInterval (database);
+
     if (latest.empty ())
     {
       throw std::string ("There is no previous tracking to continue.");
@@ -99,17 +100,6 @@ int CmdContinue (
   // Create an identical interval and update the DB.
   to_copy.start = start_time;
   to_copy.end = end_time;
-
-  if (latest.is_open ())
-  {
-    Interval modified {latest};
-    modified.end = start_time;
-    database.modifyInterval(latest, modified, verbose);
-    if (verbose)
-    {
-      std::cout << '\n' << intervalSummarize (database, rules, modified);
-    }
-  }
 
   validate (cli, rules, database, to_copy);
   database.addInterval (to_copy, verbose);

@@ -150,6 +150,52 @@ class TestContinue(TestCase):
                                 expectedTags=["FOO"],
                                 description="continued interval")
 
+    def test_continue_without_adjust_hint(self):
+        """Verify that continuing without the :adjust hint fails to overwrite"""
+        now_utc = datetime.now().utcnow()
+
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+
+        self.t("track FOO {:%Y-%m-%dT%H}:00:00Z - {:%Y-%m-%dT%H}:00:00Z".format(five_hours_before_utc, four_hours_before_utc))
+        self.t("track BAR {:%Y-%m-%dT%H}:00:00Z - {:%Y-%m-%dT%H}:00:00Z".format(four_hours_before_utc, two_hours_before_utc))
+
+        self.t.runError("continue @2 {:%Y-%m-%dT%H}:00:00Z".format(three_hours_before_utc))
+
+    def test_continue_with_adjust_hint(self):
+        """Verify that continuing with the :adjust hint works"""
+        now_utc = datetime.now().utcnow()
+
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+
+        self.t("track FOO {:%Y-%m-%dT%H}:00:00Z - {:%Y-%m-%dT%H}:00:00Z".format(five_hours_before_utc, four_hours_before_utc))
+        self.t("track BAR {:%Y-%m-%dT%H}:00:00Z - {:%Y-%m-%dT%H}:00:00Z".format(four_hours_before_utc, two_hours_before_utc))
+
+        self.t("continue @2 {:%Y-%m-%dT%H}:00:00Z :adjust".format(three_hours_before_utc))
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 3)
+        self.assertClosedInterval(j[0],
+                                  expectedStart="{:%Y%m%dT%H}0000Z".format(five_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(four_hours_before_utc),
+                                  expectedTags=["FOO"],
+                                  description="first interval")
+        self.assertClosedInterval(j[1],
+                                  expectedStart="{:%Y%m%dT%H}0000Z".format(four_hours_before_utc),
+                                  expectedEnd="{:%Y%m%dT%H}0000Z".format(three_hours_before_utc),
+                                  expectedTags=["BAR"],
+                                  description="second interval")
+        self.assertOpenInterval(j[2],
+                                expectedStart="{:%Y%m%dT%H}0000Z".format(three_hours_before_utc),
+                                expectedTags=["FOO"],
+                                description="continued interval")
+
     def test_continue_with_id_and_range(self):
         """Verify that continue with a range adds a copy with same tags"""
         now_utc = datetime.now().utcnow()

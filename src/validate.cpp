@@ -112,8 +112,31 @@ static void autoAdjust (
     debug ("              " + overlap.dump ());
   }
 
+  auto verbose = rules.getBoolean ("verbose");
+
   if (! adjust)
   {
+    // standard overlap resolution: an open interval can truncate another open interval
+    if (overlaps.size () == 1)
+    {
+      auto overlap = overlaps[0];
+
+      if (overlap.is_open () && interval.is_open () && interval.startsWithin (overlap))
+      {
+        // start date of new interval within old interval
+        Interval modified {overlap};
+        modified.end = interval.start;
+        database.modifyInterval (overlap, modified, verbose);
+
+        if (verbose)
+        {
+          std::cout << '\n' << intervalSummarize (database, rules, modified);
+        }
+
+        return;
+      }
+    }
+
     throw std::string("You cannot overlap intervals. Correct the start/end "
                       "time, or specify the :adjust hint.");
   }
@@ -130,14 +153,14 @@ static void autoAdjust (
         // start date of new interval within old interval
         Interval modified {overlap};
         modified.end = interval.start;
-        database.modifyInterval (overlap, modified, rules.getBoolean ("verbose"));
+        database.modifyInterval (overlap, modified, verbose);
       }
       else if (!start_within_overlap && end_within_overlap)
       {
         // end date of new interval within old interval
         Interval modified {overlap};
         modified.start = interval.end;
-        database.modifyInterval (overlap, modified, rules.getBoolean ("verbose"));
+        database.modifyInterval (overlap, modified, verbose);
       }
       else if (!start_within_overlap && !end_within_overlap)
       {
@@ -159,12 +182,12 @@ static void autoAdjust (
         }
         else
         {
-          database.modifyInterval (overlap, split1, rules.getBoolean ("verbose"));
+          database.modifyInterval (overlap, split1, verbose);
         }
 
         if (! split2.is_empty ())
         {
-          database.addInterval (split2, rules.getBoolean ("verbose"));
+          database.addInterval (split2, verbose);
         }
       }
     }
