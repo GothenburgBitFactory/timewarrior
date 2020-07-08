@@ -97,6 +97,8 @@ static void autoAdjust (
   Database& database,
   Interval& interval)
 {
+  const bool verbose = rules.getBoolean ("verbose");
+
   Interval overlaps_filter {interval.start, interval.end};
   auto overlaps = getTracked (database, rules, overlaps_filter);
 
@@ -113,33 +115,9 @@ static void autoAdjust (
     debug ("              " + overlap.dump ());
   }
 
-  auto verbose = rules.getBoolean ("verbose");
-
   if (! adjust)
   {
-    // standard overlap resolution: an open interval can truncate another open interval
-    if (overlaps.size () == 1)
-    {
-      auto overlap = overlaps[0];
-
-      if (overlap.is_open () && interval.is_open () && interval.startsWithin (overlap))
-      {
-        // start date of new interval within old interval
-        Interval modified {overlap};
-        modified.end = interval.start;
-        database.modifyInterval (overlap, modified, verbose);
-
-        if (verbose)
-        {
-          std::cout << '\n' << intervalSummarize (database, rules, modified);
-        }
-
-        return;
-      }
-    }
-
-    throw std::string("You cannot overlap intervals. Correct the start/end "
-                      "time, or specify the :adjust hint.");
+    throw std::string ("You cannot overlap intervals. Correct the start/end time, or specify the :adjust hint.");
   }
   else
   {
