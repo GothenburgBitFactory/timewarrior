@@ -52,7 +52,8 @@ int CmdStart (
   }
   else if (interval.is_ended ())
   {
-    return CmdTrack (cli, rules, database, journal);
+    throw std::string ("The start command does not accept ranges but only a single datetime. "
+                       "Perhaps you want the track command?.");
   }
 
   auto latest = getLatestInterval (database);
