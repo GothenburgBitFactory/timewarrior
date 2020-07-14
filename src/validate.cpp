@@ -104,6 +104,13 @@ static void autoAdjust (
   Interval latest = getLatestInterval (database);
   if (interval.is_open () && latest.encloses (interval))
   {
+    if (latest.tags () == interval.tags ())
+    {
+      // If the new interval tags match those of the currently open interval,
+      // then do nothing - the tags are already being tracked.
+      return;
+    }
+
     database.deleteInterval (latest);
     latest.end = interval.start;
     for (auto& interval : flatten (latest, getAllExclusions (rules, latest)))

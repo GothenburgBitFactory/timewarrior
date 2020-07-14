@@ -50,21 +50,6 @@ int CmdStart (
                        "Perhaps you want the track command?.");
   }
 
-  auto latest = getLatestInterval (database);
-  if (latest.is_open ())
-  {
-    // If the new interval tags match those of the currently open interval, then
-    // do nothing - the tags are already being tracked.
-    if (latest.encloses (interval) && latest.tags () == interval.tags ())
-    {
-      if (verbose)
-      {
-        std::cout << intervalSummarize (database, rules, latest);
-      }
-      return 0;
-    }
-  }
-
   journal.startTransaction ();
   validate (cli, rules, database, interval);
   database.addInterval (interval, verbose);
