@@ -44,13 +44,7 @@ int CmdStart (
   {
     throw std::string ("Time tracking cannot be set in the future.");
   }
-  else if (!interval.is_started ())
-  {
-    // The :all hint provides a filter that is neither started nor ended, which
-    // the start command cannot handle and we do not want to auto start it now.
-    throw std::string ("Interval start must be specified");
-  }
-  else if (interval.is_ended ())
+  else if (!interval.is_started () || interval.is_ended ())
   {
     throw std::string ("The start command does not accept ranges but only a single datetime. "
                        "Perhaps you want the track command?.");
