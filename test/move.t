@@ -84,26 +84,45 @@ class TestMove(TestCase):
 
     def test_move_open_backwards(self):
         """Move an open interval backwards in time"""
-        self.t("start 5mins ago foo")
-        code, out, err = self.t("move @1 today")
-        self.assertRegex(out, 'Moved @1 to \d\d\d\d-\d\d-\d\dT00:00:00')
+        now = datetime.now()
+        five_hours_before = now - timedelta(hours=5)
+
+        now_utc = now.utcnow()
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z foo".format(two_hours_before_utc))
+
+        code, out, err = self.t("move @1 {:%Y-%m-%dT%H:%M:%S}Z".format(five_hours_before_utc))
+        self.assertRegex(out, 'Moved @1 to {:%Y-%m-%dT%H:%M:%S}'.format(five_hours_before))
 
         j = self.t.export()
 
         self.assertEqual(len(j), 1)
-        self.assertOpenInterval(j[0], expectedTags=["foo"])
+        self.assertOpenInterval(j[0],
+                                expectedStart="{:%Y%m%dT%H%M%S}Z".format(five_hours_before_utc),
+                                expectedTags=["foo"])
 
     def test_move_open_forwards(self):
         """Move an open interval forwards in time"""
-        self.t("start yesterday foo")
+        now = datetime.now()
+        two_hours_before = now - timedelta(hours=2)
 
-        code, out, err = self.t("move @1 today")
+        now_utc = now.utcnow()
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
 
-        self.assertRegex(out, 'Moved @1 to \d\d\d\d-\d\d-\d\dT00:00:00')
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc))
+
+        code, out, err = self.t("move @1 {:%Y-%m-%dT%H:%M:%S}Z".format(two_hours_before_utc))
+
+        self.assertRegex(out, 'Moved @1 to {:%Y-%m-%dT%H:%M:%S}'.format(two_hours_before))
 
         j = self.t.export()
         self.assertEqual(len(j), 1)
-        self.assertOpenInterval(j[0], expectedTags=["foo"])
+        self.assertOpenInterval(j[0],
+                                expectedStart="{:%Y%m%dT%H%M%S}Z".format(two_hours_before_utc),
+                                expectedTags=["foo"])
 
     def test_move_interval_over_another_with_adjust(self):
         """Move an interval over another with :adjust"""

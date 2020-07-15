@@ -45,8 +45,19 @@ class TestDelete(TestCase):
 
     def test_delete_open(self):
         """Delete a single open interval"""
-        self.t("track :yesterday foo")
-        self.t("start today bar")
+        now_utc = datetime.now().utcnow()
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc, four_hours_before_utc))
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z bar".format(three_hours_before_utc))
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 2)
+        self.assertClosedInterval(j[0], expectedTags=["foo"])
+        self.assertOpenInterval(j[1], expectedTags=["bar"])
 
         code, out, err = self.t("delete @1")
         self.assertEqual(out, 'Deleted @1\n')
@@ -58,8 +69,20 @@ class TestDelete(TestCase):
 
     def test_delete_closed(self):
         """Delete a single closed interval"""
-        self.t("track :yesterday foo")
-        self.t("start today bar")
+        now_utc = datetime.now().utcnow()
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc, four_hours_before_utc))
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z bar".format(three_hours_before_utc))
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 2)
+        self.assertClosedInterval(j[0], expectedTags=["foo"])
+        self.assertOpenInterval(j[1], expectedTags=["bar"])
+
         code, out, err = self.t("delete @2")
         self.assertEqual(out, 'Deleted @2\n')
 
@@ -70,8 +93,14 @@ class TestDelete(TestCase):
 
     def test_delete_multiple(self):
         """Delete a mix of open/closed intervals"""
-        self.t("track :yesterday foo")
-        self.t("start today bar")
+        now_utc = datetime.now().utcnow()
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc, four_hours_before_utc))
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z bar".format(three_hours_before_utc))
+
         code, out, err = self.t("delete @1 @2")
         self.assertIn('Deleted @1', out)
         self.assertIn('Deleted @2', out)
