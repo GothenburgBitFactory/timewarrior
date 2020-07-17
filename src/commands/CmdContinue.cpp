@@ -53,7 +53,6 @@ int CmdContinue (
   }
 
   journal.startTransaction ();
-  flattenDatabase (database, rules);
 
   Interval to_copy;
 
