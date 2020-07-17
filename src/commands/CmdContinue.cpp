@@ -52,8 +52,6 @@ int CmdContinue (
     throw std::string ("You can only specify one ID to continue.");
   }
 
-  journal.startTransaction ();
-
   Interval to_copy;
 
   if (ids.size() == 1)
@@ -115,9 +113,9 @@ int CmdContinue (
   to_copy.start = start_time;
   to_copy.end = end_time;
 
+  journal.startTransaction ();
   validate (cli, rules, database, to_copy);
   database.addInterval (to_copy, verbose);
-
   journal.endTransaction ();
 
   if (verbose)
