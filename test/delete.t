@@ -138,7 +138,11 @@ class TestDelete(TestCase):
 
     def test_delete_interval_which_encloses_month_border(self):
         """Delete an interval which encloses a month border"""
-        self.t("track 20180831T220000 - 20180901T030000 foo")
+        now = datetime.now()
+        this_month = datetime(now.year, now.month, 1)
+        last_month = this_month - timedelta(days=1)
+
+        self.t("track {:%Y-%m-%dT12:00:00}Z - {:%Y-%m-%dT12:00:00}Z foo".format(last_month, this_month))
         self.t("delete @1")
 
         j = self.t.export()
