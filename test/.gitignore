@@ -1,6 +1,7 @@
 all.log
 AtomicFileTest
 data.t
+DatetimeParser.t
 exclusion.t
 helper.t
 interval.t
