@@ -129,16 +129,20 @@ void Datafile::deleteInterval (const Interval& interval)
   assert (interval.startsWithin (_range));
 
   if (! _lines_loaded)
+  {
     load_lines ();
+  }
 
   auto serialized = interval.serialize ();
   auto i = std::find (_lines.begin (), _lines.end (), serialized);
-  if (i != _lines.end ())
+  if (i == _lines.end ())
   {
-    _lines.erase (i);
-    _dirty = true;
-    debug (format ("{1}: Deleted {2}", _file.name (), serialized));
+    throw format ("Datafile::deleteInterval failed to find '{1}'", serialized);
   }
+
+  _lines.erase (i);
+  _dirty = true;
+  debug (format ("{1}: Deleted {2}", _file.name (), serialized));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
