@@ -36,100 +36,12 @@
 #include <test.h>
 #include <AtomicFile.h>
 #include <FS.h>
+#include <TempDir.h>
 
 #ifdef FIU_ENABLE
 
 #include <fiu.h>
 #include <fiu-control.h>
-
-#else
-
-#define fiu_init(flags) 0
-#define fiu_fail(name) 0
-#define fiu_failinfo() NULL
-#define fiu_do_on(name, action)
-#define fiu_exit_on(name)
-#define fiu_return_on(name, retval)
-
-#endif /* FIU_ENABLE */
-
-////////////////////////////////////////////////////////////////////////////////
-class TempDir
-{
-public:
-  TempDir ();
-  ~TempDir ();
-
-  bool is_empty () const;
-  void clear ();
-  std::vector <std::string> file_names () const;
-
-private:
-  std::string tmpName {};
-  std::string oldDir {};
-};
-
-////////////////////////////////////////////////////////////////////////////////
-TempDir::TempDir ()
-{
-  oldDir = Directory::cwd ();
-
-  char template_name[] = "atomic_XXXXXX";
-  const char *cwd = ::mkdtemp (template_name);
-  if (cwd == nullptr)
-  {
-    throw std::string ("Failed to create temp directory");
-  }
-
-  tmpName = cwd;
-
-  if (::chdir (tmpName.c_str ()))
-  {
-    throw std::string ("Failed to change to temporary directory");
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-TempDir::~TempDir ()
-{
-  try
-  {
-    clear ();
-    ::chdir (oldDir.c_str ());
-
-    if (!Directory(tmpName).remove ())
-    {
-      std::cerr << "Failed to remove temp dir " << tmpName << '\n';
-    }
-  }
-  catch (...)
-  {
-    std::cerr << "Unhandled exception in " << __func__ << '\n';
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-bool TempDir::is_empty () const
-{
-  return file_names().empty ();
-}
-
-////////////////////////////////////////////////////////////////////////////////
-std::vector <std::string> TempDir::file_names () const
-{
-  return Path (tmpName).glob ("*");
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void TempDir::clear ()
-{
-  for (const auto& file : file_names ())
-  {
-    File::remove (file);
-  }
-}
-
-#ifdef FIU_ENABLE
 
 // This class is a helper to make sure we turn off libfiu after the test so that
 // we can properly write to stdout / stderr.
@@ -232,6 +144,14 @@ int fiu_test (UnitTest& t)
   return 0;
 }
 #else
+
+#define fiu_init(flags) 0
+#define fiu_fail(name) 0
+#define fiu_failinfo() NULL
+#define fiu_do_on(name, action)
+#define fiu_exit_on(name)
+#define fiu_return_on(name, retval)
+
 int fiu_test (UnitTest& t)
 {
   t.skip ("AtomicFile::write_raw throws on error");
