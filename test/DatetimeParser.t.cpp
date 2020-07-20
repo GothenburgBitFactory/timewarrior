@@ -160,8 +160,6 @@ int main (int, char**)
   std::cout << "# utc midnight 2013-12-01 " << utc1 << '\n';
 
   int hms = (12 * 3600) + (34 * 60) + 56; // The time 12:34:56 in seconds.
-  int hm  = (12 * 3600) + (34 * 60);      // The time 12:34:00 in seconds.
-  int z   = 3600;                         // TZ offset.
 
   int ld = local_s > hms ? 86400 : 0;     // Local extra day if now > hms.
   int ud = utc_s   > hms ? 86400 : 0;     // UTC extra day if now > hms.
@@ -313,39 +311,17 @@ int main (int, char**)
   testParseOpenRange(t, "2013W49T1234-0100");
   testParseOpenRange(t, "2013W49T1234-01");
 
-  // Informal time.
-  int t8a   = (8 * 3600);
-  int t830a = (8 * 3600) + (30 * 60);
-  int t8p   = (20 * 3600);
-  int t830p = (20 * 3600) + (30 * 60);
-  int t12p  = (12 * 3600);
-  int t1p   = (13 * 3600);
-
-  Datetime time_now;
-  int adjust = (time_now.hour () > 10 || (time_now.hour () == 10 && time_now.minute () > 30)) ? 86400 : 0;
   testParseOpenRange(t, "10:30am");
-
-  adjust = (time_now.hour () > 8 || (time_now.hour () == 8 && time_now.minute () > 30)) ? 86400 : 0;
   testParseOpenRange(t, "8:30am");
   testParseOpenRange(t, "8:30a");
   testParseOpenRange(t, "8:30");
-
-  adjust = (time_now.hour () >= 8) ? 86400 : 0;
   testParseOpenRange(t, "8am");
   testParseOpenRange(t, "8a");
-
-  adjust = (time_now.hour () > 20 || (time_now.hour () == 20 && time_now.minute () > 30)) ? 86400 : 0;
   testParseOpenRange(t, "8:30pm");
   testParseOpenRange(t, "8:30p");
-
-  adjust = (time_now.hour () >= 20) ? 86400 : 0;
   testParseOpenRange(t, "8pm");
   testParseOpenRange(t, "8p");
-
-  adjust = (time_now.hour () >= 12) ? 86400 : 0;
   testParseOpenRange(t, "12pm");
-
-  adjust = (time_now.hour () >= 13) ? 86400 : 0;
   testParseOpenRange(t, "1pm");
 
   // Names.
