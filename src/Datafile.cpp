@@ -89,8 +89,11 @@ const std::vector <std::string>& Datafile::allLines ()
 
 ////////////////////////////////////////////////////////////////////////////////
 // Accepted intervals;   day1 <= interval.start < dayN
-void Datafile::addInterval (const Interval& interval)
+// Returns true if the interval was added to the datafile
+bool Datafile::addInterval (const Interval& interval)
 {
+  bool lineAdded = false;
+
   // Note: end date might be zero.
   assert (interval.startsWithin (_range));
 
@@ -111,15 +114,26 @@ void Datafile::addInterval (const Interval& interval)
                      serialization, test.serialize ()));
     }
 
-    _lines.push_back (serialization);
-    debug (format ("{1}: Added {2}", _file.name (), _lines.back ()));
-    _dirty = true;
+    auto it = std::find (_lines.begin (), _lines.end (), serialization);
+    if (it == _lines.end ())
+    {
+      _lines.push_back (serialization);
+      debug (format ("{1}: Added {2}", _file.name (), _lines.back ()));
+      _dirty = true;
+      lineAdded = true;
+    }
+    else
+    {
+      debug (format ("{1}: already contained {2}", _file.name (), serialization));
+    }
   }
   catch (const std::string& error)
   {
     debug (format ("Datafile::addInterval() failed.\n{1}", error));
     throw std::string ("Internal error. Failed encode / decode check.");
   }
+
+  return lineAdded;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

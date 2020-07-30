@@ -43,7 +43,7 @@ public:
   std::string lastLine ();
   const std::vector <std::string>& allLines ();
 
-  void addInterval (const Interval&);
+  bool addInterval (const Interval&);
   void deleteInterval (const Interval&);
   void commit ();
 
