@@ -24,6 +24,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <sys/types.h>
+#include <sys/wait.h>
+
 #include <commands.h>
 #include <algorithm>
 #include <iostream>
