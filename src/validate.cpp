@@ -104,11 +104,18 @@ static void autoAdjust (
   Interval latest = getLatestInterval (database);
   if (interval.is_open () && latest.encloses (interval))
   {
-    if (latest.tags () == interval.tags ())
+    if ((latest.tags () == interval.tags ()) &&
+        (interval.getAnnotation ().empty () ||
+              interval.getAnnotation () == latest.getAnnotation ()))
     {
-      // If the new interval tags match those of the currently open interval,
-      // then do nothing - the tags are already being tracked.
-      return;
+        // This is most likely a case where the user is starting tracking with
+        // tags that are currently actively being tracked. We do not want to
+        // make any changes to the database in this case, so make the new
+        // interval match the current latest interval. The Database will see
+        // that it matches an existing interval instead of adding it as a new
+        // one.
+        interval = latest;
+        return;
     }
 
     database.deleteInterval (latest);

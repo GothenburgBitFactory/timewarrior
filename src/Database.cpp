@@ -314,8 +314,10 @@ void Database::addInterval (const Interval& interval, bool verbose)
   // Get the index into _files for the appropriate Datafile, which may be
   // created on demand.
   auto df = getDatafile (interval.start.year (), interval.start.month ());
-  _files[df].addInterval (interval);
-  _journal->recordIntervalAction ("", interval.json ());
+  if (_files[df].addInterval (interval))
+  {
+    _journal->recordIntervalAction ("", interval.json ());
+  }
 }
 
 void Database::deleteInterval (const Interval& interval)

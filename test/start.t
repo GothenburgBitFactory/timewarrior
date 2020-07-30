@@ -271,6 +271,19 @@ class TestStart(TestCase):
         self.t("start 1h ago proja")
         code, out, err = self.t("start 2h ago proja :adjust")
 
+    def test_start_with_same_tags(self):
+        """Start with same tags does not start new interval."""
+        utc_now = datetime.now().utcnow()
+        one_hour_ago = utc_now - timedelta(hours=1) 
+
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z proja".format(one_hour_ago))
+        self.t("annotate 'annotation'")
+        self.t("start proja")
+        
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertOpenInterval(j[0], expectedStart=one_hour_ago, expectedAnnotation="annotation")
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
