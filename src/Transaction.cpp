@@ -41,11 +41,16 @@ std::vector<UndoAction> Transaction::getActions () const
 
 std::string Transaction::toString () const
 {
-  std::string output = "txn:\n";
+  std::string output;
 
-  for (auto& action : _actions)
+  if (! _actions.empty ())
   {
-    output += action.toString ();
+    output = "txn:\n";
+
+    for (auto& action : _actions)
+    {
+      output += action.toString ();
+    }
   }
 
   return output;
