@@ -25,14 +25,36 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <test.h>
+#include <vector>
+#include <algorithm>
 #include <Datafile.h>
 #include <Interval.h>
 
 #include <TempDir.h>
 
+bool test_datafile_stays_sorted (UnitTest& t)
+{
+  TempDir tmp; 
+
+  Datafile df {"2020-06.data"};
+
+  const std::vector <std::string>& lines = df.allLines ();
+
+  df.addInterval ({Datetime ("2020-06-02T01:00:00"), Datetime ("2020-06-02T02:00:00")});
+  t.ok (std::is_sorted (lines.begin (), lines.end ()), "Datafile stays sorted 1");
+  df.addInterval ({Datetime ("2020-06-01T01:00:00"), Datetime ("2020-06-01T02:00:00")});
+  t.ok (std::is_sorted (lines.begin (), lines.end ()), "Datafile stays sorted 2");
+  df.addInterval ({Datetime ("2020-06-04T01:00:00"), Datetime ("2020-06-04T02:00:00")});
+  t.ok (std::is_sorted (lines.begin (), lines.end ()), "Datafile stays sorted 3");
+  df.addInterval ({Datetime ("2020-06-03T01:00:00"), Datetime ("2020-06-03T02:00:00")});
+  t.ok (std::is_sorted (lines.begin (), lines.end ()), "Datafile stays sorted 4");
+
+  return true;
+}
+
 int main ()
 {
-  UnitTest t (2);
+  UnitTest t (6);
   TempDir tempDir;
 
   try
@@ -57,6 +79,9 @@ int main ()
   {
     t.fail ("Uncaught exception");
   }
+
+  test_datafile_stays_sorted (t);
+
   return 0;
 }
 

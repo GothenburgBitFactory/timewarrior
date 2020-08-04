@@ -112,17 +112,17 @@ bool Datafile::addInterval (const Interval& interval)
                      serialization, test.serialize ()));
     }
 
-    auto it = std::find (_lines.begin (), _lines.end (), serialization);
-    if (it == _lines.end ())
+    auto it = std::lower_bound (_lines.begin (), _lines.end (), serialization);
+    if ((it != _lines.end ()) && (*it == serialization))
     {
-      _lines.push_back (serialization);
-      debug (format ("{1}: Added {2}", _file.name (), _lines.back ()));
-      _dirty = true;
-      lineAdded = true;
+      debug (format ("{1}: already contained {2}", _file.name (), serialization));
     }
     else
     {
-      debug (format ("{1}: already contained {2}", _file.name (), serialization));
+      _lines.insert (it, serialization);
+      debug (format ("{1}: Added {2}", _file.name (), serialization));
+      _dirty = true;
+      lineAdded = true;
     }
   }
   catch (const std::string& error)
@@ -168,9 +168,6 @@ void Datafile::commit ()
     {
       if (file.open ())
       {
-        // Sort the intervals by ascending start time.
-        std::sort (_lines.begin (), _lines.end ());
-
         // Write out all the lines.
         file.truncate ();
         for (auto& line : _lines)
@@ -214,16 +211,15 @@ void Datafile::load_lines ()
   if (file.open ())
   {
     // Load the data.
-    std::vector <std::string> read_lines;
-    file.read (read_lines);
+    file.read (_lines);
     file.close ();
 
-    // Append the lines that were read.
-    for (auto& line : read_lines)
-      _lines.push_back (line);
+    // We need the data to be sorted, sort it on load in case other tools or
+    // the user hand modified the datafiles
+    std::sort (_lines.begin (), _lines.end ());
 
     _lines_loaded = true;
-    debug (format ("{1}: {2} intervals", file.name (), read_lines.size ()));
+    debug (format ("{1}: {2} intervals", file.name (), _lines.size ()));
   }
 }
 
