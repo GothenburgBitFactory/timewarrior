@@ -39,12 +39,13 @@
 class Database
 {
 public:
+  using datafiles_t = std::vector <Datafile>;
 
   class iterator
   {
   private:
     friend class Database;
-    typedef std::vector <Datafile>::reverse_iterator files_iterator;
+    typedef datafiles_t::reverse_iterator files_iterator;
     typedef std::vector <std::string>::const_reverse_iterator lines_iterator;
     typedef std::string value_type;
 
@@ -70,7 +71,7 @@ public:
   {
   private:
     friend class Database;
-    typedef std::vector <Datafile>::iterator files_iterator;
+    typedef datafiles_t::iterator files_iterator;
     typedef std::vector <std::string>::const_iterator lines_iterator;
     typedef std::string value_type;
 
@@ -114,14 +115,14 @@ public:
   reverse_iterator rend ();
 
 private:
-  unsigned int getDatafile (int, int);
+  unsigned int getDatafile (int, int) const;
   std::vector <Range> segmentRange (const Range&);
-  void initializeDatafiles ();
+  void initializeDatafiles () const;
   void initializeTagDatabase ();
 
 private:
   std::string               _location {"~/.timewarrior/data"};
-  std::vector <Datafile>    _files    {};
+  mutable datafiles_t       _files    {};
   TagInfoDatabase           _tagInfoDatabase {};
   Journal*                  _journal {};
 };
