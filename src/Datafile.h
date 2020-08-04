@@ -36,8 +36,7 @@
 class Datafile
 {
 public:
-  Datafile () = default;
-  void initialize (const std::string&);
+  explicit Datafile (const std::string&);
   std::string name () const;
 
   std::string lastLine ();

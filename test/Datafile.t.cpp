@@ -37,10 +37,9 @@ int main ()
 
   try
   {
-    Datafile df;
     Interval interval {Datetime ("2020-06-01T01:00:00"), Datetime ("2020-06-01T02:00:00")};
 
-    df.initialize ("2020-06.data");
+    Datafile df {"2020-06.data"};
     df.addInterval (interval);
 
     Interval modified {interval};

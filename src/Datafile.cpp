@@ -36,10 +36,8 @@
 #include <IntervalFactory.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-void Datafile::initialize (const std::string& name)
+Datafile::Datafile (const std::string& name) : _file (name)
 {
-  _file = Path (name);
-
   // From the name, which is of the form YYYY-MM.data, extract the YYYY and MM.
   auto basename = _file.name ();
   auto year  = strtol (basename.substr (0, 4).c_str (), NULL, 10);

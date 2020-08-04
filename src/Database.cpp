@@ -388,12 +388,8 @@ unsigned int Database::getDatafile (int year, int month)
     }
   }
 
-  // Create the Datafile.
-  Datafile df;
-  df.initialize (name);
-
-  // Insert Datafile into _files. The position is not important.
-  _files.push_back (df);
+  // Create and insert Datafile into _files. The position is not important.
+  _files.emplace_back (name);
   return _files.size () - 1;
 }
 
