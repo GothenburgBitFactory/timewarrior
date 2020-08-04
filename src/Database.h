@@ -43,11 +43,17 @@ public:
 
   class iterator
   {
+  public:
+    using difference_type    = ssize_t;
+    using value_type         = std::string;
+    using pointer            = value_type*;
+    using reference          = value_type&;
+    using iterator_category  = std::forward_iterator_tag;
+
   private:
     friend class Database;
     typedef datafiles_t::reverse_iterator files_iterator;
     typedef std::vector <std::string>::const_reverse_iterator lines_iterator;
-    typedef std::string value_type;
 
     files_iterator files_it;
     files_iterator files_end;
@@ -59,8 +65,6 @@ public:
 
   public:
     iterator& operator++ ();
-    iterator& operator++ (int);
-    iterator& operator-- ();
     bool operator== (const iterator & other) const;
     bool operator!= (const iterator & other) const;
     const value_type& operator* () const;
@@ -69,11 +73,17 @@ public:
 
   class reverse_iterator
   {
+  public:
+    using difference_type    = ssize_t;
+    using value_type         = std::string;
+    using pointer            = value_type*;
+    using reference          = value_type&;
+    using iterator_category  = std::forward_iterator_tag;
+
   private:
     friend class Database;
     typedef datafiles_t::iterator files_iterator;
     typedef std::vector <std::string>::const_iterator lines_iterator;
-    typedef std::string value_type;
 
     files_iterator files_it;
     files_iterator files_end;
@@ -85,8 +95,6 @@ public:
 
   public:
     reverse_iterator& operator++ ();
-    reverse_iterator& operator++ (int);
-    reverse_iterator& operator-- ();
     bool operator== (const reverse_iterator & other) const;
     bool operator!= (const reverse_iterator & other) const;
     const value_type& operator* () const;
