@@ -469,12 +469,13 @@ bool Database::empty ()
 void Database::initializeTagDatabase ()
 {
   _tagInfoDatabase = TagInfoDatabase ();
-  Path tags_path (_location + "/tags.data");
+  AtomicFile tags_file {_location + "/tags.data"};
   std::string content;
-  const bool exists = tags_path.exists ();
+  const bool exists = tags_file.exists ();
 
-  if (exists && File::read (tags_path, content))
+  if (exists)
   {
+    tags_file.read (content);
     try
     {
       std::unique_ptr <json::object> json (dynamic_cast <json::object *>(json::parse (content)));
@@ -514,7 +515,7 @@ void Database::initializeTagDatabase ()
 
   // We always want the tag database file to exists.
   _tagInfoDatabase = TagInfoDatabase();
-  AtomicFile::write (_location + "/tags.data", _tagInfoDatabase.toJson ());
+  tags_file.write_raw (_tagInfoDatabase.toJson ());
 
   auto it = Database::begin ();
   auto end = Database::end ();
