@@ -200,45 +200,24 @@ const std::string* Database::reverse_iterator::operator->() const
 ////////////////////////////////////////////////////////////////////////////////
 Database::iterator Database::begin ()
 {
-  if (_files.empty ())
-  {
-    initializeDatafiles ();
-  }
-
   return iterator (_files.rbegin (), _files.rend ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 Database::iterator Database::end ()
 {
-  if (_files.empty ())
-  {
-    initializeDatafiles ();
-  }
-
   return iterator (_files.rend (), _files.rend ());
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 Database::reverse_iterator Database::rbegin ()
 {
-  if (_files.empty ())
-  {
-    initializeDatafiles ();
-  }
-
   return reverse_iterator(_files.begin (), _files.end ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 Database::reverse_iterator Database::rend ()
 {
-  if (_files.empty ())
-  {
-    initializeDatafiles ();
-  }
-
   return reverse_iterator (_files.end (), _files.end ());
 }
 
@@ -247,6 +226,7 @@ void Database::initialize (const std::string& location, int journal_size)
 {
   _journal.initialize (location + "/undo.data", journal_size);
   _location = location;
+  initializeDatafiles ();
   initializeTagDatabase ();
 }
 
@@ -364,11 +344,6 @@ void Database::modifyInterval (const Interval& from, const Interval& to, bool ve
 ////////////////////////////////////////////////////////////////////////////////
 std::string Database::dump () const
 {
-  if (_files.empty ())
-  {
-    initializeDatafiles ();
-  }
-
   std::stringstream out;
   out << "Database\n";
   for (auto& df : _files)
