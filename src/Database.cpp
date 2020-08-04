@@ -243,10 +243,10 @@ Database::reverse_iterator Database::rend ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Database::initialize (const std::string& location, Journal& journal)
+void Database::initialize (const std::string& location, int journal_size)
 {
+  _journal.initialize (location + "/undo.data", journal_size);
   _location = location;
-  _journal = &journal;
   initializeTagDatabase ();
 }
 
@@ -262,6 +262,12 @@ void Database::commit ()
   {
     AtomicFile::write (_location + "/tags.data", _tagInfoDatabase.toJson ());
   }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Journal& Database::journal ()
+{
+  return _journal;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -314,8 +320,10 @@ void Database::addInterval (const Interval& interval, bool verbose)
   // Get the index into _files for the appropriate Datafile, which may be
   // created on demand.
   auto df = getDatafile (interval.start.year (), interval.start.month ());
-  _files[df].addInterval (interval);
-  _journal->recordIntervalAction ("", interval.json ());
+  if (_files[df].addInterval (interval))
+  {
+    _journal.recordIntervalAction ("", interval.json ());
+  }
 }
 
 void Database::deleteInterval (const Interval& interval)
@@ -332,7 +340,7 @@ void Database::deleteInterval (const Interval& interval)
   auto df = getDatafile (interval.start.year (), interval.start.month ());
 
   _files[df].deleteInterval (interval);
-  _journal->recordIntervalAction (interval.json (), "");
+  _journal.recordIntervalAction (interval.json (), "");
 }
 
 ////////////////////////////////////////////////////////////////////////////////

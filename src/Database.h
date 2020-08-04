@@ -95,8 +95,9 @@ public:
 
 public:
   Database () = default;
-  void initialize (const std::string&, Journal& journal);
+  void initialize (const std::string&, int);
   void commit ();
+  Journal& journal ();
   std::vector <std::string> files () const;
   std::set <std::string> tags () const;
 
@@ -124,7 +125,7 @@ private:
   std::string               _location {"~/.timewarrior/data"};
   mutable datafiles_t       _files    {};
   TagInfoDatabase           _tagInfoDatabase {};
-  Journal*                  _journal {};
+  Journal                   _journal {};
 };
 
 #endif

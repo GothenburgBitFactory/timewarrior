@@ -120,10 +120,9 @@ void initializeEntities (CLI& cli)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void initializeDataJournalAndRules (
+void initializeDatabaseAndRules (
   const CLI& cli,
   Database& database,
-  Journal& journal,
   Rules& rules)
 {
   // Rose tint my world, make me safe from my trouble and pain.
@@ -221,9 +220,8 @@ void initializeDataJournalAndRules (
     }
   }
 
-  journal.initialize (data._data + "/undo.data", rules.getInteger ("journal.size"));
   // Initialize the database (no data read), but files are enumerated.
-  database.initialize (data._data, journal);
+  database.initialize (data._data, rules.getInteger ("journal.size"));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -250,11 +248,12 @@ void initializeExtensions (
 int dispatchCommand (
   const CLI& cli,
   Database& database,
-  Journal& journal,
   Rules& rules,
   const Extensions& extensions)
 {
   int status {0};
+
+  Journal& journal = database.journal ();
 
   // Debug output.
   if (rules.getBoolean ("debug"))
