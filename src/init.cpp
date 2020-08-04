@@ -120,10 +120,7 @@ void initializeEntities (CLI& cli)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void initializeDatabaseAndRules (
-  const CLI& cli,
-  Database& database,
-  Rules& rules)
+void initializeRules (const CLI& cli, Rules& rules)
 {
   // Rose tint my world, make me safe from my trouble and pain.
   rules.set ("color", isatty (STDOUT_FILENO) ? "on" : "off");
@@ -179,12 +176,6 @@ void initializeDatabaseAndRules (
   if (! extensions.exists ())
     extensions.create (0700);
 
-  // Create data subdirectory if necessary.
-  Directory data (dbLocation);
-  data += "data";
-  if (! data.exists ())
-    data.create (0700);
-
   // Load the configuration data.
   Path configFile (dbLocation);
   configFile += "timewarrior.cfg";
@@ -219,9 +210,22 @@ void initializeDatabaseAndRules (
       debug (format ("Configuration override {1} = {2}", arg.attribute ("name"), arg.attribute ("value")));
     }
   }
+}
 
-  // Initialize the database (no data read), but files are enumerated.
-  database.initialize (data._data, rules.getInteger ("journal.size"));
+////////////////////////////////////////////////////////////////////////////////
+Database createDatabase (Rules& rules)
+{
+  const std::string& dbLocation = rules.get ("temp.db");
+
+  // Create data subdirectory if necessary.
+  Directory data (dbLocation);
+  data += "data";
+  if (! data.exists ())
+  {
+    data.create (0700);
+  }
+
+  return Database {data._data, rules.getInteger ("journal.size")};
 }
 
 ////////////////////////////////////////////////////////////////////////////////

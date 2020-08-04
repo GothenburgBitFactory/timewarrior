@@ -81,9 +81,9 @@ int main (int argc, const char** argv)
     cli.analyze ();
 
     // Prepare the database, but do not read data.
-    Database database;
     Rules rules;
-    initializeDatabaseAndRules (cli, database, rules);
+    initializeRules (cli, rules);
+    Database database = createDatabase (rules);
 
     // Load extension script info.
     // Re-analyze command because of the new extension entities.
