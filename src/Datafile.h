@@ -38,6 +38,7 @@ class Datafile
 public:
   explicit Datafile (const std::string&);
   std::string name () const;
+  const Range& range () const;
 
   std::string lastLine ();
   const std::vector <std::string>& allLines ();

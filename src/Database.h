@@ -124,7 +124,6 @@ public:
   reverse_iterator rend ();
 
 private:
-  unsigned int getDatafile (int, int) const;
   std::vector <Range> segmentRange (const Range&);
   void initializeDatafiles () const;
   void initializeTagDatabase ();
