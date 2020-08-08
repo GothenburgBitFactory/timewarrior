@@ -83,7 +83,7 @@ int CmdModify (
   }
 
   assert (intervals.size () == 1);
-  if (filter.start.toEpoch () == 0)
+  if (! filter.is_started ())
   {
     throw std::string ("No updated time specified. See 'timew help modify'.");
   }

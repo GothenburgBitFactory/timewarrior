@@ -73,7 +73,7 @@ int CmdStop (
 
   // If a stop date is specified (and occupies filter.start) then use
   // that instead of the current time.
-  if (filter.start.toEpoch () != 0)
+  if (filter.is_started ())
   {
     if (modified.start >= filter.start)
     {

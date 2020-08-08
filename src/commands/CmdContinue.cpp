@@ -98,7 +98,7 @@ int CmdContinue (
   Datetime start_time;
   Datetime end_time;
 
-  if (filter.start.toEpoch () != 0)
+  if (filter.is_started ())
   {
     start_time = filter.start;
     end_time = filter.end;
