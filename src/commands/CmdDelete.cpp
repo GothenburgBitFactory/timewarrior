@@ -36,7 +36,7 @@ int CmdDelete (
   Database& database,
   Journal& journal)
 {
-  auto verbose = rules.getBoolean ("verbose");
+  const bool verbose = rules.getBoolean ("verbose");
 
   // Gather IDs.
   std::set <int> ids = cli.getIds ();

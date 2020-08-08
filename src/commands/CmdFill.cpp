@@ -37,7 +37,7 @@ int CmdFill (
   Database& database,
   Journal& journal)
 {
-  auto verbose = rules.getBoolean ("verbose");
+  const bool verbose = rules.getBoolean ("verbose");
 
   std::set <int> ids = cli.getIds ();
 

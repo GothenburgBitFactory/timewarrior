@@ -42,7 +42,7 @@ int CmdSummary (
   Rules& rules,
   Database& database)
 {
-  auto verbose = rules.getBoolean ("verbose");
+  const bool verbose = rules.getBoolean ("verbose");
 
   // Create a filter, and if empty, choose 'today'.
   auto filter = cli.getFilter (Range { Datetime ("today"), Datetime ("tomorrow") });

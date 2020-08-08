@@ -37,7 +37,7 @@ int CmdModify (
   Database& database,
   Journal& journal)
 {
-  bool verbose = rules.getBoolean ("verbose");
+  const bool verbose = rules.getBoolean ("verbose");
 
   auto filter = cli.getFilter ();
   std::set <int> ids = cli.getIds ();

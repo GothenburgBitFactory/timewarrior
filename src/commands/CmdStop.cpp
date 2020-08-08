@@ -47,7 +47,7 @@ int CmdStop (
   Database& database,
   Journal& journal)
 {
-  auto verbose = rules.getBoolean ("verbose");
+  const bool verbose = rules.getBoolean ("verbose");
 
   // Load the most recent interval.
   auto filter = cli.getFilter ();

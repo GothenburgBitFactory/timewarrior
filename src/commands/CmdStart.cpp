@@ -35,7 +35,7 @@ int CmdStart (
   Database& database,
   Journal& journal)
 {
-  auto verbose = rules.getBoolean ("verbose");
+  const bool verbose = rules.getBoolean ("verbose");
   const Datetime now {};
 
   auto interval = cli.getFilter ({now, 0});

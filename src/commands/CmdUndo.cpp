@@ -62,7 +62,7 @@ static void undoConfigAction (UndoAction& action, Rules &rules, Journal& journal
 ////////////////////////////////////////////////////////////////////////////////
 int CmdUndo (Rules& rules, Database& database, Journal& journal)
 {
-  auto verbose = rules.getBoolean ("verbose");
+  const bool verbose = rules.getBoolean ("verbose");
 
   Transaction transaction = journal.popLastTransaction ();
 

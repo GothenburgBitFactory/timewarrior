@@ -38,7 +38,7 @@ int CmdTags (
   Rules& rules,
   Database& database)
 {
-  auto verbose = rules.getBoolean ("verbose");
+  const bool verbose = rules.getBoolean ("verbose");
 
   // Create a filter, with no default range.
   auto filter = cli.getFilter ();

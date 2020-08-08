@@ -37,7 +37,7 @@ int CmdGaps (
   Rules& rules,
   Database& database)
 {
-  auto verbose = rules.getBoolean ("verbose");
+  const bool verbose = rules.getBoolean ("verbose");
 
   // If filter is empty, choose 'today'.
   auto filter = cli.getFilter ();

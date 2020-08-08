@@ -34,7 +34,7 @@ int CmdCancel (
   Database& database,
   Journal& journal)
 {
-  auto verbose = rules.getBoolean ("verbose");
+  const bool verbose = rules.getBoolean ("verbose");
 
   // If there is an open interval, cancel it by deleting it..
   auto latest = getLatestInterval (database);

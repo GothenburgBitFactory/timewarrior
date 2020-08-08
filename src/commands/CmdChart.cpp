@@ -92,7 +92,7 @@ int renderChart (
   Rules& rules,
   Database& database)
 {
-  auto verbose = rules.getBoolean ("verbose");
+  const bool verbose = rules.getBoolean ("verbose");
 
   // Load the data.
   const auto tracked = getTracked (database, rules, filter);

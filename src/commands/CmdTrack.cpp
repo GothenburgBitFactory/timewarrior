@@ -35,7 +35,7 @@ int CmdTrack (
   Database& database,
   Journal& journal)
 {
-  auto boolean = rules.getBoolean ("verbose");
+  const bool verbose = rules.getBoolean ("verbose");
 
   auto filter = cli.getFilter ();
 
@@ -52,9 +52,9 @@ int CmdTrack (
 
   for (auto& interval : flatten (filter, getAllExclusions (rules, filter)))
   {
-    database.addInterval (interval, boolean);
+    database.addInterval (interval, verbose);
 
-    if (boolean)
+    if (verbose)
       std::cout << intervalSummarize (database, rules, interval);
   }
 

@@ -56,7 +56,7 @@ int CmdConfig (
     return CmdShow (rules);
   }
 
-  auto verbose = rules.getBoolean ("verbose");
+  const bool verbose = rules.getBoolean ("verbose");
 
   bool confirmation = rules.getBoolean ("confirmation");
   std::string name = words[0];
