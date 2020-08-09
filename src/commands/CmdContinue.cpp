@@ -54,7 +54,7 @@ int CmdContinue (
 
   Interval to_copy;
 
-  if (ids.size() == 1)
+  if (ids.size () == 1)
   {
     auto intervals = getIntervalsByIds (database, rules, ids);
 

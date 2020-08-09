@@ -113,8 +113,8 @@ int CmdModify (
   journal.startTransaction ();
 
   database.deleteInterval (interval);
-  validate(cli, rules, database, modified);
-  database.addInterval(modified, verbose);
+  validate (cli, rules, database, modified);
+  database.addInterval (modified, verbose);
 
   journal.endTransaction();
 
