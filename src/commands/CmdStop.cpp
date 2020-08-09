@@ -96,7 +96,9 @@ int CmdStop (
     database.addInterval (interval, verbose);
 
     if (verbose)
+    {
       std::cout << intervalSummarize (database, rules, interval);
+    }
   }
 
   // If tags are specified, but are not a full set of tags, remove them
@@ -105,10 +107,16 @@ int CmdStop (
       setIntersect (filter.tags (), latest.tags ()).size () != latest.tags ().size ())
   {
     for (auto& tag : filter.tags ())
+    {
       if (modified.hasTag (tag))
+      {
         modified.untag (tag);
+      }
       else
+      {
         throw format ("The current interval does not have the '{1}' tag.", tag);
+      }
+    }
   }
 
   // Open a new interval with remaining tags, if any.
@@ -120,7 +128,9 @@ int CmdStop (
     validate (cli, rules, database, modified);
     database.addInterval (modified, verbose);
     if (verbose)
+    {
       std::cout << '\n' << intervalSummarize (database, rules, modified);
+    }
   }
 
   journal.endTransaction ();

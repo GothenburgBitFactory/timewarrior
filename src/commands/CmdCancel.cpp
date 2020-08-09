@@ -52,7 +52,9 @@ int CmdCancel (
   journal.endTransaction ();
 
   if (verbose)
+  {
     std::cout << "Canceled active time tracking.\n";
+  }
 
   return 0;
 }

@@ -42,7 +42,9 @@ int CmdFill (
   std::set <int> ids = cli.getIds ();
 
   if (ids.empty ())
+  {
     throw std::string ("IDs must be specified. See 'timew help fill'.");
+  }
 
   // Load the data.
   // Note: There is no filter.
