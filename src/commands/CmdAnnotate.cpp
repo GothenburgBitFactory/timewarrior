@@ -67,7 +67,7 @@ int CmdAnnotate (
     intervals = getIntervalsByIds (database, rules, ids);
   }
 
-  // Apply annotations to intervals.
+  // Apply annotation to intervals.
   for (const auto& interval : intervals)
   {
     Interval modified {interval};

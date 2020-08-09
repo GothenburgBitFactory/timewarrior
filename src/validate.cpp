@@ -64,7 +64,7 @@ void autoFill (
     }
   }
 
-// If the interval is closed, scan forwards for the next boundary.
+  // If the interval is closed, scan forwards for the next boundary.
   if (! interval.is_open ())
   {
     for (auto& later : tracked)
