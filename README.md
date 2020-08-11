@@ -7,6 +7,8 @@ Thank you for taking a look at Timewarrior!
 Timewarrior is a time tracking utility that offers simple stopwatch features as well as sophisticated calendar-based backfill, along with flexible reporting.
 It is a portable, well supported and very active Open Source project.
 
+Please visit [timewarrior.net](https://timewarrior.net/docs/) for extensive documentation, downloads, news and more.
+
 ## Installing
 
 ### From Package
@@ -25,19 +27,19 @@ Building Timewarrior yourself requires
 
 There are two ways to retrieve the Timewarrior sources:
 
-* Clone the repository from Github,
+* Clone the repository from GitHub,
 
-      git clone --recurse-submodules https://github.com/GothenburgBitFactory/timewarrior
-      cd timewarrior
+    git clone --recurse-submodules https://github.com/GothenburgBitFactory/timewarrior
+    cd timewarrior
 
 * Or download the tarball with curl,
 
-      curl -O https://taskwarrior.org/download/timew-1.1.1.tar.gz
+    curl -O https://taskwarrior.org/download/timew-1.1.1.tar.gz
 
   and expand the tarball
 
-      tar xzf timew-1.1.1.tar.gz
-      cd timew-1.1.1
+    tar xzf timew-1.1.1.tar.gz
+    cd timew-1.1.1
 
 Build Timewarrior, optionally run the test suite (note: the tarball does not contain tests), and install it.
 
@@ -51,21 +53,14 @@ This copies files into the right place (default under `/usr/local`), and install
 Add the optional parameter `-DCMAKE_INSTALL_PREFIX=/path/to/your/install/location` to the `cmake` command if you want to install Timewarrior at a location other than `/usr/local`.
 The `make install` command may not require `sudo` depending on your choice of install location.
 
-## Documentation
-
-There is extensive online documentation.
-You'll find all the details at [timewarrior.net/docs/](https://timewarrior.net/docs/).
-
-There you will find the documentation, downloads, news and more.
-
 ## Contributing
 
-Your contributions are especially welcome.
-Whether it comes in the form of code patches, ideas, discussion, bug reports, encouragement or criticism, your input is needed.
+Contributions are greatly appreciated.
+Whether in the form of code patches, ideas, discussion, bug reports, encouragement or criticism, we need you!
 
 For support options, take a look at [CONTRIBUTING.md](CONTRIBUTING.md) or visit [taskwarrior.org](https://taskwarrior.org/support).
 
-Visit [Github](https://github.com/GothenburgBitFactory/timewarrior) and participate in the future of Timewarrior.
+Visit [GitHub](https://github.com/GothenburgBitFactory/timewarrior) and participate in the future of Timewarrior.
 
 ## License
 
