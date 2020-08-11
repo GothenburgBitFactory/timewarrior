@@ -18,19 +18,19 @@ If you are looking for a tutorial, check the online documentation here:
 .br
   https://timewarrior.net/docs/
 .br
-When run without arguments or options, the default command is run, which indicates whether there is any active tracking, and if so, shows a summary, then exits with a code 0.
+When run without arguments or options, the default command is run, which indicates whether there is any active tracking, and if so, shows a summar and exits with code 0.
 If there is no active time tracking, exit code is 1.
 .
 .SH OPTIONS
 .TP
 .B \-\-version
 .RS
-Displays TimeWarrior version information
+Display Timewarrior version information
 .RE
 .TP
 .B \-\-help
 .RS
-Display TimeWarrior usage information
+Display Timewarrior usage information
 .RE
 .
 .SH "TIMEWARRIOR COMMANDS"
@@ -190,13 +190,13 @@ Display week chart
 .
 .SH "MORE EXAMPLES"
 .
-For examples please see the online documentation starting at:
+For examples please see the online documentation at:
 .
 .RS
 <https://timewarrior.net/docs/>
 .RE
 .
-Note that the online documentation can be more detailed and more current than this man page.
+Note that the online documentation is often more detailed and more current than this man page.
 .
 .SH FILES
 .
