@@ -14,19 +14,21 @@ It allows you to easily track your time and generate summary reports.
 
 This is a reference, not a tutorial.
 If you are looking for a tutorial, check the online documentation here:
+[source]
+----
+https://timewarrior.net/docs/
+----
 
-    https://timewarrior.net/docs/
-
-When run without arguments or options, the default command is run, which indicates whether there is any active tracking, and if so, shows a summary, then exits with a code 0.
+When run without arguments or options, the default command is run, which indicates whether there is any active tracking, and if so, shows a summary and exits with code 0.
 If there is no active time tracking, exit code is 1.
 
 == OPTIONS
 
 *--version*::
-Displays Timewarrior version information
+Display Timewarrior version information
 
 *--help*::
-Displays Timewarrior usage information
+Display Timewarrior usage information
 
 == Timewarrior commands
 Timewarrior supports many commands.
@@ -124,11 +126,11 @@ Alphabetically:
 
 == MORE EXAMPLES
 
-For examples please see the online documentation starting at:
+For examples please see the online documentation at:
 
 <https://timewarrior.net/docs/>
 
-Note that the online documentation can be more detailed and more current than this man page
+Note that the online documentation is often more detailed and more current than this man page.
 
 == FILES
 
@@ -169,4 +171,4 @@ Bugs in Timewarrior may be reported to the issue-tracker at <https://github.com/
 **timew-dom**(7),
 **timew-durations**(7),
 **timew-hints**(7),
-**timew-range**(7)
+**timew-ranges**(7)
