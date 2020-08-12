@@ -38,6 +38,11 @@ class Rules
 {
 public:
   Rules ();
+  Rules (const Rules&) = delete;
+  Rules (Rules&&) = default;
+  Rules& operator= (const Rules&) = delete;
+  Rules& operator= (Rules&&) = default;
+
   void load (const std::string&, int next = 1);
   std::string file () const;
 

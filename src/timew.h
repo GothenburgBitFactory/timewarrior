@@ -64,9 +64,9 @@ bool validate (const CLI& cli, const Rules& rules, Database&, Interval&);
 // init.cpp
 bool lightweightVersionCheck (int, const char**);
 void initializeEntities (CLI&);
-void initializeRules (const CLI&, Rules&);
+Rules createRules (const CLI&);
 Database createDatabase (Rules&);
-void initializeExtensions (CLI&, const Rules&, Extensions&);
+Extensions createExtensions (CLI&, const Rules&);
 int dispatchCommand (const CLI&, Database&, Rules&, const Extensions&);
 
 // helper.cpp

@@ -120,8 +120,9 @@ void initializeEntities (CLI& cli)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void initializeRules (const CLI& cli, Rules& rules)
+Rules createRules (const CLI& cli)
 {
+  Rules rules;
   // Rose tint my world, make me safe from my trouble and pain.
   rules.set ("color", isatty (STDOUT_FILENO) ? "on" : "off");
 
@@ -210,6 +211,8 @@ void initializeRules (const CLI& cli, Rules& rules)
       debug (format ("Configuration override {1} = {2}", arg.attribute ("name"), arg.attribute ("value")));
     }
   }
+
+  return rules;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -229,23 +232,30 @@ Database createDatabase (Rules& rules)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void initializeExtensions (
-  CLI& cli,
-  const Rules& rules,
-  Extensions& extensions)
+Extensions createExtensions (CLI& cli, const Rules& rules)
 {
+
   Directory extDir (rules.get ("temp.db"));
   extDir += "extensions";
 
-  extensions.initialize (extDir._data);
+  Extensions extensions {extDir._data};
 
   // Add extensions as CLI entities.
-  for (auto& ext : extensions.all ())
-    cli.entity ("extension", File (ext).name ());
+  for (const auto& ext : extensions.all ())
+  {
+    cli.entity ("extension", Path (ext).name ());
+  }
+
+  // Re-analyze command because of the new extension entities.
+  cli.analyze ();
 
   // Extensions have a debug mode.
   if (rules.getBoolean ("debug"))
+  {
     extensions.debug ();
+  }
+
+  return extensions;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
