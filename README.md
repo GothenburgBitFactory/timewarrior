@@ -11,7 +11,7 @@ It is a portable, well supported and very active Open Source project.
 
 ### From Package
 
-Thanks to the community, there are binary packages available [here](https://timewarrior.net/docs/download.html#distributions).
+Thanks to the community, there are binary packages available [here](https://timewarrior.net/docs/install.html#distributions).
 
 ### Building Timewarrior
 
