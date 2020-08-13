@@ -211,7 +211,12 @@ bool validate (
     autoFill (rules, database, interval);
   }
 
-  return autoAdjust (findHint (cli, ":adjust"), rules, database, interval);
+  bool should_add = autoAdjust (findHint (cli, ":adjust"), rules, database, interval);
+  if (should_add && (interval.is_open () && interval.start > Datetime ()))
+  {
+    throw std::string ("Time tracking cannot be set in the future.");
+  }
+  return should_add;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
