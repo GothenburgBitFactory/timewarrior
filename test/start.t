@@ -131,11 +131,17 @@ class TestStart(TestCase):
 
     def test_start_with_same_tags_as_current_tracking(self):
         """Test 'start' with same tags as current tracking should not start new tracking"""
-        self.t("start 1h ago bar foo")
+        utc_now = datetime.now().utcnow()
+        one_hour_ago_utc = utc_now - timedelta(hours=1)
 
-        code, out, err = self.t("start foo bar")
+        self.t("start {:%Y-%m-%dT%H:%M:%S}Z bar foo".format(one_hour_ago_utc))
 
-        self.assertNotIn("Recorded bar foo", out)
+        self.t("start foo bar")
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertOpenInterval(j[0], expectedStart=one_hour_ago_utc, expectedTags=["foo", "bar"])
 
     def test_single_interval_enclosing_exclusion(self):
         """Add one interval that encloses an exclusion, and is therefore flattened"""

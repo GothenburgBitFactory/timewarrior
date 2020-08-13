@@ -59,7 +59,7 @@ Range                   getFullDay        (const Datetime&);
 
 // validate.cpp
 void autoFill (const Rules&, Database&, Interval&);
-void validate (const CLI& cli, const Rules& rules, Database&, Interval&);
+bool validate (const CLI& cli, const Rules& rules, Database&, Interval&);
 
 // init.cpp
 bool lightweightVersionCheck (int, const char**);

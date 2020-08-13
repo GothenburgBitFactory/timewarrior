@@ -91,7 +91,7 @@ void autoFill (
 //   can involve rejection, adjustment of modified interval, or adjustment of
 //   recorded data.
 //
-static void autoAdjust (
+static bool autoAdjust (
   bool adjust,
   const Rules& rules,
   Database& database,
@@ -108,7 +108,7 @@ static void autoAdjust (
     {
       // If the new interval tags match those of the currently open interval,
       // then do nothing - the tags are already being tracked.
-      return;
+      return false;
     }
 
     database.deleteInterval (latest);
@@ -128,7 +128,7 @@ static void autoAdjust (
 
   if (overlaps.empty ())
   {
-    return;
+    return true;
   }
 
   debug ("Input         " + interval.dump ());
@@ -195,10 +195,11 @@ static void autoAdjust (
       }
     }
   }
+  return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void validate (
+bool validate (
   const CLI& cli,
   const Rules& rules,
   Database& database,
@@ -210,7 +211,7 @@ void validate (
     autoFill (rules, database, interval);
   }
 
-  autoAdjust (findHint (cli, ":adjust"), rules, database, interval);
+  return autoAdjust (findHint (cli, ":adjust"), rules, database, interval);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

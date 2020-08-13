@@ -51,10 +51,11 @@ int CmdStart (
   }
 
   journal.startTransaction ();
-  validate (cli, rules, database, interval);
-  database.addInterval (interval, verbose);
-  journal.endTransaction ();
-
+  if (validate (cli, rules, database, interval))
+  {
+    database.addInterval (interval, verbose);
+    journal.endTransaction ();
+  }
   if (verbose)
   {
     std::cout << intervalSummarize (database, rules, interval);

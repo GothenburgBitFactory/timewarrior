@@ -114,10 +114,11 @@ int CmdContinue (
   to_copy.end = end_time;
 
   journal.startTransaction ();
-  validate (cli, rules, database, to_copy);
-  database.addInterval (to_copy, verbose);
-  journal.endTransaction ();
-
+  if (validate (cli, rules, database, to_copy))
+  {
+    database.addInterval (to_copy, verbose);
+    journal.endTransaction ();
+  }
   if (verbose)
   {
     std::cout << intervalSummarize (database, rules, to_copy);
