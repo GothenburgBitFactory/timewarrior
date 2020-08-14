@@ -109,7 +109,11 @@ int CmdReport (
 
   // Run the extensions.
   std::vector <std::string> output;
-  extensions.callExtension (script, split (input, '\n'), output);
+  int rc = extensions.callExtension (script, split (input, '\n'), output);
+  if (rc != 0 && output.size () == 0)
+  {
+    throw format ("'{1}' returned {2} without producing output.", script, rc);
+  }
 
   // Display the output.
   for (auto& line : output)
