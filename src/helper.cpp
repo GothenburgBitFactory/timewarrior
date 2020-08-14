@@ -72,35 +72,13 @@ Color tagColor (const Rules& rules, const std::string& tag)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Summarize either an active or closed interval, for user feedback.
-std::string intervalSummarize (
-  Database& database,
-  const Rules& rules,
-  const Interval& interval)
+std::string intervalSummarize (const Rules& rules, const Interval& interval)
 {
   std::stringstream out;
 
   if (interval.is_started ())
   {
-    // Walk backwards through the inclusions, and stop as soon as the tags
-    // no longer match interval. This means the 'total' is the sum of all time
-    // in the most recent set of intervals for the same tags. This is the
-    // acceptable definition of "the current task".
-    time_t total_recorded = 0;
-
-    for (auto& line : database)
-    {
-      Interval current = IntervalFactory::fromSerialization (line);
-      if (interval.tags () == current.tags ())
-      {
-        total_recorded += current.total ();
-      }
-      else
-      {
-        break;
-      }
-    }
-
-    Duration total (total_recorded);
+    Duration total (interval.total ());
 
     // Combine and colorize tags.
     std::string tags;

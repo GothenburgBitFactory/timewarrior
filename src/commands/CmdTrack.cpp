@@ -55,7 +55,7 @@ int CmdTrack (
     database.addInterval (interval, verbose);
 
     if (verbose)
-      std::cout << intervalSummarize (database, rules, interval);
+      std::cout << intervalSummarize (rules, interval);
   }
 
   journal.endTransaction ();
