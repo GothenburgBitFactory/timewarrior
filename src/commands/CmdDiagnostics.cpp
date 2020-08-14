@@ -37,26 +37,41 @@
 ////////////////////////////////////////////////////////////////////////////////
 std::string describeFile (File& file)
 {
-  std::stringstream out;
-  out << file._data
+  try
+  {
+    std::stringstream out;
+    out << file._data
       << " ("
       << (file.is_link ()
-            ? 'l'
-            : (file.is_directory ()
-                 ? 'd'
-                 : '-'))
+          ? 'l'
+          : (file.is_directory ()
+            ? 'd'
+            : '-'))
       << (file.readable ()
-            ? 'r'
-            : '-')
+          ? 'r'
+          : '-')
       << (file.writable ()
-            ? 'w'
-            : '-')
+          ? 'w'
+          : '-')
       << (file.executable ()
-            ? 'x'
-            : '-')
+          ? 'x'
+          : '-')
       << " " << file.size () << " bytes)";
 
-  return out.str ();
+    return out.str ();
+  }
+  catch (const std::string& error)
+  {
+    return file._data + " (" + error + ')';
+  }
+  catch (const std::exception& error)
+  {
+    return file._data + " (" + error.what () + ')';
+  }
+  catch (...)
+  {
+    return file._data + " (Unknown error)";
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
