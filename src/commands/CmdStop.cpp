@@ -110,7 +110,7 @@ int CmdStop (
 
       if (verbose)
       {
-        std::cout << intervalSummarize (database, rules, interval);
+        std::cout << intervalSummarize (rules, interval);
       }
     }
   }
@@ -127,7 +127,7 @@ int CmdStop (
 
     if (verbose)
     {
-      std::cout << '\n' << intervalSummarize (database, rules, next);
+      std::cout << '\n' << intervalSummarize (rules, next);
     }
   }
 

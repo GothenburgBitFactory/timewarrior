@@ -65,7 +65,7 @@ int CmdStart (
   }
   if (verbose)
   {
-    std::cout << intervalSummarize (database, rules, interval);
+    std::cout << intervalSummarize (rules, interval);
   }
 
   return 0;

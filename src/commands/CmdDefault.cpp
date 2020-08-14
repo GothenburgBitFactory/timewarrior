@@ -41,7 +41,7 @@ int CmdDefault (Rules& rules, Database& database)
   {
     if (verbose)
     {
-      std::cout << intervalSummarize (database, rules, interval);
+      std::cout << intervalSummarize (rules, interval);
     }
 
     return 0;
