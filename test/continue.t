@@ -516,7 +516,7 @@ class TestContinue(TestCase):
         code, out, err = self.t("stop")
         self.assertIn("Recorded BAR\n", out)
 
-        code, out, err = self.t.runError("continue @2 from {:%Y-%m-%dT%H:%M:%S}".format (now_utc + timedelta(seconds=10)))
+        code, out, err = self.t.runError("continue @2 from {:%Y-%m-%dT%H:%M:%S}Z".format (now_utc + timedelta(seconds=10)))
         self.assertIn("Time tracking cannot be set in the future", err)
 
 
