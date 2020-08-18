@@ -311,6 +311,11 @@ std::vector <Interval> flatten (
   Datetime now;
   for (auto& result : subtractRanges ({interval}, enclosed))
   {
+    if (interval.is_open() && result.start > now)
+    {
+      break;
+    }
+
     Interval chunk {interval};
     chunk.setRange (result);
 
