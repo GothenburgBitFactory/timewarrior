@@ -42,6 +42,7 @@ int CmdSummary (
   Rules& rules,
   Database& database)
 {
+  const Datetime now {};
   const bool verbose = rules.getBoolean ("verbose");
 
   // Create a filter, and if empty, choose 'today'.
@@ -130,8 +131,10 @@ int CmdSummary (
     for (auto& track : subset (day_range, tracked))
     {
       // Make sure the track only represents one day.
-      if ((track.is_open () && day > Datetime ()))
+      if (track.is_open () && day > now)
+      {
         continue;
+      }
 
       row = table.addRow ();
 
@@ -145,8 +148,10 @@ int CmdSummary (
 
       // Intersect track with day.
       auto today = day_range.intersect (track);
-      if (track.is_open () && day <= Datetime () && today.end > Datetime ())
-        today.end = Datetime ();
+      if (track.is_open () && day <= now && today.end > now)
+      {
+        today.end = (today.start > now) ? today.start : now;
+      }
 
       std::string tags = join(", ", track.tags());
 
