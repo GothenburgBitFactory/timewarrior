@@ -76,6 +76,18 @@ int CmdStop (
     throw std::string ("The end of a date range must be after the start.");
   }
 
+  std::set <std::string> diff = {};
+
+  if(! std::includes(latest.tags ().begin (), latest.tags ().end (),
+                     filter.tags ().begin (), filter.tags ().end ()))
+  {
+    std::set_difference(filter.tags ().begin (), filter.tags ().end (),
+                        latest.tags ().begin (), latest.tags ().end (),
+                        std::inserter(diff, diff.begin ()));
+
+    throw format ("The current interval does not have the '{1}' tag.", *diff.begin ());
+  }
+
   journal.startTransaction ();
 
   Interval modified {latest};
