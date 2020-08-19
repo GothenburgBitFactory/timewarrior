@@ -58,8 +58,8 @@ class TestStop(TestCase):
                                   expectedStart=one_hour_before_utc,
                                   expectedEnd=now_utc)
 
-    def test_invalid_stop(self):
-        """Verify stop date after start date is an error"""
+    def test_stop_with_end_before_start_is_an_error(self):
+        """Verify stop date before start date is an error"""
         now_utc = datetime.now().utcnow()
         one_hour_before_utc = now_utc - timedelta(hours=1)
 
@@ -68,6 +68,11 @@ class TestStop(TestCase):
         code, out, err = self.t.runError("stop {:%Y-%m-%dT%H:%M:%S}Z".format(one_hour_before_utc))
 
         self.assertIn("The end of a date range must be after the start.", err)
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertOpenInterval(j[0], expectedTags=[])
 
     def test_stop_all(self):
         """Start three tags, stop"""
@@ -116,6 +121,37 @@ class TestStop(TestCase):
         code, out, err = self.t.runError("stop four")
 
         self.assertIn("The current interval does not have the 'four' tag.", err)
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertOpenInterval(j[0], expectedTags=["one", "two", "three"])
+
+    def test_stop_non_existing_tag(self):
+        """Start empty, stop with tag"""
+        self.t("start 5mins ago ")
+
+        code, out, err = self.t.runError("stop bogus")
+
+        self.assertIn("The current interval does not have the 'bogus' tag.", err)
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertOpenInterval(j[0], expectedTags=[])
+
+    def test_stop_with_all_hint_is_an_error(self):
+        """Verify stop with :all hint is an error"""
+        self.t("start 5mins ago FOO ")
+
+        code, out, err = self.t.runError("stop :all")
+
+        self.assertIn("No datetime specified.", err)
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertOpenInterval(j[0], expectedTags=["FOO"])
 
     def test_single_interval_enclosing_exclusion(self):
         """Add one interval that encloses an exclusion, and is therefore flattened"""
