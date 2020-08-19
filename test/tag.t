@@ -27,10 +27,9 @@
 ###############################################################################
 
 import os
+import sys
 import unittest
 from datetime import datetime, timedelta
-
-import sys
 
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -250,14 +249,14 @@ class TestTag(TestCase):
 
     def test_tag_with_percent_sign(self):
         """Call 'tag' with an embedded percent sign"""
-        code, out, err = self.t("start 'ta%g'")
+        code, out, err = self.t("start 1h ago 'ta%g'")
         self.assertIn("Note: '\"ta%g\"' is a new tag", out)
         self.t("stop")
         self.t("delete @1")
 
     def test_tag_with_double_quote(self):
         """Call 'tag' with an embedded double quote sign"""
-        code, out, err = self.t("start 'this is a \"test\"'")
+        code, out, err = self.t("start 1h ago 'this is a \"test\"'")
         self.assertIn("Note: '\"this is a \\\"test\\\"\"' is a new tag", out)
         self.t("stop")
         self.t("delete @1")

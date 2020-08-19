@@ -30,8 +30,6 @@ import os
 import sys
 import unittest
 
-from time import sleep
-
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -66,7 +64,7 @@ class TestClock(TestCase):
         code, out, err = self.t.runError("")
         self.assertIn("There is no active time tracking.", out)
 
-        code, out, err = self.t("start tag1 tag2")
+        code, out, err = self.t("start 1h ago tag1 tag2")
         self.assertIn("Tracking tag1 tag2\n", out)
 
         code, out, err = self.t("stop")
