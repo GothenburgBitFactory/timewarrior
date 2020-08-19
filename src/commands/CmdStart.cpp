@@ -38,7 +38,7 @@ int CmdStart (
   const bool verbose = rules.getBoolean ("verbose");
   const Datetime now {};
 
-  auto interval = cli.getFilter ({now, 0});
+  auto interval = cli.getFilter ({ now, 0 });
 
   if (interval.start > now)
   {
