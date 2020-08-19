@@ -48,9 +48,10 @@ int CmdStop (
   Journal& journal)
 {
   const bool verbose = rules.getBoolean ("verbose");
+  const Datetime now {};
 
+  auto filter = cli.getFilter ({ now, 0 });
   // Load the most recent interval.
-  auto filter = cli.getFilter ();
   auto latest = getLatestInterval (database);
 
   // Verify the interval is open.
@@ -64,6 +65,15 @@ int CmdStop (
   {
     throw std::string ("The stop command does not accept ids as it works on the most recent open interval only. "
                        "Perhaps you want the modify command?.");
+  }
+
+  if (! filter.is_started())
+  {
+    throw std::string ("No datetime specified.");
+  }
+  else if (filter.start <= latest.start)
+  {
+    throw std::string ("The end of a date range must be after the start.");
   }
 
   journal.startTransaction ();
