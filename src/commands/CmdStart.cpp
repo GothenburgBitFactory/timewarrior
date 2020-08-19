@@ -47,7 +47,7 @@ int CmdStart (
   else if (!interval.is_started () || interval.is_ended ())
   {
     throw std::string ("The start command does not accept ranges but only a single datetime. "
-                       "Perhaps you want the track command?.");
+                       "Perhaps you want the track command?");
   }
 
   // We expect no ids
