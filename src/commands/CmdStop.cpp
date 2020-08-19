@@ -52,7 +52,6 @@ int CmdStop (
   // Load the most recent interval.
   auto filter = cli.getFilter ();
   auto latest = getLatestInterval (database);
-  std::set <int> ids = cli.getIds ();
 
   // Verify the interval is open.
   if (! latest.is_open ())
@@ -61,7 +60,7 @@ int CmdStop (
   }
 
   // We expect no ids
-  if (! ids.empty ())
+  if (! cli.getIds ().empty ())
   {
     throw std::string ("The stop command does not accept ids as it works on the most recent open interval only. "
                        "Perhaps you want the modify command?.");
