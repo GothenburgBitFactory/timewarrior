@@ -50,6 +50,13 @@ int CmdStart (
                        "Perhaps you want the track command?.");
   }
 
+  // We expect no ids
+  if (! cli.getIds ().empty ())
+  {
+    throw std::string ("The start command does not accept ids. "
+                       "Perhaps you want the continue command?");
+  }
+
   journal.startTransaction ();
   if (validate (cli, rules, database, interval))
   {
