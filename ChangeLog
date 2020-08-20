@@ -1,3 +1,39 @@
+1.4.0 (2020-08-) -
+
+- #126    DOM-Query for ids
+- #188    DOM-Query for tags
+- #206    Add :all hint
+          (thanks to varac, Shaun Ruffell)
+- #241    Allow continue by tag.
+          (thanks to Christian Rösch)
+- #258    make error FS.cpp on freebsd 12.1
+          (thanks to choppy812, silent-at-gh, kbcb, Shaun Ruffell)
+- #307    Introduce 'journal.size' configuration item
+          (thanks to Shaun Ruffell)
+- #309    unicode input causes indefinite hang for commands like day or month
+          (thanks to sclee15, Shaun Ruffell)
+- #317    Fix memory leak in JSON parsing
+          (thanks to Shaun Ruffell)
+- #318    Speed up deserialization of Intervals
+          (thanks to Shaun Ruffell)
+- #331    start command adjust
+          (thanks to Shaun Ruffell)
+- #333    Summary command fails with `:all` hint
+- #335    Update docs links from taskwarrior.org to timewarrior.net
+          (thanks to George Buckingham)
+- #347    delete interval silently fails
+          (thanks to Shaun Ruffell)
+- #351    Stop failed to close currently tracking interval
+          (thanks to Shaun Ruffell)
+- #364    Entering an open interval with future date causes assertion error
+          (thanks to kbcb)
+- #370    Core dump on `timew week` when open interval overlaps into exclusion
+          (thanks to Maximilian Merz)
+- #367    CmdDiagnostics: Show per-file error messages.
+          (thanks to Shaun Ruffell)
+- #372    Empty intervals are not deleted in `:adjust` overlap resolution
+          (thanks to xerus2000)
+
 ------ current release ---------------------------
 
 1.3.0 (2020-04-19) - 3de53d7599d1e4364c8aaaeb3c3ef1fe89ee3380
