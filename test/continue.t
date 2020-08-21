@@ -502,6 +502,23 @@ class TestContinue(TestCase):
                                   expectedTags=["FOO"],
                                   description="added interval")
 
+    def test_continue_with_future_time(self):
+        """Verify that continue fails with time in the future"""
+        now_utc = datetime.now().utcnow()
+
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+
+        code, out, err = self.t("start FOO {:%Y-%m-%dT%H}:00:00Z".format(two_hours_before_utc))
+        self.assertIn("Tracking FOO\n", out)
+        code, out, err = self.t("start BAR {:%Y-%m-%dT%H}:00:00Z".format(one_hour_before_utc))
+        self.assertIn("Tracking BAR\n", out)
+        code, out, err = self.t("stop")
+        self.assertIn("Recorded BAR\n", out)
+
+        code, out, err = self.t.runError("continue @2 from {:%Y-%m-%dT%H:%M:%S}Z".format(now_utc + timedelta(seconds=10)))
+        self.assertIn("Time tracking cannot be set in the future", err)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
