@@ -38,10 +38,16 @@ int CmdContinue (
   Journal& journal)
 {
   const bool verbose = rules.getBoolean ("verbose");
+  const Datetime now {};
 
-  // Gather IDs and TAGs.
+  auto filter = cli.getFilter ({ now, 0 });
+
+  if (filter.start > now)
+  {
+    throw std::string ("Time tracking cannot be set in the future.");
+  }
+
   std::set <int> ids = cli.getIds ();
-  auto filter = cli.getFilter ();
 
   if (!ids.empty () && !filter.tags().empty ())
   {
