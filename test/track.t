@@ -125,6 +125,15 @@ class TestTrack(TestCase):
         self.assertNotIn("Note: 'bar' is a new tag", out)
         self.assertIn("Recorded bar", out)
 
+    def test_track_with_future_time(self):
+        """Test track with future interval is not an error"""
+        now_utc = datetime.now().utcnow()
+
+        two_hours_after_utc = now_utc + timedelta(hours=2)
+        one_hour_after_utc = now_utc + timedelta(hours=1)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S} - {:%Y-%m-%dT%H:%M:%S} bar".format(one_hour_after_utc, two_hours_after_utc))
+
     def test_track_interval_which_encloses_month_border(self):
         """Track an interval which encloses a month border"""
         self.t("track 20180831T220000 - 20180901T030000 foo")
