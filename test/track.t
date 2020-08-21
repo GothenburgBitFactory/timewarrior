@@ -134,6 +134,62 @@ class TestTrack(TestCase):
         self.assertEqual(len(j), 1)
         self.assertClosedInterval(j[0])
 
+    def test_track_with_adjust_should_overwrite_enclosed_interval_with_same_start(self):
+        """Command track with adjust should overwrite enclosed interval with same start"""
+        now_utc = datetime.now().utcnow()
+
+        four_hours_before = now_utc - timedelta(hours=4)
+        three_hours_before = now_utc - timedelta(hours=3)
+        two_hours_before = now_utc - timedelta(hours=2)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z FOO".format(four_hours_before, three_hours_before))
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z BAR :adjust".format(four_hours_before, two_hours_before))
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertClosedInterval(j[0],
+                                  expectedStart=four_hours_before,
+                                  expectedEnd=two_hours_before,
+                                  expectedTags=["BAR"])
+
+    def test_track_with_adjust_should_overwrite_enclosed_interval_with_same_end(self):
+        """Command track with adjust should overwrite enclosed interval with same end"""
+        now_utc = datetime.now().utcnow()
+
+        five_hours_before = now_utc - timedelta(hours=5)
+        four_hours_before = now_utc - timedelta(hours=4)
+        three_hours_before = now_utc - timedelta(hours=3)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z FOO".format(four_hours_before, three_hours_before))
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z BAR :adjust".format(five_hours_before, three_hours_before))
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertClosedInterval(j[0],
+                                  expectedStart=five_hours_before,
+                                  expectedEnd=three_hours_before,
+                                  expectedTags=["BAR"])
+
+    def test_track_with_adjust_should_overwrite_identical_interval(self):
+        """Command track with adjust should overwrite identical interval"""
+        now_utc = datetime.now().utcnow()
+
+        four_hours_before = now_utc - timedelta(hours=4)
+        three_hours_before = now_utc - timedelta(hours=3)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z FOO".format(four_hours_before, three_hours_before))
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z BAR :adjust".format(four_hours_before, three_hours_before))
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertClosedInterval(j[0],
+                                  expectedStart=four_hours_before,
+                                  expectedEnd=three_hours_before,
+                                  expectedTags=["BAR"])
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

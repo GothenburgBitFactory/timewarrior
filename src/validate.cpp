@@ -156,14 +156,30 @@ static bool autoAdjust (
         // start date of new interval within old interval
         Interval modified {overlap};
         modified.end = interval.start;
-        database.modifyInterval (overlap, modified, verbose);
+
+        if (modified.is_empty ())
+        {
+          database.deleteInterval (overlap);
+        }
+        else
+        {
+          database.modifyInterval (overlap, modified, verbose);
+        }
       }
       else if (!start_within_overlap && end_within_overlap)
       {
         // end date of new interval within old interval
         Interval modified {overlap};
         modified.start = interval.end;
-        database.modifyInterval (overlap, modified, verbose);
+
+        if (modified.is_empty ())
+        {
+          database.deleteInterval (overlap);
+        }
+        else
+        {
+          database.modifyInterval (overlap, modified, verbose);
+        }
       }
       else if (!start_within_overlap && !end_within_overlap)
       {
