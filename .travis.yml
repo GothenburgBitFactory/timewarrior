@@ -14,13 +14,13 @@ matrix:
       os: linux
       env: CONTAINER=centos8
       services: docker
-    - name: "Fedora 28"
+    - name: "Fedora 31"
       os: linux
-      env: CONTAINER=fedora28
+      env: CONTAINER=fedora31
       services: docker
-    - name: "Fedora 29"
+    - name: "Fedora 32"
       os: linux
-      env: CONTAINER=fedora29
+      env: CONTAINER=fedora32
       services: docker
     - name: "Debian Stable"
       os: linux

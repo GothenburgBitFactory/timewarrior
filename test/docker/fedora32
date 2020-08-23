@@ -1,9 +1,10 @@
-FROM fedora:28
+FROM fedora:32
 
 RUN dnf update -y
 RUN dnf install -y \
         cmake \
         gcc-c++ \
+        glibc-locale-source \
         git \
         make \
         man \
@@ -13,10 +14,6 @@ RUN dnf install -y \
 # Setup environment
 RUN alternatives --install /usr/bin/python python /usr/bin/python3 10
 RUN ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime
-
-ENV LC_ALL en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US.UTF-8
 
 # Setup timewarrior
 ADD . /root/code/
@@ -31,4 +28,4 @@ RUN make install
 # Setup tests
 RUN make -j2 test || true
 WORKDIR /root/code/test/
-CMD ["bash", "-c", "./problems --summary ; cat all.log | grep 'not ok' ; ./problems ; FAILED=$? ; echo timew $( timew --version ) ; python --version ; cmake --version ; gcc --version; exit $FAILED"]
+CMD ["bash", "-c", "./problems --summary ; cat all.log | grep 'not ok' ; ./problems ; echo timew $( timew --version ) ; python --version ; cmake --version ; gcc --version"]
