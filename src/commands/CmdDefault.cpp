@@ -65,7 +65,14 @@ int CmdDefault (Rules& rules, Database& database)
 
   if (verbose)
   {
-    std::cout << "There is no active time tracking.\n";
+    const Datetime now {};
+
+    std::cout << "There is no active time tracking";
+    if (interval.start > now)
+    {
+      std::cout << " but future intervals are present";
+    }
+    std::cout << ".\n";
   }
 
   return 1;
