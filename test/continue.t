@@ -30,7 +30,7 @@ import os
 import sys
 import unittest
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -504,7 +504,7 @@ class TestContinue(TestCase):
 
     def test_continue_with_future_time(self):
         """Verify that continue fails with time in the future"""
-        now_utc = datetime.now().utcnow()
+        now_utc = datetime.now(timezone.utc)
 
         one_hour_before_utc = now_utc - timedelta(hours=1)
         two_hours_before_utc = now_utc - timedelta(hours=2)
@@ -516,8 +516,9 @@ class TestContinue(TestCase):
         code, out, err = self.t("stop")
         self.assertIn("Recorded BAR\n", out)
 
-        code, out, err = self.t.runError("continue @2 from {:%Y-%m-%dT%H:%M:%S}Z".format(now_utc + timedelta(seconds=10)))
-        self.assertIn("Time tracking cannot be set in the future", err)
+        input_time_utc = now_utc + timedelta(seconds=10)
+        code, out, err = self.t("continue @2 from {:%Y-%m-%dT%H:%M:%S}Z".format(input_time_utc))
+        self.assertIn("Scheduled for {:%Y-%m-%dT%H:%M:%S}".format(input_time_utc.astimezone()), out)
 
 
 if __name__ == "__main__":
