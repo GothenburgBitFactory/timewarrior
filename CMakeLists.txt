@@ -6,7 +6,7 @@ set (HAVE_CMAKE true)
 project (timew)
 include (CXXSniffer)
 
-set (PROJECT_VERSION "1.4.1")
+set (PROJECT_VERSION "1.4.2")
 
 string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
 
