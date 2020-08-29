@@ -66,6 +66,25 @@ W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2
 [ ]+1:00:0[01]
 """)
 
+    def test_with_closed_interval_and_all_hint(self):
+        """Summary should print closed interval with :all hint"""
+        now = datetime.now()
+        yesterday = now - timedelta(days=1)
+        tomorrow = now + timedelta(days=1)
+
+        self.t("track for 1h")
+
+        code, out, err = self.t("summary :ids :all".format(yesterday, tomorrow))
+
+        self.assertRegex(out, """
+Wk  ?Date       Day ID Tags    ?Start      ?End    Time   Total
+[ -]+
+W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2}(
+W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2})?
+
+[ ]+1:00:0[01]
+""")
+
     def test_with_open_interval(self):
         """Summary should print open interval"""
         now = datetime.now()
@@ -75,6 +94,25 @@ W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2
         self.t("start 1h ago")
 
         code, out, err = self.t("summary :ids {:%Y-%m-%d} - {:%Y-%m-%d}".format(yesterday, tomorrow))
+
+        self.assertRegex(out, """
+Wk  ?Date       Day ID Tags    ?Start End    Time   Total
+[ -]+
+W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2}[ ]+- \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2}(
+W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2}[ ]+- \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2})?
+
+[ ]+1:00:0[01]
+""")
+
+    def test_with_open_interval_and_all_hint(self):
+        """Summary should print open interval with :all hint"""
+        now = datetime.now()
+        yesterday = now - timedelta(days=1)
+        tomorrow = now + timedelta(days=1)
+
+        self.t("start 1h ago")
+
+        code, out, err = self.t("summary :ids :all".format(yesterday, tomorrow))
 
         self.assertRegex(out, """
 Wk  ?Date       Day ID Tags    ?Start End    Time   Total

@@ -116,6 +116,11 @@ int CmdSummary (
   auto days_start = filter.is_started() ? filter.start : tracked.front ().start;
   auto days_end   = filter.is_ended()   ? filter.end   : tracked.back ().end;
 
+  if (days_end == 0)
+  {
+    days_end = Datetime ();
+  }
+
   for (Datetime day = days_start; day < days_end; day++)
   {
     auto day_range = getFullDay (day);
