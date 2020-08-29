@@ -1,6 +1,6 @@
 ------ current release ---------------------------
 
-1.4.1 (2020-08-29) -
+1.4.1 (2020-08-29) - 6747beb2963475f50d2d58b1da5465247eb9e28e
 
 - #378    Summary with `:all` hint is empty for open interval
 
