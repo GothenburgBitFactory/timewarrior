@@ -1,5 +1,11 @@
 ------ current release ---------------------------
 
+1.4.1 (2020-08-29) -
+
+- #378    Summary with `:all` hint is empty for open interval
+
+------ old releases ------------------------------
+
 1.4.0 (2020-08-29) - 2447c3817212d0fd987a8fe749d181ba7073a978
 
 - #126    DOM-Query for ids
@@ -35,8 +41,6 @@
           (thanks to Shaun Ruffell)
 - #372    Empty intervals are not deleted in `:adjust` overlap resolution
           (thanks to xerus2000)
-
------- old releases ------------------------------
 
 1.3.0 (2020-04-19) - 3de53d7599d1e4364c8aaaeb3c3ef1fe89ee3380
 
