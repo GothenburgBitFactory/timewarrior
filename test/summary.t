@@ -215,6 +215,20 @@ W{5} {2:%Y-%m-%d} {2:%a} @1 BAZ  10:00:00 11:00:00 1:00:00 1:00:00
 """.format(yesterday, now, tomorrow,
            yesterday.isocalendar()[1], now.isocalendar()[1], tomorrow.isocalendar()[1]), out)
 
+    def test_with_all_hint_and_first_interval_later_in_day(self):
+        """Summary should handle :all hint with first interval that starts later in day than latest interval"""
+        now = datetime.now()
+        yesterday = now - timedelta(days=1)
+
+        self.t("track {0:%Y-%m-%dT%H:%M:%S} - {1:%Y-%m-%dT%H:%M:%S} FOO".format(yesterday + timedelta(seconds=2),
+                                                                                yesterday + timedelta(seconds=3)))
+        self.t("track {0:%Y-%m-%dT%H:%M:%S} - {1:%Y-%m-%dT%H:%M:%S} BAR".format(now - timedelta(seconds=1), now))
+
+        code, out, err = self.t("summary :ids :all")
+        self.assertIn("@2", out)
+        self.assertIn("@1", out)
+        self.assertRegex(out, r'\s{30}0:00:02')
+
     def test_with_named_date_yesterday(self):
         """Summary should work with 'yesterday'"""
         now = datetime.now()
