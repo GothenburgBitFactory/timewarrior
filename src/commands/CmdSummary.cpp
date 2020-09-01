@@ -121,7 +121,7 @@ int CmdSummary (
     days_end = Datetime ();
   }
 
-  for (Datetime day = days_start; day < days_end; day++)
+  for (Datetime day = days_start.startOfDay (); day < days_end; ++day)
   {
     auto day_range = getFullDay (day);
     time_t daily_total = 0;
