@@ -1,6 +1,6 @@
 ------ current release ---------------------------
 
-1.4.2 (2020-08-29) -
+1.4.2 (2020-08-29) - 4aa8489243adb69958d7717fb2f010c72fd4505a
 
 - #377    make install with error due to missing file `COPYING`
           (thanks to Dirk Deimeke)
