@@ -1,3 +1,7 @@
+
+- #379    CmdSummary: Fix calculation of display start in summary table
+          (thanks to Shaun Ruffell)
+
 ------ current release ---------------------------
 
 1.4.2 (2020-08-29) - 4aa8489243adb69958d7717fb2f010c72fd4505a
