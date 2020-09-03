@@ -4,7 +4,7 @@ FROM gentoo/stage3-x86:latest
 # copy the entire portage volume in
 COPY --from=gentoo/portage:latest /var/db/repos/gentoo /var/db/repos/gentoo
 
-RUN (CNT=60 ; while [[ ${CNT} -ne 0 ]] ; do echo "RUNNING (${CNT})" ; sleep 60 ; ((CNT--)) ; done ) & \
+RUN ( CNT=60 ; while [[ ${CNT} -ne 0 ]] ; do echo "RUNNING (${CNT})" ; sleep 60 ; ((CNT--)) ; done ) & \
     emerge -qv \
            dev-util/cmake \
            dev-vcs/git \
