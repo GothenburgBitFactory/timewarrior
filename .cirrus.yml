@@ -1,0 +1,42 @@
+freebsd_instance:
+  image_family: freebsd-12-1
+task:
+  clone_script: |
+    pkg install --yes cmake git python38 py37-pip
+    if [ -z "$CIRRUS_PR" ]; then
+      git clone --recursive --branch=$CIRRUS_BRANCH https://x-access-token:${CIRRUS_REPO_CLONE_TOKEN}@github.com/${CIRRUS_REPO_FULL_NAME}.git $CIRRUS_WORKING_DIR
+      git reset --hard $CIRRUS_CHANGE_IN_REPO
+    else
+      git clone --recursive https://x-access-token:${CIRRUS_REPO_CLONE_TOKEN}@github.com/${CIRRUS_REPO_FULL_NAME}.git $CIRRUS_WORKING_DIR
+      git fetch origin pull/$CIRRUS_PR/head:pull/$CIRRUS_PR
+      git reset --hard $CIRRUS_CHANGE_IN_REPO
+    fi
+    pip --version
+  complile_script: |
+    cmake .
+    make
+    make install
+    cd test
+    make
+  tests_script: |
+    cd test
+    python3 -m venv venv3
+    ls venv3
+    ls venv3/bin
+    . venv3/bin/activate
+    pip install --upgrade pip
+    pip install python-dateutil
+    ./run_all -v
+  on_failure:
+    failure_report_script: |
+      cd test
+      cat all.log | grep 'not ok' || true
+  always:
+    test_report_script: |
+      cd test
+      ./problems || FAILED=1
+      echo "timew $( timew --version )"
+      python --version
+      cmake --version
+      cc --version
+      exit "${FAILED-0}"
