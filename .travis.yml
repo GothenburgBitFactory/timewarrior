@@ -2,10 +2,11 @@ sudo: required
 language: generic
 matrix:
   include:
-    - name: "Gentoo (latest)"
-      os: linux
-      env: CONTAINER=gentoo
-      services: docker
+# Deactivated, see https://github.com/GothenburgBitFactory/timewarrior/issues/380
+#    - name: "Gentoo (latest)"
+#      os: linux
+#      env: CONTAINER=gentoo
+#      services: docker
     - name: "Centos 7"
       os: linux
       env: CONTAINER=centos7

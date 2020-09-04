@@ -1,3 +1,4 @@
+# Currently deactivated, see https://github.com/GothenburgBitFactory/timewarrior/issues/380
 # image is based on stage3-x86
 FROM gentoo/stage3-x86:latest
 
