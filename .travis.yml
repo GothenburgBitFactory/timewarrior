@@ -1,6 +1,7 @@
-sudo: required
 language: generic
-matrix:
+dist: xenial
+os: linux
+jobs:
   include:
 # Deactivated, see https://github.com/GothenburgBitFactory/timewarrior/issues/380
 #    - name: "Gentoo (latest)"
