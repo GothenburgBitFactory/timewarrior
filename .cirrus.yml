@@ -12,6 +12,8 @@ task:
       git reset --hard $CIRRUS_CHANGE_IN_REPO
     fi
     pip --version
+    cd src/libshared
+    git log --oneline
   complile_script: |
     cmake .
     make
