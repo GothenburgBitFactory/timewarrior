@@ -32,12 +32,12 @@ There are two ways to retrieve the Timewarrior sources:
 
 * Or download the tarball with curl,
 
-      curl -O https://taskwarrior.org/download/timew-1.3.0.tar.gz
+      curl -O https://github.com/GothenburgBitFactory/timewarrior/releases/download/v1.4.2/timew-1.4.2.tar.gz
 
   and expand the tarball
 
-      tar xzf timew-1.3.0.tar.gz
-      cd timew-1.3.0
+      tar xzf timew-1.4.2.tar.gz
+      cd timew-1.4.2
 
 Build Timewarrior, optionally run the test suite (note: the tarball does not contain tests), and install it.
 
