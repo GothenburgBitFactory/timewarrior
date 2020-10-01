@@ -1,6 +1,8 @@
 
 - #379    CmdSummary: Fix calculation of display start in summary table
           (thanks to Shaun Ruffell)
+- #390    dom.tracked.X.tag.Y always returns dom.tracked.1.tag.Y
+          (thanks to pweaver2019)
 
 ------ current release ---------------------------
 

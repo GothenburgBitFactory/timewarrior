@@ -196,18 +196,18 @@ bool domGet (
           return true;
         }
 
-        int n;
+        int m;
         // dom.tracked.<N>.tag.<M>
         if (pig.skipLiteral ("tag.") &&
-            pig.getDigits (n))
+            pig.getDigits (m))
         {
           std::vector <std::string> tags;
           for (auto& tag : tracked[count - n].tags ())
             tags.push_back (tag);
 
-          if (n <= static_cast <int> (tags.size ()))
+          if (m <= static_cast <int> (tags.size ()))
           {
-            value = format ("{1}", tags[n - 1]);
+            value = format ("{1}", tags[m - 1]);
             return true;
           }
         }
