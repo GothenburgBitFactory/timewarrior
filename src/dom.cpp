@@ -124,10 +124,7 @@ bool domGet (
 
         std::stringstream s;
 
-        for (const auto& tag : tags)
-        {
-          s << format ( "{1} ", tag );
-        }
+        s << joinQuotedIfNeeded ( " ", tags );
 
         value = s.str();
         return true;
