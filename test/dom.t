@@ -195,7 +195,7 @@ class TestDOMTracked(TestCase):
         self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z bar".format(three_hours_before_utc, two_hours_before_utc))
 
         code, out, err = self.t("get dom.tracked.tags")
-        self.assertEqual("bar foo \n", out)
+        self.assertEqual("bar foo\n", out)
 
     def test_dom_tracked_tags_filtered_by_time(self):
         """Test dom.tracked.tags with tags filtered by time"""
@@ -211,7 +211,7 @@ class TestDOMTracked(TestCase):
         self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z baz".format(two_hours_before_utc, one_hour_before_utc))
 
         code, out, err = self.t("get dom.tracked.tags {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z".format(five_hours_before_utc, two_hours_before_utc))
-        self.assertEqual("bar foo \n", out)
+        self.assertEqual("bar foo\n", out)
 
     def test_dom_tracked_tags_filtered_by_tag(self):
         """Test dom.tracked.tags with tags filtered by tag"""
@@ -227,7 +227,7 @@ class TestDOMTracked(TestCase):
         self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z foo baz".format(two_hours_before_utc, one_hour_before_utc))
 
         code, out, err = self.t("get dom.tracked.tags foo")
-        self.assertEqual("baz foo \n", out)
+        self.assertEqual("baz foo\n", out)
 
     def test_dom_tracked_ids_with_emtpy_database(self):
         """Test dom.tracked.ids with empty database"""
