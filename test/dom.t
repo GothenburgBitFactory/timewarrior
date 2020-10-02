@@ -197,6 +197,20 @@ class TestDOMTracked(TestCase):
         code, out, err = self.t("get dom.tracked.tags")
         self.assertEqual("bar foo\n", out)
 
+    def test_dom_tracked_tags_with_quoted_tag(self):
+        """Test dom.tracked.tags with a tag with quotes"""
+        now_utc = datetime.now().utcnow()
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z \"with quotes\"".format(five_hours_before_utc, four_hours_before_utc))
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z bar".format(three_hours_before_utc, two_hours_before_utc))
+
+        code, out, err = self.t("get dom.tracked.tags")
+        self.assertEqual("bar \"with quotes\"\n", out)
+
     def test_dom_tracked_tags_filtered_by_time(self):
         """Test dom.tracked.tags with tags filtered by time"""
         now_utc = datetime.now().utcnow()
