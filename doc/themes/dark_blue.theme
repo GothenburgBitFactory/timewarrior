@@ -25,7 +25,7 @@
 ###############################################################################
 
 define theme:
-  description = "dark_green.theme: A dark green theme."
+  description = "dark_blue.theme: A dark blue theme."
   colors:
     # General UI color.
     exclusion = "gray8 on gray4"
