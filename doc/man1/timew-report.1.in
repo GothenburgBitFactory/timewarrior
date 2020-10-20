@@ -25,3 +25,10 @@ $ timew report foo :week
 $ timew        foo :week
 .RE
 This does however assume there is a 'foo' extension installed.
+.SH CONFIGURATION
+.BI reports. <script> .range
+.RS
+Defines the default range which is used if no <range> is given on the command line.
+The <script> is the basename of the script, e.g. if the executable is called 'time-report.py' the configuration key is 'reports.time-report.py.range'.
+.br
+Default value is unset and this delivers all intervals to the extension report.
