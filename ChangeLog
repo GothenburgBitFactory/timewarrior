@@ -3,6 +3,8 @@
           (thanks to Shaun Ruffell)
 - #390    dom.tracked.X.tag.Y always returns dom.tracked.1.tag.Y
           (thanks to pweaver2019)
+-         Width determination of Unicode characters now works for up to
+          Unicode 11 (from Unicode 5). Emojis are correctly displayed.
 
 ------ current release ---------------------------
 
