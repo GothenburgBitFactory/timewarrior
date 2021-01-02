@@ -1,6 +1,6 @@
 # Bash completion for TimeWarrior
 #
-# Copyright (C) 2017 - 2020 Thomas Lauf
+# Copyright (C) 2017 - 2021, Thomas Lauf
 #
 function __get_commands()
 {
