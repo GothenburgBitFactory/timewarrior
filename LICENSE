@@ -1,4 +1,6 @@
-Timewarrior - a command line time tracker
+MIT license
+
+https://opensource.org/licenses/mit-license.php
 
 Copyright 2015 - 2021, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 
@@ -20,4 +22,3 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-https://www.opensource.org/licenses/mit-license.php
