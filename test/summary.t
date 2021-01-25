@@ -204,16 +204,23 @@ W10 2017-03-09 Thu @4 Tag1        8:43:08  9:38:15 0:55:07
 
         code, out, err = self.t("summary :ids :all")
 
+        week_yesterday = yesterday.isocalendar()[1]
+        week_now = now.isocalendar()[1]
+        week_tomorrow = tomorrow.isocalendar()[1]
+
+        two_digit_week = (week_yesterday > 9 | week_now > 9 | week_tomorrow > 9)
+
         self.assertIn("""
-Wk  Date       Day ID Tags    Start      End    Time   Total
---- ---------- --- -- ---- -------- -------- ------- -------
+Wk{6} Date       Day ID Tags    Start      End    Time   Total
+--{7} ---------- --- -- ---- -------- -------- ------- -------
 W{3} {0:%Y-%m-%d} {0:%a} @3 FOO  10:00:00 11:00:00 1:00:00 1:00:00
 W{4} {1:%Y-%m-%d} {1:%a} @2 BAR  10:00:00 11:00:00 1:00:00 1:00:00
 W{5} {2:%Y-%m-%d} {2:%a} @1 BAZ  10:00:00 11:00:00 1:00:00 1:00:00
 
-                                                     3:00:00
+{6}                                                    3:00:00
 """.format(yesterday, now, tomorrow,
-           yesterday.isocalendar()[1], now.isocalendar()[1], tomorrow.isocalendar()[1]), out)
+           week_yesterday, week_now, week_tomorrow,
+           " " if two_digit_week is True else "", "-" if two_digit_week is True else ""), out)
 
     def test_with_all_hint_and_first_interval_later_in_day(self):
         """Summary should handle :all hint with first interval that starts later in day than latest interval"""
@@ -241,13 +248,17 @@ W{5} {2:%Y-%m-%d} {2:%a} @1 BAZ  10:00:00 11:00:00 1:00:00 1:00:00
 
         code, out, err = self.t("summary :ids yesterday")
 
+        week_yesterday = yesterday.isocalendar()[1]
+
+        two_digit_week = (week_yesterday > 9)
+
         self.assertIn("""
-Wk  Date       Day ID Tags    Start      End    Time   Total
---- ---------- --- -- ---- -------- -------- ------- -------
+Wk{2} Date       Day ID Tags    Start      End    Time   Total
+--{3} ---------- --- -- ---- -------- -------- ------- -------
 W{1} {0:%Y-%m-%d} {0:%a} @3 FOO  10:00:00 11:00:00 1:00:00 1:00:00
 
-                                                     1:00:00
-""".format(yesterday, yesterday.isocalendar()[1]), out)
+{2}                                                    1:00:00
+""".format(yesterday, week_yesterday, " " if two_digit_week is True else "", "-" if two_digit_week is True else ""), out)
 
     def test_with_named_date_today(self):
         """Summary should work with 'today'"""
@@ -261,13 +272,17 @@ W{1} {0:%Y-%m-%d} {0:%a} @3 FOO  10:00:00 11:00:00 1:00:00 1:00:00
 
         code, out, err = self.t("summary :ids today")
 
+        week_now = now.isocalendar()[1]
+
+        two_digit_week = (week_now > 9)
+
         self.assertIn("""
-Wk  Date       Day ID Tags    Start      End    Time   Total
---- ---------- --- -- ---- -------- -------- ------- -------
+Wk{2} Date       Day ID Tags    Start      End    Time   Total
+--{3} ---------- --- -- ---- -------- -------- ------- -------
 W{1} {0:%Y-%m-%d} {0:%a} @2 BAR  10:00:00 11:00:00 1:00:00 1:00:00
 
-                                                     1:00:00
-""".format(now, now.isocalendar()[1]), out)
+{2}                                                    1:00:00
+""".format(now, week_now, " " if two_digit_week is True else "", "-" if two_digit_week is True else ""), out)
 
     def test_with_day_gap(self):
         """Summary should skip days with no data"""

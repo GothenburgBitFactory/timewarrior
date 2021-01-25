@@ -5,6 +5,7 @@
           (thanks to pweaver2019)
 -         Width determination of Unicode characters now works for up to
           Unicode 11 (from Unicode 5). Emojis are correctly displayed.
+-         Fix test `summary.t` for single-digit weeks
 
 ------ current release ---------------------------
 
