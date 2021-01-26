@@ -13,10 +13,10 @@ RUN yum install -y \
         python36-dateutil
 
 # Setup environment
-RUN echo "#!/bin/bash" >> /etc/profile.d/enable_env.sh ; \
-    echo "source scl_source enable devtoolset-7" >> /etc/profile.d/enable_env.sh ;
-
-RUN ln -s /usr/bin/cmake3 /usr/bin/cmake
+RUN ln -sf /opt/rh/devtoolset-7/root/usr/bin/g++ /usr/bin/c++
+RUN ln -sf /opt/rh/devtoolset-7/root/usr/bin/gcc /usr/bin/gcc
+RUN ln -sf /opt/rh/devtoolset-7/root/usr/bin/g++ /usr/bin/g++
+RUN ln -sf /usr/bin/cmake3 /usr/bin/cmake
 RUN ln -sf /usr/bin/python3 /usr/bin/python
 
 ENV LC_ALL en_US.UTF-8
