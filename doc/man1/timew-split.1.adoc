@@ -1,0 +1,27 @@
+= timew-split(1)
+
+== NAME
+timew-split - split intervals
+
+== SYNOPSIS
+[verse]
+*timew split* _<id>_**...**
+
+== DESCRIPTION
+Ѕplits an interval into two equally sized adjacent intervals, having the same tags.
+Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
+Using the right ID, you can identify an interval to split.
+
+== EXAMPLES
+For example, show the IDs:
+
+    $ timew summary :week :ids
+
+Then having selected '@2' as the interval you wish to split:
+
+    $ timew split @2
+
+== SEE ALSO
+**timew-join**(1),
+**timew-lengthen**(1),
+**timew-shorten**(1)

@@ -4,6 +4,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && yes | unminimize
 RUN apt-get install -y \
+            asciidoctor \
             cmake \
             g++ \
             git \

@@ -1,0 +1,30 @@
+= timew-fill(1)
+
+== NAME
+timew-fill - adjust intervals to fill in surrounding gaps
+
+== SYNOPSIS
+[verse]
+*timew fill* _<id>_**...**
+
+== DESCRIPTION
+The 'fill' command is used to adjust any interval to fill in surrounding gaps.
+Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
+Using the right ID, you can identify an interval to fill.
+
+== EXAMPLES
+For example, show the IDs:
+
+    $ timew summary :week :ids
+
+Then having selected '@2' as the interval you wish to fill:
+
+    $ timew fill @2
+
+Note that you can fill multiple intervals:
+
+    $ timew fill @2 @10 @23
+
+
+== SEE ALSO
+**timew-hints**(1)

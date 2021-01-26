@@ -3,6 +3,7 @@ FROM archlinux/base
 RUN pacman -Sy --noconfirm archlinux-keyring
 RUN pacman -Syu --noconfirm
 RUN pacman -S --noconfirm \
+           asciidoctor \
            cmake \
            gcc \
            git \

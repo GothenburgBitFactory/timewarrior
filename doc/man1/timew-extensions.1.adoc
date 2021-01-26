@@ -1,0 +1,14 @@
+= timew-extensions(1)
+
+== NAME
+timew-extensions - list available extensions
+
+== SYNOPSIS
+[verse]
+*timew extensions*
+
+== DESCRIPTION
+Displays the directory containing the extension programs and a table showing each extension and its status.
+
+== SEE ALSO
+**timew-diagnostics**(1)

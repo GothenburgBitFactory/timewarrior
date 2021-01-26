@@ -1,0 +1,12 @@
+= timew-tags(1)
+
+== NAME
+timew-tags - display a list of tags
+
+== SYNOPSIS
+[verse]
+*timew tags* [_<range>_]
+
+== DESCRIPTION
+Displays all the tags that have been used by default.
+When a filter is specified, shows only the tags that were used during that time.

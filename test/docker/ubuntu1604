@@ -7,6 +7,7 @@ RUN apt-get update && \
     add-apt-repository -y ppa:ubuntu-toolchain-r/test
 RUN apt-get update && \
     apt-get install -y \
+            asciidoctor \
             cmake \
             gcc-snapshot \
             g++-6 \

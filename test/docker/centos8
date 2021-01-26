@@ -1,7 +1,8 @@
 FROM centos:8
 
-RUN yum update -y
-RUN yum install -y \
+RUN dnf update -y
+RUN dnf install -y \
+        ruby \
         cmake3 \
         gcc-c++ \
         git \
@@ -10,10 +11,9 @@ RUN yum install -y \
         python36 \
         python3-dateutil
 
-# Setup environment
-RUN echo "#!/bin/bash" >> /etc/profile.d/enable_env.sh ; \
-    echo "source scl_source enable devtoolset-7" >> /etc/profile.d/enable_env.sh ;
+RUN gem install asciidoctor
 
+# Setup environment
 RUN ln -sf /usr/bin/python3 /usr/bin/python
 
 ENV LC_ALL en_US.UTF-8

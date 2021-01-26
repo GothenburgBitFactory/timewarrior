@@ -1,0 +1,111 @@
+= timew-chart(1)
+
+== NAME
+timew-chart - display chart report
+
+== SYNOPSIS
+[verse]
+*timew day* [_<range>_] [_<tag>_**...**]
+*timew month* [_<range>_] [_<tag>_**...**]
+*timew week* [_<range>_] [_<tag>_**...**]
+
+== DESCRIPTION
+A chart summarizes the tracked and untracked time with colored blocks drawn on a timeline.
+It accepts date ranges and tags for filtering.
+There are three types: *day*, *week*, and *month* with their respective commands.
+The **reports.**__<type>__**.range** configuration setting overrides the default date range.
+For more details, and precise times, use the 'summary' report.
+
+*month*::
+The month command shows a chart depicting a single month (current month by default).
+The default date range shown is *:month*.
+
+*week*::
+The week command shows a chart depicting a single week (current week by default).
+The default date range shown is *:week*.
+
+*day*::
+The day command shows a chart depicting a single day (today by default).
+The default date range shown is *:day*.
+
+== CONFIGURATION
+_<type>_ is one of **month**, **week**, **day**.
+
+**reports.**__<type>__**.cell**::
+Determines how many minutes are represented by a single character cell, for the charts.
+The value must be greater than '0'.
+A value of '15' means that an hour is represented by 60/15, or 4 character cells.
+Suitable values are the divisors of 60 (30, 20, 15, 12, ...).
+Default value is '15'.
+
+**reports.**__<type>__**.day**::
+Determines whether the current day of the month is shown at left margin.
+Default value is 'yes'.
+
+**reports.**__<type>__**.holidays**::
+Determines whether relevant holidays are shown beneath the report.
+Default value is 'yes'.
+
+**reports.**__<type>__**.hours**::
+Determines how the <type> report shows all the hours in a day ('all'), or is limited to only hours where data is tracked ('auto').
+Default value is 'all'.
+
+**reports.**__<type>__**.lines**::
+Determines how many lines are used to render each day on the <type> report.
+Default value is '1'.
+
+**reports.**__<type>__**.month**::
+Determines whether the current month is shown at left margin.
+Default value is 'yes'.
+
+**reports.**__<type>__**.range**::
+For reports that show a range of data, this setting will override the default value.
+The value should be a range hint, see
+**timew-hints**(7).
+
+**reports.**__<type>__**.spacing**::
+Specifies how many spaces are inserted between the hours in the <type> report exclusions.
+A value of '0' yields a more compact report.
+Default value is '1'.
+
+**reports.**__<type>__**.axis**::
+The value 'internal' puts the hour markers (time line at the top) inside the exclusion blocks, 'external' puts the hour markers in a separate line; additional values might be defined in the future.
+Default is 'internal' for the day report and 'external' for other reports.
+
+**reports.**__<type>__**.summary**::
+Determines whether the hours summary is shown.
+Default value is 'on'.
+
+**reports.**__<type>__**.totals**::
+Determines whether the time totals are shown for each day on the report.
+Default value is 'on'.
+
+**reports.**__<type>__**.week**::
+Determines whether the current week number is shown at left margin.
+Default value is 'yes'.
+
+**reports.**__<type>__**.weekday**::
+Determines whether the current weekday is shown at left margin.
+Default value is 'yes'.
+
+== HINTS
+
+*:blank*::
+The ':blank' hint causes only the excluded time to be shown, with no tracked time.
+This can be used to see the exclusions.
+
+*:ids*::
+The ':ids' hint causes the intervals to be displayed with their ids
+
+== EXAMPLES
+Charts accept date ranges and tags for filtering, or shortcut hints:
+
+    $ timew month 1st - today
+    $ timew week FOO BAR
+    $ timew day :week
+
+== SEE ALSO
+**timew-day**(1),
+**timew-month**(1),
+**timew-summary**(1),
+**timew-week**(1)

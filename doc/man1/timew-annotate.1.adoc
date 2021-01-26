@@ -1,0 +1,44 @@
+= timew-annotate(1)
+
+== NAME
+timew-annotate - add an annotation to intervals
+
+== SYNOPSIS
+[verse]
+*timew annotate* [_<id>_**...**] _<annotation>_**...**
+
+== DESCRIPTION
+The 'annotate' command is used to add an annotation to an interval.
+Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
+Using the right ID, you can identify an interval to annotate.
+
+== EXAMPLES
+For example, show the IDs:
+
+    $ timew summary :week :ids
+
+Then having selected '@2' as the interval you wish to annotate:
+
+    $ timew annotate @2 'Lorem ipsum...'
+
+Note that you can annotate multiple intervals with the same annotation:
+
+    $ timew annotate @2 @10 @23 'Lorem ipsum dolor sit amet...'
+
+If there is active time tracking, you can omit the ID when you want to add annotations to the current open interval:
+
+    $ timew start foo
+    $ timew annotate bar
+
+This results in the current interval having annotations 'foo' and 'bar'.
+
+== BUGS
+Currently the annotation command picks the last token from the command line and uses it as annotation.
+I.e. using no quotes in an annotation command like
+
+    $ timew annotate @1 lorem ipsum dolor
+
+will result in interval @1 having only 'dolor' as its annotation.
+
+== SEE ALSO
+**timew-tag**(1)

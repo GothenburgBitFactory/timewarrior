@@ -1,0 +1,17 @@
+= timew-report(1)
+
+== NAME
+timew-report - run an extension report
+
+== SYNOPSIS
+[verse]
+*timew* [*report*] _<report>_ [_<range>_] [_<tag>_**...**]
+
+== DESCRIPTION
+Runs an extension report, and supports filtering data.
+The 'report' command itself is optional, which means that these two commands are equivalent:
+
+    $ timew report foo :week
+    $ timew        foo :week
+
+This does however assume there is a 'foo' extension installed.

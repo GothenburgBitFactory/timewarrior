@@ -1,0 +1,22 @@
+= timew-get(1)
+
+== NAME
+timew-get - display DOM values
+
+== SYNOPSIS
+[verse]
+*timew get* _<DOM>_**...**
+
+== DESCRIPTION
+Validates the DOM reference, then obtains the value and displays it.
+
+== EXAMPLES
+For example:
+
+    $ timew get dom.active
+    1
+
+It is an error to reference an interval or tag that does not exist.
+
+== SEE ALSO
+*timew-DOM*

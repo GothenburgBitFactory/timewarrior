@@ -1,0 +1,16 @@
+= timew-diagnostics(1)
+
+== NAME
+timew-diagnostics - show diagnostic information
+
+== SYNOPSIS
+[verse]
+*timew diagnostics*
+
+== DESCRIPTION
+This command shows details about your version of Timewarrior, your platform, how it was built, compiler features, configuration, file access, extensions and more.
+
+The purpose of this command is to help diagnose configuration problems and provide supplemental information when reporting a problem.
+
+== SEE ALSO
+**timew-extensions**(1)
