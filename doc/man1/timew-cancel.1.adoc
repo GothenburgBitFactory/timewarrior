@@ -1,0 +1,37 @@
+= timew-cancel(1)
+
+== NAME
+timew-cancel - cancel time tracking
+
+== SYNOPSIS
+[verse]
+*timew cancel*
+
+== DESCRIPTION
+If there is an open interval, it is abandoned.
+
+== EXAMPLES
+
+*Cancel with active time tracking*::
++
+    $ timew start
+    ...
+    $ timew cancel
+    Canceled active time tracking.
+
+This deletes the open interval.
+
+*Cancel with no active time tracking*::
++
+    ...
+    $ timew stop
+    $ timew cancel
+    There is no active time tracking.
+
+Cancel has no effect, only a warning is printed.
+
+== SEE ALSO
+**timew-continue**(1),
+**timew-start**(1),
+**timew-stop**(1),
+**timew-track**(1)

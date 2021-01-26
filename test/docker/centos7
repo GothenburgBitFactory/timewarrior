@@ -3,6 +3,7 @@ FROM centos:7
 RUN yum update -y
 RUN yum install -y epel-release centos-release-scl
 RUN yum install -y \
+        asciidoctor \
         cmake3 \
         devtoolset-7-gcc* \
         gcc-c++ \

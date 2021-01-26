@@ -5,6 +5,7 @@ set (HAVE_CMAKE true)
 
 project (timew)
 include (CXXSniffer)
+include (FindAsciidoctor)
 
 set (PROJECT_VERSION "1.4.2")
 
@@ -31,10 +32,12 @@ set (PACKAGE_STRING "${PACKAGE} ${VERSION}")
 string (TIMESTAMP PACKAGE_DATE "%Y-%m-%d")
 
 if (FREEBSD OR DRAGONFLY)
+SET (TIMEW_MANDIR  man      CACHE STRING "Installation directory for man pages")
 SET (TIMEW_MAN1DIR man/man1 CACHE STRING "Installation directory for man pages, section 1")
 SET (TIMEW_MAN5DIR man/man5 CACHE STRING "Installation directory for man pages, section 5")
 SET (TIMEW_MAN7DIR man/man7 CACHE STRING "Installation directory for man pages, section 7")
 else (FREEBSD OR DRAGONFLY)
+SET (TIMEW_MANDIR  share/man      CACHE STRING "Installation directory for man pages")
 SET (TIMEW_MAN1DIR share/man/man1 CACHE STRING "Installation directory for man pages, section 1")
 SET (TIMEW_MAN5DIR share/man/man5 CACHE STRING "Installation directory for man pages, section 5")
 SET (TIMEW_MAN7DIR share/man/man7 CACHE STRING "Installation directory for man pages, section 7")

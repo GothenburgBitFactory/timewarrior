@@ -1,0 +1,17 @@
+= timew-export(1)
+
+== NAME
+timew-export - export tracked time in JSON
+
+== SYNOPSIS
+[verse]
+*timew export* [_<range>_] [_<tag>_**...**]
+
+== DESCRIPTION
+Exports all the tracked time in JSON format.
+Supports filtering.
+
+== EXAMPLES
+For example:
+
+    $ timew export from 2016-01-01 for 3wks tag1

@@ -1,0 +1,22 @@
+= timew-undo(1)
+
+== NAME
+timew-undo - revert Timewarrior commands
+
+== SYNOPSIS
+[verse]
+*timew undo*
+
+== DESCRIPTION
+The 'undo' command is used to revert the action of Timewarrior commands.
+Only commands affecting intervals or Timewarrior configuration can be reverted.
+Timewarrior keeps a journal of changes to the interval database and Timewarrior configuration.
+A call to 'undo' removes the last entry in the journal and restores the previous state.
+As long as there are entries in the journal, you can revert the respective action.
+The 'undo' command itself cannot be undone!
+
+== EXAMPLES
+Undo an interval modification::
++
+    $ timew split @1
+    $ timew undo

@@ -3,6 +3,7 @@ FROM debian:testing
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get install -y \
+            asciidoctor \
             cmake \
             fiu-utils=1.00-* \
             g++ \

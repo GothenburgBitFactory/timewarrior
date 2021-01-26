@@ -1,0 +1,34 @@
+= timew-lengthen(1)
+
+== NAME
+timew-lengthen - lengthen intervals
+
+== SYNOPSIS
+[verse]
+*timew lengthen* _<id>_**...** _<duration>_
+
+== DESCRIPTION
+The 'lengthen' command is used to defer the end date of a closed interval.
+Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
+Using the right ID, you can identify an interval to lengthen.
+
+== EXAMPLES
+For example, show the IDs:
+
+    $ timew summary :week :ids
+
+Then having selected '@2' as the interval you wish to lengthen:
+
+    $ timew lengthen @2 10mins
+
+Note that you can lengthen multiple intervals,:
+
+    $ timew lengthen @2 @10 @23 1hour
+
+== SEE ALSO
+**timew-modify**(1),
+**timew-resize**(1),
+**timew-shorten**(1),
+**timew-summary**(1),
+**timew-tag**(1),
+**timew-untag**(1)

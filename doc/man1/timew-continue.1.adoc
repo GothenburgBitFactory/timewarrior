@@ -1,0 +1,82 @@
+= timew-continue(1)
+
+== NAME
+timew-continue - resume tracking of existing interval
+
+== SYNOPSIS
+[verse]
+*timew continue* [_<id>_|_<tag>_**...**] [_<datetime>_|_<range>_]
+
+== DESCRIPTION
+The 'continue' command is used to resume tracking specified by a closed interval.
+This command is a convenient way to resume work without re-entering the tags.
+
+The interval to be resumed can be specified either by its id or by a set of tags.
+Specifying multiple ids or both ids and tags will result in an error.
+
+When given a set of tags, the first interval matching it will be taken as a blueprint for the new interval.
+When given neither id nor tags, the first interval in the database is taken.
+
+When no datetime or range given, the new interval is started at the current time.
+
+== EXAMPLES
+Using the 'summary' command and specifying the ':ids' hint shows interval IDs.
+Consider the following intervals:
+
+    $ src/timew summary :ids
+
+    Wk  Date       Day ID Tags             Start      End    Time   Total
+    W23 2020-06-04 Thu @4 BAR           13:00:00 14:00:00 1:00:00
+                       @3 BAR, FOO      14:00:00 15:00:00 1:00:00
+                       @2 BAR, BAZ, FOO 15:00:00 16:00:00 1:00:00
+                       @1 FOO           16:00:00 17:00:00 1:00:00 4:00:00
+
+                                                                  4:00:00
+
+Simple continue::
++
+    $ timew continue
+
+The 'continue' command creates a new open interval, starting now, with tag 'FOO'
+
+Continue an interval via id::
++
+    $ timew continue @3
+
+The 'continue' command creates a new open interval, starting now, with tags 'BAR' and 'FOO'.
+
+Continue an interval via tag set::
++
+    $ timew continue FOO BAR
+
+The 'continue' command creates a new open interval, starting now, with tags 'FOO', 'BAR', and 'BAZ'.
+
+Note that the first matching interval (here '@2') is taken as a blueprint for the new interval, although '@3' would have been a perfect match for the given tag set.
+The command 'timew continue BAR' would have the same effect.
+This means that there is no way to continue '@4' via a tag set.
+
+Continue an interval at a specific date & time::
++
+    $ timew continue @4 19:00  (1)
+    $ timew continue FOO 19:00 (2)
+
+The 'continue' command creates a new open interval
+
+1. with tag 'BAR' (as specified by '@4') and start time '19:00'.
+2. with tag 'FOO' (as specified by '@1') and start time '19:00'.
+
+Continue an interval with a specific range::
++
+    $ timew continue @4 19:00 - 20:00  (1)
+    $ timew continue FOO 19:00 - 20:00 (2)
+
+The 'continue' command creates a new closed interval
+
+1. with tag 'BAR' (as specified by '@4'), start time '19:00', and end time '20:00'.
+2. with tag 'FOO' (as specified by '@1') and start time '19:00', and end time '20:00'.
+
+== SEE ALSO
+**timew-cancel**(1),
+**timew-start**(1),
+**timew-stop**(1),
+**timew-track**(1)

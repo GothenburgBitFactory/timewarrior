@@ -1,7 +1,7 @@
 #!/bin/sh
 
-CONCEPTS="$( ls doc/man7/*.in | sed -E 's|doc/man7/timew-(.*).7.in|\1|' | sort )"
-COMMANDS="$( ls doc/man1/*.in | sed -E 's|doc/man1/timew-(.*).1.in|\1|' | sort | tr '\n' ' ' )"
+CONCEPTS="$( find doc/man7 -name "timew-*.7*" | sed -E 's|doc/man7/timew-(.*)\.7.*|\1|' | sort -u )"
+COMMANDS="$( find doc/man1 -name "timew-*.1*" | sed -E 's|doc/man1/timew-(.*)\.1.*|\1|' | sort -u | tr '\n' ' ' )"
 
 echo "// Generated file. Do not modify"
 echo "#include <vector>"

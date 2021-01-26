@@ -1,0 +1,32 @@
+= timew-stop(1)
+
+== NAME
+timew-stop - stop time tracking
+
+== SYNOPSIS
+[verse]
+*timew stop* [_<date>_] [_<tag>_**...**]
+
+== DESCRIPTION
+Stops tracking time.
+If tags are specified, then they are no longer tracked.
+If no tags are specified, all tracking stops.
+
+== EXAMPLES
+For example:
+
+    $ timew start tag1 tag2
+    ...
+    $ timew stop tag1
+
+Initially time is tracked for both 'tag1' and 'tag2', then 'tag1' tracking is stopped, leaving tag2 active.
+To stop all tracking:
+
+    $ timew stop
+
+
+== SEE ALSO
+**timew-cancel**(1),
+**timew-continue**(1),
+**timew-start**(1),
+**timew-track**(1)

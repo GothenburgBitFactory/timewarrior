@@ -1,0 +1,27 @@
+= timew-track(1)
+
+== NAME
+timew-track - add intervals to the database
+
+== SYNOPSIS
+[verse]
+*timew track* _<range>_ [_<tag>_**...**]
+
+== DESCRIPTION
+The track command is used to add tracked time in the past.
+Perhaps you forgot to record time, or are just filling in old entries.
+
+== EXAMPLES
+For example:
+
+    $ timew track :yesterday 'Training Course'
+    $ timew track 9am - 11am 'Staff Meeting'
+
+Note that the track command expects a closed interval (start and end time), when recording.
+If a closed interval is not provided, the 'track' command behaves the same as the 'start' command.
+
+== SEE ALSO
+**timew-cancel**(1),
+**timew-continue**(1),
+**timew-start**(1),
+**timew-stop**(1)

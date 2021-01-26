@@ -1,0 +1,39 @@
+= timew-untag(1)
+
+== NAME
+timew-untag - remove tags from intervals
+
+== SYNOPSIS
+[verse]
+*timew untag* [_<id>_**...** ] _<tag>_**...**
+
+== DESCRIPTION
+The 'untag' command is used to remove a tag from an interval.
+Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
+Using the right ID, you can identify an interval to untag.
+
+== EXAMPLES
+For example, show the IDs:
+
+    $ timew summary :week :ids
+
+Then having selected '@2' as the interval you wish to untag:
+
+    $ timew untag @2 'Old Tag'
+
+Note that you can untag multiple intervals, with multiple tags:
+
+    $ timew untag @2 @10 @23 'Old Tag' tag2 tag3
+
+If there is active time tracking, you can omit the ID when you want to remove tags from the current open interval:
+
+    $ timew start foo bar
+    $ timew untag bar
+
+This results in the current interval having tag 'foo' but not 'bar'.
+
+== SEE ALSO
+**timew-lengthen**(1),
+**timew-shorten**(1),
+**timew-summary**(1),
+**timew-tag**(1)

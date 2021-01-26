@@ -1,0 +1,22 @@
+= timew-help(1)
+
+== NAME
+timew-help - display help
+
+== SYNOPSIS
+[verse]
+*timew help* {_<command>_|*interval*|*hints*|*date*|*duration*}
+
+== DESCRIPTION
+The help command shows detailed descriptions and examples of commands, interval syntax, supported hints, date and duration formats and DOM references.
+
+== EXAMPLES
+For example:
+
+    $ timew help
+    $ timew help start
+    $ timew help hints
+    $ timew help interval
+    $ timew help date
+    $ timew help duration
+    $ timew help dom

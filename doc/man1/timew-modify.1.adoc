@@ -1,0 +1,30 @@
+= timew-modify(1)
+
+== NAME
+timew-modify - change start or end date of an interval
+
+== SYNOPSIS
+[verse]
+*timew modify* (*start*|*end*) _<id>_ _<date>_
+
+== DESCRIPTION
+The 'modify' command is used to change the start or end date of an interval.
+Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
+Using the right ID, you can identify an interval to modify.
+
+== EXAMPLES
+For example, show the IDs:
+
+    $ timew summary :week :ids
+
+Then having selected '@3' as the interval you wish to modify:
+
+    $ timew modify end @3 2020-12-28T17:00:00
+
+
+== SEE ALSO
+**timew-lengthen**(1),
+**timew-move**(1),
+**timew-resize**(1)
+**timew-shorten**(1),
+**timew-summary**(1)

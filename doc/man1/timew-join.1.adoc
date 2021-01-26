@@ -1,0 +1,28 @@
+= timew-join(1)
+
+== NAME
+timew-join - join intervals
+
+== SYNOPSIS
+[verse]
+*timew join* _<id> <id>_
+
+== DESCRIPTION
+Joins two intervals, by using the earlier of the two start times, and the later of the two end times, and the combined set of tags.
+Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
+Using the correct IDs, you can identify an intervals to join.
+
+== EXAMPLES
+For example, show the IDs:
+
+    $ timew summary :week :ids
+
+Then having selected '@1' and '@2' as the intervals you wish to join:
+
+    $ timew join @1 @2
+
+== SEE ALSO
+**timew-lengthen**(1),
+**timew-resize**(1),
+**timew-shorten**(1),
+**timew-split**(1)

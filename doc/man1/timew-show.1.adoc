@@ -1,0 +1,14 @@
+= timew-show(1)
+
+== NAME
+timew-show - display configuration
+
+== SYNOPSIS
+[verse]
+*timew show*
+
+== DESCRIPTION
+Displays the effective configuration in hierarchical form.
+
+== SEE ALSO
+**timew-config**(1)

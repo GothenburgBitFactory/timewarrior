@@ -1,0 +1,25 @@
+= timew-gaps(1)
+
+== NAME
+timew-gaps - display time tracking gaps
+
+== SYNOPSIS
+[verse]
+*timew gaps* [_<range>_] [_<tag>_**...**]
+
+== DESCRIPTION
+Displays a summary of time that is neither tracked nor excluded from tracking.
+
+The 'reports.gaps.range' configuration setting overrides the default date range.
+The ':blank' hint causes only the excluded time to be shown, with no tracked time.
+The default date range shown is ':day'.
+
+The ':blank' hint causes only the excluded time to be shown, with no tracked time.
+
+== CONFIGURATION
+**reports.gaps.range**::
+For reports that show a range of data, this setting will override the default value.
+The value should be a range hint, see **timew-hints**(7).
+
+== SEE ALSO
+**timew-summary**(1)

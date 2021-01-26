@@ -1,0 +1,51 @@
+= timew-config(7)
+
+== NAME
+timew-config - Timewarrior configuration file and override options
+
+== SYNOPSIS
+**timew rc.**__<name>__**=**__<value>__ _<command>_
+
+== DESCRIPTION
+Timewarrior stores its configuration in the user's home directory in _~/.timewarrior/timewarrior.cfg_.
+This file contains a mix of rules and configuration settings.
+Note that the TIMEWARRIORDB environment variable can be set to override this location.
+
+The values 'true', '1', 'y', 'yes' and 'on' are all equivalent and enable a setting.
+Any other value means disable the setting.
+
+Default values may be overridden by timewarrior.cfg values, which may in turn be overridden on the command line using: **rc.**__<name>__**=**__<value>__
+
+For example, to turn off verbose mode:
+
+    rc.verbose=0
+
+Note that hints can also do this (:quiet).
+
+== CONFIGURATION
+
+*confirmation*::
+Determines whether harmful operations require interactive confirmation.
++
+May be overridden by the ':yes' hint.
++
+Default value is 'yes'.
+
+*verbose*::
+Determines whether Timewarrior generates feedback.
++
+May be overridden by the ':quiet' hint.
++
+Default value is 'yes'.
+
+*debug*::
+Determines whether diagnostic debugging information is shown.
++
+Useful for troubleshooting, but not for general use.
++
+Default value is 'off'.
+
+*debug.indicator*::
+The debug output prefix string.
++
+Default value is '>>'.

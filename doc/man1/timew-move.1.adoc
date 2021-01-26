@@ -1,0 +1,31 @@
+= timew-move(1)
+
+== NAME
+timew-move - change interval start-time
+
+== SYNOPSIS
+[verse]
+*timew move* _<id>_ _<date>_
+
+== DESCRIPTION
+The 'move' command is used to reposition an interval at a new start time.
+Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
+Using the right ID, you can identify an interval to move.
+
+== EXAMPLES
+For example, show the IDs:
+
+    $ timew summary :week :ids
+
+Then having selected '@2' as the interval you wish to move:
+
+    $ timew move @2 9am
+
+== SEE ALSO
+**timew-lengthen**(1),
+**timew-modify**(1),
+**timew-resize**(1),
+**timew-shorten**(1),
+**timew-summary**(1),
+**timew-tag**(1),
+**timew-untag**(1)

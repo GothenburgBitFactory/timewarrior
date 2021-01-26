@@ -1,0 +1,31 @@
+= timew-start(1)
+
+== NAME
+timew-start - start time tracking
+
+== SYNOPSIS
+[verse]
+*timew start* [_<date>_] [_<tag>_**...**]
+
+== DESCRIPTION
+Begins tracking using the current time with any specified set of tags.
+If a tag contains multiple words, therefore containing spaces, use quotes to surround the whole tag.
+
+== EXAMPLES
+For example, this command specifies two tags ('weekend' and 'Home & Garden'), the second of which requires quotes.
+
+    $ timew start weekend 'Home & Garden'
+
+An optional date may be specified to indicate the intended start of the tracked time:
+
+    $ timew start 8am weekend 'Home & Garden'
+
+If there is a previous open interval, it will be closed at the given start time.
+
+Quotes are harmless if used unnecessarily.
+
+== SEE ALSO
+**timew-cancel**(1),
+**timew-continue**(1),
+**timew-stop**(1),
+**timew-track**(1)
