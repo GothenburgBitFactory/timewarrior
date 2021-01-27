@@ -58,6 +58,8 @@ In addition to the standard date formats, the following are supported:
   <epoch>                               POSIX time
   later                                 2038-01-18T0:00:00 (Y2K38)
   someday                               2038-01-18T0:00:00 (Y2K38)
+  earlier                               1970-01-02T0:00:00
+  before                                1970-01-02T0:00:00
   sopd, eopd                            Start/end of previous day
   sod, eod                              Start/end of current day
   sond, eond                            Start/end of next day

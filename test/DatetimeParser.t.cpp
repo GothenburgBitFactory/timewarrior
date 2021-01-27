@@ -387,6 +387,7 @@ int main (int, char**)
   Datetime fourth ("4th");
 
   Datetime later ("later");
+  Datetime earlier ("earlier");
 
   // Test all format options.
   Datetime r32 ("2015-10-28T12:55:00");
