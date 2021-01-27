@@ -62,7 +62,7 @@ In addition to the standard date formats, the following are supported:
   <month-of-year>                       Previous 1st of the  month at 0:00:00
   hh:mm[:ss][am|a|pm|p]                 Short time format
   Nst, Nnd, Nrd, Nth                    Previous 1st, 2nd, 3rd ...
-  <epoch>                               POSIX time
+  <epoch>                               POSIX time (at least 315532800)
   later                                 2038-01-18T0:00:00 (Y2K38)
   someday                               2038-01-18T0:00:00 (Y2K38)
   sopd, eopd                            Start/end of previous day
