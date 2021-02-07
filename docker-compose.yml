@@ -72,15 +72,6 @@ services:
     security_opt:
       - label=type:container_runtime_t
     tty: true
-# Deactivated, see https://github.com/GothenburgBitFactory/timewarrior/issues/380
-#  test-gentoo:
-#    build:
-#      context: .
-#      dockerfile: test/docker/gentoo
-#    network_mode: "host"
-#    security_opt:
-#      - label=type:container_runtime_t
-#    tty: true
   test-opensuse1500:
     build:
       context: .
