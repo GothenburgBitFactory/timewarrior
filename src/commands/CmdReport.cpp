@@ -31,6 +31,7 @@
 #include <timew.h>
 #include <iostream>
 #include <sstream>
+#include <DatetimeParser.h>
 #include <FS.h>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -89,8 +90,16 @@ int CmdReport (
   if (script.empty ())
     throw std::string ("Specify which report to run.");
 
+  Range default_range;
+
+  std::string rangeRuleName = "reports." + Path (script).name() + ".range";
+  if (rules.has (rangeRuleName)) {
+    DatetimeParser dtp;
+    default_range = dtp.parse_range (rules.get (rangeRuleName));
+  }
+
   // Compose Header info.
-  auto filter = cli.getFilter ();
+  auto filter = cli.getFilter (default_range);
   auto tracked = getTracked (database, rules, filter);
 
   rules.set ("temp.report.start", filter.is_started () ? filter.start.toISO () : "");
