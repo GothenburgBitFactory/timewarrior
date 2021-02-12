@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 2.8.12)
 
 # This is a work-around for the following CMake issue:
 # https://gitlab.kitware.com/cmake/cmake/issues/16062
