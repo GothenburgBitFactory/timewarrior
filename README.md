@@ -40,7 +40,7 @@ There are two ways to retrieve the Timewarrior sources:
       tar xzf timew-1.4.2.tar.gz
       cd timew-1.4.2
 
-Build Timewarrior, optionally run the test suite (note: the tarball does not contain tests), and install it.
+Build Timewarrior, optionally run the test suite, and install it.
 
     cmake -DCMAKE_BUILD_TYPE=release
     make
