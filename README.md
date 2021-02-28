@@ -21,7 +21,8 @@ Building Timewarrior yourself requires
 * cmake
 * make
 * C++ compiler with full C++14 support, currently gcc 4.8.1+ or clang 3.3+ 
-* Python 3, for running the testsuite
+* Python 3 (for running the testsuite)
+* Asciidoctor (for creating documentation)
 
 There are two ways to retrieve the Timewarrior sources:
 
