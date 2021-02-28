@@ -1,6 +1,6 @@
 # Timewarrior
 
-[![Build Status](https://travis-ci.org/GothenburgBitFactory/timewarrior.svg?branch=dev)](https://travis-ci.org/GothenburgBitFactory/timewarrior)
+[![tests](https://github.com/GothenburgBitFactory/timewarrior/actions/workflows/tests.yaml/badge.svg)](https://github.com/GothenburgBitFactory/timewarrior/actions/workflows/tests.yaml)
 
 Thank you for taking a look at Timewarrior!
 
