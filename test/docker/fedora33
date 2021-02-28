@@ -1,0 +1,33 @@
+FROM fedora:33
+
+RUN dnf update -y
+RUN dnf install -y \
+        asciidoctor \
+        cmake \
+        findutils \
+        gcc-c++ \
+        glibc-locale-source \
+        git \
+        make \
+        man \
+        python3 \
+        python3-dateutil
+
+# Setup environment
+RUN alternatives --install /usr/bin/python python /usr/bin/python3 10
+RUN ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime
+
+# Setup timewarrior
+ADD . /root/code/
+WORKDIR /root/code/
+RUN git clean -dfx
+RUN git submodule init
+RUN git submodule update
+RUN cmake -DCMAKE_BUILD_TYPE=debug .
+RUN make -j2
+RUN make install
+
+# Setup tests
+RUN make -j2 test || true
+WORKDIR /root/code/test/
+CMD ["bash", "-c", "./problems --summary ; cat all.log | grep 'not ok' ; ./problems ; echo timew $( timew --version ) ; python --version ; cmake --version ; gcc --version"]

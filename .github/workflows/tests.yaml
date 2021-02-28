@@ -27,6 +27,9 @@ jobs:
           - name: "Fedora 32"
             runner: ubuntu-latest
             container: fedora32
+          - name: "Fedora 33"
+            runner: ubuntu-latest
+            container: fedora33
           - name: "OpenSUSE 15.0"
             runner: ubuntu-latest
             container: opensuse1500
