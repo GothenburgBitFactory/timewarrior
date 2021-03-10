@@ -40,11 +40,7 @@ int CmdStart (
 
   auto interval = cli.getFilter ({ now, 0 });
 
-  if (interval.start > now)
-  {
-    throw std::string ("Time tracking cannot be set in the future.");
-  }
-  else if (!interval.is_started () || interval.is_ended ())
+  if (!interval.is_started () || interval.is_ended ())
   {
     throw std::string ("The start command does not accept ranges but only a single datetime. "
                        "Perhaps you want the track command?");

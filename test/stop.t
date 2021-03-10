@@ -67,7 +67,7 @@ class TestStop(TestCase):
 
         code, out, err = self.t.runError("stop {:%Y-%m-%dT%H:%M:%S}Z".format(one_hour_before_utc))
 
-        self.assertIn("The end of a date range must be after the start.", err)
+        self.assertIn("cannot be stopped at", err)
 
         j = self.t.export()
 

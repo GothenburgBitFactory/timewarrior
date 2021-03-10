@@ -71,10 +71,6 @@ int CmdStop (
   {
     throw std::string ("No datetime specified.");
   }
-  else if (filter.start <= latest.start)
-  {
-    throw std::string ("The end of a date range must be after the start.");
-  }
 
   std::set <std::string> diff = {};
 
@@ -92,6 +88,23 @@ int CmdStop (
     std::set_difference(latest.tags ().begin (), latest.tags ().end (),
                         filter.tags ().begin (), filter.tags ().end (),
                         std::inserter(diff, diff.begin()));
+  }
+
+  if (filter.start <= latest.start)
+  {
+    std::stringstream sstr;
+
+    sstr << "Interval";
+    auto it = latest.tags ().cbegin ();
+    auto end = latest.tags ().cend ();
+    while (it != end)
+    {
+        sstr << " " << *it;
+        ++it;
+    }
+    sstr << " started at " << latest.start.toISOLocalExtended ()
+       << " cannot be stopped at " << filter.start.toISOLocalExtended () << '.';
+    throw sstr.str ();
   }
 
   journal.startTransaction ();

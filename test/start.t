@@ -72,9 +72,9 @@ class TestStart(TestCase):
 
         one_hour_after_utc = now_utc + timedelta(hours=1)
 
-        code, out, err = self.t.runError("start {:%Y-%m-%dT%H:%M:%S}Z FOO".format(one_hour_after_utc))
+        code, out, err = self.t("start {:%Y-%m-%dT%H:%M:%S}Z FOO".format(one_hour_after_utc))
 
-        self.assertIn("Time tracking cannot be set in the future.", err)
+        self.assertIn("Scheduled for", out)
 
     def test_start_with_open_interval(self):
         """Test start with already open interval, which should be auto-stopped"""

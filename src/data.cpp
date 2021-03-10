@@ -516,14 +516,15 @@ std::vector <Interval> getTracked (
 
   if (! intervals.empty ())
   {
+    const Datetime now {};
     auto latest = intervals.back ();
 
-    if (latest.is_open ())
+    if (latest.is_open () && latest.start <= now)
     {
       // Get the set of expanded exclusions that overlap the range defined by the open interval.
       Interval exclusion_range {};
       exclusion_range.start = latest.start;
-      exclusion_range.end = Datetime();
+      exclusion_range.end = now;
 
       auto exclusions = getAllExclusions (rules, exclusion_range);
       if (! exclusions.empty ())

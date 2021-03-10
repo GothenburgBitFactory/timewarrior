@@ -78,8 +78,6 @@ std::string intervalSummarize (const Rules& rules, const Interval& interval)
 
   if (interval.is_started ())
   {
-    Duration total (interval.total ());
-
     // Combine and colorize tags.
     std::string tags;
     for (auto& tag : interval.tags ())
@@ -95,10 +93,23 @@ std::string intervalSummarize (const Rules& rules, const Interval& interval)
     // Interval open.
     if (interval.is_open ())
     {
-      out << "Tracking " << tags << '\n'
+      const Datetime now {};
+      if (interval.start <= now)
+      {
+        out << "Tracking " << tags << '\n'
           << "  Started " << interval.start.toISOLocalExtended () << '\n'
-          << "  Current " << minimalDelta (interval.start, Datetime ()) << '\n'
-          << "  Total   " << std::setw (19) << std::setfill (' ') << total.formatHours () << '\n';
+          << "  Current " << minimalDelta (interval.start, now) << '\n'
+          << "  Total   " << std::setw (19) << std::setfill (' ') << Duration (interval.total ()).formatHours () << '\n';
+      }
+      else
+      {
+        out << "Tracking";
+        if (! tags.empty ())
+        {
+          out << " of " << tags;
+        }
+        out  << "\n  Scheduled for " << interval.start.toISOLocalExtended () << '\n';
+      }
     }
 
     // Interval closed.
@@ -107,7 +118,7 @@ std::string intervalSummarize (const Rules& rules, const Interval& interval)
       out << "Recorded " << tags << '\n'
           << "  Started " << interval.start.toISOLocalExtended () << '\n'
           << "  Ended   " << minimalDelta (interval.start, interval.end) << '\n'
-          << "  Total   " << std::setw (19) << std::setfill (' ') << total.formatHours () << '\n';
+          << "  Total   " << std::setw (19) << std::setfill (' ') << Duration (interval.total ()).formatHours () << '\n';
     }
   }
 
