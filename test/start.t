@@ -277,6 +277,14 @@ class TestStart(TestCase):
         self.t("start 1h ago proja")
         code, out, err = self.t("start 2h ago proja :adjust")
 
+    def test_start_with_one_quoted_and_one_non_quoted_tag(self):
+        """Start will allow tags encased in quotes"""
+        self.t("start 1h ago foo '\"bar\"' :debug")
+
+        j = self.t.export()
+        self.assertOpenInterval(j[0],
+                expectedTags=["\"bar\"", "foo"])
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

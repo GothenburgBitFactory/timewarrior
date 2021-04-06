@@ -219,7 +219,7 @@ void CLI::lexArguments ()
     if (lex.token (lexeme, type) &&
         lex.isEOS ())
     {
-      A2 a (Lexer::dequote (_original_args[i].attribute ("raw")), type);
+      A2 a (_original_args[i].attribute ("raw"), type);
       if (quoted)
         a.tag ("QUOTED");
 
