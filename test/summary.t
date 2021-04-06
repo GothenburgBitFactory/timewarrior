@@ -208,7 +208,7 @@ W10 2017-03-09 Thu @4 Tag1        8:43:08  9:38:15 0:55:07
         week_now = now.isocalendar()[1]
         week_tomorrow = tomorrow.isocalendar()[1]
 
-        two_digit_week = (week_yesterday > 9 | week_now > 9 | week_tomorrow > 9)
+        two_digit_week = (week_yesterday > 9 or week_now > 9 or week_tomorrow > 9)
 
         self.assertIn("""
 Wk{6} Date       Day ID Tags    Start      End    Time   Total
