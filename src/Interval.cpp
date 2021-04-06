@@ -143,7 +143,7 @@ std::string Interval::json () const
         if (tags[0])
           tags += ',';
 
-        tags += "\"" + escape (tag, '"') + "\"";
+        tags += "\"" + json::encode (tag) + "\"";
       }
 
       out << ",\"tags\":["
@@ -153,7 +153,7 @@ std::string Interval::json () const
 
     if (!annotation.empty ())
     {
-      out << ",\"annotation\":\"" << escape (annotation, '"') << "\"";
+      out << ",\"annotation\":\"" << json::encode (annotation) << "\"";
     }
   }
   out << "}";

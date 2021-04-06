@@ -477,7 +477,7 @@ void Database::initializeTagDatabase ()
 
       for (auto &pair : json->_data)
       {
-        auto key = str_replace (pair.first, "\\\"", "\"");
+        auto key = json::decode (pair.first);
         auto *value = (json::object *) pair.second;
         auto iter = value->_data.find ("count");
 
