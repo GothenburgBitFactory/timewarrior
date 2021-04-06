@@ -24,9 +24,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <JSON.h>
 #include <TagInfoDatabase.h>
 #include <format.h>
 #include <TagInfo.h>
+
 #include "timew.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -117,7 +119,7 @@ std::string TagInfoDatabase::toJson ()
     if (tagInfo.hasCount ())
     {
       json << (first ? "" : ",")
-         << "\n  \"" << escape(pair.first, '"') << "\":"
+         << "\n  \"" << json::encode (pair.first) << "\":"
          << tagInfo.toJson ();
 
       first = (first ? false : first);

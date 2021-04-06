@@ -28,6 +28,7 @@
 #include <Lexer.h>
 #include <IntervalFactory.h>
 #include <JSON.h>
+#include <shared.h>
 
 static std::vector <std::string> tokenizeSerialization (const std::string& line) 
 {
@@ -136,12 +137,12 @@ Interval IntervalFactory::fromJson (const std::string& jsonString)
       for (auto& tag : tags->_data)
       {
         auto* value = (json::string*) tag;
-        interval.tag(value->_data);
+        interval.tag (json::decode (value->_data));
       }
     }
 
     json::string* annotation = (json::string*) json->_data["annotation"];
-    interval.annotation = (annotation != nullptr) ? annotation->_data : "";
+    interval.annotation = (annotation != nullptr) ? json::decode (annotation->_data) : "";
 
     json::string* start = (json::string*) json->_data["start"];
     interval.start = (start != nullptr) ? Datetime(start->_data) : 0;
