@@ -466,7 +466,7 @@ void Rules::parseRuleSettings (
 ////////////////////////////////////////////////////////////////////////////////
 unsigned int Rules::getIndentation (const std::string& line)
 {
-  auto indent = line.find_first_not_of (" ");
+  auto indent = line.find_first_not_of (' ');
   if (indent == std::string::npos)
     indent = 0;
 
