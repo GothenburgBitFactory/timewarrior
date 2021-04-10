@@ -1,8 +1,12 @@
 
+- #159    Tags enclosed in escaped double-quotes are not handled correctly
+          (thanks to Shaun Ruffell)
 - #379    CmdSummary: Fix calculation of display start in summary table
           (thanks to Shaun Ruffell)
 - #390    dom.tracked.X.tag.Y always returns dom.tracked.1.tag.Y
           (thanks to pweaver2019)
+- #416    Internal error. Failed encode / decode check when doing undo
+          (thanks to Shaun Ruffell)
 -         Width determination of Unicode characters now works for up to
           Unicode 11 (from Unicode 5). Emojis are correctly displayed.
 -         Fix test `summary.t` for single-digit weeks
