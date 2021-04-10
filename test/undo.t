@@ -92,11 +92,11 @@ class TestUndo(TestCase):
         self.t("undo")
 
         j = self.t.export()
+        self.assertEqual(len(j), 2, msg="Expected 2 intervals afterwards, got {}".format(len(j)))
         self.assertOpenInterval(j[1],
                                 expectedStart=one_hour_before_utc,
                                 expectedTags=["bar"],
                                 expectedAnnotation="")
-
 
     def test_undo_cancel(self):
         """Test undo of command 'cancel'"""
