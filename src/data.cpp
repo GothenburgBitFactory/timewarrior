@@ -127,6 +127,7 @@ std::vector <Range> getAllExclusions (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Convert what would be synthetic intervals into real intervals in the database
 void flattenDatabase (Database& database, const Rules& rules)
 {
   auto latest = getLatestInterval (database);
@@ -135,13 +136,23 @@ void flattenDatabase (Database& database, const Rules& rules)
     auto exclusions = getAllExclusions (rules, {latest.start, Datetime ()});
     if (! exclusions.empty ())
     {
-      Interval modified {latest};
+      std::vector <Interval> flattened = flatten (latest, exclusions);
 
-      // Update database.
-      database.deleteInterval (latest);
-      for (auto& interval : flatten (modified, exclusions))
+      // If flattened returns only the latest then there are not any synthetic
+      // intervals to convert.
+      if (flattened.size () > 1)
       {
-        database.addInterval (interval, rules.getBoolean ("verbose"));
+        // Update database.
+        bool verbose = rules.getBoolean ("verbose");
+        database.deleteInterval (latest);
+        for (auto& interval : flattened)
+        {
+          database.addInterval (interval, verbose);
+        }
+      }
+      else
+      {
+        assert (latest == flattened[0]);
       }
     }
   }
