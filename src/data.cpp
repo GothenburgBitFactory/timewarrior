@@ -25,6 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <algorithm>
+#include <cassert>
 #include <deque>
 
 #include <cmake.h>
@@ -175,15 +176,28 @@ std::vector <Interval> getIntervalsByIds (
     auto exclusions = getAllExclusions (rules, {latest.start, Datetime ()});
     if (! exclusions.empty ())
     {
-      // We're converting the latest interval into synthetic intervals so we need to skip it
-      ++it;
+      std::vector <Interval> flattened = flatten (latest, exclusions);
 
-      for (auto& interval : flatten (latest, exclusions))
+      // If flatten() converted the latest interval into a group of synthetic
+      // intervals, the number of returned intervals will be greater than 1,
+      // otherwise, it just returned the non-synthetic latest interval.
+      if (flattened.size () > 1)
       {
-        ++current_id;
-        interval.synthetic = true;
-        interval.id = current_id;
-        synthetic.push_front (interval);
+        // Skip over the latest interval since we're converting it into a group
+        // of synthetic intervals
+        ++it;
+
+        for (auto& interval : flattened)
+        {
+          ++current_id;
+          interval.synthetic = true;
+          interval.id = current_id;
+          synthetic.push_front (std::move(interval));
+        }
+      }
+      else
+      {
+        assert (latest == flattened[0]);
       }
     }
   }
