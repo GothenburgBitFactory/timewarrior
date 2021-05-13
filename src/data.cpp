@@ -175,16 +175,16 @@ std::vector <Interval> getIntervalsByIds (
     auto exclusions = getAllExclusions (rules, {latest.start, Datetime ()});
     if (! exclusions.empty ())
     {
-        // We're converting the latest interval into synthetic intervals so we need to skip it
-        ++it;
+      // We're converting the latest interval into synthetic intervals so we need to skip it
+      ++it;
 
-        for (auto& interval : flatten (latest, exclusions))
-        {
-          ++current_id;
-          interval.synthetic = true;
-          interval.id = current_id;
-          synthetic.push_front (interval);
-        }
+      for (auto& interval : flatten (latest, exclusions))
+      {
+        ++current_id;
+        interval.synthetic = true;
+        interval.id = current_id;
+        synthetic.push_front (interval);
+      }
     }
   }
 
