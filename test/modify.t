@@ -249,6 +249,35 @@ class TestModify(TestCase):
                                 expectedTags=[],
                                 description="moved interval")
 
+    def test_modify_move_start_inside_exclusion(self):
+        """`timew modify` should handle moving start times within an exclusion."""
+
+        now = datetime.now().replace(second=0, microsecond=0, minute=0)
+        three_hours_before = now - timedelta(hours=3)
+        four_hours_before = now - timedelta(hours=4)
+
+        now_utc = now.utcnow().replace(second=0, microsecond=0, minute=0)
+        day_before = now_utc - timedelta(days=1)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+
+        self.t.configure_exclusions((four_hours_before.time(), three_hours_before.time()))
+
+        # Start an interval within the exclusion
+        self.t("start {:%Y-%m-%dT%H:%M:%S} foo".format(four_hours_before + timedelta(minutes=20)))
+
+        # Now modify the start time, but keep the start within the exclusion
+        self.t("modify start @1 {:%Y-%m-%dT%H:%M:%S} :debug".format(four_hours_before + timedelta(minutes=10)))
+
+        j = self.t.export() 
+
+        self.assertEqual(len(j), 1)
+        self.assertOpenInterval(j[0],
+                                expectedStart=four_hours_before_utc + timedelta(minutes=10),
+                                expectedTags=['foo'])
+
+
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
 
