@@ -108,7 +108,7 @@ void Datafile::addInterval (const Interval& interval)
     if (interval != test)
     {
       throw (format ("Encode / decode check failed:\n  {1}\nis not equal to:\n  {2}",
-                     serialization, test.serialize ()));
+                     interval.dump (), test.dump ()));
     }
 
     _lines.push_back (serialization);
