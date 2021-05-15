@@ -26,7 +26,6 @@
 
 #include <algorithm>
 #include <cassert>
-#include <deque>
 
 #include <cmake.h>
 #include <shared.h>
@@ -127,60 +126,12 @@ std::vector <Range> getAllExclusions (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Convert what would be synthetic intervals into real intervals in the database
-void flattenDatabase (Database& database, const Rules& rules)
+// Potentially expand the latest interval into a collection of synthetic
+// intervals.
+std::vector <Interval> expandLatest (const Interval& latest, const Rules& rules)
 {
-  auto latest = getLatestInterval (database);
-  if (latest.is_open ())
-  {
-    auto exclusions = getAllExclusions (rules, {latest.start, Datetime ()});
-    if (! exclusions.empty ())
-    {
-      std::vector <Interval> flattened = flatten (latest, exclusions);
-
-      // If flattened returns only the latest then there are not any synthetic
-      // intervals to convert.
-      if (flattened.size () > 1)
-      {
-        // Update database.
-        bool verbose = rules.getBoolean ("verbose");
-        database.deleteInterval (latest);
-        for (auto& interval : flattened)
-        {
-          database.addInterval (interval, verbose);
-        }
-      }
-      else
-      {
-        assert (latest == flattened[0]);
-      }
-    }
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// This function will return synthetic intervals
-std::vector <Interval> getIntervalsByIds (
-  Database& database,
-  const Rules& rules,
-  const std::set <int>& ids)
-{
-  std::vector <Interval> intervals;
-  std::deque <Interval> synthetic;
-
   int current_id = 0;
-  auto id_it = ids.begin ();
-  auto id_end = ids.end ();
-
-  auto it = database.begin ();
-  auto end = database.end ();
-
-  Interval latest;
-  if (it != end )
-  {
-    latest = IntervalFactory::fromSerialization (*it);
-  }
-
+  std::vector <Interval> intervals;
   // If the latest interval is open, check for synthetic intervals
   if (latest.is_open ())
   {
@@ -194,53 +145,89 @@ std::vector <Interval> getIntervalsByIds (
       // otherwise, it just returned the non-synthetic latest interval.
       if (flattened.size () > 1)
       {
-        // Skip over the latest interval since we're converting it into a group
-        // of synthetic intervals
-        ++it;
-
-        for (auto& interval : flattened)
+        std::reverse (flattened.begin (), flattened.end ());
+        for (auto interval : flattened)
         {
-          ++current_id;
           interval.synthetic = true;
-          interval.id = current_id;
-          synthetic.push_front (std::move(interval));
+          interval.id = ++current_id;
+          intervals.push_back (std::move (interval));
         }
       }
-      else
+    }
+  }
+
+  if (intervals.empty ())
+  {
+    intervals.push_back (latest);
+    intervals.back().id = 1;
+  }
+  return intervals;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Convert what would be synthetic intervals into real intervals in the database
+void flattenDatabase (Database& database, const Rules& rules)
+{
+  Interval latest = getLatestInterval (database);
+  std::vector <Interval> expanded = expandLatest (latest, rules);
+
+  if (expanded.size () > 1)
+  {
+    bool verbose = rules.getBoolean ("verbose");
+    database.deleteInterval (latest);
+    for (auto it = expanded.rbegin (); it != expanded.rend (); ++it)
+    {
+      it->synthetic = false;
+      database.addInterval (*it, verbose);
+    }
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Return collection of intervals (synthetic included) sorted by id
+std::vector <Interval> getIntervalsByIds (
+  Database& database,
+  const Rules& rules,
+  const std::set <int>& ids)
+{
+  std::vector <Interval> intervals;
+  intervals.reserve (ids.size ());
+
+  int current_id = 0;
+  auto id_it = ids.begin ();
+  auto id_end = ids.end ();
+
+  auto it = database.begin ();
+  auto end = database.end ();
+
+  // Because the latest recorded interval may be expanded into synthetic
+  // intervals, we'll handle it specially
+  if (it != end )
+  {
+    Interval latest = IntervalFactory::fromSerialization (*it);
+    ++it;
+
+    for (auto& interval : expandLatest (latest, rules))
+    {
+      ++current_id;
+
+      if (id_it == id_end)
       {
-        assert (latest == flattened[0]);
+        break;
+      }
+
+      if (interval.id == *id_it)
+      {
+        intervals.push_back (interval);
+        ++id_it;
       }
     }
   }
 
-  intervals.reserve (ids.size ());
-
-  // First look for the ids in our set of synthetic intervals
-  for (auto& interval : synthetic)
-  {
-    if (id_it == id_end)
-    {
-      break;
-    }
-
-    if (interval.id == *id_it)
-    {
-      intervals.push_back (interval);
-      ++id_it;
-    }
-  }
-
-  current_id = synthetic.size ();
-
-  // We'll find remaining intervals from the database itself
-  for ( ; it != end; ++it)
+  // We'll find remaining intervals from the normal recorded intervals
+  for ( ; (it != end) && (id_it != id_end); ++it)
   {
     ++current_id;
-
-    if (id_it == id_end)
-    {
-      break;
-    }
 
     if (current_id == *id_it)
     {
@@ -258,23 +245,6 @@ std::vector <Interval> getIntervalsByIds (
   }
 
   return intervals;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> subset (
-  const Interval& filter,
-  const std::deque <Interval>& intervals)
-{
-  std::vector <Interval> all;
-  for (auto& interval : intervals)
-  {
-    if (matchesFilter (interval, filter))
-    {
-      all.push_back (interval);
-    }
-  }
-
-  return all;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -511,91 +481,62 @@ Interval clip (const Interval& interval, const Range& range)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Return collection of intervals that match the filter (synthetic intervals
+// included) sorted by date
 std::vector <Interval> getTracked (
   Database& database,
   const Rules& rules,
   Interval& filter)
 {
-  int id_skip = 0;
-  std::deque <Interval> intervals;
+  int current_id = 0;
+  std::vector <Interval> intervals;
 
-  for (auto& line : database)
+  auto it = database.begin ();
+  auto end = database.end ();
+
+  // Because the latest recorded interval may be expanded into synthetic
+  // intervals, we'll handle it specially
+  if (it != end )
   {
-    Interval interval = IntervalFactory::fromSerialization(line);
+    Interval latest = IntervalFactory::fromSerialization (*it);
+    ++it;
 
-    // Since we are moving backwards, and the intervals are in sorted order,
-    // if the filter is after the interval, we know there will be no more matches
-    if (matchesRange (interval, filter))
+    for (auto& interval : expandLatest (latest, rules))
     {
-      intervals.push_front (std::move (interval));
-    }
-    else if (interval.start.toEpoch () >= filter.start.toEpoch ())
-    {
-      ++id_skip;
-    }
-    else
-    {
-      break;
-    }
-  }
-
-  if (! intervals.empty ())
-  {
-    auto latest = intervals.back ();
-
-    if (latest.is_open ())
-    {
-      // Get the set of expanded exclusions that overlap the range defined by the open interval.
-      Interval exclusion_range {};
-      exclusion_range.start = latest.start;
-      exclusion_range.end = Datetime();
-
-      auto exclusions = getAllExclusions (rules, exclusion_range);
-      if (! exclusions.empty ())
+      ++current_id;
+      if (matchesFilter (interval, filter))
       {
-        intervals.pop_back ();
-
-        for (auto& interval : flatten (latest, exclusions))
-        {
-          if (latest.synthetic ||
-              latest != interval)
-            interval.synthetic = true;
-
-          intervals.push_back (interval);
-        }
+        interval.id = current_id;
+        intervals.push_back (interval);
       }
     }
   }
 
-  // Assign an ID to each interval before we prune ones that do not have matching tags
-  for (unsigned int i = 0; i < intervals.size (); ++i)
+  for (; it != end; ++it)
   {
-    intervals[i].id = intervals.size () - i + id_skip;
-  }
+    Interval interval = IntervalFactory::fromSerialization(*it);
+    interval.id = ++current_id;
 
-  // Now prune the intervals without matching tags
-  if (filter.tags ().size () > 0)
-  {
-    auto cmp = [&filter] (const Interval& interval)
-               {
-                 for (const auto& tag : filter.tags ())
-                 {
-                   if (! interval.hasTag (tag))
-                   {
-                     return true;
-                   }
-                 }
-                 return false;
-               };
+    // Since we are moving backwards in time, and the intervals are in sorted
+    // order, if the filter is after the interval, we know there will be no
+    // more matches
+    if (interval.start < filter.start)
+    {
+      break;
+    }
 
-    intervals.erase (std::remove_if (intervals.begin (), intervals.end (), cmp),
-                     intervals.end ());
+    if (matchesFilter (interval, filter))
+    {
+      intervals.push_back (std::move (interval));
+    }
   }
 
   debug (format ("Loaded {1} tracked intervals", intervals.size ()));
 
-  return std::vector <Interval> (std::make_move_iterator (intervals.begin ()),
-                                 std::make_move_iterator (intervals.end ()));
+  // By default intervals are sorted by id, but getTracked needs to return the
+  // intervals sorted by date, which are ids in reverse order.
+  std::reverse (intervals.begin (), intervals.end ());
+  return intervals;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
