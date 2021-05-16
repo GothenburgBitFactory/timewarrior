@@ -3,10 +3,22 @@
           (thanks to Shaun Ruffell)
 - #379    CmdSummary: Fix calculation of display start in summary table
           (thanks to Shaun Ruffell)
+- #387    Fixed URL for tarball download
+          (thanks to Joerg Kastning)
 - #390    dom.tracked.X.tag.Y always returns dom.tracked.1.tag.Y
           (thanks to pweaver2019)
-- #416    Internal error. Failed encode / decode check when doing undo
+- #393    Update dark_blue.theme
+          (thanks to Peter Zuidema)
+- #398    test: Thread.isAlive() -> Thread.is_alive()
           (thanks to Shaun Ruffell)
+- #410    Replace roff man pages with asciidoctor
+- #411    Transfer platform testing from Travis CI to Github Actions
+- #416    Internal error. Failed encode / decode check when doing undo
+          (thanks to narudarurarasya, Shaun Ruffel)
+- #419    Links not preserved over linebreaks in man page
+          (thanks to draupadi77)
+- #422    Internal error. Failed encode / decode check.
+          (thanks to Glen Solsberry, Shaun Ruffell)
 -         Width determination of Unicode characters now works for up to
           Unicode 11 (from Unicode 5). Emojis are correctly displayed.
 -         Fix test `summary.t` for single-digit weeks
