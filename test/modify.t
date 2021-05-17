@@ -257,10 +257,7 @@ class TestModify(TestCase):
         four_hours_before = now - timedelta(hours=4)
 
         now_utc = now.utcnow().replace(second=0, microsecond=0, minute=0)
-        day_before = now_utc - timedelta(days=1)
-        three_hours_before_utc = now_utc - timedelta(hours=3)
         four_hours_before_utc = now_utc - timedelta(hours=4)
-        five_hours_before_utc = now_utc - timedelta(hours=5)
 
         self.t.configure_exclusions((four_hours_before.time(), three_hours_before.time()))
 
