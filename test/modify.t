@@ -27,10 +27,10 @@
 ###############################################################################
 
 import os
-import sys
 import unittest
-
 from datetime import datetime, timedelta
+
+import sys
 
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
