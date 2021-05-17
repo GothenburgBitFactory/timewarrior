@@ -2,7 +2,7 @@
 
 ###############################################################################
 #
-# Copyright 2016 - 2019, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+# Copyright 2016 - 2020, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -26,13 +26,13 @@
 #
 ###############################################################################
 
+import json
 import os
 import shutil
-import sys
 import unittest
-import json
-
 from datetime import datetime, timedelta
+
+import sys
 
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
