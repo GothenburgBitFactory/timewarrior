@@ -198,6 +198,21 @@ class TestExport(TestCase):
                                   expectedId=2,
                                   expectedTags=["Tag1", "Tag3"])
 
+    def test_export_with_intersecting_filter(self):
+        """Export with filter that is contained by interval"""
+        self.t("track Tag1 2021-02-01T00:00:00 - 2021-03-01T00:00:00")
+        self.t("track Tag2 2021-03-01T00:00:00 - 2021-04-01T00:00:00")
+
+        # Pass a filter to export that is contained within the above intervals
+        # and check that it picks up the containing interval
+        j = self.t.export("2021-02-02 - 2021-02-03")
+
+        self.assertEqual(len(j), 1)
+
+        self.assertClosedInterval(j[0],
+                                  expectedId=2,
+                                  expectedTags=["Tag1"])
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

@@ -517,17 +517,16 @@ std::vector <Interval> getTracked (
     Interval interval = IntervalFactory::fromSerialization(*it);
     interval.id = ++current_id;
 
-    // Since we are moving backwards in time, and the intervals are in sorted
-    // order, if the filter is after the interval, we know there will be no
-    // more matches
-    if (interval.start < filter.start)
-    {
-      break;
-    }
-
     if (matchesFilter (interval, filter))
     {
       intervals.push_back (std::move (interval));
+    }
+    else if ((interval.start < filter.start) && ! interval.intersects (filter))
+    {
+      // Since we are moving backwards in time, and the intervals are in sorted
+      // order, if the filter is after the interval, we know there will be no
+      // more matches
+      break;
     }
   }
 
