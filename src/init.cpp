@@ -153,7 +153,7 @@ void initializeDataJournalAndRules (
   // ~/.timewarrior‥
   Directory dbLocation;
   char* override = getenv ("TIMEWARRIORDB");
-  dbLocation = Directory (override ? override : "~/.timewarrior");
+  dbLocation = Directory (override ? override : "~/.local/share/timewarrior");
 
   // If dbLocation exists, but is not readable/writable/executable, error.
   if (dbLocation.exists () &&
