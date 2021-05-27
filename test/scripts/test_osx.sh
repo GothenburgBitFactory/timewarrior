@@ -4,9 +4,11 @@ brew install cmake
 brew install pyenv
 brew install asciidoctor
 
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$( pyenv init --path )"
 pyenv install 3.8.0
 pyenv global 3.8.0
-eval "$( pyenv init - )"
 pip install --upgrade pip
 pip install python-dateutil
 
