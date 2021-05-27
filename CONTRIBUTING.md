@@ -206,5 +206,5 @@ To be a little more explicit, the common elements across the languages are:
 
 We target Python 3 so that our test suite runs on the broadest set of platforms.
 
-We can safely target C++11 because all the default compilers on our supported platforms are ready.
-Feel free to use C++14 and C++17 provided that all build platforms support this.
+We can safely target C++14 because all the default compilers on our supported platforms are ready.
+Feel free to use C++17 and C++20 provided that all build platforms support this.
