@@ -33,12 +33,12 @@ There are two ways to retrieve the Timewarrior sources:
 
 * Or download the tarball with curl,
 
-      curl -O https://github.com/GothenburgBitFactory/timewarrior/releases/download/v1.4.2/timew-1.4.2.tar.gz
+      curl -O https://github.com/GothenburgBitFactory/timewarrior/releases/download/v1.4.3/timew-1.4.3.tar.gz
 
   and expand the tarball
 
-      tar xzf timew-1.4.2.tar.gz
-      cd timew-1.4.2
+      tar xzf timew-1.4.3.tar.gz
+      cd timew-1.4.3
 
 Build Timewarrior, optionally run the test suite, and install it.
 

@@ -7,7 +7,7 @@ project (timew)
 include (CXXSniffer)
 include (FindAsciidoctor)
 
-set (PROJECT_VERSION "1.4.2")
+set (PROJECT_VERSION "1.4.3")
 
 string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
 

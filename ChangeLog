@@ -1,3 +1,6 @@
+------ current release ---------------------------
+
+1.4.3 (2021-05-28) -
 
 - #159    Tags enclosed in escaped double-quotes are not handled correctly
           (thanks to Shaun Ruffell)
@@ -23,14 +26,12 @@
           Unicode 11 (from Unicode 5). Emojis are correctly displayed.
 -         Fix test `summary.t` for single-digit weeks
 
------- current release ---------------------------
+------ old releases ------------------------------
 
 1.4.2 (2020-08-29) - 4aa8489243adb69958d7717fb2f010c72fd4505a
 
 - #377    make install with error due to missing file `COPYING`
           (thanks to Dirk Deimeke)
-
------- old releases ------------------------------
 
 1.4.1 (2020-08-29) - 6747beb2963475f50d2d58b1da5465247eb9e28e
 
