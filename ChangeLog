@@ -1,6 +1,6 @@
 ------ current release ---------------------------
 
-1.4.3 (2021-05-28) -
+1.4.3 (2021-05-28) - fc618636aacba6e52d447b482aeef58b375dfc8c
 
 - #159    Tags enclosed in escaped double-quotes are not handled correctly
           (thanks to Shaun Ruffell)
