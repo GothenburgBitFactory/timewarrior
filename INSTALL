@@ -9,6 +9,7 @@ In order to build Timewarrior, you will need:
 
   - cmake (See https://cmake.org)
   - make
+  - asciidoctor (for building documentation)
 
 You will need a C++ compiler that supports full C++14, which includes:
   - gcc 6.1
@@ -107,7 +108,7 @@ To uninstall Timewarrior, remove the files listed in the `install_manifest.txt` 
 
 Timewarrior has dependencies that are detected by CMake in almost all cases, but there are situations and operating systems that mean you will need to offer a little help.
 
-If Timewarrior will not build on your system, first take a look at the Operating System notes below.
+If Timewarrior does not build on your system, first take a look at the Operating System notes below.
 If this doesn't help, then go to the Troubleshooting section, which includes instructions on how to contact us for help.
 
 
