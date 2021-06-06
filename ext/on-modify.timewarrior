@@ -58,6 +58,9 @@ def extract_tags_from(json_obj):
         tags.append(json_obj['project'])
 
     if 'tags' in json_obj:
+        for i in range(len(json_obj['tags'])):
+            if json_obj['tags'][i].isnumeric():
+                json_obj['tags'][i] = '#' + json_obj['tags'][i]
         tags.extend(json_obj['tags'])
 
     return tags
