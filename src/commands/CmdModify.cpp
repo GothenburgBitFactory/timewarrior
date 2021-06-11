@@ -46,7 +46,7 @@ int CmdModify (
 
   if (words.empty())
   {
-    throw std::string ("Must specify start|end command to modify. See 'timew help modify'.");
+    throw std::string ("Usage: timew modify ( start | end ) <id> <date>\nMust specify start|end command to modify. See 'timew help modify'.");
   }
 
   if (words.at (0) == "start")
@@ -59,7 +59,7 @@ int CmdModify (
   }
   else
   {
-    throw format ("Must specify start|end command to modify. See 'timew help modify'.", words.at (0));
+    throw format ("Usage: timew modify ( start | end ) <id> <date>\nMust specify start|end command to modify. See 'timew help modify'.", words.at (0));
   }
 
   if (ids.empty ())
