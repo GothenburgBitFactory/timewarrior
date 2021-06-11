@@ -3,7 +3,7 @@ FROM centos:8
 RUN dnf update -y
 RUN dnf install -y \
         ruby \
-        cmake3 \
+        cmake \
         gcc-c++ \
         git \
         make \
