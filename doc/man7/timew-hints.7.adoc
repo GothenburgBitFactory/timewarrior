@@ -17,7 +17,7 @@ Other hints, such as:
 
   :quiet
 
-Are ways to control the behavior of Timewarrior, in this case eliminating all forms of feedback, for purposes of automation.
+are ways to control the behavior of Timewarrior, in this case eliminating all forms of feedback, for purposes of automation.
 
 The supported hints are:
 
@@ -34,6 +34,7 @@ The supported hints are:
 
 Range hints provide convenient shortcuts to date ranges:
 
+  :all           All tracked time
   :yesterday     The 24 hours of the previous day
   :day           The 24 hours of the current day
   :week          This week

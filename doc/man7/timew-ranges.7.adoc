@@ -27,4 +27,9 @@ Examples are:
   2h ago
   for 2h
 
-An interval is said to be 'closed' if there is both a start and end, and 'open' if there is no end date.
+An interval is called 'closed' if there is both a start date and an end date, and 'open' if there is no end date.
+
+There is also a number of useful hints for common ranges.
+
+== SEE ALSO
+**timew-hints**(7)
