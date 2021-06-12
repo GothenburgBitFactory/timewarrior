@@ -142,11 +142,11 @@ To make a pull request you need to have a Github account.
 1. Commit your changes, and finally push to the remote repository.
    Use a commit message that matches the prevailing format. (See `git log` for examples.)
    
-       $ git commit -am '<issue>: <description>'
+       $ git commit --signoff -am '<issue>: <description>'
        ...
        $ git push origin feature_branch
     
-    Furthermore, commits should be signed off according to the [DCO](DCO).
+    Furthermore, commits should be signed off according to the [DCO](DCO) (use `-s` / `--signoff` flag when commiting).
     
 1. Create the pull request on Github.
 
