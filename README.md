@@ -1,6 +1,18 @@
-# Timewarrior
+<div align="center">
+<img src="https://avatars.githubusercontent.com/u/36100920?s=200&u=24da05914c20c4ccfe8485310f7b83049407fa9a&v=4"></br>
 
-[![tests](https://github.com/GothenburgBitFactory/timewarrior/actions/workflows/tests.yaml/badge.svg)](https://github.com/GothenburgBitFactory/timewarrior/actions/workflows/tests.yaml)
+[![Tests](https://github.com/GothenburgBitFactory/timewarrior/actions/workflows/tests.yaml/badge.svg)](https://github.com/GothenburgBitFactory/timewarrior/actions/workflows/tests.yaml)
+[![Release](https://img.shields.io/github/v/release/GothenburgBitFactory/timewarrior)](https://github.com/GothenburgBitFactory/timewarrior/releases/latest)
+[![Release date](https://img.shields.io/github/release-date/GothenburgBitFactory/timewarrior)](https://github.com/GothenburgBitFactory/timewarrior/releases/latest)
+![Commits since release](https://img.shields.io/github/commits-since/GothenburgBitFactory/timewarrior/latest)
+</br>
+[![Twitter](https://img.shields.io/twitter/follow/timewarrior_net?style=social)](https://twitter.com/timewarrior_net)
+</div>
+
+# Timewarrior
+![OS-X downloads](https://img.shields.io/homebrew/installs/dy/timewarrior?label=OS-X%20downloads)
+![Github downloads](https://img.shields.io/github/downloads/GothenburgBitFactory/timewarrior/total?label=Github%20downloads)
+![Linux downloads](https://img.shields.io/badge/Linux%20downloads-unknown-gray)
 
 Thank you for taking a look at Timewarrior!
 
@@ -8,6 +20,11 @@ Timewarrior is a time tracking utility that offers simple stopwatch features as 
 It is a portable, well supported and very active Open Source project.
 
 ## Installing
+[![Arch](https://img.shields.io/archlinux/v/community/x86_64/timew)](https://archlinux.org/packages/community/x86_64/timew/)
+[![Debian](https://img.shields.io/debian/v/timewarrior/testing)](https://packages.debian.org/search?keywords=timewarrior&searchon=names&suite=all&section=all)
+[![Fedora](https://img.shields.io/fedora/v/timew)](https://bodhi.fedoraproject.org/updates/?packages=timew)
+[![Homebrew](https://img.shields.io/homebrew/v/timewarrior)](https://formulae.brew.sh/formula/timewarrior#default)
+[![Ubuntu](https://img.shields.io/ubuntu/v/timew)](https://packages.ubuntu.com/search?keywords=timewarrior&searchon=names&suite=hirsute&section=all)
 
 ### From Package
 
@@ -59,12 +76,29 @@ You'll find all the details at [timewarrior.net/docs/](https://timewarrior.net/d
 
 There you will find the documentation, downloads, news and more.
 
+## Community
+[![Twitter](https://img.shields.io/twitter/follow/timewarrior_net?style=social)](https://twitter.com/timewarrior_net)
+[![Reddit](https://img.shields.io/reddit/subreddit-subscribers/taskwarrior?style=social)](https://reddit.com/r/taskwarrior/)
+[![Libera.chat](https://img.shields.io/badge/IRC%20libera.chat-online-green)](https://web.libera.chat/#taskwarrior)
+[![Discord](https://img.shields.io/discord/796949983734661191?label=discord)](https://discord.gg/eRXEHk8w62)
+[![Github discussions](https://img.shields.io/github/discussions/GothenburgBitFactory/timewarrior?label=GitHub%20discussions)](https://github.com/GothenburgBitFactory/timewarrior/discussions)
+
+Timewarrior has a lively community on many places on the internet. The project has its own Twitter account, and shares community spaces on IRC and Discord with [Taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior).
+
+Best place to ask questions is our [discussions forum on
+Github](https://github.com/GothenburgBitFactory/timewarrior/discussions). For
+other support options, take a look at
+[timewarrior.net/support](https://timewarrior.net/support)
+
 ## Contributing
+[![Contributors](https://img.shields.io/github/contributors/GothenburgBitFactory/timewarrior)](https://github.com/GothenburgBitFactory/timewarrior/graphs/contributors)
+[![Milestone progress](https://img.shields.io/github/milestones/progress/GothenburgBitFactory/timewarrior/11?label=current%20milestone%20issues)](https://github.com/GothenburgBitFactory/timewarrior/milestone/11)
+[![Good first issus](https://img.shields.io/github/issues/GothenburgBitFactory/timewarrior/good%20first%20issue)](https://github.com/GothenburgBitFactory/timewarrior/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 
 Your contributions are especially welcome.
 Whether it comes in the form of code patches, ideas, discussion, bug reports, encouragement or criticism, your input is needed.
 
-For support options, take a look at [CONTRIBUTING.md](CONTRIBUTING.md) or visit [taskwarrior.org](https://taskwarrior.org/support).
+For support options, take a look at [CONTRIBUTING.md](CONTRIBUTING.md) or visit [timewarior.net](https://timewarrior.net/support).
 
 Visit [Github](https://github.com/GothenburgBitFactory/timewarrior) and participate in the future of Timewarrior.
 
