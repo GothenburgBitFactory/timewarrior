@@ -6,9 +6,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          #- name: "Archlinux Base"
-          #  runner: ubuntu-latest
-          #  container: archlinux
+          - name: "Archlinux Base"
+            runner: ubuntu-latest
+            container: archlinux
           - name: "Centos 7"
             runner: ubuntu-latest
             container: centos7

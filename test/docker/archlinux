@@ -1,5 +1,6 @@
-FROM archlinux/base
+FROM archlinux:base
 
+RUN pacman-key --init
 RUN pacman -Sy --noconfirm archlinux-keyring
 RUN pacman -Syu --noconfirm
 RUN pacman -S --noconfirm \
