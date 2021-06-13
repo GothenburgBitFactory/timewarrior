@@ -42,8 +42,11 @@ jobs:
           - name: "Ubuntu 20.04"
             runner: ubuntu-latest
             container: ubuntu2004
-          - name: "Mac OS X 10.15"
+          - name: "macOS 10.15"
             runner: macos-10.15
+            container: osx
+          - name: "macOS 11"
+            runner: macos-11
             container: osx
     runs-on: ${{ matrix.runner }}
     continue-on-error: ${{ matrix.continue-on-error == true }}
