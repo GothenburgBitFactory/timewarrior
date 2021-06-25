@@ -103,6 +103,11 @@ class TestCLI(TestCase):
         code, out, err = self.t.runError("bogus")
         self.assertIn("'bogus' is not a timew command. See 'timew help'.", err)
 
+    def test_TimeWarrior_with_invalid_hint(self):
+        """Call a non-existing TimeWarrior hint should be an error"""
+        code, out, err = self.t.runError(":invalid_hint")
+        self.assertIn("':invalid_hint'", err)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
