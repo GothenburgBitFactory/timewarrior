@@ -82,10 +82,7 @@ struct AtomicFile::impl
   static atomic_files_t atomic_files;
 };
 
-using atomic_files_t = AtomicFile::impl::atomic_files_t;
-using atomics_iterator = atomic_files_t::iterator;
-
-atomic_files_t AtomicFile::impl::atomic_files {};
+AtomicFile::impl::atomic_files_t AtomicFile::impl::atomic_files {};
 bool AtomicFile::impl::allow_atomics {true};
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -283,7 +280,7 @@ void AtomicFile::impl::finalize ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-atomics_iterator AtomicFile::impl::find (const Path& path)
+AtomicFile::impl::iterator AtomicFile::impl::find (const Path& path)
 {
   auto end = impl::atomic_files.end ();
   auto cmp = [&path](const atomic_files_t::value_type& p)
@@ -483,7 +480,7 @@ void AtomicFile::finalize_all ()
   sigprocmask (SIG_SETMASK, &old_mask, nullptr);
 
   // Step 3: Cleanup any references
-  atomic_files_t new_atomic_files;
+  impl::atomic_files_t new_atomic_files;
   for (auto& file : impl::atomic_files)
   {
     // Delete entry if we are holding the last reference
