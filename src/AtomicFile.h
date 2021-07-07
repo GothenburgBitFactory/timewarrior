@@ -70,10 +70,8 @@ public:
   static void finalize_all ();
   static void reset ();
 
-public:
-  struct impl;
-
 private:
+  struct impl;
   std::shared_ptr <impl> pimpl;
 };
 
