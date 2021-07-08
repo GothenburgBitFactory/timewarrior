@@ -280,26 +280,18 @@ void AtomicFile::impl::finalize ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-AtomicFile::impl::iterator AtomicFile::impl::find (const Path& path)
-{
-  auto end = impl::atomic_files.end ();
-  auto cmp = [&path](const atomic_files_t::value_type& p)
-             {
-               return p->real_file == path;
-             };
-  auto it = std::find_if(impl::atomic_files.begin (), end, cmp);
-  return (it == end) ? end : it;
-}
-
-
-////////////////////////////////////////////////////////////////////////////////
 AtomicFile::AtomicFile (const Path& path)
 {
-  auto it = impl::find (path);
+  auto end = impl::atomic_files.end ();
+  auto it = std::find_if (impl::atomic_files.begin (), end,
+                          [&path] (const impl::value_type& p)
+                          {
+                            return p->real_file == path;
+                          });
 
-  if (it == impl::atomic_files.end ())
+  if (it == end)
   {
-    pimpl = std::make_shared <impl> (path._data);
+    pimpl = std::make_shared <impl> (path);
     impl::atomic_files.push_back (pimpl);
   }
   else
@@ -401,18 +393,6 @@ void AtomicFile::write_raw (const std::string& content)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void AtomicFile::append (const std::string& path, const std::string& data)
-{
-  return AtomicFile(path).append (data);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void AtomicFile::write (const std::string& path, const std::string& data)
-{
-  AtomicFile::write (Path (path), data);
-}
-
-////////////////////////////////////////////////////////////////////////////////
 void AtomicFile::write (const Path& path, const std::string& data)
 {
   AtomicFile file (path);
@@ -434,14 +414,7 @@ void AtomicFile::write (const Path& path, const std::vector <std::string>& lines
 ////////////////////////////////////////////////////////////////////////////////
 void AtomicFile::read (const Path& path, std::string& content)
 {
-  AtomicFile file (path);
-  file.read (content);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-void AtomicFile::read (const std::string& path, std::string& content)
-{
-  AtomicFile::read (Path (path), content);
+  AtomicFile (path).read (content);
 }
 
 void AtomicFile::read (const Path& path, std::vector <std::string>& lines)
