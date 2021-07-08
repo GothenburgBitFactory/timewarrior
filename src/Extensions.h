@@ -33,10 +33,15 @@
 class Extensions
 {
 public:
-  Extensions () = default;
-  void initialize (const std::string&);
+  Extensions () = delete;
+  Extensions (const std::string&);
+  Extensions (const Extensions&) = delete;
+  Extensions (Extensions&&) = default;
+  Extensions& operator= (const Extensions&) = delete;
+  Extensions& operator= (Extensions&&) = default;
+
   void debug ();
-  std::vector <std::string> all () const;
+  const std::vector <std::string>& all () const;
   int callExtension (const std::string&, const std::vector <std::string>&, std::vector <std::string>&) const;
   std::string dump () const;
 

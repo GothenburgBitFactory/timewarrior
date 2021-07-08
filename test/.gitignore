@@ -1,6 +1,7 @@
 all.log
 AtomicFileTest
 data.t
+Database.t
 Datafile.t
 DatetimeParser.t
 exclusion.t

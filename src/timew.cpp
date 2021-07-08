@@ -80,20 +80,13 @@ int main (int argc, const char** argv)
     // Scan command line.
     cli.analyze ();
 
-    Journal journal;
     // Prepare the database, but do not read data.
-    Database database;
-    Rules rules;
-    initializeDataJournalAndRules (cli, database, journal, rules);
-
-    // Load extension script info.
-    // Re-analyze command because of the new extension entities.
-    Extensions extensions;
-    initializeExtensions (cli, rules, extensions);
-    cli.analyze ();
+    Rules rules = createRules (cli);
+    Database database = createDatabase (rules);
+    Extensions extensions = createExtensions (cli, rules);
 
     // Dispatch to commands.
-    status = dispatchCommand (cli, database, journal, rules, extensions);
+    status = dispatchCommand (cli, database, rules, extensions);
 
     // Save any outstanding changes.
     database.commit ();

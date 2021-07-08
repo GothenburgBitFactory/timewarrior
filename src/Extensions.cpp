@@ -36,7 +36,7 @@
 #include <algorithm>
 
 ////////////////////////////////////////////////////////////////////////////////
-void Extensions::initialize (const std::string& location)
+Extensions::Extensions (const std::string& location)
 {
   // Scan extension directory.
   Directory d (location);
@@ -47,7 +47,9 @@ void Extensions::initialize (const std::string& location)
     std::sort (_scripts.begin (), _scripts.end ());
   }
   else
+  {
     throw std::string ("Extension directory not readable: ") + d._data;
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -57,7 +59,7 @@ void Extensions::debug ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <std::string> Extensions::all () const
+const std::vector <std::string>& Extensions::all () const
 {
   return _scripts;
 }

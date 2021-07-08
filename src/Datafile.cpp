@@ -36,10 +36,8 @@
 #include <IntervalFactory.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-void Datafile::initialize (const std::string& name)
+Datafile::Datafile (const std::string& name) : _file (name)
 {
-  _file = Path (name);
-
   // From the name, which is of the form YYYY-MM.data, extract the YYYY and MM.
   auto basename = _file.name ();
   auto year  = strtol (basename.substr (0, 4).c_str (), NULL, 10);
@@ -61,6 +59,12 @@ void Datafile::initialize (const std::string& name)
 std::string Datafile::name () const
 {
   return _file.name ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+const Range& Datafile::range () const
+{
+  return _range;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -89,8 +93,11 @@ const std::vector <std::string>& Datafile::allLines ()
 
 ////////////////////////////////////////////////////////////////////////////////
 // Accepted intervals;   day1 <= interval.start < dayN
-void Datafile::addInterval (const Interval& interval)
+// Returns true if the interval was added to the datafile
+bool Datafile::addInterval (const Interval& interval)
 {
+  bool lineAdded = false;
+
   // Note: end date might be zero.
   assert (interval.startsWithin (_range));
 
@@ -111,15 +118,26 @@ void Datafile::addInterval (const Interval& interval)
                      interval.dump (), test.dump ()));
     }
 
-    _lines.push_back (serialization);
-    debug (format ("{1}: Added {2}", _file.name (), _lines.back ()));
-    _dirty = true;
+    auto it = std::lower_bound (_lines.begin (), _lines.end (), serialization);
+    if ((it != _lines.end ()) && (*it == serialization))
+    {
+      debug (format ("{1}: already contained {2}", _file.name (), serialization));
+    }
+    else
+    {
+      _lines.insert (it, serialization);
+      debug (format ("{1}: Added {2}", _file.name (), serialization));
+      _dirty = true;
+      lineAdded = true;
+    }
   }
   catch (const std::string& error)
   {
     debug (format ("Datafile::addInterval() failed.\n{1}", error));
     throw std::string ("Internal error. Failed encode / decode check.");
   }
+
+  return lineAdded;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -156,9 +174,6 @@ void Datafile::commit ()
     {
       if (file.open ())
       {
-        // Sort the intervals by ascending start time.
-        std::sort (_lines.begin (), _lines.end ());
-
         // Write out all the lines.
         file.truncate ();
         for (auto& line : _lines)
@@ -202,16 +217,15 @@ void Datafile::load_lines ()
   if (file.open ())
   {
     // Load the data.
-    std::vector <std::string> read_lines;
-    file.read (read_lines);
+    file.read (_lines);
     file.close ();
 
-    // Append the lines that were read.
-    for (auto& line : read_lines)
-      _lines.push_back (line);
+    // We need the data to be sorted, sort it on load in case other tools or
+    // the user hand modified the datafiles
+    std::sort (_lines.begin (), _lines.end ());
 
     _lines_loaded = true;
-    debug (format ("{1}: {2} intervals", file.name (), read_lines.size ()));
+    debug (format ("{1}: {2} intervals", file.name (), _lines.size ()));
   }
 }
 

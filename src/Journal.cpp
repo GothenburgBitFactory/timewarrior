@@ -58,11 +58,8 @@ std::vector<Transaction> loadJournal (AtomicFile& undo)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Journal::initialize (const std::string& location, int size)
+Journal::Journal (const std::string& location, int size) : _location (location), _size (size)
 {
-  _location = location;
-  _size = size;
-
   if (! enabled ())
   {
     AtomicFile undo (_location);
