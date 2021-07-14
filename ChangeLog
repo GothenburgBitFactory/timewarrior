@@ -1,5 +1,7 @@
 - #408    Update documentation of hint `:all`
           (thanks to quazgar)
+- #437    Minor AtomicFile cleanup
+          (thanks to Shaun Ruffel)
 
 ------ current release ---------------------------
 
