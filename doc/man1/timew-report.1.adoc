@@ -15,3 +15,6 @@ The 'report' command itself is optional, which means that these two commands are
     $ timew        foo :week
 
 This does however assume there is a 'foo' extension installed.
+
+The return code is the return code of the extension.
+If the extension produces no output, 255 is returned.
