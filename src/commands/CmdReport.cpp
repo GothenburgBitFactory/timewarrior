@@ -127,7 +127,7 @@ int CmdReport (
   for (auto& line : output)
     std::cout << line << '\n';
 
-  return 0;
+  return rc;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
