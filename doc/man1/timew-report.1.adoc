@@ -17,4 +17,4 @@ The 'report' command itself is optional, which means that these two commands are
 This does however assume there is a 'foo' extension installed.
 
 The return code is the return code of the extension.
-If the extension produces no output, 255 is returned.
+If the extension produces no output and a non-zero rc, then 255 is returned.
