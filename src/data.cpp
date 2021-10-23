@@ -447,14 +447,30 @@ bool matchesFilter (const Interval& interval, const Interval& filter)
 {
   if (matchesRange (interval, filter))
   {
+    bool isOr = false;
     for (auto& tag : filter.tags ())
     {
-      if (! interval.hasTag (tag))
-      {
+      if (tag == "OR") {
+        isOr = true;
+        break;
+      }
+    }
+
+    for (auto& tag : filter.tags ())
+    {
+      bool isNegative = tag[0] == '-';
+      std::string tagName = isNegative ? tag.substr(1) : tag;
+      bool hasTag = interval.hasTag(tagName);
+      if (isNegative) hasTag = !hasTag;
+
+      if (isOr && hasTag) {
+        return true;
+      }
+      if (!isOr && !hasTag) {
         return false;
       }
     }
-    return true;
+    return isOr ? false : true;
   }
 
   return false;
