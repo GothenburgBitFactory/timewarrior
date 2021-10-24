@@ -451,7 +451,7 @@ bool matchesFilter (const Interval& interval, const Interval& filter)
     for (auto& tag : filter.tags ())
     {
       if (tag == "OR")
-	  {
+      {
         isOr = true;
         break;
       }
@@ -465,11 +465,11 @@ bool matchesFilter (const Interval& interval, const Interval& filter)
       if (isNegative) hasTag = !hasTag;
 
       if (isOr && hasTag)
-	  {
+      {
         return true;
       }
       if (!isOr && !hasTag)
-	  {
+      {
         return false;
       }
     }
