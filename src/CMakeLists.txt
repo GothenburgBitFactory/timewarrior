@@ -16,6 +16,7 @@ set (timew_SRCS AtomicFile.cpp AtomicFile.h
                 Extensions.cpp Extensions.h
                 Interval.cpp   Interval.h
                 IntervalFactory.cpp IntervalFactory.h
+                IntervalFilter.cpp IntervalFilter.h
                 Journal.cpp    Journal.h
                 Range.cpp      Range.h
                 Rules.cpp      Rules.h
