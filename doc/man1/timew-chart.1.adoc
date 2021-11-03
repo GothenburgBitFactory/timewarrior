@@ -88,6 +88,10 @@ Default value is 'yes'.
 Determines whether the current weekday is shown at left margin.
 Default value is 'yes'.
 
+**tags.**__<tag>__**.color**::
+Assigns a specific foreground and background color to a tag, instead of the default color palette determined by your current theme.
+Examples of valid colors include 'white', 'gray8', 'black on yellow', and 'rgb345'.
+
 == HINTS
 
 *:blank*::
