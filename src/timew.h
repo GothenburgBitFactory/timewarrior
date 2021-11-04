@@ -35,6 +35,7 @@
 #include <Exclusion.h>
 #include <Palette.h>
 #include <Color.h>
+#include <IntervalFilter.h>
 
 // data.cpp
 std::vector <Range>     getHolidays       (const Rules&);
@@ -53,6 +54,7 @@ bool                    matchesRange      (const Interval&, const Range&);
 bool                    matchesFilter     (const Interval&, const Interval&);
 Interval                clip              (const Interval&, const Range&);
 std::vector <Interval>  getTracked        (Database&, const Rules&, Interval&);
+std::vector <Interval>  getTracked        (Database&, const Rules&, IntervalFilter&);
 std::vector <Range>     getUntracked      (Database&, const Rules&, Interval&);
 Interval                getLatestInterval (Database&);
 Range                   getFullDay        (const Datetime&);

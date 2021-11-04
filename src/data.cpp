@@ -36,6 +36,7 @@
 #include <algorithm>
 #include <iostream>
 #include <IntervalFactory.h>
+#include <IntervalFilter.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Read rules and extract all holiday definitions. Create a Range for each
@@ -478,6 +479,69 @@ Interval clip (const Interval& interval, const Range& range)
     clipped.end = range.end;
 
   return clipped;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Return collection of intervals that match the filter (synthetic intervals
+// included) sorted by date
+std::vector <Interval> getTracked (
+  Database& database,
+  const Rules& rules,
+  IntervalFilter& filter)
+{
+  int current_id = 0;
+  std::vector <Interval> intervals;
+
+  auto it = database.begin ();
+  auto end = database.end ();
+
+  // Because the latest recorded interval may be expanded into synthetic
+  // intervals, we'll handle it specially
+  if (it != end )
+  {
+    Interval latest = IntervalFactory::fromSerialization (*it);
+    ++it;
+
+    for (auto& interval : expandLatest (latest, rules))
+    {
+      ++current_id;
+      if (filter.accepts (interval))
+      {
+        interval.id = current_id;
+        intervals.push_back (interval);
+      }
+      else if (filter.is_done ())
+      {
+        break;
+      }
+    }
+  }
+
+  for (; it != end; ++it)
+  {
+    Interval interval = IntervalFactory::fromSerialization(*it);
+    interval.id = ++current_id;
+
+    if (filter.accepts (interval))
+    {
+      intervals.push_back (std::move (interval));
+    }
+    else if (filter.is_done ())
+    {
+      // Since we are moving backwards in time, and the intervals are in sorted
+      // order, if the filter is after the interval, we know there will be no
+      // more matches
+      break;
+    }
+  }
+
+  debug (format ("Loaded {1} tracked intervals", intervals.size ()));
+
+  // By default, intervals are sorted by id, but getTracked needs to return the
+  // intervals sorted by date, which are ids in reverse order.
+  std::reverse (intervals.begin (), intervals.end ());
+
+  return intervals;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
