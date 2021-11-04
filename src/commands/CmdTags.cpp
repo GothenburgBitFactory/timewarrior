@@ -31,6 +31,9 @@
 #include <Color.h>
 #include <set>
 #include <iostream>
+#include <IntervalFilterAllInRange.h>
+#include <IntervalFilterAllWithTags.h>
+#include <IntervalFilterAndGroup.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdTags (
@@ -42,10 +45,14 @@ int CmdTags (
 
   // Create a filter, with no default range.
   auto filter = cli.getFilter ();
+  auto filtering = IntervalFilterAndGroup ({
+    new IntervalFilterAllInRange ({ filter.start, filter.end }),
+    new IntervalFilterAllWithTags (filter.tags ())
+  });
 
   // Generate a unique, ordered list of tags.
   std::set <std::string> tags;
-  for (const auto& interval : getTracked (database, rules, filter))
+  for (const auto& interval : getTracked (database, rules, filtering))
     for (auto& tag : interval.tags ())
       tags.insert (tag);
 

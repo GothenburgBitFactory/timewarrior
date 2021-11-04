@@ -29,6 +29,7 @@
 #include <timew.h>
 #include <iostream>
 #include <cassert>
+#include <IntervalFilterAllWithTags.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdContinue (
@@ -74,9 +75,8 @@ int CmdContinue (
   }
   else if (!filter.tags ().empty ())
   {
-    Interval tagFilter = {filter};
-    tagFilter.setRange (0, 0);
-    auto tracked = getTracked (database, rules, tagFilter);
+    auto filtering = IntervalFilterAllWithTags (filter.tags());
+    auto tracked = getTracked (database, rules, filtering);
 
     if (tracked.empty())
     {
@@ -120,11 +120,13 @@ int CmdContinue (
   to_copy.end = end_time;
 
   journal.startTransaction ();
+
   if (validate (cli, rules, database, to_copy))
   {
     database.addInterval (to_copy, verbose);
     journal.endTransaction ();
   }
+
   if (verbose)
   {
     std::cout << intervalSummarize (rules, to_copy);

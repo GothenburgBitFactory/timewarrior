@@ -31,6 +31,9 @@
 #include <format.h>
 #include <vector>
 #include <iostream>
+#include <IntervalFilterAllInRange.h>
+#include <IntervalFilterAllWithTags.h>
+#include <IntervalFilterAndGroup.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 bool domGet (
@@ -107,7 +110,12 @@ bool domGet (
     // dom.tracked.<...>
     else if (pig.skipLiteral ("tracked."))
     {
-      auto tracked = getTracked (database, rules, filter);
+      auto filtering = IntervalFilterAndGroup ({
+        new IntervalFilterAllInRange ({ filter.start, filter.end }),
+        new IntervalFilterAllWithTags (filter.tags())
+      });
+
+      auto tracked = getTracked (database, rules, filtering);
       int count = static_cast <int> (tracked.size ());
 
       // dom.tracked.tags

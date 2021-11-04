@@ -44,13 +44,17 @@ int CmdGet (
   for (auto& reference : references)
   {
     std::string value;
+
     if (! domGet (database, filter, rules, reference, value))
+    {
       throw format ("DOM reference '{1}' is not valid.", reference);
+    }
 
     results.push_back (value);
   }
 
   std::cout << join (" ", results) << '\n';
+
   return 0;
 }
 

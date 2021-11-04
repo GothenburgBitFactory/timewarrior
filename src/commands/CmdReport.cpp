@@ -32,6 +32,9 @@
 #include <iostream>
 #include <sstream>
 #include <FS.h>
+#include <IntervalFilterAllInRange.h>
+#include <IntervalFilterAllWithTags.h>
+#include <IntervalFilterAndGroup.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Given a partial match for an extension script name, find the full patch of
@@ -91,7 +94,12 @@ int CmdReport (
 
   // Compose Header info.
   auto filter = cli.getFilter ();
-  auto tracked = getTracked (database, rules, filter);
+  auto filtering = IntervalFilterAndGroup ({
+    new IntervalFilterAllInRange ({ filter.start, filter.end }),
+    new IntervalFilterAllWithTags (filter.tags ())
+  });
+
+  auto tracked = getTracked (database, rules, filtering);
 
   rules.set ("temp.report.start", filter.is_started () ? filter.start.toISO () : "");
   rules.set ("temp.report.end",   filter.is_ended ()   ? filter.end.toISO ()   : "");
