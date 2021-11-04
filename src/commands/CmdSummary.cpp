@@ -31,6 +31,9 @@
 #include <commands.h>
 #include <timew.h>
 #include <iostream>
+#include <IntervalFilterAndGroup.h>
+#include <IntervalFilterAllWithTags.h>
+#include <IntervalFilterAllInRange.h>
 
 // Implemented in CmdChart.cpp.
 std::map <Datetime, std::string> createHolidayMap (Rules&, Interval&);
@@ -48,7 +51,12 @@ int CmdSummary (
   auto filter = cli.getFilter (Range { Datetime ("today"), Datetime ("tomorrow") });
 
   // Load the data.
-  auto tracked = getTracked (database, rules, filter);
+  auto filtering = IntervalFilterAndGroup ({
+    new IntervalFilterAllInRange ({ filter.start, filter.end }),
+    new IntervalFilterAllWithTags (filter.tags())
+  });
+
+  auto tracked = getTracked (database, rules, filtering);
 
   if (tracked.empty ())
   {
