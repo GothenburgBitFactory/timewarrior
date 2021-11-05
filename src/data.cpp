@@ -545,64 +545,6 @@ std::vector <Interval> getTracked (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Return collection of intervals that match the filter (synthetic intervals
-// included) sorted by date
-std::vector <Interval> getTracked (
-  Database& database,
-  const Rules& rules,
-  Interval& filter)
-{
-  int current_id = 0;
-  std::vector <Interval> intervals;
-
-  auto it = database.begin ();
-  auto end = database.end ();
-
-  // Because the latest recorded interval may be expanded into synthetic
-  // intervals, we'll handle it specially
-  if (it != end )
-  {
-    Interval latest = IntervalFactory::fromSerialization (*it);
-    ++it;
-
-    for (auto& interval : expandLatest (latest, rules))
-    {
-      ++current_id;
-      if (matchesFilter (interval, filter))
-      {
-        interval.id = current_id;
-        intervals.push_back (interval);
-      }
-    }
-  }
-
-  for (; it != end; ++it)
-  {
-    Interval interval = IntervalFactory::fromSerialization(*it);
-    interval.id = ++current_id;
-
-    if (matchesFilter (interval, filter))
-    {
-      intervals.push_back (std::move (interval));
-    }
-    else if ((interval.start < filter.start) && ! interval.intersects (filter))
-    {
-      // Since we are moving backwards in time, and the intervals are in sorted
-      // order, if the filter is after the interval, we know there will be no
-      // more matches
-      break;
-    }
-  }
-
-  debug (format ("Loaded {1} tracked intervals", intervals.size ()));
-
-  // By default intervals are sorted by id, but getTracked needs to return the
-  // intervals sorted by date, which are ids in reverse order.
-  std::reverse (intervals.begin (), intervals.end ());
-  return intervals;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 // Untracked time is that which is not excluded, and not filled. Gaps.
 std::vector <Range> getUntracked (
   Database& database,
