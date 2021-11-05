@@ -27,6 +27,9 @@
 #include <commands.h>
 #include <timew.h>
 #include <iostream>
+#include <IntervalFilterAllInRange.h>
+#include <IntervalFilterAllWithTags.h>
+#include <IntervalFilterAndGroup.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdExport (
@@ -35,7 +38,14 @@ int CmdExport (
   Database& database)
 {
   auto filter = cli.getFilter ();
-  std::cout << jsonFromIntervals (getTracked (database, rules, filter));
+
+  auto filtering = IntervalFilterAndGroup ({
+    new IntervalFilterAllInRange ({ filter.start, filter.end }),
+    new IntervalFilterAllWithTags (filter.tags())
+  });
+
+  auto tracked = getTracked (database, rules, filtering);
+  std::cout << jsonFromIntervals (tracked);
   return 0;
 }
 
