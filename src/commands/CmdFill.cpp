@@ -29,6 +29,7 @@
 #include <commands.h>
 #include <timew.h>
 #include <iostream>
+#include <IntervalFilterAllInRange.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdFill (
@@ -49,7 +50,9 @@ int CmdFill (
   // Load the data.
   // Note: There is no filter.
   Interval filter;
-  auto tracked = getTracked (database, rules, filter);
+
+  auto filtering = IntervalFilterAllInRange ({ 0, 0 });
+  auto tracked = getTracked (database, rules, filtering);
 
   journal.startTransaction ();
 
