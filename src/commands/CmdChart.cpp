@@ -34,6 +34,9 @@
 #include <format.h>
 #include <iostream>
 #include <iomanip>
+#include <IntervalFilterAllInRange.h>
+#include <IntervalFilterAllWithTags.h>
+#include <IntervalFilterAndGroup.h>
 
 int renderChart (const CLI&, const std::string&, Interval&, Rules&, Database&);
 
@@ -95,7 +98,12 @@ int renderChart (
   const bool verbose = rules.getBoolean ("verbose");
 
   // Load the data.
-  const auto tracked = getTracked (database, rules, filter);
+  auto filtering = IntervalFilterAndGroup ({
+    new IntervalFilterAllInRange ({ filter.start, filter.end }),
+    new IntervalFilterAllWithTags (filter.tags())
+  });
+
+  auto tracked = getTracked (database, rules, filtering);
 
   if (tracked.empty ())
   {
