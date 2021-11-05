@@ -28,6 +28,7 @@
 #include <format.h>
 #include <timew.h>
 #include <iostream>
+#include "IntervalFilterAllInRange.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // :fill
@@ -44,7 +45,7 @@ void autoFill (
   Interval& interval)
 {
   // An empty filter allows scanning beyond interval range.
-  Interval range_filter;
+  auto range_filter = IntervalFilterAllInRange ({0, 0});
 
   // Look backwards from interval.start to a boundary.
   auto tracked = getTracked (database, rules, range_filter);
@@ -123,7 +124,7 @@ static bool autoAdjust (
     }
   }
 
-  Interval overlaps_filter {interval.start, interval.end};
+  auto overlaps_filter = IntervalFilterAllInRange ({interval.start, interval.end});
   auto overlaps = getTracked (database, rules, overlaps_filter);
 
   if (overlaps.empty ())
