@@ -29,6 +29,7 @@
 #include <timew.h>
 #include <iostream>
 #include <cassert>
+#include <IntervalFilterAllWithTags.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdContinue (
@@ -74,9 +75,8 @@ int CmdContinue (
   }
   else if (!filter.tags ().empty ())
   {
-    Interval tagFilter = {filter};
-    tagFilter.setRange (0, 0);
-    auto tracked = getTracked (database, rules, tagFilter);
+    auto filtering = IntervalFilterAllWithTags (filter.tags());
+    auto tracked = getTracked (database, rules, filtering);
 
     if (tracked.empty())
     {
