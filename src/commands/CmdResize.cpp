@@ -31,6 +31,7 @@
 #include <timew.h>
 #include <iostream>
 #include <stdlib.h>
+#include <IntervalFilterAllWithIds.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdResize (
@@ -52,7 +53,8 @@ int CmdResize (
 
   journal.startTransaction ();
 
-  std::vector <Interval> intervals = getIntervalsByIds (database, rules, ids);
+  auto filtering = IntervalFilterAllWithIds (ids);
+  auto intervals = getTracked (database, rules, filtering);
 
   // Apply tags to ids.
   for (auto& interval : intervals)
