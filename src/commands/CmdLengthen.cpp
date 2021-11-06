@@ -31,6 +31,7 @@
 #include <timew.h>
 #include <iostream>
 #include <stdlib.h>
+#include <IntervalFilterAllWithIds.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdLengthen (
@@ -54,7 +55,8 @@ int CmdLengthen (
   journal.startTransaction ();
 
   flattenDatabase (database, rules);
-  std::vector <Interval> intervals = getIntervalsByIds (database, rules, ids);
+  auto filtering = IntervalFilterAllWithIds (ids);
+  auto intervals = getTracked (database, rules, filtering);
 
   // Lengthen intervals specified by ids
   for (auto& interval : intervals)

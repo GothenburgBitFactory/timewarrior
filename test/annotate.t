@@ -130,7 +130,7 @@ class TestAnnotate(TestCase):
 
         code, out, err = self.t("annotate @1 @2 foo")
 
-        self.assertIn("Annotated @1 with \"foo\"\nAnnotated @2 with \"foo\"", out)
+        self.assertIn("Annotated @2 with \"foo\"\nAnnotated @1 with \"foo\"", out)
 
         j = self.t.export()
         self.assertClosedInterval(j[0], expectedAnnotation="foo")

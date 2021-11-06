@@ -30,6 +30,7 @@
 #include <timew.h>
 #include <iostream>
 #include <stdlib.h>
+#include <IntervalFilterAllWithIds.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdAnnotate (
@@ -64,14 +65,14 @@ int CmdAnnotate (
   }
   else
   {
-    intervals = getIntervalsByIds (database, rules, ids);
+    auto filtering = IntervalFilterAllWithIds (ids);
+    intervals = getTracked (database, rules, filtering);
   }
 
   // Apply annotation to intervals.
   for (const auto& interval : intervals)
   {
     Interval modified {interval};
-
     modified.setAnnotation (annotation);
 
     database.modifyInterval (interval, modified, verbose);

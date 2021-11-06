@@ -31,6 +31,7 @@
 #include <timew.h>
 #include <iostream>
 #include <stdlib.h>
+#include <IntervalFilterAllWithIds.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdTag (
@@ -72,7 +73,8 @@ int CmdTag (
   }
   else
   {
-    intervals = getIntervalsByIds (database, rules, ids);
+    auto filtering = IntervalFilterAllWithIds (ids);
+    intervals = getTracked (database, rules, filtering);
   }
 
   // Apply tags to intervals.

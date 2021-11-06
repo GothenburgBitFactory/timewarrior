@@ -28,6 +28,7 @@
 #include <format.h>
 #include <iostream>
 #include <src/Journal.h>
+#include <IntervalFilterAllWithIds.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdDelete (
@@ -49,7 +50,8 @@ int CmdDelete (
   journal.startTransaction ();
 
   flattenDatabase (database, rules);
-  auto intervals = getIntervalsByIds (database, rules, ids);
+  auto filtering = IntervalFilterAllWithIds (ids);
+  auto intervals = getTracked (database, rules, filtering);
 
   for (const auto& interval : intervals)
   {
