@@ -31,6 +31,7 @@
 #include <timew.h>
 #include <iostream>
 #include <stdlib.h>
+#include <IntervalFilterAllWithIds.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdJoin (
@@ -53,10 +54,11 @@ int CmdJoin (
   journal.startTransaction ();
 
   flattenDatabase (database, rules);
-  std::vector <Interval> intervals = getIntervalsByIds (database, rules, ids);
+  auto filtering = IntervalFilterAllWithIds (ids);
+  auto intervals = getTracked (database, rules, filtering);
 
-  Interval first  = intervals[0];
-  Interval second = intervals[1];
+  Interval first  = intervals[1];
+  Interval second = intervals[0];
 
   // TODO Require confirmation if intervals are not consecutive.
 
