@@ -30,6 +30,7 @@
 #include <timew.h>
 #include <iostream>
 #include <stdlib.h>
+#include <IntervalFilterAllWithIds.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdUntag (
@@ -71,7 +72,8 @@ int CmdUntag (
   }
   else
   {
-    intervals = getIntervalsByIds (database, rules, ids);
+    auto filtering = IntervalFilterAllWithIds (ids);
+    intervals = getTracked (database, rules, filtering);
   }
 
   // Remove tags from intervals.
