@@ -31,6 +31,7 @@
 #include <timew.h>
 #include <iostream>
 #include <stdlib.h>
+#include <IntervalFilterAllWithIds.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdMove (
@@ -67,13 +68,15 @@ int CmdMove (
     }
   }
 
-  std::vector <Interval> intervals = getIntervalsByIds (database, rules, ids);
+  auto filtering = IntervalFilterAllWithIds (ids);
+  auto intervals = getTracked (database, rules, filtering);
   Interval interval = intervals.at (0);
 
   if (interval.synthetic)
   {
     flattenDatabase (database, rules);
-    intervals = getIntervalsByIds (database, rules, ids);
+    filtering.reset ();
+    intervals = getTracked (database, rules, filtering);
     interval = intervals.at (0);
   }
 
