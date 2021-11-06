@@ -29,6 +29,7 @@
 #include <timew.h>
 #include <iostream>
 #include <cassert>
+#include <IntervalFilterAllWithIds.h>
 #include <IntervalFilterAllWithTags.h>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -63,7 +64,8 @@ int CmdContinue (
 
   if (ids.size () == 1)
   {
-    auto intervals = getIntervalsByIds (database, rules, ids);
+    auto filtering = IntervalFilterAllWithIds (ids);
+    auto intervals = getTracked (database, rules, filtering);
 
     if (intervals.empty ())
     {
