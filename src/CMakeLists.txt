@@ -18,6 +18,7 @@ set (timew_SRCS AtomicFile.cpp AtomicFile.h
                 IntervalFactory.cpp IntervalFactory.h
                 IntervalFilter.cpp IntervalFilter.h
                 IntervalFilterAllInRange.cpp IntervalFilterAllInRange.h
+                IntervalFilterAllWithIds.cpp IntervalFilterAllWithIds.h
                 IntervalFilterAllWithTags.cpp IntervalFilterAllWithTags.h
                 Journal.cpp    Journal.h
                 Range.cpp      Range.h
