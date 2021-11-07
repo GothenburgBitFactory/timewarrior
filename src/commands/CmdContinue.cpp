@@ -31,6 +31,7 @@
 #include <cassert>
 #include <IntervalFilterAllWithIds.h>
 #include <IntervalFilterAllWithTags.h>
+#include <IntervalFilterFirstOf.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdContinue (
@@ -77,7 +78,7 @@ int CmdContinue (
   }
   else if (!filter.tags ().empty ())
   {
-    auto filtering = IntervalFilterAllWithTags (filter.tags());
+    auto filtering = IntervalFilterFirstOf { new IntervalFilterAllWithTags (filter.tags ())};
     auto tracked = getTracked (database, rules, filtering);
 
     if (tracked.empty())
