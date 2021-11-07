@@ -21,6 +21,7 @@ set (timew_SRCS AtomicFile.cpp AtomicFile.h
                 IntervalFilterAllInRange.cpp IntervalFilterAllInRange.h
                 IntervalFilterAllWithIds.cpp IntervalFilterAllWithIds.h
                 IntervalFilterAllWithTags.cpp IntervalFilterAllWithTags.h
+                IntervalFilterFirstOf.cpp IntervalFilterFirstOf.h
                 Journal.cpp    Journal.h
                 Range.cpp      Range.h
                 Rules.cpp      Rules.h
