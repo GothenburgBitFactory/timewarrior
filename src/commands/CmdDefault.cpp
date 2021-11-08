@@ -27,6 +27,8 @@
 #include <commands.h>
 #include <timew.h>
 #include <iostream>
+#include <IntervalFilterAllInRange.h>
+#include <IntervalFilterFirstOf.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Returns 0 if tracking is active, 1 if not.
@@ -35,13 +37,14 @@ int CmdDefault (Rules& rules, Database& database)
   const bool verbose = rules.getBoolean ("verbose");
 
   // Load the most recent interval, summarize and display.
-  auto interval = getLatestInterval (database);
+  auto filtering = IntervalFilterFirstOf (new IntervalFilterAllInRange ({0, 0}));
+  auto latest = getTracked (database, rules, filtering);
 
-  if (interval.is_open ())
+  if (!latest.empty () && latest.at (0).is_open ())
   {
     if (verbose)
     {
-      std::cout << intervalSummarize (rules, interval);
+      std::cout << intervalSummarize (rules, latest.at (0));
     }
 
     return 0;

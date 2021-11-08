@@ -32,6 +32,8 @@
 #include <iostream>
 #include <stdlib.h>
 #include <IntervalFilterAllWithIds.h>
+#include <IntervalFilterAllInRange.h>
+#include <IntervalFilterFirstOf.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdTag (
@@ -58,18 +60,19 @@ int CmdTag (
 
   if (ids.empty ())
   {
-    auto latest = getLatestInterval (database);
+    auto filtering = IntervalFilterFirstOf (new IntervalFilterAllInRange ({0, 0}));
+    auto latest = getTracked (database, rules, filtering);
 
     if (latest.empty ())
     {
       throw std::string ("There is no active time tracking.");
     }
-    else if (!latest.is_open ())
+    else if (!latest.at (0).is_open ())
     {
       throw std::string ("At least one ID must be specified. See 'timew help tag'.");
     }
 
-    intervals.push_back (latest);
+    intervals = latest;
   }
   else
   {

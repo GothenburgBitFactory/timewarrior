@@ -34,6 +34,7 @@
 #include <IntervalFilterAllInRange.h>
 #include <IntervalFilterAllWithTags.h>
 #include <IntervalFilterAndGroup.h>
+#include "IntervalFilterFirstOf.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 bool domGet (
@@ -49,14 +50,22 @@ bool domGet (
     // dom.active
     if (pig.skipLiteral ("active"))
     {
-      auto latest = getLatestInterval (database);
+      auto filtering = IntervalFilterFirstOf (new IntervalFilterAllInRange ({0, 0}));
+      auto intervals = getTracked (database, rules, filtering);
 
       // dom.active
       if (pig.eos ())
       {
-        value = latest.is_open () ? "1" : "0";
+        value = !intervals.empty () && intervals.at (0).is_open () ? "1" : "0";
         return true;
       }
+
+      if (intervals.empty ())
+      {
+        return false;
+      }
+
+      auto latest = intervals.at (0);
 
       // dom.active.start
       if (pig.skipLiteral (".start") &&

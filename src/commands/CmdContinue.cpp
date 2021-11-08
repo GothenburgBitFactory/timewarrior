@@ -32,6 +32,7 @@
 #include <IntervalFilterAllWithIds.h>
 #include <IntervalFilterAllWithTags.h>
 #include <IntervalFilterFirstOf.h>
+#include <IntervalFilterAllInRange.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdContinue (
@@ -61,48 +62,46 @@ int CmdContinue (
     throw std::string ("You can only specify one ID to continue.");
   }
 
-  Interval to_copy;
+  std::vector <Interval> intervals;
 
   if (ids.size () == 1)
   {
     auto filtering = IntervalFilterAllWithIds (ids);
-    auto intervals = getTracked (database, rules, filtering);
+    intervals = getTracked (database, rules, filtering);
 
     if (intervals.empty ())
     {
       throw format ("ID '@{1}' does not correspond to any tracking.", *ids.begin ());
     }
-
-    assert (intervals.size () == 1);
-    to_copy = intervals.front ();
   }
   else if (!filter.tags ().empty ())
   {
     auto filtering = IntervalFilterFirstOf { new IntervalFilterAllWithTags (filter.tags ())};
-    auto tracked = getTracked (database, rules, filtering);
+    intervals = getTracked (database, rules, filtering);
 
-    if (tracked.empty())
+    if (intervals.empty ())
     {
       throw format ("Tags '{1}' do not correspond to any tracking.", joinQuotedIfNeeded (", ", filter.tags ()));
     }
-
-    to_copy = tracked.back();
   }
   else
   {
-    Interval latest = getLatestInterval (database);
+    auto filtering = IntervalFilterFirstOf (new IntervalFilterAllInRange ({0, 0}));
+    intervals = getTracked (database, rules, filtering);
 
-    if (latest.empty ())
+    if (intervals.empty ())
     {
       throw std::string ("There is no previous tracking to continue.");
     }
-    if (latest.is_open ())
+
+    if (intervals.at (0).is_open ())
     {
       throw std::string ("There is already active tracking.");
     }
-
-    to_copy = latest;
   }
+
+  assert (intervals.size () == 1);
+  auto to_copy = intervals.back ();
 
   Datetime start_time;
   Datetime end_time;

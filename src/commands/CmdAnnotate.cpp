@@ -31,6 +31,8 @@
 #include <iostream>
 #include <stdlib.h>
 #include <IntervalFilterAllWithIds.h>
+#include <IntervalFilterAllInRange.h>
+#include <IntervalFilterFirstOf.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdAnnotate (
@@ -50,18 +52,17 @@ int CmdAnnotate (
 
   if (ids.empty ())
   {
-    auto latest = getLatestInterval (database);
+    auto filtering = IntervalFilterFirstOf (new IntervalFilterAllInRange ({0, 0}));
+    intervals = getTracked (database, rules, filtering);
 
-    if (latest.empty ())
+    if (intervals.empty ())
     {
       throw std::string ("There is no active time tracking.");
     }
-    else if (!latest.is_open ())
+    else if (!intervals.at (0).is_open ())
     {
       throw std::string ("At least one ID must be specified. See 'timew help annotate'.");
     }
-
-    intervals.push_back (latest);
   }
   else
   {
