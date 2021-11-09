@@ -2,6 +2,8 @@
           (thanks to quazgar)
 - #437    Minor AtomicFile cleanup
           (thanks to Shaun Ruffel)
+- #458    Add man documentation for configuring tag colors.
+          (thanks to Lim Ding Wen)
 
 ------ current release ---------------------------
 
