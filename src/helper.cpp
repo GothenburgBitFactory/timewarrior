@@ -38,8 +38,24 @@
 #include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////
-// Select a color to represent the interval.
-Color intervalColor (
+// Select a color to represent the interval in a summary report.
+Color summaryIntervalColor (
+  const Rules& rules,
+  const std::set <std::string>& tags)
+{
+  Color c;
+
+  for (auto& tag : tags)
+  {
+      c.blend (tagColor (rules, tag));
+  }
+
+  return c;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Select a color to represent the interval on a chart.
+Color chartIntervalColor (
   const std::set <std::string>& tags,
   const std::map <std::string, Color>& tag_colors)
 {

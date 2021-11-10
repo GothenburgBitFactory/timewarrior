@@ -75,9 +75,7 @@ int CmdSummary (
   }
 
   // Map tags to colors.
-  auto palette = createPalette (rules);
-  auto tag_colors = createTagColorMap (rules, palette, tracked);
-  Color colorID (rules.getBoolean ("color") ? rules.get ("theme.colors.ids") : "");
+  Color colorID (rules.getBoolean("color") ? rules.get ("theme.colors.ids") : "");
 
   auto ids = findHint (cli, ":ids");
   auto show_annotation = findHint (cli, ":annotations");
@@ -155,7 +153,7 @@ int CmdSummary (
         table.set (row, 3, format ("@{1}", track.id), colorID);
       }
 
-      table.set (row, (ids ? 4 : 3), tags, intervalColor(track.tags(), tag_colors));
+      table.set (row, (ids ? 4 : 3), tags, summaryIntervalColor(rules, track.tags()));
 
       if (show_annotation)
       {
