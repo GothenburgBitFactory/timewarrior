@@ -22,6 +22,10 @@ The ':ids' hint adds an 'ID' column to the summary report output for interval mo
 Determines whether relevant holidays are shown beneath the report.
 Default value is 'yes'.
 
+**tags.**__<tag>__**.color**::
+Assigns a specific foreground and background color to a tag.
+Examples of valid colors include 'white', 'gray8', 'black on yellow', and 'rgb345'.
+
 == SEE ALSO
 **timew-day**(1),
 **timew-lengthen**(1),
