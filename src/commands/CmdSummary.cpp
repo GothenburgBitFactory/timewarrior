@@ -155,7 +155,7 @@ int CmdSummary (
         table.set (row, 3, format ("@{1}", track.id), colorID);
       }
 
-      table.set (row, (ids ? 4 : 3), tags);
+      table.set (row, (ids ? 4 : 3), tags, intervalColor(track.tags(), tag_colors));
 
       if (show_annotation)
       {
