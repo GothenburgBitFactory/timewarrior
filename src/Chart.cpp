@@ -470,7 +470,7 @@ void Chart::renderInterval (
   if (end_offset > start_offset)
   {
     // Determine color of interval.
-    Color colorTrack = intervalColor (track.tags (), tag_colors);
+    Color colorTrack = chartIntervalColor (track.tags (), tag_colors);
 
     // Properly format the tags within the space.
     std::string label;
