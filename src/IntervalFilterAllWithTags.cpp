@@ -32,13 +32,33 @@ IntervalFilterAllWithTags::IntervalFilterAllWithTags (std::set <std::string> tag
 
 bool IntervalFilterAllWithTags::accepts (const Interval& interval)
 {
+  bool isOr = false;
   for (auto& tag : _tags)
   {
-    if (! interval.hasTag (tag))
+    if (tag == "OR")
+    {
+      isOr = true;
+      break;
+    }
+  }
+
+  for (auto& tag : _tags)
+  { 
+    bool isNegative = tag[0] == '-';
+    std::string tagName = isNegative ? tag.substr(1) : tag;
+    bool hasTag = interval.hasTag(tagName);
+    if (isNegative) hasTag = !hasTag;
+
+    if (isOr && hasTag)
+    {
+      return true;
+    }
+
+    if (!isOr && !hasTag)
     {
       return false;
     }
   }
 
-  return true;
+  return isOr ? false : true;
 }
