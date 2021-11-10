@@ -27,38 +27,59 @@
 #include <IntervalFilterAllWithTags.h>
 #include <Interval.h>
 
-IntervalFilterAllWithTags::IntervalFilterAllWithTags (std::set <std::string> tags): _tags (std::move(tags))
+IntervalFilterAllWithTags::IntervalFilterAllWithTags (std::set <std::string> tags, const bool complexFiltering): _tags (std::move(tags)), _complexFiltering (complexFiltering)
 {}
 
 bool IntervalFilterAllWithTags::accepts (const Interval& interval)
 {
-  bool isOr = false;
-  for (auto& tag : _tags)
-  {
-    if (tag == "OR")
+  if (_complexFiltering) {
+    // TODO: WIP, This does not fully implement boolean logic.
+    // Check if OR exists.
+    bool isOr = false;
+    for (auto& tag : _tags)
     {
-      isOr = true;
-      break;
+      if (tag == "OR")
+      {
+        isOr = true;
+        break;
+      }
     }
+
+    for (auto& tag : _tags)
+    {
+      // Process negation
+      bool isNegative = tag[0] == '-';
+      std::string tagName = isNegative ? tag.substr(1) : tag;
+      bool hasTag = interval.hasTag(tagName);
+      if (isNegative) hasTag = !hasTag;
+
+      // Return true at the first sign of a tag, if we're using OR logic.
+      if (isOr && hasTag)
+      {
+        return true;
+      }
+
+      // Return false at the first sign of miss, if we're using AND logic.
+      if (!isOr && !hasTag)
+      {
+        return false;
+      }
+    }
+
+    // OR logic : Nothing triggered the match, so this interval does not match.
+    // AND logic: Nothing triggered the miss, so this interval matches.
+    return isOr ? false : true;
   }
-
-  for (auto& tag : _tags)
-  { 
-    bool isNegative = tag[0] == '-';
-    std::string tagName = isNegative ? tag.substr(1) : tag;
-    bool hasTag = interval.hasTag(tagName);
-    if (isNegative) hasTag = !hasTag;
-
-    if (isOr && hasTag)
+  else {
+    // Old filtering AND logic
+    for (auto& tag : _tags)
     {
-      return true;
+      if (! interval.hasTag (tag))
+      {
+        return false;
+      }
     }
 
-    if (!isOr && !hasTag)
-    {
-      return false;
-    }
+    return true;
   }
-
-  return isOr ? false : true;
 }

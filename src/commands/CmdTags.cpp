@@ -47,7 +47,7 @@ int CmdTags (
   auto filter = cli.getFilter ();
   auto filtering = IntervalFilterAndGroup ({
     new IntervalFilterAllInRange ({ filter.start, filter.end }),
-    new IntervalFilterAllWithTags (filter.tags ())
+    new IntervalFilterAllWithTags (filter.tags(), rules.getBoolean("complexFiltering"))
   });
 
   // Generate a unique, ordered list of tags.

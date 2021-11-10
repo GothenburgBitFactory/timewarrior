@@ -35,12 +35,13 @@
 class IntervalFilterAllWithTags : public IntervalFilter
 {
 public:
-  explicit IntervalFilterAllWithTags(std::set <std::string>);
+  explicit IntervalFilterAllWithTags(std::set <std::string>, const bool complexFiltering);
 
   bool accepts (const Interval&) final;
 
 private:
   const std::set <std::string> _tags {};
+  const bool _complexFiltering {};
 };
 
 #endif //INCLUDED_INTERVALFILTERTAGSET

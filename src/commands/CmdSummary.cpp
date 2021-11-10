@@ -53,7 +53,7 @@ int CmdSummary (
   // Load the data.
   auto filtering = IntervalFilterAndGroup ({
     new IntervalFilterAllInRange ({ filter.start, filter.end }),
-    new IntervalFilterAllWithTags (filter.tags())
+    new IntervalFilterAllWithTags (filter.tags(), rules.getBoolean("complexFiltering"))
   });
 
   auto tracked = getTracked (database, rules, filtering);

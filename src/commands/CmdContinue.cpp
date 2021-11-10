@@ -77,7 +77,7 @@ int CmdContinue (
   }
   else if (!filter.tags ().empty ())
   {
-    auto filtering = IntervalFilterAllWithTags (filter.tags());
+    auto filtering = IntervalFilterAllWithTags (filter.tags(), rules.getBoolean("complexFiltering"));
     auto tracked = getTracked (database, rules, filtering);
 
     if (tracked.empty())
