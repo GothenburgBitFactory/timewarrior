@@ -123,7 +123,10 @@ std::vector <Range> getAllExclusions (
     {
       for (auto& r : exclusion.ranges (range))
       {
-        exclusionRanges.push_back (r);
+        if (!r.is_empty ())
+        {
+          exclusionRanges.push_back (r);
+        }
       }
     }
   }
