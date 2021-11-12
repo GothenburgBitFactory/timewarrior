@@ -16,10 +16,10 @@ function default_minutes()
 {
   case "${OSTYPE}" in
     darwin*)
-      echo "0$( jot -r 1 0 59 )" | sed -E "s|.+(..)|\1|g"
+      pad_with_zero "$( jot -r 1 0 59 )"
       ;;
     *)
-      echo "0$( rand -M 60 )" | sed "s|.\+\(..\)\$|\1|g"
+      pad_with_zero "$( rand -M 60 )"
       ;;
   esac
 }
@@ -29,60 +29,119 @@ function default_hours()
   seq -w 0 23
 }
 
+function pad_with_zero()
+{
+  case "${OSTYPE}" in
+    darwin*)
+      echo "0${1}" | sed -E "s|.+(..)|\1|g"
+      ;;
+    *)
+      echo "0${1}" | sed "s|.\+\(..\)\$|\1|g"
+      ;;
+  esac
+}
+
+function get_runtime_for()
+{
+  local test_file="${1}"
+
+  case "$( file -b "${test_file}" )" in
+    "POSIX shell"*)
+      echo "bash"
+      ;;
+    "Python script"*)
+      echo "python3"
+      ;;
+    *)
+      ;;
+  esac
+}
+
 if ! command -v faketime >/dev/null 2>&1 ; then
   echo "timemachine requires libfaketime to be installed!"
   exit 1
 fi
 
+declare -a tests=()
+declare -a dates=()
+declare -a hours=()
+declare -a minutes=()
+
 # parse options/arguments
 until [[ -z "${1}" ]] ; do
   case "${1}" in
-    --minute)
+    --minute|--minutes)
       shift
-      minutes="${minutes} ${1}"
+      minutes=( "${minutes[@]}" "$( pad_with_zero "${1}" )" )
       ;;
-    --minutes)
+    --hour|--hours)
       shift
-      minutes="${1}"
-      ;;
-    --hour)
-      shift
-      hours="${hours} ${1}"
-      ;;
-    --hours)
-      shift
-      hours="${1}"
+      hours=( "${hours[@]}" "$( pad_with_zero "${1}" )" )
       ;;
     --date)
       shift
-      dates="${dates} ${1}"
+      dates=( "${dates[@]}" "${1}" )
       ;;
     --fail-at-end)
-      fail_at_end=1
+      fail_at_end="yes"
       ;;
     -*)
       echo "Unknown option '${1}'"
       exit 1
       ;;
     *)
-      tests="${tests} ${1}"
+      tests=( "${tests[@]}" "${1}" )
       ;;
   esac
   shift
 done
 
-for date in ${dates-$( default_dates )} ; do
-  for hour in ${hours-$( default_hours )} ; do
-    for minute in ${minutes-$( default_minutes )} ; do
-      date_time="${date}T${hour}:${minute}"
-      for single_test in ${tests} ; do
-        echo "Running test ${single_test} at ${date_time}"
+if [[ "${#tests[@]}" -eq 0 ]] ; then
+  echo "No tests specified!"
+  exit 1
+fi
 
-        if ! faketime "${date_time}" "${single_test}" ; then
-          echo "Test ${single_test} broke at ${date_time}!"
-          [[ ${fail_at_end-0} -ne 0 ]] || break 2
+for single_test in "${tests[@]}" ; do
+  if [[ ! -e "${single_test}" ]] ; then
+    echo "Test '${single_test}' does not exist!"
+    exit 1
+  fi
+done
+
+if [[ "${#dates[@]}" -eq 0 ]] ;  then
+  read -d '' -r -a dates <<< "$( default_dates )"
+fi
+
+if [[ "${#hours[@]}" -eq 0 ]] ;  then
+  read -d '' -r -a hours <<< "$( default_hours )"
+fi
+
+if [[ "${#minutes[@]}" -eq 0 ]] ;  then
+  read -d '' -r -a minutes <<< "$( default_minutes )"
+fi
+
+REPORT=
+
+for date in "${dates[@]}" ; do
+  for hour in "${hours[@]}" ; do
+    for minute in "${minutes[@]}" ; do
+      date_time="${date}T${hour}:${minute}"
+      for single_test in "${tests[@]}" ; do
+        runtime=$( get_runtime_for "${single_test}" )
+        echo "Running test ${single_test} at ${date_time}${runtime:+" with ${runtime}"}"
+
+        if ! faketime "${date_time}" ${runtime} "${single_test}" ; then
+          REPORT+="${REPORT+$'\n'}Test ${single_test} broke at ${date_time}!"
+          [[ "${fail_at_end-"no"}" == "no" ]] && break 4
         fi
       done
     done
   done
 done
+
+if [[ -n "${REPORT}" ]] ; then
+  echo "There were test failures:"
+  echo -e "${REPORT}"
+else
+  echo "All tests passed!"
+fi
