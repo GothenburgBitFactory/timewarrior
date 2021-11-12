@@ -118,9 +118,15 @@ std::vector <Range> getAllExclusions (
   // overlap with range.
   std::vector <Range> exclusionRanges;
   for (auto& exclusion : exclusions)
+  {
     if (exclusion.tokens ()[1] != "day")
+    {
       for (auto& r : exclusion.ranges (range))
+      {
         exclusionRanges.push_back (r);
+      }
+    }
+  }
 
   return merge (addRanges (range, results, exclusionRanges));
 }
