@@ -4,6 +4,8 @@
           (thanks to Shaun Ruffel)
 - #458    Add man documentation for configuring tag colors.
           (thanks to Lim Ding Wen)
+- #463    Add colors to summary
+          (thanks to Lim Ding Wen)
 - #466    Ignore empty exclusion ranges
 
 ------ current release ---------------------------
