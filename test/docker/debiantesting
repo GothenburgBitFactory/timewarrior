@@ -5,10 +5,10 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && apt-get install -y \
             asciidoctor \
             cmake \
-            fiu-utils=1.00-* \
+            fiu-utils \
             g++ \
             git \
-            libfiu-dev=1.00-* \
+            libfiu-dev \
             locales \
             man \
             python3 \
