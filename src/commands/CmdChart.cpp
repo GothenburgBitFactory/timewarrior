@@ -98,9 +98,9 @@ int renderChart (
   const bool verbose = rules.getBoolean ("verbose");
 
   // Load the data.
-  auto filtering = IntervalFilterAndGroup ({
-    new IntervalFilterAllInRange ({ filter.start, filter.end }),
-    new IntervalFilterAllWithTags (filter.tags())
+  IntervalFilterAndGroup filtering ({
+    std::make_shared <IntervalFilterAllInRange> ( Range { filter.start, filter.end }),
+    std::make_shared <IntervalFilterAllWithTags> (filter.tags())
   });
 
   auto tracked = getTracked (database, rules, filtering);

@@ -33,12 +33,12 @@
 class IntervalFilterAllInRange : public IntervalFilter
 {
 public:
-  explicit IntervalFilterAllInRange (const Range&);
+  explicit IntervalFilterAllInRange (Range);
 
   bool accepts (const Interval&) final;
 
 private:
-  const Range& _range;
+  const Range _range;
 };
 
 #endif //INCLUDED_INTERVALFILTERRANGE
