@@ -8,6 +8,8 @@
           (thanks to Lim Ding Wen)
 - #466    Ignore empty exclusion ranges
 - #468    Refactor interval filtering
+- #469    Do not leak IntervalFilters in IntervalFilterAndGroup
+          (thanks to Shaun Ruffel)
 
 ------ current release ---------------------------
 
