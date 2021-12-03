@@ -34,6 +34,7 @@ class IntervalFilter
 public:
   virtual bool accepts (const Interval&) = 0;
   virtual void reset ();
+  virtual ~IntervalFilter() = default;
 
   bool is_done () const;
 

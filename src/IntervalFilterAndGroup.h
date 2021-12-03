@@ -27,18 +27,19 @@
 #ifndef INCLUDED_INTERVALFILTERANDGROUP
 #define INCLUDED_INTERVALFILTERANDGROUP
 
+#include <memory>
 #include <IntervalFilter.h>
 
 class IntervalFilterAndGroup : public IntervalFilter
 {
 public:
-  explicit IntervalFilterAndGroup (const std::vector <IntervalFilter *>& filters);
+  explicit IntervalFilterAndGroup (std::vector <std::shared_ptr<IntervalFilter>> filters);
 
   bool accepts (const Interval&) final;
   void reset () override;
 
 private:
-  const std::vector<IntervalFilter*> _filters = {};
+  const std::vector<std::shared_ptr<IntervalFilter>> _filters = {};
 };
 
 #endif //INCLUDED_INTERVALFILTERANDGROUP

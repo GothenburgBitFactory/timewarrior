@@ -26,7 +26,7 @@
 
 #include <IntervalFilterAllInRange.h>
 
-IntervalFilterAllInRange::IntervalFilterAllInRange (const Range& range): _range (range)
+IntervalFilterAllInRange::IntervalFilterAllInRange (Range range): _range (std::move(range))
 {}
 
 bool IntervalFilterAllInRange::accepts (const Interval& interval)

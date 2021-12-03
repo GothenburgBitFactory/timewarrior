@@ -26,7 +26,7 @@
 
 #include <IntervalFilterAndGroup.h>
 
-IntervalFilterAndGroup::IntervalFilterAndGroup (const std::vector <IntervalFilter *>& filters) : _filters (filters)
+IntervalFilterAndGroup::IntervalFilterAndGroup (std::vector <std::shared_ptr<IntervalFilter>> filters) : _filters (std::move(filters))
 {}
 
 bool IntervalFilterAndGroup::accepts (const Interval &interval)
@@ -36,7 +36,7 @@ bool IntervalFilterAndGroup::accepts (const Interval &interval)
     return false;
   }
 
-  for (auto filter: _filters)
+  for (auto& filter: _filters)
   {
     if (filter->accepts (interval))
     {
@@ -56,7 +56,7 @@ bool IntervalFilterAndGroup::accepts (const Interval &interval)
 
 void IntervalFilterAndGroup::reset ()
 {
-  for (auto filter: _filters)
+  for (auto& filter: _filters)
   {
     filter->reset ();
   }

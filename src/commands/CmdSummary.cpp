@@ -51,9 +51,9 @@ int CmdSummary (
   auto filter = cli.getFilter (Range { Datetime ("today"), Datetime ("tomorrow") });
 
   // Load the data.
-  auto filtering = IntervalFilterAndGroup ({
-    new IntervalFilterAllInRange ({ filter.start, filter.end }),
-    new IntervalFilterAllWithTags (filter.tags())
+  IntervalFilterAndGroup filtering ({
+    std::make_shared <IntervalFilterAllInRange> ( Range { filter.start, filter.end }),
+    std::make_shared <IntervalFilterAllWithTags> (filter.tags())
   });
 
   auto tracked = getTracked (database, rules, filtering);
