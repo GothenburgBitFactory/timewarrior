@@ -76,7 +76,7 @@ int CmdContinue (
   }
   else if (!filter.tags ().empty ())
   {
-    auto filtering = IntervalFilterFirstOf { new IntervalFilterAllWithTags (filter.tags ())};
+    IntervalFilterFirstOf filtering {std::make_shared <IntervalFilterAllWithTags> (filter.tags ())};
     intervals = getTracked (database, rules, filtering);
 
     if (intervals.empty ())
@@ -86,7 +86,7 @@ int CmdContinue (
   }
   else
   {
-    auto filtering = IntervalFilterFirstOf (new IntervalFilterAllInRange ({0, 0}));
+    IntervalFilterFirstOf filtering {std::make_shared <IntervalFilterAllInRange> ( Range {})};
     intervals = getTracked (database, rules, filtering);
 
     if (intervals.empty ())

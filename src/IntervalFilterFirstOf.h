@@ -27,18 +27,19 @@
 #ifndef INCLUDED_INTERVALFILTERFIRSTOF
 #define INCLUDED_INTERVALFILTERFIRSTOF
 
+#include <memory>
 #include <IntervalFilter.h>
 
 class IntervalFilterFirstOf : public IntervalFilter
 {
 public:
-  explicit IntervalFilterFirstOf(IntervalFilter *filter);
+  explicit IntervalFilterFirstOf(std::shared_ptr <IntervalFilter> filter);
 
   bool accepts (const Interval&) final;
   void reset ();
 
 private:
-  IntervalFilter* _filter;
+  std::shared_ptr <IntervalFilter> _filter;
 };
 
 #endif //INCLUDED_INTERVALFILTERFIRSTOF

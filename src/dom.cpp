@@ -50,7 +50,7 @@ bool domGet (
     // dom.active
     if (pig.skipLiteral ("active"))
     {
-      auto filtering = IntervalFilterFirstOf (new IntervalFilterAllInRange ({0, 0}));
+      IntervalFilterFirstOf filtering {std::make_shared <IntervalFilterAllInRange> (Range {})};
       auto intervals = getTracked (database, rules, filtering);
 
       // dom.active

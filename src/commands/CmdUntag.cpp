@@ -59,7 +59,7 @@ int CmdUntag (
 
   if (ids.empty ())
   {
-    auto filtering = IntervalFilterFirstOf (new IntervalFilterAllInRange ({0, 0}));
+    IntervalFilterFirstOf filtering {std::make_shared <IntervalFilterAllInRange> (Range {})};
     auto latest = getTracked (database, rules, filtering);
 
     if (latest.empty ())

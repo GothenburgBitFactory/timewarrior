@@ -37,7 +37,7 @@ int CmdDefault (Rules& rules, Database& database)
   const bool verbose = rules.getBoolean ("verbose");
 
   // Load the most recent interval, summarize and display.
-  auto filtering = IntervalFilterFirstOf (new IntervalFilterAllInRange ({0, 0}));
+  IntervalFilterFirstOf filtering (std::make_shared <IntervalFilterAllInRange> (Range {}));
   auto latest = getTracked (database, rules, filtering);
 
   if (!latest.empty () && latest.at (0).is_open ())
