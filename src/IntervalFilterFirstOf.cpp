@@ -26,7 +26,7 @@
 
 #include <IntervalFilterFirstOf.h>
 
-IntervalFilterFirstOf::IntervalFilterFirstOf (IntervalFilter *filter) : _filter (filter)
+IntervalFilterFirstOf::IntervalFilterFirstOf (std::shared_ptr <IntervalFilter> filter) : _filter (filter)
 {}
 
 bool IntervalFilterFirstOf::accepts (const Interval& interval)

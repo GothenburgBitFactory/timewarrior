@@ -52,7 +52,7 @@ int CmdAnnotate (
 
   if (ids.empty ())
   {
-    auto filtering = IntervalFilterFirstOf (new IntervalFilterAllInRange ({0, 0}));
+    IntervalFilterFirstOf filtering {std::make_shared <IntervalFilterAllInRange> (Range {})};
     intervals = getTracked (database, rules, filtering);
 
     if (intervals.empty ())
