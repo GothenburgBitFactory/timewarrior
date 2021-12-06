@@ -10,6 +10,8 @@
 - #468    Refactor interval filtering
 - #469    Do not leak IntervalFilters in IntervalFilterAndGroup
           (thanks to Shaun Ruffel)
+- #470    Do not leak filter in IntervalFilterFirstOf
+          (thanks to Shaun Ruffel)
 
 ------ current release ---------------------------
 
