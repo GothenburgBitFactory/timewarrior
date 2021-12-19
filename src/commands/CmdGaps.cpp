@@ -50,7 +50,7 @@ int CmdGaps (
   }
 
   // Is the :blank hint being used?
-  bool blank = findHint (cli, ":blank");
+  bool blank = cli.getHint ("blank", false);
 
   std::vector <Range> untracked;
   if (blank)

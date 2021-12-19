@@ -95,7 +95,9 @@ void initializeEntities (CLI& cli)
   cli.entity ("hint", ":debug");
   cli.entity ("hint", ":fill");
   cli.entity ("hint", ":ids");
+  cli.entity ("hint", ":no-ids");
   cli.entity ("hint", ":annotations");
+  cli.entity ("hint", ":no-annotations");
   cli.entity ("hint", ":lastmonth");
   cli.entity ("hint", ":lastquarter");
   cli.entity ("hint", ":lastweek");
@@ -166,7 +168,7 @@ void initializeDataJournalAndRules (
   bool shinyNewDatabase = false;
 
   if (! dbLocation.exists () &&
-      (findHint (cli, ":yes") ||
+      (cli.getHint ("yes", false) ||
        confirm ("Create new database in " + dbLocation._data + "?")))
   {
     dbLocation.create (0700);

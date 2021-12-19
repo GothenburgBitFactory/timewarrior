@@ -152,12 +152,12 @@ int renderChart (
   configuration.with_label_week = rules.getBoolean ("reports." + type + ".week");
   configuration.with_label_weekday = rules.getBoolean ("reports." + type + ".weekday");
   configuration.with_label_day = rules.getBoolean ("reports." + type + ".day");
-  configuration.with_ids = findHint (cli, ":ids");
+  configuration.with_ids = cli.getHint ("ids", false);
   configuration.with_summary = rules.getBoolean ("reports." + type + ".summary");
   configuration.with_holidays = rules.getBoolean ("reports." + type + ".holidays");
   configuration.with_totals = rules.getBoolean ("reports." + type + ".totals");
   configuration.with_internal_axis = rules.get ("reports." + type + ".axis") == "internal";
-  configuration.show_intervals = findHint (cli, ":blank");
+  configuration.show_intervals = cli.getHint ("blank", false);
   configuration.determine_hour_range = rules.get ("reports." + type + ".hours") == "auto";
   configuration.minutes_per_char = minutes_per_char;
   configuration.spacing = rules.getInteger ("reports." + type + ".spacing", 1);

@@ -85,8 +85,8 @@ int CmdSummary (
   // Map tags to colors.
   Color colorID (rules.getBoolean ("color") ? rules.get ("theme.colors.ids") : "");
 
-  auto show_ids = findHint (cli, ":ids");
-  auto show_annotations = findHint (cli, ":annotations");
+  const auto show_ids = cli.getComplementaryHint ("ids", rules.getBoolean ("reports.summary.ids"));
+  const auto show_annotations = cli.getComplementaryHint ("annotations", rules.getBoolean ("reports.summary.annotations"));
 
   Table table;
   table.width (1024);

@@ -833,3 +833,44 @@ Interval CLI::getFilter (const Range& default_range) const
 
   return filter;
 }
+
+////////////////////////////////////////////////////////////////////////////////
+bool CLI::findHint (const std::string& hint) const
+{
+  for (auto& arg : _args)
+  {
+    if (arg.hasTag ("HINT") &&
+        arg.getToken () == ":" + hint)
+    {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool CLI::getComplementaryHint (const std::string& base, const bool default_value) const
+{
+  if (findHint (base))
+  {
+    return true;
+  }
+  else if (findHint ("no-" + base))
+  {
+    return false;
+  }
+
+  return default_value;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool CLI::getHint (const std::string &base, const bool default_value) const
+{
+  if (findHint (base))
+  {
+    return true;
+  }
+
+  return default_value;
+}

@@ -1,3 +1,4 @@
+- #474    Make display of ids and annotations in summary report configurable
 - #408    Update documentation of hint `:all`
           (thanks to quazgar)
 - #437    Minor AtomicFile cleanup

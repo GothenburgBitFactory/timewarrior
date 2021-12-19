@@ -67,6 +67,8 @@ public:
   bool canonicalize (std::string&, const std::string&, const std::string&) const;
   std::string getBinary () const;
   std::string getCommand () const;
+  bool getComplementaryHint (const std::string&, bool) const;
+  bool getHint(const std::string&, bool) const;
   std::set <int> getIds () const;
   std::vector<std::string> getTags () const;
   std::string getAnnotation() const;
@@ -83,6 +85,8 @@ private:
   void canonicalizeNames ();
   void identifyFilter ();
   bool exactMatch (const std::string&, const std::string&) const;
+
+  bool findHint (const std::string &hint) const;
 
 public:
   std::multimap <std::string, std::string>           _entities             {};

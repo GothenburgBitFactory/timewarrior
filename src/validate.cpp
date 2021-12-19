@@ -226,12 +226,12 @@ bool validate (
   Interval& interval)
 {
   // All validation performed here.
-  if (findHint (cli, ":fill"))
+  if (cli.getHint ("fill", false))
   {
     autoFill (rules, database, interval);
   }
 
-  return autoAdjust (findHint (cli, ":adjust"), rules, database, interval);
+  return autoAdjust (cli.getHint ("adjust", false), rules, database, interval);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

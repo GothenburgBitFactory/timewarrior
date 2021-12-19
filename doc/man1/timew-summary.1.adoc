@@ -17,10 +17,24 @@ Accepts date ranges and tags for filtering, or shortcut hints:
 
 The ':ids' hint adds an 'ID' column to the summary report output for interval modification.
 
+The ':annotations' hint adds an 'Annotation' column to the summary report output.
+The annotation column is limited to 15 characters.
+Longer values in this column are truncated to 12 characters and shown with an ellipsis attached.
+
 == CONFIGURATION
+**reports.summary.annotations**::
+Determines whether the annotation column is shown in the summary.
+Can be overridden by the ':annotations' and ':no-annotations' hint, respectively.
+Default value is 'no'
+
 **reports.summary.holidays**::
 Determines whether relevant holidays are shown beneath the report.
 Default value is 'yes'.
+
+**reports.summary.ids**::
+Determines whether the id column is shown in the summary.
+Can be overridden by the ':ids' and ':no-ids' hint, respectively.
+Default value is 'no'
 
 **tags.**__<tag>__**.color**::
 Assigns a specific foreground and background color to a tag.
