@@ -85,7 +85,7 @@ int CmdSummary (
   // Map tags to colors.
   Color colorID (rules.getBoolean ("color") ? rules.get ("theme.colors.ids") : "");
 
-  auto ids = findHint (cli, ":ids");
+  auto show_ids = findHint (cli, ":ids");
   auto show_annotation = findHint (cli, ":annotations");
 
   Table table;
@@ -95,7 +95,7 @@ int CmdSummary (
   table.add ("Date");
   table.add ("Day");
 
-  if (ids)
+  if (show_ids)
   {
     table.add ("ID");
   }
@@ -156,12 +156,12 @@ int CmdSummary (
 
       std::string tags = join(", ", track.tags());
 
-      if (ids)
+      if (show_ids)
       {
         table.set (row, 3, format ("@{1}", track.id), colorID);
       }
 
-      table.set (row, (ids ? 4 : 3), tags, summaryIntervalColor (rules, track.tags ()));
+      table.set (row, (show_ids ? 4 : 3), tags, summaryIntervalColor (rules, track.tags ()));
 
       if (show_annotation)
       {
@@ -170,25 +170,25 @@ int CmdSummary (
         if (annotation.length () > 15)
           annotation = annotation.substr (0, 12) + "...";
 
-        table.set (row, (ids ? 5 : 4), annotation);
+        table.set (row, (show_ids ? 5 : 4), annotation);
       }
 
-      table.set (row, (ids ? 5 : 4) + offset, today.start.toString ("h:N:S"));
-      table.set (row, (ids ? 6 : 5) + offset, (track.is_open () ? "-" : today.end.toString ("h:N:S")));
-      table.set (row, (ids ? 7 : 6) + offset, Duration (today.total ()).formatHours ());
+      table.set (row, (show_ids ? 5 : 4) + offset, today.start.toString ("h:N:S"));
+      table.set (row, (show_ids ? 6 : 5) + offset, (track.is_open () ? "-" : today.end.toString ("h:N:S")));
+      table.set (row, (show_ids ? 7 : 6) + offset, Duration (today.total ()).formatHours ());
 
       daily_total += today.total ();
     }
 
     if (row != -1)
-      table.set (row, (ids ? 8 : 7) + offset, Duration (daily_total).formatHours ());
+      table.set (row, (show_ids ? 8 : 7) + offset, Duration (daily_total).formatHours ());
 
     grand_total += daily_total;
   }
 
   // Add the total.
-  table.set (table.addRow (), (ids ? 8 : 7) + offset, " ", Color ("underline"));
-  table.set (table.addRow (), (ids ? 8 : 7) + offset, Duration (grand_total).formatHours ());
+  table.set (table.addRow (), (show_ids ? 8 : 7) + offset, " ", Color ("underline"));
+  table.set (table.addRow (), (show_ids ? 8 : 7) + offset, Duration (grand_total).formatHours ());
 
   const auto with_holidays = rules.getBoolean ("reports.summary.holidays");
 
