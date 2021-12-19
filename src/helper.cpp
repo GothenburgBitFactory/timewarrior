@@ -413,9 +413,13 @@ int quantizeToNMinutes (const int minutes, const int N)
 bool findHint (const CLI& cli, const std::string& hint)
 {
   for (auto& arg : cli._args)
+  {
     if (arg.hasTag ("HINT") &&
         arg.getToken () == hint)
+    {
       return true;
+    }
+  }
 
   return false;
 }
