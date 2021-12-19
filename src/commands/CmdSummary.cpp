@@ -86,7 +86,7 @@ int CmdSummary (
   Color colorID (rules.getBoolean ("color") ? rules.get ("theme.colors.ids") : "");
 
   auto show_ids = findHint (cli, ":ids");
-  auto show_annotation = findHint (cli, ":annotations");
+  auto show_annotations = findHint (cli, ":annotations");
 
   Table table;
   table.width (1024);
@@ -104,7 +104,7 @@ int CmdSummary (
 
   auto offset = 0;
 
-  if (show_annotation)
+  if (show_annotations)
   {
     table.add ("Annotation");
     offset = 1;
@@ -163,7 +163,7 @@ int CmdSummary (
 
       table.set (row, (show_ids ? 4 : 3), tags, summaryIntervalColor (rules, track.tags ()));
 
-      if (show_annotation)
+      if (show_annotations)
       {
         auto annotation = track.getAnnotation ();
 
