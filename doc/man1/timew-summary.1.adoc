@@ -29,6 +29,7 @@ Default value is 'no'
 
 **reports.summary.holidays**::
 Determines whether relevant holidays are shown beneath the report.
+Can be overridden by the ':holidays' and ':no-holidays' hint, respectively.
 Default value is 'yes'.
 
 **reports.summary.ids**::

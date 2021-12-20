@@ -190,11 +190,11 @@ int CmdSummary (
   table.set (table.addRow (), (show_ids ? 8 : 7) + offset, " ", Color ("underline"));
   table.set (table.addRow (), (show_ids ? 8 : 7) + offset, Duration (grand_total).formatHours ());
 
-  const auto with_holidays = rules.getBoolean ("reports.summary.holidays");
+  const auto show_holidays = cli.getComplementaryHint ("holidays", rules.getBoolean ("reports.summary.holidays"));
 
   std::cout << '\n'
             << table.render ()
-            << (with_holidays ? renderHolidays (createHolidayMap (rules, filter)) : "")
+            << (show_holidays ? renderHolidays (createHolidayMap (rules, filter)) : "")
             << '\n';
 
   return 0;
