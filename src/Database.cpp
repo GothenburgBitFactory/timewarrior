@@ -36,6 +36,58 @@
 #include <AtomicFile.h>
 
 ////////////////////////////////////////////////////////////////////////////////
+// This returns a value which is equivalent to std::lower_bound on the
+// datafiles. It will either be the Datafile that should contain the range, an
+// iterator pointing to where a new Datafile should be created, or the end of
+// the datafiles.
+//
+// Unlike lower_bound, it always searches from the end of files since the most
+// common use case for timewarrior are the most recent entries.
+using datafiles_t = Database::datafiles_t;
+static datafiles_t::iterator findDatafile (const Range& range, datafiles_t* files)
+{
+  assert (files != nullptr);
+  for (auto r_it = files->rbegin (); r_it != files->rend (); ++r_it)
+  {
+    const Range& df_range = r_it->range ();
+    if (range.startsWithin (df_range))
+    {
+      // found the datafile that contains the range
+      return r_it.base () - 1;
+    }
+    else if (df_range.end < range.start)
+    {
+      // found the place where new datafile should be inserted to contain
+      // this range
+      return std::prev(r_it).base () - 1;
+    }
+  }
+
+  // New datafile should be created at end
+  return files->begin ();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+static Datafile& getDatafile (const std::string& location, const Interval& interval, datafiles_t* files)
+{
+  assert (files != nullptr);
+  auto it = findDatafile (interval, files);
+  if (it == files->end () || ! interval.startsWithin (it->range ()))
+  {
+    std::stringstream sstream;
+    sstream << location << '/'
+            << std::setw (4) << std::setfill ('0') << interval.start.year ()
+            << '-'
+            << std::setw (2) << std::setfill ('0') << interval.start.month ()
+            << ".data";
+
+    it = files->emplace (it, sstream.str ());
+  }
+
+  return *it;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 Database::iterator::iterator (files_iterator fbegin, files_iterator fend) :
           files_it(fbegin),
           files_end(fend)
@@ -200,54 +252,39 @@ const std::string* Database::reverse_iterator::operator->() const
 ////////////////////////////////////////////////////////////////////////////////
 Database::iterator Database::begin ()
 {
-  if (_files.empty ())
-  {
-    initializeDatafiles ();
-  }
-
   return iterator (_files.rbegin (), _files.rend ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 Database::iterator Database::end ()
 {
-  if (_files.empty ())
-  {
-    initializeDatafiles ();
-  }
-
   return iterator (_files.rend (), _files.rend ());
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 Database::reverse_iterator Database::rbegin ()
 {
-  if (_files.empty ())
-  {
-    initializeDatafiles ();
-  }
-
   return reverse_iterator(_files.begin (), _files.end ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 Database::reverse_iterator Database::rend ()
 {
-  if (_files.empty ())
-  {
-    initializeDatafiles ();
-  }
-
   return reverse_iterator (_files.end (), _files.end ());
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Database::initialize (const std::string& location, Journal& journal)
+Database::Database (const std::string& location, int journal_size) : _location (location), _journal (location + "/undo.data", journal_size)
 {
-  _location = location;
-  _journal = &journal;
-  initializeTagDatabase ();
+  try
+  {
+    initializeDatafiles ();
+    initializeTagDatabase ();
+  }
+  catch (const std::string& error)
+  {
+    throw std::string ("Failed to create database at '" ) + _location + "' error: " + error;
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -262,6 +299,12 @@ void Database::commit ()
   {
     AtomicFile::write (_location + "/tags.data", _tagInfoDatabase.toJson ());
   }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+Journal& Database::journal ()
+{
+  return _journal;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -302,8 +345,7 @@ void Database::addInterval (const Interval& interval, bool verbose)
 {
   assert ( (interval.end == 0) || (interval.start <= interval.end));
 
-  auto tags = interval.tags ();
-  for (auto& tag : tags)
+  for (const auto& tag : interval.tags ())
   {
     if (_tagInfoDatabase.incrementTag (tag) == -1 && verbose)
     {
@@ -311,28 +353,28 @@ void Database::addInterval (const Interval& interval, bool verbose)
     }
   }
 
-  // Get the index into _files for the appropriate Datafile, which may be
-  // created on demand.
-  auto df = getDatafile (interval.start.year (), interval.start.month ());
-  _files[df].addInterval (interval);
-  _journal->recordIntervalAction ("", interval.json ());
+  if (getDatafile (_location, interval, &_files).addInterval (interval))
+  {
+    _journal.recordIntervalAction ("", interval.json ());
+  }
 }
 
+////////////////////////////////////////////////////////////////////////////////
 void Database::deleteInterval (const Interval& interval)
 {
-  auto tags = interval.tags ();
-
-  for (auto& tag : tags)
+  for (const auto& tag : interval.tags ())
   {
     _tagInfoDatabase.decrementTag (tag);
   }
 
-  // Get the index into _files for the appropriate Datafile, which may be
-  // created on demand.
-  auto df = getDatafile (interval.start.year (), interval.start.month ());
+  getDatafile (_location, interval, &_files).deleteInterval (interval);
+  auto it = findDatafile (interval, &_files);
+  if (it == _files.end () || ! interval.startsWithin (it->range ()))
+  {
+    throw std::string ("Database failed to find file for deleted Interval");
+  }
 
-  _files[df].deleteInterval (interval);
-  _journal->recordIntervalAction (interval.json (), "");
+  _journal.recordIntervalAction (interval.json (), "");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -364,37 +406,6 @@ std::string Database::dump () const
   }
 
   return out.str ();
-}
-
-////////////////////////////////////////////////////////////////////////////////
-unsigned int Database::getDatafile (int year, int month)
-{
-  std::stringstream file;
-  file << _location
-       << '/'
-       << std::setw (4) << std::setfill ('0') << year
-       << '-'
-       << std::setw (2) << std::setfill ('0') << month
-       << ".data";
-  auto name = file.str ();
-  auto basename = Path (name).name ();
-
-  // If the datafile is already initialized, return.
-  for (unsigned int i = 0; i < _files.size (); ++i)
-  {
-    if (_files[i].name () == basename)
-    {
-      return i;
-    }
-  }
-
-  // Create the Datafile.
-  Datafile df;
-  df.initialize (name);
-
-  // Insert Datafile into _files. The position is not important.
-  _files.push_back (df);
-  return _files.size () - 1;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -460,12 +471,13 @@ bool Database::empty ()
 void Database::initializeTagDatabase ()
 {
   _tagInfoDatabase = TagInfoDatabase ();
-  Path tags_path (_location + "/tags.data");
+  AtomicFile tags_file {_location + "/tags.data"};
   std::string content;
-  const bool exists = tags_path.exists ();
+  const bool exists = tags_file.exists ();
 
-  if (exists && File::read (tags_path, content))
+  if (exists)
   {
+    tags_file.read (content);
     try
     {
       std::unique_ptr <json::object> json (dynamic_cast <json::object *>(json::parse (content)));
@@ -505,11 +517,11 @@ void Database::initializeTagDatabase ()
 
   // We always want the tag database file to exists.
   _tagInfoDatabase = TagInfoDatabase();
-  AtomicFile::write (_location + "/tags.data", _tagInfoDatabase.toJson ());
+  tags_file.write_raw (_tagInfoDatabase.toJson ());
 
   auto it = Database::begin ();
   auto end = Database::end ();
-  
+
   if (it == end)
   {
     return;
@@ -519,7 +531,7 @@ void Database::initializeTagDatabase ()
   {
     std::cout << "Tags database does not exist. ";
   }
-  
+
   std::cout << "Recreating from interval data..." << std::endl;
 
   for (; it != end; ++it)
@@ -533,25 +545,33 @@ void Database::initializeTagDatabase ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Database::initializeDatafiles ()
+void Database::initializeDatafiles () const
 {
+  assert (_files.empty ());
+
+  Directory d (_location);
+  auto filenames = d.list ();
+
+  const auto& not_valid_filename = [](const std::string& filename)
+  {
+    return (filename[filename.length () - 8] != '-' ||
+            filename.find (".data") != filename.length () - 5);
+  };
+
+  auto begin = filenames.begin ();
+  auto end = std::remove_if (begin, filenames.end (), not_valid_filename);
+
   // Because the data files have names YYYY-MM.data, sorting them by name also
   // sorts by the intervals within.
-  Directory d (_location);
-  auto files = d.list ();
-  std::sort (files.begin (), files.end ());
+  std::sort (begin, end);
 
-  for (auto& file : files)
+  // Reserve room for one extra datafile for the common case where we will add a
+  // new interval to a new datafile.
+  _files.reserve (std::distance (begin, end) + 1);
+
+  for (auto it = begin; it != end; ++it)
   {
-    // If it looks like a data file: *-??.data
-    if (file[file.length () - 8] == '-' &&
-        file.find (".data") == file.length () - 5)
-    {
-      auto basename = Path (file).name ();
-      auto year  = strtol (basename.substr (0, 4).c_str (), NULL, 10);
-      auto month = strtol (basename.substr (5, 2).c_str (), NULL, 10);
-      getDatafile (year, month);
-    }
+    _files.emplace_back (*it);
   }
 }
 

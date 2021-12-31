@@ -64,9 +64,10 @@ bool validate (const CLI& cli, const Rules& rules, Database&, Interval&);
 // init.cpp
 bool lightweightVersionCheck (int, const char**);
 void initializeEntities (CLI&);
-void initializeDataJournalAndRules (const CLI&, Database&, Journal&, Rules&);
-void initializeExtensions (CLI&, const Rules&, Extensions&);
-int dispatchCommand (const CLI&, Database&, Journal&, Rules&, const Extensions&);
+Rules createRules (const CLI&);
+Database createDatabase (Rules&);
+Extensions createExtensions (CLI&, const Rules&);
+int dispatchCommand (const CLI&, Database&, Rules&, const Extensions&);
 
 // helper.cpp
 Color summaryIntervalColor (const Rules&, const std::set <std::string>&);

@@ -29,6 +29,7 @@
 
 #include <unistd.h>
 #include <cstdlib>
+#include <cstring>
 
 #include <iostream>
 #include <vector>
@@ -45,6 +46,9 @@ public:
   void clear ();
   std::vector <std::string> file_names () const;
 
+  const std::string& name () const { return tmpName; };
+  operator const std::string& () const { return name (); }
+
 private:
   std::string tmpName {};
   std::string oldDir {};
@@ -53,9 +57,11 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 TempDir::TempDir ()
 {
+  char template_name[PATH_MAX] = {'\0',};
+
   oldDir = Directory::cwd ();
 
-  char template_name[] = "atomic_XXXXXX";
+  strncpy (template_name, (oldDir + "/timew_test_XXXXXX").c_str (), sizeof (template_name) - 1);
   const char *cwd = ::mkdtemp (template_name);
   if (cwd == nullptr)
   {

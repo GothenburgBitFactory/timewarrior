@@ -36,14 +36,14 @@
 class Datafile
 {
 public:
-  Datafile () = default;
-  void initialize (const std::string&);
+  explicit Datafile (const std::string&);
   std::string name () const;
+  const Range& range () const;
 
   std::string lastLine ();
   const std::vector <std::string>& allLines ();
 
-  void addInterval (const Interval&);
+  bool addInterval (const Interval&);
   void deleteInterval (const Interval&);
   void commit ();
 

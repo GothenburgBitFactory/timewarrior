@@ -39,14 +39,21 @@
 class Database
 {
 public:
+  using datafiles_t = std::vector <Datafile>;
 
   class iterator
   {
+  public:
+    using difference_type    = ssize_t;
+    using value_type         = std::string;
+    using pointer            = value_type*;
+    using reference          = value_type&;
+    using iterator_category  = std::forward_iterator_tag;
+
   private:
     friend class Database;
-    typedef std::vector <Datafile>::reverse_iterator files_iterator;
+    typedef datafiles_t::reverse_iterator files_iterator;
     typedef std::vector <std::string>::const_reverse_iterator lines_iterator;
-    typedef std::string value_type;
 
     files_iterator files_it;
     files_iterator files_end;
@@ -58,8 +65,6 @@ public:
 
   public:
     iterator& operator++ ();
-    iterator& operator++ (int);
-    iterator& operator-- ();
     bool operator== (const iterator & other) const;
     bool operator!= (const iterator & other) const;
     const value_type& operator* () const;
@@ -68,11 +73,17 @@ public:
 
   class reverse_iterator
   {
+  public:
+    using difference_type    = ssize_t;
+    using value_type         = std::string;
+    using pointer            = value_type*;
+    using reference          = value_type&;
+    using iterator_category  = std::forward_iterator_tag;
+
   private:
     friend class Database;
-    typedef std::vector <Datafile>::iterator files_iterator;
+    typedef datafiles_t::iterator files_iterator;
     typedef std::vector <std::string>::const_iterator lines_iterator;
-    typedef std::string value_type;
 
     files_iterator files_it;
     files_iterator files_end;
@@ -84,8 +95,6 @@ public:
 
   public:
     reverse_iterator& operator++ ();
-    reverse_iterator& operator++ (int);
-    reverse_iterator& operator-- ();
     bool operator== (const reverse_iterator & other) const;
     bool operator!= (const reverse_iterator & other) const;
     const value_type& operator* () const;
@@ -93,9 +102,15 @@ public:
   };
 
 public:
-  Database () = default;
-  void initialize (const std::string&, Journal& journal);
+  Database () = delete;
+  Database (const std::string&, int);
+  Database (const Database&) = delete;
+  Database (Database&&) = default;
+  Database& operator= (const Database&) = delete;
+  Database& operator= (Database&&) = default;
+  void initialize (const std::string&, int);
   void commit ();
+  Journal& journal ();
   std::vector <std::string> files () const;
   std::set <std::string> tags () const;
 
@@ -114,16 +129,15 @@ public:
   reverse_iterator rend ();
 
 private:
-  unsigned int getDatafile (int, int);
   std::vector <Range> segmentRange (const Range&);
-  void initializeDatafiles ();
+  void initializeDatafiles () const;
   void initializeTagDatabase ();
 
 private:
-  std::string               _location {"~/.timewarrior/data"};
-  std::vector <Datafile>    _files    {};
+  std::string               _location;
+  Journal                   _journal;
+  mutable datafiles_t       _files    {};
   TagInfoDatabase           _tagInfoDatabase {};
-  Journal*                  _journal {};
 };
 
 #endif
