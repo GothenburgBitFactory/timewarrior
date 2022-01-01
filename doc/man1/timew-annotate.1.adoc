@@ -33,7 +33,7 @@ If there is active time tracking, you can omit the ID when you want to add annot
 This results in the current interval having annotations 'foo' and 'bar'.
 
 == BUGS
-Currently the annotation command picks the last token from the command line and uses it as annotation.
+Currently, the annotation command picks the last token from the command line and uses it as annotation.
 I.e. using no quotes in an annotation command like
 
     $ timew annotate @1 lorem ipsum dolor
