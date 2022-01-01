@@ -14,8 +14,6 @@ The 'reports.gaps.range' configuration setting overrides the default date range.
 The ':blank' hint causes only the excluded time to be shown, with no tracked time.
 The default date range shown is ':day'.
 
-The ':blank' hint causes only the excluded time to be shown, with no tracked time.
-
 == CONFIGURATION
 **reports.gaps.range**::
 For reports that show a range of data, this setting will override the default value.
