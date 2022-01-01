@@ -69,7 +69,7 @@ A value of '0' yields a more compact report.
 Default value is '1'.
 
 **reports.**__<type>__**.axis**::
-The value 'internal' puts the hour markers (time line at the top) inside the exclusion blocks, 'external' puts the hour markers in a separate line; additional values might be defined in the future.
+The value 'internal' puts the hour markers (timeline at the top) inside the exclusion blocks, 'external' puts the hour markers in a separate line; additional values might be defined in the future.
 Default is 'internal' for the day report and 'external' for other reports.
 
 **reports.**__<type>__**.summary**::
