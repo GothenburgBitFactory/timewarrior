@@ -80,8 +80,7 @@ void initializeEntities (CLI& cli)
   cli.entity ("command", "undo");
   cli.entity ("command", "untag");
 
-  // Some command list themselves as extensions, to integrate with the real
-  // extensions.
+  // Some command list themselves as extensions, to integrate with the real extensions.
   cli.entity ("extension", "day");
   cli.entity ("extension", "month");
   cli.entity ("extension", "summary");
@@ -149,8 +148,7 @@ void initializeDataJournalAndRules (
 
   enableDebugMode (rules.getBoolean ("debug"));
 
-  // The $TIMEWARRIORDB environment variable overrides the default value of
-  // ~/.timewarrior‥
+  // The $TIMEWARRIORDB environment variable overrides the default value of ~/.timewarrior
   Directory dbLocation;
   char* override = getenv ("TIMEWARRIORDB");
   dbLocation = Directory (override ? override : "~/.timewarrior");
@@ -195,13 +193,12 @@ void initializeDataJournalAndRules (
   }
   rules.load (configFile._data);
 
-  // This value is not written out to disk, as there would be no point. Having
-  // located the config file, the 'db' location is already known. This is just
-  // for subsequent internal use.
+  // This value is not written out to disk, as there would be no point.
+  // Having located the config file, the 'db' location is already known.
+  // This is just for subsequent internal use.
   rules.set ("temp.db", dbLocation._data);
 
-  // Perhaps some subsequent code would like to know this is a new db and
-  // possibly a first run.
+  // Perhaps some subsequent code would like to know this is a new db and possibly a first run.
   if (shinyNewDatabase)
     rules.set ("temp.shiny", 1);
 
@@ -265,8 +262,7 @@ int dispatchCommand (
 
   if (! command.empty ())
   {
-    // These signatures are expected to be all different, therefore no
-    // command to fn mapping.
+    // These signatures are expected to be all different, therefore no command to fn mapping.
          if (command == "annotate")    status = CmdAnnotate      (cli, rules, database, journal            );
     else if (command == "cancel")      status = CmdCancel        (     rules, database, journal            );
     else if (command == "config")      status = CmdConfig        (cli, rules,           journal            );
