@@ -164,6 +164,7 @@ void initializeDataJournalAndRules (
 
   // If dbLocation does not exist, ask whether it should be created.
   bool shinyNewDatabase = false;
+
   if (! dbLocation.exists () &&
       (findHint (cli, ":yes") ||
        confirm ("Create new database in " + dbLocation._data + "?")))
@@ -175,22 +176,30 @@ void initializeDataJournalAndRules (
   // Create extensions subdirectory if necessary.
   Directory extensions (dbLocation);
   extensions += "extensions";
+
   if (! extensions.exists ())
+  {
     extensions.create (0700);
+  }
 
   // Create data subdirectory if necessary.
   Directory data (dbLocation);
   data += "data";
+
   if (! data.exists ())
+  {
     data.create (0700);
+  }
 
   // Load the configuration data.
   Path configFile (dbLocation);
   configFile += "timewarrior.cfg";
+
   if (! configFile.exists ())
   {
     File (configFile).create (0600);
   }
+
   rules.load (configFile._data);
 
   // This value is not written out to disk, as there would be no point.
