@@ -1,4 +1,5 @@
-- #474    Make display of ids and annotations in summary report configurable
+- #403    Remove incorrect output stating that an empty interval was recorded
+          (thanks to xeruf)
 - #408    Update documentation of hint `:all`
           (thanks to quazgar)
 - #437    Minor AtomicFile cleanup
@@ -13,6 +14,7 @@
           (thanks to Shaun Ruffel)
 - #470    Do not leak filter in IntervalFilterFirstOf
           (thanks to Shaun Ruffel)
+- #474    Make display of ids and annotations in summary report configurable
 
 ------ current release ---------------------------
 
