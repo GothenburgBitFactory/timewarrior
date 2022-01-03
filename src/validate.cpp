@@ -118,6 +118,11 @@ static bool autoAdjust (
 
     for (auto& interval : flatten (latest, getAllExclusions (rules, latest)))
     {
+      if (interval.is_empty ())
+      {
+        continue;
+      }
+
       database.addInterval (interval, verbose);
 
       if (verbose)
