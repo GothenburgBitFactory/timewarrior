@@ -138,13 +138,13 @@ bool expandIntervalHint (
 {
   static std::map <std::string, std::vector <std::string>> hints
   {
-    {":yesterday",   {"yesterday", "today"}},
-    {":day",         {"today",     "eod"}},
-    {":week",        {"sow",       "eow"}},
-    {":fortnight",   {"sopw",      "eow"}},
-    {":month",       {"som",       "eom"}},
-    {":quarter",     {"soq",       "eoq"}},
-    {":year",        {"soy",       "eoy"}},
+    {":yesterday", {"sopd", "sod" }},
+    {":day",       {"sod",  "sond"}},
+    {":week",      {"sow",  "sonw"}},
+    {":fortnight", {"sopw", "sonw"}},
+    {":month",     {"som",  "sonm"}},
+    {":quarter",   {"soq",  "sonq"}},
+    {":year",      {"soy",  "sony"}},
   };
 
   static std::vector <std::string> dayNames
