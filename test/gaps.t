@@ -44,7 +44,7 @@ class TestGaps(TestCase):
         self.t = Timew()
 
     def test_trivial_gaps(self):
-        """Test trivial track"""
+        """Test trivial gaps"""
         code, out, err = self.t("gaps")
         self.assertRegex(out, r'\s{30}24:00:00')
 
