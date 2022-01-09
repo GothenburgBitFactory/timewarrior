@@ -92,6 +92,16 @@ class TestJoin(TestCase):
                                 expectedStart="{:%Y%m%dT%H%M%S}Z".format(five_hours_before_utc),
                                 expectedTags=["foo", "bar"])
 
+    def test_referencing_a_non_existent_interval_is_an_error(self):
+        """Calling join with a non-existent interval reference is an error"""
+        code, out, err = self.t.runError("join @1 @2")
+        self.assertIn("ID '@1' does not correspond to any tracking.", err)
+
+        self.t("start 1h ago bar")
+
+        code, out, err = self.t.runError("join @1 @2")
+        self.assertIn("ID '@2' does not correspond to any tracking.", err)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

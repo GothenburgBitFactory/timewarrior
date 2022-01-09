@@ -149,6 +149,16 @@ class TestDelete(TestCase):
 
         self.assertEqual(len(j), 0)
 
+    def test_referencing_a_non_existent_interval_is_an_error(self):
+        """Calling delete with a non-existent interval reference is an error"""
+        code, out, err = self.t.runError("delete @1")
+        self.assertIn("ID '@1' does not correspond to any tracking.", err)
+
+        self.t("start 1h ago bar")
+
+        code, out, err = self.t.runError("delete @2")
+        self.assertIn("ID '@2' does not correspond to any tracking.", err)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

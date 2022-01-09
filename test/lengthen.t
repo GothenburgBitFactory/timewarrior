@@ -97,7 +97,15 @@ class TestLengthen(TestCase):
         self.assertEqual(len(j), 1)
         self.assertClosedInterval(j[0])
 
-    # TODO Add :adjust tests.
+    def test_referencing_a_non_existent_interval_is_an_error(self):
+        """Calling lengthen with a non-existent interval reference is an error"""
+        code, out, err = self.t.runError("lengthen @1 @2 5min")
+        self.assertIn("ID '@1' does not correspond to any tracking.", err)
+
+        self.t("start 1h ago bar")
+
+        code, out, err = self.t.runError("lengthen @2 5min")
+        self.assertIn("ID '@2' does not correspond to any tracking.", err)
 
 
 if __name__ == "__main__":

@@ -57,6 +57,27 @@ int CmdShorten (
   auto filtering = IntervalFilterAllWithIds (ids);
   auto intervals = getTracked (database, rules, filtering);
 
+  if (intervals.size () != ids.size ())
+  {
+    for (auto& id: ids)
+    {
+      bool found = false;
+
+      for (auto& interval: intervals)
+      {
+        if (interval.id == id)
+        {
+          found = true;
+          break;
+        }
+      }
+      if (!found)
+      {
+        throw format ("ID '@{1}' does not correspond to any tracking.", id);
+      }
+    }
+  }
+
   // Shorten intervals specified by ids
   for (auto& interval : intervals)
   {

@@ -519,6 +519,16 @@ class TestContinue(TestCase):
         code, out, err = self.t.runError("continue @2 from {:%Y-%m-%dT%H:%M:%S}Z".format(now_utc + timedelta(seconds=10)))
         self.assertIn("Time tracking cannot be set in the future", err)
 
+    def test_referencing_a_non_existent_interval_is_an_error(self):
+        """Calling continue with a non-existent interval reference is an error"""
+        code, out, err = self.t.runError("continue @1")
+        self.assertIn("ID '@1' does not correspond to any tracking.", err)
+
+        self.t("start 1h ago bar")
+
+        code, out, err = self.t.runError("continue @2")
+        self.assertIn("ID '@2' does not correspond to any tracking.", err)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

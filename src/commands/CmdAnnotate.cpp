@@ -68,6 +68,27 @@ int CmdAnnotate (
   {
     auto filtering = IntervalFilterAllWithIds (ids);
     intervals = getTracked (database, rules, filtering);
+
+    if (intervals.size () != ids.size ())
+    {
+      for (auto& id: ids)
+      {
+        bool found = false;
+
+        for (auto& interval: intervals)
+        {
+          if (interval.id == id)
+          {
+            found = true;
+            break;
+          }
+        }
+        if (!found)
+        {
+          throw format ("ID '@{1}' does not correspond to any tracking.", id);
+        }
+      }
+    }
   }
 
   // Apply annotation to intervals.

@@ -70,7 +70,15 @@ class TestSplit(TestCase):
 
         self.assertEqual(j[0]['end'], j[1]['start'])
 
-    # TODO Add :adjust tests.
+    def test_referencing_a_non_existent_interval_is_an_error(self):
+        """Calling split with a non-existent interval reference is an error"""
+        code, out, err = self.t.runError("split @1 @2")
+        self.assertIn("ID '@1' does not correspond to any tracking.", err)
+
+        self.t("start 1h ago bar")
+
+        code, out, err = self.t.runError("split @2")
+        self.assertIn("ID '@2' does not correspond to any tracking.", err)
 
 
 if __name__ == "__main__":

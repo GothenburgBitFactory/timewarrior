@@ -27,10 +27,10 @@
 ###############################################################################
 
 import os
-import sys
 import unittest
-
 from datetime import datetime, timedelta
+
+import sys
 
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -286,7 +286,6 @@ class TestMove(TestCase):
                                 expectedTags=[],
                                 description="unmodified interval")
 
-
     def test_move_interval_to_enclose_a_month_border(self):
         """Move an interval to enclose a month border"""
         self.t("track 20180831T180000 - 20180831T230000 foo")
@@ -297,7 +296,15 @@ class TestMove(TestCase):
         self.assertEqual(len(j), 1)
         self.assertClosedInterval(j[0])
 
-    # TODO Add :adjust tests.
+    def test_referencing_a_non_existent_interval_is_an_error(self):
+        """Calling move with a non-existent interval reference is an error"""
+        code, out, err = self.t.runError("move @1 2h ago")
+        self.assertIn("ID '@1' does not correspond to any tracking.", err)
+
+        self.t("start 1h ago bar")
+
+        code, out, err = self.t.runError("move @2 2h ago")
+        self.assertIn("ID '@2' does not correspond to any tracking.", err)
 
 
 if __name__ == "__main__":

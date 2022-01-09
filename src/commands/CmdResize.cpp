@@ -56,7 +56,27 @@ int CmdResize (
   auto filtering = IntervalFilterAllWithIds (ids);
   auto intervals = getTracked (database, rules, filtering);
 
-  // Apply tags to ids.
+  if (intervals.size () != ids.size ())
+  {
+    for (auto& id: ids)
+    {
+      bool found = false;
+
+      for (auto& interval: intervals)
+      {
+        if (interval.id == id)
+        {
+          found = true;
+          break;
+        }
+      }
+      if (!found)
+      {
+        throw format ("ID '@{1}' does not correspond to any tracking.", id);
+      }
+    }
+  }
+
   for (auto& interval : intervals)
   {
     if (interval.is_open ())

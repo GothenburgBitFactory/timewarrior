@@ -274,6 +274,13 @@ class TestModify(TestCase):
                                 expectedStart=four_hours_before_utc + timedelta(minutes=10),
                                 expectedTags=['foo'])
 
+    def test_referencing_a_non_existent_interval_is_an_error(self):
+        """Calling modify with a non-existent interval reference is an error"""
+        self.t("start 1h ago bar")
+
+        code, out, err = self.t.runError("modify start @2")
+        self.assertIn("ID '@2' does not correspond to any tracking.", err)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
