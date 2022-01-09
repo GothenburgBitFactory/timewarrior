@@ -25,8 +25,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <algorithm>
-#include <cassert>
-
 #include <cmake.h>
 #include <shared.h>
 #include <format.h>
@@ -191,70 +189,6 @@ void flattenDatabase (Database& database, const Rules& rules)
       database.addInterval (*it, verbose);
     }
   }
-}
-
-////////////////////////////////////////////////////////////////////////////////
-// Return collection of intervals (synthetic included) sorted by id
-std::vector <Interval> getIntervalsByIds (
-  Database& database,
-  const Rules& rules,
-  const std::set <int>& ids)
-{
-  std::vector <Interval> intervals;
-  intervals.reserve (ids.size ());
-
-  int current_id = 0;
-  auto id_it = ids.begin ();
-  auto id_end = ids.end ();
-
-  auto it = database.begin ();
-  auto end = database.end ();
-
-  // Because the latest recorded interval may be expanded into synthetic
-  // intervals, we'll handle it specially
-  if (it != end )
-  {
-    Interval latest = IntervalFactory::fromSerialization (*it);
-    ++it;
-
-    for (auto& interval : expandLatest (latest, rules))
-    {
-      ++current_id;
-
-      if (id_it == id_end)
-      {
-        break;
-      }
-
-      if (interval.id == *id_it)
-      {
-        intervals.push_back (interval);
-        ++id_it;
-      }
-    }
-  }
-
-  // We'll find remaining intervals from the normal recorded intervals
-  for ( ; (it != end) && (id_it != id_end); ++it)
-  {
-    ++current_id;
-
-    if (current_id == *id_it)
-    {
-      Interval interval = IntervalFactory::fromSerialization (*it);
-      interval.id = current_id;
-      intervals.push_back (interval);
-      ++id_it;
-    }
-  }
-
-  // We did not find all the ids we were looking for.
-  if (id_it != id_end)
-  {
-    throw format("ID '@{1}' does not correspond to any tracking.", *id_it);
-  }
-
-  return intervals;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
