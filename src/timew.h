@@ -40,7 +40,6 @@
 // data.cpp
 std::vector <Range>     getHolidays       (const Rules&);
 std::vector <Range>     getAllExclusions  (const Rules&, const Range&);
-std::vector <Interval>  subset            (const Interval&, const std::vector <Interval>&);
 std::vector <Range>     subset            (const Range&, const std::vector <Range>&);
 std::vector <Interval>  subset            (const Range&, const std::vector <Interval>&);
 void                    flattenDatabase   (Database&, const Rules&);

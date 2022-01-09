@@ -192,19 +192,6 @@ void flattenDatabase (Database& database, const Rules& rules)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector <Interval> subset (
-  const Interval& filter,
-  const std::vector <Interval>& intervals)
-{
-  std::vector <Interval> all;
-  for (auto& interval : intervals)
-    if (matchesFilter (interval, filter))
-      all.push_back (interval);
-
-  return all;
-}
-
-////////////////////////////////////////////////////////////////////////////////
 std::vector <Range> subset (
   const Range& range,
   const std::vector <Range>& ranges)
