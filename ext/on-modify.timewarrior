@@ -31,6 +31,7 @@ from __future__ import print_function
 import json
 import subprocess
 import sys
+import shlex
 
 # Hook should extract all of the following for use as Timewarrior tags:
 #   UUID
@@ -87,16 +88,19 @@ if start_or_stop:
     subprocess.call(['timew', start_or_stop] + tags + [':yes'])
 
 # Modifications to task other than start/stop
-elif 'start' in new and 'start' in old:
-    old_tags = extract_tags_from(old)
-    new_tags = extract_tags_from(new)
+old_tags = extract_tags_from(old)
+new_tags = extract_tags_from(new)
 
-    if old_tags != new_tags:
-        subprocess.call(['timew', 'untag', '@1'] + old_tags + [':yes'])
-        subprocess.call(['timew', 'tag', '@1'] + new_tags + [':yes'])
+if old_tags != new_tags:
+    ids = subprocess.check_output(['timew', 'get', 'dom.tracked.ids', old['description']], stderr=subprocess.STDOUT).decode()
+    ids = shlex.split(ids)
 
-    old_annotation = extract_annotation_from(old)
-    new_annotation = extract_annotation_from(new)
+    subprocess.call(['timew', 'untag'] + ids + old_tags + [':yes'])
+    subprocess.call(['timew', 'tag'] + ids + new_tags + [':yes'])
 
-    if old_annotation != new_annotation:
-        subprocess.call(['timew', 'annotate', '@1', new_annotation])
+old_annotation = extract_annotation_from(old)
+new_annotation = extract_annotation_from(new)
+
+if old_annotation != new_annotation:
+    subprocess.call(['timew', 'annotate', '@1', new_annotation])
+
