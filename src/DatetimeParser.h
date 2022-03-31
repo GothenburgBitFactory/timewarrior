@@ -27,10 +27,10 @@
 #ifndef INCLUDED_DATETIMEPARSER
 #define INCLUDED_DATETIMEPARSER
 
-#include <string>
-#include <ctime>
 #include <Pig.h>
 #include <Range.h>
+#include <ctime>
+#include <string>
 
 class DatetimeParser
 {

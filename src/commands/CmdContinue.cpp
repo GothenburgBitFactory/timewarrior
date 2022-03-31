@@ -24,15 +24,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <commands.h>
-#include <format.h>
-#include <timew.h>
-#include <iostream>
-#include <cassert>
+#include <IntervalFilterAllInRange.h>
 #include <IntervalFilterAllWithIds.h>
 #include <IntervalFilterAllWithTags.h>
 #include <IntervalFilterFirstOf.h>
-#include <IntervalFilterAllInRange.h>
+#include <cassert>
+#include <commands.h>
+#include <format.h>
+#include <iostream>
+#include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdContinue (

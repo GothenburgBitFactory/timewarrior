@@ -24,16 +24,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cmake.h>
-#include <Datafile.h>
-#include <timew.h>
-#include <format.h>
-#include <algorithm>
-#include <sstream>
-#include <cassert>
-#include <stdlib.h>
 #include <AtomicFile.h>
+#include <Datafile.h>
 #include <IntervalFactory.h>
+#include <algorithm>
+#include <cassert>
+#include <cstdlib>
+#include <format.h>
+#include <sstream>
+#include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 void Datafile::initialize (const std::string& name)

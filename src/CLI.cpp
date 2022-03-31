@@ -24,19 +24,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cmake.h>
 #include <CLI.h>
 #include <Color.h>
-#include <Pig.h>
-#include <shared.h>
-#include <format.h>
-#include <utf8.h>
-#include <sstream>
-#include <algorithm>
-#include <set>
-#include <Duration.h>
-#include <timew.h>
 #include <DatetimeParser.h>
+#include <Duration.h>
+#include <Pig.h>
+#include <algorithm>
+#include <format.h>
+#include <set>
+#include <shared.h>
+#include <sstream>
+#include <timew.h>
+#include <utf8.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 A2::A2 (const std::string& raw, Lexer::Type lextype)

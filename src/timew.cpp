@@ -24,20 +24,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cmake.h>
 #include <AtomicFile.h>
 #include <CLI.h>
 #include <Database.h>
-#include <Rules.h>
-#include <Extensions.h>
 #include <Datetime.h>
+#include <Extensions.h>
+#include <Rules.h>
 #include <Timer.h>
-#include <shared.h>
-#include <commands.h>
-#include <timew.h>
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 #include <new>
+#include <shared.h>
+#include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int main (int argc, const char** argv)

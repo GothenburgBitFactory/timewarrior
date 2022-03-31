@@ -24,11 +24,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <commands.h>
-#include <timew.h>
-#include <iostream>
 #include <IntervalFilterAllInRange.h>
 #include <IntervalFilterFirstOf.h>
+#include <commands.h>
+#include <iostream>
+#include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Returns 0 if tracking is active, 1 if not.

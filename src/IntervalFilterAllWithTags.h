@@ -27,10 +27,10 @@
 #ifndef INCLUDED_INTERVALFILTERALLWITHTAGSET
 #define INCLUDED_INTERVALFILTERALLWITHTAGSET
 
-#include <IntervalFilter.h>
-#include <string>
-#include <set>
 #include <Interval.h>
+#include <IntervalFilter.h>
+#include <set>
+#include <string>
 
 class IntervalFilterAllWithTags : public IntervalFilter
 {

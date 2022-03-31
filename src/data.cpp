@@ -24,17 +24,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <algorithm>
-#include <cmake.h>
-#include <shared.h>
-#include <format.h>
 #include <Datetime.h>
 #include <Duration.h>
-#include <timew.h>
-#include <algorithm>
-#include <iostream>
 #include <IntervalFactory.h>
 #include <IntervalFilter.h>
+#include <algorithm>
+#include <format.h>
+#include <shared.h>
+#include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Read rules and extract all holiday definitions. Create a Range for each

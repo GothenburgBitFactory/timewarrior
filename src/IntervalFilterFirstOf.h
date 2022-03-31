@@ -27,8 +27,8 @@
 #ifndef INCLUDED_INTERVALFILTERFIRSTOF
 #define INCLUDED_INTERVALFILTERFIRSTOF
 
-#include <memory>
 #include <IntervalFilter.h>
+#include <memory>
 
 class IntervalFilterFirstOf : public IntervalFilter
 {

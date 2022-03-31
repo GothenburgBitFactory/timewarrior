@@ -27,8 +27,8 @@
 #ifndef INCLUDED_INTERVALFILTERANDGROUP
 #define INCLUDED_INTERVALFILTERANDGROUP
 
-#include <memory>
 #include <IntervalFilter.h>
+#include <memory>
 
 class IntervalFilterAndGroup : public IntervalFilter
 {

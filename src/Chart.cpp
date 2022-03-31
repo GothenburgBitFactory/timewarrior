@@ -24,17 +24,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <iomanip>
-#include <iostream>
-#include <shared.h>
-#include <commands.h>
-#include <Duration.h>
+#include <Chart.h>
 #include <Composite.h>
-#include <Chart.h>
-#include <format.h>
+#include <Duration.h>
 #include <cassert>
+#include <format.h>
+#include <iomanip>
+#include <shared.h>
 #include <timew.h>
-#include <Chart.h>
 #include <utf8.h>
 
 ////////////////////////////////////////////////////////////////////////////////

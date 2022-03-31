@@ -24,18 +24,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cmake.h>
-#include <Rules.h>
+#include <AtomicFile.h>
 #include <FS.h>
-#include <shared.h>
-#include <format.h>
-#include <sstream>
-#include <tuple>
+#include <JSON.h>
+#include <Rules.h>
 #include <cassert>
 #include <cerrno>
-#include <inttypes.h>
-#include <AtomicFile.h>
-#include <JSON.h>
+#include <cinttypes>
+#include <format.h>
+#include <shared.h>
+#include <sstream>
+#include <tuple>
 
 ////////////////////////////////////////////////////////////////////////////////
 Rules::Rules ()

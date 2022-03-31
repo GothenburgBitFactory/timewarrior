@@ -24,12 +24,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cmake.h>
 #include <Datetime.h>
-#include <test.h>
+#include <DatetimeParser.h>
+#include <ctime>
 #include <iostream>
-#include <time.h>
-#include <src/DatetimeParser.h>
+#include <test.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 void testParseOpenRange (

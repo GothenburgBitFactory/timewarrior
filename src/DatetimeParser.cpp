@@ -24,19 +24,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cmake.h>
 #include <DatetimeParser.h>
+#include <Duration.h>
 #include <algorithm>
-#include <iostream>
-#include <sstream>
-#include <iomanip>
-#include <cassert>
-#include <stdlib.h>
-#include <shared.h>
 #include <format.h>
+#include <iostream>
 #include <unicode.h>
 #include <utf8.h>
-#include <src/libshared/src/Duration.h>
 
 static std::vector <std::string> dayNames {
   "sunday",

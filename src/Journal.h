@@ -28,10 +28,10 @@
 #define INCLUDED_JOURNAL
 
 
-#include <vector>
-#include <string>
-#include <memory>
 #include <Transaction.h>
+#include <memory>
+#include <string>
+#include <vector>
 
 class Journal
 {

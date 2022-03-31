@@ -24,11 +24,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <format.h>
-#include <Lexer.h>
 #include <IntervalFactory.h>
 #include <JSON.h>
-#include <shared.h>
+#include <Lexer.h>
+#include <format.h>
 
 static std::vector <std::string> tokenizeSerialization (const std::string& line) 
 {

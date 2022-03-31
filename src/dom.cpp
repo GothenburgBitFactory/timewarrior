@@ -24,17 +24,16 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cmake.h>
-#include <timew.h>
-#include <Pig.h>
 #include <Duration.h>
-#include <format.h>
-#include <vector>
-#include <iostream>
 #include <IntervalFilterAllInRange.h>
 #include <IntervalFilterAllWithTags.h>
 #include <IntervalFilterAndGroup.h>
 #include <IntervalFilterFirstOf.h>
+#include <Pig.h>
+#include <format.h>
+#include <iostream>
+#include <timew.h>
+#include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////
 bool domGet (

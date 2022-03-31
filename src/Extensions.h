@@ -27,8 +27,8 @@
 #ifndef INCLUDED_EXTENSIONS
 #define INCLUDED_EXTENSIONS
 
-#include <vector>
 #include <string>
+#include <vector>
 
 class Extensions
 {

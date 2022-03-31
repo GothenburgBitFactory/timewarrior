@@ -24,14 +24,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cmake.h>
 #include <Interval.h>
-#include <timew.h>
-#include <format.h>
-#include <Lexer.h>
-#include <sstream>
 #include <JSON.h>
-#include <Interval.h>
+#include <Lexer.h>
+#include <algorithm>
+#include <sstream>
+#include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 bool Interval::operator== (const Interval& other) const

@@ -27,10 +27,10 @@
 #ifndef INCLUDED_INTERVALFILTERALLWITHIDS
 #define INCLUDED_INTERVALFILTERALLWITHIDS
 
-#include <IntervalFilter.h>
-#include <string>
-#include <set>
 #include <Interval.h>
+#include <IntervalFilter.h>
+#include <set>
+#include <string>
 
 class IntervalFilterAllWithIds : public IntervalFilter
 {

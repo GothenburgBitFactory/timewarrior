@@ -24,8 +24,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <IntervalFilterAllWithTags.h>
 #include <Interval.h>
+#include <IntervalFilterAllWithTags.h>
 
 IntervalFilterAllWithTags::IntervalFilterAllWithTags (std::set <std::string> tags): _tags (std::move(tags))
 {}

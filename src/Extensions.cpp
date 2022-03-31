@@ -24,16 +24,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cmake.h>
 #include <Extensions.h>
 #include <FS.h>
 #include <Timer.h>
-#include <shared.h>
-#include <timew.h>
-#include <sstream>
+#include <algorithm>
 #include <iomanip>
 #include <iostream>
-#include <algorithm>
+#include <shared.h>
+#include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 void Extensions::initialize (const std::string& location)

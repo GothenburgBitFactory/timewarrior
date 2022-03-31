@@ -24,14 +24,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <iostream>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <iomanip>
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include <math.h>
-#include <stdlib.h>
+#include <iostream>
 #include <test.h>
+#include <unistd.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 UnitTest::UnitTest ()

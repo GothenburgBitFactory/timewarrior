@@ -24,16 +24,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <Table.h>
 #include <Duration.h>
-#include <shared.h>
-#include <format.h>
-#include <commands.h>
-#include <timew.h>
-#include <iostream>
-#include <IntervalFilterAndGroup.h>
-#include <IntervalFilterAllWithTags.h>
 #include <IntervalFilterAllInRange.h>
+#include <IntervalFilterAllWithTags.h>
+#include <IntervalFilterAndGroup.h>
+#include <Table.h>
+#include <commands.h>
+#include <format.h>
+#include <iostream>
+#include <timew.h>
 #include <utf8.h>
 
 // Implemented in CmdChart.cpp.

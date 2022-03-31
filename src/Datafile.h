@@ -27,11 +27,11 @@
 #ifndef INCLUDED_DATAFILE
 #define INCLUDED_DATAFILE
 
+#include <FS.h>
 #include <Interval.h>
 #include <Range.h>
-#include <FS.h>
-#include <vector>
 #include <string>
+#include <vector>
 
 class Datafile
 {

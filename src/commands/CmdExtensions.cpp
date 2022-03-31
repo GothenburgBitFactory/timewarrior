@@ -24,8 +24,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <commands.h>
 #include <Table.h>
+#include <commands.h>
 #include <iostream>
 #include <paths.h>
 

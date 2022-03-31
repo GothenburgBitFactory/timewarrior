@@ -27,10 +27,10 @@
 #ifndef INCLUDED_TAGINFODATABASE
 #define INCLUDED_TAGINFODATABASE
 
+#include <TagInfo.h>
+#include <map>
 #include <set>
 #include <string>
-#include <map>
-#include <TagInfo.h>
 
 class TagInfoDatabase
 {

@@ -24,10 +24,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <format.h>
 #include <commands.h>
-#include <timew.h>
+#include <format.h>
 #include <iostream>
+#include <timew.h>
 
 template <class T> T setIntersect (
   const T& left, const T& right)

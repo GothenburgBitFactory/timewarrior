@@ -28,10 +28,10 @@
 #define INCLUDED_COMMANDS
 
 #include <CLI.h>
-#include <Rules.h>
 #include <Database.h>
 #include <Extensions.h>
 #include <Journal.h>
+#include <Rules.h>
 
 int CmdAnnotate      (const CLI&, Rules&, Database&, Journal&                   );
 int CmdCancel        (            Rules&, Database&, Journal&                   );

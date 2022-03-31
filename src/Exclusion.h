@@ -29,8 +29,8 @@
 
 #include <Interval.h>
 #include <Range.h>
-#include <vector>
 #include <string>
+#include <vector>
 
 class Exclusion
 {

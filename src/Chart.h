@@ -27,10 +27,10 @@
 #ifndef INCLUDED_CHART
 #define INCLUDED_CHART
 
+#include <ChartConfig.h>
 #include <Composite.h>
 #include <Interval.h>
 #include <map>
-#include "ChartConfig.h"
 
 class Chart
 {

@@ -24,11 +24,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <commands.h>
-#include <timew.h>
-#include <iostream>
-#include <format.h>
 #include <IntervalFactory.h>
+#include <commands.h>
+#include <format.h>
+#include <iostream>
 
 static void undoIntervalAction(UndoAction& action, Database& database)
 {

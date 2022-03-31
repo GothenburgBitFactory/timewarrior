@@ -27,6 +27,10 @@
 #ifndef INCLUDED_CHARTCONFIG
 #define INCLUDED_CHARTCONFIG
 
+#include <Color.h>
+#include <Datetime.h>
+#include <map>
+
 class ChartConfig
 {
 public:

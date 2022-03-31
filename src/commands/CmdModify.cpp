@@ -24,12 +24,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cassert>
-#include <format.h>
-#include <commands.h>
-#include <timew.h>
-#include <iostream>
 #include <IntervalFilterAllWithIds.h>
+#include <cassert>
+#include <commands.h>
+#include <format.h>
+#include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdModify (

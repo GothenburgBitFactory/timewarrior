@@ -27,8 +27,8 @@
 #ifndef INCLUDED_TRANSACTIONSFACTORY
 #define INCLUDED_TRANSACTIONSFACTORY
 
-#include <string>
 #include <Transaction.h>
+#include <string>
 
 class TransactionsFactory
 {

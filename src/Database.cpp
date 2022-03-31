@@ -24,16 +24,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cassert>
-#include <Database.h>
-#include <format.h>
-#include <JSON.h>
-#include <IntervalFactory.h>
-#include <iostream>
-#include <iomanip>
-#include <shared.h>
-#include <timew.h>
 #include <AtomicFile.h>
+#include <Database.h>
+#include <IntervalFactory.h>
+#include <JSON.h>
+#include <cassert>
+#include <format.h>
+#include <iomanip>
+#include <iostream>
+#include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 Database::iterator::iterator (files_iterator fbegin, files_iterator fend) :

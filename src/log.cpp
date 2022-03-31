@@ -25,9 +25,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <Color.h>
-#include <timew.h>
 #include <iostream>
 #include <sstream>
+#include <timew.h>
 
 static bool debugMode = false;
 static std::string debugIndicator = ">>";

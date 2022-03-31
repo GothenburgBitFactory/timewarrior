@@ -26,10 +26,10 @@
 
 #ifndef INCLUDED_PATH_RESOLVER
 #define INCLUDED_PATH_RESOLVER
-#include <string>
-#include <Rules.h>
 #include <CLI.h>
 #include <Rules.h>
+#include <Rules.h>
+#include <string>
 
 namespace paths {
     void initializeDirs (const CLI&, Rules&);

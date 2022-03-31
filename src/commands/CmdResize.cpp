@@ -24,14 +24,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cmake.h>
 #include <Duration.h>
-#include <format.h>
-#include <commands.h>
-#include <timew.h>
-#include <iostream>
-#include <stdlib.h>
 #include <IntervalFilterAllWithIds.h>
+#include <commands.h>
+#include <format.h>
+#include <iostream>
+#include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdResize (

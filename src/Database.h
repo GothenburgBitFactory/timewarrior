@@ -29,12 +29,12 @@
 
 #include <Datafile.h>
 #include <Interval.h>
-#include <Range.h>
-#include <Transaction.h>
-#include <vector>
-#include <string>
-#include <TagInfoDatabase.h>
 #include <Journal.h>
+#include <Range.h>
+#include <TagInfoDatabase.h>
+#include <Transaction.h>
+#include <string>
+#include <vector>
 
 class Database
 {

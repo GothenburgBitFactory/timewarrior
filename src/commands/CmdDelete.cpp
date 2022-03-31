@@ -24,11 +24,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <timew.h>
+#include <IntervalFilterAllWithIds.h>
+#include <Journal.h>
 #include <format.h>
 #include <iostream>
-#include <src/Journal.h>
-#include <IntervalFilterAllWithIds.h>
+#include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdDelete (

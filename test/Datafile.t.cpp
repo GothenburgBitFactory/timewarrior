@@ -24,11 +24,10 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <test.h>
 #include <Datafile.h>
 #include <Interval.h>
-
 #include <TempDir.h>
+#include <test.h>
 
 int main ()
 {

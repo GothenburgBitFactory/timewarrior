@@ -24,16 +24,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cmake.h>
-#include <cassert>
+#include <IntervalFilterAllInRange.h>
+#include <IntervalFilterAllWithIds.h>
+#include <IntervalFilterFirstOf.h>
 #include <commands.h>
 #include <format.h>
-#include <timew.h>
 #include <iostream>
-#include <stdlib.h>
-#include <IntervalFilterAllWithIds.h>
-#include <IntervalFilterAllInRange.h>
-#include <IntervalFilterFirstOf.h>
+#include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdTag (

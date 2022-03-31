@@ -24,19 +24,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <Duration.h>
-#include <Range.h>
 #include <Chart.h>
 #include <ChartConfig.h>
-#include <commands.h>
-#include <timew.h>
-#include <shared.h>
-#include <format.h>
-#include <iostream>
-#include <iomanip>
+#include <Duration.h>
 #include <IntervalFilterAllInRange.h>
 #include <IntervalFilterAllWithTags.h>
 #include <IntervalFilterAndGroup.h>
+#include <Range.h>
+#include <commands.h>
+#include <format.h>
+#include <iostream>
+#include <timew.h>
 
 int renderChart (const CLI&, const std::string&, Interval&, Rules&, Database&);
 

@@ -25,14 +25,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <cmake.h>
-#include <timew.h>
-#include <shared.h>
-#include <format.h>
 #include <commands.h>
-#include <cstring>
-#include <unistd.h>
+#include <format.h>
 #include <iostream>
 #include <paths.h>
+#include <shared.h>
+#include <timew.h>
+#include <unistd.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 bool lightweightVersionCheck (int argc, const char** argv)

@@ -24,13 +24,12 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <cmake.h>
-#include <Exclusion.h>
 #include <Datetime.h>
+#include <Exclusion.h>
 #include <Pig.h>
-#include <shared.h>
-#include <format.h>
 #include <algorithm>
+#include <format.h>
+#include <shared.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // An exclusion represents untrackable time such as holidays, weekends, evenings

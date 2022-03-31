@@ -27,12 +27,12 @@
 #ifndef INCLUDED_RULES
 #define INCLUDED_RULES
 
-#include <Lexer.h>
-#include <map>
-#include <vector>
-#include <string>
 #include <Database.h>
 #include <Journal.h>
+#include <Lexer.h>
+#include <map>
+#include <string>
+#include <vector>
 
 class Rules
 {

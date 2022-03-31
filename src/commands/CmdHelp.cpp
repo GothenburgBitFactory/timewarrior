@@ -24,15 +24,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <sys/types.h>
-#include <sys/wait.h>
-
-#include <commands.h>
-#include <algorithm>
-#include <iostream>
 #include <FS.h>
-#include <shared.h>
 #include <additional-help.h>
+#include <algorithm>
+#include <commands.h>
+#include <iostream>
+#include <shared.h>
+#include <sys/wait.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdHelpUsage (const Extensions& extensions)

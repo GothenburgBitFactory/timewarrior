@@ -24,8 +24,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <vector>
 #include <TransactionsFactory.h>
+#include <vector>
 
 void TransactionsFactory::parseLine (const std::string& line)
 {

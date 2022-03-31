@@ -26,10 +26,10 @@
 
 #include <cmake.h>
 #include <format.h>
-#include <timew.h>
 #include <iostream>
-#include <shared.h>
 #include <paths.h>
+#include <shared.h>
+#include <timew.h>
 
 #ifdef HAVE_COMMIT
 #include <commit.h>

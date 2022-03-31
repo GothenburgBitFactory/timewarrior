@@ -25,10 +25,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <commands.h>
-#include <timew.h>
-#include <shared.h>
 #include <format.h>
 #include <iostream>
+#include <shared.h>
+#include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 // Іdentify DOM references in cli, provide space-separated results.

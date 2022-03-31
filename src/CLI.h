@@ -27,13 +27,13 @@
 #ifndef INCLUDED_CLI
 #define INCLUDED_CLI
 
-#include <Lexer.h>
-#include <string>
-#include <set>
-#include <vector>
-#include <map>
 #include <Duration.h>
-#include "Interval.h"
+#include <Interval.h>
+#include <Lexer.h>
+#include <map>
+#include <set>
+#include <string>
+#include <vector>
 
 // Represents a single argument.
 class A2
