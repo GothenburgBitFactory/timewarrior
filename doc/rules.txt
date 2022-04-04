@@ -1,11 +1,16 @@
 Rules System
 ============
-The Timewarrior rule system reads your ~/.timewarrior/timewarrior.cfg file and
+The Timewarrior rule system reads your timewarrior.cfg file and
 uses the combination of configuration settings and logic within to:
 
 - Define configuration and customization details
 - Define tags, exclusions, constraints
 - Define various policies
+
+On non-Unix systems config file is expected in ~/.timewarrior directory.
+On Unix systems, if legacy ~/.timewarrior directory doesn't exists, config is
+read from $XDG_CONFIG_HOME/timewarrior directory (if not specified,
+$XDG_CONFIG_HOME defaults to ~/.config).
 
 The rules are a mechanism to apply late-bound logic and data to various
 functions. Whenever data changes, the rule system is run, which will run each
@@ -19,8 +24,8 @@ will initially be minimal, but grow to be come more capable.
 
 Format
 ------
-The rules are written as UTF8 text in the ~/.timewarrior/timewarrior.cfg text
-file. Other rules files may be included:
+The rules are written as UTF8 text in the timewarrior.cfg text file. Other
+rules files may be included:
 
   import /path/to/other/rule/file
 

@@ -7,7 +7,29 @@ timew-config - Timewarrior configuration file and override options
 **timew rc.**__<name>__**=**__<value>__ _<command>_
 
 == DESCRIPTION
-Timewarrior stores its configuration in the user's home directory in _~/.timewarrior/timewarrior.cfg_.
+Timewarrior stores its configuration in the user's home directory in _~/.timewarrior/timewarrior.cfg_ on non-Unix systems (e.g. Windows or macOS).
+On Unix systems, XDG Base Directory specification is supported, if _~/.timewarrior_ directory doesn't exist
+(old config directory is still supported and has precedence over XDG BD compliant locations).
+This means configuration is stored in
+_$XDG_CONFIG_HOME/timewarrior/timewarrior.cfg_, which defaults to
+_~/.config/timewarrior/timewarrior.cfg_ if _$XDG_CONFIG_HOME_ environment
+variable is not specified.
+
+Those wanting to migrate their data to a new directory scheme, might do that with following shell snippet:
+
+[source,shell]
+----
+LEGACY="${HOME}/.timewarrior"
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/timewarrior"
+DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/timewarrior"
+mkdir -p "${CONFIG_DIR}"
+mkdir -p "${DATA_DIR}"
+mv "${LEGACY}/timewarrior.cfg" "${CONFIG_DIR}"
+mv "${LEGACY}/extensions" "${CONFIG_DIR}"
+mv "${LEGACY}/data" "${DATA_DIR}"
+rmdir "${LEGACY}"
+----
+
 This file contains a mix of rules and configuration settings.
 Note that the TIMEWARRIORDB environment variable can be set to override this location.
 

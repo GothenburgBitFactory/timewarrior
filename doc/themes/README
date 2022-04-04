@@ -4,7 +4,8 @@ The theme files define colors that Timewarrior uses in various situations.
 There are several themes provided with Timewarrior, and you use a theme by importing it into your configuration file.
 Edit this file:
 
-    ~/.timewarrior/timewarrior.cfg
+    ~/.timewarrior/timewarrior.cfg (non-Unix systems or instalations using pre-XDG paths on Unix systems)
+    ${XDG_CONFIG_HOME:-$HOME/.config}/timewarrior/timewarrior.cfg (Unix systems)
 
 And add the import line, which looks like this:
 
