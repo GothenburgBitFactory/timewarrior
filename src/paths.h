@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2018 - 2021, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2021, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,38 +24,19 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef INCLUDED_JOURNAL
-#define INCLUDED_JOURNAL
-
-
-#include <vector>
+#ifndef INCLUDED_PATH_RESOLVER
+#define INCLUDED_PATH_RESOLVER
 #include <string>
-#include <memory>
-#include <Transaction.h>
+#include <Rules.h>
+#include <CLI.h>
+#include <Rules.h>
 
-class Journal
-{
-public:
-  Journal() = default;
-  Journal(const Journal&) = delete;
-  Journal& operator= (const Journal&) = delete;
-
-  void initialize(const std::string&, int);
-
-  void startTransaction ();
-  void endTransaction ();
-  void recordConfigAction(const std::string&, const std::string&);
-  void recordIntervalAction(const std::string&, const std::string&);
-  bool enabled () const;
-
-  Transaction popLastTransaction();
-
-private:
-  void recordUndoAction (const std::string &, const std::string &, const std::string &);
-
-  std::string _location {};
-  std::shared_ptr <Transaction> _currentTransaction = nullptr;
-  int _size {0};
-};
-
+namespace paths {
+    void initializeDirs (const CLI&, Rules&);
+    std::string configDir ();
+    std::string configFile ();
+    std::string dbDir ();
+    std::string dbDataDir ();
+    std::string extensionsDir ();
+}
 #endif

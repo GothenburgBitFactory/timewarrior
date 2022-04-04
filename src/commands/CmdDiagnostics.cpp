@@ -29,6 +29,7 @@
 #include <timew.h>
 #include <iostream>
 #include <shared.h>
+#include <paths.h>
 
 #ifdef HAVE_COMMIT
 #include <commit.h>
@@ -163,15 +164,15 @@ int CmdDiagnostics (
       << (env ? env : "-")
       << '\n';
 
-  File cfg (rules.get ("temp.db") + "/timewarrior.cfg");
+  File cfg (paths::configFile ());
   out << "            Cfg: " << describeFile (cfg) << '\n';
 
-  Directory db (rules.get ("temp.db"));
+  Directory db (paths::dbDir ());
   out << "       Database: " << describeFile (db) << '\n';
 
   for (auto& file : database.files ())
   {
-    File df (rules.get ("temp.db") + "/data");
+    File df (paths::dbDataDir ());
     df += file;
     out << "                 " << describeFile (df) << '\n';
   }
@@ -205,8 +206,7 @@ int CmdDiagnostics (
   out << '\n';
 
   // Display extensions.
-  Directory extDir (rules.get ("temp.db"));
-  extDir += "extensions";
+  Directory extDir (paths::extensionsDir ());
 
   out << "Extensions\n"
       << "       Location: " << describeFile (extDir) << '\n';
