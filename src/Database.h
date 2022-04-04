@@ -120,7 +120,7 @@ private:
   void initializeTagDatabase ();
 
 private:
-  std::string               _location {"~/.timewarrior/data"};
+  std::string               _location {};
   std::vector <Datafile>    _files    {};
   TagInfoDatabase           _tagInfoDatabase {};
   Journal*                  _journal {};

@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2016 - 2019, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2021, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,49 +24,19 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <commands.h>
-#include <Table.h>
-#include <iostream>
-#include <paths.h>
+#ifndef INCLUDED_PATH_RESOLVER
+#define INCLUDED_PATH_RESOLVER
+#include <string>
+#include <Rules.h>
+#include <CLI.h>
+#include <Rules.h>
 
-////////////////////////////////////////////////////////////////////////////////
-// Enumerate all extensions.
-int CmdExtensions (const Extensions& extensions)
-{
-  Table t;
-  t.width (1024);
-  t.colorHeader (Color ("underline"));
-  t.add ("Extension", true);
-  t.add ("Status", true);
-
-  for (auto& ext : extensions.all ())
-  {
-    File program (ext);
-
-    // Show program name.
-    auto row = t.addRow ();
-    t.set (row, 0, program.name ());
-
-    // Show extension status.
-    std::string perms;
-         if (! program.readable ())   perms = "Not readable";
-    else if (! program.executable ()) perms = "No executable";
-    else                              perms = "Active";
-
-    if (program.is_link ())           perms += " (link)";
-
-    t.set (row, 1, perms);
-  }
-
-  Directory extDir (paths::extensionsDir ());
-
-  std::cout << '\n'
-            << "Extensions located in:\n"
-            << "  " << extDir._data << '\n'
-            << '\n'
-            << t.render ()
-            << '\n';
-  return 0;
+namespace paths {
+    void initializeDirs (const CLI&, Rules&);
+    std::string configDir ();
+    std::string configFile ();
+    std::string dbDir ();
+    std::string dbDataDir ();
+    std::string extensionsDir ();
 }
-
-////////////////////////////////////////////////////////////////////////////////
+#endif

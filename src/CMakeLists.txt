@@ -34,6 +34,7 @@ set (timew_SRCS AtomicFile.cpp AtomicFile.h
                 dom.cpp
                 init.cpp
                 helper.cpp
+                paths.cpp      paths.h
                 log.cpp
                 util.cpp
                 validate.cpp)
