@@ -132,11 +132,19 @@ Note that the online documentation can be more detailed and more current than th
 
 == FILES
 
+=== Non-Unix systems
 ~/.timewarrior/timewarrior.cfg::
     User configuration file.
 
 ~/.timewarrior/data/YYYY-MM.data::
     Time tracking data files.
+
+=== Unix systems
+${XDG_CONFIG_HOME:-$HOME/.config}/timewarrior/timewarrior.cfg::
+    User configuration file if legacy _~/.timewarrior_ directory doesn't exist.
+
+${XDG_DATA_HOME:-$HOME/.local/share}/timewarrior/data/YYYY-MM.data::
+    Time tracking data files if legacy _~/.timewarrior_ directory doesn't exist.
 
 == pass:[CREDITS & COPYRIGHT]
 Copyright (C) 2015 - 2018 T. Lauf, P. Beckingham, F. Hernandez. +

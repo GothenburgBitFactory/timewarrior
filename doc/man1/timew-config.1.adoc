@@ -8,7 +8,7 @@ timew-config - get and set Timewarrior configuration
 *timew config* [_<name>_ {_<value>_|*''*}]
 
 == DESCRIPTION
-Allows setting and removing configuration values, as an alternative to directly editing your ~/.timewarrior/timewarrior.cfg file.
+Allows setting and removing configuration values, as an alternative to directly editing your _timewarrior.cfg_ file.
 
 == EXAMPLES
 For example:
