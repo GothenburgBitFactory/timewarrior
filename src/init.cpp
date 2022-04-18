@@ -169,12 +169,17 @@ void initializeDataJournalAndRules (
   // If dbLocation does not exist, ask whether it should be created.
   bool shinyNewDatabase = false;
 
-  if (! dbLocation.exists () &&
-      (cli.getHint ("yes", false) ||
-       confirm ("Create new database in " + dbLocation._data + "?")))
+  if (! dbLocation.exists ())
   {
-    dbLocation.create (0700);
-    shinyNewDatabase = true;
+    if ((cli.getHint ("yes", false) || confirm ("Create new database in " + dbLocation._data + "?")))
+    {
+      dbLocation.create (0700);
+      shinyNewDatabase = true;
+    }
+    else
+    {
+      throw std::string("Initial setup aborted by user");
+    }
   }
 
   // Create extensions subdirectory if necessary.

@@ -1,3 +1,5 @@
+- #489    First execution creates database regardless of confirmation response
+          (thanks to Rafael Oliveira)
 - #403    Remove incorrect output stating that an empty interval was recorded
           (thanks to xeruf)
 - #408    Update documentation of hint `:all`
