@@ -36,7 +36,6 @@
 #include <inttypes.h>
 #include <AtomicFile.h>
 #include <JSON.h>
-#include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
 Rules::Rules ()
