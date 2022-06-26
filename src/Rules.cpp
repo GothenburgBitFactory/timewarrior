@@ -36,6 +36,7 @@
 #include <inttypes.h>
 #include <AtomicFile.h>
 #include <JSON.h>
+#include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
 Rules::Rules ()
@@ -558,6 +559,7 @@ bool Rules::setConfigVariable (
           change = true;
         }
       }
+      if (found) break;
     }
 
     // If it was not found, then retry in hierarchical form∴
