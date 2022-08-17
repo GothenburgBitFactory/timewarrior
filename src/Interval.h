@@ -49,7 +49,7 @@ public:
   void setRange (const Datetime& start, const Datetime& end);
 
   void setAnnotation(const std::string& annotation);
-  std::string getAnnotation();
+  std::string getAnnotation() const;
 
   std::string serialize () const;
   std::string json () const;
