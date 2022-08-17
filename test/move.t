@@ -27,10 +27,9 @@
 ###############################################################################
 
 import os
+import sys
 import unittest
 from datetime import datetime, timedelta
-
-import sys
 
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -222,7 +221,7 @@ class TestMove(TestCase):
         # Place a non-synthetic interval in the history
         self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z bar".format(day_before, day_before + timedelta(minutes=30)))
 
-        # Now create an open interval that crosses the exlusions added
+        # Now create an open interval that crosses the exclusions added
         # previously, which will result in synthetic intervals
         self.t("start {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc))
 

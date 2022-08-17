@@ -93,7 +93,7 @@ other support options, take a look at
 ## Contributing
 [![Contributors](https://img.shields.io/github/contributors/GothenburgBitFactory/timewarrior)](https://github.com/GothenburgBitFactory/timewarrior/graphs/contributors)
 [![Milestone progress](https://img.shields.io/github/milestones/progress/GothenburgBitFactory/timewarrior/11?label=current%20milestone%20issues)](https://github.com/GothenburgBitFactory/timewarrior/milestone/11)
-[![Good first issus](https://img.shields.io/github/issues/GothenburgBitFactory/timewarrior/good%20first%20issue)](https://github.com/GothenburgBitFactory/timewarrior/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+[![Good first issues](https://img.shields.io/github/issues/GothenburgBitFactory/timewarrior/good%20first%20issue)](https://github.com/GothenburgBitFactory/timewarrior/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
 
 Your contributions are especially welcome.
 Whether it comes in the form of code patches, ideas, discussion, bug reports, encouragement or criticism, your input is needed.

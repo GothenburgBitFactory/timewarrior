@@ -30,7 +30,7 @@ class MetaTest(type):
             # Name of function must start with test_ to be ran by unittest
             func.__name__ = "test_{0}".format(i)
 
-            # Attach the new test to the testclass
+            # Attach the new test to the test class
             dct[func.__name__] = func
 
         return super(MetaTest, meta).__new__(meta, classname, bases, dct)

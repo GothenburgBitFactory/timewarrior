@@ -3,7 +3,7 @@
 set -e
 
 # Due to system integrity protection, macOS requires us to use a copy of date
-# if we want it to work with faketimea.
+# if we want it to work with faketime.
 DATE=$(command -v date)
 if [ $(uname -s) = "Darwin" ]; then
     TEMP_DATE=$(mktemp)
