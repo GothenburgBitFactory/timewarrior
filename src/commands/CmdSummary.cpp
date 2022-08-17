@@ -122,9 +122,11 @@ int CmdSummary (
   auto days_start = filter.is_started() ? filter.start : tracked.front ().start;
   auto days_end   = filter.is_ended()   ? filter.end   : tracked.back ().end;
 
+  const auto now = Datetime ();
+
   if (days_end == 0)
   {
-    days_end = Datetime ();
+    days_end = now;
   }
 
   for (Datetime day = days_start.startOfDay (); day < days_end; ++day)
@@ -136,7 +138,7 @@ int CmdSummary (
     for (auto& track : subset (day_range, tracked))
     {
       // Make sure the track only represents one day.
-      if ((track.is_open () && day > Datetime ()))
+      if ((track.is_open () && day > now))
         continue;
 
       row = table.addRow ();
@@ -145,14 +147,22 @@ int CmdSummary (
       {
         table.set (row, 0, format ("W{1}", day.week ()));
         table.set (row, 1, day.toString ("Y-M-D"));
-        table.set (row, 2, day.dayNameShort (day.dayOfWeek ()));
+        table.set (row, 2, Datetime::dayNameShort (day.dayOfWeek ()));
         previous = day;
       }
 
+
       // Intersect track with day.
       auto today = day_range.intersect (track);
-      if (track.is_open () && day <= Datetime () && today.end > Datetime ())
-        today.end = Datetime ();
+
+      if (track.is_open() && track.start > now)
+      {
+        today.end = track.start;
+      }
+      else if (track.is_open () && day <= now && today.end > now)
+      {
+        today.end = now;
+      }
 
       std::string tags = join(", ", track.tags());
 
@@ -173,11 +183,13 @@ int CmdSummary (
         table.set (row, (show_ids ? 5 : 4), annotation);
       }
 
+      const auto total = today.total ();
+      
       table.set (row, (show_ids ? 5 : 4) + offset, today.start.toString ("h:N:S"));
       table.set (row, (show_ids ? 6 : 5) + offset, (track.is_open () ? "-" : today.end.toString ("h:N:S")));
-      table.set (row, (show_ids ? 7 : 6) + offset, Duration (today.total ()).formatHours ());
+      table.set (row, (show_ids ? 7 : 6) + offset, Duration (total).formatHours ());
 
-      daily_total += today.total ();
+      daily_total += total;
     }
 
     if (row != -1)
