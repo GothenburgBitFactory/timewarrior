@@ -80,7 +80,7 @@ std::vector <Range> getAllExclusions (
   // Load all exclusions from configuration.
   std::vector <Exclusion> exclusions;
   for (auto& name : rules.all ("exclusions."))
-    exclusions.emplace_back(lowerCase (name), rules.get (name));
+    exclusions.emplace_back (lowerCase (name), rules.get (name));
   debug (format ("Found {1} exclusions", exclusions.size ()));
 
   // Find exclusions 'exc day on <date>' and remove from holidays.

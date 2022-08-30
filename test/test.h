@@ -33,7 +33,7 @@ class UnitTest
 {
 public:
   UnitTest ();
-  UnitTest (int);
+  explicit UnitTest (int);
   ~UnitTest ();
 
   void plan (int);

@@ -179,9 +179,9 @@ int CmdDiagnostics (
 
   // Determine rc.editor/$EDITOR/$VISUAL.
   char* peditor;
-  if ((peditor = getenv ("VISUAL")) != NULL)
+  if ((peditor = getenv ("VISUAL")) != nullptr)
     out << "        $VISUAL: " << peditor << '\n';
-  else if ((peditor = getenv ("EDITOR")) != NULL)
+  else if ((peditor = getenv ("EDITOR")) != nullptr)
     out << "        $EDITOR: " << peditor << '\n';
 
   // Theme description, if present.

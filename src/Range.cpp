@@ -316,12 +316,12 @@ std::vector <Range> Range::subtract (const Range& other) const
   {
     if (start < other.start)
     {
-      results.emplace_back(start, other.start);
+      results.emplace_back (start, other.start);
 
       if (other.is_ended () &&
           (! is_ended () || end > other.end))
       {
-        results.emplace_back(other.end, end);
+        results.emplace_back (other.end, end);
       }
     }
     else
@@ -331,11 +331,11 @@ std::vector <Range> Range::subtract (const Range& other) const
         if (is_ended ())
         {
           if (end > other.end)
-            results.emplace_back(other.end, end);
+            results.emplace_back (other.end, end);
         }
         else
         {
-          results.emplace_back(other.end, end);
+          results.emplace_back (other.end, end);
         }
       }
     }

@@ -161,7 +161,7 @@ int CmdReport (
   // Run the extensions.
   std::vector <std::string> output;
   int rc = extensions.callExtension (script_path, split (input, '\n'), output);
-  if (rc != 0 && output.size () == 0)
+  if (rc != 0 && output.empty ())
   {
     throw format ("'{1}' returned {2} without producing output.", script_path, rc);
   }

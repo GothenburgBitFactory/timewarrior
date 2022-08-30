@@ -547,8 +547,8 @@ void Database::initializeDatafiles ()
         file.find (".data") == file.length () - 5)
     {
       auto basename = Path (file).name ();
-      auto year  = strtol (basename.substr (0, 4).c_str (), NULL, 10);
-      auto month = strtol (basename.substr (5, 2).c_str (), NULL, 10);
+      auto year  = strtol (basename.substr (0, 4).c_str (), nullptr, 10);
+      auto month = strtol (basename.substr (5, 2).c_str (), nullptr, 10);
       getDatafile (year, month);
     }
   }

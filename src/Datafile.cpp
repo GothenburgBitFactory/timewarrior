@@ -41,8 +41,8 @@ void Datafile::initialize (const std::string& name)
 
   // From the name, which is of the form YYYY-MM.data, extract the YYYY and MM.
   auto basename = _file.name ();
-  auto year  = strtol (basename.substr (0, 4).c_str (), NULL, 10);
-  auto month = strtol (basename.substr (5, 2).c_str (), NULL, 10);
+  auto year  = strtol (basename.substr (0, 4).c_str (), nullptr, 10);
+  auto month = strtol (basename.substr (5, 2).c_str (), nullptr, 10);
 
   // The range is a month: [start, end).
   Datetime start (year, month, 1, 0, 0, 0);
@@ -151,7 +151,7 @@ void Datafile::commit ()
   if (_dirty)
   {
     AtomicFile file (_file);
-    if (_lines.size () > 0)
+    if (!_lines.empty ())
     {
       if (file.open ())
       {

@@ -51,7 +51,7 @@ struct AtomicFile::impl
   // the temp file until finalization.
   bool is_temp_active {false};
 
-  impl (const Path& path);
+  explicit impl (const Path& path);
   ~impl ();
 
   std::string name () const;

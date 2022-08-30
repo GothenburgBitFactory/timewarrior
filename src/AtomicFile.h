@@ -34,8 +34,8 @@ class Path;
 class AtomicFile
 {
 public:
-  AtomicFile (const Path& path);
-  AtomicFile (std::string path);
+  explicit AtomicFile (const Path& path);
+  explicit AtomicFile (std::string path);
   AtomicFile (const AtomicFile&) = delete;
   AtomicFile (AtomicFile&&);
   AtomicFile& operator= (const AtomicFile&) = delete;

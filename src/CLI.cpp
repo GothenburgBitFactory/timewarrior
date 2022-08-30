@@ -557,7 +557,7 @@ std::set<int> CLI::getIds() const
   for (auto& arg : _args)
   {
     if (arg.hasTag ("ID"))
-      ids.insert (strtol (arg.attribute ("value").c_str (), NULL, 10));
+      ids.insert (strtol (arg.attribute ("value").c_str (), nullptr, 10));
   }
 
   return ids;
@@ -666,16 +666,16 @@ Interval CLI::getFilter (const Range& default_range) const
         {
           if (range.is_empty ())
           {
-            args.emplace_back("<all>");
+            args.emplace_back ("<all>");
           }
           else
           {
             start = range.start.toISO ();
             end   = range.end.toISO ();
 
-            args.emplace_back("<date>");
-            args.emplace_back("-");
-            args.emplace_back("<date>");
+            args.emplace_back ("<date>");
+            args.emplace_back ("-");
+            args.emplace_back ("<date>");
           }
         }
 
@@ -688,14 +688,14 @@ Interval CLI::getFilter (const Range& default_range) const
         else if (end.empty ())
           end = raw;
 
-        args.emplace_back("<date>");
+        args.emplace_back ("<date>");
       }
       else if (arg._lextype == Lexer::Type::duration)
       {
         if (duration.empty ())
           duration = raw;
 
-        args.emplace_back("<duration>");
+        args.emplace_back ("<duration>");
       }
       else if (arg.hasTag ("KEYWORD"))
       {

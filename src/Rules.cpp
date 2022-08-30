@@ -605,7 +605,7 @@ bool Rules::setConfigVariable (
       {
         // Add blank line required by rules.
         if (lines.empty () || lines.back ().empty ())
-          lines.emplace_back("");
+          lines.emplace_back ("");
 
         // Add new line.
         lines.push_back (name + " = " + json::encode (value));
@@ -626,7 +626,7 @@ bool Rules::setConfigVariable (
 
       // Add blank line required by rules.
       if (lines.empty () || lines.back ().empty ())
-        lines.emplace_back("");
+        lines.emplace_back ("");
 
       // Add new line.
       lines.push_back (name + " = " + json::encode (value));

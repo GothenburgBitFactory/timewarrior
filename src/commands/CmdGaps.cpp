@@ -84,7 +84,7 @@ int CmdGaps (
       {
         table.set (row, 0, format ("W{1}", day.week ()));
         table.set (row, 1, day.toString ("Y-M-D"));
-        table.set (row, 2, day.dayNameShort (day.dayOfWeek ()));
+        table.set (row, 2, Datetime::dayNameShort (day.dayOfWeek ()));
         previous = day;
       }
 
