@@ -146,8 +146,8 @@ std::vector <Interval> expandLatest (const Interval& latest, const Rules& rules)
       std::vector <Interval> flattened = flatten (latest, exclusions);
 
       // If flatten() converted the latest interval into a group of synthetic
-      // intervals, the number of returned intervals will be greater than 1,
-      // otherwise, it just returned the non-synthetic, latest interval.
+      // intervals, the number of returned intervals will be greater than 1.
+      // Otherwise, it just returned the non-synthetic, latest interval.
       if (flattened.size () > 1)
       {
         std::reverse (flattened.begin (), flattened.end ());

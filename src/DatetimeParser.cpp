@@ -332,7 +332,7 @@ bool DatetimeParser::parse_named (Pig& pig)
 {
   auto checkpoint = pig.cursor ();
 
-  // Experimental handling of date phrases, such as "first monday in march".
+  // Experimental handling of date phrases, such as "first monday in March".
   // Note that this requires that phrases are delimited by EOS or WS.
   std::string token;
   std::vector <std::string> tokens;

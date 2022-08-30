@@ -29,7 +29,7 @@ It is also the quickest way to get help, or confirm a bug.
 
 Review documentation: there are man pages, online articles, tutorials and so on, and these may contain errors, or they may not convey ideas in the best way.
 You can help improve it.
-Documentation is a separate effort from the codebase, and includes all websites, and all are available using git.
+Documentation is a separate effort from the codebase, and includes all websites, and all are available using Git.
 
 Take a look at the bug database, and help triage the bug list.
 Bug triage is very useful and much needed.

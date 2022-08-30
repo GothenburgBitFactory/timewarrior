@@ -7,13 +7,13 @@ Please follow the instructions below to build and install Timewarrior from sourc
 
 In order to build Timewarrior, you will need:
 
-  - cmake (See https://cmake.org)
-  - make
-  - asciidoctor (for building documentation)
+  - CMake (See https://cmake.org)
+  - Make
+  - Asciidoctor (for building documentation)
 
 You will need a C++ compiler that supports full C++17, which includes:
-  - gcc 8
-  - clang 5
+  - GCC 8
+  - Clang 5
 
 
 # Basic Installation
@@ -47,14 +47,14 @@ These commands are explained below:
 
 # Build and configurations options
 
-You can customize the configuration run with cmake variables.
+You can customize the configuration run with CMake variables.
 This will modify the installation process:
 
 To change the installation directory you use the following configuration variable:
 
     $ cmake -DCMAKE_INSTALL_PREFIX=<path-to-installation-dir> .
 
-cmake configuration variables are applied with the -D option and consist of a <name> and a <value>:
+CMake configuration variables are applied with the -D option and consist of a <name> and a <value>:
 
     $ cmake -D<name>=<value> .
 
@@ -81,9 +81,9 @@ The corresponding `TIMEW_*` variables will be combined with `CMAKE_INSTALL_PREFI
 
 # Updating Timewarrior build
 
-This section concerns itself with the description of the procedure needed to update the local Timewarrior build from the 'timew' git repository.
+This section concerns itself with the description of the procedure needed to update the local Timewarrior build from the 'timew' Git repository.
 
-To update the local Timewarrior build, you need to update the git repository, including the `src/libshared` submodule.
+To update the local Timewarrior build, you need to update the Git repository, including the `src/libshared` submodule.
 To do that, run:
 
     $ git pull --recurse-submodules
