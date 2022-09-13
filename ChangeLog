@@ -1,6 +1,7 @@
 - #493    :lastweek doesn't count last Sunday
           (thanks to Saulius Krasuckas, Per Møldrup-Dalum, Beshoy Girgis, Sergey Zhuravlevich)
 -         Add ':today' hint
+-         Refactor holidays/refresh script
 
  ------ current release ---------------------------
 
