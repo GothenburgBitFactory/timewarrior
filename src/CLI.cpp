@@ -711,7 +711,6 @@ Interval CLI::getFilter (const Range& default_range) const
       }
       else
       {
-        args.emplace_back("<?>");
         filter.tag (raw);
       }
     }
