@@ -48,7 +48,13 @@ int CmdSummary (
   const bool verbose = rules.getBoolean ("verbose");
 
   // Create a filter, and if empty, choose 'today'.
-  auto filter = cli.getFilter (Range { Datetime ("today"), Datetime ("tomorrow") });
+  auto default_hint = rules.get ("reports.range", ":day");
+  auto report_hint = rules.get ("reports.summary.range", default_hint);
+
+  Range default_range = {};
+  expandIntervalHint (report_hint, default_range);
+
+  auto filter = cli.getFilter (default_range);
 
   // Load the data.
   IntervalFilterAndGroup filtering ({

@@ -77,6 +77,35 @@ static std::string findExtension (
   return "";
 }
 
+std::string basename (const std::string &script_path)
+{
+  const auto lastSlash = script_path.find_last_of ('/');
+
+  if (lastSlash != std::string::npos)
+  {
+    return script_path.substr (lastSlash + 1);
+  }
+
+  return script_path;
+}
+
+std::string dropExtension (const std::string& basename)
+{
+  const auto lastDot = basename.find_last_of ('.');
+
+  if (lastDot != std::string::npos)
+  {
+    return basename.substr (0, lastDot);
+  }
+
+  return basename;
+}
+
+std::string getScriptName (const std::string& script_path)
+{
+  return dropExtension (basename (script_path));
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 int CmdReport (
   const CLI& cli,
@@ -84,22 +113,30 @@ int CmdReport (
   Database& database,
   const Extensions& extensions)
 {
-  std::string script;
+  std::string script_path;
   for (auto& arg : cli._args)
   {
     if (arg.hasTag ("EXT"))
     {
-      script = findExtension (extensions, arg.attribute ("canonical"));
+      script_path = findExtension (extensions, arg.attribute ("canonical"));
     }
   }
 
-  if (script.empty ())
+  if (script_path.empty ())
   {
     throw std::string ("Specify which report to run.");
   }
 
-  // Compose Header info.
-  auto filter = cli.getFilter ();
+  auto script_name = getScriptName (script_path);
+  auto default_hint = rules.get ("reports.range", ":all");
+  auto report_hint = rules.get (format ("reports.{1}.range", script_name), default_hint);
+
+  Range default_range = {};
+  expandIntervalHint (report_hint, default_range);
+
+  // Create a filter, and if empty, choose the current week.
+  auto filter = cli.getFilter (default_range);
+
   IntervalFilterAndGroup filtering ({
     std::make_shared <IntervalFilterAllInRange> ( Range { filter.start, filter.end }),
     std::make_shared <IntervalFilterAllWithTags> (filter.tags ())
@@ -107,6 +144,7 @@ int CmdReport (
 
   auto tracked = getTracked (database, rules, filtering);
 
+  // Compose Header info.
   rules.set ("temp.report.start", filter.is_started () ? filter.start.toISO () : "");
   rules.set ("temp.report.end",   filter.is_ended ()   ? filter.end.toISO ()   : "");
   rules.set ("temp.report.tags", joinQuotedIfNeeded (",", filter.tags ()));
@@ -123,10 +161,10 @@ int CmdReport (
 
   // Run the extensions.
   std::vector <std::string> output;
-  int rc = extensions.callExtension (script, split (input, '\n'), output);
+  int rc = extensions.callExtension (script_path, split (input, '\n'), output);
   if (rc != 0 && output.size () == 0)
   {
-    throw format ("'{1}' returned {2} without producing output.", script, rc);
+    throw format ("'{1}' returned {2} without producing output.", script_path, rc);
   }
 
   // Display the output.

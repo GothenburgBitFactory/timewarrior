@@ -14,6 +14,7 @@ A chart summarizes the tracked and untracked time with colored blocks drawn on a
 It accepts date ranges and tags for filtering.
 There are three types: *day*, *week*, and *month* with their respective commands.
 The **reports.**__<type>__**.range** configuration setting overrides the default date range.
+One can override the global default date range with the **reports.range** configuration.
 For more details, and precise times, use the 'summary' report.
 
 *month*::

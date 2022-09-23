@@ -37,6 +37,11 @@ Determines whether the id column is shown in the summary.
 Can be overridden by the ':ids' and ':no-ids' hint, respectively.
 Default value is 'no'
 
+**reports.summary.range**::
+Set the date range for the summary report.
+The value has to be a range hint, see timew-hints(7).
+Default value is ':day'
+
 **tags.**__<tag>__**.color**::
 Assigns a specific foreground and background color to a tag.
 Examples of valid colors include 'white', 'gray8', 'black on yellow', and 'rgb345'.
