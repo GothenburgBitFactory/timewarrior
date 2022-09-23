@@ -86,11 +86,17 @@ int CmdReport (
 {
   std::string script;
   for (auto& arg : cli._args)
+  {
     if (arg.hasTag ("EXT"))
+    {
       script = findExtension (extensions, arg.attribute ("canonical"));
+    }
+  }
 
   if (script.empty ())
+  {
     throw std::string ("Specify which report to run.");
+  }
 
   // Compose Header info.
   auto filter = cli.getFilter ();
