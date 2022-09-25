@@ -177,7 +177,7 @@ int CmdSummary (
         table.set (row, 3, format ("@{1}", track.id), colorID);
       }
 
-      table.set (row, (show_ids ? 4 : 3), tags, summaryIntervalColor (rules, track.tags ()));
+      table.set (row, 3 + (show_ids ? 1 : 0), tags, summaryIntervalColor (rules, track.tags ()));
 
       if (show_annotations)
       {
@@ -186,27 +186,27 @@ int CmdSummary (
         if (annotation.length () > 15)
           annotation = annotation.substr (0, 12) + "...";
 
-        table.set (row, (show_ids ? 5 : 4), annotation);
+        table.set (row, 4 + (show_ids ? 1 : 0), annotation);
       }
 
       const auto total = today.total ();
       
-      table.set (row, (show_ids ? 5 : 4) + offset, today.start.toString ("h:N:S"));
-      table.set (row, (show_ids ? 6 : 5) + offset, (track.is_open () ? "-" : today.end.toString ("h:N:S")));
-      table.set (row, (show_ids ? 7 : 6) + offset, Duration (total).formatHours ());
+      table.set (row, 4 + (show_ids ? 1 : 0) + offset, today.start.toString ("h:N:S"));
+      table.set (row, 5 + (show_ids ? 1 : 0) + offset, (track.is_open () ? "-" : today.end.toString ("h:N:S")));
+      table.set (row, 6 + (show_ids ? 1 : 0) + offset, Duration (total).formatHours ());
 
       daily_total += total;
     }
 
     if (row != -1)
-      table.set (row, (show_ids ? 8 : 7) + offset, Duration (daily_total).formatHours ());
+      table.set (row, 7 + (show_ids ? 1 : 0) + offset, Duration (daily_total).formatHours ());
 
     grand_total += daily_total;
   }
 
   // Add the total.
-  table.set (table.addRow (), (show_ids ? 8 : 7) + offset, " ", Color ("underline"));
-  table.set (table.addRow (), (show_ids ? 8 : 7) + offset, Duration (grand_total).formatHours ());
+  table.set (table.addRow (), 7 + (show_ids ? 1 : 0) + offset, " ", Color ("underline"));
+  table.set (table.addRow (), 7 + (show_ids ? 1 : 0) + offset, Duration (grand_total).formatHours ());
 
   const auto show_holidays = cli.getComplementaryHint ("holidays", rules.getBoolean ("reports.summary.holidays"));
 
