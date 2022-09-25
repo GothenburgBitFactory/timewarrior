@@ -92,17 +92,19 @@ int CmdSummary (
   Color colorID (rules.getBoolean ("color") ? rules.get ("theme.colors.ids") : "");
 
   const auto show_ids = cli.getComplementaryHint ("ids", rules.getBoolean ("reports.summary.ids"));
+  const auto show_tags = cli.getComplementaryHint ("tags", rules.getBoolean ("reports.summary.tags", true));
   const auto show_annotations = cli.getComplementaryHint ("annotations", rules.getBoolean ("reports.summary.annotations"));
 
   const auto tags_col_offset = show_ids ? 1 : 0;
-  const auto start_col_offset = tags_col_offset + (show_annotations ? 1 : 0);
+  const auto annotation_col_offset = tags_col_offset + (show_tags ? 1 : 0);
+  const auto start_col_offset = annotation_col_offset + (show_annotations ? 1 : 0);
 
   const auto tags_col_index = 3 + tags_col_offset;
-  const auto annotation_col_index = 4 + tags_col_offset;
-  const auto start_col_index = 4 + start_col_offset;
-  const auto end_col_index = 5 + start_col_offset;
-  const auto duration_col_index = 6 + start_col_offset;
-  const auto total_col_index = 7 + start_col_offset;
+  const auto annotation_col_index = 3 + annotation_col_offset;
+  const auto start_col_index = 3 + start_col_offset;
+  const auto end_col_index = 4 + start_col_offset;
+  const auto duration_col_index = 5 + start_col_offset;
+  const auto total_col_index = 6 + start_col_offset;
 
   Table table;
   table.width (1024);
@@ -116,7 +118,10 @@ int CmdSummary (
     table.add ("ID");
   }
 
-  table.add ("Tags");
+  if (show_tags)
+  {
+    table.add ("Tags");
+  }
 
   if (show_annotations)
   {
@@ -178,14 +183,16 @@ int CmdSummary (
         today.end = now;
       }
 
-      std::string tags = join(", ", track.tags());
-
       if (show_ids)
       {
         table.set (row, 3, format ("@{1}", track.id), colorID);
       }
 
-      table.set (row, tags_col_index, tags, summaryIntervalColor (rules, track.tags ()));
+      if (show_tags)
+      {
+        std::string tags = join (", ", track.tags ());
+        table.set (row, tags_col_index, tags, summaryIntervalColor (rules, track.tags ()));
+      }
 
       if (show_annotations)
       {

@@ -37,6 +37,11 @@ Determines whether the id column is shown in the summary.
 Can be overridden by the ':ids' and ':no-ids' hint, respectively.
 Default value is 'no'
 
+**reports.summary.tags**::
+Determines whether the tags column is shown in the summary.
+Can be overridden by the ':tags' and ':no-tags' hint, respectively.
+Default value is 'yes'.
+
 **reports.summary.range**::
 Set the date range for the summary report.
 The value has to be a range hint, see timew-hints(7).

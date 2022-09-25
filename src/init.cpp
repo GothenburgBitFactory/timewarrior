@@ -97,6 +97,8 @@ void initializeEntities (CLI& cli)
   cli.entity ("hint", ":fill");
   cli.entity ("hint", ":ids");
   cli.entity ("hint", ":no-ids");
+  cli.entity ("hint", ":tags");
+  cli.entity ("hint", ":no-tags");
   cli.entity ("hint", ":annotations");
   cli.entity ("hint", ":no-annotations");
   cli.entity ("hint", ":holidays");
