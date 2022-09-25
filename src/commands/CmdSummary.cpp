@@ -145,7 +145,9 @@ int CmdSummary (
     {
       // Make sure the track only represents one day.
       if ((track.is_open () && day > now))
+      {
         continue;
+      }
 
       row = table.addRow ();
 
@@ -184,7 +186,9 @@ int CmdSummary (
         auto annotation = track.getAnnotation ();
 
         if (annotation.length () > 15)
+        {
           annotation = annotation.substr (0, 12) + "...";
+        }
 
         table.set (row, 4 + (show_ids ? 1 : 0), annotation);
       }
