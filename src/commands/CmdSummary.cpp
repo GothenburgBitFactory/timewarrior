@@ -94,6 +94,16 @@ int CmdSummary (
   const auto show_ids = cli.getComplementaryHint ("ids", rules.getBoolean ("reports.summary.ids"));
   const auto show_annotations = cli.getComplementaryHint ("annotations", rules.getBoolean ("reports.summary.annotations"));
 
+  const auto tags_col_offset = show_ids ? 1 : 0;
+  const auto start_col_offset = tags_col_offset + (show_annotations ? 1 : 0);
+
+  const auto tags_col_index = 3 + tags_col_offset;
+  const auto annotation_col_index = 4 + tags_col_offset;
+  const auto start_col_index = 4 + start_col_offset;
+  const auto end_col_index = 5 + start_col_offset;
+  const auto duration_col_index = 6 + start_col_offset;
+  const auto total_col_index = 7 + start_col_offset;
+
   Table table;
   table.width (1024);
   table.colorHeader (Color ("underline"));
@@ -108,12 +118,9 @@ int CmdSummary (
 
   table.add ("Tags");
 
-  auto offset = 0;
-
   if (show_annotations)
   {
     table.add ("Annotation");
-    offset = 1;
   }
 
   table.add ("Start", false);
@@ -159,7 +166,6 @@ int CmdSummary (
         previous = day;
       }
 
-
       // Intersect track with day.
       auto today = day_range.intersect (track);
 
@@ -179,7 +185,7 @@ int CmdSummary (
         table.set (row, 3, format ("@{1}", track.id), colorID);
       }
 
-      table.set (row, 3 + (show_ids ? 1 : 0), tags, summaryIntervalColor (rules, track.tags ()));
+      table.set (row, tags_col_index, tags, summaryIntervalColor (rules, track.tags ()));
 
       if (show_annotations)
       {
@@ -190,27 +196,27 @@ int CmdSummary (
           annotation = annotation.substr (0, 12) + "...";
         }
 
-        table.set (row, 4 + (show_ids ? 1 : 0), annotation);
+        table.set (row, annotation_col_index, annotation);
       }
 
       const auto total = today.total ();
-      
-      table.set (row, 4 + (show_ids ? 1 : 0) + offset, today.start.toString ("h:N:S"));
-      table.set (row, 5 + (show_ids ? 1 : 0) + offset, (track.is_open () ? "-" : today.end.toString ("h:N:S")));
-      table.set (row, 6 + (show_ids ? 1 : 0) + offset, Duration (total).formatHours ());
+
+      table.set (row, start_col_index, today.start.toString ("h:N:S"));
+      table.set (row, end_col_index, (track.is_open () ? "-" : today.end.toString ("h:N:S")));
+      table.set (row, duration_col_index, Duration (total).formatHours ());
 
       daily_total += total;
     }
 
     if (row != -1)
-      table.set (row, 7 + (show_ids ? 1 : 0) + offset, Duration (daily_total).formatHours ());
+      table.set (row, total_col_index, Duration (daily_total).formatHours ());
 
     grand_total += daily_total;
   }
 
   // Add the total.
-  table.set (table.addRow (), 7 + (show_ids ? 1 : 0) + offset, " ", Color ("underline"));
-  table.set (table.addRow (), 7 + (show_ids ? 1 : 0) + offset, Duration (grand_total).formatHours ());
+  table.set (table.addRow (), total_col_index, " ", Color ("underline"));
+  table.set (table.addRow (), total_col_index, Duration (grand_total).formatHours ());
 
   const auto show_holidays = cli.getComplementaryHint ("holidays", rules.getBoolean ("reports.summary.holidays"));
 
