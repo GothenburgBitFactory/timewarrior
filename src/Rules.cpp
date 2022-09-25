@@ -198,9 +198,10 @@ double Rules::getReal (const std::string& key) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Rules::getBoolean (const std::string& key) const
+bool Rules::getBoolean (const std::string& key, bool defaultValue) const
 {
   auto found = _settings.find (key);
+
   if (found != _settings.end ())
   {
     auto value = lowerCase (found->second);
@@ -209,10 +210,14 @@ bool Rules::getBoolean (const std::string& key) const
         value == "y"      ||
         value == "yes"    ||
         value == "on")
+    {
       return true;
+    }
+
+    return false;
   }
 
-  return false;
+  return defaultValue;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -45,7 +45,7 @@ public:
   std::string get (const std::string &key, const std::string &defaultValue = "") const;
   int         getInteger (const std::string&, int defaultValue = 0) const;
   double      getReal    (const std::string&) const;
-  bool        getBoolean (const std::string&) const;
+  bool        getBoolean (const std::string&, bool defaultValue = false) const;
 
   void set (const std::string&, const int);
   void set (const std::string&, const double);
