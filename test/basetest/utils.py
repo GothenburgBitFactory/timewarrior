@@ -20,7 +20,7 @@ except ImportError:
     import json
 from .exceptions import CommandError, TimeoutWaitingFor
 
-ON_POSIX = 'posix' in sys.builtin_module_names
+ON_POSIX = "posix" in sys.builtin_module_names
 
 # Directory relative to basetest module location
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -126,7 +126,7 @@ def _queue_output(arguments, pidq, outputq):
     out, err = proc.communicate(input)
 
     if sys.version_info > (3,):
-        out, err = out.decode('utf-8'), err.decode('utf-8')
+        out, err = out.decode("utf-8"), err.decode("utf-8")
 
     # Give the output back to the caller
     outputq.put((out, err, proc.returncode))
@@ -340,8 +340,8 @@ def parse_datafile(file):
             line = line.rstrip("\n")
 
             # Turn [] strings into {} to be treated properly as JSON hashes
-            if line.startswith('[') and line.endswith(']'):
-                line = '{' + line[1:-1] + '}'
+            if line.startswith("[") and line.endswith("]"):
+                line = "{" + line[1:-1] + "}"
 
             if line.startswith("{"):
                 data.append(json.loads(line))

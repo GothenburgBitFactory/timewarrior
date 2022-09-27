@@ -1,7 +1,7 @@
 import signal
 
 sig_names = dict((k, v) for v, k in reversed(sorted(signal.__dict__.items()))
-                 if v.startswith('SIG') and not v.startswith('SIG_'))
+                 if v.startswith("SIG") and not v.startswith("SIG_"))
 
 
 class CommandError(Exception):

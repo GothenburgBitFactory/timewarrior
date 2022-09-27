@@ -36,8 +36,8 @@ class Timew(object):
         # Configuration of the isolated environment
         self._original_pwd = os.getcwd()
         self.datadir = tempfile.mkdtemp(prefix="timew_")
-        self.timewrc = os.path.join (self.datadir, 'timewarrior.cfg')
-        self.extdir = os.path.join(self.datadir, 'extensions')
+        self.timewrc = os.path.join(self.datadir, "timewarrior.cfg")
+        self.extdir = os.path.join(self.datadir, "extensions")
 
         # Ensure any instance is properly destroyed at session end
         atexit.register(lambda: self.destroy())
