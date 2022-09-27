@@ -6,6 +6,8 @@
           (thanks to quazgar)
 - #437    Minor AtomicFile cleanup
           (thanks to Shaun Ruffel)
+- #441    Return report return code
+          (thanks to lospatchos)
 - #458    Add man documentation for configuring tag colors.
           (thanks to Lim Ding Wen)
 - #463    Add colors to summary
