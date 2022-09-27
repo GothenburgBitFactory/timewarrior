@@ -36,7 +36,7 @@
 #include <set>
 #include <Duration.h>
 #include <timew.h>
-#include "DatetimeParser.h"
+#include <DatetimeParser.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 A2::A2 (const std::string& raw, Lexer::Type lextype)

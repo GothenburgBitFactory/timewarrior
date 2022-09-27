@@ -34,7 +34,7 @@
 #include <IntervalFilterAllInRange.h>
 #include <IntervalFilterAllWithTags.h>
 #include <IntervalFilterAndGroup.h>
-#include "IntervalFilterFirstOf.h"
+#include <IntervalFilterFirstOf.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 bool domGet (
