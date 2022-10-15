@@ -28,9 +28,8 @@
 
 import datetime
 import os
-import unittest
-
 import sys
+import unittest
 
 # Ensure python finds the local simpletap module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -356,7 +355,7 @@ class TestTotals(TestCase):
             'temp.report.start: {:%Y%m%dT%H%M%S}Z\n'.format(one_hour_before_utc),
             'temp.report.end: {:%Y%m%dT%H%M%S}Z\n'.format(now_utc),
             '\n',
-            '[{"start":"20160101T070000Z","end":"20160101T080000Z","tags":[]}]',
+            '[{{"start":"{:%Y%m%dT%H%M%S}Z","end":"{:%Y%m%dT%H%M%S}Z","tags":[]}}]'.format(one_hour_before_utc, now_utc)
         ]
 
         out = calculate_totals(input_stream)

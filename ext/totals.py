@@ -28,8 +28,8 @@
 
 import datetime
 import json
-
 import sys
+
 from dateutil import tz
 
 DATEFORMAT = "%Y%m%dT%H%M%SZ"
@@ -55,6 +55,7 @@ def calculate_totals(input_stream):
     header = 1
     configuration = dict()
     body = ""
+
     for line in input_stream:
         if header:
             if line == "\n":
@@ -68,17 +69,33 @@ def calculate_totals(input_stream):
         else:
             body += line
 
+    if "temp.report.start" not in configuration:
+        return ["There is no data in the database"]
+
+    report_start_utc = datetime.datetime.strptime(configuration["temp.report.start"], DATEFORMAT)
+    report_start_utc = report_start_utc.replace(tzinfo=from_zone)
+    report_start = report_start_utc.astimezone(tz=to_zone)
+
+    if "temp.report.end" in configuration:
+        report_end_utc = datetime.datetime.strptime(configuration["temp.report.end"], DATEFORMAT)
+        report_end_utc = report_end_utc.replace(tzinfo=from_zone)
+        report_end = report_end_utc.astimezone(to_zone)
+    else:
+        report_end_utc = datetime.datetime.now(tz=from_zone)
+        report_end = report_end_utc.astimezone(tz=to_zone)
+
     # Sum the seconds tracked by tag.
     totals = dict()
     untagged = None
     j = json.loads(body)
+
     for object in j:
-        start = datetime.datetime.strptime(object["start"], DATEFORMAT)
+        start = max(report_start_utc, datetime.datetime.strptime(object["start"], DATEFORMAT).replace(tzinfo=from_zone))
 
         if "end" in object:
-            end = datetime.datetime.strptime(object["end"], DATEFORMAT)
+            end = min(report_end_utc, datetime.datetime.strptime(object["end"], DATEFORMAT).replace(tzinfo=from_zone))
         else:
-            end = datetime.datetime.utcnow()
+            end = min(report_end_utc, datetime.datetime.now(tz=from_zone))
 
         tracked = end - start
 
@@ -100,27 +117,13 @@ def calculate_totals(input_stream):
         if len(tag) > max_width:
             max_width = len(tag)
 
-    if "temp.report.start" not in configuration:
-        return ["There is no data in the database"]
-
-    start_utc = datetime.datetime.strptime(configuration["temp.report.start"], DATEFORMAT)
-    start_utc = start_utc.replace(tzinfo=from_zone)
-    start = start_utc.astimezone(to_zone)
-
-    if "temp.report.end" in configuration:
-        end_utc = datetime.datetime.strptime(configuration["temp.report.end"], DATEFORMAT)
-        end_utc = end_utc.replace(tzinfo=from_zone)
-        end = end_utc.astimezone(to_zone)
-    else:
-        end = datetime.datetime.now()
-
     if len(totals) == 0 and untagged is None:
-        return ["No data in the range {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}".format(start, end)]
+        return ["No data in the range {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}".format(report_start, report_end)]
 
     # Compose report header.
     output = [
         "",
-        "Total by Tag, for {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}".format(start, end),
+        "Total by Tag, for {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}".format(report_start, report_end),
         ""
     ]
 
