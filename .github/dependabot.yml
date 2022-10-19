@@ -1,0 +1,7 @@
+version: 2
+updates:
+  # Enable version updates for GitHub actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
