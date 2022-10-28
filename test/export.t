@@ -48,6 +48,17 @@ class TestExport(TestCase):
         code, out, err = self.t("export")
         self.assertIn("[\n]\n", out)
 
+    def test_fixed_id_export(self):
+        """Give specific IDs on CLI"""
+        self.t("track 2022-12-10T00:00:00Z - 2022-12-10T01:00:00Z")
+        self.t("track 2022-12-10T01:00:00Z - 2022-12-10T02:00:00Z")
+        self.t("track 2022-12-10T02:00:00Z - 2022-12-10T03:00:00Z")
+        self.t("track 2022-12-10T04:00:00Z - 2022-12-10T05:00:00Z")
+        j = self.t.export("@1 @4")
+        self.assertEqual(len(j), 2)
+        self.assertClosedInterval(j[0], expectedStart="20221210T000000Z", expectedId=4)
+        self.assertClosedInterval(j[1], expectedStart="20221210T040000Z", expectedId=1)
+
     def test_single_unobstructed_interval(self):
         """Single unobstructed interval"""
         now_utc = datetime.now().utcnow()
