@@ -53,7 +53,7 @@ class TestTotals(TestCase):
 
         out = calculate_totals(input_stream)
 
-        self.assertEqual(['There is no data in the database'], out)
+        self.assertEqual(['No data to display'], out)
 
     def test_totals_with_filled_database(self):
         """totals extension should print report for filled database"""
@@ -254,7 +254,7 @@ class TestTotals(TestCase):
 
         out = calculate_totals(input_stream)
 
-        self.assertEqual(['There is no data in the database'], out)
+        self.assertEqual(['No data to display'], out)
 
     def test_totals_colored_with_filled_database(self):
         """totals extension should print report for filled database (colored)"""

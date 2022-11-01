@@ -69,33 +69,59 @@ def calculate_totals(input_stream):
         else:
             body += line
 
-    if "temp.report.start" not in configuration:
-        return ["There is no data in the database"]
+    j = json.loads(body)
 
-    report_start_utc = datetime.datetime.strptime(configuration["temp.report.start"], DATEFORMAT)
-    report_start_utc = report_start_utc.replace(tzinfo=from_zone)
-    report_start = report_start_utc.astimezone(tz=to_zone)
+    if "temp.report.start" in configuration:
+        report_start_utc = datetime.datetime.strptime(configuration["temp.report.start"], DATEFORMAT)
+        report_start_utc = report_start_utc.replace(tzinfo=from_zone)
+        report_start = report_start_utc.astimezone(tz=to_zone)
+    else:
+        report_start_utc = None
+        report_start = None
 
     if "temp.report.end" in configuration:
         report_end_utc = datetime.datetime.strptime(configuration["temp.report.end"], DATEFORMAT)
         report_end_utc = report_end_utc.replace(tzinfo=from_zone)
-        report_end = report_end_utc.astimezone(to_zone)
-    else:
-        report_end_utc = datetime.datetime.now(tz=from_zone)
         report_end = report_end_utc.astimezone(tz=to_zone)
+    else:
+        report_end_utc = None
+        report_end = None
+
+    if len(j) == 0:
+        if report_start is not None and report_end is not None:
+            return ["No data in the range {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}".format(report_start, report_end)]
+        elif report_start is None and report_end is not None:
+            return ["No data in the range until {:%Y-%m-%d %H:%M:%S}".format(report_end)]
+        elif report_start is not None and report_end is None:
+            return ["No data in the range since {:%Y-%m-%d %H:%M:%S}".format(report_start)]
+        else:
+            return ["No data to display"]
+
+    if "start" in j[0]:
+        if report_start_utc is not None:
+            j[0]["start"] = max(report_start_utc, datetime.datetime.strptime(j[0]["start"], DATEFORMAT).replace(tzinfo=from_zone)).strftime(DATEFORMAT)
+    else:
+        return ["Cannot display an past open range"]
+
+    if "end" in j[-1]:
+        if report_end_utc is not None:
+            j[-1]["end"] = min(report_end_utc, datetime.datetime.strptime(j[-1]["end"], DATEFORMAT).replace(tzinfo=from_zone)).strftime(DATEFORMAT)
+        else:
+            report_end = datetime.datetime.strptime(j[-1]["end"], DATEFORMAT).replace(tzinfo=from_zone)
+    else:
+        if report_end_utc is not None:
+            j[-1]["end"] = report_end_utc.strftime(DATEFORMAT)
+        else:
+            j[-1]["end"] = datetime.datetime.now(tz=from_zone).strftime(DATEFORMAT)
+            report_end = datetime.datetime.now(tz=to_zone)
 
     # Sum the seconds tracked by tag.
     totals = dict()
     untagged = None
-    j = json.loads(body)
 
     for object in j:
-        start = max(report_start_utc, datetime.datetime.strptime(object["start"], DATEFORMAT).replace(tzinfo=from_zone))
-
-        if "end" in object:
-            end = min(report_end_utc, datetime.datetime.strptime(object["end"], DATEFORMAT).replace(tzinfo=from_zone))
-        else:
-            end = min(report_end_utc, datetime.datetime.now(tz=from_zone))
+        start = datetime.datetime.strptime(object["start"], DATEFORMAT).replace(tzinfo=from_zone)
+        end = datetime.datetime.strptime(object["end"], DATEFORMAT).replace(tzinfo=from_zone)
 
         tracked = end - start
 
@@ -116,9 +142,6 @@ def calculate_totals(input_stream):
     for tag in totals:
         if len(tag) > max_width:
             max_width = len(tag)
-
-    if len(totals) == 0 and untagged is None:
-        return ["No data in the range {:%Y-%m-%d %H:%M:%S} - {:%Y-%m-%d %H:%M:%S}".format(report_start, report_end)]
 
     # Compose report header.
     output = [

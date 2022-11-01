@@ -8,6 +8,8 @@
           (thanks to Shaun Ruffel)
 - #441    Return report return code
           (thanks to lospatchos)
+- #450    Report 'totals.py' does not display data when no time range specified
+          (thanks to squirrellyDave)
 - #458    Add man documentation for configuring tag colors.
           (thanks to Lim Ding Wen)
 - #463    Add colors to summary
@@ -23,8 +25,9 @@
           (Thanks to Stanisław Wysocki)
 - #491    Tracking an interval in the future while actively tracking time results in a database inconsistency
           (thanks to agentcoffee)
-- #505    report 'totals.py' does not truncate intervals to report range
+- #505    Report 'totals.py' does not truncate intervals to report range
           (thanks to eq0cdk)
+
 ------ current release ---------------------------
 
 1.4.3 (2021-05-28) - fc618636aacba6e52d447b482aeef58b375dfc8c
