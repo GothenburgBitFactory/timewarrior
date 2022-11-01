@@ -23,7 +23,8 @@
           (Thanks to Stanisław Wysocki)
 - #491    Tracking an interval in the future while actively tracking time results in a database inconsistency
           (thanks to agentcoffee)
-
+- #505    report 'totals.py' does not truncate intervals to report range
+          (thanks to eq0cdk)
 ------ current release ---------------------------
 
 1.4.3 (2021-05-28) - fc618636aacba6e52d447b482aeef58b375dfc8c
