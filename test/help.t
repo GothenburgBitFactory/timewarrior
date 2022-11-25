@@ -44,20 +44,23 @@ class TestHelp(TestCase):
 
     def test_help_without_command_should_print_usage(self):
         """timew help without command should print usage"""
-        code, out, err = self.t("help")
+        _, out, _ = self.t("help")
+
         self.assertRegex(out, r"Usage: timew [--version]")
 
     def test_help_long_option_should_print_usage(self):
         """timew --help should print usage"""
-        code, out1, err1 = self.t("help")
-        code, out2, err2 = self.t("--help")
-        self.assertEqual(out1, out2)
+        _, expected, _ = self.t("help")
+        _, actual, _ = self.t("--help")
+
+        self.assertEqual(actual, expected)
 
     def test_help_short_option_should_print_usage(self):
         """timew -h should print usage"""
-        code, out1, err1 = self.t("help")
-        code, out2, err2 = self.t("-h")
-        self.assertEqual(out1, out2)
+        _, expected, _ = self.t("help")
+        _, actual, _ = self.t("-h")
+
+        self.assertEqual(actual, expected)
 
     def test_help_with_command_should_show_man_page(self):
         """timew help with command should show man page"""
@@ -75,15 +78,17 @@ class TestHelp(TestCase):
 
     def test_command_with_help_long_option_should_show_help_page(self):
         """timew command with --help should show help page"""
-        code, out1, err1 = self.t("help track")
-        code, out2, err2 = self.t("track --help")
-        self.assertEqual(out1, out2)
+        _, expected, _ = self.t("help track")
+        _, actual, _ = self.t("track --help")
+
+        self.assertEqual(actual, expected)
 
     def test_command_with_help_short_option_should_show_help_page(self):
         """timew command with -h should show help page"""
-        code, out1, err1 = self.t("help track")
-        code, out2, err2 = self.t("track -h")
-        self.assertEqual(out1, out2)
+        _, expected, _ = self.t("help track")
+        _, actual, _ = self.t("track -h")
+
+        self.assertEqual(actual, expected)
 
 
 if __name__ == "__main__":
