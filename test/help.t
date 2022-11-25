@@ -61,9 +61,10 @@ class TestHelp(TestCase):
 
     def test_help_with_command_should_show_man_page(self):
         """timew help with command should show man page"""
-        code, out, err = self.t("help start")
+        _, expected, _ = run_cmd_wait_nofail(["man", "timew-start"])
+        _, actual, _ = self.t("help start")
 
-        self.assertRegex(out, r"TIMEW-START\(1\)\s+User Manuals\s+TIMEW-START\(1\)")
+        self.assertEqual(actual, expected)
 
     def test_help_with_unknown_argument_should_show_error_message(self):
         """timew help with unknown argument should show error message"""
