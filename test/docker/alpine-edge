@@ -1,0 +1,33 @@
+FROM alpine:edge
+
+RUN apk add --no-cache \
+            asciidoctor \
+            bash \
+            cmake \
+            g++ \
+            git \
+            make \
+            mandoc \
+            musl-dev \
+            python3 \
+            py3-dateutil
+
+# Setup environment
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
+ENV MAN_DISABLE_SECCOMP 1
+
+# Setup timewarrior
+ADD . /root/code/
+WORKDIR /root/code/
+RUN git clean -dfx
+RUN git submodule init
+RUN git submodule update
+RUN cmake -DCMAKE_BUILD_TYPE=debug .
+RUN make -j2
+RUN make install
+
+# Setup tests
+RUN make -j2 test || true
+WORKDIR /root/code/test/
+CMD ["bash", "-c", "./problems --summary ; cat all.log | grep 'not ok' ; ./problems ; FAILED=$? ; echo echo timew $( timew --version ) ; python --version ; cmake --version ; gcc --version; exit $FAILED"]

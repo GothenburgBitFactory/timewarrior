@@ -1,5 +1,21 @@
 version: '3'
 services:
+  test-alpine-edge:
+    build:
+      context: .
+      dockerfile: test/docker/alpine-edge
+    network_mode: "host"
+    security_opt:
+      - label=type:container_runtime_t
+    tty: true
+  test-alpine-latest:
+    build:
+      context: .
+      dockerfile: test/docker/alpine-latest
+    network_mode: "host"
+    security_opt:
+      - label=type:container_runtime_t
+    tty: true
   test-fedora31:
     build:
       context: .

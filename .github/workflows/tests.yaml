@@ -6,6 +6,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - name: "Alpine Edge"
+            runner: ubuntu-latest
+            container: alpine-edge
+          - name: "Alpine Latest"
+            runner: ubuntu-latest
+            container: alpine-latest
           - name: "Archlinux Base"
             runner: ubuntu-latest
             container: archlinux
