@@ -34,6 +34,7 @@ import unittest
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from basetest import Timew, TestCase
+from basetest.utils import run_cmd_wait_nofail
 
 
 class TestHelp(TestCase):
@@ -66,8 +67,10 @@ class TestHelp(TestCase):
 
     def test_help_with_unknown_argument_should_show_error_message(self):
         """timew help with unknown argument should show error message"""
-        code, out, err = self.t.runError("help bogus")
-        self.assertRegex(err, r"No manual entry for timew-bogus")
+        _, _, expected = run_cmd_wait_nofail(["man", "timew-bogus"])
+        _, _, actual = self.t.runError("help bogus")
+
+        self.assertEqual(actual, expected)
 
     def test_command_with_help_long_option_should_show_help_page(self):
         """timew command with --help should show help page"""
