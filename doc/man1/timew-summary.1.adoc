@@ -35,7 +35,7 @@ Default value is 'yes'.
 **reports.summary.ids**::
 Determines whether the id column is shown in the summary.
 Can be overridden by the ':ids' and ':no-ids' hint, respectively.
-Default value is 'no'
+Default value is 'no'.
 
 **reports.summary.tags**::
 Determines whether the tags column is shown in the summary.
