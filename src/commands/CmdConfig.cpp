@@ -24,11 +24,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <FS.h>
 #include <JSON.h>
-#include <shared.h>
 #include <format.h>
-#include <timew.h>
 #include <commands.h>
 #include <iostream>
 
@@ -85,6 +82,8 @@ int CmdConfig (
 
       value += words[i];
     }
+
+    value = Lexer::dequote (value);
 
     change = Rules::setConfigVariable (journal, rules, name, value, confirmation);
 
