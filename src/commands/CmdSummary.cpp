@@ -217,7 +217,9 @@ int CmdSummary (
     }
 
     if (row != -1)
+    {
       table.set (row, total_col_index, Duration (daily_total).formatHours ());
+    }
 
     grand_total += daily_total;
   }
