@@ -94,6 +94,7 @@ int CmdSummary (
   const auto show_ids = cli.getComplementaryHint ("ids", rules.getBoolean ("reports.summary.ids"));
   const auto show_tags = cli.getComplementaryHint ("tags", rules.getBoolean ("reports.summary.tags", true));
   const auto show_annotations = cli.getComplementaryHint ("annotations", rules.getBoolean ("reports.summary.annotations"));
+  const auto show_holidays = cli.getComplementaryHint ("holidays", rules.getBoolean ("reports.summary.holidays"));
 
   const auto tags_col_offset = show_ids ? 1 : 0;
   const auto annotation_col_offset = tags_col_offset + (show_tags ? 1 : 0);
@@ -224,8 +225,6 @@ int CmdSummary (
   // Add the total.
   table.set (table.addRow (), total_col_index, " ", Color ("underline"));
   table.set (table.addRow (), total_col_index, Duration (grand_total).formatHours ());
-
-  const auto show_holidays = cli.getComplementaryHint ("holidays", rules.getBoolean ("reports.summary.holidays"));
 
   std::cout << '\n'
             << table.render ()
