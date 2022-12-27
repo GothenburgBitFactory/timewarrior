@@ -91,6 +91,10 @@ int CmdSummary (
   // Map tags to colors.
   Color colorID (rules.getBoolean ("color") ? rules.get ("theme.colors.ids") : "");
 
+  const auto week_fmt = "W{1}";
+  const auto date_fmt = "Y-M-D";
+  const auto time_fmt = "h:N:S";
+
   const auto show_ids = cli.getComplementaryHint ("ids", rules.getBoolean ("reports.summary.ids"));
   const auto show_tags = cli.getComplementaryHint ("tags", rules.getBoolean ("reports.summary.tags", true));
   const auto show_annotations = cli.getComplementaryHint ("annotations", rules.getBoolean ("reports.summary.annotations"));
@@ -166,8 +170,8 @@ int CmdSummary (
 
       if (day != previous)
       {
-        table.set (row, 0, format ("W{1}", day.week ()));
-        table.set (row, 1, day.toString ("Y-M-D"));
+        table.set (row, 0, format (week_fmt, day.week ()));
+        table.set (row, 1, day.toString (date_fmt));
         table.set (row, 2, Datetime::dayNameShort (day.dayOfWeek ()));
         previous = day;
       }
@@ -209,8 +213,8 @@ int CmdSummary (
 
       const auto total = today.total ();
 
-      table.set (row, start_col_index, today.start.toString ("h:N:S"));
-      table.set (row, end_col_index, (track.is_open () ? "-" : today.end.toString ("h:N:S")));
+      table.set (row, start_col_index, today.start.toString (time_fmt));
+      table.set (row, end_col_index, (track.is_open () ? "-" : today.end.toString (time_fmt)));
       table.set (row, duration_col_index, Duration (total).formatHours ());
 
       daily_total += total;
