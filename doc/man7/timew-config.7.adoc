@@ -8,12 +8,11 @@ timew-config - Timewarrior configuration file and override options
 
 == DESCRIPTION
 Timewarrior stores its configuration in the user's home directory in _~/.timewarrior/timewarrior.cfg_ on non-Unix systems (e.g. Windows or macOS).
+
 On Unix systems, XDG Base Directory specification is supported, if _~/.timewarrior_ directory doesn't exist
 (old config directory is still supported and has precedence over XDG BD compliant locations).
-This means configuration is stored in
-_$XDG_CONFIG_HOME/timewarrior/timewarrior.cfg_, which defaults to
-_~/.config/timewarrior/timewarrior.cfg_ if _$XDG_CONFIG_HOME_ environment
-variable is not specified.
+
+This means configuration is stored in _$XDG_CONFIG_HOME/timewarrior/timewarrior.cfg_, which defaults to _~/.config/timewarrior/timewarrior.cfg_ if _$XDG_CONFIG_HOME_ environment variable is not specified.
 
 Those wanting to migrate their data to a new directory scheme, might do that with following shell snippet:
 
