@@ -27,6 +27,8 @@
           (thanks to agentcoffee)
 - #505    Report 'totals.py' does not truncate intervals to report range
           (thanks to eq0cdk)
+- #510    Export intervals by IDs
+          (thanks to Scott Mcdermott)
 - #512    help.t fails on alpine with mandoc package
           (thanks to Edd Salkield)
 
