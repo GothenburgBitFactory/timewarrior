@@ -39,6 +39,13 @@ int CmdTrack (
 
   auto filter = cli.getFilter ();
 
+  // We expect no ids
+  if (! cli.getIds ().empty ())
+  {
+    throw std::string ("The track command does not accept ids. "
+                       "Perhaps you want the continue command?");
+  }
+
   // If this is not a proper closed interval, then the user is trying to make
   // the 'track' command behave like 'start', so delegate to CmdStart.
   if (! filter.is_started () ||

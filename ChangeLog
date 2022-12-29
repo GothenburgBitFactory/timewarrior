@@ -6,6 +6,7 @@
           (thanks to quazgar)
 - #437    Minor AtomicFile cleanup
           (thanks to Shaun Ruffel)
+- #439    Show error message if command track is called with an id
 - #441    Return report return code
           (thanks to lospatchos)
 - #450    Report 'totals.py' does not display data when no time range specified
