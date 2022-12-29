@@ -1,3 +1,5 @@
+- #361    Improve documentation
+          (thanks to xeruf)
 - #389    Extend summary configuration
           (thanks to Davide Crucitti)
 - #489    First execution creates database regardless of confirmation response
@@ -111,7 +113,7 @@
 - #367    CmdDiagnostics: Show per-file error messages.
           (thanks to Shaun Ruffell)
 - #372    Empty intervals are not deleted in `:adjust` overlap resolution
-          (thanks to xerus2000)
+          (thanks to xeruf)
 
 1.3.0 (2020-04-19) - 3de53d7599d1e4364c8aaaeb3c3ef1fe89ee3380
 
