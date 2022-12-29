@@ -15,16 +15,22 @@ Supply either a list of interval IDs (e.g. `@1 @2`), or optional filters (see **
 == EXAMPLES
 
 *Export all intervals*::
-```
+[source]
+----
 $ timew export
-```
+...
+----
 
 *Export intervals filtered by range and tag*::
-```
+[source]
+----
 $ timew export from 2016-01-01 for 3wks tag1
-```
+...
+----
 
 *Export intervals by their ids*::
-```
+[source]
+----
 $ timew export @1 @3 @7
-```
+...
+----
