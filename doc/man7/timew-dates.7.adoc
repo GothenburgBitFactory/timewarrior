@@ -6,7 +6,8 @@ timew-dates - date formats supported by Timewarrior
 == SYNOPSIS
 
 == DESCRIPTION
-Timewarrior supports the following date formats based on ISO-8601:
+Timewarrior supports the following datetime formats based on ISO-8601.
+If times are followed by a 'Z', they are assumed to be in UTC, otherwise local time (TZ) is assumed.
 
   <extended-date> [T <extended-time>]   Extended date, optional extended time
   <date> [T <time>]                     Date, optional time
@@ -37,7 +38,8 @@ time::
     hhmm[ss]Z                           Hour, minutes, optional seconds, UTC
     hhmm[ss][+/-hh[mm]]                 Hour, minutes, optional seconds, TZ
 
-Examples:
+== EXAMPLES
+Here are some examples for ISO datetimes:
 
   2016-06-09T08:12:00Z
   2016-06T08:12:00+01:00
@@ -90,13 +92,12 @@ In addition to the standard date formats, the following are supported:
   midsommarafton                        midnight, 1st Friday after 19th June
   juhannus                              midnight, 1st Friday after 19th June
 
-Examples:
+For times, the following are also possible:
 
   8am
   24th
   monday
   august
-
 
 == SEE ALSO
 **timew-durations**(7),
