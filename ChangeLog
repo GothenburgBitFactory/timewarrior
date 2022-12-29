@@ -6,6 +6,8 @@
           (thanks to Rafael Oliveira)
 - #403    Remove incorrect output stating that an empty interval was recorded
           (thanks to xeruf)
+- #406    Clarify minimal value for 'epoch' as date value
+          (thanks to Daniel Hornung)
 - #408    Update documentation of hint `:all`
           (thanks to quazgar)
 - #437    Minor AtomicFile cleanup
