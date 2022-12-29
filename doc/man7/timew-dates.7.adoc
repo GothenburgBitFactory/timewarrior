@@ -62,7 +62,7 @@ In addition to the standard date formats, the following are supported:
   <month-of-year>                       Previous 1st of the  month at 0:00:00
   hh:mm[:ss][am|a|pm|p]                 Short time format
   Nst, Nnd, Nrd, Nth                    Previous 1st, 2nd, 3rd ...
-  <epoch>                               POSIX time (at least 315532800, that is 1980-01-01)
+  <epoch>                               POSIX time (at least 315532800)
   later                                 2038-01-18T0:00:00 (Y2K38)
   someday                               2038-01-18T0:00:00 (Y2K38)
   sopd, eopd                            Start/end of previous day
@@ -100,7 +100,7 @@ For times, the following are also possible:
   august
 
 == NOTES
-The minimum value for the POSIX time format was chosen to avoid confusion with ISO dates in the YYYYMMDD format.
+The minimum value for the POSIX time format of 315532800 (that is 1980-01-01) was chosen to avoid confusion with ISO dates in the YYYYMMDD format.
 
 == SEE ALSO
 **timew-durations**(7),
