@@ -5,7 +5,7 @@ timew-export - export tracked time in JSON
 
 == SYNOPSIS
 [verse]
-*timew export* [_<id>_**...**] | [[_<range>_] [_<tag>_**...**]]
+*timew export* [ _<id>_**...** | ([_<range>_] [_<tag>_**...**]) ]
 
 == DESCRIPTION
 Exports all the tracked time in JSON format.
