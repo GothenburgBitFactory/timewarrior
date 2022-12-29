@@ -1,3 +1,5 @@
+- #389    Extend summary configuration
+          (thanks to Davide Crucitti)
 - #489    First execution creates database regardless of confirmation response
           (thanks to Rafael Oliveira)
 - #403    Remove incorrect output stating that an empty interval was recorded

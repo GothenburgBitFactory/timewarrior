@@ -95,28 +95,46 @@ int CmdSummary (
   const auto date_fmt = "Y-M-D";
   const auto time_fmt = "h:N:S";
 
+  const auto show_weeks = rules.getBoolean ("reports.summary.weeks", true);
+  const auto show_weekdays = rules.getBoolean ("reports.summary.weekdays", true);
   const auto show_ids = cli.getComplementaryHint ("ids", rules.getBoolean ("reports.summary.ids"));
   const auto show_tags = cli.getComplementaryHint ("tags", rules.getBoolean ("reports.summary.tags", true));
   const auto show_annotations = cli.getComplementaryHint ("annotations", rules.getBoolean ("reports.summary.annotations"));
   const auto show_holidays = cli.getComplementaryHint ("holidays", rules.getBoolean ("reports.summary.holidays"));
 
-  const auto tags_col_offset = show_ids ? 1 : 0;
+  const auto dates_col_offset = show_weeks ? 1 : 0;
+  const auto weekdays_col_offset = dates_col_offset;
+  const auto ids_col_offset = weekdays_col_offset + (show_weekdays ? 1: 0);
+  const auto tags_col_offset = ids_col_offset + (show_ids ? 1 : 0);
   const auto annotation_col_offset = tags_col_offset + (show_tags ? 1 : 0);
   const auto start_col_offset = annotation_col_offset + (show_annotations ? 1 : 0);
 
-  const auto tags_col_index = 3 + tags_col_offset;
-  const auto annotation_col_index = 3 + annotation_col_offset;
-  const auto start_col_index = 3 + start_col_offset;
-  const auto end_col_index = 4 + start_col_offset;
-  const auto duration_col_index = 5 + start_col_offset;
-  const auto total_col_index = 6 + start_col_offset;
+  const auto weeks_col_index = 0;
+  const auto dates_col_index = 0 + dates_col_offset;
+  const auto weekdays_col_index = 1 + weekdays_col_offset;
+  const auto ids_col_index = 1 + ids_col_offset;
+  const auto tags_col_index = 1 + tags_col_offset;
+  const auto annotation_col_index = 1 + annotation_col_offset;
+  const auto start_col_index = 1 + start_col_offset;
+  const auto end_col_index = 2 + start_col_offset;
+  const auto duration_col_index = 3 + start_col_offset;
+  const auto total_col_index = 4 + start_col_offset;
 
   Table table;
   table.width (1024);
   table.colorHeader (Color ("underline"));
-  table.add ("Wk");
+
+  if (show_weeks)
+  {
+    table.add ("Wk");
+  }
+
   table.add ("Date");
-  table.add ("Day");
+
+  if (show_weekdays)
+  {
+    table.add ("Day");
+  }
 
   if (show_ids)
   {
@@ -170,9 +188,18 @@ int CmdSummary (
 
       if (day != previous)
       {
-        table.set (row, 0, format (week_fmt, day.week ()));
-        table.set (row, 1, day.toString (date_fmt));
-        table.set (row, 2, Datetime::dayNameShort (day.dayOfWeek ()));
+        if (show_weeks)
+        {
+          table.set (row, weeks_col_index, format (week_fmt, day.week ()));
+        }
+
+        table.set (row, dates_col_index, day.toString (date_fmt));
+
+        if (show_weekdays)
+        {
+          table.set (row, weekdays_col_index, Datetime::dayNameShort (day.dayOfWeek ()));
+        }
+
         previous = day;
       }
 
@@ -190,7 +217,7 @@ int CmdSummary (
 
       if (show_ids)
       {
-        table.set (row, 3, format ("@{1}", track.id), colorID);
+        table.set (row, ids_col_index, format ("@{1}", track.id), colorID);
       }
 
       if (show_tags)
