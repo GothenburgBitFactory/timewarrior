@@ -29,7 +29,7 @@
           (thanks to Shaun Ruffel)
 - #474    Make display of ids and annotations in summary report configurable
 - #477    Add configurable default range for reports
-          (thanks to Oivvio Polite)
+          (thanks to Oivvio Polite, Christian Kohlstedde)
 - #478    Add support for XDG Base Directory specification on Unixes
           (Thanks to Stanisław Wysocki)
 - #491    Tracking an interval in the future while actively tracking time results in a database inconsistency
