@@ -1,0 +1,43 @@
+name: Docker
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "develop", "stable" ]
+    # Publish semver tags as releases.
+    tags: [ 'v*.*.*' ]
+
+env:
+  REGISTRY: "ghcr.io"
+  IMAGE_NAME: "timew"
+  TIMEW_BRANCH: "develop"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Login against a Docker registry
+      # https://github.com/docker/login-action
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Build and push Docker image with Buildx
+      # https://github.com/docker/build-push-action
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        with:
+          context: docker/timew.dockerfile
+          push: false
+          tags: ghcr.io/${{ github.actor }}/timew:${TIMEW_BRANCH}
