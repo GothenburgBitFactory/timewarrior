@@ -43,7 +43,7 @@ Review the source code, and point out inefficiencies, problems, unreadable funct
 ## Bug reports
 
 Before you submit a bug report, make sure you are using the latest version of Timewarrior. 
-Also please take your time and scan the current bug tickets on our [Github issue tracker](https://github.com/GothenburgBitFactory/timewarrior/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+label%3Abug) whether your issue has already been reported.
+Also please take your time and scan the current bug tickets on our [GitHub issue tracker](https://github.com/GothenburgBitFactory/timewarrior/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+label%3Abug) whether your issue has already been reported.
 
 When you submit a bug report, be precise and put as much information into your bug report as possible.
 You should at least provide
@@ -64,7 +64,7 @@ An example:
 
 ## Feature requests
 
-As for bug reports, you should check our [Github issue tracker](https://github.com/GothenburgBitFactory/timewarrior/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+label%3Aenhancement) whether your feature has already been requested.
+As for bug reports, you should check our [GitHub issue tracker](https://github.com/GothenburgBitFactory/timewarrior/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+label%3Aenhancement) whether your feature has already been requested.
 
 When you submit a feature request, provide a use case which captures the overall intention of your feature, not the technical implementation.
 
@@ -101,7 +101,7 @@ Consult the [documentation](https://timewarrior.net/docs/api.html) on how you ca
 
 ### Tests, Bug-fixes and Features
 
-In general your contributions have to be associated with an issue on our [Github issue tracker](https://github.com/GothenburgBitFactory/timewarrior/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen).
+In general your contributions have to be associated with an issue on our [GitHub issue tracker](https://github.com/GothenburgBitFactory/timewarrior/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen).
 See the sections above on how to submit bug reports and feature requests.
 
 Code contributions are only accepted as pull-requests.
@@ -128,9 +128,9 @@ This is the branch where your changes must go.
 The `master` branch always points to the latest release.
 No development takes place here.
 
-To make a pull request you need to have a Github account.
+To make a pull request you need to have a GitHub account.
 
-1. Fork the [Timewarrior repository](https://github.com/GothenburgBitFactory/timewarrior) on Github.
+1. Fork the [Timewarrior repository](https://github.com/GothenburgBitFactory/timewarrior) on GitHub.
 1. Checkout the development branch.
 
        $ git checkout dev
@@ -148,7 +148,7 @@ To make a pull request you need to have a Github account.
     
     Furthermore, commits should be signed off according to the [DCO](DCO) (use `-s` / `--signoff` flag when commiting).
     
-1. Create the pull request on Github.
+1. Create the pull request on GitHub.
 
 ## What happens next?
 

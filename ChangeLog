@@ -59,7 +59,7 @@
 - #398    test: Thread.isAlive() -> Thread.is_alive()
           (thanks to Shaun Ruffell)
 - #410    Replace roff man pages with asciidoctor
-- #411    Transfer platform testing from Travis CI to Github Actions
+- #411    Transfer platform testing from Travis CI to GitHub Actions
 - #416    Internal error. Failed encode / decode check when doing undo
           (thanks to narudarurarasya, Shaun Ruffel)
 - #419    Links not preserved over linebreaks in man page
