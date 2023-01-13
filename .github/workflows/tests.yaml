@@ -36,15 +36,15 @@ jobs:
           - name: "OpenSUSE 15.0"
             runner: ubuntu-latest
             container: opensuse1500
-          - name: "Ubuntu 16.04"
-            runner: ubuntu-latest
-            container: ubuntu1604
           - name: "Ubuntu 18.04"
             runner: ubuntu-latest
             container: ubuntu1804
           - name: "Ubuntu 20.04"
             runner: ubuntu-latest
             container: ubuntu2004
+          - name: "Ubuntu 22.04"
+            runner: ubuntu-latest
+            container: ubuntu2204
           - name: "macOS 11"
             runner: macos-11
             container: osx-11
