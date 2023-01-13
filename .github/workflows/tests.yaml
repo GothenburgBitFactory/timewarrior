@@ -27,15 +27,12 @@ jobs:
           - name: "Debian Testing"
             runner: ubuntu-latest
             container: debiantesting
-          - name: "Fedora 31"
+          - name: "Fedora 36"
             runner: ubuntu-latest
-            container: fedora31
-          - name: "Fedora 32"
+            container: fedora36
+          - name: "Fedora 37"
             runner: ubuntu-latest
-            container: fedora32
-          - name: "Fedora 33"
-            runner: ubuntu-latest
-            container: fedora33
+            container: fedora37
           - name: "OpenSUSE 15.0"
             runner: ubuntu-latest
             container: opensuse1500
