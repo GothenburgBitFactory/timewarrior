@@ -16,26 +16,18 @@ services:
     security_opt:
       - label=type:container_runtime_t
     tty: true
-  test-fedora31:
+  test-fedora36:
     build:
       context: .
-      dockerfile: test/docker/fedora31
+      dockerfile: test/docker/fedora36
     network_mode: "host"
     security_opt:
       - label=type:container_runtime_t
     tty: true
-  test-fedora32:
+  test-fedora37:
     build:
       context: .
-      dockerfile: test/docker/fedora32
-    network_mode: "host"
-    security_opt:
-      - label=type:container_runtime_t
-    tty: true
-  test-fedora33:
-    build:
-      context: .
-      dockerfile: test/docker/fedora33
+      dockerfile: test/docker/fedora37
     network_mode: "host"
     security_opt:
       - label=type:container_runtime_t
