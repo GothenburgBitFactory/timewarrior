@@ -23,6 +23,10 @@ jobs:
       id-token: write
 
     steps:
+      - name: Create lowercase repository name
+        run: |
+          GHCR_REPOSITORY="${{ github.repository_owner }}"
+          echo "REPOSITORY=${GHCR_REPOSITORY,,}" >> ${GITHUB_ENV}
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
@@ -45,9 +49,9 @@ jobs:
           context: .
           file: "./docker/timew.dockerfile"
           push: true
-          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/timew:${{ github.ref_name }}
+          tags: ${{ env.REGISTRY }}/${{ env.REPOSITORY }}/timew:${{ github.ref_name }}
 
       - name: Sign the published Docker image
         env:
           COSIGN_EXPERIMENTAL: "true"
-        run: cosign sign ${{ env.REGISTRY }}/${{ github.repository_owner }}/timew@${{ steps.build-and-push.outputs.digest }}
+        run: cosign sign ${{ env.REGISTRY }}/${{ env.REPOSITORY }}/timew@${{ steps.build-and-push.outputs.digest }}
