@@ -8,38 +8,57 @@ timew-summary - display a time-tracking summary
 *timew summary* [_<range>_] [_<tag>_**...**]
 
 == DESCRIPTION
-Displays a report summarizing tracked and untracked time for the current day by default.
-Accepts date ranges and tags for filtering, or shortcut hints:
+Displays a table summarizing tracked time, by default for the current day.
+Accepts date ranges, or range hints, and tags for filtering.
 
-    $ timew summary monday - today
-    $ timew summary :week
-    $ timew summary :month
+== HINTS
+Apart from range hints (see **timew-hints**(7)), the summary report adheres to the following hints:
 
-The ':ids' hint adds an 'ID' column to the summary report output for interval modification.
-
-The ':annotations' hint adds an 'Annotation' column to the summary report output.
+**:annotations**::
+**:no-annotations**::
+Toggle the display of annotations in the summary report.
+Can be used on the command line to override the configured setting.
+The ':annotations' hint adds an 'Annotation' column to the summary table.
 The annotation column is limited to 15 characters.
 Longer values in this column are truncated to 12 characters and shown with an ellipsis attached.
+
+**:holidays**::
+**:no-holidays**::
+Toggle the display of holidays in the summary report.
+Can be used on the command line to override the configured setting.
+
+**:ids**::
+**:no-ids**::
+Toggle the display of ids in the summary report.
+Can be used on the command line to override the configured setting.
+The ':ids' hint adds an 'ID' column to the summary table.
+Those ids can be used for interval modification.
+
+**:tags**::
+**:no-tags**::
+Toggle the display of tags in the summary report.
+Can be used on the command line to override the configured setting.
+The ':tags' hint adds a 'Tags' column to the summary table.
 
 == CONFIGURATION
 **reports.summary.annotations**::
 Determines whether the annotation column is shown in the summary.
-Can be overridden by the ':annotations' and ':no-annotations' hint, respectively.
+Can be overridden by the ':annotations' or ':no-annotations' hint, respectively.
 Default value is 'no'
 
 **reports.summary.holidays**::
 Determines whether relevant holidays are shown beneath the report.
-Can be overridden by the ':holidays' and ':no-holidays' hint, respectively.
+Can be overridden by the ':holidays' or ':no-holidays' hint, respectively.
 Default value is 'yes'.
 
 **reports.summary.ids**::
 Determines whether the id column is shown in the summary.
-Can be overridden by the ':ids' and ':no-ids' hint, respectively.
+Can be overridden by the ':ids' or ':no-ids' hint, respectively.
 Default value is 'no'.
 
 **reports.summary.tags**::
 Determines whether the tags column is shown in the summary.
-Can be overridden by the ':tags' and ':no-tags' hint, respectively.
+Can be overridden by the ':tags' or ':no-tags' hint, respectively.
 Default value is 'yes'.
 
 **reports.summary.range**::
@@ -61,6 +80,7 @@ Examples of valid colors include 'white', 'gray8', 'black on yellow', and 'rgb34
 
 == SEE ALSO
 **timew-day**(1),
+**timew-hints**(7),
 **timew-lengthen**(1),
 **timew-modify**(1),
 **timew-month**(1),

@@ -15,6 +15,8 @@
 - #439    Show error message if command track is called with an id
 - #441    Return report return code
           (thanks to lospatchos)
+- #444    Improve documentation on annotations
+          (Thanks to apkawel, Shaun Ruffel)
 - #450    Report 'totals.py' does not display data when no time range specified
           (thanks to squirrellyDave)
 - #458    Add man documentation for configuring tag colors.

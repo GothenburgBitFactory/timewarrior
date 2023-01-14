@@ -5,43 +5,50 @@ timew-annotate - add an annotation to intervals
 
 == SYNOPSIS
 [verse]
-*timew annotate* [_<id>_**...**] _<annotation>_**...**
+*timew annotate* [_<id>_**...**] _<annotation>_
 
 == DESCRIPTION
 The 'annotate' command is used to add an annotation to an interval.
 
-Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
-Using the right ID, you can identify an interval to annotate.
+See the 'summary' command on how to display the _<id>_ and _<annotation>_ of an interval.
 
 == EXAMPLES
-
-For example, show the IDs:
-
+*Annotate a single interval*::
++
+Call the command with an _id_ and the _annotation_:
++
 [source]
 ----
-$ timew summary :week :ids
+$ timew annotate @2 'Lorem ipsum'
+Annotated @2 with "Lorem ipsum"
 ----
 
-Then having selected e.g. '@2' as the interval you wish to annotate:
-
+*Remove an annotation*::
++
+Annotating an interval with an empty string removes the annotation:
++
 [source]
 ----
-$ timew annotate @2 'Lorem ipsum...'
-Annotated @2 with "Lorem ipsum..."
+$ timew annotate @1 ''
+Removed annotation from @1
 ----
 
-Note that you can annotate multiple intervals with the same annotation:
-
+*Annotate multiple intervals*::
++
+You can annotate multiple intervals with the same _annotation_ at once, by specifying their ids:
++
 [source]
 ----
-$ timew annotate @2 @10 @23 'Lorem ipsum dolor sit amet...'
-Annotated @1 with "Lorem ipsum dolor sit amet..."
-Annotated @10 with "Lorem ipsum dolor sit amet..."
-Annotated @23 with "Lorem ipsum dolor sit amet..."
+$ timew annotate @2 @10 @23 'Lorem ipsum'
+Annotated @1 with "Lorem ipsum"
+Annotated @10 with "Lorem ipsum"
+Annotated @23 with "Lorem ipsum"
 ----
 
-If there is active time tracking, you can omit the ID when you want to add annotations to the current open interval:
-
+*Annotate the current open interval*::
++
+If there is active time tracking, you can omit the ID when you want to add an annotation to the current open interval:
++
 [source]
 ----
 $ timew start foo
@@ -49,22 +56,25 @@ $ timew start foo
 $ timew annotate bar
 Annotated @1 with "bar"
 ----
-
-This results in the current interval having annotations 'foo' and 'bar'.
++
+This results in the current interval having tag 'foo' and annotation 'bar'.
 
 == pass:[BUGS & LIMITATIONS]
 The summary command truncates annotations longer than 15 characters.
-To display longer annotations, one can use the export command, or a custom report.
+To display longer annotations, one can use the 'export' command, or a custom report.
 
 Currently, the annotation command picks the last token from the command line and uses it as annotation.
 I.e. using no quotes in an annotation command like
 
 [source]
 ----
-$ timew annotate @1 lorem ipsum dolor
+$ timew annotate @1 lorem ipsum
 ----
 
-will result in interval @1 having only 'dolor' as its annotation.
+will result in interval @1 having only 'ipsum' as its annotation.
+Use quotes to avoid this.
 
 == SEE ALSO
+**timew-export**(1),
+**timew-summary**(1),
 **timew-tag**(1)
