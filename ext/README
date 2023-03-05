@@ -7,6 +7,7 @@
 
 ## on-modify.timewarrior
   This is a Taskwarrior hook script that will integrate Timewarrior.
+  It is taken from https://github.com/GothenburgBitFactory/task-timewarrior-hook which is released under [MIT license](https://github.com/GothenburgBitFactory/task-timewarrior-hook/blob/main/LICENSE)
 
 ## csv.py
   This extension exports the data in CSV format, with a variable number of tag fields.
