@@ -75,7 +75,7 @@ The `make install` command may not require `sudo` depending on your choice of in
 [![Twitter](https://img.shields.io/twitter/follow/timewarrior_net?style=social)](https://twitter.com/timewarrior_net)
 [![Reddit](https://img.shields.io/reddit/subreddit-subscribers/taskwarrior?style=social)](https://reddit.com/r/taskwarrior/)
 [![Libera.chat](https://img.shields.io/badge/IRC%20libera.chat-online-green)](https://web.libera.chat/#taskwarrior)
-[![Discord](https://img.shields.io/discord/796949983734661191?label=discord)](https://discord.gg/eRXEHk8w62)
+[![Discord](https://img.shields.io/discord/796949983734661191?label=discord)](https://discord.gg/HYpSAeVH)
 [![GitHub discussions](https://img.shields.io/github/discussions/GothenburgBitFactory/timewarrior?label=GitHub%20discussions)](https://github.com/GothenburgBitFactory/timewarrior/discussions)
 
 Timewarrior has a lively community on many places on the internet.
