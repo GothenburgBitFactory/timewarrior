@@ -1,3 +1,7 @@
+------ current release ---------------------------
+
+1.5.0 (2023-04-02) -
+
 - #361    Improve documentation
           (thanks to xeruf)
 - #389    Extend summary configuration
@@ -44,7 +48,7 @@
           (thanks to Edd Salkield)
 -         Add option '--details' to 'test/problems' script
 
------- current release ---------------------------
+------ old releases ------------------------------
 
 1.4.3 (2021-05-28) - fc618636aacba6e52d447b482aeef58b375dfc8c
 
@@ -71,8 +75,6 @@
 -         Width determination of Unicode characters now works for up to
           Unicode 11 (from Unicode 5). Emojis are correctly displayed.
 -         Fix test `summary.t` for single-digit weeks
-
------- old releases ------------------------------
 
 1.4.2 (2020-08-29) - 4aa8489243adb69958d7717fb2f010c72fd4505a
 
