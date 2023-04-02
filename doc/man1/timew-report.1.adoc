@@ -23,10 +23,10 @@ If the extension produces no output and a non-zero rc, then 255 is returned.
 
 **reports.range**::
 Sets the default date range for all reports.
-The value has to be a range hint, see timew-hints(7).
-Defaults to `:all`
+The value has to correspond to a range hint, see timew-hints(7).
+Defaults to `all`
 
 **reports.**__<name>__**.range**::
 Set the date range for report _name_, used if no _range_ is given on the command line.
 Here, _name_ is the name of the report executable without its extension (i.e. a report executable 'foo.py' is referred to by 'foo').
-The value has to be a range hint, see timew-hints(7).
+The value has to correspond to a range hint, see timew-hints(7).

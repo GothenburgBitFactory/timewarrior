@@ -48,11 +48,11 @@ int CmdChartDay (
   Rules& rules,
   Database& database)
 {
-  auto default_hint = rules.get ("reports.range", ":day");
+  auto default_hint = rules.get ("reports.range", "day");
   auto report_hint = rules.get ("reports.day.range", default_hint);
 
   Range default_range = {};
-  expandIntervalHint (report_hint, default_range);
+  expandIntervalHint (":" + report_hint, default_range);
 
   // Create a filter, and if empty, choose the current day.
   auto filter = cli.getFilter (default_range);
@@ -66,11 +66,11 @@ int CmdChartWeek (
   Rules& rules,
   Database& database)
 {
-  auto default_hint = rules.get ("reports.range", ":week");
+  auto default_hint = rules.get ("reports.range", "week");
   auto report_hint = rules.get ("reports.week.range", default_hint);
 
   Range default_range = {};
-  expandIntervalHint (report_hint, default_range);
+  expandIntervalHint (":" + report_hint, default_range);
 
   // Create a filter, and if empty, choose the current week.
   auto filter = cli.getFilter (default_range);
@@ -84,11 +84,11 @@ int CmdChartMonth (
   Rules& rules,
   Database& database)
 {
-  auto default_hint = rules.get ("reports.range", ":month");
+  auto default_hint = rules.get ("reports.range", "month");
   auto report_hint = rules.get ("reports.month.range", default_hint);
 
   Range default_range = {};
-  expandIntervalHint (report_hint, default_range);
+  expandIntervalHint (":" + report_hint, default_range);
 
   // Create a filter, and if empty, choose the current month.
   auto filter = cli.getFilter (default_range);

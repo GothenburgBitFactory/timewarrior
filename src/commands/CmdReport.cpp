@@ -128,11 +128,11 @@ int CmdReport (
   }
 
   auto script_name = getScriptName (script_path);
-  auto default_hint = rules.get ("reports.range", ":all");
+  auto default_hint = rules.get ("reports.range", "all");
   auto report_hint = rules.get (format ("reports.{1}.range", script_name), default_hint);
 
   Range default_range = {};
-  expandIntervalHint (report_hint, default_range);
+  expandIntervalHint (":" + report_hint, default_range);
 
   // Create a filter, and if empty, choose the current week.
   auto filter = cli.getFilter (default_range);

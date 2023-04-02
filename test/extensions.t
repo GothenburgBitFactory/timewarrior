@@ -61,7 +61,7 @@ class TestExtensions(TestCase):
         """Default range is applied when no range is given on the command line"""
         self.t.add_default_extension("debug.py")
 
-        self.t.config("reports.debug.range", "':day'")
+        self.t.config("reports.debug.range", "'day'")
 
         now = datetime.now()
         now_utc = now.utcnow()
@@ -85,7 +85,7 @@ class TestExtensions(TestCase):
         """Default range is overridden when range is given on the command line"""
         self.t.add_default_extension("debug.py")
 
-        self.t.config("reports.debug.range", "':day'")
+        self.t.config("reports.debug.range", "'day'")
 
         now = datetime.now()
         now_utc = now.utcnow()
