@@ -39,15 +39,13 @@ int CmdGaps (
 {
   const bool verbose = rules.getBoolean ("verbose");
 
-  // If filter is empty, choose 'today'.
-  auto filter = cli.getFilter ();
-  if (! filter.is_started ())
-  {
-    if (rules.has ("reports.gaps.range"))
-      expandIntervalHint (rules.get ("reports.gaps.range"), filter);
-    else
-      filter.setRange (Datetime ("today"), Datetime ("tomorrow"));
-  }
+  auto default_hint = rules.get ("reports.range", "day");
+  auto report_hint = rules.get ("reports.gaps.range", default_hint);
+
+  Range default_range = {};
+  expandIntervalHint (":" + report_hint, default_range);
+
+  auto filter = cli.getFilter (default_range);
 
   // Is the :blank hint being used?
   bool blank = cli.getHint ("blank", false);
