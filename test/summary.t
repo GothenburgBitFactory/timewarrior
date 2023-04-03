@@ -352,6 +352,16 @@ W\d{1,2} \d{4}-\d{2}-\d{2} .{3}       ?0:00:00 0:00:00 0:00:00 0:00:00
 [ ]+0:00:00
 """)
 
+    def test_multibyte_char_annotation_truncated(self):
+        """Summary correctly truncates long annotation containing multibyte characters"""
+        # Using a blue heart emoji as an example of a multibyte (4 bytes in
+        # this case) character.
+        long_enough_annotation = "a" + "\N{blue heart}" * 20
+        self.t("track FOO sod - sod")
+        self.t("anno @1 " + long_enough_annotation)
+        code, out, err = self.t("summary :anno")
+        self.assertIn("a" + "\N{blue heart}" * 11 + "...", out)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner
