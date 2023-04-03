@@ -34,6 +34,7 @@
 #include <IntervalFilterAndGroup.h>
 #include <IntervalFilterAllWithTags.h>
 #include <IntervalFilterAllInRange.h>
+#include <utf8.h>
 
 // Implemented in CmdChart.cpp.
 std::map <Datetime, std::string> createHolidayMap (Rules&, Interval&);
@@ -229,9 +230,9 @@ int CmdSummary (
       {
         auto annotation = track.getAnnotation ();
 
-        if (annotation.length () > 15)
+        if (utf8_length (annotation) > 15)
         {
-          annotation = annotation.substr (0, 12) + "...";
+          annotation = utf8_substr (annotation, 0, 12) + "...";
         }
 
         table.set (row, annotation_col_index, annotation);
