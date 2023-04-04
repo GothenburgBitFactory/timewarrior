@@ -203,7 +203,7 @@ Range Range::intersect (const Range& other) const
 {
   if (overlaps (other))
   {
-    // Intersection is choosing the later of the two starts, and the earlier of
+    // Intersection is choosing the later one of the two starts, and the earlier one of
     // the two ends, provided the two ranges overlap.
     Range result;
     result.start = start > other.start ? start : other.start;

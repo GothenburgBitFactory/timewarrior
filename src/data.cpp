@@ -150,7 +150,7 @@ std::vector <Interval> expandLatest (const Interval& latest, const Rules& rules)
 
       // If flatten() converted the latest interval into a group of synthetic
       // intervals, the number of returned intervals will be greater than 1,
-      // otherwise, it just returned the non-synthetic latest interval.
+      // otherwise, it just returned the non-synthetic, latest interval.
       if (flattened.size () > 1)
       {
         std::reverse (flattened.begin (), flattened.end ());
@@ -261,7 +261,7 @@ static bool rangeCompare (Range left, Range right)
 std::vector <Range> merge (
   const std::vector <Range>& ranges)
 {
-  // Short cut.
+  // Shortcut.
   if (ranges.size () < 2)
     return ranges;
 
@@ -494,7 +494,7 @@ std::vector <Range> getUntracked (
     else if (found_match)
     {
       // If we already had a match, and now we do not, since the database is in
-      // order from most recent to oldest inclusion, we can be sure that there
+      // order from most recent to the oldest inclusion, we can be sure that there
       // will not be any further matches.
       break;
     }

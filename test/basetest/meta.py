@@ -27,7 +27,7 @@ class MetaTest(type):
             func = meta.make_function(classname, *args, **kwargs)
 
             # Rename the function after a unique identifier
-            # Name of function must start with test_ to be ran by unittest
+            # Name of function must start with test_ to be run by unittest
             func.__name__ = "test_{0}".format(i)
 
             # Attach the new test to the test class

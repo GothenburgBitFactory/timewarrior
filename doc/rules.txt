@@ -8,7 +8,7 @@ uses the combination of configuration settings and logic within to:
 - Define various policies
 
 On non-Unix systems config file is expected in ~/.timewarrior directory.
-On Unix systems, if legacy ~/.timewarrior directory doesn't exists, config is
+On Unix systems, if legacy ~/.timewarrior directory doesn't exist, config is
 read from $XDG_CONFIG_HOME/timewarrior directory (if not specified,
 $XDG_CONFIG_HOME defaults to ~/.config).
 
@@ -19,7 +19,7 @@ are no chained rules, but errors will be able to terminate rule processing and
 program execution.
 
 As much functionality as possible is to be deferred to the rules system, which
-will initially be minimal, but grow to be come more capable.
+will initially be minimal, but grow to become more capable.
 
 
 Format

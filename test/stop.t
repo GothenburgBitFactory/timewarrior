@@ -235,7 +235,7 @@ class TestStop(TestCase):
         self.assertClosedInterval(j[0])
 
     def test_stop_with_id_should_suggest_modify_command(self):
-        """Stop does not work with with ids, suggest modify command instead"""
+        """Stop does not work with ids, suggest modify command instead"""
         self.t("start 2h ago")
         self.t("start 1h ago")
         

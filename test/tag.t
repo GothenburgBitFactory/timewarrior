@@ -102,7 +102,7 @@ class TestTag(TestCase):
         self.assertIn("At least one tag must be specified.", err)
 
     def test_add_tag_to_closed_interval(self):
-        """Add a tag to an closed interval"""
+        """Add a tag to a closed interval"""
         now_utc = datetime.now().utcnow()
         one_hour_before_utc = now_utc - timedelta(hours=1)
 
@@ -130,7 +130,7 @@ class TestTag(TestCase):
         self.assertOpenInterval(j[0], expectedTags=["bar", "foo"])
 
     def test_add_tags_to_closed_interval(self):
-        """Add tags to an closed interval"""
+        """Add tags to a closed interval"""
         now_utc = datetime.now().utcnow()
         one_hour_before_utc = now_utc - timedelta(hours=1)
 

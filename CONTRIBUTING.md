@@ -14,7 +14,7 @@ Here are the different ways you might conѕider contributing:
 
 Please read the respective section below about the details.
 
-Otherwise you can spread the word and recommend Timewarrior to your friends and colleagues.
+Otherwise, you can spread the word and recommend Timewarrior to your friends and colleagues.
 
 
 ## Reviews
@@ -29,7 +29,7 @@ It is also the quickest way to get help, or confirm a bug.
 
 Review documentation: there are man pages, online articles, tutorials and so on, and these may contain errors, or they may not convey ideas in the best way.
 You can help improve it.
-Documentation is a separate effort from the codebase, and includes all web sites, and all are available using git.
+Documentation is a separate effort from the codebase, and includes all websites, and all are available using git.
 
 Take a look at the bug database, and help triage the bug list.
 Bug triage is very useful and much needed.
@@ -43,7 +43,7 @@ Review the source code, and point out inefficiencies, problems, unreadable funct
 ## Bug reports
 
 Before you submit a bug report, make sure you are using the latest version of Timewarrior. 
-Also please take your time and scan the current bug tickets on our [GitHub issue tracker](https://github.com/GothenburgBitFactory/timewarrior/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+label%3Abug) whether your issue has already been reported.
+Also, please take your time and scan the current bug tickets on our [GitHub issue tracker](https://github.com/GothenburgBitFactory/timewarrior/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aopen+label%3Abug) whether your issue has already been reported.
 
 When you submit a bug report, be precise and put as much information into your bug report as possible.
 You should at least provide
@@ -146,7 +146,7 @@ To make a pull request you need to have a GitHub account.
        ...
        $ git push origin feature_branch
     
-    Furthermore, commits should be signed off according to the [DCO](DCO) (use `-s` / `--signoff` flag when commiting).
+    Furthermore, commits should be signed off according to the [DCO](DCO) (use `-s` / `--signoff` flag when committing).
     
 1. Create the pull request on GitHub.
 

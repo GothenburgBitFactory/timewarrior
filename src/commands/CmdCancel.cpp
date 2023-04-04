@@ -36,7 +36,7 @@ int CmdCancel (
 {
   const bool verbose = rules.getBoolean ("verbose");
 
-  // If there is an open interval, cancel it by deleting it..
+  // If there is an open interval, cancel it by deleting it
   auto latest = getLatestInterval (database);
 
   if (!latest.is_open ())

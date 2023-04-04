@@ -8,7 +8,7 @@ timew-join - join intervals
 *timew join* _<id> <id>_
 
 == DESCRIPTION
-Joins two intervals, by using the earlier of the two start times, and the later of the two end times, and the combined set of tags.
+Joins two intervals, by using the earlier one of the two start times, and the later one of the two end times, and the combined set of tags.
 Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
 Using the correct IDs, you can identify an intervals to join.
 

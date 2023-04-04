@@ -17,7 +17,7 @@
 Thank you for taking a look at Timewarrior!
 
 Timewarrior is a time tracking utility that offers simple stopwatch features as well as sophisticated calendar-based backfill, along with flexible reporting.
-It is a portable, well supported and very active Open Source project.
+It is a portable, well-supported and very active Open Source project.
 
 Please visit [timewarrior.net](https://timewarrior.net/docs/) for extensive documentation, downloads, news and more.
 

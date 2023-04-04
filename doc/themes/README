@@ -36,7 +36,7 @@ Color settings include:
 
 The color palette is used to automatically color tagged time in reports.
 When creating a color theme, the palette should be larger rather than smaller.
-It is recommended that you provide at least 16 colors, otherwise Timewarrior cycles through them and you'll see repetitions.
+It is recommended that you provide at least 16 colors, otherwise Timewarrior cycles through them, and you'll see repetitions.
 
 ## Share Your Theme
 

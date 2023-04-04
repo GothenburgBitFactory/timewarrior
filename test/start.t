@@ -121,7 +121,7 @@ class TestStart(TestCase):
         self.assertIn("Tracking bar foo", out)
 
     def test_start_with_less_tags_than_current_tracking(self):
-        """Test 'start' with less tags than current tracking should start new tracking"""
+        """Test 'start' with fewer tags than current tracking should start new tracking"""
         self.t("start 1h ago foo bar")
 
         code, out, err = self.t("start foo")

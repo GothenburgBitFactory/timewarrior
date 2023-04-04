@@ -130,7 +130,7 @@ class TestUntag(TestCase):
         self.assertOpenInterval(j[0], expectedTags=["baz"])
 
     def test_remove_tags_from_closed_interval(self):
-        """Remove tags from an closed interval"""
+        """Remove tags from a closed interval"""
         now_utc = datetime.now().utcnow()
         one_hour_before_utc = now_utc - timedelta(hours=1)
 

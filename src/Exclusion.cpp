@@ -34,7 +34,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // An exclusion represents untrackable time such as holidays, weekends, evenings
-// and lunch. By default there are none, but they may be configured. Once there
+// and lunch. There are none by default, but they may be configured. Once there
 // are exclusions defined, the :fill functionality is enabled.
 //
 // Exclusions are instantiated from configuration, and are passed here as name/

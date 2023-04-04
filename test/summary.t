@@ -223,7 +223,7 @@ W{5: <{width}} {2:%Y-%m-%d} {2:%a} @1 BAZ  10:00:00 11:00:00 1:00:00 1:00:00
            "-", " ", width=week_col_padding), out)
 
     def test_with_all_hint_and_first_interval_later_in_day(self):
-        """Summary should handle :all hint with first interval that starts later in day than latest interval"""
+        """Summary should handle :all hint with first interval that starts later in day than the latest interval"""
         now = datetime.now()
         yesterday = now - timedelta(days=1)
 

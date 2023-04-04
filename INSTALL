@@ -89,7 +89,7 @@ To do that, run:
     $ git pull --recurse-submodules
     $ git submodule update
 
-At this point you have the fully updated sources at your disposal and you can update your local build following the regular build instructions:
+At this point you have the fully updated sources at your disposal, and you can update your local build following the regular build instructions:
 
     $ cmake .
     $ make

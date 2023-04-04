@@ -503,7 +503,7 @@ void Database::initializeTagDatabase ()
     }
   }
 
-  // We always want the tag database file to exists.
+  // We always want the tag database file to exist.
   _tagInfoDatabase = TagInfoDatabase();
   AtomicFile::write (_location + "/tags.data", _tagInfoDatabase.toJson ());
 

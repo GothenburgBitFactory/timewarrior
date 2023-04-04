@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 # write-failure-test.py - Make sure the test will fail t
 
-import sys
-import os
-
-import atexit
 import filecmp
+import os
 import shutil
-import tempfile
 import subprocess
+import sys
+import tempfile
 import unittest
 
 from basetest import Timew, TestCase
@@ -35,7 +33,7 @@ class WrappedTimew(Timew):
         """Invoke timew with given arguments
 
         If you wish to pass instructions to timew such as confirmations or other
-        input via stdin, you can do so by providing a input string.
+        input via stdin, you can do so by providing an input string.
         Such as input="y\ny\n".
 
         If merge_streams=True stdout and stderr will be merged into stdout.
