@@ -1,5 +1,7 @@
 - #529    Fix summary truncating multibyte characters in long anotations
           (thanks to Maxim Beder, Leon Grünewald)
+-         Use local man pages in tests
+          (thanks to Maxim Beder)
 
 ------ current release ---------------------------
 
