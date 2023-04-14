@@ -1,5 +1,7 @@
 - #529    Fix summary truncating multibyte characters in long anotations
           (thanks to Maxim Beder, Leon Grünewald)
+- #531    Update CONTRIBUTING.md to use branch 'develop' instead of 'dev'
+          (thanks to Maxim Beder)
 -         Use local man pages in tests
           (thanks to Maxim Beder)
 
