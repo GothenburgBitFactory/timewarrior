@@ -123,9 +123,9 @@ By contributing, you are declaring that you have the right to submit the code un
  
 ## How to make a pull-request
 
-The main branch for development is named `dev`.
+The main branch for development is named `develop`.
 This is the branch where your changes must go.
-The `master` branch always points to the latest release.
+The `stable` branch always points to the latest release.
 No development takes place here.
 
 To make a pull request you need to have a GitHub account.
