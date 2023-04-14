@@ -50,7 +50,6 @@ int CmdStop (
   const bool verbose = rules.getBoolean ("verbose");
   const Datetime now {};
 
-  auto filter = cli.getFilter ({ now, 0 });
   // Load the most recent interval.
   auto latest = getLatestInterval (database);
 
@@ -67,30 +66,34 @@ int CmdStop (
                        "Perhaps you want the modify command?.");
   }
 
-  if (! filter.is_started())
+  auto range = cli.getRange ({now, 0});
+
+  if (! range.is_started ())
   {
     throw std::string ("No datetime specified.");
   }
-  else if (filter.start <= latest.start)
+  else if (range.start <= latest.start)
   {
     throw std::string ("The end of a date range must be after the start.");
   }
 
+  auto tags = cli.getTags ();
+
   std::set <std::string> diff = {};
 
   if(! std::includes(latest.tags ().begin (), latest.tags ().end (),
-                     filter.tags ().begin (), filter.tags ().end ()))
+                     tags.begin (), tags.end ()))
   {
-    std::set_difference(filter.tags ().begin (), filter.tags ().end (),
+    std::set_difference(tags.begin (), tags.end (),
                         latest.tags ().begin (), latest.tags ().end (),
                         std::inserter(diff, diff.begin ()));
 
     throw format ("The current interval does not have the '{1}' tag.", *diff.begin ());
   }
-  else if (!filter.tags ().empty ())
+  else if (! tags.empty ())
   {
     std::set_difference(latest.tags ().begin (), latest.tags ().end (),
-                        filter.tags ().begin (), filter.tags ().end (),
+                        tags.begin (), tags.end (),
                         std::inserter(diff, diff.begin()));
   }
 
@@ -98,8 +101,8 @@ int CmdStop (
 
   if (diff.empty ())
   {
-    Interval modified { latest };
-    modified.end = filter.start;
+    Interval modified {latest};
+    modified.end = range.start;
 
     database.deleteInterval (latest);
     validate (cli, rules, database, modified);
@@ -116,7 +119,7 @@ int CmdStop (
   }
   else
   {
-    Interval next { filter.start, 0 };
+    Interval next {range.start, 0};
     for (auto& tag : diff)
     {
       next.tag (tag);

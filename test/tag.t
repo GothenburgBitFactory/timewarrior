@@ -124,7 +124,7 @@ class TestTag(TestCase):
 
         code, out, err = self.t("tag @1 foo bar")
 
-        self.assertIn("Added foo bar to @1", out)
+        self.assertIn("Added bar foo to @1", out)
 
         j = self.t.export()
         self.assertOpenInterval(j[0], expectedTags=["bar", "foo"])
@@ -138,7 +138,7 @@ class TestTag(TestCase):
 
         code, out, err = self.t("tag @1 foo bar")
 
-        self.assertIn("Added foo bar to @1", out)
+        self.assertIn("Added bar foo to @1", out)
 
         j = self.t.export()
         self.assertClosedInterval(j[0], expectedTags=["bar", "foo"])
@@ -171,7 +171,7 @@ class TestTag(TestCase):
 
         code, out, err = self.t("tag @1 @2 foo bar")
 
-        self.assertIn("Added foo bar to @2\nAdded foo bar to @1", out)
+        self.assertIn("Added bar foo to @2\nAdded bar foo to @1", out)
 
         j = self.t.export()
         self.assertClosedInterval(j[0], expectedTags=["bar", "foo", "one"])

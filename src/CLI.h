@@ -70,11 +70,11 @@ public:
   bool getComplementaryHint (const std::string&, bool) const;
   bool getHint(const std::string&, bool) const;
   std::set <int> getIds () const;
-  std::vector<std::string> getTags () const;
+  std::set<std::string> getTags () const;
   std::string getAnnotation() const;
   Duration getDuration() const;
   std::vector<std::string> getDomReferences () const;
-  Interval getFilter (const Range& = {}) const;
+  Range getRange (const Range& default_range = {0, 0}) const;
   std::string dump (const std::string& title = "CLI Parser") const;
 
 private:

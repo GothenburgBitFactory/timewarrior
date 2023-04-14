@@ -37,8 +37,6 @@ int CmdTrack (
 {
   const bool verbose = rules.getBoolean ("verbose");
 
-  auto filter = cli.getFilter ();
-
   // We expect no ids
   if (! cli.getIds ().empty ())
   {
@@ -46,23 +44,32 @@ int CmdTrack (
                        "Perhaps you want the continue command?");
   }
 
+  auto range = cli.getRange ();
+
   // If this is not a proper closed interval, then the user is trying to make
   // the 'track' command behave like 'start', so delegate to CmdStart.
-  if (! filter.is_started () ||
-      ! filter.is_ended ())
+  if (! range.is_started () || ! range.is_ended ())
+  {
     return CmdStart (cli, rules, database, journal);
+  }
+
+  auto tags = cli.getTags ();
 
   journal.startTransaction ();
+
+  auto filter = Interval {range, tags};
 
   // Validation must occur before flattening.
   validate (cli, rules, database, filter);
 
-  for (auto& interval : flatten (filter, getAllExclusions (rules, filter)))
+  for (auto& interval : flatten (filter, getAllExclusions (rules, range)))
   {
     database.addInterval (interval, verbose);
 
     if (verbose)
+    {
       std::cout << intervalSummarize (rules, interval);
+    }
   }
 
   journal.endTransaction ();

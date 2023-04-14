@@ -38,16 +38,19 @@ int CmdExport (
   Rules& rules,
   Database& database)
 {
-  auto filter = cli.getFilter ();
-  std::set <int> ids = cli.getIds ();
+  auto ids = cli.getIds ();
+  auto range = cli.getRange ();
+  auto tags = cli.getTags ();
+
   std::shared_ptr <IntervalFilter> filtering;
 
-  if (!ids.empty ())
+  if (! ids.empty ())
   {
-    if (!filter.empty ())
+    if (! range.is_empty ())
     {
       throw std::string ("You cannot specify both id and tags/range to export intervals.");
     }
+
     filtering = std::make_shared <IntervalFilterAllWithIds> (ids);
   }
   else
@@ -55,14 +58,15 @@ int CmdExport (
     filtering = std::make_shared <IntervalFilterAndGroup> (
       std::vector <std::shared_ptr <IntervalFilter>> (
         {
-          std::make_shared <IntervalFilterAllInRange> (Range{filter.start, filter.end}),
-          std::make_shared <IntervalFilterAllWithTags> (filter.tags ()),
+          std::make_shared <IntervalFilterAllInRange> (range),
+          std::make_shared <IntervalFilterAllWithTags> (tags),
         }
       )
     );
   }
 
   auto intervals = getTracked (database, rules, *filtering);
+
   std::cout << jsonFromIntervals (intervals);
 
   return 0;

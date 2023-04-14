@@ -44,16 +44,17 @@ int CmdContinue (
   const bool verbose = rules.getBoolean ("verbose");
   const Datetime now {};
 
-  auto filter = cli.getFilter ({ now, 0 });
+  auto range = cli.getRange ({now, 0});
 
-  if (filter.start > now)
+  if (range.start > now)
   {
     throw std::string ("Time tracking cannot be set in the future.");
   }
 
-  std::set <int> ids = cli.getIds ();
+  auto tags = cli.getTags ();
+  auto ids = cli.getIds ();
 
-  if (!ids.empty () && !filter.tags().empty ())
+  if (! ids.empty () && ! tags.empty ())
   {
     throw std::string ("You cannot specify both id and tags to continue an interval.");
   }
@@ -74,14 +75,14 @@ int CmdContinue (
       throw format ("ID '@{1}' does not correspond to any tracking.", *ids.begin ());
     }
   }
-  else if (!filter.tags ().empty ())
+  else if (!tags.empty ())
   {
-    IntervalFilterFirstOf filtering {std::make_shared <IntervalFilterAllWithTags> (filter.tags ())};
+    IntervalFilterFirstOf filtering {std::make_shared <IntervalFilterAllWithTags> (tags)};
     intervals = getTracked (database, rules, filtering);
 
     if (intervals.empty ())
     {
-      throw format ("Tags '{1}' do not correspond to any tracking.", joinQuotedIfNeeded (", ", filter.tags ()));
+      throw format ("Tags '{1}' do not correspond to any tracking.", joinQuotedIfNeeded (", ", tags));
     }
   }
   else
@@ -106,10 +107,10 @@ int CmdContinue (
   Datetime start_time;
   Datetime end_time;
 
-  if (filter.is_started ())
+  if (range.is_started ())
   {
-    start_time = filter.start;
-    end_time = filter.end;
+    start_time = range.start;
+    end_time = range.end;
   }
   else
   {

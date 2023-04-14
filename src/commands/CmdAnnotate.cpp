@@ -41,8 +41,8 @@ int CmdAnnotate (
 {
   const bool verbose = rules.getBoolean ("verbose");
 
-  std::set <int> ids = cli.getIds ();
-  std::string annotation = cli.getAnnotation ();
+  auto ids = cli.getIds ();
+  auto annotation = cli.getAnnotation ();
 
   journal.startTransaction ();
   flattenDatabase (database, rules);

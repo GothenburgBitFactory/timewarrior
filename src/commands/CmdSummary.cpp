@@ -36,7 +36,7 @@
 #include <utf8.h>
 
 // Implemented in CmdChart.cpp.
-std::map <Datetime, std::string> createHolidayMap (Rules&, Interval&);
+std::map <Datetime, std::string> createHolidayMap (Rules&, Range&);
 std::string renderHolidays (const std::map <Datetime, std::string>&);
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -53,12 +53,13 @@ int CmdSummary (
   Range default_range = {};
   expandIntervalHint (":" + report_hint, default_range);
 
-  auto filter = cli.getFilter (default_range);
+  auto range = cli.getRange (default_range);
+  auto tags = cli.getTags ();
 
   // Load the data.
   IntervalFilterAndGroup filtering ({
-    std::make_shared <IntervalFilterAllInRange> ( Range { filter.start, filter.end }),
-    std::make_shared <IntervalFilterAllWithTags> (filter.tags())
+    std::make_shared <IntervalFilterAllInRange> (range),
+    std::make_shared <IntervalFilterAllWithTags> (tags)
   });
 
   auto tracked = getTracked (database, rules, filtering);
@@ -69,16 +70,18 @@ int CmdSummary (
     {
       std::cout << "No filtered data found";
 
-      if (filter.is_started ())
+      if (range.is_started ())
       {
-        std::cout << " in the range " << filter.start.toISOLocalExtended ();
-        if (filter.is_ended ())
-          std::cout << " - " << filter.end.toISOLocalExtended ();
+        std::cout << " in the range " << range.start.toISOLocalExtended ();
+        if (range.is_ended ())
+        {
+          std::cout << " - " << range.end.toISOLocalExtended ();
+        }
       }
 
-      if (! filter.tags ().empty ())
+      if (! tags.empty ())
       {
-        std::cout << " tagged with " << joinQuotedIfNeeded (", ", filter.tags ());
+        std::cout << " tagged with " << joinQuotedIfNeeded (", ", tags);
       }
 
       std::cout << ".\n";
@@ -159,8 +162,8 @@ int CmdSummary (
   time_t grand_total = 0;
   Datetime previous;
 
-  auto days_start = filter.is_started() ? filter.start : tracked.front ().start;
-  auto days_end   = filter.is_ended()   ? filter.end   : tracked.back ().end;
+  auto days_start = range.is_started() ? range.start : tracked.front ().start;
+  auto days_end   = range.is_ended()   ? range.end   : tracked.back ().end;
 
   const auto now = Datetime ();
 
@@ -221,8 +224,8 @@ int CmdSummary (
 
       if (show_tags)
       {
-        std::string tags = join (", ", track.tags ());
-        table.set (row, tags_col_index, tags, summaryIntervalColor (rules, track.tags ()));
+        std::string tags_string = join (", ", track.tags ());
+        table.set (row, tags_col_index, tags_string, summaryIntervalColor (rules, track.tags ()));
       }
 
       if (show_annotations)
@@ -260,7 +263,7 @@ int CmdSummary (
 
   std::cout << '\n'
             << table.render ()
-            << (show_holidays ? renderHolidays (createHolidayMap (rules, filter)) : "")
+            << (show_holidays ? renderHolidays (createHolidayMap (rules, range)) : "")
             << '\n';
 
   return 0;

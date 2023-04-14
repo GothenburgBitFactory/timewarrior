@@ -38,13 +38,14 @@ int CmdStart (
   const bool verbose = rules.getBoolean ("verbose");
   const Datetime now {};
 
-  auto interval = cli.getFilter ({ now, 0 });
+  auto range = cli.getRange ({now, 0});
+  auto tags = cli.getTags ();
 
-  if (interval.start > now)
+  if (range.start > now)
   {
     throw std::string ("Time tracking cannot be set in the future.");
   }
-  else if (!interval.is_started () || interval.is_ended ())
+  else if (! range.is_started () || range.is_ended ())
   {
     throw std::string ("The start command does not accept ranges but only a single datetime. "
                        "Perhaps you want the track command?");
@@ -58,6 +59,8 @@ int CmdStart (
   }
 
   journal.startTransaction ();
+  auto interval = Interval {range, tags};
+
   if (validate (cli, rules, database, interval))
   {
     database.addInterval (interval, verbose);

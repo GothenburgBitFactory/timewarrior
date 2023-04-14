@@ -86,7 +86,7 @@ Range DatetimeParser::parse_range (const std::string& input)
     {
       start = pig.cursor ();
       resolve ();
-      return Range { Datetime {_date}, 0 };
+      return Range {Datetime {_date}, 0};
     }
   }
 
@@ -115,13 +115,13 @@ Range DatetimeParser::parse_range (const std::string& input)
       {
         auto start_date = Datetime (_date);
         auto end_date = Datetime(start_date.year(), start_date.month()+1, 1);
-        return Range { start_date, end_date };
+        return Range {start_date, end_date};
       }
       else if (_year != 0)
       {
         auto start_date = Datetime (_date);
         auto end_date = Datetime(start_date.year()+1, 1, 1);
-        return Range { start_date, end_date };
+        return Range {start_date, end_date};
       }
       return Range {};
     }
@@ -145,7 +145,7 @@ Range DatetimeParser::parse_range (const std::string& input)
     {
       start = pig.cursor ();
       resolve ();
-      return Range { Datetime (_date), 0 };
+      return Range {Datetime (_date), 0};
     }
   }
 
@@ -153,14 +153,14 @@ Range DatetimeParser::parse_range (const std::string& input)
 
   if (parse_informal_time (pig))
   {
-    return Range { Datetime {_date}, 0 };
+    return Range {Datetime {_date}, 0};
   }
 
   if (parse_named_day (pig))
   {
     // ::validate and ::resolve are not needed in this case.
     start = pig.cursor ();
-    return Range { Datetime (_date), Datetime (_date) + Duration ("1d").toTime_t () };
+    return Range {Datetime (_date), Datetime (_date) + Duration ("1d").toTime_t ()};
   }
 
   if (parse_named_month (pig))
@@ -171,14 +171,14 @@ Range DatetimeParser::parse_range (const std::string& input)
     auto month = (begin.month() + 1) % 13 + (begin.month() == 12);
     auto year = (begin.year() + (begin.month() == 12));
     auto end = Datetime (year, month, 1);
-    return Range { begin, end };
+    return Range {begin, end};
   }
 
   if (parse_named (pig))
   {
     // ::validate and ::resolve are not needed in this case.
     start = pig.cursor ();
-    return Range { Datetime (_date), 0 };
+    return Range {Datetime (_date), 0};
   }
 
   throw format ("'{1}' is not a valid range.", input);

@@ -30,12 +30,15 @@
 #include <Range.h>
 #include <set>
 #include <string>
+#include <utility>
 
 class Interval : public Range
 {
 public:
   Interval () = default;
   Interval (const Datetime& start, const Datetime& end) : Range (start, end) {}
+  Interval (const Range& range, std::set <std::string> tags) : Range (range), _tags(std::move(tags)) {}
+
   bool operator== (const Interval&) const;
   bool operator!= (const Interval&) const;
 

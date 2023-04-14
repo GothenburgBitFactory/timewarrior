@@ -119,8 +119,8 @@ bool domGet (
     else if (pig.skipLiteral ("tracked."))
     {
       IntervalFilterAndGroup filtering ({
-        std::make_shared <IntervalFilterAllInRange> ( Range { filter.start, filter.end }),
-        std::make_shared <IntervalFilterAllWithTags> (filter.tags())
+        std::make_shared <IntervalFilterAllInRange> (Range {filter.start, filter.end}),
+        std::make_shared <IntervalFilterAllWithTags> (filter.tags ())
       });
 
       auto tracked = getTracked (database, rules, filtering);

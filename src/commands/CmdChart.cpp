@@ -36,9 +36,9 @@
 #include <iostream>
 #include <timew.h>
 
-int renderChart (const CLI&, const std::string&, Interval&, Rules&, Database&);
+int renderChart (const std::string&, const CLI&, Rules&, Database&);
 
-std::map <Datetime, std::string> createHolidayMap (Rules&, Interval&);
+std::map <Datetime, std::string> createHolidayMap (Rules&, Range&);
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdChartDay (
@@ -46,16 +46,7 @@ int CmdChartDay (
   Rules& rules,
   Database& database)
 {
-  auto default_hint = rules.get ("reports.range", "day");
-  auto report_hint = rules.get ("reports.day.range", default_hint);
-
-  Range default_range = {};
-  expandIntervalHint (":" + report_hint, default_range);
-
-  // Create a filter, and if empty, choose the current day.
-  auto filter = cli.getFilter (default_range);
-
-  return renderChart (cli, "day", filter, rules, database);
+  return renderChart ("day", cli, rules, database);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -64,16 +55,7 @@ int CmdChartWeek (
   Rules& rules,
   Database& database)
 {
-  auto default_hint = rules.get ("reports.range", "week");
-  auto report_hint = rules.get ("reports.week.range", default_hint);
-
-  Range default_range = {};
-  expandIntervalHint (":" + report_hint, default_range);
-
-  // Create a filter, and if empty, choose the current week.
-  auto filter = cli.getFilter (default_range);
-
-  return renderChart (cli, "week", filter, rules, database);
+  return renderChart ("week", cli, rules, database);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -82,32 +64,31 @@ int CmdChartMonth (
   Rules& rules,
   Database& database)
 {
-  auto default_hint = rules.get ("reports.range", "month");
-  auto report_hint = rules.get ("reports.month.range", default_hint);
-
-  Range default_range = {};
-  expandIntervalHint (":" + report_hint, default_range);
-
-  // Create a filter, and if empty, choose the current month.
-  auto filter = cli.getFilter (default_range);
-
-  return renderChart (cli, "month", filter, rules, database);
+  return renderChart ("month", cli, rules, database);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 int renderChart (
-  const CLI& cli,
   const std::string& type,
-  Interval& filter,
+  const CLI& cli,
   Rules& rules,
   Database& database)
 {
   const bool verbose = rules.getBoolean ("verbose");
 
+  auto default_hint = rules.get ("reports.range", type);
+  auto report_hint = rules.get ("reports." + type + ".range", default_hint);
+
+  Range default_range = {};
+  expandIntervalHint (":" + report_hint, default_range);
+
+  auto range = cli.getRange (default_range);
+  auto tags = cli.getTags ();
+
   // Load the data.
   IntervalFilterAndGroup filtering ({
-    std::make_shared <IntervalFilterAllInRange> ( Range { filter.start, filter.end }),
-    std::make_shared <IntervalFilterAllWithTags> (filter.tags())
+    std::make_shared <IntervalFilterAllInRange> (range),
+    std::make_shared <IntervalFilterAllWithTags> (tags)
   });
 
   auto tracked = getTracked (database, rules, filtering);
@@ -118,16 +99,18 @@ int renderChart (
     {
       std::cout << "No filtered data found";
 
-      if (filter.is_started ())
+      if (range.is_started ())
       {
-        std::cout << " in the range " << filter.start.toISOLocalExtended ();
-        if (filter.is_ended ())
-          std::cout << " - " << filter.end.toISOLocalExtended ();
+        std::cout << " in the range " << range.start.toISOLocalExtended ();
+        if (range.is_ended ())
+        {
+          std::cout << " - " << range.end.toISOLocalExtended ();
+        }
       }
 
-      if (! filter.tags ().empty ())
+      if (! tags.empty ())
       {
-        std::cout << " tagged with " << joinQuotedIfNeeded (", ", filter.tags ());
+        std::cout << " tagged with " << joinQuotedIfNeeded (", ", tags);
       }
 
       std::cout << ".\n";
@@ -136,8 +119,8 @@ int renderChart (
     return 0;
   }
 
-  const auto exclusions = getAllExclusions (rules, filter);
-  const auto holidays = createHolidayMap (rules, filter);
+  const auto exclusions = getAllExclusions (rules, range);
+  const auto holidays = createHolidayMap (rules, range);
 
   // Map tags to colors.
   auto palette = createPalette (rules);
@@ -146,12 +129,16 @@ int renderChart (
   const auto minutes_per_char = rules.getInteger ("reports." + type + ".cell");
 
   if (minutes_per_char < 1)
+  {
     throw format ("The value for 'reports.{1}.cell' must be at least 1.", type);
+  }
 
   const auto num_lines = rules.getInteger ("reports." + type + ".lines", 1);
 
   if (num_lines < 1)
+  {
     throw format ("Invalid value for 'reports.{1}.lines': '{2}'", type, num_lines);
+  }
 
   ChartConfig configuration {};
   configuration.reference_datetime = Datetime ();
@@ -177,13 +164,13 @@ int renderChart (
 
   Chart chart (configuration);
 
-  std::cout << chart.render (filter, tracked, exclusions, holidays);
+  std::cout << chart.render (range, tracked, exclusions, holidays);
 
   return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::map <Datetime, std::string> createHolidayMap (Rules &rules, Interval &filter)
+std::map <Datetime, std::string> createHolidayMap (Rules& rules, Range& range)
 {
   std::map <Datetime, std::string> mapping;
   auto holidays = rules.all ("holidays.");
@@ -199,7 +186,7 @@ std::map <Datetime, std::string> createHolidayMap (Rules &rules, Interval &filte
       std::replace (date.begin (), date.end (), '_', '-');
       Datetime holiday (date);
 
-      if (holiday >= filter.start && holiday <= filter.end)
+      if (holiday >= range.start && holiday <= range.end)
       {
         std::stringstream out;
         out << " ["

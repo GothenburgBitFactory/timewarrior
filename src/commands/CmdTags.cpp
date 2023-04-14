@@ -42,15 +42,14 @@ int CmdTags (
 {
   const bool verbose = rules.getBoolean ("verbose");
 
-  // Create a filter, with no default range.
-  auto filter = cli.getFilter ();
   IntervalFilterAndGroup filtering ({
-    std::make_shared <IntervalFilterAllInRange> ( Range { filter.start, filter.end }),
-    std::make_shared <IntervalFilterAllWithTags> (filter.tags ())
+    std::make_shared <IntervalFilterAllInRange> (cli.getRange ()),
+    std::make_shared <IntervalFilterAllWithTags> (cli.getTags ())
   });
 
   // Generate a unique, ordered list of tags.
   std::set <std::string> tags;
+
   for (const auto& interval : getTracked (database, rules, filtering))
     for (auto& tag : interval.tags ())
       tags.insert (tag);

@@ -45,16 +45,22 @@ int CmdGaps (
   Range default_range = {};
   expandIntervalHint (":" + report_hint, default_range);
 
-  auto filter = cli.getFilter (default_range);
+  auto range = cli.getRange (default_range);
+  auto tags = cli.getTags ();
+  auto filter = Interval {range, tags};
 
   // Is the :blank hint being used?
   bool blank = cli.getHint ("blank", false);
 
   std::vector <Range> untracked;
   if (blank)
-    untracked = subtractRanges ({filter}, getAllExclusions (rules, filter));
+  {
+    untracked = subtractRanges ({range}, getAllExclusions (rules, range));
+  }
   else
+  {
     untracked = getUntracked (database, rules, filter);
+  }
 
   Table table;
   table.width (1024);
@@ -70,7 +76,7 @@ int CmdGaps (
   // Each day is rendered separately.
   time_t grand_total = 0;
   Datetime previous;
-  for (Datetime day = filter.start; day < filter.end; day++)
+  for (Datetime day = range.start; day < range.end; day++)
   {
     auto day_range = getFullDay (day);
     time_t daily_total = 0;

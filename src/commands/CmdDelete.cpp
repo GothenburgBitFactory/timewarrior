@@ -39,8 +39,7 @@ int CmdDelete (
 {
   const bool verbose = rules.getBoolean ("verbose");
 
-  // Gather IDs.
-  std::set <int> ids = cli.getIds ();
+  auto ids = cli.getIds ();
 
   if (ids.empty ())
   {
@@ -52,7 +51,6 @@ int CmdDelete (
   flattenDatabase (database, rules);
   auto filtering = IntervalFilterAllWithIds (ids);
   auto intervals = getTracked (database, rules, filtering);
-
 
   if (intervals.size () != ids.size ())
   {

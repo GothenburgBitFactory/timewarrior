@@ -43,7 +43,7 @@ int CmdUntag (
 
   // Gather IDs and TAGs.
   std::set <int> ids = cli.getIds ();
-  std::vector<std::string> tags = cli.getTags ();
+  std::set<std::string> tags = cli.getTags ();
 
   if (tags.empty ())
   {

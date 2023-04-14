@@ -134,24 +134,28 @@ int CmdReport (
   expandIntervalHint (":" + report_hint, default_range);
 
   // Create a filter, and if empty, choose the current week.
-  auto filter = cli.getFilter (default_range);
+  auto tags = cli.getTags ();
+  auto range = cli.getRange (default_range);
 
   IntervalFilterAndGroup filtering ({
-    std::make_shared <IntervalFilterAllInRange> ( Range { filter.start, filter.end }),
-    std::make_shared <IntervalFilterAllWithTags> (filter.tags ())
+    std::make_shared <IntervalFilterAllInRange> (range),
+    std::make_shared <IntervalFilterAllWithTags> (tags)
   });
 
   auto tracked = getTracked (database, rules, filtering);
 
   // Compose Header info.
-  rules.set ("temp.report.start", filter.is_started () ? filter.start.toISO () : "");
-  rules.set ("temp.report.end",   filter.is_ended ()   ? filter.end.toISO ()   : "");
-  rules.set ("temp.report.tags", joinQuotedIfNeeded (",", filter.tags ()));
+  rules.set ("temp.report.start", range.is_started () ? range.start.toISO () : "");
+  rules.set ("temp.report.end",   range.is_ended ()   ? range.end.toISO ()   : "");
+  rules.set ("temp.report.tags", joinQuotedIfNeeded (",", tags));
   rules.set ("temp.version", VERSION);
 
   std::stringstream header;
+
   for (auto& name : rules.all ())
+  {
     header << name << ": " << rules.get (name) << '\n';
+  }
 
   // Get the data.
   auto input = header.str ()
@@ -168,7 +172,9 @@ int CmdReport (
 
   // Display the output.
   for (auto& line : output)
+  {
     std::cout << line << '\n';
+  }
 
   return rc;
 }

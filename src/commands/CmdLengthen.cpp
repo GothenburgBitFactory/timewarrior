@@ -40,15 +40,14 @@ int CmdLengthen (
 {
   const bool verbose = rules.getBoolean ("verbose");
 
-  // Gather IDs and TAGs.
-  std::set <int> ids = cli.getIds ();
+  auto ids = cli.getIds ();
 
   if (ids.empty ())
   {
     throw std::string ("IDs must be specified. See 'timew help lengthen'.");
   }
 
-  Duration dur = cli.getDuration ();
+  auto dur = cli.getDuration ();
 
   journal.startTransaction ();
 

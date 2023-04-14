@@ -61,14 +61,14 @@ Chart::Chart (const ChartConfig& configuration) :
 { }
 
 std::string Chart::render (
-  const Interval &filter,
+  const Range& range,
   const std::vector<Interval> &tracked,
   const std::vector<Range> &exclusions,
   const std::map<Datetime, std::string> &holidays)
 {
   // Determine hours shown.
   auto hour_range = determine_hour_range
-                    ? determineHourRange (filter, tracked)
+                    ? determineHourRange (range, tracked)
                     : std::make_pair (0, 23);
 
   int first_hour = hour_range.first;
@@ -97,7 +97,7 @@ std::string Chart::render (
   // Each day is rendered separately.
   time_t total_work = 0;
 
-  for (Datetime day = filter.start; day < filter.end; day++)
+  for (Datetime day = range.start; day < range.end; day++)
   {
     // Render the exclusion blocks.
 
@@ -154,7 +154,7 @@ std::string Chart::render (
 
   out << (with_totals ? renderSubTotal (total_work, std::string (padding_size, ' ')) : "")
       << (with_holidays ? renderHolidays (holidays) : "")
-      << (with_summary ? renderSummary (indent, filter, exclusions, tracked) : "");
+      << (with_summary ? renderSummary (indent, range, exclusions, tracked) : "");
 
   return out.str ();
 }
@@ -172,7 +172,7 @@ unsigned long Chart::getIndentSize ()
 // Scan all tracked intervals, looking for the earliest and latest hour into
 // which an interval extends.
 std::pair<int, int> Chart::determineHourRange (
-  const Interval &filter,
+  const Range& range,
   const std::vector<Interval> &tracked)
 {
   // If there is no data, show the whole day.
@@ -185,11 +185,11 @@ std::pair<int, int> Chart::determineHourRange (
   auto first_hour = 23;
   auto last_hour = 0;
 
-  for (Datetime day = filter.start; day < filter.end; day++)
+  for (Datetime day = range.start; day < range.end; day++)
   {
     auto day_range = getFullDay (day);
 
-    for (auto &track : tracked)
+    for (auto& track : tracked)
     {
       Interval test {track};
 
@@ -549,7 +549,7 @@ std::string Chart::renderHolidays (const std::map<Datetime, std::string> &holida
 ////////////////////////////////////////////////////////////////////////////////
 std::string Chart::renderSummary (
   const std::string &indent,
-  const Interval &filter,
+  const Range& range,
   const std::vector<Range> &exclusions,
   const std::vector<Interval> &tracked)
 {
@@ -558,9 +558,9 @@ std::string Chart::renderSummary (
 
   for (auto &exclusion : exclusions)
   {
-    if (filter.overlaps (exclusion))
+    if (range.overlaps (exclusion))
     {
-      total_unavailable += filter.intersect (exclusion).total ();
+      total_unavailable += range.intersect (exclusion).total ();
     }
   }
 
@@ -570,9 +570,9 @@ std::string Chart::renderSummary (
   {
     for (auto &interval : tracked)
     {
-      if (filter.overlaps (interval))
+      if (range.overlaps (interval))
       {
-        Interval clipped = clip (interval, filter);
+        Interval clipped = clip (interval, range);
         if (interval.is_open ())
         {
           clipped.end = reference_datetime;
@@ -583,7 +583,7 @@ std::string Chart::renderSummary (
     }
   }
 
-  auto total_available = filter.total () - total_unavailable;
+  auto total_available = range.total () - total_unavailable;
   assert (total_available >= 0);
   auto total_remaining = total_available - total_worked;
 

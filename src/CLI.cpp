@@ -564,14 +564,14 @@ std::set<int> CLI::getIds() const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::vector<std::string> CLI::getTags () const
+std::set <std::string> CLI::getTags () const
 {
-  std::vector <std::string> tags;
+  std::set <std::string> tags;
 
   for (auto& arg : _args)
   {
     if (arg.hasTag ("TAG"))
-      tags.push_back (arg.attribute ("raw"));
+      tags.insert (arg.attribute ("raw"));
   }
 
   return tags;
@@ -628,20 +628,18 @@ std::vector <std::string> CLI::getDomReferences () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// A filter is just another interval, containing start, end and tags.
 //
-// Supported interval forms:
+// Supported range forms:
 //   ["from"] <date> ["to"|"-" <date>]
 //   ["from"] <date> "for" <duration>
 //   <duration> ["before"|"after" <date>]
 //   <duration> "ago"
 //
-Interval CLI::getFilter (const Range& default_range) const
+Range CLI::getRange(const Range& default_range) const
 {
-  // One instance, so we can directly compare.
   Datetime now;
 
-  Interval filter;
+  Range the_range;
   std::string start;
   std::string end;
   std::string duration;
@@ -666,16 +664,16 @@ Interval CLI::getFilter (const Range& default_range) const
         {
           if (range.is_empty ())
           {
-            args.emplace_back ("<all>");
+            args.emplace_back("<all>");
           }
           else
           {
             start = range.start.toISO ();
             end   = range.end.toISO ();
 
-            args.emplace_back ("<date>");
-            args.emplace_back ("-");
-            args.emplace_back ("<date>");
+            args.emplace_back("<date>");
+            args.emplace_back("-");
+            args.emplace_back("<date>");
           }
         }
 
@@ -688,14 +686,14 @@ Interval CLI::getFilter (const Range& default_range) const
         else if (end.empty ())
           end = raw;
 
-        args.emplace_back ("<date>");
+        args.emplace_back("<date>");
       }
       else if (arg._lextype == Lexer::Type::duration)
       {
         if (duration.empty ())
           duration = raw;
 
-        args.emplace_back ("<duration>");
+        args.emplace_back("<duration>");
       }
       else if (arg.hasTag ("KEYWORD"))
       {
@@ -704,37 +702,27 @@ Interval CLI::getFilter (const Range& default_range) const
         //       function.
         args.push_back (raw);
       }
-      else if (arg.hasTag ("ID"))
-      {
-        // Not part of a filter.
-      }
-      else
-      {
-        filter.tag (raw);
-      }
     }
   }
 
   if (args.empty ())
   {
-    filter.setRange(default_range);
+    the_range = default_range;
   }
-
   // <date>
   else if (args.size () == 1 &&
-      args[0] == "<date>")
+           args[0] == "<date>")
   {
     DatetimeParser dtp;
     Range range = dtp.parse_range(start);
-    filter.setRange (range);
+    the_range = Range (range);
   }
-
   // from <date>
   else if (args.size () == 2 &&
            args[0] == "from" &&
            args[1] == "<date>")
   {
-    filter.setRange ({Datetime (start), 0});
+    the_range = Range ({Datetime (start), 0});
   }
   // <date> to/- <date>
   else if (args.size () == 3                   &&
@@ -742,9 +730,8 @@ Interval CLI::getFilter (const Range& default_range) const
            (args[1] == "to" || args[1] == "-") &&
            args[2] == "<date>")
   {
-    filter.setRange ({Datetime (start), Datetime (end)});
+    the_range = Range ({Datetime (start), Datetime (end)});
   }
-
   // from <date> to/- <date>
   else if (args.size () == 4                   &&
            args[0] == "from"                   &&
@@ -752,18 +739,16 @@ Interval CLI::getFilter (const Range& default_range) const
            (args[2] == "to" || args[2] == "-") &&
            args[3] == "<date>")
   {
-    filter.setRange ({Datetime (start), Datetime (end)});
+    the_range = Range ({Datetime (start), Datetime (end)});
   }
-
   // <date> for <duration>
   else if (args.size () == 3   &&
            args[0] == "<date>" &&
            args[1] == "for"    &&
            args[2] == "<duration>")
   {
-    filter.setRange ({Datetime (start), Datetime (start) + Duration (duration).toTime_t ()});
+    the_range = Range ({Datetime (start), Datetime (start) + Duration (duration).toTime_t ()});
   }
-
   // from <date> for <duration>
   else if (args.size () == 4       &&
            args[0] == "from"       &&
@@ -771,66 +756,61 @@ Interval CLI::getFilter (const Range& default_range) const
            args[2] == "for"        &&
            args[3] == "<duration>")
   {
-    filter.setRange ({Datetime (start), Datetime (start) + Duration (duration).toTime_t ()});
+    the_range = Range ({Datetime (start), Datetime (start) + Duration (duration).toTime_t ()});
   }
-
   // <duration> before <date>
   else if (args.size () == 3       &&
            args[0] == "<duration>" &&
            args[1] == "before"     &&
            args[2] == "<date>")
   {
-    filter.setRange ({Datetime (start) - Duration (duration).toTime_t (), Datetime (start)});
+    the_range = Range ({Datetime (start) - Duration (duration).toTime_t (), Datetime (start)});
   }
-
   // <duration> after <date>
   else if (args.size () == 3       &&
            args[0] == "<duration>" &&
            args[1] == "after"      &&
            args[2] == "<date>")
   {
-    filter.setRange ({Datetime (start), Datetime (start) + Duration (duration).toTime_t ()});
+    the_range = Range ({Datetime (start), Datetime (start) + Duration (duration).toTime_t ()});
   }
-
   // <duration> ago
   else if (args.size () == 2       &&
            args[0] == "<duration>" &&
            args[1] == "ago")
   {
-    filter.setRange ({now - Duration (duration).toTime_t (), 0});
+    the_range = Range ({now - Duration (duration).toTime_t (), 0});
   }
-
   // for <duration>
   else if (args.size () == 2       &&
            args[0] == "for"        &&
            args[1] == "<duration>")
   {
-    filter.setRange ({now - Duration (duration).toTime_t (), now});
+    the_range = Range ({now - Duration (duration).toTime_t (), now});
   }
-
   // <duration>
   else if (args.size () == 1 &&
            args[0] == "<duration>")
   {
-    filter.setRange ({now - Duration (duration).toTime_t (), now});
+    the_range = Range ({now - Duration (duration).toTime_t (), now});
   }
-
   // :all
   else if (args.size () == 1 && args[0] == "<all>")
   {
-    filter.setRange (0, 0);
+    the_range = Range (0, 0);
   }
-
-    // Unrecognized date range construct.
+  // Unrecognized date range construct.
   else if (! args.empty ())
   {
     throw std::string ("Unrecognized date range: '") + join (" ", args) + "'.";
   }
 
-  if (filter.end != 0 && filter.start > filter.end)
+  if (the_range.end != 0 && the_range.start > the_range.end)
+  {
     throw std::string ("The end of a date range must be after the start.");
+  }
 
-  return filter;
+  return the_range;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

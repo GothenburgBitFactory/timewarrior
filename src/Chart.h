@@ -37,7 +37,7 @@ class Chart
 public:
   explicit Chart (const ChartConfig& configuration);
 
-  std::string render (const Interval&, const std::vector <Interval>&, const std::vector <Range>&, const std::map <Datetime, std::string>&);
+  std::string render (const Range&, const std::vector <Interval>&, const std::vector <Range>&, const std::map <Datetime, std::string>&);
 
 private:
   std::string renderAxis (int, int);
@@ -45,7 +45,7 @@ private:
   std::string renderHolidays (const std::map <Datetime, std::string>&);
   std::string renderMonth (const Datetime&, const Datetime&);
   std::string renderSubTotal (time_t, const std::string&);
-  std::string renderSummary (const std::string&, const Interval&, const std::vector <Range>&, const std::vector <Interval>&);
+  std::string renderSummary (const std::string&, const Range&, const std::vector <Range>&, const std::vector <Interval>&);
   std::string renderTotal (time_t);
   std::string renderWeek (const Datetime&, const Datetime&);
   std::string renderWeekday (Datetime&, const Color&);
@@ -55,7 +55,7 @@ private:
 
   unsigned long getIndentSize ();
 
-  std::pair <int, int> determineHourRange (const Interval&, const std::vector <Interval>&);
+  std::pair <int, int> determineHourRange (const Range&, const std::vector <Interval>&);
 
   Color getDayColor (const Datetime&, const std::map <Datetime, std::string>&);
   Color getHourColor (int) const;

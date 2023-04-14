@@ -41,7 +41,7 @@ int CmdJoin (
   const bool verbose = rules.getBoolean ("verbose");
 
   // Gather IDs and TAGs.
-  std::set <int> ids = cli.getIds ();
+  auto ids = cli.getIds ();
 
   // Only 2 IDs allowed in a join.
   if (ids.size () != 2)

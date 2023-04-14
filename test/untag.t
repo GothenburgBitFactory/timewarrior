@@ -124,7 +124,7 @@ class TestUntag(TestCase):
 
         code, out, err = self.t("untag @1 foo bar")
 
-        self.assertIn('Removed foo bar from @1', out)
+        self.assertIn('Removed bar foo from @1', out)
 
         j = self.t.export()
         self.assertOpenInterval(j[0], expectedTags=["baz"])
@@ -138,7 +138,7 @@ class TestUntag(TestCase):
 
         code, out, err = self.t("untag @1 foo bar")
 
-        self.assertIn('Removed foo bar from @1', out)
+        self.assertIn('Removed bar foo from @1', out)
 
         j = self.t.export()
         self.assertClosedInterval(j[0], expectedTags=["baz"])
@@ -171,7 +171,7 @@ class TestUntag(TestCase):
 
         code, out, err = self.t("untag @1 @2 foo bar")
 
-        self.assertIn('Removed foo bar from @2\nRemoved foo bar from @1', out)
+        self.assertIn('Removed bar foo from @2\nRemoved bar foo from @1', out)
 
         j = self.t.export()
         self.assertClosedInterval(j[0], expectedTags=["one"])
