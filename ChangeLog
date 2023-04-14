@@ -1,3 +1,6 @@
+- #529    Fix summary truncating multibyte characters in long anotations
+          (thanks to Maxim Beder, Leon Grünewald)
+
 ------ current release ---------------------------
 
 1.5.0 (2023-04-04) - 51e7c2c772837bbd6d56da8d16506c4b6de8644166e0b5234ad36ae6a70dd4f6
