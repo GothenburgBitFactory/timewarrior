@@ -8,9 +8,9 @@ Anyone can contribute, and everyone is encouraged to do so.
 Here are the different ways you might conѕider contributing:
 
 1. Reviews
-1. Bug reports
-1. Feature requests
-1. Code contribution
+2. Bug reports
+3. Feature requests
+4. Code contribution
 
 Please read the respective section below about the details.
 
@@ -85,9 +85,9 @@ Plus, you might get your feature implemented.
 There are different ways you can contribute code to the project:
 
 1. Add extensions
-1. Add tests
-1. Fix bugs
-1. Add features
+2. Add tests
+3. Fix bugs
+4. Add features
 
 
 ### Extensions
@@ -131,15 +131,15 @@ No development takes place here.
 To make a pull request you need to have a GitHub account.
 
 1. Fork the [Timewarrior repository](https://github.com/GothenburgBitFactory/timewarrior) on GitHub.
-1. Checkout the development branch.
+2. Checkout the development branch.
 
        $ git checkout dev
 
-1. Create a feature branch.
+3. Create a feature branch.
 
        $ git checkout -b feature_branch
 
-1. Commit your changes, and finally push to the remote repository.
+4. Commit your changes, and finally push to the remote repository.
    Use a commit message that matches the prevailing format. (See `git log` for examples.)
    
        $ git commit --signoff -am '<issue>: <description>'
@@ -148,7 +148,7 @@ To make a pull request you need to have a GitHub account.
     
     Furthermore, commits should be signed off according to the [DCO](DCO) (use `-s` / `--signoff` flag when committing).
     
-1. Create the pull request on GitHub.
+5. Create the pull request on GitHub.
 
 ## What happens next?
 
