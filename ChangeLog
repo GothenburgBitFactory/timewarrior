@@ -1,4 +1,4 @@
-- #529    Fix summary truncating multibyte characters in long anotations
+- #529    Fix summary truncating multibyte characters in long annotations
           (thanks to Maxim Beder, Leon Grünewald)
 - #531    Update CONTRIBUTING.md to use branch 'develop' instead of 'dev'
           (thanks to Maxim Beder)
