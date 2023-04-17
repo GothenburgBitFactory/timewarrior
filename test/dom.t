@@ -403,11 +403,11 @@ class TestDOMRC(TestCase):
 
     def test_dom_rc_missing(self):
         """Test 'dom.rc.missing' with no value"""
-        code, out, err = self.t("get dom.rc.missing")
+        self.t("get dom.rc.missing")
 
     def test_dom_rc_present(self):
         """Test 'dom.rc.debug'"""
-        code, out, err = self.t("get dom.rc.debug")
+        self.t("get dom.rc.debug")
 
 
 if __name__ == "__main__":
