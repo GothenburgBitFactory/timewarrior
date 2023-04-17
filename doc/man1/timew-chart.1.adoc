@@ -48,7 +48,7 @@ Determines whether relevant holidays are shown beneath the report.
 Default value is 'yes'.
 
 **reports.**__<type>__**.hours**::
-Determines how the <type> report shows all the hours in a day ('all'), or is limited to only hours where data is tracked ('auto').
+Determines how the <type> report shows all the hours in a day ('all'), or is limited to only hours when data is tracked ('auto').
 Default value is 'all'.
 
 **reports.**__<type>__**.lines**::

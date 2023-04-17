@@ -29,11 +29,10 @@
 
 import inspect
 import os
+import sys
 import traceback
 import unittest
 import warnings
-
-import sys
 
 
 def color(text, c):
@@ -227,7 +226,7 @@ class TAPTestRunner(unittest.runner.TextTestRunner):
         unittest.signals.registerResult(result)
         result.failfast = self.failfast
 
-        # TAP requires output is on STDOUT.
+        # TAP requires that output is on STDOUT.
         # TODO: Define this at __init__ time
         result.stream = unittest.runner._WritelnDecorator(sys.stdout)
 

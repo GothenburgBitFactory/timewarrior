@@ -198,7 +198,7 @@ def _get_output(arguments, timeout=None):
             # Process finished
             return _retrieve_output(t, output_timeout, outputq, "Program to die")
 
-    # This should never happen but in case something goes really bad
+    # This should never happen, but in case something goes really awry...
     raise OSError("Program stopped responding and couldn't be killed")
 
 
