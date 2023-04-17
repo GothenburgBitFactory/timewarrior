@@ -33,7 +33,7 @@ function bashtap_run_testcase {
         fi
 
         # Run file line by line.
-        if [ ! -z "$bashtap_line" ] && [ "${bashtap_line:0:2}" != "#!" ]; then
+        if [ -n "$bashtap_line" ] && [ "${bashtap_line:0:2}" != "#!" ]; then
             bashtap_output+="# $ $bashtap_line"
             bashtap_output+=$'\n'
             local cmd_output
@@ -43,7 +43,7 @@ function bashtap_run_testcase {
             cmd_ret=$?
             cmd_output="$(sed 's/^/# >>> /' < bashtap_out_tmp)"
 
-            if [ ! -z "$cmd_output" ]; then
+            if [ -n "$cmd_output" ]; then
                 bashtap_output+="$cmd_output"
                 bashtap_output+=$'\n'
             fi
@@ -55,7 +55,7 @@ function bashtap_run_testcase {
 }
 
 function bashtap_clean_tmpdir {
-    if [ ! -z "$bashtap_tmpdir" ] && [ -d "$bashtap_tmpdir" ]; then
+    if [ -n "$bashtap_tmpdir" ] && [ -d "$bashtap_tmpdir" ]; then
         cd "$bashtap_org_pwd"
         rm -rf "$bashtap_tmpdir"
     fi
@@ -67,7 +67,7 @@ function bashtap_clean_tmpdir {
 function bashtap_get_absolute_path {
     # NOTE: No actual thought put into this. Might break. Horribly.
     # Using this instead of readlink/realpath for OSX compatibility.
-    echo $(cd "$(dirname "$1")" && pwd)/$(basename "$1")
+    echo "$( cd "$( dirname "$1" )" && pwd )/$( basename "$1" )"
 }
 
 
@@ -87,7 +87,7 @@ if [ "${0:(-2)}" == ".t" ] || [ "$1" == "-t" ]; then
 
     # The different calls to mktemp are necessary for OSX compatibility.
     bashtap_tmpdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'bash_tap')
-    if [ ! -z "$bashtap_tmpdir" ]; then
+    if [ -n "$bashtap_tmpdir" ]; then
         cd "$bashtap_tmpdir"
     else
         bashtap_line="Unable to create temporary directory."

@@ -130,7 +130,7 @@ for date in "${dates[@]}" ; do
         runtime=$( get_runtime_for "${single_test}" )
         echo "Running test ${single_test} at ${date_time}${runtime:+" with ${runtime}"}"
 
-        if ! faketime "${date_time}" ${runtime} "${single_test}" ; then
+        if ! faketime "${date_time}" "${runtime}" "${single_test}" ; then
           REPORT+="${REPORT+$'\n'}Test ${single_test} broke at ${date_time}!"
           [[ "${fail_at_end-"no"}" == "no" ]] && break 4
         fi

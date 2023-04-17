@@ -14,8 +14,8 @@
 function setup_cfg {
     # Configuration
     for i in data/*.data timewarrior.cfg; do
-       if [ -f "$i" ]; then
-           rm "$i" 2>&1 >/dev/null
+       if [ -f "${i}" ]; then
+           rm "${i}" >/dev/null 2>&1
        fi
     done
 
