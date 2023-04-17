@@ -6,14 +6,11 @@ import os
 import signal
 import sys
 import tempfile
+from queue import Queue, Empty
 from subprocess import Popen, PIPE, STDOUT
 from threading import Thread
-
-try:
-    from Queue import Queue, Empty
-except ImportError:
-    from queue import Queue, Empty
 from time import sleep
+
 try:
     import simplejson as json
 except ImportError:
