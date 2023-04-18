@@ -410,7 +410,7 @@ bool DatetimeParser::parse_named (Pig& pig)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Valid epoch values are unsigned integers after 1980-01-01T00:00:00Z. This
-// restriction means that '12' will not be identified as an epoch date.
+// restriction means that "12" will not be identified as an epoch date.
 bool DatetimeParser::parse_epoch (Pig& pig)
 {
   auto checkpoint = pig.cursor ();
@@ -2815,7 +2815,7 @@ bool DatetimeParser::validate ()
 // int tm_year;      year - 1900
 // int tm_wday;      day of week (Sunday = 0)
 // int tm_yday;      day of year (0 - 365)
-// int tm_isdst;     is summer time in effect?
+// int tm_isdst;     is daylight saving time in effect?
 // char *tm_zone;    abbreviation of timezone name
 // long tm_gmtoff;   offset from UTC in seconds
 void DatetimeParser::resolve ()
