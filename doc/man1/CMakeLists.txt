@@ -1,10 +1,11 @@
 cmake_minimum_required (VERSION 2.8.12)
 
-file (GLOB DOC_SOURCES "${CMAKE_CURRENT_BINARY_DIR}/*.1.adoc")
+file (GLOB DOC_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.1.adoc")
 set (DOC_FILES)
 
 foreach (SRC ${DOC_SOURCES})
   string (REPLACE ".adoc" "" OUTPUT_FILE_NAME "${SRC}")
+  string (REPLACE "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_BINARY_DIR}" OUTPUT_FILE_NAME "${OUTPUT_FILE_NAME}")
 
   add_custom_command (
           OUTPUT "${OUTPUT_FILE_NAME}"
