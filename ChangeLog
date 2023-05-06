@@ -11,6 +11,7 @@
 -         Use local man pages in tests
           (thanks to Maxim Beder)
 -         Cleanup CMake files
+-         Update project to C++17
 
 ------ current release ---------------------------
 

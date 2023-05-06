@@ -38,9 +38,9 @@ Thanks to the community, there are binary packages available [here](https://time
 Building Timewarrior yourself requires
 
 * git
-* cmake
+* cmake (>= 3.8)
 * make
-* C++ compiler with full C++14 support, currently gcc 6.1+ or clang 3.4+ 
+* C++ compiler with full C++17 support, currently gcc 8+ or clang 5+ 
 * Python 3 (for running the testsuite)
 * Asciidoctor (for creating documentation)
 
