@@ -110,7 +110,8 @@ def calculate_totals(input_stream):
         if report_end_utc is not None:
             j[-1]["end"] = min(report_end_utc, datetime.datetime.strptime(j[-1]["end"], DATEFORMAT).replace(tzinfo=from_zone)).strftime(DATEFORMAT)
         else:
-            report_end = datetime.datetime.strptime(j[-1]["end"], DATEFORMAT).replace(tzinfo=from_zone)
+            report_end_utc = datetime.datetime.strptime(j[-1]["end"], DATEFORMAT).replace(tzinfo=from_zone)
+            report_end = report_end_utc.astimezone(tz=to_zone)
     else:
         if report_end_utc is not None:
             j[-1]["end"] = min(report_end_utc, datetime.datetime.now(tz=from_zone)).strftime(DATEFORMAT)
