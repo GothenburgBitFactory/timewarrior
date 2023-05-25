@@ -100,6 +100,9 @@ def calculate_totals(input_stream):
     if "start" in j[0]:
         if report_start_utc is not None:
             j[0]["start"] = max(report_start_utc, datetime.datetime.strptime(j[0]["start"], DATEFORMAT).replace(tzinfo=from_zone)).strftime(DATEFORMAT)
+        else:
+            report_start_utc = datetime.datetime.strptime(j[0]["start"], DATEFORMAT).replace(tzinfo=from_zone)
+            report_start = report_start_utc.astimezone(tz=to_zone)
     else:
         return ["Cannot display an past open range"]
 
