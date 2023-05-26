@@ -2,6 +2,8 @@
           (thanks to Maxim Beder, Leon Grünewald)
 - #531    Update CONTRIBUTING.md to use branch 'develop' instead of 'dev'
           (thanks to Maxim Beder)
+- #540    reports should end at current time if a task is still running
+          (thanks to Ankur Sinha)
 -         Use local man pages in tests
           (thanks to Maxim Beder)
 
