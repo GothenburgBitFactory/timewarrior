@@ -6,10 +6,9 @@ set (DOC_FILES)
 foreach (SRC ${DOC_SOURCES})
   string (REPLACE ".adoc" "" OUTPUT_FILE_NAME "${SRC}")
 
-  add_custom_command (
-          OUTPUT "${OUTPUT_FILE_NAME}"
-          COMMAND ${ASCIIDOCTOR_EXECUTABLE} -b manpage ${ASCIIDOCTOR_OPTIONS} ${SRC} -o ${OUTPUT_FILE_NAME}
-          DEPENDS "${SRC}")
+  add_custom_command (OUTPUT "${OUTPUT_FILE_NAME}"
+                      COMMAND ${ASCIIDOCTOR_EXECUTABLE} -b manpage ${ASCIIDOCTOR_OPTIONS} ${SRC} -o ${OUTPUT_FILE_NAME}
+                      DEPENDS "${SRC}")
 
   set (DOC_FILES ${DOC_FILES} "${OUTPUT_FILE_NAME}")
 endforeach (SRC)

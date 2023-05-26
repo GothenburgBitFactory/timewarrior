@@ -4,9 +4,9 @@ cmake_minimum_required (VERSION 2.8.12)
 # https://gitlab.kitware.com/cmake/cmake/issues/16062
 # The issue has been fixed in CMake 3.11.0; the policy is set
 # to OLD for compatibility with older versions of CMake only.
-if(POLICY CMP0037 AND ${CMAKE_VERSION} VERSION_LESS "3.11.0")
+if (POLICY CMP0037 AND ${CMAKE_VERSION} VERSION_LESS "3.11.0")
   cmake_policy(SET CMP0037 OLD)
-endif()
+endif ()
 
 # If this is a debug build, check if we have libfiu installed and available on
 # the system. If so, we will be able to use it to add additional tests of the

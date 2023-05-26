@@ -7,15 +7,14 @@ include_directories (${CMAKE_SOURCE_DIR}
 
 set (ADDITIONAL_HELP_H "additional-help.h")
 
-ADD_CUSTOM_COMMAND (
-	OUTPUT ${ADDITIONAL_HELP_H}
-	COMMAND /bin/sh src/commands/generate-additional-help.sh > src/commands/${ADDITIONAL_HELP_H}
-	DEPENDS ${CMAKE_CURRENT_LIST_DIR}/generate-additional-help.sh
-	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-	COMMENT "Generating ${ADDITIONAL_HELP_H}")
+add_custom_command (OUTPUT ${ADDITIONAL_HELP_H}
+                    COMMAND /bin/sh src/commands/generate-additional-help.sh > src/commands/${ADDITIONAL_HELP_H}
+                    DEPENDS ${CMAKE_CURRENT_LIST_DIR}/generate-additional-help.sh
+                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                    COMMENT "Generating ${ADDITIONAL_HELP_H}")
 
-ADD_CUSTOM_TARGET (generate_additional_help
-									 DEPENDS ${ADDITIONAL_HELP_H})
+add_custom_target (generate_additional_help
+                   DEPENDS ${ADDITIONAL_HELP_H})
 
 set (commands_SRCS CmdAnnotate.cpp
                    CmdCancel.cpp

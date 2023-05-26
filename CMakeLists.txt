@@ -17,8 +17,8 @@ if (EXISTS ${CMAKE_SOURCE_DIR}/.git/index)
   execute_process (COMMAND git log -1 --pretty=format:%h
                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
                    OUTPUT_VARIABLE COMMIT)
-  configure_file ( ${CMAKE_SOURCE_DIR}/commit.h.in
-                   ${CMAKE_SOURCE_DIR}/commit.h)
+  configure_file (${CMAKE_SOURCE_DIR}/commit.h.in
+                  ${CMAKE_SOURCE_DIR}/commit.h)
   message ("-- Found SHA1 reference: ${COMMIT}")
 endif (EXISTS ${CMAKE_SOURCE_DIR}/.git/index)
 
@@ -32,22 +32,21 @@ set (PACKAGE_STRING "${PACKAGE} ${VERSION}")
 string (TIMESTAMP PACKAGE_DATE "%Y-%m-%d")
 
 if (FREEBSD OR DRAGONFLY)
-SET (TIMEW_MANDIR  man      CACHE STRING "Installation directory for man pages")
-SET (TIMEW_MAN1DIR man/man1 CACHE STRING "Installation directory for man pages, section 1")
-SET (TIMEW_MAN5DIR man/man5 CACHE STRING "Installation directory for man pages, section 5")
-SET (TIMEW_MAN7DIR man/man7 CACHE STRING "Installation directory for man pages, section 7")
+set (TIMEW_MANDIR  man      CACHE STRING "Installation directory for man pages")
+set (TIMEW_MAN1DIR man/man1 CACHE STRING "Installation directory for man pages, section 1")
+set (TIMEW_MAN5DIR man/man5 CACHE STRING "Installation directory for man pages, section 5")
+set (TIMEW_MAN7DIR man/man7 CACHE STRING "Installation directory for man pages, section 7")
 else (FREEBSD OR DRAGONFLY)
-SET (TIMEW_MANDIR  share/man      CACHE STRING "Installation directory for man pages")
-SET (TIMEW_MAN1DIR share/man/man1 CACHE STRING "Installation directory for man pages, section 1")
-SET (TIMEW_MAN5DIR share/man/man5 CACHE STRING "Installation directory for man pages, section 5")
-SET (TIMEW_MAN7DIR share/man/man7 CACHE STRING "Installation directory for man pages, section 7")
+set (TIMEW_MANDIR  share/man      CACHE STRING "Installation directory for man pages")
+set (TIMEW_MAN1DIR share/man/man1 CACHE STRING "Installation directory for man pages, section 1")
+set (TIMEW_MAN5DIR share/man/man5 CACHE STRING "Installation directory for man pages, section 5")
+set (TIMEW_MAN7DIR share/man/man7 CACHE STRING "Installation directory for man pages, section 7")
 endif (FREEBSD OR DRAGONFLY)
-SET (TIMEW_DOCDIR  share/doc/timew CACHE STRING "Installation directory for doc files")
+set (TIMEW_DOCDIR  share/doc/timew CACHE STRING "Installation directory for doc files")
 
 message ("-- Configuring cmake.h")
-configure_file (
-  ${CMAKE_SOURCE_DIR}/cmake.h.in
-  ${CMAKE_SOURCE_DIR}/cmake.h)
+configure_file (${CMAKE_SOURCE_DIR}/cmake.h.in
+                ${CMAKE_SOURCE_DIR}/cmake.h)
 
 add_subdirectory (src)
 add_subdirectory (src/commands)
@@ -66,9 +65,22 @@ endforeach (doc_FILE)
 
 set (CPACK_SOURCE_GENERATOR "TGZ")
 set (CPACK_SOURCE_PACKAGE_FILE_NAME ${PACKAGE_NAME}-${PACKAGE_VERSION})
-set (CPACK_SOURCE_IGNORE_FILES  "CMakeCache" "CMakeFiles" "CPackConfig" "CPackSourceConfig"
-                                "_CPack_Packages" "cmake_install" "install_manifest" "Makefile$"
-                                "test" "package-config" "src/timew$" "src/libtimew.a"
-                                "src/commands/libcommands.a" "src/lex$" "src/liblibshared.a"
-                                "/\\\\.gitignore" "/\\\\.git/" "swp$")
+set (CPACK_SOURCE_IGNORE_FILES  "CMakeCache"
+                                "CMakeFiles"
+                                "CPackConfig"
+                                "CPackSourceConfig"
+                                "_CPack_Packages"
+                                "cmake_install"
+                                "install_manifest"
+                                "Makefile$"
+                                "test"
+                                "package-config"
+                                "src/timew$"
+                                "src/libtimew.a"
+                                "src/commands/libcommands.a"
+                                "src/lex$"
+                                "src/liblibshared.a"
+                                "/\\\\.gitignore"
+                                "/\\\\.git/"
+                                "swp$")
 include (CPack)

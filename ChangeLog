@@ -8,6 +8,7 @@
           (thanks to Ankur Sinha)
 -         Use local man pages in tests
           (thanks to Maxim Beder)
+-         Cleanup CMake files
 
 ------ current release ---------------------------
 

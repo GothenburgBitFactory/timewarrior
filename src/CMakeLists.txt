@@ -72,4 +72,3 @@ set_property (TARGET timew_executable PROPERTY OUTPUT_NAME "timew")
 set_property (TARGET lex_executable   PROPERTY OUTPUT_NAME "lex")
 
 install (TARGETS timew_executable DESTINATION bin)
-
