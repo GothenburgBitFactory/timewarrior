@@ -31,7 +31,7 @@
 - #441    Return report return code
           (thanks to lospatchos)
 - #444    Improve documentation on annotations
-          (Thanks to apkawel, Shaun Ruffel)
+          (thanks to apkawel, Shaun Ruffel)
 - #450    Report 'totals.py' does not display data when no time range specified
           (thanks to squirrellyDave)
 - #458    Add man documentation for configuring tag colors.
@@ -48,7 +48,7 @@
 - #477    Add configurable default range for reports
           (thanks to Oivvio Polite, Christian Kohlstedde)
 - #478    Add support for XDG Base Directory specification on Unixes
-          (Thanks to Stanisław Wysocki)
+          (thanks to Stanisław Wysocki)
 - #491    Tracking an interval in the future while actively tracking time results in a database inconsistency
           (thanks to agentcoffee)
 - #505    Report 'totals.py' does not truncate intervals to report range
@@ -152,9 +152,9 @@
 - #278    New hint :fortnight added
           (thanks to quazgar)
 - #282    Database: Fix error when empty datafile is most recent / oldest
-          (Thanks to Shaun Ruffell)
+          (thanks to Shaun Ruffell)
 - #283    Use AtomicFile to commit files as a group
-          (Thanks to Shaun Ruffell)
+          (thanks to Shaun Ruffell)
 - #284    tags.data modification date updated when file is not modified
           (thanks to Shaun Ruffell, Charlie Gorichanaz)
 - #285    Pass record id to extensions
