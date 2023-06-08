@@ -11,9 +11,6 @@
 
 #define CMAKE_BUILD_TYPE  "${CMAKE_BUILD_TYPE}"
 
-/* Installation details */
-#define TIMEW_RCDIR "${CMAKE_INSTALL_PREFIX}/${TIMEW_RCDIR}"
-
 /* git information */
 #cmakedefine HAVE_COMMIT
 
@@ -45,4 +42,3 @@
 #cmakedefine HAVE_GET_CURRENT_DIR_NAME
 #cmakedefine HAVE_TIMEGM
 #cmakedefine HAVE_UUID_UNPARSE_LOWER
-
