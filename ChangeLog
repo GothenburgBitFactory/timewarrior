@@ -4,6 +4,8 @@
           (thanks to Maxim Beder)
 - #535    Adding completion for fish shell
           (thanks to Povl Filip Sonne-Frederiksen)
+- #538    Fix man page build for out-of-source builds
+          (thanks to Benedikt Fein)
 - #540    reports should end at current time if a task is still running
           (thanks to Ankur Sinha)
 -         Use local man pages in tests
