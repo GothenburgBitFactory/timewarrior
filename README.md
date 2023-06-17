@@ -11,7 +11,7 @@
 </div>
 
 # Timewarrior
-![OS-X downloads](https://img.shields.io/homebrew/installs/dy/timewarrior?label=OS-X%20downloads)
+![macOS downloads](https://img.shields.io/homebrew/installs/dy/timewarrior?label=macOS%20downloads)
 ![GitHub downloads](https://img.shields.io/github/downloads/GothenburgBitFactory/timewarrior/total?label=GitHub%20downloads)
 ![Linux downloads](https://img.shields.io/badge/Linux%20downloads-unknown-gray)
 
