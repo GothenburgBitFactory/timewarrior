@@ -173,7 +173,7 @@ class TestRunner(object):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Run Taskwarrior tests")
+    parser = argparse.ArgumentParser(description="Run Timewarrior tests")
     parser.add_argument('--verbose',
                         '-v',
                         action="store_true",
