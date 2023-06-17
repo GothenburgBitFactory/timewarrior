@@ -38,7 +38,8 @@ set (test_SRCS AtomicFileTest data.t Datafile.t DatetimeParser.t exclusion.t hel
 
 add_custom_target (test ./run_all --verbose
                         DEPENDS ${test_SRCS} timew_executable doc
-                        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test)
+                        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test
+                        COMMENT "Running testsuite...")
 
 foreach (src_FILE ${test_SRCS})
   add_executable (${src_FILE} "${src_FILE}.cpp" test.cpp)
