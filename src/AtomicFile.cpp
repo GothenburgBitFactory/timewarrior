@@ -91,9 +91,19 @@ AtomicFile::impl::impl (const Path& path)
   static int s_count = 0;
   std::stringstream str; 
 
-  str << path._data << '.' << s_pid << '-' << ++s_count << ".tmp";
+  std::string real_path;
+  if (path.is_link())
+  {
+    real_path = path.realpath();
+  }
+  else
+  {
+    real_path = path._data;
+  }
+
+  str << real_path << '.' << s_pid << '-' << ++s_count << ".tmp";
   temp_file = File (str.str());
-  real_file = File (path);
+  real_file = File (real_path);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
