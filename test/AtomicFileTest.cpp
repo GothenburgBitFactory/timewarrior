@@ -114,28 +114,28 @@ int fiu_test (UnitTest& t)
   TempDir tempDir;
   fiu_init (0);
 
-  try { FIU fiu; AtomicFile ("test.txt").write_raw("This is  test"); t.fail ("AtomicFile::write_raw throws on error"); }
-  catch (...) {                                                      t.pass ("AtomicFile::write_raw throws on error"); }  
+  try { FIU fiu; AtomicFile ("test.txt").write_raw("This is  test"); t.fail ("AtomicFileTest: AtomicFile::write_raw throws on error"); }
+  catch (...) {                                                      t.pass ("AtomicFileTest: AtomicFile::write_raw throws on error"); }  
 
-  try { FIU fiu; AtomicFile::finalize_all ();                        t.fail ("AtomicFile::finalize_all() throws on error"); }
-  catch (...) {                                                      t.pass ("AtomicFile::finalize_all() throws on error"); }
+  try { FIU fiu; AtomicFile::finalize_all ();                        t.fail ("AtomicFileTest: AtomicFile::finalize_all() throws on error"); }
+  catch (...) {                                                      t.pass ("AtomicFileTest: AtomicFile::finalize_all() throws on error"); }
 
-  try { FIU fiu; AtomicFile::reset (); AtomicFile::finalize_all ();  t.pass ("AtomicFile::reset clears failure state"); }
-  catch (...) {                                                      t.fail ("AtomicFile::reset clears failure state"); }
+  try { FIU fiu; AtomicFile::reset (); AtomicFile::finalize_all ();  t.pass ("AtomicFileTest: AtomicFile::reset clears failure state"); }
+  catch (...) {                                                      t.fail ("AtomicFileTest: AtomicFile::reset clears failure state"); }
 
   File::write ("test.txt", "line1\n");
   {
     AtomicFile file ("test.txt");
-    try { FIU fiu; file.append ("append1\n");                        t.fail ("AtomicFile::append throws on error"); }
-    catch (...) {                                                    t.pass ("AtomicFile::append throws on error"); }
+    try { FIU fiu; file.append ("append1\n");                        t.fail ("AtomicFileTest: AtomicFile::append throws on error"); }
+    catch (...) {                                                    t.pass ("AtomicFileTest: AtomicFile::append throws on error"); }
 
     std::string contents {"should-not-see-this"};
     file.read (contents);
     t.is (contents, "", "AtomicFile::append did not partially fill the file.");
   }
 
-  try { FIU fiu; AtomicFile::finalize_all ();                       t.fail ("AtomicFile::append failures prevent finalization"); }
-  catch (...) {                                                     t.pass ("AtomicFile::append failures prevent finalization"); }
+  try { FIU fiu; AtomicFile::finalize_all ();                       t.fail ("AtomicFileTest: AtomicFile::append failures prevent finalization"); }
+  catch (...) {                                                     t.pass ("AtomicFileTest: AtomicFile::append failures prevent finalization"); }
 
   return 0;
 }
@@ -150,12 +150,12 @@ int fiu_test (UnitTest& t)
 
 int fiu_test (UnitTest& t)
 {
-  t.skip ("AtomicFile::write_raw throws on error");
-  t.skip ("AtomicFile::finalize_all() throws on error");
-  t.skip ("AtomicFile::reset clears failure state");
-  t.skip ("AtomicFile::append throws on error");
-  t.skip ("AtomicFile::append did not partially fill the file.");
-  t.skip ("AtomicFile::append failures prevent finalization");
+  t.skip ("AtomicFileTest: AtomicFile::write_raw throws on error");
+  t.skip ("AtomicFileTest: AtomicFile::finalize_all() throws on error");
+  t.skip ("AtomicFileTest: AtomicFile::reset clears failure state");
+  t.skip ("AtomicFileTest: AtomicFile::append throws on error");
+  t.skip ("AtomicFileTest: AtomicFile::append did not partially fill the file.");
+  t.skip ("AtomicFileTest: AtomicFile::append failures prevent finalization");
   return 0;
 }
 #endif // FIU_ENABLE
@@ -182,11 +182,11 @@ int test (UnitTest& t)
     file.close ();
   }
 
-  t.is (firstFilename.exists (), false, "Shall not exists before finalize");
+  t.is (firstFilename.exists (), false, "AtomicFileTest: Shall not exists before finalize");
   AtomicFile::finalize_all ();
-  t.is (firstFilename.exists (), true, "Shall exists after finalize");
+  t.is (firstFilename.exists (), true, "AtomicFileTest: Shall exists after finalize");
   File::read(firstFilename, contents);
-  t.is (contents == goldenText, true, "Shall have the correct data");
+  t.is (contents == goldenText, true, "AtomicFileTest: Shall have the correct data");
 
   tempDir.clear ();
 
@@ -200,14 +200,14 @@ int test (UnitTest& t)
     second.close ();
   }
 
-  t.is (firstFilename.exists () || secondFilename.exists (), false, "Neither shall exist before finalize");
+  t.is (firstFilename.exists () || secondFilename.exists (), false, "AtomicFileTest: Neither shall exist before finalize");
 
   AtomicFile::finalize_all ();
 
-  t.is (firstFilename.exists () && secondFilename.exists (), true, "Both shall exists after finalize");
+  t.is (firstFilename.exists () && secondFilename.exists (), true, "AtomicFileTest: Both shall exists after finalize");
 
   File::read(firstFilename, contents);
-  test_name = "First file shall contain the correct data";
+  test_name = "AtomicFileTest: First file shall contain the correct data";
   expected = "first\n";
   if (contents == expected)
   {
@@ -220,7 +220,7 @@ int test (UnitTest& t)
   }
 
   File::read(secondFilename, contents);
-  test_name = "Second file shall contain the correct data";
+  test_name = "AtomicFileTest: Second file shall contain the correct data";
   if (contents == std::string("second\n"))
   {
     t.pass (test_name);
@@ -233,7 +233,7 @@ int test (UnitTest& t)
 
   // Make sure appending works
 
-  test_name = "Appending does not update original before finalize";
+  test_name = "AtomicFileTest: Appending does not update original before finalize";
   expected = "first\n";
 
   {
@@ -255,7 +255,7 @@ int test (UnitTest& t)
     t.diag (std::string ("Expected '" + expected + "' read '" + contents + "'"));
   }
 
-  test_name = "Finalizing updates the appended data";
+  test_name = "AtomicFileTest: Finalizing updates the appended data";
   expected = "first\nappend 1\nappend 2\n";
   AtomicFile::finalize_all ();
   File::read (firstFilename, contents);
@@ -269,7 +269,7 @@ int test (UnitTest& t)
     t.diag (std::string ("Expected '" + expected + "' read '" + contents + "'"));
   }
 
-  test_name = "Read from Atomicfile";
+  test_name = "AtomicFileTest: Read from Atomicfile";
   // We do not want to update the expected
   {
     AtomicFile::read (firstFilename, contents);
@@ -288,7 +288,7 @@ int test (UnitTest& t)
   // If we read from an atomic file before finalizing, we should get the data
   // that was written to the temporary file and not the 'real' file.
 
-  test_name = "Read from Atomicfile should read unfinalized data";
+  test_name = "AtomicFileTest: Read from Atomicfile should read unfinalized data";
   expected += "expected\n";
   AtomicFile::write (firstFilename, expected);
   AtomicFile::read (firstFilename, contents);
@@ -318,7 +318,7 @@ int test (UnitTest& t)
 
   }
 
-  test_name = "Two AtomicFiles should access same temp file (part 1)";
+  test_name = "AtomicFileTest: Two AtomicFiles should access same temp file (part 1)";
 
   // The atomic files, which were closed above should return all the strings
   // written since it was not yet finalized.
@@ -338,7 +338,7 @@ int test (UnitTest& t)
   // But since the file was not yet finalized, the "real" file should only
   // contain the data present since before the finalize_all () call.
 
-  test_name = "Two AtomicFiles should access same temp file (part 2)";
+  test_name = "AtomicFileTest: Two AtomicFiles should access same temp file (part 2)";
   expected = "first\nsecond\n";
   File::read (firstFilename, contents);
   if (contents == expected)
@@ -354,7 +354,7 @@ int test (UnitTest& t)
   // After we finalize the data, the AtomicFile and the File should now both
   // return the same information
 
-  test_name = "Two AtomicFiles should access same temp file (part 3)";
+  test_name = "AtomicFileTest: Two AtomicFiles should access same temp file (part 3)";
   AtomicFile::finalize_all ();
   File::read (firstFilename, expected);
   AtomicFile::read (firstFilename, contents);
@@ -378,9 +378,9 @@ int test (UnitTest& t)
     AtomicFile::finalize_all ();
     assert (test.exists ());
     file.remove ();
-    t.is (test.exists (), true, "File not removed before finalize");
+    t.is (test.exists (), true, "AtomicFileTest: File not removed before finalize");
     AtomicFile::finalize_all ();
-    t.is (test.exists (), false, "File is removed after finalize");
+    t.is (test.exists (), false, "AtomicFileTest: File is removed after finalize");
   }
   return 0;
 }
