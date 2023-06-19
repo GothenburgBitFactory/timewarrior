@@ -33,6 +33,7 @@
 #include <sstream>
 #include <string>
 #include <test.h>
+#include <unistd.h>
 
 #ifdef FIU_ENABLE
 
@@ -159,6 +160,37 @@ int fiu_test (UnitTest& t)
   return 0;
 }
 #endif // FIU_ENABLE
+
+//////////////////////////////////////////////////////////////////////////////
+int test_symlink (UnitTest& t)
+{
+  Path link ("link");
+  Path target ("target");
+  File(target).write_raw("empty\n");
+
+  const std::string write_contents = "test file contents\n";
+
+  if (::symlink (target._data.c_str(), link._data.c_str()) != 0)
+  {
+    throw std::runtime_error("Failed to create link in test_symlink");
+  }
+
+  {
+    AtomicFile file(link);
+    file.write_raw(write_contents);
+  }
+  AtomicFile::finalize_all ();
+
+
+  // After finalizing we should be able read the data that we wrote through the
+  // target
+  std::string read_contents;
+  AtomicFile::read (target, read_contents);
+  t.is(read_contents, write_contents, "AtomicFileTest: writes to symlinks end up in target");
+  t.is (link.is_link (), true, "AtomicFileTest: shall maintain symlink");
+
+  return 0;
+}
 
 //////////////////////////////////////////////////////////////////////////////
 int test (UnitTest& t)
@@ -382,6 +414,10 @@ int test (UnitTest& t)
     AtomicFile::finalize_all ();
     t.is (test.exists (), false, "AtomicFileTest: File is removed after finalize");
   }
+
+  tempDir.clear();
+  test_symlink(t);
+
   return 0;
 }
 
