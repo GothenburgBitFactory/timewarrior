@@ -8,6 +8,8 @@
           (thanks to Benedikt Fein)
 - #540    reports should end at current time if a task is still running
           (thanks to Ankur Sinha)
+- #547    AtomicFile: Operate on the target of symlinks
+          (thanks to Shaun Ruffel, Ivo Forlin)
 -         Use local man pages in tests
           (thanks to Maxim Beder)
 -         Cleanup CMake files
