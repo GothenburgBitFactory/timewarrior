@@ -53,6 +53,7 @@ int CmdModify        (const CLI&, Rules&, Database&, Journal&                   
 int CmdMove          (const CLI&, Rules&, Database&, Journal&                   );
 int CmdReport        (const CLI&, Rules&, Database&,           const Extensions&);
 int CmdResize        (const CLI&, Rules&, Database&, Journal&                   );
+int CmdRetag         (const CLI&, Rules&, Database&, Journal&                   );
 int CmdShorten       (const CLI&, Rules&, Database&, Journal&                   );
 int CmdShow          (            Rules&                                        );
 int CmdSplit         (const CLI&, Rules&, Database&, Journal&                   );

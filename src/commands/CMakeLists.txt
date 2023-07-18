@@ -36,6 +36,7 @@ set (commands_SRCS CmdAnnotate.cpp
                    CmdMove.cpp
                    CmdReport.cpp
                    CmdResize.cpp
+                   CmdRetag.cpp
                    CmdStart.cpp
                    CmdStop.cpp
                    CmdSummary.cpp
