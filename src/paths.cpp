@@ -9,7 +9,7 @@ static const char *legacy_config_dir = "~/.timewarrior";
 static const bool uses_legacy_config = Directory (legacy_config_dir).exists ();
 const char *timewarriordb = getenv ("TIMEWARRIORDB");
 
-#ifdef __unix__
+#if defined(__unix__) || defined(__APPLE__) || defined(__linux__) || defined(_SYSTYPE_BSD)
 std::string getPath (const char *xdg_path)
 {
   if (timewarriordb != nullptr)
