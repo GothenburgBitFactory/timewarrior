@@ -7,7 +7,7 @@ timew-config - Timewarrior configuration file and override options
 **timew rc.**__<name>__**=**__<value>__ _<command>_
 
 == DESCRIPTION
-Timewarrior stores its configuration in the user's home directory in _~/.timewarrior/timewarrior.cfg_ on non-Unix systems (e.g. Windows or macOS).
+Timewarrior stores its configuration in the user's home directory in _~/.timewarrior/timewarrior.cfg_ on non-Unix systems (e.g. Windows).
 
 On Unix systems, XDG Base Directory specification is supported, if _~/.timewarrior_ directory doesn't exist
 (old config directory is still supported and has precedence over XDG BD compliant locations).
