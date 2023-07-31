@@ -47,6 +47,7 @@ public:
   const std::set <std::string>& tags () const;
   void tag (const std::string&);
   void untag (const std::string&);
+  void clearTags ();
 
   void setRange (const Range& range);
   void setRange (const Datetime& start, const Datetime& end);

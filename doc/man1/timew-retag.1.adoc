@@ -1,0 +1,40 @@
+= timew-retag(1)
+
+== NAME
+timew-retag - replace all tags in intervals
+
+== SYNOPSIS
+[verse]
+*timew retag* [_<id>_**...**] _<tag>_**...**
+
+== DESCRIPTION
+The 'retag' command is used to replace all tags in an interval with the newly provided tags.
+Using the 'summary' command, and specifying the ':ids' hint shows interval IDs.
+Using the right ID, you can identify an interval to retag.
+
+== EXAMPLES
+For example, show the IDs:
+
+    $ timew summary :week :ids
+
+Then having selected '@2' as the interval you wish to retag:
+
+    $ timew retag @2 'New Tag'
+
+Note that you can retag multiple intervals, with multiple tags:
+
+    $ timew retag @2 @10 @23 'Tag One' tag2 tag3
+
+If there is active time tracking, you can omit the ID when you want to retag the current open interval:
+
+    $ timew start foo
+    $ timew retag bar
+
+This results in the current interval having only the 'bar' tag.
+
+== SEE ALSO
+**timew-lengthen**(1),
+**timew-shorten**(1),
+**timew-summary**(1),
+**timew-tag**(1)
+**timew-untag**(1)

@@ -88,6 +88,9 @@ Alphabetically:
 *timew-resize*(1)::
     Set interval duration
 
+*timew-retag*(1)::
+    Replace tags in intervals
+
 *timew-shorten*(1)::
     Shorten intervals
 
