@@ -10,6 +10,8 @@
           (thanks to Ankur Sinha)
 - #547    AtomicFile: Operate on the target of symlinks
           (thanks to Shaun Ruffel, Ivo Forlin)
+- #551    Add retag command
+          (thanks to Iúri Archer)
 - #552    Extend XDG support to macOS
           (thanks to Tadeas Uhlir)
 -         Use local man pages in tests
