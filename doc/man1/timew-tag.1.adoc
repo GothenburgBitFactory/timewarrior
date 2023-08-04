@@ -34,6 +34,7 @@ This results in the current interval having tags 'foo' and 'bar'.
 
 == SEE ALSO
 **timew-lengthen**(1),
+**timew-retag**(1),
 **timew-shorten**(1),
 **timew-summary**(1),
 **timew-untag**(1)

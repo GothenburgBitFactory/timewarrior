@@ -36,5 +36,5 @@ This results in the current interval having only the 'bar' tag.
 **timew-lengthen**(1),
 **timew-shorten**(1),
 **timew-summary**(1),
-**timew-tag**(1)
+**timew-tag**(1),
 **timew-untag**(1)
