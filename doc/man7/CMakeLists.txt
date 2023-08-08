@@ -16,6 +16,4 @@ endforeach (SRC)
 
 add_custom_target (man7 DEPENDS ${DOC_FILES})
 
-install (DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-         DESTINATION ${TIMEW_MANDIR}
-         FILES_MATCHING PATTERN "*.7")
+install (FILES ${DOC_FILES} DESTINATION ${TIMEW_MAN7DIR})

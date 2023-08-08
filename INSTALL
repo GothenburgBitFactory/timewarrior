@@ -48,41 +48,35 @@ These commands are explained below:
 # Build and configurations options
 
 You can customize the configuration run with CMake variables.
-This will modify the installation process:
-
-To change the installation directory you use the following configuration variable:
-
-    $ cmake -DCMAKE_INSTALL_PREFIX=<path-to-installation-dir> .
-
-CMake configuration variables are applied with the -D option and consist of a <name> and a <value>:
+CMake configuration variables are applied with the `-D` option and consist of a `<name>` and a `<value>`:
 
     $ cmake -D<name>=<value> .
 
+To change the installation directory, use the `CMAKE_INSTALL_PREFIX` variable:
+
+    $ cmake -DCMAKE_INSTALL_PREFIX=<path-to-installation-dir> .
+
+This variable defaults to `/usr/local` on UNIX/Linux systems.
+
 Five more variables can customize the installation process.
-The following table lists them and their defaults plus the `CMAKE_INSTALL_PREFIX`:
+The following table lists them and their default values:
 
-    CMAKE_INSTALL_PREFIX   /usr/local
-    TIMEW_BINDIR           bin
-    TIMEW_DOCDIR           share/doc/timew
-    TIMEW_MAN1DIR          share/man/man1
-    TIMEW_MAN5DIR          share/man/man5
-    TIMEW_MAN7DIR          share/man/man7
+| Variable        | Default Value     |
+|-----------------|-------------------|
+| `TIMEW_BINDIR`  | `bin`             |
+| `TIMEW_DOCDIR`  | `share/doc/timew` |
+| `TIMEW_MANDIR`  | `share/man`       |
+| `TIMEW_MAN1DIR` | `share/man/man1`  |
+| `TIMEW_MAN7DIR` | `share/man/man7`  |
 
-The corresponding `TIMEW_*` variables will be combined with `CMAKE_INSTALL_PREFIX` to get absolute installation directories:
+On FreeBSD or DragonFly BSD systems, the `share/` directory is omitted for the `TIMEW_MAN*DIR` variables.
 
-    CMAKE_INSTALL_PREFIX/TIMEW_BINDIR   /usr/local/bin
-    CMAKE_INSTALL_PREFIX/TIMEW_DOCDIR   /usr/local/share/doc/timew
-    CMAKE_INSTALL_PREFIX/TIMEW_MAN1DIR  /usr/local/share/man/man1
-    CMAKE_INSTALL_PREFIX/TIMEW_MAN5DIR  /usr/local/share/man/man5
-    CMAKE_INSTALL_PREFIX/TIMEW_MAN7DIR  /usr/local/share/man/man7
+The `TIMEW_*` variables are combined with the value of `CMAKE_INSTALL_PREFIX` to get the absolute paths.
 
 
 # Updating Timewarrior build
 
-This section concerns itself with the description of the procedure needed to update the local Timewarrior build from the 'timew' Git repository.
-
-To update the local Timewarrior build, you need to update the Git repository, including the `src/libshared` submodule.
-To do that, run:
+To update the local Timewarrior build, you need to update the Git repository, including the `src/libshared` submodule, run:
 
     $ git pull --recurse-submodules
     $ git submodule update

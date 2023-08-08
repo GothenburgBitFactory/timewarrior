@@ -71,4 +71,4 @@ target_link_libraries (lex_executable   timew libshared                libshared
 set_property (TARGET timew_executable PROPERTY OUTPUT_NAME "timew")
 set_property (TARGET lex_executable   PROPERTY OUTPUT_NAME "lex")
 
-install (TARGETS timew_executable DESTINATION bin)
+install (TARGETS timew_executable DESTINATION ${TIMEW_BINDIR})

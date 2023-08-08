@@ -14,6 +14,8 @@
           (thanks to Iúri Archer)
 - #552    Extend XDG support to macOS
           (thanks to Tadeas Uhlir)
+- #553    Configurability of CMake install directories
+          (thanks to aMOPel)
 - #554    Update documentation for command 'retag'
           (thanks to quazgar)
 -         Use local man pages in tests
