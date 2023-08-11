@@ -51,6 +51,9 @@ jobs:
           - name: "macOS 12"
             runner: macos-12
             container: osx-12
+          - name: "macOS 13"
+            runner: macos-13
+            container: osx-13
     runs-on: ${{ matrix.runner }}
     continue-on-error: ${{ matrix.continue-on-error == true }}
     steps:
