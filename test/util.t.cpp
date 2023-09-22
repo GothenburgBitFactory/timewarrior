@@ -42,6 +42,7 @@ int main (int, char**)
   // std::string quoteIfNeeded (const std::string& input)
   t.is (quoteIfNeeded ("foo"), "foo",         "quoteIfNeeded 'foo' --> 'foo'");
   t.is (quoteIfNeeded ("f o o"), "\"f o o\"", "quoteIfNeeded 'f o o' --> '\"f o o\"'");
+  t.is (quoteIfNeeded ("\"a b\" c"), "\"\\\"a b\\\" c\"", "quoteIfNeeded '\"a b\" c' --> '\"\\\"a b\\\" c'\"");
 
   {
     std::set<std::string> unjoined;
