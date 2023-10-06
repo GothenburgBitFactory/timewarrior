@@ -147,6 +147,7 @@ bool expandIntervalHint (
   {
     {":yesterday", {"sopd", "sod" }},
     {":day",       {"sod",  "sond"}},
+    {":today",     {"sod",  "sond"}},
     {":week",      {"sow",  "sonw"}},
     {":fortnight", {"sopw", "sonw"}},
     {":month",     {"som",  "sonm"}},

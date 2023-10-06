@@ -112,6 +112,7 @@ void initializeEntities (CLI& cli)
   cli.entity ("hint", ":quiet");
   cli.entity ("hint", ":tags");
   cli.entity ("hint", ":no-tags");
+  cli.entity ("hint", ":today");
   cli.entity ("hint", ":week");
   cli.entity ("hint", ":year");
   cli.entity ("hint", ":yes");
