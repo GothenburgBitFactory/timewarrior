@@ -36,7 +36,7 @@ Range hints provide convenient shortcuts to date ranges:
 
   :all           All tracked time
   :yesterday     The 24 hours of the previous day
-  :day           The 24 hours of the current day
+  :day / :today  The 24 hours of the current day
   :week          This week
   :fortnight     This week and the one before
   :month         This month
