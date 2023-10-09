@@ -189,17 +189,16 @@ bool expandIntervalHint (
   // Some require math.
   if (hint == ":lastweek")
   {
-    // Note: Simply subtracting (7 * 86400) from sow, eow fails to consider
-    //       daylight savings.
+    // Note: Simply subtracting (7 * 86400) from sow/sonw fails to consider daylight saving time.
     Datetime sow ("sow");
     int sy = sow.year ();
     int sm = sow.month ();
     int sd = sow.day ();
 
-    Datetime eow ("eow");
-    int ey = eow.year ();
-    int em = eow.month ();
-    int ed = eow.day ();
+    Datetime sonw ("sonw");
+    int ey = sonw.year ();
+    int em = sonw.month ();
+    int ed = sonw.day ();
 
     sd -= 7;
     if (sd < 1)
