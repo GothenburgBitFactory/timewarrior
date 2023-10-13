@@ -1,10 +1,10 @@
-# Bash completion for TimeWarrior
+# Bash completion for Timewarrior
 #
-# Copyright (C) 2017 - 2021, Thomas Lauf
+# Copyright (C) 2017 - 2020, 2023, Thomas Lauf
 #
 function __get_commands()
 {
-  echo "annotate cancel config continue day delete diagnostics export extensions gaps get help join lengthen modify month move report resize shorten show split start stop summary tag tags track undo untag week"
+  echo "annotate cancel config continue day delete diagnostics export extensions gaps get help join lengthen modify month move report resize retag shorten show split start stop summary tag tags track undo untag week"
 }
 
 function __get_subcommands()
@@ -42,7 +42,7 @@ function __get_ids()
 
 function __get_tags()
 {
-  timew tags | tail -n +4 -- | sed -e "s|[[:space:]]*-$||"
+  timew get dom.tracked.tags "${TIMEW_COMPLETION_TAGS_RANGE:-":all"}"
 }
 
 function __get_extensions()
@@ -63,7 +63,8 @@ function __has_entered_id()
 
 function __has_entered_subcommand()
 {
-  local subcommands=$( __get_subcommands "${1}" )
+  local subcommands
+  subcommands=$( __get_subcommands "${1}" )
 
   for word in "${COMP_WORDS[@]}" ; do
     for cmd in ${subcommands} ; do
@@ -78,7 +79,8 @@ function __has_entered_subcommand()
 
 function __has_entered_help_item()
 {
-  local items=$( __get_help_items )
+  local items
+  items=$( __get_help_items )
 
   for word in "${COMP_WORDS[@]:2}" ; do
     for item in ${items} ; do
