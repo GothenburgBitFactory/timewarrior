@@ -30,6 +30,7 @@
 #include <cstring>
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <test.h>
 #include <unistd.h>
 
@@ -59,7 +60,9 @@ UnitTest::~UnitTest ()
 {
   float percentPassed = 0.0;
   if (_planned > 0)
+  {
     percentPassed = (100.0 * _passed) / std::max (_planned, _passed + _failed + _skipped);
+  }
 
   if (_counter < _planned)
   {
@@ -72,11 +75,13 @@ UnitTest::~UnitTest ()
   }
 
   else if (_counter > _planned)
+  {
     std::cout << "# "
               << _counter
               << " tests were run, but only "
               << _planned
               << " were planned.\n";
+  }
 
   std::cout << "# "
             << _passed
@@ -116,231 +121,63 @@ void UnitTest::ok (bool expression, const std::string& name)
 
   if (expression)
   {
-    ++_passed;
-    std::cout << green ("ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << '\n';
+    report_success (name);
   }
   else
   {
-    ++_failed;
-    std::cout << red ("not ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << '\n';
+    report_failure (name);
   }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 void UnitTest::notok (bool expression, const std::string& name)
 {
-  ++_counter;
-
-  if (!expression)
-  {
-    ++_passed;
-    std::cout << green ("ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << '\n';
-  }
-  else
-  {
-    ++_failed;
-    std::cout << red ("not ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << '\n';
-  }
+  ok (!expression, name);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 void UnitTest::is (bool actual, bool expected, const std::string& name)
 {
-  ++_counter;
-  if (actual == expected)
-  {
-    ++_passed;
-    std::cout << green ("ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << '\n';
-  }
-  else
-  {
-    ++_failed;
-    std::cout << red ("not ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << "\n# expected: "
-              << expected
-              << "\n#      got: "
-              << actual
-              << '\n';
-  }
+  _is <bool> (actual, expected, name);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 void UnitTest::is (size_t actual, size_t expected, const std::string& name)
 {
-  ++_counter;
-  if (actual == expected)
-  {
-    ++_passed;
-    std::cout << green ("ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << '\n';
-  }
-  else
-  {
-    ++_failed;
-    std::cout << red ("not ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << "\n# expected: "
-              << expected
-              << "\n#      got: "
-              << actual
-              << '\n';
-  }
+  _is <size_t> (actual, expected, name);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 void UnitTest::is (int actual, int expected, const std::string& name)
 {
-  ++_counter;
-  if (actual == expected)
-  {
-    ++_passed;
-    std::cout << green ("ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << '\n';
-  }
-  else
-  {
-    ++_failed;
-    std::cout << red ("not ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << "\n# expected: "
-              << expected
-              << "\n#      got: "
-              << actual
-              << '\n';
-  }
+  _is <int> (actual, expected, name);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 void UnitTest::is (double actual, double expected, const std::string& name)
 {
-  ++_counter;
-  if (actual == expected)
-  {
-    ++_passed;
-    std::cout << green ("ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << '\n';
-  }
-  else
-  {
-    ++_failed;
-    std::cout << red ("not ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << "\n# expected: "
-              << expected
-              << "\n#      got: "
-              << actual
-              << '\n';
-  }
+  _is <double> (actual, expected, name);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 void UnitTest::is (double actual, double expected, double tolerance, const std::string& name)
 {
   ++_counter;
+
   if (fabs (actual - expected) <= tolerance)
   {
-    ++_passed;
-    std::cout << green ("ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << '\n';
+    report_success (name);
   }
   else
   {
-    ++_failed;
-    std::cout << red ("not ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << "\n# expected: "
-              << expected
-              << "\n#      got: "
-              << actual
-              << '\n';
+    report_failure (create_message<double> (actual, expected, name));
   }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 void UnitTest::is (unsigned char actual, unsigned char expected, const std::string& name)
 {
-  ++_counter;
-  if (actual == expected)
-  {
-    ++_passed;
-    std::cout << green ("ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << '\n';
-  }
-  else
-  {
-    ++_failed;
-    std::cout << red ("not ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << "\n# expected: "
-              << expected
-              << "\n#      got: "
-              << actual
-              << '\n';
-  }
+  _is <unsigned char> (actual, expected, name);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -349,32 +186,7 @@ void UnitTest::is (
   const std::string& expected,
   const std::string& name)
 {
-  ++_counter;
-  if (actual == expected)
-  {
-    ++_passed;
-    std::cout << green ("ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << '\n';
-  }
-  else
-  {
-    ++_failed;
-    std::cout << red ("not ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << "\n# expected: '"
-              << expected
-              << "'"
-              << "\n#      got: '"
-              << actual
-              << "'\n";
-  }
+  _is <const std::string&> (actual, expected, name);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -384,30 +196,30 @@ void UnitTest::is (
   const std::string& name)
 {
   ++_counter;
+
   if (! strcmp (actual, expected))
   {
-    ++_passed;
-    std::cout << green ("ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << '\n';
+    report_success (name);
   }
   else
   {
-    ++_failed;
-    std::cout << red ("not ok")
-              << " "
-              << _counter
-              << " - "
-              << name
-              << "\n# expected: '"
-              << expected
-              << "'"
-              << "\n#      got: '"
-              << actual
-              << "'\n";
+    report_failure (create_message<const char*> (actual, expected, name));
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+template <typename T>
+void UnitTest::_is (T actual, T expected, const std::string& name)
+{
+  ++_counter;
+
+  if (actual == expected)
+  {
+    report_success (name);
+  }
+  else
+  {
+    report_failure (create_message<T> (actual, expected, name));
   }
 }
 
@@ -416,74 +228,109 @@ void UnitTest::diag (const std::string& text)
 {
   auto start = text.find_first_not_of (" \t\n\r\f");
   auto end   = text.find_last_not_of  (" \t\n\r\f");
+
   if (start != std::string::npos &&
       end   != std::string::npos)
+  {
     std::cout << "# " << text.substr (start, end - start + 1) << '\n';
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 void UnitTest::pass (const std::string& text)
 {
   ++_counter;
-  ++_passed;
-  std::cout << green ("ok")
-            << " "
-            << _counter
-            << " - "
-            << text
-            << '\n';
+  report_success (text);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 void UnitTest::fail (const std::string& text)
 {
   ++_counter;
-  ++_failed;
-  std::cout << red ("not ok")
-            << " "
-            << _counter
-            << " - "
-            << text
-            << '\n';
+  report_failure (text);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 void UnitTest::skip (const std::string& text)
 {
   ++_counter;
+  report_skip (text);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+template <typename T>
+std::string UnitTest::create_message (T actual, T expected, const std::string &name)
+{
+  std::stringstream message;
+
+  message << name
+          << "\n# expected: '"
+          << expected
+          << "'"
+          << "\n#      got: '"
+          << actual
+          << "'";
+
+  return message.str ();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+void UnitTest::report_success (const std::string& message)
+{
+  ++_passed;
+  report_status (green ("ok"), message);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+void UnitTest::report_failure (const std::string& message)
+{
+  ++_failed;
+  report_status (red ("not ok"), message);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+void UnitTest::report_skip (const std::string& message)
+{
   ++_skipped;
-  std::cout << yellow ("ok")
+  report_status (yellow ("ok"), message + " # skip");
+}
+
+///////////////////////////////////////////////////////////////////////////////
+void UnitTest::report_status (const std::string& status, const std::string& message) const
+{
+  std::cout << status
             << " "
             << _counter
             << " - "
-            << text
-            << " # skip"
+            << message
             << '\n';
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-std::string UnitTest::red (const std::string& input)
+std::string UnitTest::red (const std::string& input) const
 {
-  if (isatty (fileno (stdout)))
-    return std::string ("\033[31m" + input + "\033[0m");
-
-  return input;
+  return colored (COLOR_RED, input);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-std::string UnitTest::green (const std::string& input)
+std::string UnitTest::green (const std::string& input) const
 {
-  if (isatty (fileno (stdout)))
-    return std::string ("\033[32m" + input + "\033[0m");
-
-  return input;
+  return colored (COLOR_GREEN, input);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-std::string UnitTest::yellow (const std::string& input)
+std::string UnitTest::yellow (const std::string& input) const
+{
+  return colored (COLOR_YELLOW, input);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+std::string UnitTest::colored (const std::string& color_code, const std::string& input) const
 {
   if (isatty (fileno (stdout)))
-    return std::string ("\033[33m" + input + "\033[0m");
+  {
+    return std::string (color_code + input + COLOR_RESET);
+  }
 
   return input;
 }

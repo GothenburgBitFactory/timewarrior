@@ -29,6 +29,11 @@
 
 #include <string>
 
+static constexpr auto COLOR_RESET = "\033[0m";
+static constexpr auto COLOR_YELLOW = "\033[33m";
+static constexpr auto COLOR_GREEN = "\033[32m";
+static constexpr auto COLOR_RED = "\033[31m";
+
 class UnitTest
 {
 public:
@@ -40,6 +45,7 @@ public:
   void planMore (int);
   void ok (bool, const std::string&);
   void notok (bool, const std::string&);
+
   void is (bool, bool, const std::string&);
   void is (size_t, size_t, const std::string&);
   void is (int, int, const std::string&);
@@ -48,15 +54,25 @@ public:
   void is (unsigned char, unsigned char, const std::string&);
   void is (const std::string&, const std::string&, const std::string&);
   void is (const char*, const char*, const std::string&);
+
   void diag (const std::string&);
   void pass (const std::string&);
   void fail (const std::string&);
   void skip (const std::string&);
 
 private:
-  std::string red (const std::string&);
-  std::string green (const std::string&);
-  std::string yellow (const std::string&);
+  std::string red (const std::string&) const;
+  std::string green (const std::string&) const;
+  std::string yellow (const std::string&) const;
+  std::string colored (const std::string&, const std::string&) const;
+
+  void report_success (const std::string&);
+  void report_failure (const std::string&);
+  void report_skip (const std::string&);
+  void report_status (const std::string&, const std::string&) const;
+
+  template <typename T> void _is (T, T, const std::string &);
+  template <typename T> static std::string create_message (T, T, const std::string&);
 
 private:
   int _planned;
