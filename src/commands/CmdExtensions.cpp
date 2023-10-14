@@ -33,19 +33,19 @@
 // Enumerate all extensions.
 int CmdExtensions (const Extensions& extensions)
 {
-  Table t;
-  t.width (1024);
-  t.colorHeader (Color ("underline"));
-  t.add ("Extension", true);
-  t.add ("Status", true);
+  Table table;
+  table.width (1024);
+  table.colorHeader (Color ("underline"));
+  table.add ("Extension", true);
+  table.add ("Status", true);
 
   for (auto& ext : extensions.all ())
   {
     File program (ext);
 
     // Show program name.
-    auto row = t.addRow ();
-    t.set (row, 0, program.name ());
+    auto row = table.addRow ();
+    table.set (row, 0, program.name ());
 
     // Show extension status.
     std::string perms;
@@ -55,7 +55,7 @@ int CmdExtensions (const Extensions& extensions)
 
     if (program.is_link ())           perms += " (link)";
 
-    t.set (row, 1, perms);
+    table.set (row, 1, perms);
   }
 
   Directory extDir (paths::extensionsDir ());
@@ -64,7 +64,7 @@ int CmdExtensions (const Extensions& extensions)
             << "Extensions located in:\n"
             << "  " << extDir._data << '\n'
             << '\n'
-            << t.render ()
+            << table.render ()
             << '\n';
   return 0;
 }

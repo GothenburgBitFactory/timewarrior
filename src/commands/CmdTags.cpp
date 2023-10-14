@@ -57,24 +57,24 @@ int CmdTags (
   // Shows all tags.
   if (! tags.empty ())
   {
-    Table t;
-    t.width (1024);
-    t.colorHeader (Color ("underline"));
-    t.add ("Tag");
-    t.add ("Description");
+    Table table;
+    table.width (1024);
+    table.colorHeader (Color ("underline"));
+    table.add ("Tag");
+    table.add ("Description");
     // TODO Show all tag metadata.
 
     for (auto& tag : tags)
     {
-      auto row = t.addRow ();
-      t.set (row, 0, tag, tagColor (rules, tag));
+      auto row = table.addRow ();
+      table.set (row, 0, tag, tagColor (rules, tag));
 
       auto name = std::string ("tags.") + tag + ".description";
-      t.set (row, 1, rules.has (name) ? rules.get (name) : "-");
+      table.set (row, 1, rules.has (name) ? rules.get (name) : "-");
     }
 
     std::cout << '\n'
-              << t.render ()
+              << table.render ()
               << '\n';
   }
   else
