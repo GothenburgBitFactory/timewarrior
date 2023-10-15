@@ -15,6 +15,7 @@ set (timew_SRCS AtomicFile.cpp AtomicFile.h
                 Exclusion.cpp  Exclusion.h
                 Extensions.cpp Extensions.h
                 ExtensionsTable.cpp ExtensionsTable.h
+                GapsTable.cpp GapsTable.h
                 Interval.cpp   Interval.h
                 IntervalFactory.cpp IntervalFactory.h
                 IntervalFilter.cpp IntervalFilter.h

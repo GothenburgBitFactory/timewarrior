@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2016 - 2023, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2023, Gothenburg Bit Factory.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +25,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <Duration.h>
-#include <Table.h>
+#include <GapsTable.h>
 #include <commands.h>
-#include <format.h>
 #include <iostream>
 #include <timew.h>
 
@@ -62,70 +61,23 @@ int CmdGaps (
     untracked = getUntracked (database, rules, filter);
   }
 
-  Table table;
-  table.width (1024);
-  table.colorHeader (Color ("underline"));
-  table.add ("Wk");
-  table.add ("Date");
-  table.add ("Day");
-  table.add ("Start", false);
-  table.add ("End", false);
-  table.add ("Time", false);
-  table.add ("Total", false);
-
-  // Each day is rendered separately.
-  time_t grand_total = 0;
-  Datetime previous;
-  for (Datetime day = range.start; day < range.end; day++)
+  if (untracked.empty ())
   {
-    auto day_range = getFullDay (day);
-    time_t daily_total = 0;
-
-    int row = -1;
-    for (auto& gap : subset (day_range, untracked))
+    if (verbose)
     {
-      row = table.addRow ();
-
-      if (day != previous)
-      {
-        table.set (row, 0, format ("W{1}", day.week ()));
-        table.set (row, 1, day.toString ("Y-M-D"));
-        table.set (row, 2, Datetime::dayNameShort (day.dayOfWeek ()));
-        previous = day;
-      }
-
-      // Intersect track with day.
-      auto today = day_range.intersect (gap);
-      if (gap.is_open ())
-        today.end = Datetime ();
-
-      table.set (row, 3, today.start.toString ("h:N:S"));
-      table.set (row, 4, (gap.is_open () ? "-" : today.end.toString ("h:N:S")));
-      table.set (row, 5, Duration (today.total ()).formatHours ());
-
-      daily_total += today.total ();
+      std::cout << "No gaps found.\n";
     }
-
-    if (row != -1)
-      table.set (row, 6, Duration (daily_total).formatHours ());
-
-    grand_total += daily_total;
-  }
-
-  // Add the total.
-  table.set (table.addRow (), 6, " ", Color ("underline"));
-  table.set (table.addRow (), 6, Duration (grand_total).formatHours ());
-
-  if (table.rows () > 2)
-  {
-    std::cout << '\n'
-              << table.render ()
-              << '\n';
   }
   else
   {
-    if (verbose)
-      std::cout << "No gaps found.\n";
+    auto table = GapsTable::builder ()
+      .withRange (range)
+      .withIntervals (untracked)
+      .build ();
+
+    std::cout << '\n'
+              << table.render ()
+              << '\n';
   }
 
   return 0;
