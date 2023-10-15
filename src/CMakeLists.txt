@@ -14,6 +14,7 @@ set (timew_SRCS AtomicFile.cpp AtomicFile.h
                 DatetimeParser.cpp DatetimeParser.h
                 Exclusion.cpp  Exclusion.h
                 Extensions.cpp Extensions.h
+                ExtensionsTable.cpp ExtensionsTable.h
                 Interval.cpp   Interval.h
                 IntervalFactory.cpp IntervalFactory.h
                 IntervalFilter.cpp IntervalFilter.h
