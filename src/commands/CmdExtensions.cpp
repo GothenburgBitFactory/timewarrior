@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2016 - 2019, 2022, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2019, 2022 - 2023, Gothenburg Bit Factory.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <Table.h>
+#include <ExtensionsTable.h>
 #include <commands.h>
 #include <iostream>
 #include <paths.h>
@@ -33,30 +33,9 @@
 // Enumerate all extensions.
 int CmdExtensions (const Extensions& extensions)
 {
-  Table table;
-  table.width (1024);
-  table.colorHeader (Color ("underline"));
-  table.add ("Extension", true);
-  table.add ("Status", true);
-
-  for (auto& ext : extensions.all ())
-  {
-    File program (ext);
-
-    // Show program name.
-    auto row = table.addRow ();
-    table.set (row, 0, program.name ());
-
-    // Show extension status.
-    std::string perms;
-         if (! program.readable ())   perms = "Not readable";
-    else if (! program.executable ()) perms = "No executable";
-    else                              perms = "Active";
-
-    if (program.is_link ())           perms += " (link)";
-
-    table.set (row, 1, perms);
-  }
+  auto table = ExtensionsTable::builder()
+    .withExtensions (extensions)
+    .build ();
 
   Directory extDir (paths::extensionsDir ());
 
@@ -66,6 +45,7 @@ int CmdExtensions (const Extensions& extensions)
             << '\n'
             << table.render ()
             << '\n';
+
   return 0;
 }
 
