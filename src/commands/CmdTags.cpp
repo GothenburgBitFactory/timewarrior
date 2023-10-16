@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2016 - 2023, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2016 - 2023, Gothenburg Bit Factory.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,8 @@
 #include <IntervalFilterAllWithTags.h>
 #include <IntervalFilterAndGroup.h>
 #include <Table.h>
+#include <TagDescription.h>
+#include <TagsTable.h>
 #include <commands.h>
 #include <iostream>
 #include <set>
@@ -51,36 +53,38 @@ int CmdTags (
   std::set <std::string> tags;
 
   for (const auto& interval : getTracked (database, rules, filtering))
-    for (auto& tag : interval.tags ())
+  {
+    for (const auto& tag : interval.tags ())
+    {
       tags.insert (tag);
+    }
+  }
 
   // Shows all tags.
-  if (! tags.empty ())
+  if (tags.empty ())
   {
-    Table table;
-    table.width (1024);
-    table.colorHeader (Color ("underline"));
-    table.add ("Tag");
-    table.add ("Description");
-    // TODO Show all tag metadata.
-
-    for (auto& tag : tags)
+    if (verbose)
     {
-      auto row = table.addRow ();
-      table.set (row, 0, tag, tagColor (rules, tag));
-
-      auto name = std::string ("tags.") + tag + ".description";
-      table.set (row, 1, rules.has (name) ? rules.get (name) : "-");
+      std::cout << "No data found.\n";
     }
+  }
+  else
+  {
+    std::vector <TagDescription> tagDescriptions;
+
+    for (const auto& tag: tags)
+    {
+      auto name = std::string ("tags.") + tag + ".description";
+      tagDescriptions.emplace_back (tag, tagColor (rules, tag), rules.has (name) ? rules.get (name) : "-");
+    }
+
+    auto table = TagsTable::builder()
+      .withTagDescriptions (tagDescriptions)
+      .build ();
 
     std::cout << '\n'
               << table.render ()
               << '\n';
-  }
-  else
-  {
-    if (verbose)
-      std::cout << "No data found.\n";
   }
 
   return 0;
