@@ -82,6 +82,7 @@ int quantizeToNMinutes (int, int);
 
 bool findHint (const CLI&, const std::string&);
 std::string minimalDelta (const Datetime&, const Datetime&);
+int getTerminalWidth () ;
 
 // log.cpp
 void enableDebugMode (bool);

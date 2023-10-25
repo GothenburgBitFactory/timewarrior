@@ -27,6 +27,7 @@
 #include <Extensions.h>
 #include <ExtensionsTable.h>
 #include <FS.h>
+#include <timew.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 ExtensionsTable::Builder ExtensionsTable::builder ()
@@ -44,9 +45,10 @@ ExtensionsTable::Builder& ExtensionsTable::Builder::withExtensions (const Extens
 ///////////////////////////////////////////////////////////////////////////////
 Table ExtensionsTable::Builder::build ()
 {
-  Table table;
+  int terminalWidth = getTerminalWidth ();
 
-  table.width (1024);
+  Table table;
+  table.width (terminalWidth);
   table.colorHeader (Color ("underline"));
   table.add ("Extension", true);
   table.add ("Status", true);
