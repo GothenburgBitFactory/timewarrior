@@ -52,8 +52,10 @@ GapsTable::Builder& GapsTable::Builder::withIntervals (const std::vector <Range>
 ///////////////////////////////////////////////////////////////////////////////
 Table GapsTable::Builder::build ()
 {
+  int terminalWidth = getTerminalWidth ();
+
   Table table;
-  table.width (1024);
+  table.width (terminalWidth);
   table.colorHeader (Color ("underline"));
   table.add ("Wk");
   table.add ("Date");

@@ -131,8 +131,10 @@ Table SummaryTable::Builder::build ()
   const auto duration_col_index = 3 + start_col_offset;
   const auto total_col_index = 4 + start_col_offset;
 
+  int terminalWidth = getTerminalWidth ();
+
   Table table;
-  table.width (1024);
+  table.width (terminalWidth);
   table.colorHeader (Color ("underline"));
 
   if (_show_weeks)

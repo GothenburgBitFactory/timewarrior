@@ -25,6 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <TagsTable.h>
+#include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 TagsTable::Builder TagsTable::builder ()
@@ -42,8 +43,10 @@ TagsTable::Builder& TagsTable::Builder::withTagDescriptions (std::vector <TagDes
 ////////////////////////////////////////////////////////////////////////////////
 Table TagsTable::Builder::build ()
 {
+  int terminalWidth = getTerminalWidth ();
+
   Table table;
-  table.width (1024);
+  table.width (terminalWidth);
   table.colorHeader (Color ("underline"));
   table.add ("Tag");
   table.add ("Description");

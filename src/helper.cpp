@@ -27,12 +27,15 @@
 #include <Datetime.h>
 #include <Duration.h>
 #include <IntervalFactory.h>
+#include <Table.h>
 #include <format.h>
 #include <iomanip>
 #include <map>
 #include <sstream>
 #include <string>
+#include <sys/ioctl.h>
 #include <timew.h>
+#include <unistd.h>
 #include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -509,6 +512,23 @@ std::string minimalDelta (const Datetime& left, const Datetime& right)
   }
 
   return result;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+int getTerminalWidth ()
+{
+  int terminalWidth;
+#ifdef TIOCGSIZE
+  struct ttysize ts{};
+  ioctl (STDIN_FILENO, TIOCGSIZE, &ts);
+  terminalWidth = ts.ts_cols;
+#elif defined(TIOCGWINSZ)
+  struct winsize ts {};
+  ioctl(STDIN_FILENO, TIOCGWINSZ, &ts);
+  terminalWidth = ts.ws_col;
+#endif
+
+  return terminalWidth > 0 ? terminalWidth : 80;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
