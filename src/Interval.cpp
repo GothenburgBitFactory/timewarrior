@@ -181,7 +181,7 @@ std::string Interval::json () const
   }
   out << "}";
 
-  return out.str();
+  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

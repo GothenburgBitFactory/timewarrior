@@ -92,9 +92,9 @@ AtomicFile::impl::impl (const Path& path)
   std::stringstream str; 
 
   std::string real_path;
-  if (path.is_link())
+  if (path.is_link ())
   {
-    real_path = path.realpath();
+    real_path = path.realpath ();
   }
   else
   {
@@ -102,7 +102,7 @@ AtomicFile::impl::impl (const Path& path)
   }
 
   str << real_path << '.' << s_pid << '-' << ++s_count << ".tmp";
-  temp_file = File (str.str());
+  temp_file = File (str.str ());
   real_file = File (real_path);
 }
 

@@ -36,28 +36,28 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 Chart::Chart (const ChartConfig& configuration) :
-  reference_datetime(configuration.reference_datetime),
-  with_label_month(configuration.with_label_month),
-  with_label_week(configuration.with_label_week),
-  with_label_weekday(configuration.with_label_weekday),
-  with_label_day(configuration.with_label_day),
-  with_ids(configuration.with_ids),
-  with_summary(configuration.with_summary),
-  with_holidays(configuration.with_holidays),
-  with_totals(configuration.with_totals),
-  with_internal_axis(configuration.with_internal_axis),
-  show_intervals(configuration.show_intervals),
-  determine_hour_range(configuration.determine_hour_range),
-  minutes_per_char(configuration.minutes_per_char),
-  spacing(configuration.spacing),
-  num_lines(configuration.num_lines),
-  color_today(configuration.color_today),
-  color_holiday(configuration.color_holiday),
-  color_label(configuration.color_label),
-  color_exclusion(configuration.color_exclusion),
-  tag_colors(configuration.tag_colors),
-  cell_width(60 / minutes_per_char + spacing),
-  reference_hour(reference_datetime.hour ())
+  reference_datetime (configuration.reference_datetime),
+  with_label_month (configuration.with_label_month),
+  with_label_week (configuration.with_label_week),
+  with_label_weekday (configuration.with_label_weekday),
+  with_label_day (configuration.with_label_day),
+  with_ids (configuration.with_ids),
+  with_summary (configuration.with_summary),
+  with_holidays (configuration.with_holidays),
+  with_totals (configuration.with_totals),
+  with_internal_axis (configuration.with_internal_axis),
+  show_intervals (configuration.show_intervals),
+  determine_hour_range (configuration.determine_hour_range),
+  minutes_per_char (configuration.minutes_per_char),
+  spacing (configuration.spacing),
+  num_lines (configuration.num_lines),
+  color_today (configuration.color_today),
+  color_holiday (configuration.color_holiday),
+  color_label (configuration.color_label),
+  color_exclusion (configuration.color_exclusion),
+  tag_colors (configuration.tag_colors),
+  cell_width (60 / minutes_per_char + spacing),
+  reference_hour (reference_datetime.hour ())
 { }
 
 std::string Chart::render (
@@ -499,7 +499,7 @@ void Chart::renderInterval (
       // but otherwise functions normally for text where the utf-8 width matches the byte length of the label.
       //
       size_t utf8_characters = utf8_text_width (label);
-      if (static_cast <size_t>(width) >= utf8_characters)
+      if (static_cast <size_t> (width) >= utf8_characters)
       {
         text_lines.push_back (label);
       }

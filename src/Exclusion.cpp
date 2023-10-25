@@ -122,9 +122,9 @@ std::vector <Range> Exclusion::ranges (const Range& range) const
 
     Range myRange = {range};
 
-    if (myRange.is_open())
+    if (myRange.is_open ())
     {
-      myRange.end = Datetime();
+      myRange.end = Datetime ();
     }
 
     while (start <= myRange.end)

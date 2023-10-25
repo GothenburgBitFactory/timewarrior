@@ -27,7 +27,7 @@
 #include <Interval.h>
 #include <IntervalFilterAllWithTags.h>
 
-IntervalFilterAllWithTags::IntervalFilterAllWithTags (std::set <std::string> tags): _tags (std::move(tags))
+IntervalFilterAllWithTags::IntervalFilterAllWithTags (std::set <std::string> tags): _tags (std::move (tags))
 {}
 
 bool IntervalFilterAllWithTags::accepts (const Interval& interval)

@@ -142,7 +142,7 @@ bool domGet (
 
         s << joinQuotedIfNeeded ( " ", tags );
 
-        value = s.str();
+        value = s.str ();
         return true;
       }
 
@@ -154,7 +154,7 @@ bool domGet (
         {
           s << format ( "@{1} ", interval.id );
         }
-        value = s.str();
+        value = s.str ();
         return true;
       }
 

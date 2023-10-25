@@ -35,7 +35,7 @@ IntervalFilterAllWithIds::IntervalFilterAllWithIds (std::set <int> ids) : _ids (
 
 bool IntervalFilterAllWithIds::accepts (const Interval& interval)
 {
-  if (is_done())
+  if (is_done ())
   {
     return false;
   }

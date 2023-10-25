@@ -79,7 +79,7 @@ std::string quoteIfNeeded (const std::string& input)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-std::string join(const std::string& glue, const std::set <std::string>& array)
+std::string join (const std::string& glue, const std::set <std::string>& array)
 {
   if (array.empty ())
   {
@@ -100,7 +100,7 @@ std::string join(const std::string& glue, const std::set <std::string>& array)
 
 ////////////////////////////////////////////////////////////////////////////////
 
-std::string joinQuotedIfNeeded(const std::string& glue, const std::set <std::string>& array)
+std::string joinQuotedIfNeeded (const std::string& glue, const std::set <std::string>& array)
 {
   if (array.empty ())
   {
@@ -113,7 +113,7 @@ std::string joinQuotedIfNeeded(const std::string& glue, const std::set <std::str
 
   while (iterator != array.end ())
   {
-    value += glue + quoteIfNeeded(*iterator++);
+    value += glue + quoteIfNeeded (*iterator++);
   }
 
   return value;
@@ -121,7 +121,7 @@ std::string joinQuotedIfNeeded(const std::string& glue, const std::set <std::str
 
 ////////////////////////////////////////////////////////////////////////////////
 
-std::string joinQuotedIfNeeded(const std::string& glue, const std::vector <std::string>& array)
+std::string joinQuotedIfNeeded (const std::string& glue, const std::vector <std::string>& array)
 {
   if (array.empty ())
   {
@@ -134,7 +134,7 @@ std::string joinQuotedIfNeeded(const std::string& glue, const std::vector <std::
 
   while (iterator != array.end ())
   {
-    value += glue + quoteIfNeeded(*iterator++);
+    value += glue + quoteIfNeeded (*iterator++);
   }
 
   return value;

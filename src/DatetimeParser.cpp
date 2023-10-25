@@ -114,7 +114,7 @@ Range DatetimeParser::parse_range (const std::string& input)
       else if (_month != 0)
       {
         auto start_date = Datetime (_date);
-        auto end_date = Datetime(start_date.year(), start_date.month()+1, 1);
+        auto end_date = Datetime (start_date.year (), start_date.month ()+1, 1);
         return Range {start_date, end_date};
       }
       else if (_year != 0)

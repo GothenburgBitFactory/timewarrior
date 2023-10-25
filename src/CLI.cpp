@@ -452,15 +452,15 @@ void CLI::canonicalizeNames ()
     else if (alreadyFoundCmd && (raw == "--help" || raw == "-h"))
     {
       for (auto& b : _args) {
-        if (b.hasTag("CMD"))
+        if (b.hasTag ("CMD"))
         {
-          b.unTag("CMD");
+          b.unTag ("CMD");
           break;
         }
       }
 
       a.tag ("CMD");
-      a.attribute("canonical", canonical);
+      a.attribute ("canonical", canonical);
     }
 
     // Hints.
@@ -522,7 +522,7 @@ void CLI::identifyFilter ()
       a.tag ("KEYWORD");
     }
 
-    else if (raw.rfind("dom.",0) == 0)
+    else if (raw.rfind ("dom.",0) == 0)
     {
       a.tag ("DOM");
     }
@@ -550,7 +550,7 @@ bool CLI::exactMatch (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::set<int> CLI::getIds() const
+std::set<int> CLI::getIds () const
 {
   std::set <int> ids;
 
@@ -635,7 +635,7 @@ std::vector <std::string> CLI::getDomReferences () const
 //   <duration> ["before"|"after" <date>]
 //   <duration> "ago"
 //
-Range CLI::getRange(const Range& default_range) const
+Range CLI::getRange (const Range& default_range) const
 {
   Datetime now;
 
@@ -664,16 +664,16 @@ Range CLI::getRange(const Range& default_range) const
         {
           if (range.is_empty ())
           {
-            args.emplace_back("<all>");
+            args.emplace_back ("<all>");
           }
           else
           {
             start = range.start.toISO ();
             end   = range.end.toISO ();
 
-            args.emplace_back("<date>");
-            args.emplace_back("-");
-            args.emplace_back("<date>");
+            args.emplace_back ("<date>");
+            args.emplace_back ("-");
+            args.emplace_back ("<date>");
           }
         }
 
@@ -686,14 +686,14 @@ Range CLI::getRange(const Range& default_range) const
         else if (end.empty ())
           end = raw;
 
-        args.emplace_back("<date>");
+        args.emplace_back ("<date>");
       }
       else if (arg._lextype == Lexer::Type::duration)
       {
         if (duration.empty ())
           duration = raw;
 
-        args.emplace_back("<duration>");
+        args.emplace_back ("<duration>");
       }
       else if (arg.hasTag ("KEYWORD"))
       {
@@ -714,7 +714,7 @@ Range CLI::getRange(const Range& default_range) const
            args[0] == "<date>")
   {
     DatetimeParser dtp;
-    Range range = dtp.parse_range(start);
+    Range range = dtp.parse_range (start);
     the_range = Range (range);
   }
   // from <date>

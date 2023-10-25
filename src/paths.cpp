@@ -124,7 +124,7 @@ void initializeDirs (const CLI &cli, Rules &rules)
     }
     else
     {
-      throw std::string("Initial setup aborted by user");
+      throw std::string ("Initial setup aborted by user");
     }
   }
 

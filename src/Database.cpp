@@ -36,29 +36,29 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 Database::iterator::iterator (files_iterator fbegin, files_iterator fend) :
-          files_it(fbegin),
-          files_end(fend)
+  files_it (fbegin),
+  files_end (fend)
 {
-    if (files_end != files_it)
+  if (files_end != files_it)
+  {
+    auto &lines = files_it->allLines ();
+    lines_it = lines.rbegin ();
+    lines_end = lines.rend ();
+    while ((lines_it == lines_end) && (files_it != files_end))
     {
-      auto &lines = files_it->allLines ();
-      lines_it = lines.rbegin ();
-      lines_end = lines.rend ();
-      while ((lines_it == lines_end) && (files_it != files_end))
+      ++files_it;
+      if (files_it != files_end)
       {
-        ++files_it;
-        if (files_it != files_end)
-        {
-          auto& lines = files_it->allLines ();
-          lines_it = lines.rbegin ();
-          lines_end = lines.rend ();
-        }
+        auto &lines = files_it->allLines ();
+        lines_it = lines.rbegin ();
+        lines_end = lines.rend ();
       }
     }
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Database::iterator& Database::iterator::operator++()
+Database::iterator& Database::iterator::operator++ ()
 {
   if (files_it != files_end)
   {
@@ -85,10 +85,10 @@ Database::iterator& Database::iterator::operator++()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Database::iterator::operator==(const iterator & other) const
+bool Database::iterator::operator== (const iterator &other) const
 {
   return (other.files_it == other.files_end) ?
-          files_it == files_end :
+         files_it == files_end :
          ((files_it == other.files_it) &&
           (files_end == other.files_end) &&
           (lines_it == other.lines_it) &&
@@ -96,50 +96,50 @@ bool Database::iterator::operator==(const iterator & other) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Database::iterator::operator!=(const iterator & other) const
+bool Database::iterator::operator!= (const iterator &other) const
 {
   return ! (*this == other);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-const std::string& Database::iterator::operator*() const
+const std::string& Database::iterator::operator* () const
 {
-  assert(lines_it != lines_end);
+  assert (lines_it != lines_end);
   return *lines_it;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-const std::string* Database::iterator::operator->() const
+const std::string* Database::iterator::operator-> () const
 {
-  assert(lines_it != lines_end);
+  assert (lines_it != lines_end);
   return &(*lines_it);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 Database::reverse_iterator::reverse_iterator (files_iterator fbegin,
                                               files_iterator fend) :
-          files_it(fbegin),
-          files_end(fend)
+  files_it (fbegin),
+  files_end (fend)
 {
-    if (files_end != files_it)
+  if (files_end != files_it)
+  {
+    lines_it = files_it->allLines ().begin ();
+    lines_end = files_it->allLines ().end ();
+    while ((lines_it == lines_end) && (files_it != files_end))
     {
-      lines_it = files_it->allLines ().begin ();
-      lines_end = files_it->allLines ().end ();
-      while ((lines_it == lines_end) && (files_it != files_end))
+      ++files_it;
+      if (files_it != files_end)
       {
-        ++files_it;
-        if (files_it != files_end)
-        {
-          auto& lines = files_it->allLines ();
-          lines_it = lines.begin ();
-          lines_end = lines.end ();
-        }
+        auto &lines = files_it->allLines ();
+        lines_it = lines.begin ();
+        lines_end = lines.end ();
       }
     }
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-Database::reverse_iterator& Database::reverse_iterator::operator++()
+Database::reverse_iterator& Database::reverse_iterator::operator++ ()
 {
   if (files_it != files_end)
   {
@@ -166,10 +166,10 @@ Database::reverse_iterator& Database::reverse_iterator::operator++()
 
 ////////////////////////////////////////////////////////////////////////////////
 bool
-Database::reverse_iterator::operator==(const reverse_iterator & other) const
+Database::reverse_iterator::operator== (const reverse_iterator& other) const
 {
   return (other.files_it == other.files_end) ?
-          files_it == files_end :
+         files_it == files_end :
          ((files_it == other.files_it) &&
           (files_end == other.files_end) &&
           (lines_it == other.lines_it) &&
@@ -178,22 +178,22 @@ Database::reverse_iterator::operator==(const reverse_iterator & other) const
 
 ////////////////////////////////////////////////////////////////////////////////
 bool
-Database::reverse_iterator::operator!=(const reverse_iterator & other) const
+Database::reverse_iterator::operator!= (const reverse_iterator& other) const
 {
   return ! (*this == other);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-const std::string& Database::reverse_iterator::operator*() const
+const std::string& Database::reverse_iterator::operator* () const
 {
   assert (lines_it != lines_end);
   return *lines_it;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-const std::string* Database::reverse_iterator::operator->() const
+const std::string* Database::reverse_iterator::operator-> () const
 {
-  return &operator*();
+  return &operator* ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -227,7 +227,7 @@ Database::reverse_iterator Database::rbegin ()
     initializeDatafiles ();
   }
 
-  return reverse_iterator(_files.begin (), _files.end ());
+  return {_files.begin (), _files.end ()};
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -299,7 +299,7 @@ std::string Database::getLatestEntry ()
 ////////////////////////////////////////////////////////////////////////////////
 void Database::addInterval (const Interval& interval, bool verbose)
 {
-  assert ( (interval.end == 0) || (interval.start <= interval.end));
+  assert ((interval.end == 0) || (interval.start <= interval.end));
 
   auto tags = interval.tags ();
   for (auto& tag : tags)
@@ -317,6 +317,7 @@ void Database::addInterval (const Interval& interval, bool verbose)
   _journal->recordIntervalAction ("", interval.json ());
 }
 
+////////////////////////////////////////////////////////////////////////////////
 void Database::deleteInterval (const Interval& interval)
 {
   auto tags = interval.tags ();
@@ -471,10 +472,10 @@ void Database::initializeTagDatabase ()
 
       if (content.empty () || (json == nullptr))
       {
-          throw std::string ("Contents invalid.");
+        throw std::string ("Contents invalid.");
       }
 
-      for (auto &pair : json->_data)
+      for (auto& pair : json->_data)
       {
         auto key = json::decode (pair.first);
         auto *value = (json::object *) pair.second;
@@ -503,12 +504,12 @@ void Database::initializeTagDatabase ()
   }
 
   // We always want the tag database file to exist.
-  _tagInfoDatabase = TagInfoDatabase();
+  _tagInfoDatabase = TagInfoDatabase ();
   AtomicFile::write (_location + "/tags.data", _tagInfoDatabase.toJson ());
 
   auto it = Database::begin ();
   auto end = Database::end ();
-  
+
   if (it == end)
   {
     return;
@@ -518,7 +519,7 @@ void Database::initializeTagDatabase ()
   {
     std::cout << "Tags database does not exist. ";
   }
-  
+
   std::cout << "Recreating from interval data..." << std::endl;
 
   for (; it != end; ++it)

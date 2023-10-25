@@ -31,7 +31,7 @@ IntervalFilterFirstOf::IntervalFilterFirstOf (std::shared_ptr <IntervalFilter> f
 
 bool IntervalFilterFirstOf::accepts (const Interval& interval)
 {
-  if (is_done())
+  if (is_done ())
   {
     return false;
   }

@@ -164,7 +164,7 @@ std::vector <Interval> expandLatest (const Interval& latest, const Rules& rules)
   if (intervals.empty ())
   {
     intervals.push_back (latest);
-    intervals.back().id = 1;
+    intervals.back ().id = 1;
   }
   return intervals;
 }
@@ -234,7 +234,7 @@ std::vector <Interval> flatten (
   Datetime now;
   for (auto& result : subtractRanges ({interval}, enclosed))
   {
-    if (interval.is_open() && result.start > now)
+    if (interval.is_open () && result.start > now)
     {
       break;
     }
@@ -331,7 +331,7 @@ std::vector <Range> subtractRanges (
 // An interval matches a filter range if the start/end overlaps
 bool matchesRange (const Interval& interval, const Range& filter)
 {
-  return ((!filter.is_started() && !filter.is_ended()) || interval.intersects (filter));
+  return ((!filter.is_started () && !filter.is_ended ()) || interval.intersects (filter));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -446,7 +446,7 @@ std::vector <Interval> getTracked (
 
   for (; it != end; ++it)
   {
-    Interval interval = IntervalFactory::fromSerialization(*it);
+    Interval interval = IntervalFactory::fromSerialization (*it);
     interval.id = ++current_id;
 
     if (filter.accepts (interval))

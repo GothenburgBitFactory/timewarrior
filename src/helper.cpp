@@ -44,7 +44,7 @@ Color summaryIntervalColor (
 
   for (auto& tag : tags)
   {
-      c.blend (tagColor (rules, tag));
+    c.blend (tagColor (rules, tag));
   }
 
   return c;
@@ -65,7 +65,7 @@ Color chartIntervalColor (
 
   for (auto& tag : tags)
   {
-      c.blend (tag_colors.at (tag));
+    c.blend (tag_colors.at (tag));
   }
 
   return c;
@@ -78,7 +78,9 @@ Color tagColor (const Rules& rules, const std::string& tag)
   Color c;
   std::string name = std::string ("tags.") + tag + ".color";
   if (rules.has (name))
+  {
     c = Color (rules.get (name));
+  }
 
   return c;
 }
@@ -110,7 +112,7 @@ std::string intervalSummarize (const Rules& rules, const Interval& interval)
     {
       auto now = Datetime ();
 
-      if (interval.start <= now )
+      if (interval.start <= now)
       {
         out << "Tracking " << tags << '\n'
             << "  Started " << interval.start.toISOLocalExtended () << '\n'
@@ -123,7 +125,6 @@ std::string intervalSummarize (const Rules& rules, const Interval& interval)
             << "  Starting " << interval.start.toISOLocalExtended () << '\n';
       }
     }
-
     // Interval closed.
     else
     {
@@ -275,7 +276,7 @@ bool expandIntervalHint (
     range.start = Datetime (y, m, 1);
 
     m += 3;
-    y += m/12;
+    y += m / 12;
     m %= 12;
 
     range.end   = Datetime (y, m, 1);
@@ -306,8 +307,8 @@ bool expandIntervalHint (
     Datetime sd = now - (86400 * dow) + (86400 * (wd - 7 * (wd <= dow ? 0 : 1)));
     Datetime ed = sd + 86400;
 
-    range.start = Datetime (sd.year(), sd.month(), sd.day());
-    range.end   = Datetime (ed.year(), ed.month(), ed.day());
+    range.start = Datetime (sd.year (), sd.month (), sd.day ());
+    range.end   = Datetime (ed.year (), ed.month (), ed.day ());
 
     debug (format ("Hint {1} expanded to {2} - {3}",
                    hint,
@@ -339,14 +340,18 @@ std::string jsonFromIntervals (const std::vector <Interval>& intervals)
   for (auto& interval : intervals)
   {
     if (counter)
+    {
       out << ",\n";
+    }
 
     out << interval.json ();
     ++counter;
   }
 
   if (counter)
+  {
     out << '\n';
+  }
 
   out << "]\n";
   return out.str ();
@@ -362,7 +367,9 @@ Palette createPalette (const Rules& rules)
   {
     p.clear ();
     for (auto& c : colors)
+    {
       p.add (Color (rules.get (c)));
+    }
   }
 
   p.enabled = rules.getBoolean ("color");
@@ -407,11 +414,15 @@ std::map <std::string, Color> createTagColorMap (
 int quantizeToNMinutes (const int minutes, const int N)
 {
   if (minutes % N == 0)
+  {
     return minutes;
+  }
 
   auto deviation = minutes % N;
-  if (deviation < N/2)
+  if (deviation < N / 2)
+  {
     return minutes - deviation;
+  }
 
   return minutes + N - deviation;
 }
@@ -449,7 +460,9 @@ std::string minimalDelta (const Datetime& left, const Datetime& right)
         {
           result.replace (11, 3, "   ");
           if (left.minute () == right.minute ())
+          {
             result.replace (14, 3, "   ");
+          }
         }
       }
     }
