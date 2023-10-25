@@ -241,14 +241,7 @@ Table SummaryTable::Builder::build ()
 
       if (_show_annotations)
       {
-        auto annotation = track.getAnnotation ();
-
-        if (utf8_length (annotation) > 15)
-        {
-          annotation = utf8_substr (annotation, 0, 12) + "...";
-        }
-
-        table.set (row, annotation_col_index, annotation);
+        table.set (row, annotation_col_index, track.getAnnotation ());
       }
 
       const auto total = today.total ();
