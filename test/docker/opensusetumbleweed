@@ -1,18 +1,16 @@
-FROM opensuse/leap:15
+FROM opensuse/tumbleweed
 
 RUN zypper install -y \
            cmake \
-           coreutils \
            gcc-c++ \
            git \
-           make \
            man \
            python3 \
-           python3-dateutil \
+           python3-python-dateutil \
            ruby
 
 RUN gem install asciidoctor -v 2.0.15
-RUN update-alternatives --install /usr/bin/asciidoctor asciidoctor /usr/lib64/ruby/gems/2.5.0/gems/asciidoctor-2.0.15/bin/asciidoctor 10
+RUN update-alternatives --install /usr/bin/asciidoctor asciidoctor /usr/bin/asciidoctor.ruby3.2 10
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 ENV TZ=Europe/Berlin
 
@@ -33,6 +31,6 @@ RUN make install
 
 # Setup tests
 WORKDIR /root/code/test/
-RUN make
+RUN make -j2
 
-CMD ["bash", "-c", "./run_all -v ; cat all.log | grep 'not ok' ; ./problems ; FAILED=$? ; echo timew $( timew --version ) ; python --version ; cmake --version ; gcc --version; exit $FAILED"]
+CMD ["bash", "-c", "./run_all -v ; cat all.log | grep 'not ok' ; ./problems ; FAILED=$? ; echo timew $( timew --version ) ; python --version ; cmake --version ; gcc --version ; exit $FAILED"]

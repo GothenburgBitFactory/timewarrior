@@ -27,15 +27,18 @@ jobs:
           - name: "Debian Testing"
             runner: ubuntu-latest
             container: debiantesting
-          - name: "Fedora 36"
-            runner: ubuntu-latest
-            container: fedora36
           - name: "Fedora 37"
             runner: ubuntu-latest
             container: fedora37
-          - name: "OpenSUSE 15.0"
+          - name: "Fedora 38"
             runner: ubuntu-latest
-            container: opensuse1500
+            container: fedora38
+          - name: "OpenSUSE Leap"
+            runner: ubuntu-latest
+            container: opensuseleap
+          - name: "OpenSUSE Tumbleweed"
+            runner: ubuntu-latest
+            container: opensusetumbleweed
           - name: "Ubuntu 18.04"
             runner: ubuntu-latest
             container: ubuntu1804
