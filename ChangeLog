@@ -1,5 +1,10 @@
+- #205    Wrap annotations in summary
+          (thanks to varac)
 - #493    :lastweek doesn't count last Sunday
           (thanks to Saulius Krasuckas, Per Møldrup-Dalum, Beshoy Girgis, Sergey Zhuravlevich)
+- #494    Expand annotations in summary
+          (thanks to catexis)
+- #566    Set table width dynamically to terminal width
 -         Add ':today' hint
 -         Refactor holidays/refresh script
 
