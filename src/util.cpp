@@ -78,7 +78,6 @@ std::string quoteIfNeeded (const std::string& input)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 std::string join (const std::string& glue, const std::set <std::string>& array)
 {
   if (array.empty ())
@@ -99,19 +98,19 @@ std::string join (const std::string& glue, const std::set <std::string>& array)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
-std::string joinQuotedIfNeeded (const std::string& glue, const std::set <std::string>& array)
+template <typename Container>
+std::string joinQuotedIfNeeded (const std::string& glue, const Container& container)
 {
-  if (array.empty ())
+  if (container.empty ())
   {
     return "";
   }
 
-  auto iterator = array.begin ();
+  auto iterator = container.begin ();
 
   std::string value = *iterator++;
 
-  while (iterator != array.end ())
+  while (iterator != container.end ())
   {
     value += glue + quoteIfNeeded (*iterator++);
   }
@@ -119,25 +118,8 @@ std::string joinQuotedIfNeeded (const std::string& glue, const std::set <std::st
   return value;
 }
 
-////////////////////////////////////////////////////////////////////////////////
+template std::string joinQuotedIfNeeded(const std::string&, const std::set <std::string>&);
 
-std::string joinQuotedIfNeeded (const std::string& glue, const std::vector <std::string>& array)
-{
-  if (array.empty ())
-  {
-    return "";
-  }
-
-  auto iterator = array.begin ();
-
-  std::string value = *iterator++;
-
-  while (iterator != array.end ())
-  {
-    value += glue + quoteIfNeeded (*iterator++);
-  }
-
-  return value;
-}
+template std::string joinQuotedIfNeeded(const std::string&, const std::vector <std::string>&);
 
 ////////////////////////////////////////////////////////////////////////////////

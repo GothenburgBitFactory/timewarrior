@@ -94,8 +94,7 @@ void debug (const std::string&);
 std::string escape (const std::string&, int);
 std::string quoteIfNeeded (const std::string&);
 std::string join(const std::string& glue, const std::set <std::string>& array);
-std::string joinQuotedIfNeeded(const std::string& glue, const std::set <std::string>& array);
-std::string joinQuotedIfNeeded(const std::string& glue, const std::vector <std::string>& array);
+template <typename Container> std::string joinQuotedIfNeeded (const std::string&, const Container&);
 
 // dom.cpp
 bool domGet (Database&, Interval&, const Rules&, const std::string&, std::string&);
