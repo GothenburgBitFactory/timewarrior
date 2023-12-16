@@ -7,6 +7,7 @@
 - #566    Set table width dynamically to terminal width
 -         Add ':today' hint
 -         Refactor holidays/refresh script
+-         Update task-timewarrior-hook script to 87a3426d8153f92aaee2edf36b2de62e48c4de0e
 
  ------ current release ---------------------------
 

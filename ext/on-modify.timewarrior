@@ -2,7 +2,7 @@
 
 ###############################################################################
 #
-# Copyright 2016 - 2020, 2023, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+# Copyright 2016 - 2021, 2023, Gothenburg Bit Factory
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -51,7 +51,13 @@ def extract_tags_from(json_obj):
         tags.append(json_obj['project'])
 
     if 'tags' in json_obj:
-        tags.extend(json_obj['tags'])
+        if type(json_obj['tags']) is str:
+            # Usage of tasklib (e.g. in taskpirate) converts the tag list into a string
+            # If this is the case, convert it back into a list first
+            # See https://github.com/tbabej/taskpirate/issues/11
+            tags.extend(json_obj['tags'].split(','))
+        else:
+            tags.extend(json_obj['tags'])
 
     return tags
 
