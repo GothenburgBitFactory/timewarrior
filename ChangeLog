@@ -5,6 +5,7 @@
 - #494    Expand annotations in summary
           (thanks to catexis)
 - #566    Set table width dynamically to terminal width
+- #576    Fix quoting of tags in DOM output
 -         Add ':today' hint
 -         Refactor holidays/refresh script
 -         Update task-timewarrior-hook script to 87a3426d8153f92aaee2edf36b2de62e48c4de0e
