@@ -108,7 +108,7 @@ std::string joinQuotedIfNeeded (const std::string& glue, const Container& contai
 
   auto iterator = container.begin ();
 
-  std::string value = *iterator++;
+  std::string value = quoteIfNeeded (*iterator++);
 
   while (iterator != container.end ())
   {
