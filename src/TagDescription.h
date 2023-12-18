@@ -32,7 +32,7 @@
 class TagDescription
 {
 public:
-  TagDescription (std::string , Color, std::string );
+  TagDescription (std::string , Color, std::string);
 
   std::string name;
   Color color;

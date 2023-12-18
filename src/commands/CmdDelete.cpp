@@ -66,7 +66,7 @@ int CmdDelete (
           break;
         }
       }
-      if (!found)
+      if (! found)
       {
         throw format ("ID '@{1}' does not correspond to any tracking.", id);
       }

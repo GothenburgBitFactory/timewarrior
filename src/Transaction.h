@@ -37,10 +37,10 @@ public:
 
   std::string toString() const;
 
-  std::vector<UndoAction> getActions () const;
+  std::vector <UndoAction> getActions () const;
 
 private:
-  std::vector<UndoAction> _actions {};
+  std::vector <UndoAction> _actions {};
 };
 
 #endif

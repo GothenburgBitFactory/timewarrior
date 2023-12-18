@@ -57,7 +57,7 @@ int CmdAnnotate (
     {
       throw std::string ("There is no active time tracking.");
     }
-    else if (!intervals.at (0).is_open ())
+    else if (! intervals.at (0).is_open ())
     {
       throw std::string ("At least one ID must be specified. See 'timew help annotate'.");
     }
@@ -81,7 +81,7 @@ int CmdAnnotate (
             break;
           }
         }
-        if (!found)
+        if (! found)
         {
           throw format ("ID '@{1}' does not correspond to any tracking.", id);
         }

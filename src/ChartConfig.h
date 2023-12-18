@@ -53,7 +53,7 @@ public:
   Color color_holiday;
   Color color_label;
   Color color_exclusion;
-  std::map<std::string, Color> tag_colors;
+  std::map <std::string, Color> tag_colors;
 };
 
 #endif

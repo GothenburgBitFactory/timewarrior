@@ -119,7 +119,7 @@ std::vector <Range> getAllExclusions (
     {
       for (auto& r : exclusion.ranges (range))
       {
-        if (!r.is_empty ())
+        if (! r.is_empty ())
         {
           exclusionRanges.push_back (r);
         }
@@ -331,7 +331,7 @@ std::vector <Range> subtractRanges (
 // An interval matches a filter range if the start/end overlaps
 bool matchesRange (const Interval& interval, const Range& filter)
 {
-  return ((!filter.is_started () && !filter.is_ended ()) || interval.intersects (filter));
+  return ((! filter.is_started () && ! filter.is_ended ()) || interval.intersects (filter));
 }
 
 ////////////////////////////////////////////////////////////////////////////////

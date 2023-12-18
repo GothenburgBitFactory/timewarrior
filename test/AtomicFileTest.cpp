@@ -77,7 +77,7 @@ public:
   }
 
 private:
-  static const std::vector <const char *> test_points;
+  static const std::vector <const char*> test_points;
   static std::stringstream cbuffer;
 
   static int external_cb_was_called;
@@ -98,7 +98,7 @@ private:
   }
 };
 
-const std::vector <const char *> FIU::test_points {
+const std::vector <const char*> FIU::test_points {
   "posix/stdio/gp/fputs",
   "posix/io/rw/write",
 };

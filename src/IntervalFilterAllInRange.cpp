@@ -36,7 +36,7 @@ bool IntervalFilterAllInRange::accepts (const Interval& interval)
     return false;
   }
 
-  if ((!_range.is_started() && !_range.is_ended()) || interval.intersects (_range))
+  if ((! _range.is_started() && ! _range.is_ended()) || interval.intersects (_range))
   {
     return true;
   }

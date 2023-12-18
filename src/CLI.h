@@ -73,7 +73,7 @@ public:
   std::set <std::string> getTags () const;
   std::string getAnnotation() const;
   Duration getDuration() const;
-  std::vector<std::string> getDomReferences () const;
+  std::vector <std::string> getDomReferences () const;
   Range getRange (const Range& default_range = {0, 0}) const;
   std::string dump (const std::string& title = "CLI Parser") const;
 
@@ -86,7 +86,7 @@ private:
   void identifyFilter ();
   bool exactMatch (const std::string&, const std::string&) const;
 
-  bool findHint (const std::string &hint) const;
+  bool findHint (const std::string&) const;
 
 public:
   std::multimap <std::string, std::string>           _entities             {};

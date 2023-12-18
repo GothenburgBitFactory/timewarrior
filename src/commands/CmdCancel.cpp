@@ -39,7 +39,7 @@ int CmdCancel (
   // If there is an open interval, cancel it by deleting it
   auto latest = getLatestInterval (database);
 
-  if (!latest.is_open ())
+  if (! latest.is_open ())
   {
     if (verbose)
       std::cout << "There is no active time tracking.\n";

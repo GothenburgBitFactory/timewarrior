@@ -550,7 +550,7 @@ bool CLI::exactMatch (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::set<int> CLI::getIds () const
+std::set <int> CLI::getIds () const
 {
   std::set <int> ids;
 
@@ -614,9 +614,9 @@ Duration CLI::getDuration () const
 
 std::vector <std::string> CLI::getDomReferences () const
 {
-  std::vector<std::string> references;
+  std::vector <std::string> references;
 
-  for (auto &arg : _args)
+  for (auto& arg : _args)
   {
     if (arg.hasTag ("DOM"))
     {
@@ -722,7 +722,7 @@ Range CLI::getRange (const Range& default_range) const
            args[0] == "from" &&
            args[1] == "<date>")
   {
-    the_range = Range ({Datetime (start), 0});
+    the_range = Range {Datetime (start), 0};
   }
   // <date> to/- <date>
   else if (args.size () == 3                   &&
@@ -730,7 +730,7 @@ Range CLI::getRange (const Range& default_range) const
            (args[1] == "to" || args[1] == "-") &&
            args[2] == "<date>")
   {
-    the_range = Range ({Datetime (start), Datetime (end)});
+    the_range = Range {Datetime (start), Datetime (end)};
   }
   // from <date> to/- <date>
   else if (args.size () == 4                   &&
@@ -739,7 +739,7 @@ Range CLI::getRange (const Range& default_range) const
            (args[2] == "to" || args[2] == "-") &&
            args[3] == "<date>")
   {
-    the_range = Range ({Datetime (start), Datetime (end)});
+    the_range = Range {Datetime (start), Datetime (end)};
   }
   // <date> for <duration>
   else if (args.size () == 3   &&
@@ -747,7 +747,7 @@ Range CLI::getRange (const Range& default_range) const
            args[1] == "for"    &&
            args[2] == "<duration>")
   {
-    the_range = Range ({Datetime (start), Datetime (start) + Duration (duration).toTime_t ()});
+    the_range = Range {Datetime (start), Datetime (start) + Duration (duration).toTime_t ()};
   }
   // from <date> for <duration>
   else if (args.size () == 4       &&
@@ -756,7 +756,7 @@ Range CLI::getRange (const Range& default_range) const
            args[2] == "for"        &&
            args[3] == "<duration>")
   {
-    the_range = Range ({Datetime (start), Datetime (start) + Duration (duration).toTime_t ()});
+    the_range = Range {Datetime (start), Datetime (start) + Duration (duration).toTime_t ()};
   }
   // <duration> before <date>
   else if (args.size () == 3       &&
@@ -764,7 +764,7 @@ Range CLI::getRange (const Range& default_range) const
            args[1] == "before"     &&
            args[2] == "<date>")
   {
-    the_range = Range ({Datetime (start) - Duration (duration).toTime_t (), Datetime (start)});
+    the_range = Range {Datetime (start) - Duration (duration).toTime_t (), Datetime (start)};
   }
   // <duration> after <date>
   else if (args.size () == 3       &&
@@ -772,27 +772,27 @@ Range CLI::getRange (const Range& default_range) const
            args[1] == "after"      &&
            args[2] == "<date>")
   {
-    the_range = Range ({Datetime (start), Datetime (start) + Duration (duration).toTime_t ()});
+    the_range = Range {Datetime (start), Datetime (start) + Duration (duration).toTime_t ()};
   }
   // <duration> ago
   else if (args.size () == 2       &&
            args[0] == "<duration>" &&
            args[1] == "ago")
   {
-    the_range = Range ({now - Duration (duration).toTime_t (), 0});
+    the_range = Range {now - Duration (duration).toTime_t (), 0};
   }
   // for <duration>
   else if (args.size () == 2       &&
            args[0] == "for"        &&
            args[1] == "<duration>")
   {
-    the_range = Range ({now - Duration (duration).toTime_t (), now});
+    the_range = Range {now - Duration (duration).toTime_t (), now};
   }
   // <duration>
   else if (args.size () == 1 &&
            args[0] == "<duration>")
   {
-    the_range = Range ({now - Duration (duration).toTime_t (), now});
+    the_range = Range {now - Duration (duration).toTime_t (), now};
   }
   // :all
   else if (args.size () == 1 && args[0] == "<all>")
@@ -844,7 +844,7 @@ bool CLI::getComplementaryHint (const std::string& base, const bool default_valu
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool CLI::getHint (const std::string &base, const bool default_value) const
+bool CLI::getHint (const std::string& base, const bool default_value) const
 {
   if (findHint (base))
   {

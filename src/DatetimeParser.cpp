@@ -1179,7 +1179,7 @@ bool DatetimeParser::initializeOrdinal (Pig& pig)
             y++;
           }
         }
-        else if (!Datetime::timeRelative && (d < number && number <= Datetime::daysInMonth (y, m)))
+        else if (! Datetime::timeRelative && (d < number && number <= Datetime::daysInMonth (y, m)))
         {
           if (--m < 1)
           {

@@ -39,7 +39,7 @@ bool Journal::enabled () const
 
 ////////////////////////////////////////////////////////////////////////////////
 
-std::vector<Transaction> loadJournal (AtomicFile& undo)
+std::vector <Transaction> loadJournal (AtomicFile& undo)
 {
   std::vector <std::string> read_lines;
   undo.read (read_lines);
@@ -88,7 +88,7 @@ void Journal::startTransaction ()
 ////////////////////////////////////////////////////////////////////////////////
 void Journal::endTransaction ()
 {
-  if (!enabled ())
+  if (! enabled ())
   {
     assert (_currentTransaction == nullptr);
     return;
@@ -149,9 +149,9 @@ void Journal::recordIntervalAction (const std::string&  before, const std::strin
 // Actions are only recorded if a transaction is open
 //
 void Journal::recordUndoAction (
-  const std::string &type,
-  const std::string &before,
-  const std::string &after)
+  const std::string& type,
+  const std::string& before,
+  const std::string& after)
 {
   if (enabled () && _currentTransaction != nullptr)
   {

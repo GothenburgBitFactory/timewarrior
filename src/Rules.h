@@ -42,32 +42,25 @@ public:
   std::string file () const;
 
   bool        has        (const std::string&) const;
-  std::string get (const std::string &key, const std::string &defaultValue = "") const;
-  int         getInteger (const std::string&, int defaultValue = 0) const;
+  std::string get (const std::string&, const std::string& = "") const;
+  int         getInteger (const std::string&, int = 0) const;
   double      getReal    (const std::string&) const;
-  bool        getBoolean (const std::string&, bool defaultValue = false) const;
+  bool        getBoolean (const std::string&, bool = false) const;
 
-  void set (const std::string&, const int);
-  void set (const std::string&, const double);
+  void set (const std::string&, int);
+  void set (const std::string&, double);
   void set (const std::string&, const std::string&);
 
-  std::vector <std::string> all (const std::string& stem = "") const;
+  std::vector <std::string> all (const std::string& = "") const;
   bool isRuleType (const std::string&) const;
 
   std::string dump () const;
 
-  static bool setConfigVariable (Journal& journal,
-                                 const Rules& rules,
-                                 std::string name,
-                                 std::string value,
-                                 bool confirmation /* = false */);
-  static int unsetConfigVariable (Journal& journal,
-                                  const Rules& rules,
-                                  std::string name,
-                                  bool confirmation /* = false */);
+  static bool setConfigVariable (Journal&, const Rules&, std::string, std::string, bool confirmation);
+  static int unsetConfigVariable (Journal&, const Rules&, std::string, bool confirmation);
 
 private:
-  void parse               (const std::string&, int next = 1);
+  void parse               (const std::string&, int = 1);
   void parseRule           (const std::string&);
   void parseRuleSettings   (const std::vector <std::string>&);
 

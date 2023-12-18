@@ -51,7 +51,7 @@ public:
   Transaction popLastTransaction();
 
 private:
-  void recordUndoAction (const std::string &, const std::string &, const std::string &);
+  void recordUndoAction (const std::string&, const std::string&, const std::string&);
 
   std::string _location {};
   std::shared_ptr <Transaction> _currentTransaction = nullptr;

@@ -53,7 +53,7 @@ Table ExtensionsTable::Builder::build ()
   table.add ("Extension", true);
   table.add ("Status", true);
 
-  for (auto &ext: _extensions.all ())
+  for (auto& ext: _extensions.all ())
   {
     File program (ext);
 
@@ -64,11 +64,11 @@ Table ExtensionsTable::Builder::build ()
     // Show extension status.
     std::string status;
 
-    if (!program.readable ())
+    if (! program.readable ())
     {
       status = "Not readable";
     }
-    else if (!program.executable ())
+    else if (! program.executable ())
     {
       status = "No executable";
     }

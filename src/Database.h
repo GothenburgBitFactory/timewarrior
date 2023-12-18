@@ -103,7 +103,7 @@ public:
 
   void addInterval (const Interval&, bool verbose);
   void deleteInterval (const Interval&);
-  void modifyInterval (const Interval&, const Interval &, bool verbose);
+  void modifyInterval (const Interval&, const Interval&, bool verbose);
 
   std::string dump () const;
 

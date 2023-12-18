@@ -35,7 +35,7 @@ class ExtensionsTable
   class Builder
   {
   public:
-    Builder& withExtensions (const Extensions &);
+    Builder& withExtensions (const Extensions&);
 
     Table build ();
 

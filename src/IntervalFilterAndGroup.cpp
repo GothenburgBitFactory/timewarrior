@@ -26,10 +26,10 @@
 
 #include <IntervalFilterAndGroup.h>
 
-IntervalFilterAndGroup::IntervalFilterAndGroup (std::vector <std::shared_ptr<IntervalFilter>> filters) : _filters (std::move (filters))
+IntervalFilterAndGroup::IntervalFilterAndGroup (std::vector <std::shared_ptr <IntervalFilter>> filters) : _filters (std::move (filters))
 {}
 
-bool IntervalFilterAndGroup::accepts (const Interval &interval)
+bool IntervalFilterAndGroup::accepts (const Interval& interval)
 {
   if (is_done ())
   {

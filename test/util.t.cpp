@@ -44,7 +44,7 @@ int main (int, char**)
   t.is (quoteIfNeeded ("f o o"), "\"f o o\"", "quoteIfNeeded 'f o o' --> '\"f o o\"'");
 
   {
-    std::set<std::string> unjoined;
+    std::set <std::string> unjoined;
     std::string joined;
 
     joined = join("", unjoined);

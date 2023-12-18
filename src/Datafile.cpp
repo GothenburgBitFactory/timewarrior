@@ -151,7 +151,7 @@ void Datafile::commit ()
   if (_dirty)
   {
     AtomicFile file (_file);
-    if (!_lines.empty ())
+    if (! _lines.empty ())
     {
       if (file.open ())
       {

@@ -40,7 +40,7 @@ int CmdDefault (Rules& rules, Database& database)
   IntervalFilterFirstOf filtering (std::make_shared <IntervalFilterAllInRange> (Range {}));
   auto latest = getTracked (database, rules, filtering);
 
-  if (!latest.empty () && latest.at (0).is_open ())
+  if (! latest.empty () && latest.at (0).is_open ())
   {
     if (verbose)
     {

@@ -104,7 +104,7 @@ SummaryTable::Builder& SummaryTable::Builder::withRange (const Range& range)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-SummaryTable::Builder & SummaryTable::Builder::withIntervals (const std::vector<Interval>& tracked)
+SummaryTable::Builder & SummaryTable::Builder::withIntervals (const std::vector <Interval>& tracked)
 {
   _tracked = tracked;
   return *this;

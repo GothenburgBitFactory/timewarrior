@@ -38,9 +38,9 @@ class SummaryTable
   class Builder
   {
   public:
-    Builder& withWeekFormat (const std::string &);
-    Builder& withDateFormat (const std::string &);
-    Builder& withTimeFormat (const std::string &);
+    Builder& withWeekFormat (const std::string&);
+    Builder& withDateFormat (const std::string&);
+    Builder& withTimeFormat (const std::string&);
 
     Builder& withAnnotations (bool);
     Builder& withIds (bool, Color);
@@ -48,7 +48,7 @@ class SummaryTable
     Builder& withWeeks (bool);
     Builder& withWeekdays (bool);
 
-    Builder& withRange (const Range &);
+    Builder& withRange (const Range&);
     Builder& withIntervals (const std::vector <Interval>&);
 
     Table build ();

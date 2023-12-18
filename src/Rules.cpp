@@ -150,7 +150,7 @@ bool Rules::has (const std::string& key) const
 
 ////////////////////////////////////////////////////////////////////////////////
 // Return the configuration value given the specified key.
-std::string Rules::get (const std::string &key, const std::string &defaultValue) const
+std::string Rules::get (const std::string& key, const std::string& defaultValue) const
 {
   auto found = _settings.find (key);
 
@@ -429,7 +429,7 @@ void Rules::parseRuleSettings (
     // If indent decreased.
     else if (indent < indents.back ())
     {
-      while (!indents.empty () && indent != indents.back ())
+      while (! indents.empty () && indent != indents.back ())
       {
         indents.pop_back ();
         hierarchy.pop_back ();

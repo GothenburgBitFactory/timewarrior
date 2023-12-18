@@ -41,7 +41,7 @@ Database::iterator::iterator (files_iterator fbegin, files_iterator fend) :
 {
   if (files_end != files_it)
   {
-    auto &lines = files_it->allLines ();
+    auto& lines = files_it->allLines ();
     lines_it = lines.rbegin ();
     lines_end = lines.rend ();
     while ((lines_it == lines_end) && (files_it != files_end))
@@ -49,7 +49,7 @@ Database::iterator::iterator (files_iterator fbegin, files_iterator fend) :
       ++files_it;
       if (files_it != files_end)
       {
-        auto &lines = files_it->allLines ();
+        auto& lines = files_it->allLines ();
         lines_it = lines.rbegin ();
         lines_end = lines.rend ();
       }
@@ -85,7 +85,7 @@ Database::iterator& Database::iterator::operator++ ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Database::iterator::operator== (const iterator &other) const
+bool Database::iterator::operator== (const iterator& other) const
 {
   return (other.files_it == other.files_end) ?
          files_it == files_end :
@@ -96,7 +96,7 @@ bool Database::iterator::operator== (const iterator &other) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Database::iterator::operator!= (const iterator &other) const
+bool Database::iterator::operator!= (const iterator& other) const
 {
   return ! (*this == other);
 }
@@ -130,7 +130,7 @@ Database::reverse_iterator::reverse_iterator (files_iterator fbegin,
       ++files_it;
       if (files_it != files_end)
       {
-        auto &lines = files_it->allLines ();
+        auto& lines = files_it->allLines ();
         lines_it = lines.begin ();
         lines_end = lines.end ();
       }
@@ -342,12 +342,12 @@ void Database::deleteInterval (const Interval& interval)
 // Interval belongs in a different file.
 void Database::modifyInterval (const Interval& from, const Interval& to, bool verbose)
 {
-  if (!from.empty ())
+  if (! from.empty ())
   {
     deleteInterval (from);
   }
 
-  if (!to.empty ())
+  if (! to.empty ())
   {
     addInterval (to, verbose);
   }
@@ -468,7 +468,7 @@ void Database::initializeTagDatabase ()
   {
     try
     {
-      std::unique_ptr <json::object> json (dynamic_cast <json::object *>(json::parse (content)));
+      std::unique_ptr <json::object> json (dynamic_cast <json::object*> (json::parse (content)));
 
       if (content.empty () || (json == nullptr))
       {
@@ -486,7 +486,7 @@ void Database::initializeTagDatabase ()
           throw format ("Failed to find \"count\" member for tag \"{1}\" in tags database.", key);
         }
 
-        auto number = dynamic_cast<json::number *> (iter->second);
+        auto number = dynamic_cast <json::number*> (iter->second);
         _tagInfoDatabase.add (key, TagInfo{(unsigned int) number->_dvalue});
       }
 
@@ -515,7 +515,7 @@ void Database::initializeTagDatabase ()
     return;
   }
 
-  if (!exists)
+  if (! exists)
   {
     std::cout << "Tags database does not exist. ";
   }

@@ -109,7 +109,7 @@ int CmdModify (
     break;
   }
 
-  if (!modified.is_open () && (modified.start > modified.end))
+  if (! modified.is_open () && (modified.start > modified.end))
   {
     throw format ("Cannot modify interval @{1} where start is after end.", id);
   }

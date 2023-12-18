@@ -42,8 +42,8 @@ public:
 
 private:
   const std::set <int> _ids {};
-  std::set<int>::iterator _id_it;
-  std::set<int>::iterator _id_end;
+  std::set <int>::iterator _id_it;
+  std::set <int>::iterator _id_end;
 };
 
 #endif //INCLUDE_INTERVALFILTERALLWITHIDS

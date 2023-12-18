@@ -64,7 +64,7 @@ Interval IntervalFactory::fromSerialization (const std::string& line)
   std::vector <std::string> tokens = tokenizeSerialization (line);
 
   // Minimal requirement 'inc'.
-  if (!tokens.empty () && tokens[0] == "inc")
+  if (! tokens.empty () && tokens[0] == "inc")
   {
     Interval interval = Interval ();
 
@@ -125,9 +125,9 @@ Interval IntervalFactory::fromJson (const std::string& jsonString)
 {
   Interval interval = Interval ();
 
-  if (!jsonString.empty ())
+  if (! jsonString.empty ())
   {
-    std::unique_ptr <json::object> json (dynamic_cast <json::object *> (json::parse (jsonString)));
+    std::unique_ptr <json::object> json (dynamic_cast <json::object*> (json::parse (jsonString)));
 
     json::array* tags = (json::array*) json->_data["tags"];
 

@@ -62,9 +62,9 @@ Chart::Chart (const ChartConfig& configuration) :
 
 std::string Chart::render (
   const Range& range,
-  const std::vector<Interval> &tracked,
-  const std::vector<Range> &exclusions,
-  const std::map<Datetime, std::string> &holidays)
+  const std::vector <Interval>& tracked,
+  const std::vector <Range>& exclusions,
+  const std::map <Datetime, std::string>& holidays)
 {
   // Determine hours shown.
   auto hour_range = determine_hour_range
@@ -86,13 +86,13 @@ std::string Chart::render (
   out << '\n';
 
   // Render the axis.
-  if (!with_internal_axis)
+  if (! with_internal_axis)
   {
     out << indent << renderAxis (first_hour, last_hour);
   }
 
   // For rendering labels on edge detection.
-  Datetime previous{0};
+  Datetime previous {0};
 
   // Each day is rendered separately.
   time_t total_work = 0;
@@ -103,7 +103,7 @@ std::string Chart::render (
 
     // Add an empty string with no color, to reserve width, so this function
     // can simply concatenate to lines[i].str ().
-    std::vector<Composite> lines (num_lines);
+    std::vector <Composite> lines (num_lines);
     for (int i = 0; i < num_lines; ++i)
     {
       lines[i].add (std::string (total_width, ' '), 0, Color ());
@@ -112,9 +112,9 @@ std::string Chart::render (
     renderExclusionBlocks (lines, day, first_hour, last_hour, exclusions);
 
     time_t work = 0;
-    if (!show_intervals)
+    if (! show_intervals)
     {
-      for (auto &track : tracked)
+      for (auto& track : tracked)
       {
         time_t interval_work = 0;
         renderInterval (lines, day, track, first_hour, interval_work);
@@ -171,9 +171,9 @@ unsigned long Chart::getIndentSize ()
 ////////////////////////////////////////////////////////////////////////////////
 // Scan all tracked intervals, looking for the earliest and latest hour into
 // which an interval extends.
-std::pair<int, int> Chart::determineHourRange (
+std::pair <int, int> Chart::determineHourRange (
   const Range& range,
-  const std::vector<Interval> &tracked)
+  const std::vector <Interval>& tracked)
 {
   // If there is no data, show the whole day.
   if (tracked.empty ())
@@ -207,7 +207,7 @@ std::pair<int, int> Chart::determineHourRange (
           first_hour = clipped.start.hour ();
         }
 
-        if (!clipped.is_open () && clipped.end.hour () > last_hour)
+        if (! clipped.is_open () && clipped.end.hour () > last_hour)
         {
           last_hour = clipped.end.hour ();
         }
@@ -251,7 +251,7 @@ std::string Chart::renderAxis (const int first_hour, const int last_hour)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string Chart::renderMonth (const Datetime &previous, const Datetime &day)
+std::string Chart::renderMonth (const Datetime& previous, const Datetime& day)
 {
   const auto show_month = previous.month () != day.month ();
 
@@ -264,7 +264,7 @@ std::string Chart::renderMonth (const Datetime &previous, const Datetime &day)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string Chart::renderWeek (const Datetime &previous, const Datetime &day)
+std::string Chart::renderWeek (const Datetime& previous, const Datetime& day)
 {
   const auto show_week = previous.week () != day.week ();
 
@@ -277,7 +277,7 @@ std::string Chart::renderWeek (const Datetime &previous, const Datetime &day)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string Chart::renderWeekday (Datetime &day, const Color &color)
+std::string Chart::renderWeekday (Datetime& day, const Color& color)
 {
   std::stringstream out;
 
@@ -288,7 +288,7 @@ std::string Chart::renderWeekday (Datetime &day, const Color &color)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string Chart::renderDay (Datetime &day, const Color &color)
+std::string Chart::renderDay (Datetime& day, const Color& color)
 {
   std::stringstream out;
 
@@ -300,15 +300,15 @@ std::string Chart::renderDay (Datetime &day, const Color &color)
 
 ////////////////////////////////////////////////////////////////////////////////
 Color Chart::getDayColor (
-  const Datetime &day,
-  const std::map <Datetime, std::string> &holidays)
+  const Datetime& day,
+  const std::map <Datetime, std::string>& holidays)
 {
   if (day.sameDay (reference_datetime))
   {
     return color_today;
   }
 
-  for (auto &entry : holidays)
+  for (auto& entry : holidays)
   {
     if (day.sameDay (entry.first))
     {
@@ -346,7 +346,7 @@ std::string Chart::renderTotal (time_t work)
 ////////////////////////////////////////////////////////////////////////////////
 std::string Chart::renderSubTotal (
   time_t total_work,
-  const std::string &padding)
+  const std::string& padding)
 {
   std::stringstream out;
 
@@ -366,8 +366,8 @@ std::string Chart::renderSubTotal (
 }
 
 void Chart::renderExclusionBlocks (
-  std::vector<Composite> &lines,
-  const Datetime &day,
+  std::vector <Composite>& lines,
+  const Datetime& day,
   int first_hour,
   int last_hour,
   const std::vector <Range>& exclusions)
@@ -399,7 +399,7 @@ void Chart::renderExclusionBlocks (
         int width = end_block - start_block;
         std::string block (width, ' ');
 
-        for (auto &line : lines)
+        for (auto& line : lines)
         {
           line.add (block, offset, color_exclusion);
         }
@@ -420,15 +420,15 @@ void Chart::renderExclusionBlocks (
 
 ////////////////////////////////////////////////////////////////////////////////
 void Chart::renderInterval (
-  std::vector<Composite> &lines,
-  const Datetime &day,
-  const Interval &track,
+  std::vector <Composite>& lines,
+  const Datetime& day,
+  const Interval& track,
   const int first_hour,
-  time_t &work)
+  time_t& work)
 {
   // Ignore any track that doesn't overlap with day.
   auto day_range = getFullDay (day);
-  if (!day_range.overlaps (track) || (track.is_open () && day > reference_datetime))
+  if (! day_range.overlaps (track) || (track.is_open () && day > reference_datetime))
   {
     return;
   }
@@ -476,9 +476,9 @@ void Chart::renderInterval (
       label = format ("@{1}", track.id);
     }
 
-    for (auto &tag : track.tags ())
+    for (auto& tag : track.tags ())
     {
-      if (!label.empty ())
+      if (! label.empty ())
       {
         label += ' ';
       }
@@ -490,7 +490,7 @@ void Chart::renderInterval (
 
     if (width)
     {
-      std::vector<std::string> text_lines;
+      std::vector <std::string> text_lines;
 
       // --
       // The hang/memory consumption in #309 is due to a bug in libshared's wrapText
@@ -531,11 +531,11 @@ void Chart::renderInterval (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string Chart::renderHolidays (const std::map<Datetime, std::string> &holidays)
+std::string Chart::renderHolidays (const std::map <Datetime, std::string>& holidays)
 {
   std::stringstream out;
 
-  for (auto &entry : holidays)
+  for (auto& entry : holidays)
   {
     out << entry.first.toString ("Y-M-D")
         << " "
@@ -548,15 +548,15 @@ std::string Chart::renderHolidays (const std::map<Datetime, std::string> &holida
 
 ////////////////////////////////////////////////////////////////////////////////
 std::string Chart::renderSummary (
-  const std::string &indent,
+  const std::string& indent,
   const Range& range,
-  const std::vector<Range> &exclusions,
-  const std::vector<Interval> &tracked)
+  const std::vector <Range>& exclusions,
+  const std::vector <Interval>& tracked)
 {
   std::stringstream out;
   time_t total_unavailable = 0;
 
-  for (auto &exclusion : exclusions)
+  for (auto& exclusion : exclusions)
   {
     if (range.overlaps (exclusion))
     {
@@ -566,9 +566,9 @@ std::string Chart::renderSummary (
 
   time_t total_worked = 0;
 
-  if (!show_intervals)
+  if (! show_intervals)
   {
-    for (auto &interval : tracked)
+    for (auto& interval : tracked)
     {
       if (range.overlaps (interval))
       {

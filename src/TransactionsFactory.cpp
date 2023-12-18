@@ -29,19 +29,19 @@
 
 void TransactionsFactory::parseLine (const std::string& line)
 {
-  if (!line.compare (0, 4, "txn:"))
+  if (! line.compare (0, 4, "txn:"))
   {
     _transactions.emplace_back ();
   }
-  else if (!line.compare (0, 7, "  type:"))
+  else if (! line.compare (0, 7, "  type:"))
   {
     _type = line.substr (8, line.size ());
   }
-  else if (!line.compare (0, 9, "  before:"))
+  else if (! line.compare (0, 9, "  before:"))
   {
     _before = line.substr (10, line.size ());
   }
-  else if (!line.compare (0, 8, "  after:"))
+  else if (! line.compare (0, 8, "  after:"))
   {
     _after = line.substr (9, line.size ());
     _transactions.back ().addUndoAction (_type, _before, _after);
@@ -52,7 +52,7 @@ void TransactionsFactory::parseLine (const std::string& line)
   }
 }
 
-std::vector<Transaction> TransactionsFactory::get ()
+std::vector <Transaction> TransactionsFactory::get ()
 {
   return _transactions;
 }

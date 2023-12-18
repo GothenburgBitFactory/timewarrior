@@ -33,13 +33,13 @@
 class IntervalFilterAndGroup : public IntervalFilter
 {
 public:
-  explicit IntervalFilterAndGroup (std::vector <std::shared_ptr<IntervalFilter>> filters);
+  explicit IntervalFilterAndGroup (std::vector <std::shared_ptr <IntervalFilter>> filters);
 
   bool accepts (const Interval&) final;
   void reset () override;
 
 private:
-  const std::vector<std::shared_ptr<IntervalFilter>> _filters = {};
+  const std::vector <std::shared_ptr <IntervalFilter>> _filters = {};
 };
 
 #endif //INCLUDED_INTERVALFILTERANDGROUP

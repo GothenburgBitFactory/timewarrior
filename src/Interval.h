@@ -46,9 +46,9 @@ public:
   bool hasTag (const std::string&) const;
   const std::set <std::string>& tags () const;
   void tag (const std::string&);
-  void tag (const std::set<std::string>&);
+  void tag (const std::set <std::string>&);
   void untag (const std::string&);
-  void untag (const std::set<std::string>&);
+  void untag (const std::set <std::string>&);
   void clearTags ();
 
   void setRange (const Range& range);

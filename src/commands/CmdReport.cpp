@@ -76,7 +76,7 @@ static std::string findExtension (
   return "";
 }
 
-std::string basename (const std::string &script_path)
+std::string basename (const std::string& script_path)
 {
   const auto lastSlash = script_path.find_last_of ('/');
 

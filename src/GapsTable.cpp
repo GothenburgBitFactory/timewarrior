@@ -36,14 +36,14 @@ GapsTable::Builder GapsTable::builder ()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-GapsTable::Builder& GapsTable::Builder::withRange (const Range &range)
+GapsTable::Builder& GapsTable::Builder::withRange (const Range& range)
 {
   _range = range;
   return *this;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-GapsTable::Builder& GapsTable::Builder::withIntervals (const std::vector <Range> &intervals)
+GapsTable::Builder& GapsTable::Builder::withIntervals (const std::vector <Range>& intervals)
 {
   _intervals = intervals;
   return *this;
@@ -68,13 +68,14 @@ Table GapsTable::Builder::build ()
   // Each day is rendered separately.
   time_t grand_total = 0;
   Datetime previous;
+
   for (Datetime day = _range.start; day < _range.end; day++)
   {
     auto day_range = getFullDay (day);
     time_t daily_total = 0;
-
     int row = -1;
-    for (auto &gap: subset (day_range, _intervals))
+
+    for (auto& gap: subset (day_range, _intervals))
     {
       row = table.addRow ();
 
@@ -88,6 +89,7 @@ Table GapsTable::Builder::build ()
 
       // Intersect track with day.
       auto today = day_range.intersect (gap);
+
       if (gap.is_open ())
       {
         today.end = Datetime ();

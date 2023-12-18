@@ -69,7 +69,7 @@ int CmdHelpUsage (const Extensions& extensions)
             << "       timew week [<interval>] [<tag> ...]\n"
             << '\n';
 
-  if (!extensions.all ().empty ())
+  if (! extensions.all ().empty ())
   {
     std::cout << "Extensions (extensions do not provide help):\n";
 

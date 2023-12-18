@@ -90,7 +90,7 @@ void setDebugIndicator (const std::string&);
 void setDebugColor (const Color&);
 void debug (const std::string&);
 
-// utiŀ.cpp
+// util.cpp
 std::string escape (const std::string&, int);
 std::string quoteIfNeeded (const std::string&);
 std::string join(const std::string& glue, const std::set <std::string>& array);

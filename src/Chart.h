@@ -51,7 +51,7 @@ private:
   std::string renderWeekday (Datetime&, const Color&);
 
   void renderExclusionBlocks (std::vector <Composite>&, const Datetime&, int, int, const std::vector <Range>&);
-  void renderInterval (std::vector<Composite>&, const Datetime&, const Interval&, int, time_t&);
+  void renderInterval (std::vector <Composite>&, const Datetime&, const Interval&, int, time_t&);
 
   unsigned long getIndentSize ();
 
@@ -79,7 +79,7 @@ private:
   const Color color_holiday;
   const Color color_label;
   const Color color_exclusion;
-  const std::map<std::string, Color> tag_colors;
+  const std::map <std::string, Color> tag_colors;
 
   const int cell_width;
   const int reference_hour;

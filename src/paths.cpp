@@ -73,15 +73,15 @@ std::string configFile () { return configDir () + "/timewarrior.cfg"; }
 std::string dbDataDir () { return dbDir () + "/data"; }
 std::string extensionsDir () { return configDir () + "/extensions"; }
 
-void initializeDirs (const CLI &cli, Rules &rules)
+void initializeDirs (const CLI& cli, Rules& rules)
 {
   Directory configLocation = Directory (configDir ());
   bool configDirExists = configLocation.exists ();
 
   if (configDirExists &&
-      (!configLocation.readable () ||
-       !configLocation.writable () ||
-       !configLocation.executable ()))
+      (! configLocation.readable () ||
+       ! configLocation.writable () ||
+       ! configLocation.executable ()))
   {
     throw format ("Config is not readable at '{1}'", configLocation._data);
   }
@@ -89,19 +89,19 @@ void initializeDirs (const CLI &cli, Rules &rules)
   Directory dbLocation = Directory (dbDir ());
   bool dataLocationExists = dbLocation.exists ();
   if (dataLocationExists &&
-          (!dbLocation.readable () ||
-           !dbLocation.writable () ||
-           !dbLocation.executable ()))
+          (! dbLocation.readable () ||
+           ! dbLocation.writable () ||
+           ! dbLocation.executable ()))
   {
     throw format ("Database is not readable at '{1}'", dbLocation._data);
   }
 
   std::string question = "";
-  if (!configDirExists)
+  if (! configDirExists)
   {
     question += "Create new config in " + configLocation._data + "?";
   }
-  if (!dataLocationExists && configLocation._data != dbLocation._data)
+  if (! dataLocationExists && configLocation._data != dbLocation._data)
   {
     if (question != "") {
         question += "\n";
@@ -109,15 +109,15 @@ void initializeDirs (const CLI &cli, Rules &rules)
     question += "Create new database in " + dbLocation._data + "?";
   }
 
-  if (!configDirExists || !dataLocationExists)
+  if (! configDirExists || ! dataLocationExists)
   {
     if (cli.getHint ("yes", false) || confirm (question))
     {
-      if (!configDirExists)
+      if (! configDirExists)
       {
         configLocation.create (0700);
       }
-      if (!dataLocationExists)
+      if (! dataLocationExists)
       {
         dbLocation.create (0700);
       }
@@ -131,7 +131,7 @@ void initializeDirs (const CLI &cli, Rules &rules)
   // Create extensions subdirectory if necessary.
   Directory extensionsLocation (extensionsDir ());
 
-  if (!extensionsLocation.exists ())
+  if (! extensionsLocation.exists ())
   {
     extensionsLocation.create (0700);
   }
@@ -139,14 +139,14 @@ void initializeDirs (const CLI &cli, Rules &rules)
   // Create data subdirectory if necessary.
   Directory dbDataLocation (dbDataDir ());
 
-  if (!dbDataLocation.exists ())
+  if (! dbDataLocation.exists ())
   {
     dbDataLocation.create (0700);
   }
 
   Path configFileLocation (configFile ());
 
-  if (!configFileLocation.exists ())
+  if (! configFileLocation.exists ())
   {
     File (configFileLocation).create (0600);
   }
@@ -162,7 +162,7 @@ void initializeDirs (const CLI &cli, Rules &rules)
   rules.set ("temp.config", configFileLocation);
 
   // Perhaps some subsequent code would like to know this is a new db and possibly a first run.
-  if (!dataLocationExists)
+  if (! dataLocationExists)
     rules.set ("temp.shiny", 1);
 }
 

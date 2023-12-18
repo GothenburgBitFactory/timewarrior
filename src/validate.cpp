@@ -174,7 +174,7 @@ static bool autoAdjust (
           database.modifyInterval (overlap, modified, verbose);
         }
       }
-      else if (!start_within_overlap && end_within_overlap)
+      else if (! start_within_overlap && end_within_overlap)
       {
         // end date of new interval within old interval
         Interval modified {overlap};
@@ -189,7 +189,7 @@ static bool autoAdjust (
           database.modifyInterval (overlap, modified, verbose);
         }
       }
-      else if (!start_within_overlap && !end_within_overlap)
+      else if (! start_within_overlap && ! end_within_overlap)
       {
         // new interval encloses old interval
         database.deleteInterval (overlap);

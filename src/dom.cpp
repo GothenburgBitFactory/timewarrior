@@ -132,7 +132,7 @@ bool domGet (
         std::set <std::string> tags;
         for (const auto& interval : tracked)
         {
-          for (const auto &tag : interval.tags ())
+          for (const auto& tag : interval.tags ())
           {
             tags.insert (tag);
           }

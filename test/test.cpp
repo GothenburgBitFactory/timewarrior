@@ -132,7 +132,7 @@ void UnitTest::ok (bool expression, const std::string& name)
 ///////////////////////////////////////////////////////////////////////////////
 void UnitTest::notok (bool expression, const std::string& name)
 {
-  ok (!expression, name);
+  ok (! expression, name);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -170,7 +170,7 @@ void UnitTest::is (double actual, double expected, double tolerance, const std::
   }
   else
   {
-    report_failure (create_message<double> (actual, expected, name));
+    report_failure (create_message <double> (actual, expected, name));
   }
 }
 
@@ -203,7 +203,7 @@ void UnitTest::is (
   }
   else
   {
-    report_failure (create_message<const char*> (actual, expected, name));
+    report_failure (create_message <const char*> (actual, expected, name));
   }
 }
 
@@ -219,7 +219,7 @@ void UnitTest::_is (T actual, T expected, const std::string& name)
   }
   else
   {
-    report_failure (create_message<T> (actual, expected, name));
+    report_failure (create_message <T> (actual, expected, name));
   }
 }
 
@@ -259,7 +259,7 @@ void UnitTest::skip (const std::string& text)
 
 ///////////////////////////////////////////////////////////////////////////////
 template <typename T>
-std::string UnitTest::create_message (T actual, T expected, const std::string &name)
+std::string UnitTest::create_message (T actual, T expected, const std::string& name)
 {
   std::stringstream message;
 

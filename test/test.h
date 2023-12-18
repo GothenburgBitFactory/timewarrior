@@ -71,7 +71,7 @@ private:
   void report_skip (const std::string&);
   void report_status (const std::string&, const std::string&) const;
 
-  template <typename T> void _is (T, T, const std::string &);
+  template <typename T> void _is (T, T, const std::string&);
   template <typename T> static std::string create_message (T, T, const std::string&);
 
 private:

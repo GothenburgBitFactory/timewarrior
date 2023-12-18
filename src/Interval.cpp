@@ -79,7 +79,7 @@ void Interval::tag (const std::string& tag)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Interval::tag (const std::set<std::string>& tags)
+void Interval::tag (const std::set <std::string>& tags)
 {
   _tags.insert (tags.begin (), tags.end ());
 }
@@ -93,7 +93,7 @@ void Interval::untag (const std::string& tag)
 ////////////////////////////////////////////////////////////////////////////////
 void Interval::untag (const std::set <std::string>& tags)
 {
-  std::set<std::string> updated;
+  std::set <std::string> updated;
 
   std::set_difference (
     _tags.begin (), _tags.end (),
@@ -144,7 +144,7 @@ std::string Interval::json () const
   std::stringstream out;
   out << "{";
 
-  if (!empty ())
+  if (! empty ())
   {
     out << "\"id\":" << id;
 
@@ -158,10 +158,10 @@ std::string Interval::json () const
       out << ",\"end\":\"" << end.toISO () << "\"";
     }
 
-    if (!_tags.empty ())
+    if (! _tags.empty ())
     {
       std::string tags;
-      for (auto &tag : _tags)
+      for (auto& tag : _tags)
       {
         if (tags[0])
           tags += ',';
@@ -174,7 +174,7 @@ std::string Interval::json () const
           << ']';
     }
 
-    if (!annotation.empty ())
+    if (! annotation.empty ())
     {
       out << ",\"annotation\":\"" << json::encode (annotation) << "\"";
     }

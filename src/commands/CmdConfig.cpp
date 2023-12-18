@@ -87,7 +87,7 @@ int CmdConfig (
 
     change = Rules::setConfigVariable (journal, rules, name, value, confirmation);
 
-    if (!change)
+    if (! change)
     {
       rc = 1;
     }
@@ -107,7 +107,7 @@ int CmdConfig (
       found = true;
     }
 
-    if (!found)
+    if (! found)
     {
       throw format ("No entry named '{1}' found.", name);
     }

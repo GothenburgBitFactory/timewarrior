@@ -37,7 +37,7 @@ static void undoIntervalAction(UndoAction& action, Database& database)
   database.modifyInterval (after, before, false);
 }
 
-static void undoConfigAction (UndoAction& action, Rules &rules, Journal& journal)
+static void undoConfigAction (UndoAction& action, Rules& rules, Journal& journal)
 {
   const std::string& before = action.getBefore ();
 

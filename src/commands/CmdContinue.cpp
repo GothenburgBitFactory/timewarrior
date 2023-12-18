@@ -75,7 +75,7 @@ int CmdContinue (
       throw format ("ID '@{1}' does not correspond to any tracking.", *ids.begin ());
     }
   }
-  else if (!tags.empty ())
+  else if (! tags.empty ())
   {
     IntervalFilterFirstOf filtering {std::make_shared <IntervalFilterAllWithTags> (tags)};
     intervals = getTracked (database, rules, filtering);

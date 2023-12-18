@@ -99,7 +99,7 @@ bool Range::is_empty () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Range::contains (const Datetime &datetime) const
+bool Range::contains (const Datetime& datetime) const
 {
   return (! is_started () || start < datetime) &&
          (! is_ended () || datetime < end);
@@ -130,7 +130,7 @@ bool Range::contains (const Datetime &datetime) const
 //   H                         [...
 //   I                                 [...
 //
-bool Range::overlaps (const Range &other) const
+bool Range::overlaps (const Range& other) const
 {
   if (! is_started () || ! other.is_started ())
     return false;
@@ -234,7 +234,7 @@ Range Range::intersect (const Range& other) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-bool Range::intersects (const Range &other) const
+bool Range::intersects (const Range& other) const
 {
   if (overlaps (other)) {
     return true;

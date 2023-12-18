@@ -43,7 +43,7 @@ int CmdUntag (
 
   // Gather IDs and TAGs.
   std::set <int> ids = cli.getIds ();
-  std::set<std::string> tags = cli.getTags ();
+  std::set <std::string> tags = cli.getTags ();
 
   if (tags.empty ())
   {
@@ -64,7 +64,7 @@ int CmdUntag (
     {
       throw std::string ("There is no active time tracking.");
     }
-    else if (!latest.at (0).is_open ())
+    else if (! latest.at (0).is_open ())
     {
       throw std::string ("At least one ID must be specified. See 'timew help untag'.");
     }
@@ -90,7 +90,7 @@ int CmdUntag (
             break;
           }
         }
-        if (!found)
+        if (! found)
         {
           throw format ("ID '@{1}' does not correspond to any tracking.", id);
         }

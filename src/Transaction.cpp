@@ -34,7 +34,7 @@ void Transaction::addUndoAction (
    _actions.emplace_back (type, before, after);
 }
 
-std::vector<UndoAction> Transaction::getActions () const
+std::vector <UndoAction> Transaction::getActions () const
 {
   return _actions;
 }

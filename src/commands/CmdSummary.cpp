@@ -123,7 +123,7 @@ int CmdSummary (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string renderHolidays (const std::map<Datetime, std::string>& holidays)
+std::string renderHolidays (const std::map <Datetime, std::string>& holidays)
 {
   std::stringstream out;
 

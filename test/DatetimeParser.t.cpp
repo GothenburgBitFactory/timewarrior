@@ -55,7 +55,7 @@ void testParseClosedRange (
 
   auto range = iso.parse_range (input);
 
-  t.ok (!range.is_open (), label + "[start,end)");
+  t.ok (! range.is_open (), label + "[start,end)");
 }
 
 ////////////////////////////////////////////////////////////////////////////////

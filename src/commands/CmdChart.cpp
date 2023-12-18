@@ -175,7 +175,7 @@ std::map <Datetime, std::string> createHolidayMap (Rules& rules, Range& range)
   std::map <Datetime, std::string> mapping;
   auto holidays = rules.all ("holidays.");
 
-  for (auto &entry : holidays)
+  for (auto& entry : holidays)
   {
     auto first_dot = entry.find ('.');
     auto last_dot = entry.rfind ('.');

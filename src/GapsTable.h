@@ -37,8 +37,8 @@ class GapsTable
   class Builder
   {
   public:
-    Builder& withRange (const Range &);
-    Builder& withIntervals (const std::vector <Range> &);
+    Builder& withRange (const Range&);
+    Builder& withIntervals (const std::vector <Range>&);
 
     Table build ();
 
