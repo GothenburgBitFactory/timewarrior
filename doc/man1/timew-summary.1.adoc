@@ -6,10 +6,14 @@ timew-summary - display a time-tracking summary
 == SYNOPSIS
 [verse]
 *timew summary* [_<range>_] [_<tag>_**...**]
+*timew summary* [_<id>_**...**]
 
 == DESCRIPTION
 Displays a table summarizing tracked time, by default for the current day.
-Accepts date ranges, or range hints, and tags for filtering.
+Accepts date ranges (or range hints) and tags, or ids for filtering.
+
+When ids are given, date ranges are ignored.
+Specifying both, tags and ids, is an error.
 
 == HINTS
 Apart from range hints (see **timew-hints**(7)), the summary report adheres to the following hints:

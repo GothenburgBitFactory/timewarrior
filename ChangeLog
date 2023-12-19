@@ -5,6 +5,8 @@
 - #494    Expand annotations in summary
           (thanks to catexis)
 - #566    Set table width dynamically to terminal width
+- #573    Filter summary based on ids
+          (thanks to Aniket Meshram)
 - #576    Fix quoting of tags in DOM output
 -         Add ':today' hint
 -         Refactor holidays/refresh script
