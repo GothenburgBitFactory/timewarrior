@@ -1,3 +1,7 @@
+------ current release ---------------------------
+
+1.7.0 (2023-12-23) -
+
 - #205    Wrap annotations in summary
           (thanks to varac)
 - #493    :lastweek doesn't count last Sunday
@@ -12,7 +16,7 @@
 -         Refactor holidays/refresh script
 -         Update task-timewarrior-hook script to 87a3426d8153f92aaee2edf36b2de62e48c4de0e
 
- ------ current release ---------------------------
+------ old releases ------------------------------
 
 1.6.0 (2023-09-18) - cd1aa610ed50558bb2cf141022fa7b41523091ac3ae5fbb9c2d459cfe1afc782
 
@@ -40,8 +44,6 @@
           (thanks to Maxim Beder)
 -         Cleanup CMake files
 -         Update project to C++17
-
------- old releases ------------------------------
 
 1.5.0 (2023-04-04) - 51e7c2c772837bbd6d56da8d16506c4b6de8644166e0b5234ad36ae6a70dd4f6
 
@@ -90,8 +92,6 @@
 - #512    help.t fails on alpine with mandoc package
           (thanks to Edd Salkield)
 -         Add option '--details' to 'test/problems' script
-
------- old releases ------------------------------
 
 1.4.3 (2021-05-28) - fc618636aacba6e52d447b482aeef58b375dfc8c
 
