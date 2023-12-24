@@ -175,7 +175,7 @@ W10 2017-03-09 Thu @4 Tag1 8:43:08 9:38:15 0:55:07 0:55:07
 """, out)
 
     def test_with_id_filter(self):
-        """Summary should print data filtered by tag"""
+        """Summary should print data filtered by id"""
         self.t("track Tag1 2017-03-09T08:43:08 - 2017-03-09T09:38:15")
         self.t("track Tag2 2017-03-09T11:38:39 - 2017-03-09T11:45:35")
         self.t("track Tag2 Tag3 2017-03-09T11:46:21 - 2017-03-09T12:00:17")
