@@ -92,7 +92,7 @@ int CmdSummary (
       }
     }
 
-    range = Range {tracked.begin ()->end, tracked.end ()->start};
+    range = Range {tracked.front ().start, tracked.back ().end};
   }
   else
   {
