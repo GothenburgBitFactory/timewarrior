@@ -1,6 +1,6 @@
 ------ current release ---------------------------
 
-1.7.0 (2023-12-23) -
+1.7.0 (2023-12-24) - 63f7fc95a0fa20dc768ae4e94b7f2d79c306f9dd
 
 - #205    Wrap annotations in summary
           (thanks to varac)
