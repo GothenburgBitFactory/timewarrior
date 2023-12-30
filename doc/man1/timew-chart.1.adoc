@@ -103,11 +103,13 @@ This can be used to see the exclusions.
 The ':ids' hint causes the intervals to be displayed with their ids
 
 == EXAMPLES
-Charts accept date ranges and tags for filtering, or shortcut hints:
+Charts accept date ranges and/or tags, or ids for filtering:
 
     $ timew month 1st - today
     $ timew week FOO BAR
-    $ timew day :week
+    $ timew day @3 @4
+
+See **timew-ranges**(7) and **timew-hints**(7) on the different ways to provide date ranges.
 
 == SEE ALSO
 **timew-summary**(1),
