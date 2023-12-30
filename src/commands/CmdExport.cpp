@@ -29,6 +29,7 @@
 #include <IntervalFilterAllWithTags.h>
 #include <IntervalFilterAndGroup.h>
 #include <commands.h>
+#include <format.h>
 #include <iostream>
 #include <timew.h>
 
@@ -39,33 +40,52 @@ int CmdExport (
   Database& database)
 {
   auto ids = cli.getIds ();
-  auto range = cli.getRange ();
   auto tags = cli.getTags ();
 
-  std::shared_ptr <IntervalFilter> filtering;
+  if (! ids.empty () && ! tags.empty ())
+  {
+    throw std::string ("You cannot specify both id and tags/range to export intervals.");
+  }
+
+  std::vector <Interval> intervals;
 
   if (! ids.empty ())
   {
-    if (! range.is_empty ())
-    {
-      throw std::string ("You cannot specify both id and tags/range to export intervals.");
-    }
+    auto filtering = IntervalFilterAllWithIds (ids);
+    intervals = getTracked (database, rules, filtering);
 
-    filtering = std::make_shared <IntervalFilterAllWithIds> (ids);
+    if (intervals.size () != ids.size ())
+    {
+      for (auto& id: ids)
+      {
+        bool found = false;
+
+        for (auto& interval: intervals)
+        {
+          if (interval.id == id)
+          {
+            found = true;
+            break;
+          }
+        }
+        if (! found)
+        {
+          throw format ("ID '@{1}' does not correspond to any tracking.", id);
+        }
+      }
+    }
   }
   else
   {
-    filtering = std::make_shared <IntervalFilterAndGroup> (
-      std::vector <std::shared_ptr <IntervalFilter>> (
-        {
-          std::make_shared <IntervalFilterAllInRange> (range),
-          std::make_shared <IntervalFilterAllWithTags> (tags),
-        }
-      )
-    );
-  }
+    auto range = cli.getRange ();
 
-  auto intervals = getTracked (database, rules, *filtering);
+    IntervalFilterAndGroup filtering ({
+      std::make_shared <IntervalFilterAllInRange> (range),
+      std::make_shared <IntervalFilterAllWithTags> (tags)
+    });
+
+    intervals = getTracked (database, rules, filtering);
+  }
 
   std::cout << jsonFromIntervals (intervals);
 
