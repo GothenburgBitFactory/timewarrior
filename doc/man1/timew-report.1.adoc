@@ -6,6 +6,7 @@ timew-report - run an extension report
 == SYNOPSIS
 [verse]
 *timew* [*report*] _<report>_ [_<range>_] [_<tag>_**...**]
+*timew* [*report*] _<report>_ _<id>_**...**
 
 == DESCRIPTION
 Runs an extension report, and supports filtering data.
@@ -19,6 +20,8 @@ This does however assume there is a 'foo' extension installed.
 The return code is the return code of the extension.
 If the extension produces no output and a non-zero rc, then 255 is returned.
 
+Filtering is either possible by range and/or tags, or by ids.
+
 == CONFIGURATION
 
 **reports.range**::
@@ -30,3 +33,4 @@ Defaults to `all`
 Set the date range for report _name_, used if no _range_ is given on the command line.
 Here, _name_ is the name of the report executable without its extension (i.e. a report executable 'foo.py' is referred to by 'foo').
 The value has to correspond to a range hint, see **timew-hints**(7).
+Defaults to the value of **reports.range**.

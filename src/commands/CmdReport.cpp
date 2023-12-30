@@ -26,6 +26,7 @@
 
 #include <FS.h>
 #include <IntervalFilterAllInRange.h>
+#include <IntervalFilterAllWithIds.h>
 #include <IntervalFilterAllWithTags.h>
 #include <IntervalFilterAndGroup.h>
 #include <cmake.h>
@@ -133,16 +134,57 @@ int CmdReport (
   Range default_range = {};
   expandIntervalHint (":" + report_hint, default_range);
 
-  // Create a filter, and if empty, choose the current week.
+  auto ids = cli.getIds ();
   auto tags = cli.getTags ();
-  auto range = cli.getRange (default_range);
 
-  IntervalFilterAndGroup filtering ({
-    std::make_shared <IntervalFilterAllInRange> (range),
-    std::make_shared <IntervalFilterAllWithTags> (tags)
-  });
+  if (! ids.empty () && ! tags.empty ())
+  {
+    throw std::string ("You cannot filter intervals by both, ids and tags.");
+  }
 
-  auto tracked = getTracked (database, rules, filtering);
+  Range range;
+
+  std::vector <Interval> tracked;
+
+  if (! ids.empty ())
+  {
+    auto filtering = IntervalFilterAllWithIds (ids);
+    tracked = getTracked (database, rules, filtering);
+
+    if (tracked.size () != ids.size ())
+    {
+      for (auto& id: ids)
+      {
+        bool found = false;
+
+        for (auto& interval: tracked)
+        {
+          if (interval.id == id)
+          {
+            found = true;
+            break;
+          }
+        }
+        if (! found)
+        {
+          throw format ("ID '@{1}' does not correspond to any tracking.", id);
+        }
+      }
+    }
+
+    range = Range {tracked.begin ()->end, tracked.end ()->start};
+  }
+  else
+  {
+    range = cli.getRange (default_range);
+
+    IntervalFilterAndGroup filtering ({
+      std::make_shared <IntervalFilterAllInRange> (range),
+      std::make_shared <IntervalFilterAllWithTags> (tags)
+    });
+
+    tracked = getTracked (database, rules, filtering);
+  }
 
   // Compose Header info.
   rules.set ("temp.report.start", range.is_started () ? range.start.toISO () : "");
