@@ -56,8 +56,8 @@ public:
 
   std::string dump () const;
 
-  static bool setConfigVariable (Journal&, const Rules&, std::string, std::string, bool confirmation);
-  static int unsetConfigVariable (Journal&, const Rules&, std::string, bool confirmation);
+  static bool setConfigVariable (Journal&, const Rules&, const std::string&, const std::string&, bool confirmation);
+  static int unsetConfigVariable (Journal&, const Rules&, const std::string&, bool confirmation);
 
 private:
   void parse               (const std::string&, int = 1);
@@ -72,7 +72,6 @@ private:
   std::string                         _original_file {};
   std::map <std::string, std::string> _settings      {};
   std::vector <std::string>           _rule_types    {"tags", "reports", "theme", "holidays", "exclusions"};
-
 };
 
 #endif
