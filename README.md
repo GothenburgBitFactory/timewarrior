@@ -46,7 +46,7 @@ Building Timewarrior yourself requires
 
 There are two ways to retrieve the Timewarrior sources:
 
-* Clone the repository from GitHub,
+* Clone the repository from GitHub and update required submodules,
   ```
   git clone --recurse-submodules https://github.com/GothenburgBitFactory/timewarrior
   cd timewarrior
