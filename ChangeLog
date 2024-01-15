@@ -1,3 +1,7 @@
+- #580    internal parsing of tags starting with number broken
+          (thanks to arxel-sc)
+- #582    Retrieval of intervals with tags containing hyphens is broken
+          (thanks to Eugene Morozov)
 - #583    README - Update build instructions
           (thanks to Joachim Meyer)
 

@@ -55,7 +55,7 @@ std::string quoteIfNeeded (const std::string& input)
 {
   auto quote = input.find ('"');
   auto space = input.find (' ');
-  auto op    = input.find_first_of ("+/()<^!=~_%");
+  auto op    = input.find_first_of ("-+/()<^!=~_%");
 
   if (quote == std::string::npos &&
       space == std::string::npos &&
