@@ -1,3 +1,7 @@
+------ current release ---------------------------
+
+1.7.1 (2024-01-16) -
+
 - #580    internal parsing of tags starting with number broken
           (thanks to arxel-sc)
 - #582    Retrieval of intervals with tags containing hyphens is broken
@@ -5,7 +9,7 @@
 - #583    README - Update build instructions
           (thanks to Joachim Meyer)
 
------- current release ---------------------------
+------ old releases ------------------------------
 
 1.7.0 (2023-12-24) - 63f7fc95a0fa20dc768ae4e94b7f2d79c306f9dd
 
@@ -22,8 +26,6 @@
 -         Add ':today' hint
 -         Refactor holidays/refresh script
 -         Update task-timewarrior-hook script to 87a3426d8153f92aaee2edf36b2de62e48c4de0e
-
------- old releases ------------------------------
 
 1.6.0 (2023-09-18) - cd1aa610ed50558bb2cf141022fa7b41523091ac3ae5fbb9c2d459cfe1afc782
 
