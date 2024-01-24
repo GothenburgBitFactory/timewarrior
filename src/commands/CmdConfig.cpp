@@ -25,6 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <JSON.h>
+#include <Rules.h>
 #include <commands.h>
 #include <format.h>
 #include <iostream>
