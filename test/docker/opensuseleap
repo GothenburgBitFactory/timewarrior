@@ -11,8 +11,8 @@ RUN zypper install -y \
            python3-python-dateutil \
            ruby
 
-RUN gem install asciidoctor -v 2.0.15
-RUN update-alternatives --install /usr/bin/asciidoctor asciidoctor /usr/lib64/ruby/gems/2.5.0/gems/asciidoctor-2.0.15/bin/asciidoctor 10
+RUN gem install asciidoctor -v 2.0.17
+RUN update-alternatives --install /usr/bin/asciidoctor asciidoctor /usr/bin/asciidoctor.ruby2.5 10
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 ENV TZ=Europe/Berlin
 
