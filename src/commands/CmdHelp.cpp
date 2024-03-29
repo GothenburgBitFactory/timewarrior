@@ -55,6 +55,7 @@ int CmdHelpUsage (const Extensions& extensions)
             << "       timew month [<interval>] [<tag> ...]\n"
             << "       timew move @<id> <date>\n"
             << "       timew [report] <report> [<interval>] [<tag> ...]\n"
+            << "       timew retag @<id> [@<id> ...] <tag> [<tag> ...]\n"
             << "       timew shorten @<id> [@<id> ...] <duration>\n"
             << "       timew show\n"
             << "       timew split @<id> [@<id> ...]\n"
