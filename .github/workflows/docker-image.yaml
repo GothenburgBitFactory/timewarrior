@@ -44,7 +44,7 @@ jobs:
 
       - name: Build and push Timewarrior Docker image
         id: build-and-push
-        uses: docker/build-push-action@v6.0.0
+        uses: docker/build-push-action@v6.2.0
         with:
           context: .
           file: "./docker/timew.dockerfile"
