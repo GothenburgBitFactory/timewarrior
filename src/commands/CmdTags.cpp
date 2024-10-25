@@ -31,13 +31,18 @@
 int CmdTags (
   CLI& cli,
   Rules& rules,
-  Database& database)
+  Database& database,
+  Journal& journal)
 {
-  auto subCommand = cli.getSubCommand ( std::set <std::string> {"list"}, "list");
+  auto subCommand = cli.getSubCommand ( std::set <std::string> {"add", "list"}, "list");
 
   if (subCommand == "list")
   {
     return CmdTagsList (cli, rules, database);
+  }
+  else if (subCommand == "add")
+  {
+    return CmdTag(cli, rules, database, journal);
   }
   else
   {

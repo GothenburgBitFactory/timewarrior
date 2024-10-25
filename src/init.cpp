@@ -262,7 +262,7 @@ int dispatchCommand (
     else if (command == "stop")        status = CmdStop          (cli, rules, database, journal            );
     else if (command == "summary")     status = CmdSummary       (cli, rules, database                     );
     else if (command == "tag")         status = CmdTag           (cli, rules, database, journal            );
-    else if (command == "tags")        status = CmdTags          (cli, rules, database                     );
+    else if (command == "tags")        status = CmdTags          (cli, rules, database, journal            );
     else if (command == "track")       status = CmdTrack         (cli, rules, database, journal            );
     else if (command == "undo")        status = CmdUndo          (     rules, database, journal            );
     else if (command == "untag")       status = CmdUntag         (cli, rules, database, journal            );

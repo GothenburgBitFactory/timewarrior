@@ -305,6 +305,7 @@ std::string CLI::findSubCommand(const std::set<std::string>& subCommands) {
     }
     if (subCommands.find(a.attribute("raw")) != subCommands.end()) {
       a.tag ("CMD");
+      a.unTag ("TAG");
       return a.attribute("raw");
     }
   }
