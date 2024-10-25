@@ -34,7 +34,7 @@ int CmdTags (
   Database& database,
   Journal& journal)
 {
-  auto subCommand = cli.getSubCommand ( std::set <std::string> {"add", "list", "remove"}, "list");
+  auto subCommand = cli.getSubCommand ( std::set <std::string> {"add", "list", "remove", "replace"}, "list");
 
   if (subCommand == "list")
   {
@@ -47,6 +47,10 @@ int CmdTags (
   else if (subCommand == "remove")
   {
     return CmdUntag(cli, rules, database, journal);
+  }
+  else if (subCommand == "replace")
+  {
+    return CmdRetag (cli, rules, database, journal);
   }
   else
   {
