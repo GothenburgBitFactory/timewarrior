@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2024, Gothenburg Bit Factory.
+// Copyright 2016 - 2023, Gothenburg Bit Factory.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,29 +20,75 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-// https://opensource.org/license/mit
+// https://www.opensource.org/licenses/mit-license.php
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <Color.h>
+#include <IntervalFilterAllInRange.h>
+#include <IntervalFilterAllWithTags.h>
+#include <IntervalFilterAndGroup.h>
+#include <Table.h>
+#include <TagDescription.h>
+#include <TagsTable.h>
 #include <commands.h>
-#include <format.h>
+#include <iostream>
+#include <set>
+#include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdTags (
+int CmdTagsList (
   CLI& cli,
   Rules& rules,
   Database& database)
 {
-  auto subCommand = cli.getSubCommand ( std::set <std::string> {"list"}, "list");
+  const bool verbose = rules.getBoolean ("verbose");
 
-  if (subCommand == "list")
+  IntervalFilterAndGroup filtering ({
+    std::make_shared <IntervalFilterAllInRange> (cli.getRange ()),
+    std::make_shared <IntervalFilterAllWithTags> (cli.getTags ())
+  });
+
+  // Generate a unique, ordered list of tags.
+  std::set <std::string> tags;
+
+  for (const auto& interval : getTracked (database, rules, filtering))
   {
-    return CmdTagsList (cli, rules, database);
+    for (const auto& tag : interval.tags ())
+    {
+      tags.insert (tag);
+    }
+  }
+
+  // Shows all tags.
+  if (tags.empty ())
+  {
+    if (verbose)
+    {
+      std::cout << "No data found.\n";
+    }
   }
   else
   {
-    throw format ("Command 'tags' has no subcommand '{1}' defined!", subCommand);
+    std::vector <TagDescription> tagDescriptions;
+
+    for (const auto& tag: tags)
+    {
+      auto name = std::string ("tags.") + tag + ".description";
+      tagDescriptions.emplace_back (tag, tagColor (rules, tag), rules.has (name) ? rules.get (name) : "-");
+    }
+
+    auto table = TagsTable::builder()
+      .withTagDescriptions (tagDescriptions)
+      .withColor (rules.getBoolean ("color"))
+      .build ();
+
+    std::cout << '\n'
+              << table.render ()
+              << '\n';
   }
+
+  return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

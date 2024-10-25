@@ -49,6 +49,7 @@ set (commands_SRCS CmdAnnotate.cpp
                    CmdSplit.cpp
                    CmdTag.cpp
                    CmdTags.cpp
+                   CmdTagsList.cpp
                    CmdTrack.cpp
                    CmdUndo.cpp
                    CmdUntag.cpp)

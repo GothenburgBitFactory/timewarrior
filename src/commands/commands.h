@@ -65,6 +65,7 @@ int CmdStart         (CLI&, Rules&, Database&, Journal&                   );
 int CmdStop          (CLI&, Rules&, Database&, Journal&                   );
 int CmdTag           (CLI&, Rules&, Database&, Journal&                   );
 int CmdTags          (CLI&, Rules&, Database&                             );
+int CmdTagsList      (CLI&, Rules&, Database&                             );
 int CmdTrack         (CLI&, Rules&, Database&, Journal&                   );
 int CmdUndo          (      Rules&, Database&, Journal&                   );
 int CmdUntag         (CLI&, Rules&, Database&, Journal&                   );
