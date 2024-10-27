@@ -50,6 +50,7 @@ set (commands_SRCS CmdAnnotate.cpp
                    CmdTag.cpp
                    CmdTags.cpp
                    CmdTagsList.cpp
+                   CmdTagsDescribe.cpp
                    CmdTrack.cpp
                    CmdUndo.cpp
                    CmdUntag.cpp)

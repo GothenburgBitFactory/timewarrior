@@ -20,46 +20,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 //
-// https://opensource.org/license/mit
+// https://www.opensource.org/licenses/mit-license.php
 //
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <commands.h>
-#include <format.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdTags (
+int CmdTagsDescribe (
   CLI& cli,
   Rules& rules,
-  Database& database,
   Journal& journal)
 {
-  auto subCommand = cli.getSubCommand ( std::set <std::string> {"add", "list", "remove", "replace"}, "list");
+  const bool verbose = rules.getBoolean ("verbose");
 
-  if (subCommand == "list")
-  {
-    return CmdTagsList (cli, rules, database);
-  }
-  else if (subCommand == "add")
-  {
-    return CmdTag(cli, rules, database, journal);
-  }
-  else if (subCommand == "remove")
-  {
-    return CmdUntag(cli, rules, database, journal);
-  }
-  else if (subCommand == "replace")
-  {
-    return CmdRetag (cli, rules, database, journal);
-  }
-  else if (subCommand == "describe")
-  {
-    return CmdTagsDescribe (cli, rules, journal);
-  }
-  else
-  {
-    throw format ("Command 'tags' has no subcommand '{1}' defined!", subCommand);
-  }
+  auto tags = cli.getTags ();
+
+  // Expect first (non-consumed) argument to be the tag, the rest the description
+
+  // Check tag for existence
+  // Confirm whether to create a new tag
+
+  // Enter description in DB
+
+  return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
