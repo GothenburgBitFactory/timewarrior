@@ -30,7 +30,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdStart (
-  const CLI& cli,
+  CLI& cli,
   Rules& rules,
   Database& database,
   Journal& journal)

@@ -200,7 +200,7 @@ void initializeExtensions (
 
 ////////////////////////////////////////////////////////////////////////////////
 int dispatchCommand (
-  const CLI& cli,
+  CLI& cli,
   Database& database,
   Journal& journal,
   Rules& rules,

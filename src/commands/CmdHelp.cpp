@@ -52,6 +52,7 @@ int CmdHelpUsage (const Extensions& extensions)
             << "       timew join @<id> @<id>\n"
             << "       timew lengthen @<id> [@<id> ...] <duration>\n"
             << "       timew modify (start|end) @<id> <date>\n"
+            << "       timew modify range @<id> <interval>\n"
             << "       timew month [<interval>] [<tag> ...]\n"
             << "       timew move @<id> <date>\n"
             << "       timew [report] <report> [<interval>] [<tag> ...]\n"
@@ -113,7 +114,7 @@ int CmdHelpUsage (const Extensions& extensions)
 }
 
 int CmdHelp (
-  const CLI& cli,
+  CLI& cli,
   const Extensions& extensions)
 {
   auto words = cli.getWords ();

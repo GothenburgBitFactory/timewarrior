@@ -2,7 +2,7 @@
 
 ###############################################################################
 #
-# Copyright 2018 - 2022, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+# Copyright 2018 - 2022, 2024 Thomas Lauf, Paul Beckingham, Federico Hernandez.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -65,14 +65,14 @@ class TestModify(TestCase):
             expectedStart="{:%Y%m%dT%H%M%S}Z".format(one_hour_before_utc))
 
     def test_modify_invalid_subcommand(self):
-        """Modify without (start|stop) subcommand"""
+        """Modify with invalid subcommand"""
         now_utc = datetime.now(timezone.utc)
         one_hour_before_utc = now_utc - timedelta(hours=1)
 
         self.t("start {:%Y-%m-%dT%H:%M:%S}Z".format(one_hour_before_utc))
         self.t("stop")
-        code, out, err = self.t.runError("modify @1 {:%Y-%m-%dT%H:%M:%S}Z".format(now_utc))
-        self.assertIn("Must specify start|end command to modify", err)
+        code, out, err = self.t.runError("modify @1 bogus {:%Y-%m-%dT%H:%M:%S}Z".format(now_utc))
+        self.assertIn("Must specify start|end|range command to modify", err)
 
     def test_modify_no_end_time(self):
         """Modify without a time to stop at"""
@@ -281,6 +281,36 @@ class TestModify(TestCase):
         code, out, err = self.t.runError("modify start @2")
         self.assertIn("ID '@2' does not correspond to any tracking.", err)
 
+    def test_modify_range(self):
+        """Call modify with range subcommand"""
+        now = datetime.now().replace(second=0, microsecond=0, minute=0)
+        now_utc = now.replace(tzinfo=tz.tzlocal()).astimezone(timezone.utc).replace(second=0, microsecond=0, minute=0)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+
+        self.t("track from {:%Y-%m-%dT%H:%M:%S}Z for 30min bar".format(four_hours_before_utc))
+
+        self.t("modify @1 range {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z".format(three_hours_before_utc, two_hours_before_utc))
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 1)
+        self.assertClosedInterval(j[0],
+                                expectedStart=three_hours_before_utc,
+                                expectedEnd=two_hours_before_utc,
+                                expectedTags=['bar'])
+
+    def test_modify_range_with_point_in_time(self):
+        """Call modify range with a point in time is an error"""
+        now = datetime.now().replace(second=0, microsecond=0, minute=0)
+        now_utc = now.replace(tzinfo=tz.tzlocal()).astimezone(timezone.utc).replace(second=0, microsecond=0, minute=0)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+
+        self.t("track from {:%Y-%m-%dT%H:%M:%S}Z for 30min bar".format(four_hours_before_utc))
+
+        self.t("modify @1 range {:%Y-%m-%dT%H:%M:%S}Z".format(three_hours_before_utc))
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

@@ -294,6 +294,32 @@ std::vector <std::string> CLI::getWords () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Find and mark sub-command, return empty string if not found
+std::string CLI::findSubCommand(const std::set<std::string>& subCommands) {
+  for (auto &a: _args) {
+    if (a.hasTag("BINARY") &&
+        a.hasTag("CMD") &&
+        a.hasTag("CONFIG") &&
+        a.hasTag("HINT")) {
+      continue;
+    }
+    if (subCommands.find(a.attribute("raw")) != subCommands.end()) {
+      a.tag ("CMD");
+      return a.attribute("raw");
+    }
+  }
+  return "";
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Find and mark sub-command, return given default if not found
+std::string CLI::getSubCommand(const std::set<std::string>& subCommands, const std::string& defaultCommand) {
+  const auto& subCommand = findSubCommand (subCommands);
+
+  return subCommand.empty () ? defaultCommand : subCommand;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 // Search for 'value' in _entities category, return canonicalized value.
 bool CLI::canonicalize (
   std::string& canonicalized,

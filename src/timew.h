@@ -65,7 +65,7 @@ bool lightweightVersionCheck (int, const char**);
 void initializeEntities (CLI&);
 void initializeDataJournalAndRules (const CLI&, Database&, Journal&, Rules&);
 void initializeExtensions (CLI&, const Rules&, Extensions&);
-int dispatchCommand (const CLI&, Database&, Journal&, Rules&, const Extensions&);
+int dispatchCommand (CLI&, Database&, Journal&, Rules&, const Extensions&);
 
 // helper.cpp
 Color summaryIntervalColor (const Rules&, const std::set <std::string>&);

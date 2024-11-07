@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright 2018 - 2023, Thomas Lauf, Paul Beckingham, Federico Hernandez.
+// Copyright 2024, Thomas Lauf, Paul Beckingham, Federico Hernandez.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,16 +24,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <IntervalFilterAllInRange.h>
 #include <IntervalFilterAllWithIds.h>
-#include <IntervalFilterFirstOf.h>
+#include <cassert>
 #include <commands.h>
 #include <format.h>
-#include <iostream>
 #include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-int CmdAnnotate (
+int CmdModifyStart (
   CLI& cli,
   Rules& rules,
   Database& database,
@@ -42,75 +40,52 @@ int CmdAnnotate (
   const bool verbose = rules.getBoolean ("verbose");
 
   auto ids = cli.getIds ();
-  auto annotation = cli.getAnnotation ();
-
-  journal.startTransaction ();
-  flattenDatabase (database, rules);
-  std::vector <Interval> intervals;
 
   if (ids.empty ())
   {
-    IntervalFilterFirstOf filtering {std::make_shared <IntervalFilterAllInRange> (Range {})};
-    intervals = getTracked (database, rules, filtering);
-
-    if (intervals.empty ())
-    {
-      throw std::string ("There is no active time tracking.");
-    }
-    else if (! intervals.at (0).is_open ())
-    {
-      throw std::string ("At least one ID must be specified. See 'timew help annotate'.");
-    }
+    throw std::string ("ID must be specified. See 'timew help modify'.");
   }
-  else
+
+  if (ids.size () > 1)
   {
-    auto filtering = IntervalFilterAllWithIds (ids);
-    intervals = getTracked (database, rules, filtering);
-
-    if (intervals.size () != ids.size ())
-    {
-      for (auto& id: ids)
-      {
-        bool found = false;
-
-        for (auto& interval: intervals)
-        {
-          if (interval.id == id)
-          {
-            found = true;
-            break;
-          }
-        }
-        if (! found)
-        {
-          throw format ("ID '@{1}' does not correspond to any tracking.", id);
-        }
-      }
-    }
+    throw std::string ("Only one ID may be specified. See 'timew help modify'.");
   }
 
-  // Apply annotation to intervals.
-  for (const auto& interval : intervals)
+  auto range = cli.getRange ({0, 0});
+
+  int id = *ids.begin();
+
+  flattenDatabase (database, rules);
+  auto filtering = IntervalFilterAllWithIds (ids);
+  auto intervals = getTracked (database, rules, filtering);
+
+  if (intervals.empty())
   {
-    Interval modified {interval};
-    modified.setAnnotation (annotation);
-
-    database.modifyInterval (interval, modified, verbose);
-
-    if (verbose)
-    {
-      if (annotation.empty ())
-      {
-        std::cout << "Removed annotation from @" << modified.id << std::endl;
-      }
-      else
-      {
-        std::cout << "Annotated @" << modified.id << " with \"" << annotation << "\"" << std::endl;
-      }
-    }
+    throw format ("ID '@{1}' does not correspond to any tracking.", id);
   }
 
-  journal.endTransaction ();
+  assert (intervals.size () == 1);
+  if (! range.is_started ())
+  {
+    throw std::string ("No updated time specified. See 'timew help modify'.");
+  }
+
+  const Interval interval = intervals.at (0);
+  Interval modified {interval};
+  modified.start = range.start;
+
+  if (! modified.is_open () && (modified.start > modified.end))
+  {
+    throw format ("Cannot modify interval @{1} where start is after end.", id);
+  }
+  
+  journal.startTransaction ();
+
+  database.deleteInterval (interval);
+  validate (cli, rules, database, modified);
+  database.addInterval (modified, verbose);
+
+  journal.endTransaction();
 
   return 0;
 }

@@ -69,6 +69,8 @@ public:
   std::string getCommand () const;
   bool getComplementaryHint (const std::string&, bool) const;
   bool getHint(const std::string&, bool) const;
+  std::string findSubCommand(const std::set<std::string>&);
+  std::string getSubCommand(const std::set<std::string>&, const std::string&);
   std::set <int> getIds () const;
   std::set <std::string> getTags () const;
   std::string getAnnotation() const;

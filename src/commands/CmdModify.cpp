@@ -24,105 +24,37 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <IntervalFilterAllWithIds.h>
-#include <cassert>
 #include <commands.h>
 #include <format.h>
-#include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdModify (
-  const CLI& cli,
+  CLI& cli,
   Rules& rules,
   Database& database,
   Journal& journal)
 {
-  const bool verbose = rules.getBoolean ("verbose");
+  const auto subCommand = cli.findSubCommand (std::set<std::string> {"start", "end", "range"});
 
-  auto words = cli.getWords ();
-
-  enum {MODIFY_START, MODIFY_END} op = MODIFY_START;
-
-  if (words.empty())
+  if (subCommand.empty())
   {
-    throw std::string ("Must specify start|end command to modify. See 'timew help modify'.");
+    throw std::string ("Must specify start|end|range command to modify. See 'timew help modify'.");
   }
 
-  if (words.at (0) == "start")
+  if (subCommand == "start")
   {
-    op = MODIFY_START;
+    return CmdModifyStart (cli, rules, database, journal);
   }
-  else if (words.at (0) == "end")
+  if (subCommand == "end")
   {
-    op = MODIFY_END;
+    return CmdModifyEnd (cli, rules, database, journal);
   }
-  else
+  if (subCommand == "range")
   {
-    throw format ("Must specify start|end command to modify. See 'timew help modify'.", words.at (0));
-  }
-
-  auto ids = cli.getIds ();
-
-  if (ids.empty ())
-  {
-    throw std::string ("ID must be specified. See 'timew help modify'.");
+    return CmdModifyRange (cli, rules, database, journal);
   }
 
-  if (ids.size () > 1)
-  {
-    throw std::string ("Only one ID may be specified. See 'timew help modify'.");
-  }
-
-  auto range = cli.getRange ({0, 0});
-
-  int id = *ids.begin();
-
-  flattenDatabase (database, rules);
-  auto filtering = IntervalFilterAllWithIds (ids);
-  auto intervals = getTracked (database, rules, filtering);
-
-  if (intervals.empty())
-  {
-    throw format ("ID '@{1}' does not correspond to any tracking.", id);
-  }
-
-  assert (intervals.size () == 1);
-  if (! range.is_started ())
-  {
-    throw std::string ("No updated time specified. See 'timew help modify'.");
-  }
-
-  const Interval interval = intervals.at (0);
-  Interval modified {interval};
-  switch (op)
-  {
-  case MODIFY_START:
-    modified.start = range.start;
-    break;
-
-  case MODIFY_END:
-    if (interval.is_open ())
-    {
-      throw format ("Cannot modify end of open interval @{1}.", id);
-    }
-    modified.end = range.start;
-    break;
-  }
-
-  if (! modified.is_open () && (modified.start > modified.end))
-  {
-    throw format ("Cannot modify interval @{1} where start is after end.", id);
-  }
-  
-  journal.startTransaction ();
-
-  database.deleteInterval (interval);
-  validate (cli, rules, database, modified);
-  database.addInterval (modified, verbose);
-
-  journal.endTransaction();
-
-  return 0;
+  throw format ("Command 'modify' has no subcommand '{1}' defined!", subCommand);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

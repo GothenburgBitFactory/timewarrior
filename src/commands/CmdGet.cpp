@@ -33,7 +33,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 // Іdentify DOM references in cli, provide space-separated results.
 int CmdGet (
-  const CLI& cli,
+  CLI& cli,
   Rules& rules,
   Database& database)
 {

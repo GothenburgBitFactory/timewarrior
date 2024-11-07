@@ -42,7 +42,7 @@ std::string renderHolidays (const std::map <Datetime, std::string>&);
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdSummary (
-  const CLI& cli,
+  CLI& cli,
   Rules& rules,
   Database& database)
 {

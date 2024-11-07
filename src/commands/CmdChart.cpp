@@ -36,13 +36,13 @@
 #include <iostream>
 #include <timew.h>
 
-int renderChart (const std::string&, const CLI&, Rules&, Database&);
+int renderChart (const std::string&, CLI&, Rules&, Database&);
 
 std::map <Datetime, std::string> createHolidayMap (Rules&, Range&);
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdChartDay (
-  const CLI& cli,
+  CLI& cli,
   Rules& rules,
   Database& database)
 {
@@ -51,7 +51,7 @@ int CmdChartDay (
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdChartWeek (
-  const CLI& cli,
+  CLI& cli,
   Rules& rules,
   Database& database)
 {
@@ -60,7 +60,7 @@ int CmdChartWeek (
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdChartMonth (
-  const CLI& cli,
+  CLI& cli,
   Rules& rules,
   Database& database)
 {
@@ -70,7 +70,7 @@ int CmdChartMonth (
 ////////////////////////////////////////////////////////////////////////////////
 int renderChart (
   const std::string& type,
-  const CLI& cli,
+  CLI& cli,
   Rules& rules,
   Database& database)
 {

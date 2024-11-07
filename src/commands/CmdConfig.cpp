@@ -35,7 +35,7 @@
 // timew config name             Remove name
 // timew config                  Show all config
 int CmdConfig (
-  const CLI& cli,
+  CLI& cli,
   Rules& rules,
   Journal& journal)
 {

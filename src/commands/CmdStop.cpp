@@ -42,7 +42,7 @@ template <class T> T setIntersect (
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdStop (
-  const CLI& cli,
+  CLI& cli,
   Rules& rules,
   Database& database,
   Journal& journal)

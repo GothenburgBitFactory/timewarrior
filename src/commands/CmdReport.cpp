@@ -107,7 +107,7 @@ std::string getScriptName (const std::string& script_path)
 
 ////////////////////////////////////////////////////////////////////////////////
 int CmdReport (
-  const CLI& cli,
+  CLI& cli,
   Rules& rules,
   Database& database,
   const Extensions& extensions)

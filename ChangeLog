@@ -1,3 +1,4 @@
+- #658    Add sub-command 'range' to command 'modify'
 - #620    Fix installation of man pages from tarball
 - #600    Add retag command to internal help
           (thanks to Stefan Herold)
