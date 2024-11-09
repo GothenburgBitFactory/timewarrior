@@ -611,17 +611,30 @@ std::set <std::string> CLI::getTags () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::string CLI::getAnnotation () const
+std::string CLI::getAnnotation ()
 {
   std::string annotation;
 
+  bool found = false;
+
   for (auto& arg : _args)
   {
-    if (arg.hasTag ("TAG"))
-    {
-      annotation = (arg.attribute ("raw"));
+    if (arg.hasTag ("CMD")  ||
+      arg.hasTag ("EXT")    ||
+      arg.hasTag ("CONFIG") ||
+      arg.hasTag ("ID")     ||
+      arg.hasTag ("BINARY")) {
+      if (!found) {
+        continue;
+      } else {
+        break;
+      }
     }
 
+    arg.tag ("ANNOTATION");
+    arg.attribute ("consumed", true);
+    annotation += (found ? " " : "") + (arg.attribute ("raw"));
+    found = true;
   }
 
   return annotation;

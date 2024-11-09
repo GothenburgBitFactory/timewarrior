@@ -73,7 +73,7 @@ public:
   std::string getSubCommand(const std::set<std::string>&, const std::string&);
   std::set <int> getIds () const;
   std::set <std::string> getTags () const;
-  std::string getAnnotation() const;
+  std::string getAnnotation();
   Duration getDuration() const;
   std::vector <std::string> getDomReferences () const;
   Range getRange (const Range& default_range = {0, 0}) const;
