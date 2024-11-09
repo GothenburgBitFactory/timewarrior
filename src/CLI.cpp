@@ -583,14 +583,29 @@ bool CLI::exactMatch (
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-std::set <int> CLI::getIds () const
+std::set <int> CLI::getIds ()
 {
   std::set <int> ids;
 
-  for (auto& arg : _args)
+  for (auto& a : _args)
   {
-    if (arg.hasTag ("ID"))
-      ids.insert (strtol (arg.attribute ("value").c_str (), nullptr, 10));
+    if (a._lextype == Lexer::Type::word)
+    {
+      Pig pig (a.attribute ("raw"));
+      int digits;
+      if (pig.skipLiteral ("@")  &&
+        pig.getDigits (digits) &&
+        pig.eos ())
+      {
+        if (digits <= 0)
+          throw format ("'@{1}' is not a valid ID.", digits);
+
+        a.tag ("ID");
+        a.attribute ("value", digits);
+        a.attribute ("consumed", true);
+        ids.insert (digits);
+      }
+    }
   }
 
   return ids;
