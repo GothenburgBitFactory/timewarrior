@@ -21,10 +21,9 @@ jobs:
           - name: "Debian Stable"
             runner: ubuntu-latest
             container: debianstable
-# Pause testing on debian testing until libfiu-dev/fiu-utils is available
-#          - name: "Debian Testing"
-#            runner: ubuntu-latest
-#            container: debiantesting
+          - name: "Debian Testing"
+            runner: ubuntu-latest
+            container: debiantesting
           - name: "Fedora 37"
             runner: ubuntu-latest
             container: fedora37
