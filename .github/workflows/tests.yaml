@@ -45,9 +45,6 @@ jobs:
           - name: "Ubuntu 22.04"
             runner: ubuntu-latest
             container: ubuntu2204
-          - name: "macOS 12"
-            runner: macos-12
-            container: osx-12
           - name: "macOS 13"
             runner: macos-13
             container: osx-13
