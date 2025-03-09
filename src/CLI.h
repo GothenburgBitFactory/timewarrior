@@ -38,6 +38,7 @@
 // Represents a single argument.
 class A2
 {
+  friend class CLI;
 public:
   A2 (const std::string&, Lexer::Type);
   bool hasTag (const std::string&) const;
@@ -47,12 +48,17 @@ public:
   void attribute (const std::string&, int);
   std::string attribute (const std::string&) const;
   std::string getToken () const;
+
+  void setConsumed ();
+  bool isConsumed () const;
+
   std::string dump () const;
 
 public:
   Lexer::Type                         _lextype     {Lexer::Type::word};
   std::vector <std::string>           _tags        {};
   std::map <std::string, std::string> _attributes  {};
+  bool                                _consumed    {false};
 };
 
 // Represents the command line.
@@ -68,9 +74,9 @@ public:
   std::string getBinary () const;
   std::string getCommand () const;
   bool getComplementaryHint (const std::string&, bool) const;
-  bool getHint(const std::string&, bool) const;
-  std::string findSubCommand(const std::set<std::string>&);
-  std::string getSubCommand(const std::set<std::string>&, const std::string&);
+  bool getHint (const std::string&, bool) const;
+  std::string findSubCommand (const std::set<std::string>&);
+  std::string getSubCommand (const std::set<std::string>&, const std::string&);
   std::set <int> getIds ();
   std::set <std::string> getTags () const;
   std::string getAnnotation();

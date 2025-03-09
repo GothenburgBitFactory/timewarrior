@@ -65,7 +65,7 @@ bool autoAdjust (bool, const Rules&, Database&, Interval&);
 // init.cpp
 bool lightweightVersionCheck (int, const char**);
 void initializeEntities (CLI&);
-void initializeDataJournalAndRules (const CLI&, Database&, Journal&, Rules&);
+void initializeDataJournalAndRules (CLI&, Database&, Journal&, Rules&);
 void initializeExtensions (CLI&, const Rules&, Extensions&);
 int dispatchCommand (CLI&, Database&, Journal&, Rules&, const Extensions&);
 

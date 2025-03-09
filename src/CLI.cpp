@@ -107,6 +107,18 @@ std::string A2::getToken () const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void A2::setConsumed()
+{
+  _consumed = true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+bool A2::isConsumed() const
+{
+  return _consumed;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 std::string A2::dump () const
 {
   auto output = Lexer::typeToString (_lextype);
@@ -185,6 +197,7 @@ void CLI::handleArg0 ()
   auto raw = _original_args[0].attribute ("raw");
   A2 a (raw, Lexer::Type::word);
   a.tag ("BINARY");
+  a.setConsumed ();
 
   std::string basename = "timew";
   auto slash = raw.rfind ('/');
@@ -295,20 +308,22 @@ std::vector <std::string> CLI::getWords () const
 
 ////////////////////////////////////////////////////////////////////////////////
 // Find and mark sub-command, return empty string if not found
-std::string CLI::findSubCommand(const std::set<std::string>& subCommands) {
-  for (auto &a: _args) {
-    if (a.hasTag("BINARY") &&
-        a.hasTag("CMD") &&
-        a.hasTag("CONFIG") &&
-        a.hasTag("HINT")) {
+std::string CLI::findSubCommand (const std::set<std::string>& subCommands) {
+  for (auto& a: _args) {
+    if (a.hasTag ("BINARY") &&
+        a.hasTag ("CMD") &&
+        a.hasTag ("CONFIG") &&
+        a.hasTag ("HINT")) {
       continue;
     }
-    if (subCommands.find(a.attribute("raw")) != subCommands.end()) {
+
+    if (subCommands.find (a.attribute ("raw")) != subCommands.end ()) {
       a.tag ("CMD");
       a.unTag ("TAG");
-      return a.attribute("raw");
+      return a.attribute ("raw");
     }
   }
+
   return "";
 }
 
@@ -525,22 +540,25 @@ void CLI::identifyFilter ()
         a.hasTag ("EXT")    ||
         a.hasTag ("CONFIG") ||
         a.hasTag ("BINARY"))
+    {
       continue;
+    }
 
     auto raw = a.attribute ("raw");
 
     if (a.hasTag ("HINT"))
+    {
       a.tag ("FILTER");
-
+    }
     else if (a.hasTag ("ID"))
+    {
       a.tag ("FILTER");
-
+    }
     else if (a._lextype == Lexer::Type::date ||
              a._lextype == Lexer::Type::duration)
     {
       a.tag ("FILTER");
     }
-
     else if (raw == "from"   ||
              raw == "since"  ||
              raw == "to"     ||
@@ -554,7 +572,6 @@ void CLI::identifyFilter ()
       a.tag ("FILTER");
       a.tag ("KEYWORD");
     }
-
     else if (raw.rfind ("dom.",0) == 0)
     {
       a.tag ("DOM");
@@ -602,7 +619,7 @@ std::set <int> CLI::getIds ()
 
         a.tag ("ID");
         a.attribute ("value", digits);
-        a.attribute ("consumed", true);
+        a.setConsumed ();
         ids.insert (digits);
       }
     }
@@ -639,6 +656,7 @@ std::string CLI::getAnnotation ()
       arg.hasTag ("CONFIG") ||
       arg.hasTag ("ID")     ||
       arg.hasTag ("BINARY")) {
+
       if (!found) {
         continue;
       } else {
@@ -647,7 +665,7 @@ std::string CLI::getAnnotation ()
     }
 
     arg.tag ("ANNOTATION");
-    arg.attribute ("consumed", true);
+    arg.setConsumed ();
     annotation += (found ? " " : "") + (arg.attribute ("raw"));
     found = true;
   }
