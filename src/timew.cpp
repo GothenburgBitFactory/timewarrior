@@ -70,7 +70,9 @@ int main (int argc, const char** argv)
       cli.add (argv[i]);
 
       if (i)
+      {
         commandLine += " ";
+      }
 
       commandLine += quoteIfNeeded (argv[i]);
     }
