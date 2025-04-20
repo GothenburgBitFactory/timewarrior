@@ -27,4 +27,4 @@ Note that you can fill multiple intervals:
 
 
 == SEE ALSO
-**timew-hints**(1)
+**timew-hints**(7)

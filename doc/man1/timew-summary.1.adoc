@@ -67,7 +67,7 @@ Default value is 'yes'.
 
 **reports.summary.range**::
 Set the date range for the summary report.
-The value has to correspond to a range hint, see timew-hints(7).
+The value has to correspond to a range hint, see **timew-hints**(7).
 Default value is 'day'
 
 **reports.summary.weekdays**::

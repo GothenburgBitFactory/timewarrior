@@ -33,5 +33,5 @@ If no arguments are provided, all configuration settings are shown:
     ...
 
 == SEE ALSO
-**timew-hints**(1),
+**timew-hints**(7),
 **timew-show**(1)

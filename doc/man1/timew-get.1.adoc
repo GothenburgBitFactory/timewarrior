@@ -19,4 +19,4 @@ For example:
 It is an error to reference an interval or tag that does not exist.
 
 == SEE ALSO
-*timew-DOM*
+**timew-dom**(7)

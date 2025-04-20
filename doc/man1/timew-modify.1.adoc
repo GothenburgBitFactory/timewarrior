@@ -15,7 +15,7 @@ Using the 'start' or 'end' subcommand, one can either specify a new start or end
 The interval to be modified is specified via its id.
 
 If the resulting interval overlaps with an existing interval, the command will return an error.
-One can the ':adjust' hint to force an overwrite in this case.
+One can add the ':adjust' hint to force an overwrite in this case.
 
 See **timew-summary**(1) on how to retrieve the interval id.
 
@@ -46,6 +46,6 @@ As in the examples above, the date portion can be omitted, if the date of the in
 == SEE ALSO
 **timew-lengthen**(1),
 **timew-move**(1),
-**timew-resize**(1)
+**timew-resize**(1),
 **timew-shorten**(1),
 **timew-summary**(1)

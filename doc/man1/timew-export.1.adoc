@@ -10,7 +10,7 @@ timew-export - export tracked time in JSON
 == DESCRIPTION
 Exports all the tracked time in JSON format.
 
-Supply either a list of interval IDs (e.g. `@1 @2`), or optional filters (see **timew-ranges(7)** and/or **timew-tags(1)**)
+Supply either a list of interval IDs (e.g. `@1 @2`), or optional filters (see **timew-ranges**(7) and/or **timew-tags**(1))
 
 == EXAMPLES
 

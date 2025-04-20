@@ -110,7 +110,4 @@ Charts accept date ranges and tags for filtering, or shortcut hints:
     $ timew day :week
 
 == SEE ALSO
-**timew-day**(1),
-**timew-month**(1),
 **timew-summary**(1),
-**timew-week**(1)

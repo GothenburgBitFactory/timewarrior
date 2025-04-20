@@ -23,4 +23,4 @@ Then having selected '@2' as the interval you wish to delete:
 
 
 == SEE ALSO
-*timew-cancel*(1)
+**timew-cancel**(1)
