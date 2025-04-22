@@ -58,10 +58,10 @@ class TestSummary(TestCase):
         code, out, err = self.t("summary :ids {:%Y-%m-%d} - {:%Y-%m-%d}".format(yesterday, tomorrow))
 
         self.assertRegex(out, r"""
-Wk  ?Date       Day ID Tags    ?Start      ?End    Time   Total
+Wk  ?Date       Day ID Tags Annotation    ?Start      ?End    Time   Total
 [ -]+
-W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2}(
-W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2})?
+W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1                 ?\d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2}(
+W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1                 ?\d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2})?
 
 [ ]+1:00:0[01]
 """)
@@ -77,10 +77,10 @@ W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2
         code, out, err = self.t("summary :ids :all".format(yesterday, tomorrow))
 
         self.assertRegex(out, r"""
-Wk  ?Date       Day ID Tags    ?Start      ?End    Time   Total
+Wk  ?Date       Day ID Tags Annotation    ?Start      ?End    Time   Total
 [ -]+
-W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2}(
-W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2})?
+W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1                  ?\d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2}(
+W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1                  ?\d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2})?
 
 [ ]+1:00:0[01]
 """)
@@ -96,10 +96,10 @@ W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2
         code, out, err = self.t("summary :ids {:%Y-%m-%d} - {:%Y-%m-%d}".format(yesterday, tomorrow))
 
         self.assertRegex(out, r"""
-Wk  ?Date       Day ID Tags    ?Start End    Time   Total
+Wk  ?Date       Day ID Tags Annotation    ?Start End    Time   Total
 [ -]+
-W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2}[ ]+- \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2}(
-W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2}[ ]+- \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2})?
+W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1                 ?\d{1,2}:\d{2}:\d{2}[ ]+- \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2}(
+W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1                 ?\d{1,2}:\d{2}:\d{2}[ ]+- \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2})?
 
 [ ]+1:00:0[01]
 """)
@@ -115,10 +115,10 @@ W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2}[ ]+- \d{1,2}:\d{2}
         code, out, err = self.t("summary :ids :all".format(yesterday, tomorrow))
 
         self.assertRegex(out, r"""
-Wk  ?Date       Day ID Tags    ?Start End    Time   Total
+Wk  ?Date       Day ID Tags Annotation    ?Start End    Time   Total
 [ -]+
-W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2}[ ]+- \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2}(
-W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2}[ ]+- \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2})?
+W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1                 ?\d{1,2}:\d{2}:\d{2}[ ]+- \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2}(
+W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1                 ?\d{1,2}:\d{2}:\d{2}[ ]+- \d{1,2}:\d{2}:\d{2} \d{1,2}:\d{2}:\d{2})?
 
 [ ]+1:00:0[01]
 """)
@@ -133,12 +133,12 @@ W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1       ?\d{1,2}:\d{2}:\d{2}[ ]+- \d{1,2}:\d{2}
         code, out, err = self.t("summary 2017-03-09T11:00 - 2017-03-09T12:00 :ids")
 
         self.assertIn("""
-Wk  Date       Day ID Tags          Start      End    Time   Total
---- ---------- --- -- ---------- -------- -------- ------- -------
-W10 2017-03-09 Thu @3 Tag2       11:38:39 11:45:35 0:06:56
-                   @2 Tag2, Tag3 11:46:21 12:00:17 0:13:56 0:20:52
+Wk  Date       Day ID Tags       Annotation    Start      End    Time   Total
+--- ---------- --- -- ---------- ---------- -------- -------- ------- -------
+W10 2017-03-09 Thu @3 Tag2                  11:38:39 11:45:35 0:06:56
+                   @2 Tag2, Tag3            11:46:21 12:00:17 0:13:56 0:20:52
 
-                                                           0:20:52
+                                                                      0:20:52
 """, out)
 
     def test_with_date_filter(self):
@@ -150,11 +150,11 @@ W10 2017-03-09 Thu @3 Tag2       11:38:39 11:45:35 0:06:56
         code, out, err = self.t("summary 2017-03-10 :ids")
 
         self.assertIn("""
-Wk  Date       Day ID Tags    Start      End    Time   Total
---- ---------- --- -- ---- -------- -------- ------- -------
-W10 2017-03-10 Fri @2      10:00:00 11:00:00 1:00:00 1:00:00
+Wk  Date       Day ID Tags Annotation    Start      End    Time   Total
+--- ---------- --- -- ---- ---------- -------- -------- ------- -------
+W10 2017-03-10 Fri @2                 10:00:00 11:00:00 1:00:00 1:00:00
 
-                                                     1:00:00
+                                                                1:00:00
 """, out)
 
     def test_with_tag_filter(self):
@@ -167,11 +167,11 @@ W10 2017-03-10 Fri @2      10:00:00 11:00:00 1:00:00 1:00:00
         code, out, err = self.t("summary 2017-03-09 Tag1 :ids")
 
         self.assertIn("""
-Wk  Date       Day ID Tags   Start     End    Time   Total
---- ---------- --- -- ---- ------- ------- ------- -------
-W10 2017-03-09 Thu @4 Tag1 8:43:08 9:38:15 0:55:07 0:55:07
+Wk  Date       Day ID Tags Annotation   Start     End    Time   Total
+--- ---------- --- -- ---- ---------- ------- ------- ------- -------
+W10 2017-03-09 Thu @4 Tag1            8:43:08 9:38:15 0:55:07 0:55:07
 
-                                                   0:55:07
+                                                              0:55:07
 """, out)
 
     def test_with_id_filter(self):
@@ -184,12 +184,12 @@ W10 2017-03-09 Thu @4 Tag1 8:43:08 9:38:15 0:55:07 0:55:07
         code, out, err = self.t("summary @2 @4 :ids")
 
         self.assertIn("""
-Wk  Date       Day ID Tags          Start      End    Time   Total
---- ---------- --- -- ---------- -------- -------- ------- -------
-W10 2017-03-09 Thu @4 Tag1        8:43:08  9:38:15 0:55:07
-                   @2 Tag2, Tag3 11:46:21 12:00:17 0:13:56 1:09:03
+Wk  Date       Day ID Tags       Annotation    Start      End    Time   Total
+--- ---------- --- -- ---------- ---------- -------- -------- ------- -------
+W10 2017-03-09 Thu @4 Tag1                   8:43:08  9:38:15 0:55:07
+                   @2 Tag2, Tag3            11:46:21 12:00:17 0:13:56 1:09:03
 
-                                                           1:09:03
+                                                                      1:09:03
 """, out)
 
     def test_non_contiguous_with_tag_filter(self):
@@ -202,12 +202,12 @@ W10 2017-03-09 Thu @4 Tag1        8:43:08  9:38:15 0:55:07
         code, out, err = self.t("summary 2017-03-09 Tag1 :ids")
 
         self.assertIn("""
-Wk  Date       Day ID Tags          Start      End    Time   Total
---- ---------- --- -- ---------- -------- -------- ------- -------
-W10 2017-03-09 Thu @4 Tag1        8:43:08  9:38:15 0:55:07
-                   @2 Tag1, Tag3 11:46:21 12:00:17 0:13:56 1:09:03
+Wk  Date       Day ID Tags       Annotation    Start      End    Time   Total
+--- ---------- --- -- ---------- ---------- -------- -------- ------- -------
+W10 2017-03-09 Thu @4 Tag1                   8:43:08  9:38:15 0:55:07
+                   @2 Tag1, Tag3            11:46:21 12:00:17 0:13:56 1:09:03
 
-                                                           1:09:03
+                                                                      1:09:03
 """, out)
 
     def test_with_all_hint(self):
@@ -229,13 +229,13 @@ W10 2017-03-09 Thu @4 Tag1        8:43:08  9:38:15 0:55:07
         week_col_padding = 2 if (week_yesterday > 9 or week_now > 9 or week_tomorrow > 9) else 1
 
         self.assertIn("""
-Wk{7: <{width}}Date       Day ID Tags    Start      End    Time   Total
--{6:-<{width}} ---------- --- -- ---- -------- -------- ------- -------
-W{3: <{width}} {0:%Y-%m-%d} {0:%a} @3 FOO  10:00:00 11:00:00 1:00:00 1:00:00
-W{4: <{width}} {1:%Y-%m-%d} {1:%a} @2 BAR  10:00:00 11:00:00 1:00:00 1:00:00
-W{5: <{width}} {2:%Y-%m-%d} {2:%a} @1 BAZ  10:00:00 11:00:00 1:00:00 1:00:00
+Wk{7: <{width}}Date       Day ID Tags Annotation    Start      End    Time   Total
+-{6:-<{width}} ---------- --- -- ---- ---------- -------- -------- ------- -------
+W{3: <{width}} {0:%Y-%m-%d} {0:%a} @3 FOO             10:00:00 11:00:00 1:00:00 1:00:00
+W{4: <{width}} {1:%Y-%m-%d} {1:%a} @2 BAR             10:00:00 11:00:00 1:00:00 1:00:00
+W{5: <{width}} {2:%Y-%m-%d} {2:%a} @1 BAZ             10:00:00 11:00:00 1:00:00 1:00:00
 
- {7: <{width}}                                                  3:00:00
+ {7: <{width}}                                                             3:00:00
 """.format(yesterday, now, tomorrow,
            week_yesterday, week_now, week_tomorrow,
            "-", " ", width=week_col_padding), out)
@@ -271,11 +271,11 @@ W{5: <{width}} {2:%Y-%m-%d} {2:%a} @1 BAZ  10:00:00 11:00:00 1:00:00 1:00:00
         two_digit_week = (week_yesterday > 9)
 
         self.assertIn("""
-Wk{2} Date       Day ID Tags    Start      End    Time   Total
---{3} ---------- --- -- ---- -------- -------- ------- -------
-W{1} {0:%Y-%m-%d} {0:%a} @3 FOO  10:00:00 11:00:00 1:00:00 1:00:00
+Wk{2} Date       Day ID Tags Annotation    Start      End    Time   Total
+--{3} ---------- --- -- ---- ---------- -------- -------- ------- -------
+W{1} {0:%Y-%m-%d} {0:%a} @3 FOO             10:00:00 11:00:00 1:00:00 1:00:00
 
-{2}                                                    1:00:00
+{2}                                                               1:00:00
 """.format(yesterday, week_yesterday, " " if two_digit_week is True else "", "-" if two_digit_week is True else ""), out)
 
     def test_with_named_date_today(self):
@@ -295,11 +295,11 @@ W{1} {0:%Y-%m-%d} {0:%a} @3 FOO  10:00:00 11:00:00 1:00:00 1:00:00
         two_digit_week = (week_now > 9)
 
         self.assertIn("""
-Wk{2} Date       Day ID Tags    Start      End    Time   Total
---{3} ---------- --- -- ---- -------- -------- ------- -------
-W{1} {0:%Y-%m-%d} {0:%a} @2 BAR  10:00:00 11:00:00 1:00:00 1:00:00
+Wk{2} Date       Day ID Tags Annotation    Start      End    Time   Total
+--{3} ---------- --- -- ---- ---------- -------- -------- ------- -------
+W{1} {0:%Y-%m-%d} {0:%a} @2 BAR             10:00:00 11:00:00 1:00:00 1:00:00
 
-{2}                                                    1:00:00
+{2}                                                               1:00:00
 """.format(now, week_now, " " if two_digit_week is True else "", "-" if two_digit_week is True else ""), out)
 
     def test_with_day_gap(self):
@@ -310,12 +310,12 @@ W{1} {0:%Y-%m-%d} {0:%a} @2 BAR  10:00:00 11:00:00 1:00:00 1:00:00
         code, out, err = self.t("summary 2017-03-09 - 2017-03-12 :ids")
 
         self.assertIn("""
-Wk  Date       Day ID Tags    Start      End    Time   Total
---- ---------- --- -- ---- -------- -------- ------- -------
-W10 2017-03-09 Thu @2      10:00:00 11:00:00 1:00:00 1:00:00
-W10 2017-03-11 Sat @1      10:00:00 11:00:00 1:00:00 1:00:00
+Wk  Date       Day ID Tags Annotation    Start      End    Time   Total
+--- ---------- --- -- ---- ---------- -------- -------- ------- -------
+W10 2017-03-09 Thu @2                 10:00:00 11:00:00 1:00:00 1:00:00
+W10 2017-03-11 Sat @1                 10:00:00 11:00:00 1:00:00 1:00:00
 
-                                                     2:00:00
+                                                                2:00:00
 """, out)
 
     def test_with_week_change(self):
@@ -326,12 +326,12 @@ W10 2017-03-11 Sat @1      10:00:00 11:00:00 1:00:00 1:00:00
         code, out, err = self.t("summary 2017-03-11 - 2017-03-14 :ids")
 
         self.assertIn("""
-Wk  Date       Day ID Tags    Start      End    Time   Total
---- ---------- --- -- ---- -------- -------- ------- -------
-W10 2017-03-11 Sat @2      10:00:00 11:00:00 1:00:00 1:00:00
-W11 2017-03-13 Mon @1      10:00:00 11:00:00 1:00:00 1:00:00
+Wk  Date       Day ID Tags Annotation    Start      End    Time   Total
+--- ---------- --- -- ---- ---------- -------- -------- ------- -------
+W10 2017-03-11 Sat @2                 10:00:00 11:00:00 1:00:00 1:00:00
+W11 2017-03-13 Mon @1                 10:00:00 11:00:00 1:00:00 1:00:00
 
-                                                     2:00:00
+                                                                2:00:00
 """, out)
 
     def test_with_several_tracks_per_day(self):
@@ -346,16 +346,16 @@ W11 2017-03-13 Mon @1      10:00:00 11:00:00 1:00:00 1:00:00
         code, out, err = self.t("summary 2017-03-09 - 2017-03-12 :ids")
 
         self.assertIn("""
-Wk  Date       Day ID Tags    Start      End    Time   Total
---- ---------- --- -- ---- -------- -------- ------- -------
-W10 2017-03-09 Thu @6 FOO  10:00:00 11:00:00 1:00:00
-                   @5 BAR  12:00:00 13:00:00 1:00:00
-                   @4 BAZ  14:00:00 15:00:00 1:00:00 3:00:00
-W10 2017-03-11 Sat @3 FOO  10:00:00 11:00:00 1:00:00
-                   @2 BAR  12:00:00 13:00:00 1:00:00
-                   @1 BAZ  14:00:00 15:00:00 1:00:00 3:00:00
+Wk  Date       Day ID Tags Annotation    Start      End    Time   Total
+--- ---------- --- -- ---- ---------- -------- -------- ------- -------
+W10 2017-03-09 Thu @6 FOO             10:00:00 11:00:00 1:00:00
+                   @5 BAR             12:00:00 13:00:00 1:00:00
+                   @4 BAZ             14:00:00 15:00:00 1:00:00 3:00:00
+W10 2017-03-11 Sat @3 FOO             10:00:00 11:00:00 1:00:00
+                   @2 BAR             12:00:00 13:00:00 1:00:00
+                   @1 BAZ             14:00:00 15:00:00 1:00:00 3:00:00
 
-                                                     6:00:00
+                                                                6:00:00
 """, out)
 
     def test_with_empty_interval_at_start_of_day(self):
@@ -363,9 +363,9 @@ W10 2017-03-11 Sat @3 FOO  10:00:00 11:00:00 1:00:00
         self.t("track sod - sod")
         code, out, err = self.t("summary :year")
         self.assertRegex(out, r"""
-Wk  ?Date       Day Tags    ?Start      ?End    Time   Total
+Wk  ?Date       Day ID Tags Annotation   Start     End    Time   Total
 [ -]+
-W\d{1,2} \d{4}-\d{2}-\d{2} .{3}       ?0:00:00 0:00:00 0:00:00 0:00:00
+W\d{1,2} \d{4}-\d{2}-\d{2} .{3} @1                 0:00:00 0:00:00 0:00:00 0:00:00
 
 [ ]+0:00:00
 """)

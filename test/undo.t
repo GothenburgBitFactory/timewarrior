@@ -118,6 +118,9 @@ class TestUndo(TestCase):
 
     def test_undo_config_add_name(self):
         """Test undo of command 'config' (add name)"""
+        self.t("config")
+        initial = [x for x in self.t.timewrc_content if x != '\n']
+
         self.t("config foo bar :yes")
 
         before = [x for x in self.t.timewrc_content if x != '\n']
@@ -127,7 +130,7 @@ class TestUndo(TestCase):
         after = [x for x in self.t.timewrc_content if x != '\n']
 
         self.assertNotEqual(before, after)
-        self.assertEqual([], after)
+        self.assertEqual(initial, after)
 
     def test_undo_config_remove_name(self):
         """Test undo of command 'config' (remove name)"""

@@ -148,7 +148,13 @@ void initializeDirs (const CLI& cli, Rules& rules)
 
   if (! configFileLocation.exists ())
   {
-    File (configFileLocation).create (0600);
+    File configFile (configFileLocation);
+    configFile.create (0600);
+    std::vector<std::string> defaultConfig = {
+      "reports.summary.ids = yes\n",
+      "reports.summary.annotations = yes\n",
+    };
+    configFile.append(defaultConfig);
   }
 
   // Load the configuration data.
