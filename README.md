@@ -93,7 +93,7 @@ For other support options, take a look at [timewarrior.net/support](https://time
 Contributions are greatly appreciated.
 Whether in the form of code patches, ideas, discussion, bug reports, encouragement or criticism, we need you!
 
-For support options, take a look at [CONTRIBUTING.md](CONTRIBUTING.md) or visit [timewarior.net](https://timewarrior.net/support).
+For support options, take a look at [CONTRIBUTING.md](CONTRIBUTING.md) or visit [timewarrior.net](https://timewarrior.net/support).
 
 Visit [GitHub](https://github.com/GothenburgBitFactory/timewarrior) and participate in the future of Timewarrior.
 
