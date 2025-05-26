@@ -105,7 +105,6 @@ _commands=(
     'move:change interval start-time'
     'report:run an extension report'
     'resize:set interval duration'
-    'revert:revert Timewarrior commands'
     'shorten:shorten intervals'
     'show:display configuration'
     'split:split intervals'
@@ -115,6 +114,7 @@ _commands=(
     'tag:add tags to intervals'
     'tags:display a list of tags'
     'track:add intervals to the database'
+    'undo:revert the last Timwarrior command'
     'untag:remove tags from intervals'
     'week:shows a chart depicting a single week (current week by default)'
 )
