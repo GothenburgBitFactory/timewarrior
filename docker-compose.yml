@@ -47,18 +47,18 @@ services:
     security_opt:
       - label=type:container_runtime_t
     tty: true
-  test-fedora40:
-    build:
-      context: .
-      dockerfile: test/docker/fedora40
-    network_mode: "host"
-    security_opt:
-      - label=type:container_runtime_t
-    tty: true
   test-fedora41:
     build:
       context: .
       dockerfile: test/docker/fedora41
+    network_mode: "host"
+    security_opt:
+      - label=type:container_runtime_t
+    tty: true
+  test-fedora42:
+    build:
+      context: .
+      dockerfile: test/docker/fedora42
     network_mode: "host"
     security_opt:
       - label=type:container_runtime_t
@@ -75,14 +75,6 @@ services:
     build:
       context: .
       dockerfile: test/docker/opensusetumbleweed
-    network_mode: "host"
-    security_opt:
-      - label=type:container_runtime_t
-    tty: true
-  test-ubuntu2004:
-    build:
-      context: .
-      dockerfile: test/docker/ubuntu2004
     network_mode: "host"
     security_opt:
       - label=type:container_runtime_t
