@@ -8,7 +8,10 @@ function __fish_timew_get_commands
 end
 
 function __fish_timew_get_tags
-    timew tags | tail -n+4 | awk '{sub(/-([^-]*)$/, "\\1"); print}' | awk '!/^[[:space:]]*$/' | awk '{$1=$1};1' | awk '{ print "\'"$0"\'"}'
+    timew tags | awk '
+        NR == 2 { desc_col = match($0, /Description/) }
+        NR > 3 { name = substr($0, 1, desc_col - 1); sub(/ +$/, "", name); print name }
+    '
 end
 
 function __fish_timew_get_ids
@@ -28,10 +31,10 @@ end
 #        [for] <duration>
 # timew show | sed -n '/\s\s.*:/p'
 
-set -l commands (__fish_timew_get_commands)
-set -l reports (__fish_timew_get_reports)
-set -l ids (__fish_timew_get_ids)
-set -l tags (__fish_timew_get_tags)
+set -l commands "(__fish_timew_get_commands)"
+set -l reports "(__fish_timew_get_reports)"
+set -l ids "(__fish_timew_get_ids)"
+set -l tags "(__fish_timew_get_tags)"
 set -l intervals ""
 set -l durations ""
 set -l dates ""
