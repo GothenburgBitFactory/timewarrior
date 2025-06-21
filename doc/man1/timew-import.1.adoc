@@ -1,0 +1,57 @@
+= timew-import(1)
+
+== NAME
+timew-import - import time-tracking data from files
+
+== SYNOPSIS
+[verse]
+*timew import* [_<file>_**...**]
+
+== DESCRIPTION
+Import tracked time from `file`.
+If no files are specified, the command will read from standard input.
+
+The data to import has to be in JSON format, as exported by **timew-export**(1), i.e. a single array with interval objects.
+
+When importing, the intervals are checked for overlaps with existing intervals.
+If an overlap is found, the import will abort at the first overlap and no more intervals are imported, unless the `:adjust` hint is specified.
+
+In general, it is recommended to create a backup of your data before importing.
+
+== HINTS
+
+**:adjust**::
+When given, the imported interval will overwrite any existing intervals that it overlaps with.
+
+== EXAMPLES
+
+*Import intervals from a file*::
++
+Import intervals from a single file:
++
+[source]
+----
+timew import intervals.json
+----
++
+Any file path that does not start with a `/` is interpreted as relative to the current working directory.
+
+*Import intervals from multiple files*::
++
+One can also use shell wildcards and absolute paths:
++
+[source]
+----
+timew import /path/to/intervals/*.json
+----
+
+*Import intervals from standard input*::
++
+Import intervals from stdin:
++
+[source]
+----
+timew export | ssh <server> 'timew import'
+----
+This is especially useful for synchronizing intervals between different machines.
++

@@ -63,6 +63,7 @@ void initializeEntities (CLI& cli)
   cli.entity ("command", "help");
   cli.entity ("command", "--help");
   cli.entity ("command", "-h");
+  cli.entity ("command", "import");
   cli.entity ("command", "join");
   cli.entity ("command", "lengthen");
   cli.entity ("command", "modify");
@@ -235,6 +236,7 @@ int dispatchCommand (
     else if (command == "help" ||
              command == "--help" ||
              command == "-h")          status = CmdHelp          (cli,                           extensions);
+    else if (command == "import")      status = CmdImport        (cli, rules, database, journal            );
     else if (command == "join")        status = CmdJoin          (cli, rules, database, journal            );
     else if (command == "lengthen")    status = CmdLengthen      (cli, rules, database, journal            );
     else if (command == "modify")      status = CmdModify        (cli, rules, database, journal            );

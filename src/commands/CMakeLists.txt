@@ -30,6 +30,7 @@ set (commands_SRCS CmdAnnotate.cpp
                    CmdGaps.cpp
                    CmdGet.cpp
                    CmdHelp.cpp
+                   CmdImport.cpp
                    CmdJoin.cpp
                    CmdLengthen.cpp
                    CmdModify.cpp
