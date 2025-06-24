@@ -460,6 +460,12 @@ void CLI::canonicalizeNames ()
 
   for (auto& a : _args)
   {
+    // Do not canonicalize the BINARY
+    if (a.hasTag ("BINARY"))
+    {
+      continue;
+    }
+
     auto raw = a.attribute ("raw");
     std::string canonical = raw;
 
