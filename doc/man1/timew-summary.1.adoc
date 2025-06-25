@@ -10,10 +10,10 @@ timew-summary - display a time-tracking summary
 
 == DESCRIPTION
 Displays a table summarizing tracked time, by default for the current day.
-Accepts date ranges (or range hints) and tags, or ids for filtering.
+Accepts date ranges (or range hints) and tags, or IDs for filtering.
 
-When ids are given, date ranges are ignored.
-Specifying both, tags and ids, is an error.
+When IDs are given, date ranges are ignored.
+Specifying both, tags and IDs, is an error.
 
 == HINTS
 Apart from range hints (see **timew-hints**(7)), the summary report adheres to the following hints:
@@ -33,7 +33,7 @@ Can be used on the command line to override the configured setting.
 
 **:ids**::
 **:no-ids**::
-Toggle the display of ids in the summary report.
+Toggle the display of IDs in the summary report.
 Can be used on the command line to override the configured setting.
 The ':ids' hint adds an 'ID' column to the summary table.
 Those ids can be used for interval modification.

@@ -29,6 +29,16 @@ The default date range shown is *:week*.
 The day command shows a chart depicting a single day (today by default).
 The default date range shown is *:day*.
 
+== HINTS
+Apart from range hints (see **timew-hints**(7)), the chart reports adhere to the following hints:
+
+**:blank**::
+The ':blank' hint causes only the excluded time to be shown, with no tracked time.
+This can be used to display the exclusions.
+
+**:ids**::
+The ':ids' hint causes the intervals to be displayed with their IDs
+
 == CONFIGURATION
 _<type>_ is one of **month**, **week**, **day**.
 
@@ -61,8 +71,7 @@ Default value is 'yes'.
 
 **reports.**__<type>__**.range**::
 For reports that show a range of data, this setting will override the default value.
-The value should be a range hint, see
-**timew-hints**(7).
+The value has to be a range hint (without the prefix colon), see **timew-hints**(7).
 
 **reports.**__<type>__**.spacing**::
 Specifies how many spaces are inserted between the hours in the <type> report exclusions.
@@ -93,15 +102,6 @@ Default value is 'yes'.
 Assigns a specific foreground and background color to a tag, instead of the default color palette determined by your current theme.
 Examples of valid colors include 'white', 'gray8', 'black on yellow', and 'rgb345'.
 
-== HINTS
-
-*:blank*::
-The ':blank' hint causes only the excluded time to be shown, with no tracked time.
-This can be used to see the exclusions.
-
-*:ids*::
-The ':ids' hint causes the intervals to be displayed with their ids
-
 == EXAMPLES
 Charts accept date ranges and/or tags, or ids for filtering:
 
@@ -112,4 +112,4 @@ Charts accept date ranges and/or tags, or ids for filtering:
 See **timew-ranges**(7) and **timew-hints**(7) on the different ways to provide date ranges.
 
 == SEE ALSO
-**timew-summary**(1),
+**timew-summary**(1)
