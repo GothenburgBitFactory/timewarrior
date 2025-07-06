@@ -99,7 +99,7 @@ def update_locale_files(locales, regions, years):
 
                 except HTTPError as e:
                     if e.code == 404:
-                        print(f"holidata.net does not have data for {locale}, for {year}.")
+                        print(f"holidata.net does not provide data for locale {locale}, year {year}.")
                     else:
                         print(e.code, e.read())
 
