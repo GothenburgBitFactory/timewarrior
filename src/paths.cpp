@@ -73,7 +73,7 @@ std::string configFile () { return configDir () + "/timewarrior.cfg"; }
 std::string dbDataDir () { return dbDir () + "/data"; }
 std::string extensionsDir () { return configDir () + "/extensions"; }
 
-void initializeDirs (const CLI& cli, Rules& rules)
+void initializeDirs (Rules& rules)
 {
   Directory configLocation = Directory (configDir ());
   bool configDirExists = configLocation.exists ();
@@ -111,7 +111,7 @@ void initializeDirs (const CLI& cli, Rules& rules)
 
   if (! configDirExists || ! dataLocationExists)
   {
-    if (cli.getHint ("yes", false) || confirm (question))
+    if (!rules.getBoolean ("confirmation", true) || confirm (question))
     {
       if (! configDirExists)
       {

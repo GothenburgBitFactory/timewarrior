@@ -156,7 +156,7 @@ void initializeDataJournalAndRules (
   }
 
   enableDebugMode (rules.getBoolean ("debug"));
-  paths::initializeDirs (cli, rules);
+  paths::initializeDirs (rules);
 
   if (rules.has ("debug.indicator"))
     setDebugIndicator (rules.get ("debug.indicator"));

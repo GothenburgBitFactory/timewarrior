@@ -26,13 +26,11 @@
 
 #ifndef INCLUDED_PATH_RESOLVER
 #define INCLUDED_PATH_RESOLVER
-#include <CLI.h>
-#include <Rules.h>
 #include <Rules.h>
 #include <string>
 
 namespace paths {
-    void initializeDirs (const CLI&, Rules&);
+    void initializeDirs (Rules&);
     std::string configDir ();
     std::string configFile ();
     std::string dbDir ();
