@@ -23,8 +23,6 @@ Apart from range hints (see **timew-hints**(7)), the summary report adheres to t
 Toggle the display of annotations in the summary report.
 Can be used on the command line to override the configured setting.
 The ':annotations' hint adds an 'Annotation' column to the summary table.
-The annotation column is limited to 15 characters.
-Longer values in this column are truncated to 12 characters and shown with an ellipsis attached.
 
 **:holidays**::
 **:no-holidays**::
