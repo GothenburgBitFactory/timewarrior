@@ -104,8 +104,7 @@ int CmdMove (
   // Move start time.
   Datetime start (new_start);
 
-  // Changing the start date should also change the end date by the same
-  // amount.
+  // Changing the start date should also change the end date by the same amount.
   if (interval.start < start)
   {
     auto delta = start - interval.start;

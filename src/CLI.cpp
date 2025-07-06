@@ -150,7 +150,7 @@ void CLI::entity (const std::string& category, const std::string& name)
 // Capture a single argument.
 void CLI::add (const std::string& argument)
 {
-  // Sanitize the input: Convert control charts to spaces. Then trim.
+  // Sanitize the input: Convert control chars to spaces. Then trim.
   std::string clean;
   std::string::size_type i = 0;
   int character;
