@@ -154,7 +154,7 @@ void CLI::add (const std::string& argument)
   std::string clean;
   std::string::size_type i = 0;
   int character;
-  while ((character = utf8_next_char (argument.c_str (), i)))
+  while ((character = utf8_next_char (argument, i)))
   {
     if (character <= 32)
        clean += ' ';
