@@ -116,7 +116,7 @@ function __complete_tag()
   declare -a completions
   while read -r line ; do
     completions+=( "${line}" )
-  done < <( compgen -W "$(printf '%q ' "${wordlist[@]}")" -- "${cur}" 2>/dev/null )
+  done < <( compgen -W ${wordlist[@]} -- "${cur}" 2>/dev/null )
 
   for completion in "${completions[@]}" ; do
     COMPREPLY+=( "$(printf "%q" "${completion}")" )
