@@ -10,18 +10,30 @@ timew-export - export tracked time in JSON
 == DESCRIPTION
 Exports all the tracked time in JSON format.
 
-Supply either a list of interval IDs (e.g. `@1 @2`), or optional filters (see **timew-ranges**(7) and/or **timew-tags**(1))
+Supply either a list of interval IDs, or a range and/or tag filter (see **timew-ranges**(7) and **timew-tags**(1)) to export only a subset of intervals.
+
+The data is exported as a JSON array of interval objects, each containing the start time, end time, current id, tags, and annotation of the interval, if present.
 
 == EXAMPLES
 
 *Export all intervals*::
++
+Calling the `export` command without any arguments exports all tracked intervals in JSON format:
++
 [source]
 ----
 $ timew export
-...
+[
+{"id":2,"start":"20231001T103000Z","end":"20231001T120000Z","tags":["work"],"annotation":"Project work"},
+{"id":1,"start":"20231001T090000Z","end":"20231001T100000Z","tags":["work"],"annotation":"Morning meeting"},
+]
 ----
++
+In this example, only two intervals are present in the database.
+The output is sorted by start time, with the oldest interval first.
 
 *Export intervals filtered by range and tag*::
++
 [source]
 ----
 $ timew export from 2016-01-01 for 3wks tag1
@@ -29,6 +41,7 @@ $ timew export from 2016-01-01 for 3wks tag1
 ----
 
 *Export intervals by their ids*::
++
 [source]
 ----
 $ timew export @1 @3 @7
