@@ -100,6 +100,7 @@ public:
   std::set <std::string> tags () const;
 
   std::string getLatestEntry ();
+  std::string getLocation ();
 
   void addInterval (const Interval&, bool verbose);
   void deleteInterval (const Interval&);

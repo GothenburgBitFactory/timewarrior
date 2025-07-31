@@ -28,6 +28,7 @@
 
 import os
 import sys
+from pathlib import Path
 import unittest
 
 from datetime import datetime, timezone, timedelta
@@ -153,6 +154,12 @@ class TestDOM(TestCase):
         code, out, err = self.t("get dom.tracked.count")
         self.assertEqual('0\n', out)
 
+    def test_dom_data_location(self):
+        """Test 'dom.data.location'"""
+        code, out, err = self.t("get dom.data.location")
+        datadir = Path(self.t.datadir) / 'data'
+        returned_data_location = out.strip()  # strip new line char
+        self.assertEqual(str(datadir), returned_data_location)
 
 class TestDOMTracked(TestCase):
     def setUp(self):

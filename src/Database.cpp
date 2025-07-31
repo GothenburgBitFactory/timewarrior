@@ -297,6 +297,13 @@ std::string Database::getLatestEntry ()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+std::string Database::getLocation ()
+{
+  auto datapath = Path (_location);
+  return datapath;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 void Database::addInterval (const Interval& interval, bool verbose)
 {
   assert ((interval.end == 0) || (interval.start <= interval.end));

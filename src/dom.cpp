@@ -266,6 +266,16 @@ bool domGet (
         return true;
       }
     }
+
+    // dom.data.<...>
+    else if (pig.skipLiteral ("data."))
+    {
+      if (pig.skipLiteral ("location"))
+	{
+	  value = database.getLocation ();
+	  return true;
+	}
+    }
   }
 
   return false;
