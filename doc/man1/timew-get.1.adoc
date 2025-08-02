@@ -10,13 +10,37 @@ timew-get - display DOM values
 == DESCRIPTION
 Validates the DOM reference, then obtains the value and displays it.
 
-== EXAMPLES
-For example:
+In case of an invalid reference an error message is displayed on stderr and the exit code is 1.
 
-    $ timew get dom.active
-    1
+All DOM references start with `dom`, there are 4 subreferences that can be accessed:
 
+- `dom.tracked`, all intervals
+- `dom.active`, active time tracking
+- `dom.tag`, all tags
+- `dom.rc`, configuration settings
+
+See **timew-config**(7) for more details on those.
 It is an error to reference an interval or tag that does not exist.
+
+If more than one valid DOM reference is given, the results are concatenated by a space.
+
+== EXAMPLES
+
+Query current time tracking::
+
+  $ timew get dom.active
+  1
++
+This query returns `1` if time tracking is active, `0` if not.
+
+Display the 3rd interval of a query as JSON::
+
+For the `dom.tracked` reference filtering by range and tags can be applied:
++
+  $ timew get dom.tracked.3.json :month FOO
+  {"id":42,"start":"20250802T101224Z","end":"20250802T101224Z","tags":["FOO","BAR"]}
++
+Note that the `3` in the reference refers to the 3rd interval in the query result, not the interval with ID `3`!
 
 == SEE ALSO
 **timew-dom**(7)

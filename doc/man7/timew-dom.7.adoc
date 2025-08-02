@@ -6,24 +6,52 @@ timew-dom - Timewarrior DOM
 == SYNOPSIS
 
 == DESCRIPTION
-Supported DOM references are:
+All DOM references start with `dom`, there are 4 subreferences that can be accessed:
 
-  dom.tag.count             Count of all tags
-  dom.tag.1                 Nth tag used
+- `dom.tracked`, all intervals
+- `dom.active`, active time tracking
+- `dom.tag`, all tags
+- `dom.rc`, configuration settings
 
+All intervals::
+`dom.tracked` is a reference to all intervals of the database query result.
+When using this reference, filtering by range and tags can be applied.
++
+  dom.tracked.count         Count of all intervals in the query result
+  dom.tracked.ids           Ids of all intervals in the query result
+  dom.tracked.tags          Tags of all intervals in the query result
++
+`dom.tracked.<n>` is a reference to the n-th interval of the database query result.
+Depending on the filtering applied, the n-th interval is not necessarily the one with ID `@n`!
++
+  dom.tracked.<n>.tag.count Count of tags of the n-th interval
+  dom.tracked.<n>.tag.<m>   N-th interval, m-th tag
+  dom.tracked.<n>.start     N-th interval, start time (ISO Extended date)
+  dom.tracked.<n>.end       N-th interval, end time (ISO Extended date, blank if open)
+  dom.tracked.<n>.duration  N-th interval, duration (ISO Duration)
+  dom.tracked.<n>.json      N-th interval, as JSON
+
+Active time tracking::
+`dom.active` is a reference to the latest interval in active time tracking.
+It is invalid when no time is tracked.
++
   dom.active                '1' if there is active tracking, otherwise '0'
-  dom.active.tag.count      Count of active tags
-  dom.active.tag.1          Active Nth tag
-  dom.active.start          Active start timestamp (ISO Extended local date)
-  dom.active.duration       Active elapsed (ISO Period)
-  dom.active.json           Active interval as JSON
+  dom.active.tag.count      Count of tags
+  dom.active.tag.<n>        N-th tag
+  dom.active.start          Start timestamp (ISO Extended date)
+  dom.active.duration       Elapsed (ISO Period)
+  dom.active.json           Interval as JSON
 
-  dom.tracked.count         Count of tracked intervals
-  dom.tracked.1.tag.count   Count of active tags
-  dom.tracked.1.tag.1       Tracked Nth, Nth tag
-  dom.tracked.1.start       Tracked Nth, start time
-  dom.tracked.1.end         Tracked Nth, end time, blank if closed
-  dom.tracked.1.duration    Tracked Nth, elapsed
-  dom.tracked.1.json        Tracked Nth, interval as JSON
+All tags::
+`dom.tag` is a reference to all tags in the database.
++
+  dom.tag.count             Count of all tags
+  dom.tag.1                 N-th tag
++
+Without filtering applied, `dom.tracked.tags` refers to the same set of tags as `dom.tag`.
 
-  dom.rc.<name>             Configuration setting
+Configuration settings::
+`dom.rc` is a reference to all Timewarrior configuration settings.
+As there are no restrictions for the configuration keys, all those references are valid by design.
++
+  dom.rc.<name>             Configuration setting <name>
