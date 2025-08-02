@@ -66,3 +66,16 @@ void debug (const std::string& msg)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void warn (const std::string& msg)
+{
+  const auto warnColor = Color(Color::yellow);
+
+  std::stringstream sstr (msg);
+  std::string line;
+  bool first = true;
+  while (std::getline (sstr, line, '\n'))
+  {
+    std::cerr << warnColor.colorize(first ? "WARNING: " : "         ") << warnColor.colorize(line) << "\n";
+    first = false;
+  }
+}

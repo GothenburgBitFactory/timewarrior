@@ -16,7 +16,7 @@ All DOM references start with `dom`, there are 4 subreferences that can be acces
 
 - `dom.tracked`, all intervals
 - `dom.active`, active time tracking
-- `dom.tag`, all tags
+- `dom.tags`, all tags
 - `dom.rc`, configuration settings
 
 See **timew-config**(7) for more details on those.

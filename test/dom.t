@@ -70,6 +70,28 @@ class TestDOM(TestCase):
         code, out, err = self.t("get dom.tag.2")
         self.assertEqual('two\n', out)
 
+    def test_dom_tags_count_zero(self):
+        """Test 'dom.tags.count' with zero tags"""
+        code, out, err = self.t("get dom.tags.count")
+        self.assertEqual('0\n', out)
+
+    def test_dom_tags_count_two(self):
+        """Test 'dom.tags.count' with two tags"""
+        self.t("start one two")
+        code, out, err = self.t("get dom.tags.count")
+        self.assertEqual('2\n', out)
+
+    def test_dom_tags_N_none(self):
+        """Test 'dom.tags.N' with no data"""
+        code, out, err = self.t.runError("get dom.tags.1")
+        self.assertIn("DOM reference 'dom.tags.1' is not valid.", err)
+
+    def test_dom_tags_N_two(self):
+        """Test 'dom.tags.N' with two tags"""
+        self.t("start one two")
+        code, out, err = self.t("get dom.tags.2")
+        self.assertEqual('two\n', out)
+
     def test_dom_active_inactive(self):
         """Test 'dom.active' without an active interval"""
         code, out, err = self.t("get dom.active")
@@ -148,6 +170,87 @@ class TestDOM(TestCase):
         code, out, err = self.t("get dom.active.json")
         self.assertRegex(out, r'{"id":1,"start":"\d{8}T\d{6}Z","tags":\["foo"\]}')
 
+    def test_dom_active_tags_inactive(self):
+        """Test 'dom.active.tags' without an active interval"""
+        code, out, err = self.t.runError("get dom.active.tags")
+        self.assertIn("DOM reference 'dom.active.tags' is not valid.", err)
+
+    def test_dom_active_tags_zero(self):
+        """Test 'dom.active.tags' with zero tags"""
+        self.t("start")
+        code, out, err = self.t("get dom.active.tags")
+        self.assertEqual('\n', out)
+
+    def test_dom_active_tags_one(self):
+        """Test 'dom.active.tags' with one tag"""
+        self.t("start foo")
+        code, out, err = self.t("get dom.active.tags")
+        self.assertEqual('foo\n', out)
+
+    def test_dom_active_tags_two(self):
+        """Test 'dom.active.tags' with two tags"""
+        self.t("start foo bar")
+        code, out, err = self.t("get dom.active.tags")
+        self.assertEqual('bar foo\n', out)
+
+    def test_dom_active_tags_with_quotes(self):
+        """Test 'dom.active.tags' with a tag containing spaces"""
+        self.t("start \"with spaces\" bar")
+        code, out, err = self.t("get dom.active.tags")
+        self.assertEqual('bar \"with spaces\"\n', out)
+
+    def test_dom_active_tags_N_inactive(self):
+        """Test 'dom.active.tags.N' without an active interval"""
+        code, out, err = self.t.runError("get dom.active.tags.1")
+        self.assertIn("DOM reference 'dom.active.tags.1' is not valid.", err)
+
+    def test_dom_active_tags_N_zero(self):
+        """Test 'dom.active.tags.N' with zero tags"""
+        self.t("start")
+        code, out, err = self.t.runError("get dom.active.tags.1")
+        self.assertIn("DOM reference 'dom.active.tags.1' is not valid.", err)
+
+    def test_dom_active_tags_N_one(self):
+        """Test 'dom.active.tags.N' with one tag"""
+        self.t("start foo")
+        code, out, err = self.t("get dom.active.tags.1")
+        self.assertEqual('foo\n', out)
+
+    def test_dom_active_tags_N_two(self):
+        """Test 'dom.active.tags.N' with two tags"""
+        self.t("start foo bar")
+        code, out, err = self.t("get dom.active.tags.2")
+        self.assertEqual('foo\n', out)
+
+    def test_dom_active_tags_N_invalid(self):
+        """Test 'dom.active.tags.N' with invalid index"""
+        self.t("start foo")
+        code, out, err = self.t.runError("get dom.active.tags.2")
+        self.assertIn("DOM reference 'dom.active.tags.2' is not valid.", err)
+
+    def test_dom_active_tags_count_inactive(self):
+        """Test 'dom.active.tags.count' without an active interval"""
+        code, out, err = self.t.runError("get dom.active.tags.count")
+        self.assertIn("DOM reference 'dom.active.tags.count' is not valid.", err)
+
+    def test_dom_active_tags_count_zero(self):
+        """Test 'dom.active.tags.count' with zero tags"""
+        self.t("start")
+        code, out, err = self.t("get dom.active.tags.count")
+        self.assertEqual('0\n', out)
+
+    def test_dom_active_tags_count_one(self):
+        """Test 'dom.active.tags.count' with one tag"""
+        self.t("start foo")
+        code, out, err = self.t("get dom.active.tags.count")
+        self.assertEqual('1\n', out)
+
+    def test_dom_active_tags_count_two(self):
+        """Test 'dom.active.tags.count' with two tags"""
+        self.t("start foo bar")
+        code, out, err = self.t("get dom.active.tags.count")
+        self.assertEqual('2\n', out)
+
     def test_dom_tracked_count_none(self):
         """Test 'dom.active' without an active interval"""
         code, out, err = self.t("get dom.tracked.count")
@@ -196,6 +299,31 @@ class TestDOMTracked(TestCase):
 
         code, out, err = self.t("get dom.tracked.tags")
         self.assertEqual("bar foo\n", out)
+
+    def test_dom_tracked_tags_count_with_no_tags(self):
+        """Test 'dom.tracked.tags.count' with no tags"""
+        now_utc = datetime.now(timezone.utc)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z".format(five_hours_before_utc, four_hours_before_utc))
+
+        code, out, err = self.t("get dom.tracked.tags.count")
+        self.assertEqual("0\n", out)
+
+    def test_dom_tracked_tags_count_with_tags(self):
+        """Test 'dom.tracked.tags.count' with tags"""
+        now_utc = datetime.now(timezone.utc)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+        three_hours_before_utc = now_utc - timedelta(hours=3)
+        four_hours_before_utc = now_utc - timedelta(hours=4)
+        five_hours_before_utc = now_utc - timedelta(hours=5)
+
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z foo".format(five_hours_before_utc, four_hours_before_utc))
+        self.t("track {:%Y-%m-%dT%H:%M:%S}Z - {:%Y-%m-%dT%H:%M:%S}Z bar".format(three_hours_before_utc, two_hours_before_utc))
+
+        code, out, err = self.t("get dom.tracked.tags.count")
+        self.assertEqual("2\n", out)
 
     def test_dom_tracked_tags_with_quoted_tag(self):
         """Test 'dom.tracked.tags' with a tag with quotes"""
@@ -394,6 +522,117 @@ class TestDOMTracked(TestCase):
 
         code, out, err = self.t("get dom.tracked.1.json")
         self.assertRegex(out, r'{"id":1,"start":"\d{8}T\d{6}Z"}')
+
+    def test_dom_tracked_N_tags_none(self):
+        """Test 'dom.tracked.N.tags' with no data"""
+        code, out, err = self.t.runError("get dom.tracked.1.tags")
+        self.assertIn("DOM reference 'dom.tracked.1.tags' is not valid.", err)
+
+    def test_dom_tracked_N_tags_zero(self):
+        """Test 'dom.tracked.N.tags' with zero tags"""
+        self.t("track :yesterday")
+        self.t("start")
+
+        code, out, err = self.t("get dom.tracked.2.tags")
+        self.assertEqual('\n', out)
+
+    def test_dom_tracked_N_tags_one(self):
+        """Test 'dom.tracked.N.tags' with one tag"""
+        self.t("track :yesterday foo")
+        self.t("start")
+
+        code, out, err = self.t("get dom.tracked.2.tags")
+        self.assertEqual('foo\n', out)
+
+    def test_dom_tracked_N_tags_two(self):
+        """Test 'dom.tracked.N.tags' with two tags"""
+        self.t("track :yesterday one two")
+        self.t("start")
+
+        code, out, err = self.t("get dom.tracked.2.tags")
+        self.assertEqual('one two\n', out)
+
+    def test_dom_tracked_N_tags_with_quotes(self):
+        """Test 'dom.tracked.N.tags' with a tag containing spaces"""
+        self.t("track :yesterday \"with spaces\" bar")
+        self.t("start")
+
+        code, out, err = self.t("get dom.tracked.2.tags")
+        self.assertEqual('bar \"with spaces\"\n', out)
+
+    def test_dom_tracked_N_tags_active_interval(self):
+        """Test 'dom.tracked.N.tags' with active interval (first in list)"""
+        self.t("track :yesterday one two")
+        self.t("start foo bar")
+
+        code, out, err = self.t("get dom.tracked.1.tags")
+        self.assertEqual('bar foo\n', out)
+
+    def test_dom_tracked_N_tags_M_none(self):
+        """Test 'dom.tracked.N.tags.M' with no data"""
+        code, out, err = self.t.runError("get dom.tracked.1.tags.1")
+        self.assertIn("DOM reference 'dom.tracked.1.tags.1' is not valid.", err)
+
+    def test_dom_tracked_N_tags_M_zero(self):
+        """Test 'dom.tracked.N.tags.M' with zero tags"""
+        self.t("track :yesterday")
+        self.t("start")
+
+        code, out, err = self.t.runError("get dom.tracked.2.tags.1")
+        self.assertIn("DOM reference 'dom.tracked.2.tags.1' is not valid.", err)
+
+    def test_dom_tracked_N_tags_M_one(self):
+        """Test 'dom.tracked.N.tags.M' with one tag"""
+        self.t("track :yesterday foo")
+        self.t("start")
+
+        code, out, err = self.t("get dom.tracked.2.tags.1")
+        self.assertEqual('foo\n', out)
+
+    def test_dom_tracked_N_tags_M_two(self):
+        """Test 'dom.tracked.N.tags.M' with two tags"""
+        self.t("track :yesterday one two")
+        self.t("start")
+
+        code, out, err = self.t("get dom.tracked.2.tags.2")
+        self.assertEqual('two\n', out)
+
+    def test_dom_tracked_N_tags_M_invalid(self):
+        """Test 'dom.tracked.N.tags.M' with invalid index"""
+        self.t("track :yesterday foo")
+        self.t("start")
+
+        code, out, err = self.t.runError("get dom.tracked.2.tags.2")
+        self.assertIn("DOM reference 'dom.tracked.2.tags.2' is not valid.", err)
+
+    def test_dom_tracked_N_tags_count_none(self):
+        """Test 'dom.tracked.N.tags.count' with no data"""
+        code, out, err = self.t.runError("get dom.tracked.1.tags.count")
+        self.assertIn("DOM reference 'dom.tracked.1.tags.count' is not valid.", err)
+
+    def test_dom_tracked_N_tags_count_zero(self):
+        """Test 'dom.tracked.N.tags.count' with zero tags"""
+        self.t("track :yesterday")
+        self.t("start")
+
+        code, out, err = self.t("get dom.tracked.2.tags.count")
+        self.assertEqual('0\n', out)
+
+    def test_dom_tracked_N_tags_count_one(self):
+        """Test 'dom.tracked.N.tags.count' with one tag"""
+        self.t("track :yesterday foo")
+        self.t("start")
+
+        code, out, err = self.t("get dom.tracked.2.tags.count")
+        self.assertEqual('1\n', out)
+
+    def test_dom_tracked_N_tags_count_two(self):
+        """Test 'dom.tracked.N.tags.count' with two tags"""
+        self.t("track :yesterday one two")
+        self.t("start")
+
+        code, out, err = self.t("get dom.tracked.2.tags.count")
+        self.assertEqual('2\n', out)
 
 
 class TestDOMRC(TestCase):

@@ -89,6 +89,7 @@ void enableDebugMode (bool);
 void setDebugIndicator (const std::string&);
 void setDebugColor (const Color&);
 void debug (const std::string&);
+void warn (const std::string&);
 
 // util.cpp
 std::string escape (const std::string&, int);

@@ -31,7 +31,7 @@
 #include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-// Іdentify DOM references in cli, provide space-separated results.
+// Identify DOM references in CLI, provide space-separated results.
 int CmdGet (
   CLI& cli,
   Rules& rules,

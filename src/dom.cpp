@@ -36,6 +36,38 @@
 #include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////
+// Helper function to show tag count
+static bool showTagCount (std::string& value, const std::set<std::string>& tags)
+{
+  value = format ("{1}", tags.size ());
+  return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Helper function to show tag by index
+static bool showTagByIndex (std::string& value, const std::set<std::string>& tags, const int index)
+{
+  if (1 <= index && index <= static_cast <int> (tags.size ()))
+  {
+    auto it = tags.begin ();
+    std::advance (it, index - 1);
+    value = format ("{1}", *it);
+    return true;
+  }
+  return false;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Helper function to show all tags
+static bool showAllTags (std::string& value, const std::set<std::string>& tags)
+{
+  std::stringstream s;
+  s << joinQuotedIfNeeded ( " ", tags );
+  value = s.str ();
+  return true;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 bool domGet (
   Database& database,
   Interval& filter,
@@ -46,7 +78,7 @@ bool domGet (
   Pig pig (reference);
   if (pig.skipLiteral ("dom."))
   {
-    // dom.active
+    // dom.active[.<...>]
     if (pig.skipLiteral ("active"))
     {
       IntervalFilterFirstOf filtering {std::make_shared <IntervalFilterAllInRange> (Range {})};
@@ -64,53 +96,74 @@ bool domGet (
         return false;
       }
 
-      auto latest = intervals.at (0);
+      const auto& latest = intervals.at (0);
+
+      if (!latest.is_open())
+      {
+        return false;
+      }
 
       // dom.active.start
-      if (pig.skipLiteral (".start") &&
-          latest.is_open ())
+      if (pig.skipLiteral (".start"))
       {
         value = latest.start.toISOLocalExtended ();
         return true;
       }
 
       // dom.active.duration
-      if (pig.skipLiteral (".duration") &&
-          latest.is_open ())
+      if (pig.skipLiteral (".duration"))
       {
         value = Duration (latest.total ()).formatISO ();
         return true;
       }
 
-      // dom.active.tag.count
-      if (pig.skipLiteral (".tag.count") &&
-          latest.is_open ())
-      {
-        value = format ("{1}", latest.tags ().size ());
-        return true;
-      }
-
       // dom.active.json
-      if (pig.skipLiteral (".json") &&
-          latest.is_open ())
+      if (pig.skipLiteral (".json"))
       {
         value = latest.json ();
         return true;
       }
 
-      // dom.active.tag.<N>
-      int n;
-      if (pig.skipLiteral (".tag.") &&
-          pig.getDigits (n))
+      // dom.active.tag.<...>
+      if (pig.skipLiteral (".tag."))
       {
-        if (1 <= n && n <= static_cast <int> (latest.tags ().size ()))
-        {
-          std::vector <std::string> tags;
-          for (auto& tag : latest.tags ())
-            tags.push_back (tag);
+        warn ("DOM reference '.tag.' is deprecated and will be removed in a future version of Timewarrior!\nUse reference '.tags.' instead.");
 
-          value = format ("{1}", tags[n - 1]);
-          return true;
+        // dom.active.tag.count
+        if (pig.skipLiteral ("count"))
+        {
+          return showTagCount (value, latest.tags ());
+        }
+
+        // dom.active.tag.<N>
+        if (int n; pig.getDigits (n))
+        {
+          return showTagByIndex (value, latest.tags (), n);
+        }
+      }
+
+      // dom.active.tags[.<...>]
+      if (pig.skipLiteral (".tags"))
+      {
+        // dom.active.tags
+        if (pig.eos ()) {
+          return showAllTags (value, latest.tags());
+        }
+
+        // dom.active.tags.<...>
+        if (pig.skipLiteral ("."))
+        {
+          // dom.active.tags.count
+          if (pig.skipLiteral ("count"))
+          {
+            return showTagCount (value, latest.tags ());
+          }
+
+          // dom.active.tags.<N>
+          if (int n; pig.getDigits (n))
+          {
+            return showTagByIndex (value, latest.tags (), n);
+          }
         }
       }
     }
@@ -126,7 +179,7 @@ bool domGet (
       auto tracked = getTracked (database, rules, filtering);
       int count = static_cast <int> (tracked.size ());
 
-      // dom.tracked.tags
+      // dom.tracked.tags[.<...>]
       if (pig.skipLiteral ("tags"))
       {
         std::set <std::string> tags;
@@ -138,12 +191,27 @@ bool domGet (
           }
         }
 
-        std::stringstream s;
+        // dom.tracked.tags
+        if (pig.eos ())
+        {
+          return showAllTags (value, tags);
+        }
 
-        s << joinQuotedIfNeeded ( " ", tags );
+        // dom.tracked.tags.<...>
+        if (pig.skipLiteral ("."))
+        {
+          // dom.tracked.tags.count
+          if (pig.skipLiteral ("count"))
+          {
+            return showTagCount (value, tags);
+          }
 
-        value = s.str ();
-        return true;
+          // dom.tracked.tags.<M>
+          if (int m; pig.getDigits (m))
+          {
+            return showTagByIndex (value, tags, m);
+          }
+        }
       }
 
       // dom.tracked.ids
@@ -165,19 +233,11 @@ bool domGet (
         return true;
       }
 
-      int n;
       // dom.tracked.<N>.<...>
-      if (pig.getDigits (n) &&
+      if (int n; pig.getDigits (n) &&
           n <= count        &&
           pig.skipLiteral ("."))
       {
-        // dom.tracked.<N>.tag.count
-        if (pig.skipLiteral ("tag.count"))
-        {
-          value = format ("{1}", tracked[count - n].tags ().size ());
-          return true;
-        }
-
         // dom.tracked.<N>.start
         if (pig.skipLiteral ("start"))
         {
@@ -209,19 +269,47 @@ bool domGet (
           return true;
         }
 
-        int m;
-        // dom.tracked.<N>.tag.<M>
-        if (pig.skipLiteral ("tag.") &&
-            pig.getDigits (m))
+        // dom.tracked.<N>.tag.<...>
+        if (pig.skipLiteral ("tag."))
         {
-          std::vector <std::string> tags;
-          for (auto& tag : tracked[count - n].tags ())
-            tags.push_back (tag);
+          warn ("DOM reference '.tag.' is deprecated and will be removed in a future version of Timewarrior!\nUse reference '.tags.' instead.");
 
-          if (m <= static_cast <int> (tags.size ()))
+          // dom.tracked.<N>.tag.count
+          if (pig.skipLiteral ("count"))
           {
-            value = format ("{1}", tags[m - 1]);
-            return true;
+            return showTagCount (value, tracked[count - n].tags ());
+          }
+
+          // dom.tracked.<N>.tag.<M>
+          if (int m; pig.getDigits (m))
+          {
+            return showTagByIndex (value, tracked[count - n].tags (), m);
+          }
+        }
+
+        // dom.tracked.<N>.tags[.<...>]
+        if (pig.skipLiteral ("tags"))
+        {
+          // dom.tracked.<N>.tags
+          if (pig.eos ())
+          {
+            return showAllTags (value, tracked[count - n].tags ());
+          }
+
+          // dom.tracked.<N>.tags.<...>
+          if (pig.skipLiteral ("."))
+          {
+            // dom.tracked.<N>.tags.count
+            if (pig.skipLiteral ("count"))
+            {
+              return showTagCount (value, tracked[count - n].tags ());
+            }
+
+            // dom.tracked.<N>.tags.<M>
+            if (int m; pig.getDigits (m))
+            {
+              return showTagByIndex (value, tracked[count - n].tags (), m);
+            }
           }
         }
       }
@@ -230,29 +318,46 @@ bool domGet (
     // dom.tag.<...>
     else if (pig.skipLiteral ("tag."))
     {
+      warn ( "DOM reference '.tag.' is deprecated and will be removed in a future version of Timewarrior!\nUse reference '.tags.' instead.");
+
       // get unique, ordered list of tags.
       std::set <std::string> tags = database.tags ();
 
       // dom.tag.count
       if (pig.skipLiteral ("count"))
       {
-        value = format ("{1}", tags.size ());
-        return true;
+        return showTagCount (value, tags);
       }
 
-      int n;
       // dom.tag.<N>
-      if (pig.getDigits (n))
+      if (int n; pig.getDigits (n))
       {
-        if (n <= static_cast <int> (tags.size ()))
-        {
-          std::vector <std::string> all;
-          for (auto& tag : tags)
-            all.push_back (tag);
+        return showTagByIndex (value, tags, n);
+      }
+    }
 
-          value = format ("{1}", all[n - 1]);
-          return true;
-        }
+    // dom.tags[.<...>]
+    else if (pig.skipLiteral ("tags"))
+    {
+      // get unique, ordered list of tags.
+      std::set <std::string> tags = database.tags ();
+
+      // dom.tags
+      if (pig.eos ())
+      {
+        return showAllTags (value, tags);
+      }
+
+      // dom.tags.count
+      if (pig.skipLiteral (".count"))
+      {
+        return showTagCount (value, tags);
+      }
+
+      // dom.tags.<N>
+      if (int n; pig.skipLiteral(".") && pig.getDigits (n))
+      {
+        return showTagByIndex (value, tags, n);
       }
     }
 

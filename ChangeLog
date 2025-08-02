@@ -7,6 +7,8 @@
           (thanks to ftambara)
 - #678    Document report hints with the respective commands
 - #694    Improve documentation on DOM references
+- #696    Add DOM references to query all tags
+          (thanks to Ian Kenney)
 
 ------ current release ---------------------------
 
