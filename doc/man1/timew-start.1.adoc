@@ -11,6 +11,13 @@ timew-start - start time tracking
 Begins tracking using the current time with any specified set of tags.
 If a tag contains multiple words, therefore containing spaces, use quotes to surround the whole tag.
 
+== HINTS
+The start command accepts the following hints:
+
+**:fill**::
+The ':fill' hint can be used to create a new interval that starts right after the last closed interval.
+This is useful when you want to start tracking time immediately after finishing a previous task without specifying a start time.
+
 == EXAMPLES
 For example, this command specifies two tags ('weekend' and 'Home & Garden'), the second of which requires quotes.
 

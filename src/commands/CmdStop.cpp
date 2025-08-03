@@ -48,6 +48,7 @@ int CmdStop (
   Journal& journal)
 {
   const bool verbose = rules.getBoolean ("verbose");
+  const bool do_adjust = cli.getHint ("adjust", false);
   const Datetime now {};
 
   // Load the most recent interval.
@@ -105,7 +106,7 @@ int CmdStop (
     modified.end = range.start;
 
     database.deleteInterval (latest);
-    validate (cli, rules, database, modified);
+    autoAdjust (do_adjust, rules, database, modified);
 
     for (auto& interval : flatten (modified, getAllExclusions (rules, modified)))
     {
@@ -125,7 +126,7 @@ int CmdStop (
       next.tag (tag);
     }
 
-    validate (cli, rules, database, next);
+    autoAdjust (do_adjust, rules, database, next);
     database.addInterval (next, verbose);
 
     if (verbose)

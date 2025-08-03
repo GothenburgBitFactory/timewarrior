@@ -39,6 +39,7 @@ int CmdFill (
   Journal& journal)
 {
   const bool verbose = rules.getBoolean ("verbose");
+  const bool do_adjust = cli.getHint ("adjust", false);
 
   auto ids = cli.getIds ();
 
@@ -66,8 +67,8 @@ int CmdFill (
     Interval to {from};
 
     database.deleteInterval (from);
-    autoFill (rules, database, to);
-    validate (cli, rules, database, to);
+    fillRange (rules, database, to);
+    autoAdjust (do_adjust, rules, database, to);
     std::cout << "# to " << to.dump () << "\n";
     database.addInterval (to, verbose);
 

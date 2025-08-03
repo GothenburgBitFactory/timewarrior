@@ -36,6 +36,8 @@ int CmdStart (
   Journal& journal)
 {
   const bool verbose = rules.getBoolean ("verbose");
+  const bool do_fill = cli.getHint ("fill", false);
+  const bool do_adjust = cli.getHint ("adjust", false);
   const Datetime now {};
 
   auto range = cli.getRange ({now, 0});
@@ -61,7 +63,12 @@ int CmdStart (
   journal.startTransaction ();
   auto interval = Interval {range, tags};
 
-  if (validate (cli, rules, database, interval))
+  if (do_fill)
+  {
+    fillRangeStart (rules, database, interval);
+  }
+  
+  if (autoAdjust (do_adjust, rules, database, interval))
   {
     database.addInterval (interval, verbose);
     journal.endTransaction ();

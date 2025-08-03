@@ -30,58 +30,82 @@
 #include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
-// :fill
-//   The :fill hint is used to eliminate gaps on interval modification, and only
-//   a single interval is affected.
+// Fill an interval start to the end of the preceding interval (fill-backward)
 //
-//   Fill works by extending an interval in both directions if possible, to
-//   about either an interval or an exclusion, while being constrained by a
-//   filter range.
-//
-void autoFill (
+void fillRangeStart (
   const Rules& rules,
   Database& database,
   Interval& interval)
 {
+  const bool verbose = rules.getBoolean ("verbose");
   // An empty filter allows scanning beyond interval range.
   auto range_filter = IntervalFilterAllInRange ({0, 0});
 
   // Look backwards from interval.start to a boundary.
-  auto tracked = getTracked (database, rules, range_filter);
+  const auto tracked = getTracked (database, rules, range_filter);
   for (auto earlier = tracked.rbegin (); earlier != tracked.rend (); ++earlier)
   {
-    if (! earlier->is_open () &&
-        earlier->end <= interval.start)
+    if (! earlier->is_open () && earlier->end <= interval.start)
     {
       interval.start = earlier->end;
-        if (rules.getBoolean ("verbose"))
+      if (verbose)
+      {
         std::cout << "Backfilled "
                   << (interval.id ? format ("@{1} ", interval.id) : "")
                   << "to "
                   << interval.start.toISOLocalExtended ()
                   << "\n";
+      }
       break;
     }
   }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Fill an interval end to the start of the following interval (fill-forward)
+//
+void fillRangeEnd (
+  const Rules& rules,
+  Database& database,
+  Interval& interval)
+{
+  const bool verbose = rules.getBoolean ("verbose");
+  // An empty filter allows scanning beyond interval range.
+  auto range_filter = IntervalFilterAllInRange ({0, 0});
 
   // If the interval is closed, scan forwards for the next boundary.
   if (! interval.is_open ())
   {
+    const auto tracked = getTracked (database, rules, range_filter);
     for (auto& later : tracked)
     {
       if (interval.end <= later.start)
       {
         interval.end = later.start;
-        if (rules.getBoolean ("verbose"))
+        if (verbose)
+        {
           std::cout << "Filled "
                     << (interval.id ? format ("@{1} ", interval.id) : "")
                     << "to "
                     << interval.end.toISOLocalExtended ()
                     << "\n";
+        }
         break;
       }
     }
   }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Fill an interval to the borders of its surrounding intervals
+//
+void fillRange (
+  const Rules& rules,
+  Database& database,
+  Interval& interval)
+{
+  fillRangeStart (rules, database, interval);
+  fillRangeEnd (rules, database, interval);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -91,7 +115,7 @@ void autoFill (
 //   can involve rejection, adjustment of modified interval, or adjustment of
 //   recorded data.
 //
-static bool autoAdjust (
+bool autoAdjust (
   bool adjust,
   const Rules& rules,
   Database& database,
@@ -151,91 +175,73 @@ static bool autoAdjust (
   {
     throw std::string ("You cannot overlap intervals. Correct the start/end time, or specify the :adjust hint.");
   }
-  else
+
+  // implement overwrite resolution, i.e. the new interval overwrites existing intervals
+  for (auto& overlap : overlaps)
   {
-    // implement overwrite resolution, i.e. the new interval overwrites existing intervals
-    for (auto& overlap : overlaps)
+    bool start_within_overlap = interval.startsWithin (overlap);
+    bool end_within_overlap = interval.endsWithin (overlap);
+
+    if (start_within_overlap && !end_within_overlap)
     {
-      bool start_within_overlap = interval.startsWithin (overlap);
-      bool end_within_overlap = interval.endsWithin (overlap);
+      // start date of new interval within old interval
+      Interval modified {overlap};
+      modified.end = interval.start;
 
-      if (start_within_overlap && !end_within_overlap)
+      if (modified.is_empty ())
       {
-        // start date of new interval within old interval
-        Interval modified {overlap};
-        modified.end = interval.start;
-
-        if (modified.is_empty ())
-        {
-          database.deleteInterval (overlap);
-        }
-        else
-        {
-          database.modifyInterval (overlap, modified, verbose);
-        }
-      }
-      else if (! start_within_overlap && end_within_overlap)
-      {
-        // end date of new interval within old interval
-        Interval modified {overlap};
-        modified.start = interval.end;
-
-        if (modified.is_empty ())
-        {
-          database.deleteInterval (overlap);
-        }
-        else
-        {
-          database.modifyInterval (overlap, modified, verbose);
-        }
-      }
-      else if (! start_within_overlap && ! end_within_overlap)
-      {
-        // new interval encloses old interval
         database.deleteInterval (overlap);
       }
       else
       {
-        // new interval enclosed by old interval
-        Interval split2 {overlap};
-        Interval split1 {overlap};
+        database.modifyInterval (overlap, modified, verbose);
+      }
+    }
+    else if (!start_within_overlap && end_within_overlap)
+    {
+      // end date of new interval within old interval
+      Interval modified {overlap};
+      modified.start = interval.end;
 
-        split1.end = interval.start;
-        split2.start = interval.end;
+      if (modified.is_empty ())
+      {
+        database.deleteInterval (overlap);
+      }
+      else
+      {
+        database.modifyInterval (overlap, modified, verbose);
+      }
+    }
+    else if (! start_within_overlap && ! end_within_overlap)
+    {
+      // new interval encloses old interval
+      database.deleteInterval (overlap);
+    }
+    else
+    {
+      // new interval enclosed by old interval
+      Interval split2 {overlap};
+      Interval split1 {overlap};
 
-        if (split1.is_empty ())
-        {
-          database.deleteInterval (overlap);
-        }
-        else
-        {
-          database.modifyInterval (overlap, split1, verbose);
-        }
+      split1.end = interval.start;
+      split2.start = interval.end;
 
-        if (! split2.is_empty ())
-        {
-          database.addInterval (split2, verbose);
-        }
+      if (split1.is_empty ())
+      {
+        database.deleteInterval (overlap);
+      }
+      else
+      {
+        database.modifyInterval (overlap, split1, verbose);
+      }
+
+      if (! split2.is_empty ())
+      {
+        database.addInterval (split2, verbose);
       }
     }
   }
   return true;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-bool validate (
-  const CLI& cli,
-  const Rules& rules,
-  Database& database,
-  Interval& interval)
-{
-  // All validation performed here.
-  if (cli.getHint ("fill", false))
-  {
-    autoFill (rules, database, interval);
-  }
-
-  return autoAdjust (cli.getHint ("adjust", false), rules, database, interval);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

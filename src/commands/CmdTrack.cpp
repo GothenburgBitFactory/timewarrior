@@ -36,6 +36,8 @@ int CmdTrack (
   Journal& journal)
 {
   const bool verbose = rules.getBoolean ("verbose");
+  const bool do_fill = cli.getHint ("fill", false);
+  const bool do_adjust = cli.getHint ("adjust", false);
 
   // We expect no ids
   if (! cli.getIds ().empty ())
@@ -60,7 +62,11 @@ int CmdTrack (
   auto filter = Interval {range, tags};
 
   // Validation must occur before flattening.
-  validate (cli, rules, database, filter);
+  if (do_fill)
+  {
+    fillRange (rules, database, filter);
+  }
+  autoAdjust (do_adjust, rules, database, filter);
 
   for (auto& interval : flatten (filter, getAllExclusions (rules, range)))
   {

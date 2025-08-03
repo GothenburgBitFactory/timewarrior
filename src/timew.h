@@ -57,8 +57,10 @@ Interval                getLatestInterval (Database&);
 Range                   getFullDay        (const Datetime&);
 
 // validate.cpp
-void autoFill (const Rules&, Database&, Interval&);
-bool validate (const CLI& cli, const Rules& rules, Database&, Interval&);
+void fillRange (const Rules&, Database&, Interval&);
+void fillRangeStart (const Rules&, Database&, Interval&);
+void fillRangeEnd (const Rules&, Database&, Interval&);
+bool autoAdjust (bool, const Rules&, Database&, Interval&);
 
 // init.cpp
 bool lightweightVersionCheck (int, const char**);

@@ -11,14 +11,30 @@ timew-track - add intervals to the database
 The track command is used to add tracked time in the past.
 Perhaps you forgot to record time, or are just filling in old entries.
 
-== EXAMPLES
-For example:
+== HINTS
+Apart from range hints (see **timew-hints**(7)), the track command accepts the following hints:
 
+**:fill**::
+The ':fill' hint can be used to create a new interval that fills the gap between two adjacent intervals.
+
+== EXAMPLES
+*Recording a closed interval*::
+
+For example:
++
     $ timew track :yesterday 'Training Course'
     $ timew track 9am - 11am 'Staff Meeting'
-
++
 Note that the track command expects a closed interval (start and end time), when recording.
 If a closed interval is not provided, the 'track' command behaves the same as the 'start' command.
+
+*Filling the gap between two intervals*::
+To fill the gap between two intervals, without having to specify the exact times, one can use the :fill hint.
+When e.g. the first interval ends some time before 10:00 and the second interval starts some time after 11:00, calling
++
+    $ timew track 10:00 - 11:00 :fill 'Coffee Break'
++
+will instruct Timewarrior to expand the interval such that it starts right after the first interval and ends right before the second interval.
 
 == SEE ALSO
 **timew-cancel**(1),

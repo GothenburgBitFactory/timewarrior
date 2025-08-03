@@ -38,6 +38,8 @@ int CmdModifyEnd (
   Journal& journal)
 {
   const bool verbose = rules.getBoolean ("verbose");
+  const bool do_fill = cli.getHint ("fill", false);
+  const bool do_adjust = cli.getHint ("adjust", false);
 
   auto ids = cli.getIds ();
 
@@ -65,28 +67,37 @@ int CmdModifyEnd (
   }
 
   assert (intervals.size () == 1);
-  if (! range.is_started ())
+  
+  if (! range.is_started () && ! do_fill)
   {
     throw std::string ("No updated time specified. See 'timew help modify'.");
   }
 
-  const Interval interval = intervals.at (0);
+  const Interval& interval = intervals.at (0);
   Interval modified {interval};
   if (interval.is_open ())
   {
     throw format ("Cannot modify end of open interval @{1}.", id);
   }
-  modified.end = range.start;
 
-  if (! modified.is_open () && (modified.start > modified.end))
+  if (! do_fill)
+  {
+    modified.end = range.start;
+  }
+  else
+  {
+    fillRangeEnd (rules, database, modified);
+  }
+
+  if (! modified.is_open () && modified.start > modified.end)
   {
     throw format ("Cannot modify interval @{1} where start is after end.", id);
   }
-  
+
   journal.startTransaction ();
 
   database.deleteInterval (interval);
-  validate (cli, rules, database, modified);
+  autoAdjust (do_adjust, rules, database, modified);
   database.addInterval (modified, verbose);
 
   journal.endTransaction();

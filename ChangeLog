@@ -9,6 +9,7 @@
 - #694    Improve documentation on DOM references
 - #696    Add DOM references to query all tags
           (thanks to Ian Kenney)
+- #697    Enable :fill hint for command 'modify'
 
 ------ current release ---------------------------
 

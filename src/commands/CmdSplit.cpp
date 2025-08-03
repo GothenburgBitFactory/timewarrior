@@ -39,6 +39,7 @@ int CmdSplit (
   Journal& journal)
 {
   const bool verbose = rules.getBoolean ("verbose");
+  const bool do_adjust = cli.getHint ("adjust", false);
 
   std::set <int> ids = cli.getIds ();
 
@@ -95,10 +96,10 @@ int CmdSplit (
 
     database.deleteInterval (interval);
 
-    validate (cli, rules, database, first);
+    autoAdjust (do_adjust, rules, database, first);
     database.addInterval (first, verbose);
 
-    validate (cli, rules, database, second);
+    autoAdjust (do_adjust, rules, database, second);
     database.addInterval (second, verbose);
 
     if (verbose)

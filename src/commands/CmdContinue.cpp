@@ -42,6 +42,7 @@ int CmdContinue (
   Journal& journal)
 {
   const bool verbose = rules.getBoolean ("verbose");
+  const bool do_adjust = cli.getHint ("adjust", false);
   const Datetime now {};
 
   auto range = cli.getRange ({now, 0});
@@ -124,7 +125,7 @@ int CmdContinue (
 
   journal.startTransaction ();
 
-  if (validate (cli, rules, database, to_copy))
+  if (autoAdjust (do_adjust, rules, database, to_copy))
   {
     database.addInterval (to_copy, verbose);
     journal.endTransaction ();

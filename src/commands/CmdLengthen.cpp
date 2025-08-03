@@ -39,6 +39,7 @@ int CmdLengthen (
   Journal& journal)
 {
   const bool verbose = rules.getBoolean ("verbose");
+  const bool do_adjust = cli.getHint ("adjust", false);
 
   auto ids = cli.getIds ();
 
@@ -87,7 +88,7 @@ int CmdLengthen (
     database.deleteInterval (interval);
 
     interval.end += dur.toTime_t ();
-    validate (cli, rules, database, interval);
+    autoAdjust (do_adjust, rules, database, interval);
     database.addInterval (interval, verbose);
 
     if (verbose)

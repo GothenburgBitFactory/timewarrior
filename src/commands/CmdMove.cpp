@@ -39,6 +39,7 @@ int CmdMove (
   Journal& journal)
 {
   const bool verbose = rules.getBoolean ("verbose");
+  const bool do_adjust = cli.getHint ("adjust", false);
 
   // Gather ID and TAGs.
   std::set <int> ids = cli.getIds ();
@@ -126,7 +127,7 @@ int CmdMove (
 
   database.deleteInterval (intervals.at (0));
 
-  validate (cli, rules, database, interval);
+  autoAdjust (do_adjust, rules, database, interval);
   database.addInterval (interval, verbose);
 
   journal.endTransaction ();

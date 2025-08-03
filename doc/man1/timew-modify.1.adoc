@@ -19,6 +19,18 @@ One can add the ':adjust' hint to force an overwrite in this case.
 
 See **timew-summary**(1) on how to retrieve the interval id.
 
+== HINTS
+The 'modify' command accepts the following hints:
+
+**:fill**::
+The ':fill' hint can be used instead of a date or date range to fill the gap between the interval to be modified and its adjacent intervals.
+For subcommands 'start' and 'end', the ':fill' hint will fill the gap between the targeted interval and the next or previous interval respectively.
+For the 'range' subcommand, it will fill gaps on both sides of the modified interval.
+
+**:adjust**::
+The ':adjust' hint can be added to force the modification of the interval, if it overlaps with an existing interval.
+This will overwrite the existing interval.
+
 == EXAMPLES
 *Modify the start date of an interval*::
 +
@@ -42,6 +54,12 @@ Instead of modifying start and end separately, those can be combined into a sing
     $ timew modify range @3 2020-12-28T17:00 - 2020-12-28T18:00
 +
 As in the examples above, the date portion can be omitted, if the date of the interval is today.
+
+*Modify the range of an interval and fill gaps*::
++
+    $ timew modify range @3 :fill
++
+This modifies the interval '@3' and automatically fills any gaps between this interval and its adjacent intervals.
 
 == SEE ALSO
 **timew-lengthen**(1),

@@ -39,6 +39,7 @@ int CmdResize (
   Journal& journal)
 {
   const bool verbose = rules.getBoolean ("verbose");
+  const bool do_adjust = cli.getHint ("adjust", false);
 
   std::set <int> ids = cli.getIds ();
 
@@ -85,7 +86,7 @@ int CmdResize (
     database.deleteInterval (interval);
 
     interval.end = interval.start + dur.toTime_t ();
-    validate (cli, rules, database, interval);
+    autoAdjust (do_adjust, rules, database, interval);
     database.addInterval (interval, verbose);
 
     if (verbose)

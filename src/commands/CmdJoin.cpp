@@ -39,6 +39,7 @@ int CmdJoin (
   Journal& journal)
 {
   const bool verbose = rules.getBoolean ("verbose");
+  const bool do_adjust = cli.getHint ("adjust", false);
 
   // Gather IDs and TAGs.
   auto ids = cli.getIds ();
@@ -92,7 +93,7 @@ int CmdJoin (
   database.deleteInterval (first);
   database.deleteInterval (second);
 
-  validate (cli, rules, database, combined);
+  autoAdjust (do_adjust, rules, database, combined);
   database.addInterval (combined, verbose);
 
   journal.endTransaction ();

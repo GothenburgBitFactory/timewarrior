@@ -101,7 +101,7 @@ std::vector<Interval> import_file (const std::string& file_name)
 }
 
 void import_intervals (
-    const CLI& cli,
+    const bool do_adjust,
     const Rules& rules,
     Database& database,
     Journal& journal,
@@ -112,7 +112,7 @@ void import_intervals (
     for (auto& interval: intervals)
     {
         // Add each interval to the database
-        if (validate (cli, rules, database, interval))
+        if (autoAdjust (do_adjust, rules, database, interval))
         {
             database.addInterval (interval, verbose);
             database.commit ();
@@ -129,13 +129,14 @@ int CmdImport (
     Journal &journal)
 {
     const bool verbose = rules.getBoolean ("verbose");
+    const bool do_adjust = cli.getHint ("adjust", false);
 
     if (const auto fileNames = cli.getWords (); fileNames.empty ())
     {
         const auto content = read_input ();
         auto intervals = parse_content (content);
 
-        import_intervals (cli, rules, database, journal, verbose, intervals);
+        import_intervals (do_adjust, rules, database, journal, verbose, intervals);
 
         if (verbose)
         {
@@ -151,7 +152,7 @@ int CmdImport (
             {
                 auto intervals = import_file (fileName);
 
-                import_intervals (cli, rules, database, journal, verbose, intervals);
+                import_intervals (do_adjust, rules, database, journal, verbose, intervals);
 
                 if (verbose)
                 {
