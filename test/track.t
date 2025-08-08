@@ -199,6 +199,63 @@ class TestTrack(TestCase):
                                   expectedEnd=three_hours_before,
                                   expectedTags=["BAR"])
 
+class TestFillHint(TestCase):
+    def setUp(self):
+        """Executed before each test in the class"""
+        self.t = Timew()
+
+    def test_unfilled_track_in_gap(self):
+        """Add closed interval into a gap without fill"""
+        self.t("track 20160709T050000Z - 20160709T060000Z one")
+        self.t("track 20160709T090000Z - 20160709T100000Z three")
+
+        code, out, err = self.t("track 20160709T070000Z - 20160709T080000Z two")
+
+        self.assertNotIn('Backfilled to ', out)
+        self.assertNotIn('Filled to ', out)
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 3)
+        self.assertClosedInterval(j[0],
+                                  expectedStart="20160709T050000Z",
+                                  expectedEnd="20160709T060000Z",
+                                  expectedTags=["one"])
+        self.assertClosedInterval(j[1],
+                                  expectedStart="20160709T070000Z",
+                                  expectedEnd="20160709T080000Z",
+                                  expectedTags=["two"])
+        self.assertClosedInterval(j[2],
+                                  expectedStart="20160709T090000Z",
+                                  expectedEnd="20160709T100000Z",
+                                  expectedTags=["three"])
+
+    def test_filled_track_in_gap(self):
+        """Add closed interval into a gap with fill"""
+        self.t("track 20160709T050000Z - 20160709T060000Z one")
+        self.t("track 20160709T090000Z - 20160709T100000Z three")
+
+        code, out, err = self.t("track 20160709T070000Z - 20160709T080000Z two :fill")
+
+        self.assertIn('Backfilled to ', out)
+        self.assertIn('Filled to ', out)
+
+        j = self.t.export()
+
+        self.assertEqual(len(j), 3)
+        self.assertClosedInterval(j[0],
+                                  expectedStart="20160709T050000Z",
+                                  expectedEnd="20160709T060000Z",
+                                  expectedTags=["one"])
+        self.assertClosedInterval(j[1],
+                                  expectedStart="20160709T060000Z",
+                                  expectedEnd="20160709T090000Z",
+                                  expectedTags=["two"])
+        self.assertClosedInterval(j[2],
+                                  expectedStart="20160709T090000Z",
+                                  expectedEnd="20160709T100000Z",
+                                  expectedTags=["three"])
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

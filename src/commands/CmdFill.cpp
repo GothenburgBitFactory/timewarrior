@@ -24,11 +24,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <Duration.h>
 #include <IntervalFilterAllInRange.h>
+#include <IntervalFilterAllWithIds.h>
+#include <IntervalFilterFirstOf.h>
 #include <commands.h>
 #include <format.h>
-#include <iostream>
 #include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -41,39 +41,54 @@ int CmdFill (
   const bool verbose = rules.getBoolean ("verbose");
   const bool do_adjust = cli.getHint ("adjust", false);
 
-  auto ids = cli.getIds ();
+  const auto ids = cli.getIds ();
+
+  Interval interval;
+
+  if (ids.size () > 1)
+  {
+    throw std::string ("Only one ID may be specified. See 'timew help fill'.");
+  }
 
   if (ids.empty ())
   {
-    throw std::string ("IDs must be specified. See 'timew help fill'.");
+    IntervalFilterFirstOf filtering {std::make_shared <IntervalFilterAllInRange> (Range {})};
+    auto const intervals = getTracked (database, rules, filtering);
+
+    if (intervals.empty ())
+    {
+      throw std::string ("There is no active time tracking.");
+    }
+
+    interval = intervals.at (0);
+
+    if (! interval.is_open ())
+    {
+    throw std::string ("ID must be specified. See 'timew help fill'.");
+    }
+  }
+  else
+  {
+    auto filtering = IntervalFilterAllWithIds (ids);
+    const auto intervals = getTracked (database, rules, filtering);
+
+    if (intervals.empty ())
+    {
+      throw format ("ID '@{1}' does not correspond to any tracking.", *ids.begin ());
+    }
+
+    interval = intervals.at (0);
   }
 
-  // Load the data.
-  auto filtering = IntervalFilterAllInRange ({0, 0});
-  auto tracked = getTracked (database, rules, filtering);
+  Interval modified {interval};
+
+  fillRange (rules, database, modified);
 
   journal.startTransaction ();
 
-  // Apply tags to ids.
-  for (auto& id : ids)
-  {
-    if (id > static_cast <int> (tracked.size ()))
-    {
-      throw format ("ID '@{1}' does not correspond to any tracking.", id);
-    }
-
-    Interval from = tracked[tracked.size () - id];
-    std::cout << "# from " << from.dump () << "\n";
-    Interval to {from};
-
-    database.deleteInterval (from);
-    fillRange (rules, database, to);
-    autoAdjust (do_adjust, rules, database, to);
-    std::cout << "# to " << to.dump () << "\n";
-    database.addInterval (to, verbose);
-
-    // Note: Feedback generated inside autoFill().
-  }
+  database.deleteInterval (interval);
+  autoAdjust (do_adjust, rules, database, modified);
+  database.addInterval (modified, verbose);
 
   journal.endTransaction ();
 
