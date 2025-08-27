@@ -17,13 +17,13 @@ if (uppercase_CMAKE_BUILD_TYPE MATCHES "DEBUG")
   if (FIU_ENABLE)
     message (STATUS "libfiu found")
     add_definitions (-DFIU_ENABLE)
-    set (test_LIBS fiu ${TIMEW_LIBRARIES})
+    set (timew_test_LIBS fiu ${TIMEW_LIBRARIES})
   else (FIU_ENABLE)
     message (STATUS "NOTE: install libfiu to run additional tests")
-    set (test_LIBS ${TIMEW_LIBRARIES})
+    set (timew_test_LIBS ${TIMEW_LIBRARIES})
   endif (FIU_ENABLE)
 else (uppercase_CMAKE_BUILD_TYPE MATCHES "DEBUG")
-  set (test_LIBS ${TIMEW_LIBRARIES})
+  set (timew_test_LIBS ${TIMEW_LIBRARIES})
 endif (uppercase_CMAKE_BUILD_TYPE MATCHES "DEBUG")
 
 include_directories (${CMAKE_SOURCE_DIR}
@@ -34,16 +34,16 @@ include_directories (${CMAKE_SOURCE_DIR}
 include_directories (${CMAKE_INSTALL_PREFIX}/include)
 link_directories(${CMAKE_INSTALL_PREFIX}/lib)
 
-set (test_SRCS AtomicFileTest data.t Datafile.t DatetimeParser.t exclusion.t helper.t interval.t range.t rules.t util.t TagInfoDatabase.t)
+set (timew_test_SRCS AtomicFileTest data.t Datafile.t DatetimeParser.t exclusion.t helper.t interval.t range.t rules.t util.t TagInfoDatabase.t)
 
-add_custom_target (test ./run_all --verbose
-                        DEPENDS ${test_SRCS} timew_executable doc
+add_custom_target (timew_test ./run_all --verbose
+                        DEPENDS ${timew_test_SRCS} timew_executable doc
                         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/test
                         COMMENT "Running testsuite...")
 
-foreach (src_FILE ${test_SRCS})
+foreach (src_FILE ${timew_test_SRCS})
   add_executable (${src_FILE} "${src_FILE}.cpp" test.cpp)
-  target_link_libraries (${src_FILE} timew libshared ${test_LIBS})
+  target_link_libraries (${src_FILE} timew shared ${timew_test_LIBS})
 endforeach (src_FILE)
 
 configure_file(run_all run_all COPYONLY)
