@@ -6,6 +6,7 @@ set (HAVE_CMAKE true)
 project (timew)
 include (CXXSniffer)
 include (FindAsciidoctor)
+include (CheckFunctionExists)
 
 set (PROJECT_VERSION "1.9.0-dev")
 
@@ -44,6 +45,9 @@ else (FREEBSD OR DRAGONFLY)
 endif (FREEBSD OR DRAGONFLY)
 set (TIMEW_DOCDIR share/doc/timew CACHE STRING "Installation directory for doc files")
 set (TIMEW_BINDIR bin             CACHE STRING "Installation directory for Timewarrior executable")
+
+check_function_exists(strlcpy HAVE_STRLCPY)
+check_function_exists(timegm  HAVE_TIMEGM)
 
 message ("-- Configuring cmake.h")
 configure_file (${CMAKE_SOURCE_DIR}/cmake.h.in
