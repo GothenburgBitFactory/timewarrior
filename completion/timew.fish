@@ -66,6 +66,7 @@ lengthen\t'Lengthen intervals'
 modify\t'Change start or end date of an interval'
 month\t'Display chart report'
 move\t'Change interval start-time'
+retag\t'Replace all tags in intervals'
 shorten\t'Shorten intervals'
 split\t'Split intervals'
 start\t'Start time tracking'
@@ -151,6 +152,10 @@ complete -c timew -n "__fish_seen_subcommand_from move" \
 complete -c timew -n "__fish_seen_subcommand_from $reports" \
   -a "$tags $interval"
 # <report> [<interval>] [<tag> ...]
+
+complete -c timew -n "__fish_seen_subcommand_from retag" \
+    -a "$ids $tags"
+# @<id> [@<id> ...] <tag> [<tag> ...]
 
 complete -c timew -n "__fish_seen_subcommand_from shorten" \
   -a "$ids"
