@@ -1,0 +1,12 @@
+services:
+  timew-performance-test:
+    build:
+      context: .
+      dockerfile: performance-test.Dockerfile
+    volumes:
+      - ${TIMEW_PERFORMANCE_TEST_OUTPUT}:/performance-test/output
+      - ${TIMEW_DB_DIR}:/tmp/timewarriordb
+    environment:
+      - TIMEWARRIORDB=/tmp/timewarriordb
+    tty: true
+    stdin_open: true

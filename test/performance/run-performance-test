@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Script to run Timewarrior performance tests using Docker
+
+set -e
+
+# Determine repository root
+REPO_ROOT=$(git rev-parse --show-toplevel)
+
+TIMEW_PERFORMANCE_TEST_OUTPUT="${1?"missing output directory"}"
+TIMEW_DB_DIR="${2?"missing db directory"}"
+
+# Create required directories
+mkdir -p "${TIMEW_PERFORMANCE_TEST_OUTPUT}"
+
+# Build and run the performance test container
+echo "Building and running performance test container..."
+export TIMEW_PERFORMANCE_TEST_OUTPUT
+export TIMEW_DB_DIR
+
+docker-compose -f "${REPO_ROOT}/test/performance/docker-compose.yml" up --build
+
+echo "Performance tests completed."
