@@ -1,4 +1,6 @@
 name: Update docs on ti.net
+permissions:
+  contents: read
 on:
   workflow_dispatch:
   release:
