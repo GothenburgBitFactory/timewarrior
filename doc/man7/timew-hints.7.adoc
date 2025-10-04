@@ -53,3 +53,23 @@ Range hints provide convenient shortcuts to date ranges:
   :friday        Previous friday
   :saturday      Previous saturday
   :sunday        Previous sunday
+
+== EXAMPLES
+
+Forcing color output::
+By default, Timewarrior disables color output when its output is not a terminal (for example, when piped or run under 'watch').
+One can force color output using the ':color' hint:
++
+[source,shell]
+----
+timew :color day
+----
++
+This is particularly useful with 'watch' for live updates:
++
+[source,shell]
+----
+watch -c timew :color day
+----
++
+where '-c' preserves ANSI color codes.

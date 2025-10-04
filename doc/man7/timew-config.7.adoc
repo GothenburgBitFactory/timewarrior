@@ -52,6 +52,13 @@ May be overridden by the ':yes' hint.
 +
 Default value is 'yes'.
 
+*color*::
+Determines whether output is colored.
++
+May be overridden by the ':color' or ':nocolor' hint.
++
+By default, Timewarrior disables color output when its output is not a terminal.
+
 *verbose*::
 Determines whether Timewarrior generates feedback.
 +
@@ -70,3 +77,6 @@ Default value is 'off'.
 The debug output prefix string.
 +
 Default value is '>>'.
+
+== SEE ALSO
+**timew-hints**(7)
