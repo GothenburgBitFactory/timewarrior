@@ -80,6 +80,7 @@ int CmdTags (
 
     auto table = TagsTable::builder()
       .withTagDescriptions (tagDescriptions)
+      .withColor (rules.getBoolean ("color"))
       .build ();
 
     std::cout << '\n'

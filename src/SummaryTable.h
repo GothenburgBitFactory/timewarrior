@@ -51,6 +51,8 @@ class SummaryTable
     Builder& withRange (const Range&);
     Builder& withIntervals (const std::vector <Interval>&);
 
+    Builder& withColor (bool);
+
     Table build ();
 
   private:
@@ -63,6 +65,7 @@ class SummaryTable
     bool _show_tags;
     bool _show_weekdays;
     bool _show_weeks;
+    bool _with_color;
 
     Range _range;
     std::vector <Interval> _tracked;

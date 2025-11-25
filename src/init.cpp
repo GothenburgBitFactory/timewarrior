@@ -158,6 +158,18 @@ void initializeDataJournalAndRules (
   enableDebugMode (rules.getBoolean ("debug"));
   paths::initializeDirs (rules);
 
+  for (auto& arg : cli._args)
+  {
+    if (arg.hasTag ("HINT"))
+    {
+      if (arg.attribute ("canonical") == ":debug")   rules.set ("debug",        "on");
+      if (arg.attribute ("canonical") == ":quiet")   rules.set ("verbose",      "off");
+      if (arg.attribute ("canonical") == ":color")   rules.set ("color",        "on");
+      if (arg.attribute ("canonical") == ":nocolor") rules.set ("color",        "off");
+      if (arg.attribute ("canonical") == ":yes")     rules.set ("confirmation", "off");
+    }
+  }
+
   if (rules.has ("debug.indicator"))
     setDebugIndicator (rules.get ("debug.indicator"));
 

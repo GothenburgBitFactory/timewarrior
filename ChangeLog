@@ -1,3 +1,6 @@
+- #727    :color hint does not work with the summary report
+          (thanks to Alex Rogers)
+
 ------ current release ---------------------------
 
 1.9.1 (2025-08-27) - 8c14b6d44adc75b7031eb0c25237db842aba37f9

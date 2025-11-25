@@ -37,11 +37,13 @@ class TagsTable
   {
   public:
     Builder& withTagDescriptions (std::vector <TagDescription>&);
+    Builder& withColor (bool);
 
     Table build ();
 
   private:
     std::vector <TagDescription> _tagDescriptions {};
+    bool _with_color {false};
   };
 
 public:

@@ -154,6 +154,7 @@ int CmdSummary (
     .withAnnotations (show_annotations)
     .withRange (range)
     .withIntervals (tracked)
+    .withColor (rules.getBoolean ("color"))
     .build ();
 
   std::cout << '\n'

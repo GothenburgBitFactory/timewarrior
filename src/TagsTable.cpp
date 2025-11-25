@@ -41,6 +41,13 @@ TagsTable::Builder& TagsTable::Builder::withTagDescriptions (std::vector <TagDes
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+TagsTable::Builder& TagsTable::Builder::withColor (bool forceColor)
+{
+  _with_color = forceColor;
+  return *this;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 Table TagsTable::Builder::build ()
 {
   int terminalWidth = getTerminalWidth ();
@@ -50,6 +57,8 @@ Table TagsTable::Builder::build ()
   table.colorHeader (Color ("underline"));
   table.add ("Tag");
   table.add ("Description");
+
+  table.withColor (_with_color);
 
   for (const auto& tagDescription : _tagDescriptions)
   {

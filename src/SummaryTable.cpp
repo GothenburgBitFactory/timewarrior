@@ -111,6 +111,13 @@ SummaryTable::Builder & SummaryTable::Builder::withIntervals (const std::vector 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+SummaryTable::Builder& SummaryTable::Builder::withColor (bool withColor)
+{
+  _with_color = withColor;
+  return *this;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 Table SummaryTable::Builder::build ()
 {
   const auto dates_col_offset = _show_weeks ? 1 : 0;
@@ -163,6 +170,8 @@ Table SummaryTable::Builder::build ()
   {
     table.add ("Annotation");
   }
+
+  table.withColor(_with_color);
 
   table.add ("Start", false);
   table.add ("End", false);
