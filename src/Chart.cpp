@@ -97,7 +97,17 @@ std::string Chart::render (
   // Each day is rendered separately.
   time_t total_work = 0;
 
-  for (Datetime day = range.start; day < range.end; day++)
+  auto range_start = range.is_started () ? range.start : tracked.front ().start;
+  auto range_end   = range.is_ended ()   ? range.end   : tracked.back ().end;
+
+  const auto now = Datetime ();
+
+  if (range_end == 0)
+  {
+    range_end = now;
+  }
+
+  for (Datetime day = range_start.startOfDay (); day < range_end; ++day)
   {
     // Render the exclusion blocks.
 
@@ -154,7 +164,7 @@ std::string Chart::render (
 
   out << (with_totals ? renderSubTotal (total_work, std::string (padding_size, ' ')) : "")
       << (with_holidays ? renderHolidays (holidays) : "")
-      << (with_summary ? renderSummary (indent, range, exclusions, tracked) : "");
+      << (with_summary ? renderSummary (indent, {range_start, range_end}, exclusions, tracked) : "");
 
   return out.str ();
 }
