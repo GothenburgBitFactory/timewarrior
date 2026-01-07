@@ -214,6 +214,42 @@ class TestConfig(TestCase):
         code, out, err = self.t("config number 5", input=b"yes\n")
         self.assertIn(" with a value of '5'?", out)
 
+    def test_invalid_import_before_config_values(self):
+        """Test that config values after invalid imports are not silently ignored (issue #734)"""
+        # Create a config file with an import statement BEFORE config values
+        with open(self.t.timewrc, 'w') as f:
+            f.write("""\
+import /this/path/is/invalid
+reports.summary.ids = yes
+reports.summary.annotations = yes
+""")
+
+        code, out, err = self.t("config")
+        # Config values should be present even though the import fails
+        self.assertIn("reports.summary.ids = yes", out)
+        self.assertIn("reports.summary.annotations = yes", out)
+        # A warning should be printed about the missing import
+        self.assertIn("WARNING", err)
+        self.assertIn("Could not read imported file", err)
+
+    def test_invalid_import_after_config_values(self):
+        """Test that config values before invalid imports are still present (issue #734)"""
+        # Create a config file with an import statement AFTER config values
+        with open(self.t.timewrc, 'w') as f:
+            f.write("""\
+reports.summary.ids = yes
+reports.summary.annotations = yes
+import /this/path/is/invalid
+""")
+
+        code, out, err = self.t("config")
+        # Config values should be present
+        self.assertIn("reports.summary.ids = yes", out)
+        self.assertIn("reports.summary.annotations = yes", out)
+        # A warning should be printed about the missing import
+        self.assertIn("WARNING", err)
+        self.assertIn("Could not read imported file", err)
+
 
 if __name__ == "__main__":
     from simpletap import TAPTestRunner

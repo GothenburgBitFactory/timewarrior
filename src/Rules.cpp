@@ -34,6 +34,7 @@
 #include <format.h>
 #include <shared.h>
 #include <sstream>
+#include <timew.h>
 #include <tuple>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -361,14 +362,25 @@ void Rules::parse (const std::string& input, int nest /* = 1 */)
                  tokens.size () == 2   &&
                  std::get <1> (tokens[1]) == Lexer::Type::path)
         {
-          File imported (std::get <0> (tokens[1]));
-          if (! imported.is_absolute ())
-            throw format ("Can only import files with absolute paths, not '{1}'.", imported._data);
+          try
+          {
+            File imported (std::get <0> (tokens[1]));
+            if (! imported.is_absolute ())
+            {
+              throw format ("Can only import files with absolute paths, not '{1}'.", imported._data);
+            }
 
-          if (! imported.readable ())
-            throw format ("Could not read imported file '{1}'.", imported._data);
+            if (! imported.readable ())
+            {
+              throw format ("Could not read imported file '{1}'.", imported._data);
+            }
 
-          load (imported._data, nest + 1);
+            load (imported._data, nest + 1);
+          }
+          catch (const std::string& error)
+          {
+            warn (error);
+          }
         }
         // Top-level settings:
         //   <name> '=' <value>

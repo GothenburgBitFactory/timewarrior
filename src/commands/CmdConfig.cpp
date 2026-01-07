@@ -55,8 +55,8 @@ int CmdConfig (
   }
 
   const bool verbose = rules.getBoolean ("verbose");
+  const bool confirmation = rules.getBoolean ("confirmation");
 
-  bool confirmation = rules.getBoolean ("confirmation");
   std::string name = words[0];
   std::string value;
 
