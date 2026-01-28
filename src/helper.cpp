@@ -528,6 +528,15 @@ int getTerminalWidth ()
   terminalWidth = ts.ws_col;
 #endif
 
+  if (terminalWidth == 0)
+  {
+    char *columns = getenv ("COLUMNS");
+    if (columns != NULL)
+    {
+      terminalWidth = atoi (columns);
+    }
+  }
+
   return terminalWidth > 0 ? terminalWidth : 80;
 }
 
