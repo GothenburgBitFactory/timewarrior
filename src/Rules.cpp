@@ -372,22 +372,12 @@ void Rules::parse (const std::string& input, int nest /* = 1 */)
         }
         // Top-level settings:
         //   <name> '=' <value>
-        else if (tokens.size () >= 3 &&
-                 std::get <0> (tokens[1]) == "=")
+        //   <name> '='
+        else if (auto equals = line.find ('='); equals != std::string::npos)
         {
           // If this line is an assignment, then tokenizing it is a mistake, so use the raw data from 'line'.
-          auto equals = line.find ('=');
-          assert (equals != std::string::npos);
-
           set (trim (line.substr (indent, equals - indent)),
                trim (line.substr (equals + 1)));
-        }
-        // Top-level settings, with no value:
-        //   <name> '='
-        else if (tokens.size () == 2 &&
-                 std::get <0> (tokens[1]) == "=")
-        {
-          set (firstWord, "");
         }
         // Admit defeat.
         else
