@@ -197,6 +197,14 @@ class TestConfig(TestCase):
         code, out, err = self.t("config")
         self.assertIn("month = ", out)
 
+    def test_set_tag_with_dashes_color(self):
+        """Test setting tag color with dashes in tag name"""
+        self.t.config("tags.tag-with-dashes.color", "black on yellow")
+
+        code, out, err = self.t("config")
+        self.assertIn("tag-with-dashes", out)
+        self.assertIn("color = black on yellow", out)
+
     def test_unset_known_hierarchical_name(self):
         """Test unsetting a known hierarchical name"""
         code, out, err = self.t.runError("config reports.day.month :yes")
