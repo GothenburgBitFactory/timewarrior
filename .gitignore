@@ -10,3 +10,4 @@ install_manifest.txt
 *.swp
 *.pyc
 *.cbp
+build/
