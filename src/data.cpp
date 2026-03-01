@@ -30,7 +30,9 @@
 #include <IntervalFilter.h>
 #include <algorithm>
 #include <format.h>
+#include <map>
 #include <shared.h>
+#include <sstream>
 #include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -55,6 +57,57 @@ std::vector <Range> getHolidays (const Rules& rules)
 
   debug (format ("Found {1} holidays", results.size ()));
   return results;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Read rules and extract all holiday definitions within range. Create a map
+// from date to holiday description string (with locale).
+std::map <Datetime, std::string> createHolidayMap (Rules& rules, Range& range)
+{
+  std::map <Datetime, std::string> mapping;
+  auto holidays = rules.all ("holidays.");
+
+  for (auto& entry : holidays)
+  {
+    auto first_dot = entry.find ('.');
+    auto last_dot = entry.rfind ('.');
+
+    if (last_dot != std::string::npos)
+    {
+      auto date = entry.substr (last_dot + 1);
+      std::replace (date.begin (), date.end (), '_', '-');
+      Datetime holiday (date);
+
+      if (holiday >= range.start && holiday <= range.end)
+      {
+        std::stringstream out;
+        out << " ["
+            << entry.substr (first_dot + 1, last_dot - first_dot - 1)
+            << "] "
+            << rules.get (entry);
+        mapping[holiday] = out.str ();
+      }
+    }
+  }
+
+  return mapping;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Render a map of holidays as a formatted string.
+std::string renderHolidays (const std::map <Datetime, std::string>& holidays)
+{
+  std::stringstream out;
+
+  for (auto& entry : holidays)
+  {
+    out << entry.first.toString ("Y-M-D")
+        << " "
+        << entry.second
+        << '\n';
+  }
+
+  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

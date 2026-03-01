@@ -36,10 +36,14 @@
 #include <IntervalFilter.h>
 #include <Palette.h>
 #include <Rules.h>
+#include <map>
+#include <string>
 
 // data.cpp
-std::vector <Range>     getHolidays       (const Rules&);
-std::vector <Range>     getAllExclusions  (const Rules&, const Range&);
+std::vector <Range>                      getHolidays      (const Rules&);
+std::map <Datetime, std::string>         createHolidayMap (Rules&, Range&);
+std::string                              renderHolidays   (const std::map <Datetime, std::string>&);
+std::vector <Range>                      getAllExclusions  (const Rules&, const Range&);
 std::vector <Range>     subset            (const Range&, const std::vector <Range>&);
 std::vector <Interval>  subset            (const Range&, const std::vector <Interval>&);
 void                    flattenDatabase   (Database&, const Rules&);

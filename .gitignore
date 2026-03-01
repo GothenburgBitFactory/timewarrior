@@ -1,3 +1,4 @@
+build/
 .cmake/
 _CPack_Packages/
 CMakeFiles/
