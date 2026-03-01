@@ -41,6 +41,7 @@
 
 // data.cpp
 std::vector <Range>                      getHolidays      (const Rules&);
+std::vector <Range>                      getHolidays      (const Rules&, const Range&);
 std::map <Datetime, std::string>         createHolidayMap (Rules&, Range&);
 std::string                              renderHolidays   (const std::map <Datetime, std::string>&);
 std::vector <Range>                      getAllExclusions  (const Rules&, const Range&);
