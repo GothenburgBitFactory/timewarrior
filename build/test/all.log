@@ -1,0 +1,1095 @@
+# 1772392928.7998052 ==> 2026-03-01 19:22:08
+# helper.t
+1..129
+ok 1 - quantizeToNMinutes 0/15 --> 0
+ok 2 - quantizeToNMinutes 1/15 --> 0
+ok 3 - quantizeToNMinutes 2/15 --> 0
+ok 4 - quantizeToNMinutes 3/15 --> 0
+ok 5 - quantizeToNMinutes 4/15 --> 0
+ok 6 - quantizeToNMinutes 5/15 --> 0
+ok 7 - quantizeToNMinutes 6/15 --> 0
+ok 8 - quantizeToNMinutes 7/15 --> 15
+ok 9 - quantizeToNMinutes 8/15 --> 15
+ok 10 - quantizeToNMinutes 9/15 --> 15
+ok 11 - quantizeToNMinutes 10/15 --> 15
+ok 12 - quantizeToNMinutes 11/15 --> 15
+ok 13 - quantizeToNMinutes 12/15 --> 15
+ok 14 - quantizeToNMinutes 13/15 --> 15
+ok 15 - quantizeToNMinutes 14/15 --> 15
+ok 16 - quantizeToNMinutes 15/15 --> 15
+ok 17 - quantizeToNMinutes 16/15 --> 15
+ok 18 - quantizeToNMinutes 17/15 --> 15
+ok 19 - quantizeToNMinutes 18/15 --> 15
+ok 20 - quantizeToNMinutes 19/15 --> 15
+ok 21 - quantizeToNMinutes 20/15 --> 15
+ok 22 - quantizeToNMinutes 21/15 --> 15
+ok 23 - quantizeToNMinutes 22/15 --> 30
+ok 24 - quantizeToNMinutes 23/15 --> 30
+ok 25 - quantizeToNMinutes 24/15 --> 30
+ok 26 - quantizeToNMinutes 25/15 --> 30
+ok 27 - quantizeToNMinutes 26/15 --> 30
+ok 28 - quantizeToNMinutes 27/15 --> 30
+ok 29 - quantizeToNMinutes 28/15 --> 30
+ok 30 - quantizeToNMinutes 29/15 --> 30
+ok 31 - quantizeToNMinutes 30/15 --> 30
+ok 32 - quantizeToNMinutes 31/15 --> 30
+ok 33 - quantizeToNMinutes 32/15 --> 30
+ok 34 - quantizeToNMinutes 33/15 --> 30
+ok 35 - quantizeToNMinutes 34/15 --> 30
+ok 36 - quantizeToNMinutes 35/15 --> 30
+ok 37 - quantizeToNMinutes 36/15 --> 30
+ok 38 - quantizeToNMinutes 37/15 --> 45
+ok 39 - quantizeToNMinutes 38/15 --> 45
+ok 40 - quantizeToNMinutes 39/15 --> 45
+ok 41 - quantizeToNMinutes 40/15 --> 45
+ok 42 - quantizeToNMinutes 41/15 --> 45
+ok 43 - quantizeToNMinutes 42/15 --> 45
+ok 44 - quantizeToNMinutes 43/15 --> 45
+ok 45 - quantizeToNMinutes 44/15 --> 45
+ok 46 - quantizeToNMinutes 45/15 --> 45
+ok 47 - quantizeToNMinutes 46/15 --> 45
+ok 48 - quantizeToNMinutes 47/15 --> 45
+ok 49 - quantizeToNMinutes 48/15 --> 45
+ok 50 - quantizeToNMinutes 49/15 --> 45
+ok 51 - quantizeToNMinutes 50/15 --> 45
+ok 52 - quantizeToNMinutes 51/15 --> 45
+ok 53 - quantizeToNMinutes 52/15 --> 60
+ok 54 - quantizeToNMinutes 53/15 --> 60
+ok 55 - quantizeToNMinutes 54/15 --> 60
+ok 56 - quantizeToNMinutes 55/15 --> 60
+ok 57 - quantizeToNMinutes 56/15 --> 60
+ok 58 - quantizeToNMinutes 57/15 --> 60
+ok 59 - quantizeToNMinutes 58/15 --> 60
+ok 60 - quantizeToNMinutes 59/15 --> 60
+ok 61 - quantizeToNMinutes 60/15 --> 60
+ok 62 - quantizeToNMinutes 0/20 --> 0
+ok 63 - quantizeToNMinutes 1/20 --> 0
+ok 64 - quantizeToNMinutes 2/20 --> 0
+ok 65 - quantizeToNMinutes 3/20 --> 0
+ok 66 - quantizeToNMinutes 4/20 --> 0
+ok 67 - quantizeToNMinutes 5/20 --> 0
+ok 68 - quantizeToNMinutes 6/20 --> 0
+ok 69 - quantizeToNMinutes 7/20 --> 0
+ok 70 - quantizeToNMinutes 8/20 --> 0
+ok 71 - quantizeToNMinutes 9/20 --> 0
+ok 72 - quantizeToNMinutes 10/20 --> 20
+ok 73 - quantizeToNMinutes 11/20 --> 20
+ok 74 - quantizeToNMinutes 12/20 --> 20
+ok 75 - quantizeToNMinutes 13/20 --> 20
+ok 76 - quantizeToNMinutes 14/20 --> 20
+ok 77 - quantizeToNMinutes 15/20 --> 20
+ok 78 - quantizeToNMinutes 16/20 --> 20
+ok 79 - quantizeToNMinutes 17/20 --> 20
+ok 80 - quantizeToNMinutes 18/20 --> 20
+ok 81 - quantizeToNMinutes 19/20 --> 20
+ok 82 - quantizeToNMinutes 20/20 --> 20
+ok 83 - quantizeToNMinutes 21/20 --> 20
+ok 84 - quantizeToNMinutes 22/20 --> 20
+ok 85 - quantizeToNMinutes 23/20 --> 20
+ok 86 - quantizeToNMinutes 24/20 --> 20
+ok 87 - quantizeToNMinutes 25/20 --> 20
+ok 88 - quantizeToNMinutes 26/20 --> 20
+ok 89 - quantizeToNMinutes 27/20 --> 20
+ok 90 - quantizeToNMinutes 28/20 --> 20
+ok 91 - quantizeToNMinutes 29/20 --> 20
+ok 92 - quantizeToNMinutes 30/20 --> 40
+ok 93 - quantizeToNMinutes 31/20 --> 40
+ok 94 - quantizeToNMinutes 32/20 --> 40
+ok 95 - quantizeToNMinutes 33/20 --> 40
+ok 96 - quantizeToNMinutes 34/20 --> 40
+ok 97 - quantizeToNMinutes 35/20 --> 40
+ok 98 - quantizeToNMinutes 36/20 --> 40
+ok 99 - quantizeToNMinutes 37/20 --> 40
+ok 100 - quantizeToNMinutes 38/20 --> 40
+ok 101 - quantizeToNMinutes 39/20 --> 40
+ok 102 - quantizeToNMinutes 40/20 --> 40
+ok 103 - quantizeToNMinutes 41/20 --> 40
+ok 104 - quantizeToNMinutes 42/20 --> 40
+ok 105 - quantizeToNMinutes 43/20 --> 40
+ok 106 - quantizeToNMinutes 44/20 --> 40
+ok 107 - quantizeToNMinutes 45/20 --> 40
+ok 108 - quantizeToNMinutes 46/20 --> 40
+ok 109 - quantizeToNMinutes 47/20 --> 40
+ok 110 - quantizeToNMinutes 48/20 --> 40
+ok 111 - quantizeToNMinutes 49/20 --> 40
+ok 112 - quantizeToNMinutes 50/20 --> 60
+ok 113 - quantizeToNMinutes 51/20 --> 60
+ok 114 - quantizeToNMinutes 52/20 --> 60
+ok 115 - quantizeToNMinutes 53/20 --> 60
+ok 116 - quantizeToNMinutes 54/20 --> 60
+ok 117 - quantizeToNMinutes 55/20 --> 60
+ok 118 - quantizeToNMinutes 56/20 --> 60
+ok 119 - quantizeToNMinutes 57/20 --> 60
+ok 120 - quantizeToNMinutes 58/20 --> 60
+ok 121 - quantizeToNMinutes 59/20 --> 60
+ok 122 - quantizeToNMinutes 60/20 --> 60
+ok 123 - minimalDelta 2016-05-30T15:11:01/2017-01-01T00:00:00 --> 2017-01-01T00:00:00
+ok 124 - minimalDelta 2016-05-30T15:11:01/2016-01-01T00:00:00 -->      01-01T00:00:00
+ok 125 - minimalDelta 2016-05-30T15:11:01/2016-05-01T00:00:00 -->         01T00:00:00
+ok 126 - minimalDelta 2016-05-30T15:11:01/2016-05-30T00:00:00 -->            00:00:00
+ok 127 - minimalDelta 2016-05-30T15:11:01/2016-05-30T15:00:00 -->               00:00
+ok 128 - minimalDelta 2016-05-30T15:11:01/2016-05-30T15:11:00 -->                  00
+ok 129 - minimalDelta 2016-05-30T15:11:01/2016-05-30T15:11:01 -->                  01
+# 129 passed, 0 failed, 0 skipped. 100% passed.
+# exclusion.t
+1..261
+ok 1 - Exclusion 'exclusions.monday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5
+ok 2 - Exclusion 'exclusions.monday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'
+ok 3 - Exclusion 'exclusions.monday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'monday'
+ok 4 - Exclusion 'exclusions.monday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'
+ok 5 - Exclusion 'exclusions.monday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'
+ok 6 - Exclusion 'exclusions.monday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'
+ok 7 - Exclusion ranges  --> [12]
+ok 8 - Exclusion range[0].start() --> 2015-12-21T00:00:00
+ok 9 - Exclusion range[0].end()   --> 2015-12-21T08:00:00
+ok 10 - Exclusion range[1].start() --> 2015-12-21T12:00:00
+ok 11 - Exclusion range[1].end()   --> 2015-12-21T12:45:00
+ok 12 - Exclusion range[2].start() --> 2015-12-21T17:30:00
+ok 13 - Exclusion range[2].end()   --> 2015-12-22T00:00:00
+ok 14 - Exclusion range[3].start() --> 2015-12-28T00:00:00
+ok 15 - Exclusion range[3].end()   --> 2015-12-28T08:00:00
+ok 16 - Exclusion range[4].start() --> 2015-12-28T12:00:00
+ok 17 - Exclusion range[4].end()   --> 2015-12-28T12:45:00
+ok 18 - Exclusion range[5].start() --> 2015-12-28T17:30:00
+ok 19 - Exclusion range[5].end()   --> 2015-12-29T00:00:00
+ok 20 - Exclusion range[6].start() --> 2016-01-04T00:00:00
+ok 21 - Exclusion range[6].end()   --> 2016-01-04T08:00:00
+ok 22 - Exclusion range[7].start() --> 2016-01-04T12:00:00
+ok 23 - Exclusion range[7].end()   --> 2016-01-04T12:45:00
+ok 24 - Exclusion range[8].start() --> 2016-01-04T17:30:00
+ok 25 - Exclusion range[8].end()   --> 2016-01-05T00:00:00
+ok 26 - Exclusion range[9].start() --> 2016-01-11T00:00:00
+ok 27 - Exclusion range[9].end()   --> 2016-01-11T08:00:00
+ok 28 - Exclusion range[10].start() --> 2016-01-11T12:00:00
+ok 29 - Exclusion range[10].end()   --> 2016-01-11T12:45:00
+ok 30 - Exclusion range[11].start() --> 2016-01-11T17:30:00
+ok 31 - Exclusion range[11].end()   --> 2016-01-12T00:00:00
+ok 32 - Exclusion 'exclusions.tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5
+ok 33 - Exclusion 'exclusions.tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'
+ok 34 - Exclusion 'exclusions.tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'tuesday'
+ok 35 - Exclusion 'exclusions.tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'
+ok 36 - Exclusion 'exclusions.tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'
+ok 37 - Exclusion 'exclusions.tuesday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'
+ok 38 - Exclusion ranges  --> [15]
+ok 39 - Exclusion range[0].start() --> 2015-12-15T00:00:00
+ok 40 - Exclusion range[0].end()   --> 2015-12-15T08:00:00
+ok 41 - Exclusion range[1].start() --> 2015-12-15T12:00:00
+ok 42 - Exclusion range[1].end()   --> 2015-12-15T12:45:00
+ok 43 - Exclusion range[2].start() --> 2015-12-15T17:30:00
+ok 44 - Exclusion range[2].end()   --> 2015-12-16T00:00:00
+ok 45 - Exclusion range[3].start() --> 2015-12-22T00:00:00
+ok 46 - Exclusion range[3].end()   --> 2015-12-22T08:00:00
+ok 47 - Exclusion range[4].start() --> 2015-12-22T12:00:00
+ok 48 - Exclusion range[4].end()   --> 2015-12-22T12:45:00
+ok 49 - Exclusion range[5].start() --> 2015-12-22T17:30:00
+ok 50 - Exclusion range[5].end()   --> 2015-12-23T00:00:00
+ok 51 - Exclusion range[6].start() --> 2015-12-29T00:00:00
+ok 52 - Exclusion range[6].end()   --> 2015-12-29T08:00:00
+ok 53 - Exclusion range[7].start() --> 2015-12-29T12:00:00
+ok 54 - Exclusion range[7].end()   --> 2015-12-29T12:45:00
+ok 55 - Exclusion range[8].start() --> 2015-12-29T17:30:00
+ok 56 - Exclusion range[8].end()   --> 2015-12-30T00:00:00
+ok 57 - Exclusion range[9].start() --> 2016-01-05T00:00:00
+ok 58 - Exclusion range[9].end()   --> 2016-01-05T08:00:00
+ok 59 - Exclusion range[10].start() --> 2016-01-05T12:00:00
+ok 60 - Exclusion range[10].end()   --> 2016-01-05T12:45:00
+ok 61 - Exclusion range[11].start() --> 2016-01-05T17:30:00
+ok 62 - Exclusion range[11].end()   --> 2016-01-06T00:00:00
+ok 63 - Exclusion range[12].start() --> 2016-01-12T00:00:00
+ok 64 - Exclusion range[12].end()   --> 2016-01-12T08:00:00
+ok 65 - Exclusion range[13].start() --> 2016-01-12T12:00:00
+ok 66 - Exclusion range[13].end()   --> 2016-01-12T12:45:00
+ok 67 - Exclusion range[14].start() --> 2016-01-12T17:30:00
+ok 68 - Exclusion range[14].end()   --> 2016-01-13T00:00:00
+ok 69 - Exclusion 'exclusions.wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5
+ok 70 - Exclusion 'exclusions.wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'
+ok 71 - Exclusion 'exclusions.wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'wednesday'
+ok 72 - Exclusion 'exclusions.wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'
+ok 73 - Exclusion 'exclusions.wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'
+ok 74 - Exclusion 'exclusions.wednesday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'
+ok 75 - Exclusion ranges  --> [15]
+ok 76 - Exclusion range[0].start() --> 2015-12-16T00:00:00
+ok 77 - Exclusion range[0].end()   --> 2015-12-16T08:00:00
+ok 78 - Exclusion range[1].start() --> 2015-12-16T12:00:00
+ok 79 - Exclusion range[1].end()   --> 2015-12-16T12:45:00
+ok 80 - Exclusion range[2].start() --> 2015-12-16T17:30:00
+ok 81 - Exclusion range[2].end()   --> 2015-12-17T00:00:00
+ok 82 - Exclusion range[3].start() --> 2015-12-23T00:00:00
+ok 83 - Exclusion range[3].end()   --> 2015-12-23T08:00:00
+ok 84 - Exclusion range[4].start() --> 2015-12-23T12:00:00
+ok 85 - Exclusion range[4].end()   --> 2015-12-23T12:45:00
+ok 86 - Exclusion range[5].start() --> 2015-12-23T17:30:00
+ok 87 - Exclusion range[5].end()   --> 2015-12-24T00:00:00
+ok 88 - Exclusion range[6].start() --> 2015-12-30T00:00:00
+ok 89 - Exclusion range[6].end()   --> 2015-12-30T08:00:00
+ok 90 - Exclusion range[7].start() --> 2015-12-30T12:00:00
+ok 91 - Exclusion range[7].end()   --> 2015-12-30T12:45:00
+ok 92 - Exclusion range[8].start() --> 2015-12-30T17:30:00
+ok 93 - Exclusion range[8].end()   --> 2015-12-31T00:00:00
+ok 94 - Exclusion range[9].start() --> 2016-01-06T00:00:00
+ok 95 - Exclusion range[9].end()   --> 2016-01-06T08:00:00
+ok 96 - Exclusion range[10].start() --> 2016-01-06T12:00:00
+ok 97 - Exclusion range[10].end()   --> 2016-01-06T12:45:00
+ok 98 - Exclusion range[11].start() --> 2016-01-06T17:30:00
+ok 99 - Exclusion range[11].end()   --> 2016-01-07T00:00:00
+ok 100 - Exclusion range[12].start() --> 2016-01-13T00:00:00
+ok 101 - Exclusion range[12].end()   --> 2016-01-13T08:00:00
+ok 102 - Exclusion range[13].start() --> 2016-01-13T12:00:00
+ok 103 - Exclusion range[13].end()   --> 2016-01-13T12:45:00
+ok 104 - Exclusion range[14].start() --> 2016-01-13T17:30:00
+ok 105 - Exclusion range[14].end()   --> 2016-01-14T00:00:00
+ok 106 - Exclusion 'exclusions.thursday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5
+ok 107 - Exclusion 'exclusions.thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'
+ok 108 - Exclusion 'exclusions.thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'thursday'
+ok 109 - Exclusion 'exclusions.thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'
+ok 110 - Exclusion 'exclusions.thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'
+ok 111 - Exclusion 'exclusions.thursday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'
+ok 112 - Exclusion ranges  --> [15]
+ok 113 - Exclusion range[0].start() --> 2015-12-17T00:00:00
+ok 114 - Exclusion range[0].end()   --> 2015-12-17T08:00:00
+ok 115 - Exclusion range[1].start() --> 2015-12-17T12:00:00
+ok 116 - Exclusion range[1].end()   --> 2015-12-17T12:45:00
+ok 117 - Exclusion range[2].start() --> 2015-12-17T17:30:00
+ok 118 - Exclusion range[2].end()   --> 2015-12-18T00:00:00
+ok 119 - Exclusion range[3].start() --> 2015-12-24T00:00:00
+ok 120 - Exclusion range[3].end()   --> 2015-12-24T08:00:00
+ok 121 - Exclusion range[4].start() --> 2015-12-24T12:00:00
+ok 122 - Exclusion range[4].end()   --> 2015-12-24T12:45:00
+ok 123 - Exclusion range[5].start() --> 2015-12-24T17:30:00
+ok 124 - Exclusion range[5].end()   --> 2015-12-25T00:00:00
+ok 125 - Exclusion range[6].start() --> 2015-12-31T00:00:00
+ok 126 - Exclusion range[6].end()   --> 2015-12-31T08:00:00
+ok 127 - Exclusion range[7].start() --> 2015-12-31T12:00:00
+ok 128 - Exclusion range[7].end()   --> 2015-12-31T12:45:00
+ok 129 - Exclusion range[8].start() --> 2015-12-31T17:30:00
+ok 130 - Exclusion range[8].end()   --> 2016-01-01T00:00:00
+ok 131 - Exclusion range[9].start() --> 2016-01-07T00:00:00
+ok 132 - Exclusion range[9].end()   --> 2016-01-07T08:00:00
+ok 133 - Exclusion range[10].start() --> 2016-01-07T12:00:00
+ok 134 - Exclusion range[10].end()   --> 2016-01-07T12:45:00
+ok 135 - Exclusion range[11].start() --> 2016-01-07T17:30:00
+ok 136 - Exclusion range[11].end()   --> 2016-01-08T00:00:00
+ok 137 - Exclusion range[12].start() --> 2016-01-14T00:00:00
+ok 138 - Exclusion range[12].end()   --> 2016-01-14T08:00:00
+ok 139 - Exclusion range[13].start() --> 2016-01-14T12:00:00
+ok 140 - Exclusion range[13].end()   --> 2016-01-14T12:45:00
+ok 141 - Exclusion range[14].start() --> 2016-01-14T17:30:00
+ok 142 - Exclusion range[14].end()   --> 2016-01-15T00:00:00
+ok 143 - Exclusion 'exclusions.friday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5
+ok 144 - Exclusion 'exclusions.friday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'
+ok 145 - Exclusion 'exclusions.friday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'friday'
+ok 146 - Exclusion 'exclusions.friday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'
+ok 147 - Exclusion 'exclusions.friday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'
+ok 148 - Exclusion 'exclusions.friday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'
+ok 149 - Exclusion ranges  --> [12]
+ok 150 - Exclusion range[0].start() --> 2015-12-18T00:00:00
+ok 151 - Exclusion range[0].end()   --> 2015-12-18T08:00:00
+ok 152 - Exclusion range[1].start() --> 2015-12-18T12:00:00
+ok 153 - Exclusion range[1].end()   --> 2015-12-18T12:45:00
+ok 154 - Exclusion range[2].start() --> 2015-12-18T17:30:00
+ok 155 - Exclusion range[2].end()   --> 2015-12-19T00:00:00
+ok 156 - Exclusion range[3].start() --> 2015-12-25T00:00:00
+ok 157 - Exclusion range[3].end()   --> 2015-12-25T08:00:00
+ok 158 - Exclusion range[4].start() --> 2015-12-25T12:00:00
+ok 159 - Exclusion range[4].end()   --> 2015-12-25T12:45:00
+ok 160 - Exclusion range[5].start() --> 2015-12-25T17:30:00
+ok 161 - Exclusion range[5].end()   --> 2015-12-26T00:00:00
+ok 162 - Exclusion range[6].start() --> 2016-01-01T00:00:00
+ok 163 - Exclusion range[6].end()   --> 2016-01-01T08:00:00
+ok 164 - Exclusion range[7].start() --> 2016-01-01T12:00:00
+ok 165 - Exclusion range[7].end()   --> 2016-01-01T12:45:00
+ok 166 - Exclusion range[8].start() --> 2016-01-01T17:30:00
+ok 167 - Exclusion range[8].end()   --> 2016-01-02T00:00:00
+ok 168 - Exclusion range[9].start() --> 2016-01-08T00:00:00
+ok 169 - Exclusion range[9].end()   --> 2016-01-08T08:00:00
+ok 170 - Exclusion range[10].start() --> 2016-01-08T12:00:00
+ok 171 - Exclusion range[10].end()   --> 2016-01-08T12:45:00
+ok 172 - Exclusion range[11].start() --> 2016-01-08T17:30:00
+ok 173 - Exclusion range[11].end()   --> 2016-01-09T00:00:00
+ok 174 - Exclusion 'exclusions.saturday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5
+ok 175 - Exclusion 'exclusions.saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'
+ok 176 - Exclusion 'exclusions.saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'saturday'
+ok 177 - Exclusion 'exclusions.saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'
+ok 178 - Exclusion 'exclusions.saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'
+ok 179 - Exclusion 'exclusions.saturday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'
+ok 180 - Exclusion ranges  --> [12]
+ok 181 - Exclusion range[0].start() --> 2015-12-19T00:00:00
+ok 182 - Exclusion range[0].end()   --> 2015-12-19T08:00:00
+ok 183 - Exclusion range[1].start() --> 2015-12-19T12:00:00
+ok 184 - Exclusion range[1].end()   --> 2015-12-19T12:45:00
+ok 185 - Exclusion range[2].start() --> 2015-12-19T17:30:00
+ok 186 - Exclusion range[2].end()   --> 2015-12-20T00:00:00
+ok 187 - Exclusion range[3].start() --> 2015-12-26T00:00:00
+ok 188 - Exclusion range[3].end()   --> 2015-12-26T08:00:00
+ok 189 - Exclusion range[4].start() --> 2015-12-26T12:00:00
+ok 190 - Exclusion range[4].end()   --> 2015-12-26T12:45:00
+ok 191 - Exclusion range[5].start() --> 2015-12-26T17:30:00
+ok 192 - Exclusion range[5].end()   --> 2015-12-27T00:00:00
+ok 193 - Exclusion range[6].start() --> 2016-01-02T00:00:00
+ok 194 - Exclusion range[6].end()   --> 2016-01-02T08:00:00
+ok 195 - Exclusion range[7].start() --> 2016-01-02T12:00:00
+ok 196 - Exclusion range[7].end()   --> 2016-01-02T12:45:00
+ok 197 - Exclusion range[8].start() --> 2016-01-02T17:30:00
+ok 198 - Exclusion range[8].end()   --> 2016-01-03T00:00:00
+ok 199 - Exclusion range[9].start() --> 2016-01-09T00:00:00
+ok 200 - Exclusion range[9].end()   --> 2016-01-09T08:00:00
+ok 201 - Exclusion range[10].start() --> 2016-01-09T12:00:00
+ok 202 - Exclusion range[10].end()   --> 2016-01-09T12:45:00
+ok 203 - Exclusion range[11].start() --> 2016-01-09T17:30:00
+ok 204 - Exclusion range[11].end()   --> 2016-01-10T00:00:00
+ok 205 - Exclusion 'exclusions.sunday <8:00:00 12:00:00-12:45:00 >17:30:00' --> 5
+ok 206 - Exclusion 'exclusions.sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [0] --> 'exc'
+ok 207 - Exclusion 'exclusions.sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [1] --> 'sunday'
+ok 208 - Exclusion 'exclusions.sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [2] --> '<8:00:00'
+ok 209 - Exclusion 'exclusions.sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [3] --> '12:00:00-12:45:00'
+ok 210 - Exclusion 'exclusions.sunday <8:00:00 12:00:00-12:45:00 >17:30:00' [4] --> '>17:30:00'
+ok 211 - Exclusion ranges  --> [12]
+ok 212 - Exclusion range[0].start() --> 2015-12-20T00:00:00
+ok 213 - Exclusion range[0].end()   --> 2015-12-20T08:00:00
+ok 214 - Exclusion range[1].start() --> 2015-12-20T12:00:00
+ok 215 - Exclusion range[1].end()   --> 2015-12-20T12:45:00
+ok 216 - Exclusion range[2].start() --> 2015-12-20T17:30:00
+ok 217 - Exclusion range[2].end()   --> 2015-12-21T00:00:00
+ok 218 - Exclusion range[3].start() --> 2015-12-27T00:00:00
+ok 219 - Exclusion range[3].end()   --> 2015-12-27T08:00:00
+ok 220 - Exclusion range[4].start() --> 2015-12-27T12:00:00
+ok 221 - Exclusion range[4].end()   --> 2015-12-27T12:45:00
+ok 222 - Exclusion range[5].start() --> 2015-12-22717:30:00
+ok 223 - Exclusion range[5].end()   --> 2015-12-28T00:00:00
+ok 224 - Exclusion range[6].start() --> 2016-01-03T00:00:00
+ok 225 - Exclusion range[6].end()   --> 2016-01-03T08:00:00
+ok 226 - Exclusion range[7].start() --> 2016-01-03T12:00:00
+ok 227 - Exclusion range[7].end()   --> 2016-01-03T12:45:00
+ok 228 - Exclusion range[8].start() --> 2016-01-03T17:30:00
+ok 229 - Exclusion range[8].end()   --> 2016-01-04T00:00:00
+ok 230 - Exclusion range[9].start() --> 2016-01-10T00:00:00
+ok 231 - Exclusion range[9].end()   --> 2016-01-10T08:00:00
+ok 232 - Exclusion range[10].start() --> 2016-01-10T12:00:00
+ok 233 - Exclusion range[10].end()   --> 2016-01-10T12:45:00
+ok 234 - Exclusion range[11].start() --> 2016-01-10T17:30:00
+ok 235 - Exclusion range[11].end()   --> 2016-01-11T00:00:00
+ok 236 - Exclusion 'exclusions.days on 2016_01_01' --> 4
+ok 237 - Exclusion 'exclusions.days on 2016_01_01' [0] --> 'exclusions'
+ok 238 - Exclusion 'exclusions.days on 2016_01_01' [1] --> 'days'
+ok 239 - Exclusion 'exclusions.days on 2016_01_01' [2] --> '2016_01_01'
+ok 240 - Exclusion 'exclusions.days on 2016_01_01' [3] --> 'on'
+ok 241 - Exclusion ranges --> [1]
+ok 242 - Exclusion range[0].start() --> 2016-01-01
+ok 243 - Exclusion range[0].end() --> 2016-01-02
+ok 244 - Exclusion 'day on ...' --> additive
+ok 245 - Exclusion 'exclusions.days off 2016_01_01' --> 4
+ok 246 - Exclusion 'exclusions.days off 2016_01_01' [0] --> 'exclusions'
+ok 247 - Exclusion 'exclusions.days off 2016_01_01' [1] --> 'days'
+ok 248 - Exclusion 'exclusions.days off 2016_01_01' [2] --> '2016_01_01'
+ok 249 - Exclusion 'exclusions.days off 2016_01_01' [3] --> 'off'
+ok 250 - Exclusion ranges --> [1]
+ok 251 - Exclusion range[0].start() --> 2016-01-01
+ok 252 - Exclusion range[0].end() --> 2016-01-02
+ok 253 - Exclusion 'day off ...' --> !additive
+ok 254 - Exclusion ranges --> [1]
+ok 255 - Exclusion range[2].start() --> 2016-05-12T17:30:00
+ok 256 - Exclusion range[2].end()   --> 2016-05-13T00:00:00
+ok 257 - Exclusion ranges --> [2]
+ok 258 - Exclusion range[0].start() --> 2016-05-13T00:00:00
+ok 259 - Exclusion range[0].end()   --> 2016-05-13T08:00:00
+ok 260 - Exclusion range[1].start() --> 2016-05-13T12:00:00
+ok 261 - Exclusion range[1].end()   --> 2016-05-13T12:45:00
+# 261 passed, 0 failed, 0 skipped. 100% passed.
+# DatetimeParser.t
+1..361
+# local midnight today 1772323200
+# local midnight 2013-12-06 1386288000
+# local midnight 2013-12-01 1385856000
+# utc midnight today 1772323200
+# utc midnight 2013-12-06 1386288000
+# utc midnight 2013-12-01 1385856000
+# ld 86400
+# ud 86400
+ok 1 - DatetimeParser::parse_range ("12:34:56  ") --> [start,...)
+ok 2 - DatetimeParser::parse_range ("12:34:56Z") --> [start,...)
+ok 3 - DatetimeParser::parse_range ("12:34Z") --> [start,...)
+ok 4 - DatetimeParser::parse_range ("12:34:56+01:00") --> [start,...)
+ok 5 - DatetimeParser::parse_range ("12:34:56+01") --> [start,...)
+ok 6 - DatetimeParser::parse_range ("12:34+01:00") --> [start,...)
+ok 7 - DatetimeParser::parse_range ("12:34+01") --> [start,...)
+ok 8 - DatetimeParser::parse_range ("12:34:56") --> [start,...)
+ok 9 - DatetimeParser::parse_range ("12:34") --> [start,...)
+ok 10 - DatetimeParser::parse_range ("2013-12-06") --> [start,end)
+ok 11 - DatetimeParser::parse_range ("2013-340") --> [start,end)
+ok 12 - DatetimeParser::parse_range ("2013-W49-5") --> [start,end)
+ok 13 - DatetimeParser::parse_range ("2013-W49") --> [start,end)
+ok 14 - DatetimeParser::parse_range ("2013-12") --> [start,end)
+ok 15 - DatetimeParser::parse_range ("2013-12-06T12:34:56") --> [start,...)
+ok 16 - DatetimeParser::parse_range ("2013-12-06T12:34") --> [start,...)
+ok 17 - DatetimeParser::parse_range ("2013-340T12:34:56") --> [start,...)
+ok 18 - DatetimeParser::parse_range ("2013-340T12:34") --> [start,...)
+ok 19 - DatetimeParser::parse_range ("2013-W49-5T12:34:56") --> [start,...)
+ok 20 - DatetimeParser::parse_range ("2013-W49-5T12:34") --> [start,...)
+ok 21 - DatetimeParser::parse_range ("2013-W49T12:34:56") --> [start,...)
+ok 22 - DatetimeParser::parse_range ("2013-W49T12:34") --> [start,...)
+ok 23 - DatetimeParser::parse_range ("2013-12-06T12:34:56Z") --> [start,...)
+ok 24 - DatetimeParser::parse_range ("2013-12-06T12:34Z") --> [start,...)
+ok 25 - DatetimeParser::parse_range ("2013-340T12:34:56Z") --> [start,...)
+ok 26 - DatetimeParser::parse_range ("2013-340T12:34Z") --> [start,...)
+ok 27 - DatetimeParser::parse_range ("2013-W49-5T12:34:56Z") --> [start,...)
+ok 28 - DatetimeParser::parse_range ("2013-W49-5T12:34Z") --> [start,...)
+ok 29 - DatetimeParser::parse_range ("2013-W49T12:34:56Z") --> [start,...)
+ok 30 - DatetimeParser::parse_range ("2013-W49T12:34Z") --> [start,...)
+ok 31 - DatetimeParser::parse_range ("2013-12-06T12:34:56+01:00") --> [start,...)
+ok 32 - DatetimeParser::parse_range ("2013-12-06T12:34:56+01") --> [start,...)
+ok 33 - DatetimeParser::parse_range ("2013-12-06T12:34:56-01:00") --> [start,...)
+ok 34 - DatetimeParser::parse_range ("2013-12-06T12:34:56-01") --> [start,...)
+ok 35 - DatetimeParser::parse_range ("2013-12-06T12:34+01:00") --> [start,...)
+ok 36 - DatetimeParser::parse_range ("2013-12-06T12:34+01") --> [start,...)
+ok 37 - DatetimeParser::parse_range ("2013-12-06T12:34-01:00") --> [start,...)
+ok 38 - DatetimeParser::parse_range ("2013-12-06T12:34-01") --> [start,...)
+ok 39 - DatetimeParser::parse_range ("2013-340T12:34:56+01:00") --> [start,...)
+ok 40 - DatetimeParser::parse_range ("2013-340T12:34:56+01") --> [start,...)
+ok 41 - DatetimeParser::parse_range ("2013-340T12:34:56-01:00") --> [start,...)
+ok 42 - DatetimeParser::parse_range ("2013-340T12:34:56-01") --> [start,...)
+ok 43 - DatetimeParser::parse_range ("2013-340T12:34+01:00") --> [start,...)
+ok 44 - DatetimeParser::parse_range ("2013-340T12:34+01") --> [start,...)
+ok 45 - DatetimeParser::parse_range ("2013-340T12:34-01:00") --> [start,...)
+ok 46 - DatetimeParser::parse_range ("2013-340T12:34-01") --> [start,...)
+ok 47 - DatetimeParser::parse_range ("2013-W49-5T12:34:56+01:00") --> [start,...)
+ok 48 - DatetimeParser::parse_range ("2013-W49-5T12:34:56+01") --> [start,...)
+ok 49 - DatetimeParser::parse_range ("2013-W49-5T12:34:56-01:00") --> [start,...)
+ok 50 - DatetimeParser::parse_range ("2013-W49-5T12:34:56-01") --> [start,...)
+ok 51 - DatetimeParser::parse_range ("2013-W49-5T12:34+01:00") --> [start,...)
+ok 52 - DatetimeParser::parse_range ("2013-W49-5T12:34+01") --> [start,...)
+ok 53 - DatetimeParser::parse_range ("2013-W49-5T12:34-01:00") --> [start,...)
+ok 54 - DatetimeParser::parse_range ("2013-W49-5T12:34-01") --> [start,...)
+ok 55 - DatetimeParser::parse_range ("2013-W49T12:34:56+01:00") --> [start,...)
+ok 56 - DatetimeParser::parse_range ("2013-W49T12:34:56+01") --> [start,...)
+ok 57 - DatetimeParser::parse_range ("2013-W49T12:34:56-01:00") --> [start,...)
+ok 58 - DatetimeParser::parse_range ("2013-W49T12:34:56-01") --> [start,...)
+ok 59 - DatetimeParser::parse_range ("2013-W49T12:34+01:00") --> [start,...)
+ok 60 - DatetimeParser::parse_range ("2013-W49T12:34+01") --> [start,...)
+ok 61 - DatetimeParser::parse_range ("2013-W49T12:34-01:00") --> [start,...)
+ok 62 - DatetimeParser::parse_range ("2013-W49T12:34-01") --> [start,...)
+ok 63 - DatetimeParser::parse_range ("20131206T123456Z") --> [start,...)
+ok 64 - DatetimeParser::parse_range ("20131206T123456") --> [start,...)
+ok 65 - DatetimeParser::parse_range ("123456Z") --> [start,...)
+ok 66 - DatetimeParser::parse_range ("1234Z") --> [start,...)
+ok 67 - DatetimeParser::parse_range ("123456+0100") --> [start,...)
+ok 68 - DatetimeParser::parse_range ("123456+01") --> [start,...)
+ok 69 - DatetimeParser::parse_range ("1234+0100") --> [start,...)
+ok 70 - DatetimeParser::parse_range ("1234+01") --> [start,...)
+ok 71 - DatetimeParser::parse_range ("123456") --> [start,...)
+ok 72 - DatetimeParser::parse_range ("1234") --> [start,...)
+ok 73 - DatetimeParser::parse_range ("20131206") --> [start,end)
+ok 74 - DatetimeParser::parse_range ("2013340") --> [start,end)
+ok 75 - DatetimeParser::parse_range ("2013W495") --> [start,end)
+ok 76 - DatetimeParser::parse_range ("2013W49") --> [start,end)
+ok 77 - DatetimeParser::parse_range ("201312") --> [start,end)
+ok 78 - DatetimeParser::parse_range ("20131206T123456") --> [start,...)
+ok 79 - DatetimeParser::parse_range ("20131206T1234") --> [start,...)
+ok 80 - DatetimeParser::parse_range ("2013340T123456") --> [start,...)
+ok 81 - DatetimeParser::parse_range ("2013340T1234") --> [start,...)
+ok 82 - DatetimeParser::parse_range ("2013W495T123456") --> [start,...)
+ok 83 - DatetimeParser::parse_range ("2013W495T1234") --> [start,...)
+ok 84 - DatetimeParser::parse_range ("2013W49T123456") --> [start,...)
+ok 85 - DatetimeParser::parse_range ("2013W49T1234") --> [start,...)
+ok 86 - DatetimeParser::parse_range ("20131206T123456Z") --> [start,...)
+ok 87 - DatetimeParser::parse_range ("20131206T1234Z") --> [start,...)
+ok 88 - DatetimeParser::parse_range ("2013340T123456Z") --> [start,...)
+ok 89 - DatetimeParser::parse_range ("2013340T1234Z") --> [start,...)
+ok 90 - DatetimeParser::parse_range ("2013W495T123456Z") --> [start,...)
+ok 91 - DatetimeParser::parse_range ("2013W495T1234Z") --> [start,...)
+ok 92 - DatetimeParser::parse_range ("2013W49T123456Z") --> [start,...)
+ok 93 - DatetimeParser::parse_range ("2013W49T1234Z") --> [start,...)
+ok 94 - DatetimeParser::parse_range ("20131206T123456+0100") --> [start,...)
+ok 95 - DatetimeParser::parse_range ("20131206T123456+01") --> [start,...)
+ok 96 - DatetimeParser::parse_range ("20131206T123456-0100") --> [start,...)
+ok 97 - DatetimeParser::parse_range ("20131206T123456-01") --> [start,...)
+ok 98 - DatetimeParser::parse_range ("20131206T1234+0100") --> [start,...)
+ok 99 - DatetimeParser::parse_range ("20131206T1234+01") --> [start,...)
+ok 100 - DatetimeParser::parse_range ("20131206T1234-0100") --> [start,...)
+ok 101 - DatetimeParser::parse_range ("20131206T1234-01") --> [start,...)
+ok 102 - DatetimeParser::parse_range ("2013340T123456+0100") --> [start,...)
+ok 103 - DatetimeParser::parse_range ("2013340T123456+01") --> [start,...)
+ok 104 - DatetimeParser::parse_range ("2013340T123456-0100") --> [start,...)
+ok 105 - DatetimeParser::parse_range ("2013340T123456-01") --> [start,...)
+ok 106 - DatetimeParser::parse_range ("2013340T1234+0100") --> [start,...)
+ok 107 - DatetimeParser::parse_range ("2013340T1234+01") --> [start,...)
+ok 108 - DatetimeParser::parse_range ("2013340T1234-0100") --> [start,...)
+ok 109 - DatetimeParser::parse_range ("2013340T1234-01") --> [start,...)
+ok 110 - DatetimeParser::parse_range ("2013W495T123456+0100") --> [start,...)
+ok 111 - DatetimeParser::parse_range ("2013W495T123456+01") --> [start,...)
+ok 112 - DatetimeParser::parse_range ("2013W495T123456-0100") --> [start,...)
+ok 113 - DatetimeParser::parse_range ("2013W495T123456-01") --> [start,...)
+ok 114 - DatetimeParser::parse_range ("2013W495T1234+0100") --> [start,...)
+ok 115 - DatetimeParser::parse_range ("2013W495T1234+01") --> [start,...)
+ok 116 - DatetimeParser::parse_range ("2013W495T1234-0100") --> [start,...)
+ok 117 - DatetimeParser::parse_range ("2013W495T1234-01") --> [start,...)
+ok 118 - DatetimeParser::parse_range ("2013W49T123456+0100") --> [start,...)
+ok 119 - DatetimeParser::parse_range ("2013W49T123456+01") --> [start,...)
+ok 120 - DatetimeParser::parse_range ("2013W49T123456-0100") --> [start,...)
+ok 121 - DatetimeParser::parse_range ("2013W49T123456-01") --> [start,...)
+ok 122 - DatetimeParser::parse_range ("2013W49T1234+0100") --> [start,...)
+ok 123 - DatetimeParser::parse_range ("2013W49T1234+01") --> [start,...)
+ok 124 - DatetimeParser::parse_range ("2013W49T1234-0100") --> [start,...)
+ok 125 - DatetimeParser::parse_range ("2013W49T1234-01") --> [start,...)
+ok 126 - DatetimeParser::parse_range ("10:30am") --> [start,...)
+ok 127 - DatetimeParser::parse_range ("8:30am") --> [start,...)
+ok 128 - DatetimeParser::parse_range ("8:30a") --> [start,...)
+ok 129 - DatetimeParser::parse_range ("8:30") --> [start,...)
+ok 130 - DatetimeParser::parse_range ("8am") --> [start,...)
+ok 131 - DatetimeParser::parse_range ("8a") --> [start,...)
+ok 132 - DatetimeParser::parse_range ("8:30pm") --> [start,...)
+ok 133 - DatetimeParser::parse_range ("8:30p") --> [start,...)
+ok 134 - DatetimeParser::parse_range ("8pm") --> [start,...)
+ok 135 - DatetimeParser::parse_range ("8p") --> [start,...)
+ok 136 - DatetimeParser::parse_range ("12pm") --> [start,...)
+ok 137 - DatetimeParser::parse_range ("1pm") --> [start,...)
+ok 138 - DatetimeParser::parse_range ("yesterday") --> [start,end)
+ok 139 - DatetimeParser::parse_range ("tomorrow") --> [start,end)
+ok 140 - DatetimeParser::parse_range ("january") --> [start,end)
+ok 141 - DatetimeParser::parse_range ("february") --> [start,end)
+ok 142 - DatetimeParser::parse_range ("march") --> [start,end)
+ok 143 - DatetimeParser::parse_range ("april") --> [start,end)
+ok 144 - DatetimeParser::parse_range ("may") --> [start,end)
+ok 145 - DatetimeParser::parse_range ("june") --> [start,end)
+ok 146 - DatetimeParser::parse_range ("july") --> [start,end)
+ok 147 - DatetimeParser::parse_range ("august") --> [start,end)
+ok 148 - DatetimeParser::parse_range ("september") --> [start,end)
+ok 149 - DatetimeParser::parse_range ("october") --> [start,end)
+ok 150 - DatetimeParser::parse_range ("november") --> [start,end)
+ok 151 - DatetimeParser::parse_range ("december") --> [start,end)
+ok 152 - DatetimeParser::parse_range ("jan") --> [start,end)
+ok 153 - DatetimeParser::parse_range ("feb") --> [start,end)
+ok 154 - DatetimeParser::parse_range ("mar") --> [start,end)
+ok 155 - DatetimeParser::parse_range ("apr") --> [start,end)
+ok 156 - DatetimeParser::parse_range ("may") --> [start,end)
+ok 157 - DatetimeParser::parse_range ("jun") --> [start,end)
+ok 158 - DatetimeParser::parse_range ("jul") --> [start,end)
+ok 159 - DatetimeParser::parse_range ("aug") --> [start,end)
+ok 160 - DatetimeParser::parse_range ("sep") --> [start,end)
+ok 161 - DatetimeParser::parse_range ("oct") --> [start,end)
+ok 162 - DatetimeParser::parse_range ("nov") --> [start,end)
+ok 163 - DatetimeParser::parse_range ("dec") --> [start,end)
+ok 164 - DatetimeParser::parse_range ("sunday") --> [start,end)
+ok 165 - DatetimeParser::parse_range ("monday") --> [start,end)
+ok 166 - DatetimeParser::parse_range ("tuesday") --> [start,end)
+ok 167 - DatetimeParser::parse_range ("wednesday") --> [start,end)
+ok 168 - DatetimeParser::parse_range ("thursday") --> [start,end)
+ok 169 - DatetimeParser::parse_range ("friday") --> [start,end)
+ok 170 - DatetimeParser::parse_range ("saturday") --> [start,end)
+ok 171 - DatetimeParser::parse_range ("sun") --> [start,end)
+ok 172 - DatetimeParser::parse_range ("mon") --> [start,end)
+ok 173 - DatetimeParser::parse_range ("tue") --> [start,end)
+ok 174 - DatetimeParser::parse_range ("wed") --> [start,end)
+ok 175 - DatetimeParser::parse_range ("thu") --> [start,end)
+ok 176 - DatetimeParser::parse_range ("fri") --> [start,end)
+ok 177 - DatetimeParser::parse_range ("sat") --> [start,end)
+ok 178 - Y works
+ok 179 - M works
+ok 180 - D works
+ok 181 - H works
+ok 182 - N works
+ok 183 - S works
+ok 184 - y works
+ok 185 - m works
+ok 186 - d works
+ok 187 - h works
+ok 188 - n works
+ok 189 - s works
+ok 190 - Y works
+ok 191 - B works
+ok 192 - D works
+ok 193 - A works
+ok 194 - y works
+ok 195 - b works
+ok 196 - d works
+ok 197 - a works
+ok 198 - '19th' --> 19
+ok 199 - DatetimeParser::parse_range negative 'nowadays' --> fail
+ok 200 - DatetimeParser::parse_range positive 'now+1d' --> success
+ok 201 - DatetimeParser::parse_range positive 'now-1d' --> success
+ok 202 - DatetimeParser::parse_range ("now)") --> [start,...)
+ok 203 - DatetimeParser::parse_range negative 'now7' --> fail
+ok 204 - DatetimeParser::parse_range negative 'tomorrov' --> fail
+ok 205 - DatetimeParser::parse_range negative 'yesteryear' --> fail
+ok 206 - DatetimeParser::parse_range ("yest+1d") --> [start,end)
+ok 207 - DatetimeParser::parse_range ("yest-1d") --> [start,end)
+ok 208 - DatetimeParser::parse_range ("yest)") --> [start,end)
+ok 209 - DatetimeParser::parse_range negative 'yest7' --> fail
+ok 210 - DatetimeParser::parse_range ("yesterday") --> [start,end)
+ok 211 - DatetimeParser::parse_range positive '1234567890+0' --> success
+ok 212 - DatetimeParser::parse_range positive '1234567890-0' --> success
+ok 213 - DatetimeParser::parse_range positive '1234567890)' --> success
+ok 214 - DatetimeParser::parse_range negative '' --> fail
+ok 215 - DatetimeParser::parse_range negative 'foo' --> fail
+ok 216 - DatetimeParser::parse_range negative '-2014-07-07' --> fail
+ok 217 - DatetimeParser::parse_range negative '2014-07-' --> fail
+ok 218 - DatetimeParser::parse_range negative '2014-0-12' --> fail
+ok 219 - DatetimeParser::parse_range negative 'abcd-ab-ab' --> fail
+ok 220 - DatetimeParser::parse_range negative '2014-000' --> fail
+ok 221 - DatetimeParser::parse_range ("2014-001") --> [start,end)
+ok 222 - DatetimeParser::parse_range ("2014-365") --> [start,end)
+ok 223 - DatetimeParser::parse_range negative '2014-366' --> fail
+ok 224 - DatetimeParser::parse_range negative '2014-367' --> fail
+ok 225 - DatetimeParser::parse_range negative '2014-999' --> fail
+ok 226 - DatetimeParser::parse_range negative '2014-999999999' --> fail
+ok 227 - DatetimeParser::parse_range negative '2014-W00' --> fail
+ok 228 - DatetimeParser::parse_range negative '2014-W54' --> fail
+ok 229 - DatetimeParser::parse_range negative '2014-W240' --> fail
+ok 230 - DatetimeParser::parse_range negative '2014-W248' --> fail
+ok 231 - DatetimeParser::parse_range negative '2014-W24200' --> fail
+ok 232 - DatetimeParser::parse_range negative '2014-13' --> fail
+ok 233 - DatetimeParser::parse_range negative '2014-99' --> fail
+ok 234 - DatetimeParser::parse_range negative '25:00' --> fail
+ok 235 - DatetimeParser::parse_range negative '99:00' --> fail
+ok 236 - DatetimeParser::parse_range negative '12:60' --> fail
+ok 237 - DatetimeParser::parse_range negative '12:99' --> fail
+ok 238 - DatetimeParser::parse_range negative '12:ab' --> fail
+ok 239 - DatetimeParser::parse_range negative 'ab:12' --> fail
+ok 240 - DatetimeParser::parse_range negative 'ab:cd' --> fail
+ok 241 - DatetimeParser::parse_range negative '-12:12' --> fail
+ok 242 - DatetimeParser::parse_range negative '12:-12' --> fail
+ok 243 - DatetimeParser::parse_range negative '25:00Z' --> fail
+ok 244 - DatetimeParser::parse_range negative '99:00Z' --> fail
+ok 245 - DatetimeParser::parse_range negative '12:60Z' --> fail
+ok 246 - DatetimeParser::parse_range negative '12:99Z' --> fail
+ok 247 - DatetimeParser::parse_range negative '12:abZ' --> fail
+ok 248 - DatetimeParser::parse_range negative 'ab:12Z' --> fail
+ok 249 - DatetimeParser::parse_range negative 'ab:cdZ' --> fail
+ok 250 - DatetimeParser::parse_range negative '-12:12Z' --> fail
+ok 251 - DatetimeParser::parse_range negative '12:-12Z' --> fail
+ok 252 - DatetimeParser::parse_range negative '25:00+01:00' --> fail
+ok 253 - DatetimeParser::parse_range negative '99:00+01:00' --> fail
+ok 254 - DatetimeParser::parse_range negative '12:60+01:00' --> fail
+ok 255 - DatetimeParser::parse_range negative '12:99+01:00' --> fail
+ok 256 - DatetimeParser::parse_range negative '12:ab+01:00' --> fail
+ok 257 - DatetimeParser::parse_range negative 'ab:12+01:00' --> fail
+ok 258 - DatetimeParser::parse_range negative 'ab:cd+01:00' --> fail
+ok 259 - DatetimeParser::parse_range negative '-12:12+01:00' --> fail
+ok 260 - DatetimeParser::parse_range negative '12:-12+01:00' --> fail
+ok 261 - DatetimeParser::parse_range negative '25:00-01:00' --> fail
+ok 262 - DatetimeParser::parse_range negative '99:00-01:00' --> fail
+ok 263 - DatetimeParser::parse_range negative '12:60-01:00' --> fail
+ok 264 - DatetimeParser::parse_range negative '12:99-01:00' --> fail
+ok 265 - DatetimeParser::parse_range negative '12:ab-01:00' --> fail
+ok 266 - DatetimeParser::parse_range negative 'ab:12-01:00' --> fail
+ok 267 - DatetimeParser::parse_range negative 'ab:cd-01:00' --> fail
+ok 268 - DatetimeParser::parse_range negative '-12:12-01:00' --> fail
+ok 269 - DatetimeParser::parse_range negative '12:-12-01:00' --> fail
+ok 270 - DatetimeParser::parse_range negative '25:00:00' --> fail
+ok 271 - DatetimeParser::parse_range negative '99:00:00' --> fail
+ok 272 - DatetimeParser::parse_range negative '12:60:00' --> fail
+ok 273 - DatetimeParser::parse_range negative '12:99:00' --> fail
+ok 274 - DatetimeParser::parse_range negative '12:12:60' --> fail
+ok 275 - DatetimeParser::parse_range negative '12:12:99' --> fail
+ok 276 - DatetimeParser::parse_range negative '12:ab:00' --> fail
+ok 277 - DatetimeParser::parse_range negative 'ab:12:00' --> fail
+ok 278 - DatetimeParser::parse_range negative '12:12:ab' --> fail
+ok 279 - DatetimeParser::parse_range negative 'ab:cd:ef' --> fail
+ok 280 - DatetimeParser::parse_range negative '-12:12:12' --> fail
+ok 281 - DatetimeParser::parse_range negative '12:-12:12' --> fail
+ok 282 - DatetimeParser::parse_range negative '12:12:-12' --> fail
+ok 283 - DatetimeParser::parse_range negative '25:00:00Z' --> fail
+ok 284 - DatetimeParser::parse_range negative '99:00:00Z' --> fail
+ok 285 - DatetimeParser::parse_range negative '12:60:00Z' --> fail
+ok 286 - DatetimeParser::parse_range negative '12:99:00Z' --> fail
+ok 287 - DatetimeParser::parse_range negative '12:12:60Z' --> fail
+ok 288 - DatetimeParser::parse_range negative '12:12:99Z' --> fail
+ok 289 - DatetimeParser::parse_range negative '12:ab:00Z' --> fail
+ok 290 - DatetimeParser::parse_range negative 'ab:12:00Z' --> fail
+ok 291 - DatetimeParser::parse_range negative '12:12:abZ' --> fail
+ok 292 - DatetimeParser::parse_range negative 'ab:cd:efZ' --> fail
+ok 293 - DatetimeParser::parse_range negative '-12:12:12Z' --> fail
+ok 294 - DatetimeParser::parse_range negative '12:-12:12Z' --> fail
+ok 295 - DatetimeParser::parse_range negative '12:12:-12Z' --> fail
+ok 296 - DatetimeParser::parse_range negative '25:00:00+01:00' --> fail
+ok 297 - DatetimeParser::parse_range negative '95:00:00+01:00' --> fail
+ok 298 - DatetimeParser::parse_range negative '12:60:00+01:00' --> fail
+ok 299 - DatetimeParser::parse_range negative '12:99:00+01:00' --> fail
+ok 300 - DatetimeParser::parse_range negative '12:12:60+01:00' --> fail
+ok 301 - DatetimeParser::parse_range negative '12:12:99+01:00' --> fail
+ok 302 - DatetimeParser::parse_range negative '12:ab:00+01:00' --> fail
+ok 303 - DatetimeParser::parse_range negative 'ab:12:00+01:00' --> fail
+ok 304 - DatetimeParser::parse_range negative '12:12:ab+01:00' --> fail
+ok 305 - DatetimeParser::parse_range negative 'ab:cd:ef+01:00' --> fail
+ok 306 - DatetimeParser::parse_range negative '-12:12:12+01:00' --> fail
+ok 307 - DatetimeParser::parse_range negative '12:-12:12+01:00' --> fail
+ok 308 - DatetimeParser::parse_range negative '12:12:-12+01:00' --> fail
+ok 309 - DatetimeParser::parse_range negative '25:00:00-01:00' --> fail
+ok 310 - DatetimeParser::parse_range negative '95:00:00-01:00' --> fail
+ok 311 - DatetimeParser::parse_range negative '12:60:00-01:00' --> fail
+ok 312 - DatetimeParser::parse_range negative '12:99:00-01:00' --> fail
+ok 313 - DatetimeParser::parse_range negative '12:12:60-01:00' --> fail
+ok 314 - DatetimeParser::parse_range negative '12:12:99-01:00' --> fail
+ok 315 - DatetimeParser::parse_range negative '12:ab:00-01:00' --> fail
+ok 316 - DatetimeParser::parse_range negative 'ab:12:00-01:00' --> fail
+ok 317 - DatetimeParser::parse_range negative '12:12:ab-01:00' --> fail
+ok 318 - DatetimeParser::parse_range negative 'ab:cd:ef-01:00' --> fail
+ok 319 - DatetimeParser::parse_range negative '-12:12:12-01:00' --> fail
+ok 320 - DatetimeParser::parse_range negative '12:-12:12-01:00' --> fail
+ok 321 - DatetimeParser::parse_range negative '12:12:-12-01:00' --> fail
+ok 322 - DatetimeParser::parse_range negative '12:12:12-13:00' --> fail
+ok 323 - DatetimeParser::parse_range negative '12:12:12-24:00' --> fail
+ok 324 - DatetimeParser::parse_range negative '12:12:12-99:00' --> fail
+ok 325 - DatetimeParser::parse_range negative '12:12:12-03:60' --> fail
+ok 326 - DatetimeParser::parse_range negative '12:12:12-03:99' --> fail
+ok 327 - DatetimeParser::parse_range negative '12:12:12-3:20' --> fail
+ok 328 - DatetimeParser::parse_range negative '12:12:12-03:2' --> fail
+ok 329 - DatetimeParser::parse_range negative '12:12:12-3:2' --> fail
+ok 330 - DatetimeParser::parse_range negative '12:12:12+13:00' --> fail
+ok 331 - DatetimeParser::parse_range negative '12:12:12+24:00' --> fail
+ok 332 - DatetimeParser::parse_range negative '12:12:12+99:00' --> fail
+ok 333 - DatetimeParser::parse_range negative '12:12:12+03:60' --> fail
+ok 334 - DatetimeParser::parse_range negative '12:12:12+03:99' --> fail
+ok 335 - DatetimeParser::parse_range negative '12:12:12+3:20' --> fail
+ok 336 - DatetimeParser::parse_range negative '12:12:12+03:2' --> fail
+ok 337 - DatetimeParser::parse_range negative '12:12:12+3:2' --> fail
+ok 338 - DatetimeParser::parse_range negative '12:12-13:00' --> fail
+ok 339 - DatetimeParser::parse_range negative '12:12-24:00' --> fail
+ok 340 - DatetimeParser::parse_range negative '12:12-99:00' --> fail
+ok 341 - DatetimeParser::parse_range negative '12:12-03:60' --> fail
+ok 342 - DatetimeParser::parse_range negative '12:12-03:99' --> fail
+ok 343 - DatetimeParser::parse_range negative '12:12-3:20' --> fail
+ok 344 - DatetimeParser::parse_range negative '12:12-03:2' --> fail
+ok 345 - DatetimeParser::parse_range negative '12:12-3:2' --> fail
+ok 346 - DatetimeParser::parse_range negative '12:12+13:00' --> fail
+ok 347 - DatetimeParser::parse_range negative '12:12+24:00' --> fail
+ok 348 - DatetimeParser::parse_range negative '12:12+99:00' --> fail
+ok 349 - DatetimeParser::parse_range negative '12:12+03:60' --> fail
+ok 350 - DatetimeParser::parse_range negative '12:12+03:99' --> fail
+ok 351 - DatetimeParser::parse_range negative '12:12+3:20' --> fail
+ok 352 - DatetimeParser::parse_range negative '12:12+03:2' --> fail
+ok 353 - DatetimeParser::parse_range negative '12:12+3:2' --> fail
+ok 354 - DatetimeParser::parse_range ("20170319") --> [start,end)
+ok 355 - DatetimeParser::parse_range negative '20170319' --> fail
+ok 356 - DatetimeParser::parse_range ("235959") --> [start,...)
+ok 357 - DatetimeParser::parse_range negative '235959' --> fail
+ok 358 - DatetimeParser::parse_range ("jan") --> [start,end)
+ok 359 - DatetimeParser::parse_range negative 'jan:' --> fail
+ok 360 - DatetimeParser::parse_range ("mon") --> [start,end)
+ok 361 - DatetimeParser::parse_range negative 'mon:' --> fail
+# 361 passed, 0 failed, 0 skipped. 100% passed.
+# TagInfoDatabase.t
+1..8
+ok 1 - Insertion of new tag returns -1
+ok 2 - Increment of existing tag returns previous count
+ok 3 - Decrement of existing tag returns new count
+ok 4 - JSON output for empty database
+ok 5 - JSON output for single entry
+ok 6 - JSON output for multiple entries
+ok 7 - Tags with count 0 are purged from database
+ok 8 - Decrement of non-existent tag throws an exception
+# 8 passed, 0 failed, 0 skipped. 100% passed.
+# interval.t
+1..64
+ok 1 - Interval().empty -> true
+ok 2 - Interval().is_started -> false
+ok 3 - Interval().is_ended -> false
+ok 4 - Interval().empty -> false
+ok 5 - Interval(start=now).is_started -> true
+ok 6 - Interval(start=now).is_ended -> false
+ok 7 - Interval(start=now,end=now).is_started -> true
+ok 8 - Interval(start=now,end=now).is_ended -> true
+ok 9 - Interval(tag=) -> {}
+ok 10 - Interval(tag=foo) -> {foo}
+ok 11 - Interval(tag=foo,foo) -> {foo}
+ok 12 - Interval(tag=foo,bar) -> {foo,bar}
+ok 13 - Interval(tag=foo,bar,baz) -> {foo,bar,baz}
+ok 14 - Interval(tag=bar,baz) -> {bar,baz}
+ok 15 - Interval.serialize -> 'inc'
+ok 16 - Interval.serialize -> 'inc # # "this is an annotation"
+ok 17 - Interval.serialize -> 'inc # foo'
+ok 18 - Interval.serialize -> 'inc # foo # "this is an annotation"
+ok 19 - Interval.serialize -> 'inc # bar foo'
+ok 20 - Interval.serialize -> 'inc 19700101T000001Z # bar foo'
+ok 21 - Interval.serialize -> 'inc 19700101T000001Z # bar foo # "this is an annotation"
+ok 22 - Interval.serialize -> 'inc 19700101T000001Z - 19700101T000002Z # bar foo'
+ok 23 - Interval.serialize -> 'inc 19700101T000001Z - 19700101T000002Z # "Trans-Europe Express" bar foo'
+ok 24 - Interval.serialize -> 'inc 19700101T000001Z - 19700101T000002Z # "Trans-Europe Express" bar foo' # "this is an annotation"
+ok 25 - Round-trip 'inc'
+ok 26 - Round-trip 'inc # foo'
+ok 27 - Round-trip 'inc # bar foo'
+ok 28 - Round-trip 'inc 19700101T000001Z'
+ok 29 - Round-trip 'inc 19700101T000001Z - 19700101T000002Z'
+ok 30 - Round-trip 'inc 19700101T000001Z # bar foo'
+ok 31 - Round-trip 'inc 19700101T000001Z - 19700101T000002Z # bar foo'
+ok 32 - Round-trip 'inc 19700101T000001Z - 19700101T000002Z # "Trans-Europe Express" bar foo'
+ok 33 - JSON '{}'
+ok 34 - Round-trip 'inc'
+ok 35 - JSON '{"id":0,"annotation":"this is an annotation"}'
+ok 36 - Round-trip 'inc # # "this is an annotation"'
+ok 37 - JSON '{"id":0,"tags":["foo"]}'
+ok 38 - Round-trip 'inc # foo'
+ok 39 - JSON '{"id":0,"tags":["foo"],"annotation":"this is an annotation"}'
+ok 40 - Round-trip 'inc # foo # "this is an annotation"'
+ok 41 - JSON '{"id":0,"tags":["bar","foo"]}'
+ok 42 - Round-trip 'inc # bar foo'
+ok 43 - JSON '{"id":0,"tags":["bar","foo"],"annotation":"this is an annotation"}'
+ok 44 - Round-trip 'inc # bar foo # "this is an annotation"'
+ok 45 - JSON '{"id":0,"start":"19700101T000001Z"}'
+ok 46 - Round-trip 'inc 19700101T000001Z'
+ok 47 - JSON '{"id":0,"start":"19700101T000001Z","annotation":"this is an annotation"}'
+ok 48 - Round-trip 'inc 19700101T000001Z # # "this is an annotation"'
+ok 49 - JSON '{"id":0,"start":"19700101T000001Z","end":"19700101T000002Z"}'
+ok 50 - Round-trip 'inc 19700101T000001Z - 19700101T000002Z'
+ok 51 - JSON '{"id":0,"start":"19700101T000001Z","end":"19700101T000002Z","annotation":"this is an annotation"}'
+ok 52 - Round-trip 'inc 19700101T000001Z - 19700101T000002Z # # "this is an annotation"'
+ok 53 - JSON '{"id":0,"start":"19700101T000001Z","tags":["bar","foo"]}'
+ok 54 - Round-trip 'inc 19700101T000001Z # bar foo'
+ok 55 - JSON '{"id":0,"start":"19700101T000001Z","end":"19700101T000002Z","tags":["bar","foo"]}'
+ok 56 - Round-trip 'inc 19700101T000001Z - 19700101T000002Z # bar foo'
+ok 57 - JSON '{"id":0,"start":"19700101T000001Z","end":"19700101T000002Z","tags":["bar","foo"],"annotation":"this is an annotation"}'
+ok 58 - Round-trip 'inc 19700101T000001Z - 19700101T000002Z # bar foo # "this is an annotation"'
+ok 59 - JSON '{"id":0,"start":"19700101T000001Z","end":"19700101T000002Z","tags":["Trans-Europe Express","bar","foo"]}'
+ok 60 - Round-trip 'inc 19700101T000001Z - 19700101T000002Z # "Trans-Europe Express" bar foo
+ok 61 - hasTag positive
+ok 62 - hasTag negative
+ok 63 - JSON '{"id":0,"tags":["one-two","three"]}'
+ok 64 - Interval().serialize -> 'inc # "foo_bar"'
+# 64 passed, 0 failed, 0 skipped. 100% passed.
+# rules.t
+1..8
+ok 1 - Rules set string, get string
+ok 2 - Rules set string, get string
+ok 3 - Rules set non-int string, get 0
+ok 4 - Rules set non-bool string, get false
+ok 5 - Rules set integer, get integer
+ok 6 - Rules set integer, get string
+ok 7 - Rules all ("") --> >30
+ok 8 - Rules all ("one.two") --> 3
+# 8 passed, 0 failed, 0 skipped. 100% passed.
+# util.t
+1..25
+ok 1 - escape '','x' --> ''
+ok 2 - escape 'foo','x' --> 'foo'
+ok 3 - escape 'foo','f' --> '\foo'
+ok 4 - escape 'foo','o' --> 'f\o\o'
+ok 5 - escape '"','"' --> '\"'
+ok 6 - quoteIfNeeded 'foo' --> 'foo'
+ok 7 - quoteIfNeeded 'f o o' --> '"f o o"'
+ok 8 - join -> length 0
+ok 9 - join -> ''
+ok 10 - join '' 'a' 'bc' 'def' -> length 6
+ok 11 - join '' 'a' 'bc' 'def' -> 'abcdef'
+ok 12 - join '' - 'a' - 'bc' - 'def' -> length 9
+ok 13 - join '' - 'a' - 'bc' - 'def' -> '-a-bc-def'
+ok 14 - join -> length 0
+ok 15 - join -> ''
+ok 16 - join '' 'a' 'bc' 'd e f' -> length 6
+ok 17 - join '' 'a' 'bc' 'def' -> 'abc"d e f"'
+ok 18 - join '' - 'a' - 'bc' - 'def' -> length 9
+ok 19 - join '' - 'a' - 'bc' - 'def' -> '-a-bc-"d e f"'
+ok 20 - join -> length 0
+ok 21 - join -> ''
+ok 22 - join '' 'a' 'bc' 'def' -> length 6
+ok 23 - join '' 'a' 'bc' 'def' -> 'abc"d e f"'
+ok 24 - join '' - 'a' - 'bc' - 'def' -> length 9
+ok 25 - join '' - 'a' - 'bc' - 'def' -> '-a-bc-"d e f"'
+# 25 passed, 0 failed, 0 skipped. 100% passed.
+# data.t
+1..96
+ok 1 - flatten: [1] (full day) - (3 non-overlapping exc) = (2 inc) expected number of results
+ok 2 - flatten: [1] (full day) - (3 non-overlapping exc) = (2 inc) start matches
+ok 3 - flatten: [1] (full day) - (3 non-overlapping exc) = (2 inc) end matches
+ok 4 - flatten: [1] (full day) - (3 non-overlapping exc) = (2 inc) tags match
+ok 5 - flatten: [1] (full day) - (3 non-overlapping exc) = (2 inc) start matches
+ok 6 - flatten: [1] (full day) - (3 non-overlapping exc) = (2 inc) end matches
+ok 7 - flatten: [1] (full day) - (3 non-overlapping exc) = (2 inc) tags match
+ok 8 - flatten: [2] (inc) - (1 enclosed exc) = (2 inc) expected number of results
+ok 9 - flatten: [2] (inc) - (1 enclosed exc) = (2 inc) start matches
+ok 10 - flatten: [2] (inc) - (1 enclosed exc) = (2 inc) end matches
+ok 11 - flatten: [2] (inc) - (1 enclosed exc) = (2 inc) tags match
+ok 12 - flatten: [2] (inc) - (1 enclosed exc) = (2 inc) start matches
+ok 13 - flatten: [2] (inc) - (1 enclosed exc) = (2 inc) end matches
+ok 14 - flatten: [2] (inc) - (1 enclosed exc) = (2 inc) tags match
+ok 15 - flatten: [3] (open inc) - (1 overlapping exc) = (2 inc) expected number of results
+ok 16 - flatten: [3] (open inc) - (1 overlapping exc) = (2 inc) start matches
+ok 17 - flatten: [3] (open inc) - (1 overlapping exc) = (2 inc) end matches
+ok 18 - flatten: [3] (open inc) - (1 overlapping exc) = (2 inc) tags match
+ok 19 - flatten: [3] (open inc) - (1 overlapping exc) = (2 inc) start matches
+ok 20 - flatten: [3] (open inc) - (1 overlapping exc) = (2 inc) end matches
+ok 21 - flatten: [3] (open inc) - (1 overlapping exc) = (2 inc) tags match
+ok 22 - flatten: [4] (inc) - (1 enclosing exc) = (unmodified inc) expected number of results
+ok 23 - flatten: [4] (inc) - (1 enclosing exc) = (unmodified inc) start matches
+ok 24 - flatten: [4] (inc) - (1 enclosing exc) = (unmodified inc) end matches
+ok 25 - flatten: [4] (inc) - (1 enclosing exc) = (unmodified inc) tags match
+ok 26 - flatten: [5] (inc) - (2 overlapping exc) = (unmodified inc) expected number of results
+ok 27 - flatten: [5] (inc) - (2 overlapping exc) = (unmodified inc) start matches
+ok 28 - flatten: [5] (inc) - (2 overlapping exc) = (unmodified inc) end matches
+ok 29 - flatten: [5] (inc) - (2 overlapping exc) = (unmodified inc) tags match
+ok 30 - flatten: [6] (inc) - (1 overlapping exc, 2 enclosed exc) = (3 inc) expected number of results
+ok 31 - flatten: [6] (inc) - (1 overlapping exc, 2 enclosed exc) = (3 inc) start matches
+ok 32 - flatten: [6] (inc) - (1 overlapping exc, 2 enclosed exc) = (3 inc) end matches
+ok 33 - flatten: [6] (inc) - (1 overlapping exc, 2 enclosed exc) = (3 inc) tags match
+ok 34 - flatten: [6] (inc) - (1 overlapping exc, 2 enclosed exc) = (3 inc) start matches
+ok 35 - flatten: [6] (inc) - (1 overlapping exc, 2 enclosed exc) = (3 inc) end matches
+ok 36 - flatten: [6] (inc) - (1 overlapping exc, 2 enclosed exc) = (3 inc) tags match
+ok 37 - flatten: [6] (inc) - (1 overlapping exc, 2 enclosed exc) = (3 inc) start matches
+ok 38 - flatten: [6] (inc) - (1 overlapping exc, 2 enclosed exc) = (3 inc) end matches
+ok 39 - flatten: [6] (inc) - (1 overlapping exc, 2 enclosed exc) = (3 inc) tags match
+ok 40 - merge: Empty range expected number of results
+ok 41 - merge: Single range expected number of results
+ok 42 - merge: Single range start matches
+ok 43 - merge: Single range end matches
+ok 44 - merge: Non-overlapping ranges expected number of results
+ok 45 - merge: Non-overlapping ranges start matches
+ok 46 - merge: Non-overlapping ranges end matches
+ok 47 - merge: Non-overlapping ranges start matches
+ok 48 - merge: Non-overlapping ranges end matches
+ok 49 - merge: Non-overlapping unsorted ranges expected number of results
+ok 50 - merge: Non-overlapping unsorted ranges start matches
+ok 51 - merge: Non-overlapping unsorted ranges end matches
+ok 52 - merge: Non-overlapping unsorted ranges start matches
+ok 53 - merge: Non-overlapping unsorted ranges end matches
+ok 54 - merge: Overlapping unsorted ranges expected number of results
+ok 55 - merge: Overlapping unsorted ranges start matches
+ok 56 - merge: Overlapping unsorted ranges end matches
+ok 57 - merge: Multiple overlapping ranges expected number of results
+ok 58 - merge: Multiple overlapping ranges start matches
+ok 59 - merge: Multiple overlapping ranges end matches
+ok 60 - merge: Multiple overlapping, enveloping ranges expected number of results
+ok 61 - merge: Multiple overlapping, enveloping ranges start matches
+ok 62 - merge: Multiple overlapping, enveloping ranges end matches
+ok 63 - merge: Multiple overlapping, enveloping ranges start matches
+ok 64 - merge: Multiple overlapping, enveloping ranges end matches
+ok 65 - merge: Multiple overlapping, enveloping ranges start matches
+ok 66 - merge: Multiple overlapping, enveloping ranges end matches
+ok 67 - matchesFilter 2016-06-01- tag1 tag2 <=> 2016-06-01-2016-06-30 tag1 tag2
+ok 68 - matchesFilter A <!> refClosed
+ok 69 - matchesFilter B <=> refClosed
+ok 70 - matchesFilter C <=> refClosed
+ok 71 - matchesFilter D <=> refClosed
+ok 72 - matchesFilter E <!> refClosed
+ok 73 - matchesFilter F <=> refClosed
+ok 74 - matchesFilter G <=> refClosed
+ok 75 - matchesFilter H <=> refClosed
+ok 76 - matchesFilter I <!> refClosed
+ok 77 - matchesFilter A <!> refOpen
+ok 78 - matchesFilter B <=> refOpen
+ok 79 - matchesFilter C <=> refOpen
+ok 80 - matchesFilter D <=> refOpen
+ok 81 - matchesFilter E <=> refOpen
+ok 82 - matchesFilter F <=> refOpen
+ok 83 - matchesFilter G <=> refOpen
+ok 84 - matchesFilter H <=> refOpen
+ok 85 - matchesFilter I <=> refOpen
+ok 86 - getFullDay 2016-05-01T20:31:23 -> start 2016-05-01T00:00:00
+ok 87 - getFullDay 2016-05-01T20:31:23 -> end   2016-05-02T00:00:00
+ok 88 - subtractRanges: all_day - 3 non-adjacent ranges = 2 ranges
+ok 89 - subtractRanges: results[0].start = 20160101T080000
+ok 90 - subtractRanges: results[0].end   = 20160101T120000
+ok 91 - subtractRanges: results[1].start = 20160101T130000
+ok 92 - subtractRanges: results[1].end   = 20160101T173000
+ok 93 - subtractRanges: all_day - 3 overlapping ranges = 1 range
+ok 94 - subtractRanges: results[0].start = 20160101T080000
+ok 95 - subtractRanges: results[0].end   = 20160101T120000
+ok 96 - subtractRanges: all_day - 2 overlapping months = 0 ranges
+# 96 passed, 0 failed, 0 skipped. 100% passed.
+# Datafile.t
+1..2
+ok 1 - Datafile::deleteInterval throws on error
+ok 2 - Datafile::deleteInterval does not throw on success
+# 2 passed, 0 failed, 0 skipped. 100% passed.
+# range.t
+1..101
+ok 1 - Range().is_started -> false
+ok 2 - Range().is_ended -> false
+ok 3 - Range().is_open -> false
+ok 4 - Range(start=now).is_started -> true
+ok 5 - Range(start=now).is_ended -> false
+ok 6 - Range(start=now).is_open -> true
+ok 7 - Range(start=now,end=now).is_started -> true
+ok 8 - Range(start=now,end=now).is_ended -> true
+ok 9 - Range(start=now,end=now).is_open -> false
+ok 10 - Range: ! refClosed.overlaps(testA)
+ok 11 - Range:   refClosed.overlaps(testB)
+ok 12 - Range:   refClosed.overlaps(testC)
+ok 13 - Range:   refClosed.overlaps(testD)
+ok 14 - Range: ! refClosed.overlaps(testE)
+ok 15 - Range:   refClosed.overlaps(testF)
+ok 16 - Range:   refClosed.overlaps(testG)
+ok 17 - Range:   refClosed.overlaps(testH)
+ok 18 - Range: ! refClosed.overlaps(testI)
+ok 19 - Range: ! refOpen.overlaps(testA)
+ok 20 - Range:   refOpen.overlaps(testB)
+ok 21 - Range:   refOpen.overlaps(testC)
+ok 22 - Range:   refOpen.overlaps(testD)
+ok 23 - Range:   refOpen.overlaps(testE)
+ok 24 - Range:   refOpen.overlaps(testF)
+ok 25 - Range:   refOpen.overlaps(testG)
+ok 26 - Range:   refOpen.overlaps(testH)
+ok 27 - Range:   refOpen.overlaps(testI)
+ok 28 - Range: refClosed.intersect(testA) == empty
+ok 29 - Range: refClosed.intersect(testB) == Range(refClosed.start,testB.end)
+ok 30 - Range: refClosed.intersect(testC) == testC
+ok 31 - Range: refClosed.intersect(testD) == Range(testD.start,refClosed.end)
+ok 32 - Range: refClosed.intersect(testE) == empty
+ok 33 - Range: refClosed.intersect(testF) == refClosed
+ok 34 - Range: refClosed.intersect(testG) == refClosed
+ok 35 - Range: refClosed.intersect(testH) == Range(testH.start,refClosed.end)
+ok 36 - Range: refClosed.intersect(testI) == empty
+ok 37 - Range: refOpen.intersect(testA) == empty
+ok 38 - Range: refOpen.intersect(testB) == Range(refOpen.start,testB.end)
+ok 39 - Range: refOpen.intersect(testC) == testC
+ok 40 - Range: refOpen.intersect(testD) == testD
+ok 41 - Range: refOpen.intersect(testE) == testE
+ok 42 - Range: refOpen.intersect(testF) == Range(refOpen.start,testF.end
+ok 43 - Range: refOpen.intersect(testG) == refOpen
+ok 44 - Range: refOpen.intersect(testH) == testH
+ok 45 - Range: refOpen.intersect(testI) == testI
+ok 46 - Range: refClosed.subtract(testA) == {refClosed}
+ok 47 - Range: refClosed.subtract(testB) == {Range(testB.end,refClosed.end)}
+ok 48 - Range: refClosed.subtract(testC) == {Range(refClosed.start,testC.start),Range(testC.end,refClosed.end}
+ok 49 - Range: refClosed.subtract(testD) == {Range(refClosed.start,testD.start)}
+ok 50 - Range: refClosed.subtract(testE) == {refClosed}
+ok 51 - Range: refClosed.subtract(testF) == {}
+ok 52 - Range: refClosed.subtract(testG) == {}
+ok 53 - Range: refClosed.subtract(testH) == {refClosed.start,testH.start}
+ok 54 - Range: refClosed.subtract(testI) == {refClosed}
+ok 55 - Range: refOpen.subtract(testA) == {refOpen}
+ok 56 - Range: refOpen.subtract(testB) == {Range(testB.end,refOpen.end}
+ok 57 - Range: refOpen.subtract(testC) == {Range(refOpen.start,testC.start),Range(testC.end,refOpen.end}
+ok 58 - Range: refOpen.subtract(testD) == {Range(refOpen.start,testD.start),Range(testD.end,refOpen.end}
+ok 59 - Range: refOpen.subtract(testE) == {Range(refOpen.start,testE.start),Range(testE.end,refOpen.end}
+ok 60 - Range: refOpen.subtract(testF) == {Range(testF.end,refOpen.end}
+ok 61 - Range: refOpen.subtract(testG) == {}
+ok 62 - Range: refOpen.subtract(testH) == {Range(refOpen.start,testH.start}
+ok 63 - Range: refOpen.subtract(testI) == {Range(refOpen.start,testI.start}
+ok 64 - Range: ! refClosed.encloses(testA)
+ok 65 - Range: ! refClosed.encloses(testB)
+ok 66 - Range:   refClosed.encloses(testC)
+ok 67 - Range: ! refClosed.encloses(testD)
+ok 68 - Range: ! refClosed.encloses(testE)
+ok 69 - Range: ! refClosed.encloses(testF)
+ok 70 - Range: ! refClosed.encloses(testG)
+ok 71 - Range: ! refClosed.encloses(testH)
+ok 72 - Range: ! refClosed.encloses(testI)
+ok 73 - Range: ! refOpen.encloses(testA)
+ok 74 - Range: ! refOpen.encloses(testB)
+ok 75 - Range:   refOpen.encloses(testC)
+ok 76 - Range:   refOpen.encloses(testD)
+ok 77 - Range:   refOpen.encloses(testE)
+ok 78 - Range: ! refOpen.encloses(testF)
+ok 79 - Range: ! refOpen.encloses(testG)
+ok 80 - Range:   refOpen.encloses(testH)
+ok 81 - Range:   refOpen.encloses(testI)
+ok 82 - Range: left (11am - 12pm) does not overlaps with right (12pm - 1pm)
+ok 83 - Range: adjacent ranges do not intersect
+ok 84 - Range: adjacent ranges do not intersect
+ok 85 - Range (Datetime (2016, 1, 1), Datetime (2016, 1, 3)).total () == (2 * 86400)
+ok 86 - Range: total for closed range < open range with same start time
+ok 87 - Range: total for open range predictable
+ok 88 - Range: refClosed.combine(testB) == Range(testB.start,refClosed.end)
+ok 89 - Range: refClosed.combine(testC) == refClosed
+ok 90 - Range: refClosed.combine(testD) == Range(refClosed.start,testD.end)
+ok 91 - Range: refClosed.combine(testF) == testF
+ok 92 - Range: refClosed.combine(testG) == testG
+ok 93 - Range: refClosed.combine(testH) == Range(refClosed.start,{0})
+ok 94 - Range: refOpen.combine(testB) == Range(testB.start,{0})
+ok 95 - Range: refOpen.combine(testC) == refOpen
+ok 96 - Range: refOpen.combine(testD) == refOpen
+ok 97 - Range: refOpen.combine(testE) == refOpen
+ok 98 - Range: refOpen.combine(testF) == Range(testF.start,{0})
+ok 99 - Range: refOpen.combine(testG) == testG
+ok 100 - Range: refOpen.combine(testH) == refOpen
+ok 101 - Range: refOpen.combine(testI) == refOpen
+# 101 passed, 0 failed, 0 skipped. 100% passed.
+# 1772392929.050677 ==> 2026-03-01 19:22:09
