@@ -2,15 +2,17 @@ FROM opensuse/tumbleweed
 
 RUN zypper install -y \
            cmake \
+           findutils \
            gcc-c++ \
            git \
            man \
            python3 \
            python3-python-dateutil \
-           ruby
+           ruby \
+           update-alternatives
 
 RUN gem install asciidoctor
-RUN update-alternatives --install /usr/bin/asciidoctor asciidoctor /usr/lib64/ruby/gems/4.0.0/gems/asciidoctor-2.0.26/bin/asciidoctor 10
+RUN update-alternatives --install /usr/bin/asciidoctor asciidoctor "$(ruby -e 'require "rubygems"; puts Gem.bin_path("asciidoctor","asciidoctor")')" 10
 RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 ENV TZ=Europe/Berlin
 
