@@ -1,3 +1,5 @@
+- #738    Support coloring of tags with special characters
+          (thanks to Paik Paustian)
 - #737    read $COLUMNS before defaulting to width 80 when no tty
           (thanks to Scott Mcdermott)
 - #727    :color hint does not work with the summary report
