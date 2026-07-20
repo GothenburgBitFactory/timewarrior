@@ -30,8 +30,6 @@ import datetime
 import json
 import sys
 
-from dateutil import tz
-
 DATEFORMAT = "%Y%m%dT%H%M%SZ"
 
 
@@ -48,8 +46,8 @@ def format_seconds(seconds):
 
 
 def calculate_totals(input_stream):
-    from_zone = tz.tzutc()
-    to_zone = tz.tzlocal()
+    from_zone = datetime.timezone.utc
+    to_zone = datetime.datetime.now().astimezone().tzinfo
 
     # Extract the configuration settings.
     header = 1
