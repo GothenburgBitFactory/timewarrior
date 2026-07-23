@@ -1,11 +1,13 @@
-- #738    Support coloring of tags with special characters
-          (thanks to Paik Paustian)
-- #737    read $COLUMNS before defaulting to width 80 when no tty
-          (thanks to Scott Mcdermott)
 - #727    :color hint does not work with the summary report
           (thanks to Alex Rogers)
 - #728    :all hint does not work in chart reports
           (thanks to Alex Rogers)
+- #737    read $COLUMNS before defaulting to width 80 when no tty
+          (thanks to Scott Mcdermott)
+- #738    Support coloring of tags with special characters
+          (thanks to Paik Paustian)
+- #768    remove dateutil dependency from totals.py
+          (thanks to Paul Bransford)
 
 ------ current release ---------------------------
 
