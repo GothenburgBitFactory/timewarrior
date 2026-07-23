@@ -6,6 +6,8 @@
           (thanks to Scott Mcdermott)
 - #738    Support coloring of tags with special characters
           (thanks to Paik Paustian)
+- #760    new test cases for non-ASCII text in 'chart.t'
+          (thanks to Johan Sarge)
 - #768    remove dateutil dependency from totals.py
           (thanks to Paul Bransford)
 
