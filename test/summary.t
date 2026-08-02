@@ -2,7 +2,7 @@
 
 ###############################################################################
 #
-# Copyright 2017 - 2025, Gothenburg Bit Factory.
+# Copyright 2017 - 2026, Gothenburg Bit Factory.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
