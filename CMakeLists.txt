@@ -8,7 +8,7 @@ include (CXXSniffer)
 include (FindAsciidoctor)
 include (CheckFunctionExists)
 
-set (PROJECT_VERSION "1.10.0")
+set (PROJECT_VERSION "1.10.0-dev")
 
 string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
 

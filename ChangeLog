@@ -1,6 +1,6 @@
 ------ current release ---------------------------
 
-1.10.0 (2026-08-02) -
+1.10.0 (2026-08-02) - 017fc337226e184dee500ed2bf558a6fb756db51
 
 - #727    :color hint does not work with the summary report
           (thanks to Alex Rogers)
