@@ -1,3 +1,7 @@
+------ current release ---------------------------
+
+1.10.0 (2026-08-02) -
+
 - #727    :color hint does not work with the summary report
           (thanks to Alex Rogers)
 - #728    :all hint does not work in chart reports
@@ -11,7 +15,7 @@
 - #768    remove dateutil dependency from totals.py
           (thanks to Paul Bransford)
 
------- current release ---------------------------
+------ old releases ------------------------------
 
 1.9.1 (2025-08-27) - 8c14b6d44adc75b7031eb0c25237db842aba37f9
 
