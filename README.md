@@ -54,7 +54,7 @@ There are two ways to retrieve the Timewarrior sources:
   ```
 * Or download the tarball with curl,
   ```
-  curl -O https://github.com/GothenburgBitFactory/timewarrior/releases/download/v1.10.0/timew-1.10.0.tar.gz
+  curl -L -O https://github.com/GothenburgBitFactory/timewarrior/releases/download/v1.10.0/timew-1.10.0.tar.gz
   ```
   and expand the tarball
   ```
