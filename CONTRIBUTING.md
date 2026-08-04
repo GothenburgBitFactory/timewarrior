@@ -133,7 +133,7 @@ To make a pull request you need to have a GitHub account.
 1. Fork the [Timewarrior repository](https://github.com/GothenburgBitFactory/timewarrior) on GitHub.
 2. Checkout the development branch.
 
-       $ git checkout dev
+       $ git checkout develop
 
 3. Create a feature branch.
 
