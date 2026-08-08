@@ -9,11 +9,23 @@ timew-undo - revert Timewarrior commands
 
 == DESCRIPTION
 The 'undo' command is used to revert the action of Timewarrior commands.
-Only commands affecting intervals or Timewarrior configuration can be reverted.
+
 Timewarrior keeps a journal of changes to the interval database and Timewarrior configuration.
+Therefore, only commands affecting intervals or configuration can be reverted.
+
 A call to 'undo' removes the last entry in the journal and restores the previous state.
 As long as there are entries in the journal, you can revert the respective action.
+The size of the journal can be set with the 'journal.size' configuration parameter.
+
 The 'undo' command itself cannot be undone!
+
+== CONFIGURATION
+**journal.size**::
+Determines the maximum number of transactions stored.
+A value of '-1' means unlimited, i.e. the journal will grow indefinitely.
+A value of '0' practically deactivates the journal.
+Note that, when running the 'config' command, the value is applied immediately!
+Default value is '-1'
 
 == EXAMPLES
 Undo an interval modification::
