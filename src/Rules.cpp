@@ -601,6 +601,7 @@ bool Rules::setConfigVariable (
           change = true;
         }
       }
+      if (found) break;
     }
 
     // If it was not found, then retry in hierarchical form∴
