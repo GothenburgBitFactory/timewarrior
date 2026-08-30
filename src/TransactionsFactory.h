@@ -34,6 +34,7 @@ class TransactionsFactory
 {
 public:
   void parseLine(const std::string& line);
+  void parseJsonLine(const std::string& line);
 
   std::vector< Transaction > get();
 
