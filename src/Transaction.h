@@ -36,6 +36,7 @@ public:
   void addUndoAction(const std::string&, const std::string&, const std::string&);
 
   std::string toString() const;
+  std::string toJson() const;
 
   std::vector <UndoAction> getActions () const;
 

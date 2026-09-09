@@ -40,7 +40,7 @@ public:
   Journal(const Journal&) = delete;
   Journal& operator= (const Journal&) = delete;
 
-  void initialize(const std::string&, int);
+  void initialize(const std::string&, int, const std::string& format = "");
 
   void startTransaction ();
   void endTransaction ();
@@ -56,6 +56,7 @@ private:
   std::string _location {};
   std::shared_ptr <Transaction> _currentTransaction = nullptr;
   int _size {0};
+  bool _useJsonFormat {false};
 };
 
 #endif
