@@ -28,9 +28,13 @@
 #include <Duration.h>
 #include <IntervalFactory.h>
 #include <IntervalFilter.h>
+#include <JSON.h>
 #include <algorithm>
 #include <format.h>
+#include <map>
+#include <memory>
 #include <shared.h>
+#include <sstream>
 #include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -41,20 +45,188 @@ std::vector <Range> getHolidays (const Rules& rules)
   std::vector <Range> results;
   for (auto& holiday : rules.all ("holidays."))
   {
+    // Skip the provider setting itself – it is not a date entry.
+    if (holiday == "holidays.provider")
+      continue;
+
     auto lastDot = holiday.rfind ('.');
     if (lastDot != std::string::npos)
     {
-      Range r;
-      Datetime d (holiday.substr (lastDot + 1), "Y_M_D");
-      r.start = d;
-      ++d;
-      r.end = d;
-      results.push_back (r);
+      try
+      {
+        Range r;
+        Datetime d (holiday.substr (lastDot + 1), "Y_M_D");
+        r.start = d;
+        ++d;
+        r.end = d;
+        results.push_back (r);
+      }
+      catch (...)
+      {
+        // Skip entries whose trailing segment is not a valid Y_M_D date
+      }
     }
   }
 
   debug (format ("Found {1} holidays", results.size ()));
   return results;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Call the configured external holiday provider tool with a date range and
+// parse its JSON Lines output into (date, name) pairs.
+//
+// Each output line must be a JSON object with "date" (YYYY-MM-DD) and "name":
+//   {"date":"2025-01-01","name":"New Year's Day"}
+//
+static std::vector <std::pair <Datetime, std::string>> getHolidayEntriesFromProvider (
+  const std::string& provider,
+  const Range& range)
+{
+  auto start_str = range.start.toString ("Y-M-D");
+  auto end_str   = range.is_ended () ? range.end.toString ("Y-M-D")
+                                     : Datetime ().toString ("Y-M-D");
+
+  std::string output;
+  if (execute (provider, {start_str, end_str}, "", output) != 0)
+  {
+    warn (format ("holidays.provider '{1}' exited with error", provider));
+    return {};
+  }
+
+  std::vector <std::pair <Datetime, std::string>> results;
+  for (auto& line : split (output, '\n'))
+  {
+    if (line.empty ())
+      continue;
+
+    try
+    {
+      json::value* raw = json::parse (line);
+      if (! raw)
+        continue;
+
+      if (raw->type () != json::j_object)
+      {
+        delete raw;
+        continue;
+      }
+
+      std::unique_ptr <json::object> obj (static_cast <json::object*> (raw));
+
+      auto date_it = obj->_data.find ("date");
+      auto name_it = obj->_data.find ("name");
+      if (date_it == obj->_data.end () || name_it == obj->_data.end ())
+        continue;
+
+      auto* date_val = dynamic_cast <json::string*> (date_it->second);
+      auto* name_val = dynamic_cast <json::string*> (name_it->second);
+      if (! date_val || ! name_val)
+        continue;
+
+      Datetime d (json::decode (date_val->_data), "Y-M-D");
+      results.emplace_back (d, json::decode (name_val->_data));
+    }
+    catch (...)
+    {
+      // Skip malformed JSON lines
+    }
+  }
+
+  debug (format ("Found {1} holidays from provider", results.size ()));
+  return results;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Range-aware variant: if holidays.provider is configured, call the external
+// tool with the given date range; otherwise fall back to the config-file data.
+std::vector <Range> getHolidays (const Rules& rules, const Range& range)
+{
+  auto provider = json::decode (rules.get ("holidays.provider"));
+  if (! provider.empty ())
+  {
+    std::vector <Range> results;
+    for (auto& entry : getHolidayEntriesFromProvider (provider, range))
+    {
+      Datetime d = entry.first;
+      Range r;
+      r.start = d;
+      ++d;
+      r.end = d;
+      results.push_back (r);
+    }
+    return results;
+  }
+
+  return getHolidays (rules);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Read rules and extract all holiday definitions within range. Create a map
+// from date to holiday description string (with locale).
+//
+// If holidays.provider is configured, call the external tool instead of
+// reading from the config file.  Provider output uses only the holiday name
+// (no locale bracket); config-file entries retain their " [locale] name" form.
+std::map <Datetime, std::string> createHolidayMap (Rules& rules, Range& range)
+{
+  std::map <Datetime, std::string> mapping;
+
+  auto provider = json::decode (rules.get ("holidays.provider"));
+  if (! provider.empty ())
+  {
+    for (auto& entry : getHolidayEntriesFromProvider (provider, range))
+      mapping[entry.first] = " " + entry.second;
+    return mapping;
+  }
+
+  auto holidays = rules.all ("holidays.");
+
+  for (auto& entry : holidays)
+  {
+    // Skip the provider setting itself – it is not a date entry.
+    if (entry == "holidays.provider")
+      continue;
+
+    auto first_dot = entry.find ('.');
+    auto last_dot = entry.rfind ('.');
+
+    if (last_dot != std::string::npos)
+    {
+      auto date = entry.substr (last_dot + 1);
+      std::replace (date.begin (), date.end (), '_', '-');
+      Datetime holiday (date);
+
+      if (holiday >= range.start && holiday <= range.end)
+      {
+        std::stringstream out;
+        out << " ["
+            << entry.substr (first_dot + 1, last_dot - first_dot - 1)
+            << "] "
+            << rules.get (entry);
+        mapping[holiday] = out.str ();
+      }
+    }
+  }
+
+  return mapping;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Render a map of holidays as a formatted string.
+std::string renderHolidays (const std::map <Datetime, std::string>& holidays)
+{
+  std::stringstream out;
+
+  for (auto& entry : holidays)
+  {
+    out << entry.first.toString ("Y-M-D")
+        << " "
+        << entry.second
+        << '\n';
+  }
+
+  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -75,7 +247,7 @@ std::vector <Range> getAllExclusions (
 {
   // Start with the set of all holidays, intersected with range.
   std::vector <Range> results;
-  results = addRanges (range, results, getHolidays (rules));
+  results = addRanges (range, results, getHolidays (rules, range));
 
   // Load all exclusions from configuration.
   std::vector <Exclusion> exclusions;

@@ -39,8 +39,6 @@
 
 int renderChart (const std::string&, CLI&, Rules&, Database&);
 
-std::map <Datetime, std::string> createHolidayMap (Rules&, Range&);
-
 ////////////////////////////////////////////////////////////////////////////////
 int CmdChartDay (
   CLI& cli,
@@ -209,39 +207,6 @@ int renderChart (
   std::cout << chart.render (range, tracked, exclusions, holidays);
 
   return 0;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-std::map <Datetime, std::string> createHolidayMap (Rules& rules, Range& range)
-{
-  std::map <Datetime, std::string> mapping;
-  auto holidays = rules.all ("holidays.");
-
-  for (auto& entry : holidays)
-  {
-    auto first_dot = entry.find ('.');
-    auto last_dot = entry.rfind ('.');
-
-    if (last_dot != std::string::npos)
-    {
-      auto date = entry.substr (last_dot + 1);
-      std::replace (date.begin (), date.end (), '_', '-');
-      Datetime holiday (date);
-
-      if (holiday >= range.start && holiday <= range.end)
-      {
-        std::stringstream out;
-        out << " ["
-            << entry.substr (first_dot + 1, last_dot - first_dot - 1)
-            << "] "
-            << rules.get (entry);
-        auto locale = entry.substr (first_dot + 1, last_dot - first_dot - 1);
-        mapping[holiday] = out.str ();
-      }
-    }
-  }
-
-  return mapping;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
