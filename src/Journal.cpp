@@ -28,6 +28,7 @@
 #include <Journal.h>
 #include <TransactionsFactory.h>
 #include <cassert>
+#include <iostream>
 #include <timew.h>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -39,27 +40,53 @@ bool Journal::enabled () const
 
 ////////////////////////////////////////////////////////////////////////////////
 
-std::vector <Transaction> loadJournal (AtomicFile& undo)
+static std::vector <Transaction> loadJournal (AtomicFile& undo)
 {
   std::vector <std::string> read_lines;
   undo.read (read_lines);
   undo.close ();
 
+  // Find first non-empty line to detect format
+  std::string firstLine;
+  for (auto& line : read_lines)
+  {
+    if (! line.empty ())
+    {
+      firstLine = line;
+      break;
+    }
+  }
+
+  if (firstLine.empty ())
+    return {};
+
   TransactionsFactory transactionsFactory;
 
-  for (auto& line: read_lines)
+  if (firstLine[0] == '{')
   {
-    transactionsFactory.parseLine (line);
+    // JSON format: each non-empty line is a complete transaction
+    for (auto& line : read_lines)
+    {
+      if (! line.empty ())
+        transactionsFactory.parseJsonLine (line);
+    }
+  }
+  else
+  {
+    // Legacy text format: multiple lines per transaction
+    for (auto& line : read_lines)
+      transactionsFactory.parseLine (line);
   }
 
   return transactionsFactory.get ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void Journal::initialize (const std::string& location, int size)
+void Journal::initialize (const std::string& location, int size, const std::string& format)
 {
   _location = location;
   _size = size;
+  _useJsonFormat = (format == "json");
 
   if (! enabled ())
   {
@@ -67,6 +94,53 @@ void Journal::initialize (const std::string& location, int size)
     if (undo.exists () && undo.size () > 0)
     {
       undo.remove ();
+    }
+    return;
+  }
+
+  // Detect format of existing file and warn or migrate as needed
+  AtomicFile undo (_location);
+  if (undo.exists () && undo.size () > 0)
+  {
+    std::vector <std::string> lines;
+    undo.read (lines);
+    undo.close ();
+
+    // Find first non-empty line to detect format
+    std::string firstLine;
+    for (auto& line : lines)
+    {
+      if (! line.empty ())
+      {
+        firstLine = line;
+        break;
+      }
+    }
+
+    bool isLegacyFormat = (! firstLine.empty () && firstLine.compare (0, 4, "txn:") == 0);
+
+    if (isLegacyFormat)
+    {
+      if (_useJsonFormat)
+      {
+        // Migrate legacy format to JSON
+        std::cout << "Migrating undo.data to JSON format." << std::endl;
+
+        TransactionsFactory factory;
+        for (auto& line : lines)
+          factory.parseLine (line);
+
+        std::vector <Transaction> transactions = factory.get ();
+
+        undo.truncate ();
+        for (auto& txn : transactions)
+          undo.append (txn.toJson ());
+      }
+      else
+      {
+        // Warn about the new format being available
+        warn ("undo.data uses a legacy format. Set 'journal.format=json' in your configuration to switch to the new JSON format and trigger automatic migration.");
+      }
     }
   }
 }
@@ -117,7 +191,7 @@ void Journal::endTransaction ()
     undo.truncate ();
     for (; it != end; ++it)
     {
-      undo.append (it->toString ());
+      undo.append (_useJsonFormat ? it->toJson () : it->toString ());
     }
   }
   else if (_size == 1)
@@ -125,7 +199,7 @@ void Journal::endTransaction ()
     undo.truncate ();
   }
 
-  undo.append (_currentTransaction->toString ());
+  undo.append (_useJsonFormat ? _currentTransaction->toJson () : _currentTransaction->toString ());
   _currentTransaction.reset ();
 }
 
@@ -190,7 +264,7 @@ Transaction Journal::popLastTransaction ()
 
     for (auto& transaction : transactions)
     {
-      undo.append (transaction.toString ());
+      undo.append (_useJsonFormat ? transaction.toJson () : transaction.toString ());
     }
 
     undo.close ();

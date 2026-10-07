@@ -187,7 +187,7 @@ void initializeDataJournalAndRules (
   }
 
   std::string dbDataDir = paths::dbDataDir ();
-  journal.initialize (dbDataDir + "/undo.data", rules.getInteger ("journal.size"));
+  journal.initialize (dbDataDir + "/undo.data", rules.getInteger ("journal.size"), rules.get ("journal.format"));
   // Initialize the database (no data read), but files are enumerated.
   database.initialize (dbDataDir, journal);
 }
