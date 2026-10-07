@@ -36,10 +36,6 @@
 #include <timew.h>
 #include <utf8.h>
 
-// Implemented in CmdChart.cpp.
-std::map <Datetime, std::string> createHolidayMap (Rules&, Range&);
-std::string renderHolidays (const std::map <Datetime, std::string>&);
-
 ////////////////////////////////////////////////////////////////////////////////
 int CmdSummary (
   CLI& cli,
@@ -163,22 +159,6 @@ int CmdSummary (
             << '\n';
 
   return 0;
-}
-
-////////////////////////////////////////////////////////////////////////////////
-std::string renderHolidays (const std::map <Datetime, std::string>& holidays)
-{
-  std::stringstream out;
-
-  for (auto& entry : holidays)
-  {
-    out << entry.first.toString ("Y-M-D")
-        << " "
-        << entry.second
-        << '\n';
-  }
-
-  return out.str ();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
