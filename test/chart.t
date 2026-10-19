@@ -26,6 +26,7 @@
 #
 ###############################################################################
 
+import itertools
 import os
 import sys
 import unittest
@@ -46,9 +47,9 @@ _ESCAPE_END_CHAR = "m"  # end of ANSI "Select Graphic Rendition" escape sequence
 _ESCAPE_ARGS_EOR = "0"  # attribute reset, indicating end of attributed range
 
 def _hacked_unicode_char_width(c):
-    if unicode_general_category(c) in ( 'Mn', 'Me', 'Cc', 'Cf', 'Cs', 'Co', 'Cn' ):
+    if unicode_general_category(c) in ( "Mn", "Me", "Cc", "Cf", "Cs", "Co", "Cn" ):
         return 0
-    elif east_asian_width(c) == 'W':
+    elif east_asian_width(c) == "W":
         return 2
     else:
         return 1
@@ -88,52 +89,62 @@ def _get_display_bounds(start_h, start_m, end_h, end_m, minutes_per_col, hour_sp
 
 def _find_ansi_ranges(s):
     ranges = []
+    contents = []
     in_escape = False
     escape_args = None
     in_range = False
+    range_start_char_i = None
     range_start_col = None
+    char_i = 0
     col_i = 0
 
     for c in s:
         if in_escape:  # inside escape sequence
             if c == _ESCAPE_START_CHAR_2:
                 if escape_args is not None:  # should follow _ESCAPE_START_CHAR
-                    return None  # fail
+                    return None, None  # fail
 
                 escape_args = ""  # start of escape sequence argument list
             elif c in _ESCAPE_ARG_CHARS:
                 if escape_args is None:  # should follow _ESCAPE_START_CHAR_2
-                    return None  # fail
+                    return None, None  # fail
 
                 escape_args += c
             elif c == _ESCAPE_END_CHAR:  # end of escape sequence
                 if escape_args is None or len(escape_args) == 0:  # should follow escape args
-                    return None  # fail
+                    return None, None  # fail
 
                 if in_range:  # inside ANSI attribute range
                     if escape_args != _ESCAPE_ARGS_EOR:  # expecting end of range
-                        return None  # fail
+                        return None, None  # fail
 
-                    ranges += ( range_start_col, col_i ),
+                    ranges += ( range_start_col_i, col_i ),
                     in_range = False
-                    range_start_col = None
+                    range_start_char_i = None
+                    range_start_col_i = None
                 else:  # not inside ANSI attribute range
                     if escape_args == _ESCAPE_ARGS_EOR:  # expecting start of range
-                        return None  # fail
+                        return None, None  # fail
 
                     in_range = True
-                    range_start_col = col_i
+                    range_start_char_i = char_i + 1  # Range content starts with next char.
+                    range_start_col_i = col_i
 
                 in_escape = False
                 escape_args = None
             else:  # unexpected character in escape sequence
-                return None  # fail
+                return None, None  # fail
         elif c == _ESCAPE_START_CHAR:  # start of escape sequence
             in_escape = True
-        else:  # not inside escape sequence
-            col_i += _hacked_unicode_width(c)  # Only count columns outside escape sequences.
 
-    return ranges
+            if in_range:  # inside ANSI attribute range
+                contents += s[range_start_char_i:char_i],  # Range content ends here.
+        else:  # not inside escape sequence
+            col_i += _hacked_unicode_char_width(c)  # Only count columns outside escape sequences.
+
+        char_i += 1
+
+    return ranges, contents
 
 def _strip_ansi_escapes(s):
     head = ""
@@ -155,18 +166,114 @@ def _strip_ansi_escapes(s):
 
     return head
 
+def _pad_to_width(s, width, pad_char=" "):
+    s_width = _hacked_unicode_width(s)
+    if s_width > width:
+        return None  # ERROR
+
+    return s + (width - s_width) * pad_char
+
+def _extract_line(s, max_width, hyphenate, ch_index):
+    if ch_index >= len(s):
+        return None, len(s)
+
+    line_start_ch_i = ch_index
+    prev_word_end_ch_i = None
+    prev_pos_w_ch_i = None
+    ch_i = line_start_ch_i
+    line_width = 0
+
+    while ch_i < len(s):  # We can't use range(), because we may need to rewind ch_i.
+        ch = s[ch_i]
+
+        if ch in ("\0", "\n"):  # mandatory line break
+            line = s[line_start_ch_i:ch_i]
+            line = line.rstrip()  # Strip any whitespace at end of line.
+            return line, ch_i+1  # Do not include the line break character in any line.
+        elif ch.isspace():  # whitespace
+            if ch_i > line_start_ch_i and not s[ch_i-1].isspace():  # Detect word endings.
+                prev_word_end_ch_i = ch_i
+
+        ch_width = _hacked_unicode_char_width(ch)
+
+        if line_width + ch_width <= max_width:  # Line not full.
+            if ch_width > 0:
+                prev_pos_w_ch_i = ch_i  # positive-width character added to line
+
+            line_width += ch_width  # Include current character in current line.
+            ch_i += 1
+            continue
+
+        line, next_ch_i = None, None
+
+        if prev_word_end_ch_i is not None:  # Line full, break at previous word ending.
+            line = s[line_start_ch_i:prev_word_end_ch_i]
+            next_ch_i = prev_word_end_ch_i + 1  # Start next line after previous word ending.
+        elif s[line_start_ch_i:ch_i].isspace():  # Line full but all whitespace, strip that out.
+            line = ""  # Output empty line.
+            next_ch_i = ch_i  # Start next line at current character.
+        elif hyphenate:  # Line full, no word ending available, hyphenation enabled.
+            hyphen_i = ch_i if line_width < max_width else prev_pos_w_ch_i
+            hyphen_i_c_width = _hacked_unicode_char_width(s[hyphen_i])
+
+            if hyphen_i == ch_i or (line_width - hyphen_i_c_width > 0 and not s[line_start_ch_i:hyphen_i].isspace()):
+                # Hyphenated line has positive width (and isn't all whitespace), go ahead and hyphenate.
+                line = s[line_start_ch_i:hyphen_i] + '-'
+                next_ch_i = hyphen_i  # Start next line at character that was dropped to fit the hyphen.
+            else:  # Can't hyphenate here.
+                line = s[line_start_ch_i:ch_i]
+                next_ch_i = ch_i  # Start next line at current character.
+        else:  # Line full, no word ending available, hyphenation disabled.
+            line = s[line_start_ch_i:ch_i]
+            next_ch_i = ch_i  # Start next line at current character.
+
+        return line, next_ch_i
+
+    if line_start_ch_i < len(s):  # Include the last line.
+        line = s[line_start_ch_i:]
+        line = line.rstrip()  # Strip any whitespace at end of line.
+        return line, len(s)
+
+    return None, len(s)  # Last line empty.
+
+def _split_lines(s, max_width, hyphenate=False, surrogate="."):
+    if _hacked_unicode_char_width(surrogate) > max_width:
+        return None  # ERROR
+
+    # Replace characters that won't fit on any line with the surrogate character.
+    s_old = s
+    s = "".join((surrogate if _hacked_unicode_char_width(ch) > max_width else ch) for ch in s)
+
+    lines = []
+    ch_index = 0
+
+    while ch_index < len(s):
+        line, ch_index = _extract_line(s, max_width, hyphenate, ch_index)
+        if line is not None:
+            lines.append(line)
+
+    return lines
+
 class _TrackedInterval:
     @classmethod
     def _make_datetime_str(cls, dom, h, m):
         return f"2026-02-{dom:02d}T{h:02d}:{m:02d}:00"
 
-    def __init__(self, dom, start_h, start_m, end_h, end_m, tags):
+    @classmethod
+    def assign_iids(cls, intervals):
+        intervals_desc = sorted(intervals, reverse=True)
+
+        for index in range(len(intervals_desc)):
+            intervals_desc[index].iid = index + 1
+
+    def __init__(self, dom, start_h, start_m, end_h, end_m, tags, iid=0):
         self.dom = dom
         self.start_h = start_h
         self.start_m = start_m
         self.end_h = end_h
         self.end_m = end_m
         self.tags = tags
+        self.iid = iid
 
     def __str__(self):
         start_dt = self._make_datetime_str(self.dom, self.start_h, self.start_m)
@@ -178,9 +285,61 @@ class _TrackedInterval:
 
         return f"track {start_dt} - {end_dt} {tags}"
 
+    # NOTE: Instances are assumed to be non-overlapping in time and are compared by start time.
+    def __eq__(self, other):
+        if not isinstance(other, _TrackedInterval):
+            return NotImplemented
+        else:
+            return self.dom == other.dom and self.start_h == other.start_h and self.start_m == other.start_m
+
+    def __lt__(self, other):
+        if not isinstance(other, _TrackedInterval):
+            return NotImplemented
+        elif self.dom < other.dom:
+            return True
+        elif self.dom == other.dom:
+            if self.start_h < other.start_h:
+                return True
+            elif self.start_h == other.start_h:
+                return self.start_m < other.start_m
+            else:
+                return False
+        else:
+            return False
+
+    def __gt__(self, other):
+        if not isinstance(other, _TrackedInterval):
+            return NotImplemented
+        else:
+            return other < self
+
+    def __le__(self, other):
+        if not isinstance(other, _TrackedInterval):
+            return NotImplemented
+        else:
+            return self < other or self == other
+
+    def __ge__(self, other):
+        if not isinstance(other, _TrackedInterval):
+            return NotImplemented
+        else:
+            return other < self or self == other
+
     def get_display_bounds(self, minutes_per_col, hour_spacing):
         return _get_display_bounds(
             self.start_h, self.start_m, self.end_h, self.end_m, minutes_per_col, hour_spacing)
+
+    def get_label(self, with_iid=False):
+        tags = self.tags
+        if not isinstance(tags, str):
+            tags = " ".join(tags)
+
+        label = tags.replace("'", "")  # NOTE: Q&D fixup of shlex single quotes in tag strings.
+
+        if with_iid:
+            label = f"@{self.iid} " + label
+
+        return label
 
 
 class TestChart(TestCase):
@@ -358,6 +517,7 @@ class TestChart(TestCase):
         minutes_per_col = config.get("reports.week.cell", 15)
         hour_spacing = config.get("reports.week.spacing", 1)
         output_extra_width = 7  # width of the totals column ("  HH:MM")
+        with_iids = (hints is not None and "ids" in hints)
 
         # Configure our instance of Timewarrior.
         for var, value in config.items():
@@ -405,23 +565,44 @@ class TestChart(TestCase):
             intervals.append([ interval ])
             start_h += start_h_delta
 
-        # Map start and end times of test intervals to start and end columns of
-        # corresponding displayed interval blocks.
-        # [ (start_col, end_col), ... ] # width_in_cols = end_col - start_col
-        expected_display_bounds = []  # bounds relative to start of grid row (00:00:00)
+        # Enforce the expected days of the month in test input.
         curr_day_of_month = start_day_of_month
         for intervals_for_the_day in intervals:
+            for interval in intervals_for_the_day:
+                interval.dom = curr_day_of_month
+            curr_day_of_month += 1
+
+        # Assign each tracked interval its (hopefully) correct ID, in case we need to display them.
+        _TrackedInterval.assign_iids(itertools.chain(*intervals))
+
+        # Map start and end times of test intervals to start and end columns of
+        # corresponding displayed interval blocks.
+        expected_display_bounds = []  # bounds relative to start of grid row (00:00:00)
+        expected_label_lines = []
+        for intervals_for_the_day in intervals:
+            # [ (start_col, end_col), ... ] # width_in_cols = end_col - start_col
             expected_display_bounds_for_the_day = []
+            expected_label_lines_for_the_day = []
 
             for interval in intervals_for_the_day:
-                # NOTE: Enforce the expected days of the month in test input.
-                interval.dom = curr_day_of_month
+                display_bounds = interval.get_display_bounds(minutes_per_col, hour_spacing)
+                label = interval.get_label(with_iids)
+                block_width = display_bounds[1] - display_bounds[0]
 
-                expected_display_bounds_for_the_day.append(
-                    interval.get_display_bounds(minutes_per_col, hour_spacing))
+                if block_width <= 0:
+                    continue  # Zero-width blocks do not show up in output.
+
+                label_lines = _split_lines(label, block_width)
+                self.assertIsNotNone(label_lines)
+
+                if len(label_lines) > lines_per_day:
+                    del label_lines[lines_per_day:]
+
+                expected_display_bounds_for_the_day.append(display_bounds)
+                expected_label_lines_for_the_day.append(label_lines)
 
             expected_display_bounds.append(expected_display_bounds_for_the_day)
-            curr_day_of_month += 1
+            expected_label_lines.append(expected_label_lines_for_the_day)
 
         # Execute a "track" command for each interval in the (modified) test input dataset.
         for intervals_for_the_day in intervals:
@@ -448,7 +629,7 @@ class TestChart(TestCase):
             # by searching for the corresponding ANSI escape sequences. Each interval start should
             # be associated with a "set attributes" sequence (f"\x1b[{attr_args}m"), each interval
             # end with a "reset attributes" sequence ("\x1b[0m"). Verify that this succeeds.
-            actual_display_bounds = _find_ansi_ranges(c_line)
+            actual_display_bounds, actual_block_contents = _find_ansi_ranges(c_line)
             self.assertIsNotNone(actual_display_bounds)
             actual_display_bounds = [  # Shift display bounds by starting column of interval grid.
                 ( start - grid_pos[0], end - grid_pos[0] ) for start, end in actual_display_bounds ]
@@ -471,11 +652,14 @@ class TestChart(TestCase):
 
             grid_lineno = lineno - grid_pos[1]
             if 0 <= grid_lineno < grid_dims[1]:  # output line within interval grid
+                block_lineno = grid_lineno % lines_per_day  # line number within interval block
+
                 expected_display_bounds_for_the_day = expected_display_bounds[day_of_week]
+                expected_label_lines_for_the_day = expected_label_lines[day_of_week]
                 expected_unicode_width = output_dims[0]
 
                 # Keep track of which day of the week we're at, and which grid line for that day.
-                if (grid_lineno + 1) % lines_per_day == 0:  # New day starts on next line.
+                if block_lineno == lines_per_day-1:  # New day starts on next line.
                     self.assertEqual(c_line_stripped[-3], ":")  # the colon in the daily total
                     day_of_week += 1
                 else:  # This is NOT the last line for this day, so there's no totals column.
@@ -487,6 +671,25 @@ class TestChart(TestCase):
                 # Check whether the actual interval boundaries in the output match the expected
                 # ones for the current day of the week.
                 self.assertEqual(actual_display_bounds, expected_display_bounds_for_the_day)
+
+                # Check whether the interval block content matches the expected one.
+                expected_block_contents = []
+
+                for block_index in range(len(expected_label_lines_for_the_day)):
+                    start_col, end_col = expected_display_bounds_for_the_day[block_index]
+                    label_lines = expected_label_lines_for_the_day[block_index]
+                    block_width = end_col - start_col
+                    label_line = ""
+
+                    if block_lineno < len(label_lines):  # Block content line not empty.
+                        label_line = label_lines[block_lineno]
+
+                    padded_label_line = _pad_to_width(label_line, block_width)
+                    self.assertIsNotNone(padded_label_line)
+
+                    expected_block_contents.append(padded_label_line)
+
+                self.assertEqual(actual_block_contents, expected_block_contents)
 
             lineno += 1
 
@@ -514,7 +717,7 @@ class TestChart(TestCase):
     # Since three of the four combining marks in the example string are actually spacing,
     # Timewarrior's calculated Unicode width (4) is less than the actual width (7).
     # ISSUE: Hangul (Korean) with conjoining jamo also fails, probably because the
-    # code counts the width of each jamo in isolation.
+    # code counts the width of each jamo in isolation. (This test code currently does, too.)
     # ISSUE: Arabic text messes up the chart when interval IDs are displayed, and sometimes
     # even when they aren't. Apparently because Timewarrior doesn't expect right-to-left text.
     def _make_unicode_dataset_hard(self):
@@ -536,6 +739,21 @@ class TestChart(TestCase):
             [
                 _TrackedInterval(20,  3, 30,  5, 25, "'herpa derpa ding dong'"),
                 _TrackedInterval(20,  7, 59, 12, 12, "'هَمْزَة عَلَى الأَلِفْ'") ] ]  # Arabic
+
+    def _make_unicode_dataset_linewrap(self):
+        return [
+            [
+                _TrackedInterval(16,  8, 55,  9,  0, "안녕하세요 월드"),
+                _TrackedInterval(16, 10,  0, 13,  0, "안녕하세요 월드"),
+                _TrackedInterval(16, 14,  0, 15, 45, "안녕하세요 월드"),
+                _TrackedInterval(16, 17,  0, 17, 55, "안녕하세요 월드")] ]
+
+    def _make_unicode_dataset_linewrap_issues(self):
+        return [
+            [
+                _TrackedInterval(16,  3,  0,  3, 10, "'a     bc'"),
+                _TrackedInterval(16,  3, 30,  3, 40, "'a     bc'"),
+                _TrackedInterval(16, 16, 30, 16, 35, "'a     bc'")] ]
 
     def test_chart_wide_chars_basic(self):
         """Chart should be correctly displayed with wide characters"""
@@ -568,12 +786,13 @@ class TestChart(TestCase):
         hints = ( "ids", )
         self._do_wide_char_tags_test(config, intervals, hints)
 
-    def test_chart_wide_chars_high(self):
-        """Chart should be correctly displayed with wide characters and three lines per day"""
+    def test_chart_wide_chars_high_narrow(self):
+        """Chart should be correctly displayed with wide characters, three lines per day
+           and 30 minutes per column"""
         config = {
             "reports.week.hours": "no",
             "reports.week.lines": 3,
-            "reports.week.cell": 15,
+            "reports.week.cell": 30,  # Narrow enough to test line wrapping behavior.
             "reports.week.spacing": 1 }
         intervals = self._make_unicode_dataset_basic()
         self._do_wide_char_tags_test(config, intervals)
@@ -590,6 +809,29 @@ class TestChart(TestCase):
             "reports.week.axis": "internal",
             "theme.colors.label": "none" }
         intervals = self._make_unicode_dataset_basic()
+        self._do_wide_char_tags_test(config, intervals)
+
+    def test_chart_wide_chars_linewrap_basic(self):
+        """Chart should be correctly displayed with line wrapped wide characters"""
+        config = {
+            "reports.week.hours": "no",
+            "reports.week.lines": 3,
+            "reports.week.cell": 15,
+            "reports.week.spacing": 1 }
+        intervals = self._make_unicode_dataset_linewrap()
+        self._do_wide_char_tags_test(config, intervals)
+
+    # NOTE: The line wrapper changes in libshared PR 125 fix this issue,
+    # so if that PR is merged, expectedFailure should be removed here.
+    @unittest.expectedFailure
+    def test_chart_linewrap_issues(self):
+        """Chart should be correctly displayed with very short intervals and line wrapped runs of spaces"""
+        config = {
+            "reports.week.hours": "no",
+            "reports.week.lines": 3,
+            "reports.week.cell": 15,
+            "reports.week.spacing": 1 }
+        intervals = self._make_unicode_dataset_linewrap_issues()
         self._do_wide_char_tags_test(config, intervals)
 
     # ISSUE: Unusual minutes-per-char values (like 11) appear to break the chart.
