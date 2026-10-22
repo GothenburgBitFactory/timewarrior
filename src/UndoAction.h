@@ -39,6 +39,7 @@ public:
   std::string getAfter() const;
 
   std::string toString () const;
+  std::string toJson () const;
 
 private:
   const std::string _type;

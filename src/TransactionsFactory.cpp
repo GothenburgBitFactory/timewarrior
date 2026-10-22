@@ -24,7 +24,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <JSON.h>
 #include <TransactionsFactory.h>
+#include <memory>
 #include <vector>
 
 void TransactionsFactory::parseLine (const std::string& line)
@@ -55,4 +57,51 @@ void TransactionsFactory::parseLine (const std::string& line)
 std::vector <Transaction> TransactionsFactory::get ()
 {
   return _transactions;
+}
+
+void TransactionsFactory::parseJsonLine (const std::string& line)
+{
+  std::unique_ptr <json::value> parsed (json::parse (line));
+  auto* root = dynamic_cast <json::object*> (parsed.get ());
+
+  if (! root)
+    throw std::string ("Invalid JSON transaction line: ") + line;
+
+  auto actionsIt = root->_data.find ("actions");
+  if (actionsIt == root->_data.end ())
+    throw std::string ("Missing 'actions' in JSON transaction: ") + line;
+
+  auto* actions = dynamic_cast <json::array*> (actionsIt->second);
+  if (! actions)
+    throw std::string ("'actions' is not an array in JSON transaction: ") + line;
+
+  _transactions.emplace_back ();
+
+  for (auto* item : actions->_data)
+  {
+    auto* action = dynamic_cast <json::object*> (item);
+    if (! action)
+      throw std::string ("Action is not an object in JSON transaction");
+
+    auto typeIt = action->_data.find ("type");
+    if (typeIt == action->_data.end ())
+      throw std::string ("Missing 'type' in action");
+
+    auto* typeVal = dynamic_cast <json::string*> (typeIt->second);
+    if (! typeVal)
+      throw std::string ("'type' is not a string in action");
+    std::string type = typeVal->_data;
+
+    std::string before;
+    auto beforeIt = action->_data.find ("before");
+    if (beforeIt != action->_data.end () && beforeIt->second->type () == json::j_string)
+      before = json::decode (dynamic_cast <json::string*> (beforeIt->second)->_data);
+
+    std::string after;
+    auto afterIt = action->_data.find ("after");
+    if (afterIt != action->_data.end () && afterIt->second->type () == json::j_string)
+      after = json::decode (dynamic_cast <json::string*> (afterIt->second)->_data);
+
+    _transactions.back ().addUndoAction (type, before, after);
+  }
 }
