@@ -43,11 +43,15 @@
 //   --------------------------  ------------------------
 //   exclusions.days.2016_01_01  on
 //   exclusions.days.2016_01_02  off
+//   exclusions.days.2018_01_05  off+14
 //   exclusions.friday           <8:00 12:00-12:45 >17:30
 //   exclusions.monday           <8:00 12:00-12:45 >17:30
 //   exclusions.thursday         <8:00 12:00-12:45 >17:30
 //   exclusions.tuesday          <8:00 12:00-12:45 >18:30
 //   exclusions.wednesday        <8:00 12:00-13:30 >17:30
+//
+// The "off+N" / "on+N" value syntax for days entries defines a periodic
+// exclusion recurring every N days starting from the given date.
 //
 Exclusion::Exclusion (const std::string& name, const std::string& value)
 //void Exclusion::initialize (const std::string& line)
@@ -61,17 +65,32 @@ Exclusion::Exclusion (const std::string& name, const std::string& value)
       _tokens[0] == "exclusions")
   {
     if (_tokens.size () == 4 &&
-        _tokens[1] == "days"  &&
-        _tokens[3] == "on") {
-      _additive = true;
-      return;
-    }
-    if (_tokens.size () == 4 &&
-        _tokens[1] == "days"  &&
-        _tokens[3] == "off")
+        _tokens[1] == "days")
     {
-      _additive = false;
-      return;
+      auto& val = _tokens[3];
+
+      // Support periodic syntax: "on+N" or "off+N"
+      auto plus_pos = val.find ('+');
+      if (plus_pos != std::string::npos)
+      {
+        auto period_str = val.substr (plus_pos + 1);
+        if (period_str.empty () || period_str.find_first_not_of ("0123456789") != std::string::npos)
+          throw format ("Invalid period in exclusion value: '{1}'.", value);
+        _period = std::stoi (period_str);
+        if (_period <= 0)
+          throw format ("Period in exclusion must be a positive integer: '{1}'.", value);
+        val = val.substr (0, plus_pos);
+      }
+
+      if (val == "on") {
+        _additive = true;
+        return;
+      }
+      if (val == "off")
+      {
+        _additive = false;
+        return;
+      }
     }
     else if (Datetime::dayOfWeek (_tokens[1]) != -1)
     {
@@ -96,6 +115,7 @@ std::vector <std::string> Exclusion::tokens () const
 //                                         and every block within
 //   exc day on <date>                 --> yields single day range
 //   exc day off <date>                --> yields single day range
+//   exc day on/off <date> (period>0)  --> yields day ranges every period days
 //
 std::vector <Range> Exclusion::ranges (const Range& range) const
 {
@@ -109,11 +129,52 @@ std::vector <Range> Exclusion::ranges (const Range& range) const
     auto day = _tokens[2];
     std::replace (day.begin (), day.end (), '_', '-');
     Datetime start (day);
-    Datetime end (start);
-    ++end;
-    Range all_day (start, end);
-    if (range.overlaps (all_day))
-      results.push_back (all_day);
+
+    if (_period > 0)
+    {
+      // Generate all occurrences within range that match start + k*period days.
+      const int64_t period_secs = static_cast <int64_t> (_period) * 86400;
+      auto startOfDay = [] (const Datetime& dt)
+      {
+        return Datetime (dt.year (), dt.month (), dt.day (), 0, 0, 0);
+      };
+
+      Datetime current = startOfDay (start);
+
+      // Advance to first occurrence on or after range.start
+      if (current < range.start)
+      {
+        int64_t diff_secs = range.start.toEpoch () - current.toEpoch ();
+        int64_t periods = diff_secs / period_secs;
+        current += periods * period_secs;
+        // Normalize to start of day (handles DST edge cases)
+        current = startOfDay (current);
+        if (current < range.start)
+        {
+          current += period_secs;
+          current = startOfDay (current);
+        }
+      }
+
+      while (current < range.end)
+      {
+        Datetime end = current;
+        ++end;
+        Range all_day (current, end);
+        if (range.overlaps (all_day))
+          results.push_back (all_day);
+        current += period_secs;
+        current = startOfDay (current);
+      }
+    }
+    else
+    {
+      Datetime end (start);
+      ++end;
+      Range all_day (start, end);
+      if (range.overlaps (all_day))
+        results.push_back (all_day);
+    }
   }
 
   else if ((dayOfWeek = Datetime::dayOfWeek (_tokens[1])) != -1)
