@@ -47,6 +47,15 @@ jobs:
           - name: "macOS 15"
             runner: macos-15
             container: osx-15
+          - name: "macOS 15 (Intel)"
+            runner: macos-15-intel
+            container: osx-15-intel
+          - name: "macOS 26"
+            runner: macos-26
+            container: osx-26
+          - name: "macOS 26 (Intel)"
+            runner: macos-26-intel
+            container: osx-26-intel
     runs-on: ${{ matrix.runner }}
     continue-on-error: ${{ matrix.continue-on-error == true }}
     steps:
