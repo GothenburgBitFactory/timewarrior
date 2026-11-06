@@ -53,6 +53,9 @@ jobs:
           - name: "macOS 26"
             runner: macos-26
             container: osx-26
+          - name: "macOS 26 (Intel)"
+            runner: macos-26-intel
+            container: osx-26-intel
     runs-on: ${{ matrix.runner }}
     continue-on-error: ${{ matrix.continue-on-error == true }}
     steps:
