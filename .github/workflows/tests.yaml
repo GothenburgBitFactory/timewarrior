@@ -44,9 +44,6 @@ jobs:
           - name: "Ubuntu 24.04"
             runner: ubuntu-latest
             container: ubuntu-2404
-          - name: "macOS 14"
-            runner: macos-14
-            container: osx-14
           - name: "macOS 15"
             runner: macos-15
             container: osx-15
