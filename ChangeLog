@@ -1,4 +1,5 @@
 - #795    fix getInteger falsely rejecting valid '0' config values
+- #796    Update macOS runners
 
 ------ current release ---------------------------
 
