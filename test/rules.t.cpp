@@ -25,12 +25,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <Rules.h>
+#include <cerrno>
 #include <test.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (8);
+  UnitTest t (11);
 
   Rules r;
   r.set ("string", "234");
@@ -53,6 +54,21 @@ int main (int, char**)
   r.set ("one.two.four",  124);
   t.ok ((int) r.all ().size () > 30,     "Rules all (\"\") --> >30");
   t.ok (r.all ("one.two").size () == 3,  "Rules all (\"one.two\") --> 3");
+
+  // A previous failed call may leave errno set, which must not be
+  // mistaken for a parse error when the value itself is valid.
+  errno = EINVAL;
+  r.set ("zero", "0");
+  t.is (r.getInteger ("zero"), 0, "Rules getInteger '0' with stale errno");
+
+  errno = EINVAL;
+  r.set ("negative", "-1");
+  t.is (r.getInteger ("negative"), -1, "Rules getInteger '-1' with stale errno");
+
+  // Trailing garbage is rejected.
+  r.set ("trailing", "12x");
+  try {r.getInteger ("trailing", -1);  t.fail ("Rules getInteger trailing garbage");}
+  catch (...)                          {t.pass ("Rules getInteger trailing garbage");}
 
   return 0;
 }

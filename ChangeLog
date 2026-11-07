@@ -1,3 +1,5 @@
+- #795    fix getInteger falsely rejecting valid '0' config values
+
 ------ current release ---------------------------
 
 1.10.0 (2026-08-02) - 017fc337226e184dee500ed2bf558a6fb756db51
