@@ -176,17 +176,17 @@ int Rules::getInteger (const std::string& key, int defaultValue) const
 
   if (found != _settings.end ())
   {
-    int value = strtoimax (found->second.c_str (), nullptr, 10);
+    char* end = nullptr;
+    intmax_t value = strtoimax (found->second.c_str (), &end, 10);
 
     // Invalid values are handled.
     // ERANGE errors are simply capped by strtoimax, which is desired behavior.
-    // Note that not all platforms behave alike, and the EINVAL is not necessarily returned.
-    if (value == 0 && (errno == EINVAL || found->second != "0"))
+    if (end == found->second.c_str () || *end != '\0')
     {
       throw format ("Invalid integer value for '{1}': '{2}'", key, found->second);
     }
 
-    return value;
+    return static_cast<int> (value);
   }
 
   return defaultValue;
