@@ -638,6 +638,49 @@ class TestUndo(TestCase):
                                   expectedEnd=one_hour_before_utc,
                                   expectedTags=["bar", "foo"])
 
+    def _assert_orphaned_record_rejected(self, record, command="undo"):
+        if command != "undo":
+            self.t("config journal.size 2 :yes")
+        self.t("track 2020-01-01T10:00 - 2020-01-01T11:00 alpha :yes")
+
+        data_dir = os.path.join(self.t.datadir, "data")
+        with open(os.path.join(data_dir, "undo.data"), "w") as journal:
+            journal.write(record + "\n")
+
+        before = {}
+        for name in os.listdir(data_dir):
+            if name.endswith(".data"):
+                with open(os.path.join(data_dir, name), "rb") as data:
+                    before[name] = data.read()
+
+        code, out, error = self.t.runError(command)
+        self.assertEqual(code, 255)
+        self.assertIn("Cannot handle line '" + record + "'", error)
+        for name, content in before.items():
+            with open(os.path.join(data_dir, name), "rb") as data:
+                self.assertEqual(content, data.read(), msg=name)
+
+    def test_undo_rejects_orphaned_type(self):
+        self._assert_orphaned_record_rejected("  type: interval")
+
+    def test_undo_rejects_orphaned_before(self):
+        self._assert_orphaned_record_rejected("  before: {}")
+
+    def test_undo_rejects_orphaned_after(self):
+        self._assert_orphaned_record_rejected("  after: {}")
+
+    def test_bounded_journal_rejects_orphaned_type(self):
+        self._assert_orphaned_record_rejected(
+            "  type: interval", "track 2020-01-02T10:00 - 2020-01-02T11:00 beta :yes")
+
+    def test_bounded_journal_rejects_orphaned_before(self):
+        self._assert_orphaned_record_rejected(
+            "  before: {}", "track 2020-01-02T10:00 - 2020-01-02T11:00 beta :yes")
+
+    def test_bounded_journal_rejects_orphaned_after(self):
+        self._assert_orphaned_record_rejected(
+            "  after: {}", "track 2020-01-02T10:00 - 2020-01-02T11:00 beta :yes")
+
     def test_undo_journal_size_equals_one(self):
         """Test undo only stores the last entry when journal.size == 1"""
 
