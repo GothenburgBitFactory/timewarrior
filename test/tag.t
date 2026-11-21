@@ -43,6 +43,19 @@ class TestTag(TestCase):
         """Executed before each test in the class"""
         self.t = Timew()
 
+    def test_extension_like_tags(self):
+        """A report abbreviation can be added, replaced, and removed as a tag (755)"""
+        self.t("start original")
+
+        self.t("tag @1 da")
+        self.assertOpenInterval(self.t.export()[0], expectedTags=["da", "original"])
+
+        self.t("retag @1 da")
+        self.assertOpenInterval(self.t.export()[0], expectedTags=["da"])
+
+        self.t("untag @1 da")
+        self.assertOpenInterval(self.t.export()[0], expectedTags=[])
+
     def test_add_tag_to_open_interval(self):
         """Add a tag to an open interval"""
         now_utc = datetime.now(timezone.utc)
