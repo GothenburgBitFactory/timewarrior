@@ -32,7 +32,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 int main (int, char**)
 {
-  UnitTest t (261);
+  UnitTest t (282);
 
   try
   {
@@ -391,6 +391,44 @@ int main (int, char**)
     t.is (ranges[0].end.toISOLocalExtended (),   "2016-05-13T08:00:00", "Exclusion range[0].end()   --> 2016-05-13T08:00:00");
     t.is (ranges[1].start.toISOLocalExtended (), "2016-05-13T12:00:00", "Exclusion range[1].start() --> 2016-05-13T12:00:00");
     t.is (ranges[1].end.toISOLocalExtended (),   "2016-05-13T12:45:00", "Exclusion range[1].end()   --> 2016-05-13T12:45:00");
+
+    // Periodic 'off+14': every 14 days starting from 2015-12-21.
+    // Occurrences within 2015-12-15 to 2016-01-15: 2015-12-21 and 2016-01-04.
+    Exclusion e12 ("exclusions.days.2015_12_21", "off+14");
+    tokens = e12.tokens ();
+    t.ok (tokens.size () == 4,    "Exclusion 'exclusions.days.2015_12_21 off+14' --> 4 tokens");
+    t.is (tokens[0], "exclusions","Exclusion 'exclusions.days.2015_12_21 off+14' [0] --> 'exclusions'");
+    t.is (tokens[1], "days",      "Exclusion 'exclusions.days.2015_12_21 off+14' [1] --> 'days'");
+    t.is (tokens[2], "2015_12_21","Exclusion 'exclusions.days.2015_12_21 off+14' [2] --> '2015_12_21'");
+    t.is (tokens[3], "off",       "Exclusion 'exclusions.days.2015_12_21 off+14' [3] --> 'off'");
+    t.notok (e12.additive (),     "Exclusion 'days off+14' --> !additive");
+
+    ranges = e12.ranges (r);
+    t.ok (ranges.size () == 2,                              "Exclusion periodic off+14 ranges --> [2]");
+    t.is (ranges[0].start.toString ("Y-M-D"), "2015-12-21", "Exclusion periodic range[0].start() --> 2015-12-21");
+    t.is (ranges[0].end.toString ("Y-M-D"),   "2015-12-22", "Exclusion periodic range[0].end()   --> 2015-12-22");
+    t.is (ranges[1].start.toString ("Y-M-D"), "2016-01-04", "Exclusion periodic range[1].start() --> 2016-01-04");
+    t.is (ranges[1].end.toString ("Y-M-D"),   "2016-01-05", "Exclusion periodic range[1].end()   --> 2016-01-05");
+
+    // Periodic 'off+7': start date before range.start. Verify first occurrence
+    // is the one that falls within the range.
+    // Start: 2015-12-14, period: 7 days.
+    // Occurrences in range: 2015-12-21, 2015-12-28, 2016-01-04, 2016-01-11.
+    Exclusion e13 ("exclusions.days.2015_12_14", "off+7");
+    ranges = e13.ranges (r);
+    t.ok (ranges.size () == 4,                              "Exclusion periodic off+7 (before range) ranges --> [4]");
+    t.is (ranges[0].start.toString ("Y-M-D"), "2015-12-21", "Exclusion periodic range[0].start() --> 2015-12-21");
+    t.is (ranges[0].end.toString ("Y-M-D"),   "2015-12-22", "Exclusion periodic range[0].end()   --> 2015-12-22");
+    t.is (ranges[1].start.toString ("Y-M-D"), "2015-12-28", "Exclusion periodic range[1].start() --> 2015-12-28");
+    t.is (ranges[1].end.toString ("Y-M-D"),   "2015-12-29", "Exclusion periodic range[1].end()   --> 2015-12-29");
+    t.is (ranges[2].start.toString ("Y-M-D"), "2016-01-04", "Exclusion periodic range[2].start() --> 2016-01-04");
+    t.is (ranges[2].end.toString ("Y-M-D"),   "2016-01-05", "Exclusion periodic range[2].end()   --> 2016-01-05");
+    t.is (ranges[3].start.toString ("Y-M-D"), "2016-01-11", "Exclusion periodic range[3].start() --> 2016-01-11");
+    t.is (ranges[3].end.toString ("Y-M-D"),   "2016-01-12", "Exclusion periodic range[3].end()   --> 2016-01-12");
+
+    // Periodic 'on+14': verify additive flag is set correctly.
+    Exclusion e14 ("exclusions.days.2015_12_21", "on+14");
+    t.ok (e14.additive (),        "Exclusion 'days on+14' --> additive");
   }
 
   catch (const std::string& e)

@@ -47,6 +47,7 @@ private:
 private:
   std::vector <std::string> _tokens   {};
   bool                      _additive {false};
+  int                       _period   {0};
 };
 
 #endif
