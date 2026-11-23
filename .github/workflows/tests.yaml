@@ -26,12 +26,12 @@ jobs:
           - name: "Debian Testing"
             runner: ubuntu-latest
             container: debian-testing
-          - name: "Fedora 41"
+          - name: "Fedora 45"
             runner: ubuntu-latest
-            container: fedora-41
-          - name: "Fedora 42"
+            container: fedora-45
+          - name: "Fedora 46"
             runner: ubuntu-latest
-            container: fedora-42
+            container: fedora-46
           - name: "OpenSUSE Leap"
             runner: ubuntu-latest
             container: opensuse-leap

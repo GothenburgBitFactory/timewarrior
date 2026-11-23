@@ -47,18 +47,18 @@ services:
     security_opt:
       - label=type:container_runtime_t
     tty: true
-  test-fedora-41:
+  test-fedora-45:
     build:
       context: .
-      dockerfile: test/docker/fedora-41
+      dockerfile: test/docker/fedora-45
     network_mode: "host"
     security_opt:
       - label=type:container_runtime_t
     tty: true
-  test-fedora-42:
+  test-fedora-46:
     build:
       context: .
-      dockerfile: test/docker/fedora-42
+      dockerfile: test/docker/fedora-46
     network_mode: "host"
     security_opt:
       - label=type:container_runtime_t
