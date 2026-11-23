@@ -1,6 +1,7 @@
-- #802    Fix test-container 'opensuse-leap'
 - #795    fix getInteger falsely rejecting valid '0' config values
 - #796    Update macOS runners
+- #802    Fix test-container 'opensuse-leap'
+- #803    Fix Fedora test containers
 
 ------ current release ---------------------------
 

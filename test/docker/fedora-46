@@ -1,4 +1,4 @@
-FROM fedora:42
+FROM fedora:46
 
 RUN dnf update -y
 RUN dnf install -y \
@@ -11,7 +11,8 @@ RUN dnf install -y \
         make \
         man \
         python3 \
-        python3-dateutil
+        python3-dateutil \
+        util-linux
 
 # Setup environment
 RUN alternatives --install /usr/bin/python python /usr/bin/python3 10
