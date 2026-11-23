@@ -457,6 +457,7 @@ void CLI::identifyIds ()
 void CLI::canonicalizeNames ()
 {
   bool alreadyFoundCmd = false;
+  bool tagEditingCommand = false;
 
   for (auto& a : _args)
   {
@@ -477,6 +478,7 @@ void CLI::canonicalizeNames ()
       a.attribute ("canonical", canonical);
       a.tag ("CMD");
       alreadyFoundCmd = true;
+      tagEditingCommand = canonical == "tag" || canonical == "retag" || canonical == "untag";
     }
 
     // 'timew <command> --help|-h' should be treated the same as 'timew help <command>'.
@@ -493,6 +495,7 @@ void CLI::canonicalizeNames ()
 
       a.tag ("CMD");
       a.attribute ("canonical", canonical);
+      tagEditingCommand = false;
     }
 
     // Hints.
@@ -504,8 +507,9 @@ void CLI::canonicalizeNames ()
     }
 
     // Extensions.
-    else if (exactMatch ("extension", raw) ||
-             canonicalize (canonical, "extension", raw))
+    else if (! tagEditingCommand &&
+             (exactMatch ("extension", raw) ||
+              canonicalize (canonical, "extension", raw)))
     {
       a.attribute ("canonical", canonical);
       a.tag ("EXT");
