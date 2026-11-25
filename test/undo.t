@@ -706,6 +706,77 @@ class TestUndo(TestCase):
         self.t("undo")
         self.assertEqual(before_a, self.t.export())
 
+    def test_undo_json_format(self):
+        """Test that undo works correctly when journal.format=json is set"""
+        self.t("config journal.format json :yes")
+
+        now_utc = datetime.now(timezone.utc)
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+
+        self.t("track {:%Y%m%dT%H%M%SZ} - {:%Y%m%dT%H%M%SZ} foo".format(two_hours_before_utc, one_hour_before_utc))
+
+        undo_data_path = os.path.join(self.t.env["TIMEWARRIORDB"], "data", "undo.data")
+        with open(undo_data_path) as f:
+            first_line = f.readline().strip()
+        self.assertTrue(first_line.startswith("{"), msg="Expected JSON format in undo.data, got: {}".format(first_line))
+
+        j = self.t.export()
+        self.assertEqual(len(j), 1, msg="Expected 1 interval before undo, got {}".format(len(j)))
+
+        self.t("undo")
+
+        j = self.t.export()
+        self.assertEqual(len(j), 0, msg="Expected 0 intervals after undo, got {}".format(len(j)))
+
+    def test_undo_json_format_warning_for_legacy(self):
+        """Test that a warning is shown when undo.data uses the legacy format"""
+        now_utc = datetime.now(timezone.utc)
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+
+        # Track in default (legacy) format
+        self.t("track {:%Y%m%dT%H%M%SZ} - {:%Y%m%dT%H%M%SZ} foo".format(two_hours_before_utc, one_hour_before_utc))
+
+        # Next invocation should show a warning about the legacy format
+        code, out, err = self.t("track {:%Y%m%dT%H%M%SZ} - {:%Y%m%dT%H%M%SZ} bar".format(one_hour_before_utc, now_utc))
+        self.assertIn("legacy format", err, msg="Expected warning about legacy format in stderr")
+        self.assertIn("journal.format=json", err, msg="Expected hint about journal.format=json in stderr")
+
+    def test_undo_json_format_migration(self):
+        """Test that undo.data is migrated from legacy to JSON when journal.format=json is set"""
+        now_utc = datetime.now(timezone.utc)
+        one_hour_before_utc = now_utc - timedelta(hours=1)
+        two_hours_before_utc = now_utc - timedelta(hours=2)
+
+        # Track in default (legacy) format
+        self.t("track {:%Y%m%dT%H%M%SZ} - {:%Y%m%dT%H%M%SZ} foo".format(two_hours_before_utc, one_hour_before_utc))
+
+        undo_data_path = os.path.join(self.t.env["TIMEWARRIORDB"], "data", "undo.data")
+        with open(undo_data_path) as f:
+            first_line = f.readline().strip()
+        self.assertTrue(first_line.startswith("txn:"), msg="Expected legacy format before migration, got: {}".format(first_line))
+
+        # Enable JSON format - next invocation should migrate
+        self.t("config journal.format json :yes")
+
+        # Run any command - migration should happen
+        code, out, err = self.t("track {:%Y%m%dT%H%M%SZ} - {:%Y%m%dT%H%M%SZ} bar".format(one_hour_before_utc, now_utc))
+        self.assertIn("Migrating undo.data to JSON format", out, msg="Expected migration message in stdout")
+
+        with open(undo_data_path) as f:
+            first_line = f.readline().strip()
+        self.assertTrue(first_line.startswith("{"), msg="Expected JSON format after migration, got: {}".format(first_line))
+
+        # Undo should still work after migration
+        j = self.t.export()
+        self.assertEqual(len(j), 2, msg="Expected 2 intervals before undo, got {}".format(len(j)))
+
+        self.t("undo")
+
+        j = self.t.export()
+        self.assertEqual(len(j), 1, msg="Expected 1 interval after undo, got {}".format(len(j)))
+
     def test_undo_process_commands_when_disabled(self):
         """Test that disabling the journal clears it."""
 

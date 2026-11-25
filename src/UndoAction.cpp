@@ -24,6 +24,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <JSON.h>
 #include <UndoAction.h>
 #include <utility>
 
@@ -36,6 +37,24 @@ std::string UndoAction::toString () const
   return "  type: " + _type + "\n" +
          "  before: " + _before + "\n" +
          "  after: " + _after + "\n";
+}
+
+std::string UndoAction::toJson () const
+{
+  std::string out = "{\"type\":\"" + json::encode (_type) + "\"";
+
+  if (_before.empty ())
+    out += ",\"before\":null";
+  else
+    out += ",\"before\":\"" + json::encode (_before) + "\"";
+
+  if (_after.empty ())
+    out += ",\"after\":null";
+  else
+    out += ",\"after\":\"" + json::encode (_after) + "\"";
+
+  out += "}";
+  return out;
 }
 
 std::string UndoAction::getType () const

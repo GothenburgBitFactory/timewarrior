@@ -50,3 +50,20 @@ std::string Transaction::toString () const
 
   return output;
 }
+
+std::string Transaction::toJson () const
+{
+  std::string output = "{\"actions\":[";
+  bool first = true;
+
+  for (auto& action : _actions)
+  {
+    if (! first)
+      output += ",";
+    output += action.toJson ();
+    first = false;
+  }
+
+  output += "]}\n";
+  return output;
+}

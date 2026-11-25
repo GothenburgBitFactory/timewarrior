@@ -98,6 +98,7 @@ Rules::Rules ()
 
     // Options for the journal / undo file.
     {"journal.size",             "-1"},
+    {"journal.format",           ""},
   };
 }
 
